@@ -1,0 +1,88 @@
+{
+  "base_head": "c2ef5ae58a9219b54e9719a2d4f31e869d0bc888",
+  "archive_path": "/home/qin/data/uav_usv_mpc_archive/20261006_pre_mpc/repository_before.tar.gz",
+  "archive_sha256": "8e2b72785d197c788bf788d0d64dbb90ad871805dbb8120430cd6f84a1bdf309",
+  "removed": [
+    {
+      "path": "src/uav_control/uav_control/guidance/intercept_planner_node.py.bak",
+      "bytes": 31807,
+      "lines": 822,
+      "sha256": "9c7b26c13f5c42d045a2a0e219ad9b48847a7ac3ae4cbfbd28cceb2e6cd8eae5",
+      "action": "archive_remove_from_development_tree",
+      "archive_member": "repository/src/uav_control/uav_control/guidance/intercept_planner_node.py.bak",
+      "historical_commit": "85e13461df62b65d34aa55c9d92576c58085d0b3",
+      "historical_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/src/uav_control/uav_control/guidance/intercept_planner_node.py.bak",
+      "verification": "current file = original file = Git blob = archive member"
+    },
+    {
+      "path": "src/uav_control/uav_control/archive/pure_pursuit_backup.py",
+      "bytes": 5515,
+      "lines": 269,
+      "sha256": "881135e6c7ceb4242db3eb8938d9e50be13207904e773d6c3aafdd2edd8267e8",
+      "action": "archive_remove_from_development_tree",
+      "archive_member": "repository/src/uav_control/uav_control/archive/pure_pursuit_backup.py",
+      "historical_commit": "85e13461df62b65d34aa55c9d92576c58085d0b3",
+      "historical_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/src/uav_control/uav_control/archive/pure_pursuit_backup.py",
+      "verification": "current file = original file = Git blob = archive member"
+    },
+    {
+      "path": "src/uav_control/uav_control/archive/predictive_intercept_v1.py",
+      "bytes": 11940,
+      "lines": 550,
+      "sha256": "b01fd0b4ebc36eda02868436f147036e2cca64c9154096f0a72e8d49a151801e",
+      "action": "archive_remove_from_development_tree",
+      "archive_member": "repository/src/uav_control/uav_control/archive/predictive_intercept_v1.py",
+      "historical_commit": "85e13461df62b65d34aa55c9d92576c58085d0b3",
+      "historical_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/src/uav_control/uav_control/archive/predictive_intercept_v1.py",
+      "verification": "current file = original file = Git blob = archive member"
+    }
+  ],
+  "preserved_uncertain": [
+    {
+      "paths": [
+        "uav_control/trajectory_impact_sim.py",
+        "uav_control/pure_pursuit.py",
+        "uav_control/predictive_intercept.py"
+      ],
+      "reason": "Existing regression tests import these retired interfaces and exercise historical methods."
+    },
+    {
+      "paths": [
+        "shadow_target_predictor_node"
+      ],
+      "reason": "Independent diagnostic stream is still consumed by evaluator; removing it changes diagnostics."
+    },
+    {
+      "paths": [
+        "common timestamp/vector/positive helpers"
+      ],
+      "reason": "Small duplicates in active code; consolidation adds coupling in the timing-sensitive control path with limited gain."
+    },
+    {
+      "paths": [
+        "controllers/pid.py",
+        "guidance/rolling_intercept_guidance.py",
+        "guidance/intercept_solver.py",
+        "offboard_takeoff.py",
+        "position_listener.py"
+      ],
+      "reason": "Reusable or manually callable functionality; lack of use by default launch does not establish redundancy."
+    }
+  ],
+  "verification": {
+    "pytest_before": "836 passed, 1 skipped, 2 warnings",
+    "pytest_after": "836 passed, 1 skipped, 2 warnings",
+    "flake8_exit": 0,
+    "shell_syntax_files": 8,
+    "build": "4 packages finished, exit 0",
+    "ros_package_prefix": "/home/qin/data/uav_usv_mpc/install/uav_control",
+    "installed_console_entry_points_loaded": 15,
+    "unchanged_remaining_source_test_config_model_patch_files": 459,
+    "frozen_baseline_artifacts_verified": 46,
+    "current_document_links_checked": 69,
+    "restore_files_sha256_verified": 3,
+    "current_runtime_reference_matches": 0,
+    "original_repository_unchanged": true,
+    "independent_read_only_review": "No critical, important, or minor findings; approved current scope for commit."
+  }
+}

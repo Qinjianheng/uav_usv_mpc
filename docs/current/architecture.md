@@ -35,4 +35,4 @@ tracker 和主 predictor 的目标输入均为 KF，不能再将 tracker 描述�
 
 图像采集戳、因果 pose history 等待、显式超时拒绝、原始导航 sample epoch 保持。125 ms 新鲜度限制、捕获球、KF Q/R 和安全约束本轮不变。红球仍只是仿真感知接口测试，不能作为无标记真实 USV 感知验证。
 
-`src/uav_control/uav_control/archive/`、旧单体入口及历史 launch 保留供回归；当前运行以 modular 入口为准。MPC 的新增位置与验收见 [后续范围](mpc_scope.md)。
+三个旧单体控制入口及其测试、兼容 launch 保留供回归；两个未引用的退役 archive 版本和 planner `.bak` 已外置，来源与恢复见 [源码冗余清理](redundancy_cleanup.md)。当前运行以 modular 入口为准。MPC 的新增位置与验收见 [后续范围](mpc_scope.md)。

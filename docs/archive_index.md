@@ -23,3 +23,13 @@ GitHub 链接标识原仓库该提交；本轮通过本地 Git 对象核对内�
 6 个本机独有文件不在原仓库 Git 内：一轮 `20261006_102846_255769` 的 CSV/vision/config/summary，以及 `enu_caLQn2` 的两份 PX4 参数备份。它们已归档校验，详见 [本机文件清单](current/audit/local_only_files.json)，必须从本地归档恢复。
 
 归档 SHA256 和逐成员检查见 [归档核对](current/audit/archive_verification.json)；初始 HEAD、状态、remote URL 和规模见 [清点快照](current/audit/snapshot_before.json)。当前四轮精选基线见 [数据包](../data/baselines/20261006_pre_mpc/README.md)。大体量成功 JSONL 与历史工具留在原仓库和归档中，可按清单定位。
+
+## 后续源码冗余清理
+
+原整理清单记录 `c2ef5ae` 的布局。本轮另外移出 3 个源码历史副本，其去向以 [补充清单](current/audit/redundancy_cleanup_20261006.json) 为准；原先快照及冻结实验记录不改写。详情和恢复命令见 [源码冗余清理](current/redundancy_cleanup.md)。
+
+| 移出文件 | 原仓库 85e13461 |
+|---|---|
+| `src/uav_control/uav_control/guidance/intercept_planner_node.py.bak` | [历史文件](https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/src/uav_control/uav_control/guidance/intercept_planner_node.py.bak) |
+| `src/uav_control/uav_control/archive/pure_pursuit_backup.py` | [历史文件](https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/src/uav_control/uav_control/archive/pure_pursuit_backup.py) |
+| `src/uav_control/uav_control/archive/predictive_intercept_v1.py` | [历史文件](https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/src/uav_control/uav_control/archive/predictive_intercept_v1.py) |

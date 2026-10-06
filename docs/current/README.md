@@ -10,5 +10,6 @@
 | [分析与恢复](analysis_and_recovery.md) | 当前分析入口和历史输入恢复 |
 | [MPC 范围](mpc_scope.md) | 后续实现接口和验收边界 |
 | [整理交付](repository_cleanup.md) | 清点、规模、归档和实际检查结果 |
+| [源码冗余清理](redundancy_cleanup.md) | 确认移出项、保留理由、恢复与回归 |
 
 历史文件入口：[archive_index.md](../archive_index.md)。仓库操作约束：[AGENTS.md](../../AGENTS.md)。
