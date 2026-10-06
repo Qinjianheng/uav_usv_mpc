@@ -1,0 +1,393 @@
+{
+  "role": "PRE_MPC_FROZEN_BASELINE",
+  "date": "2026-10-06",
+  "source_repository": "https://github.com/Qinjianheng/uav_usv",
+  "source_commit": "85e13461df62b65d34aa55c9d92576c58085d0b3",
+  "archive": {
+    "archive_path": "/home/qin/data/uav_usv_mpc_archive/20261006_pre_mpc/repository_before.tar.gz",
+    "archive_sha256": "8e2b72785d197c788bf788d0d64dbb90ad871805dbb8120430cd6f84a1bdf309",
+    "archive_bytes": 547049613,
+    "verified_members": 2345,
+    "verified_original_relations": {
+      "same": 2339,
+      "missing": 6
+    },
+    "metadata_members": 3
+  },
+  "runs": [
+    "20261006_093918_367847",
+    "20261006_095151_101120",
+    "20261006_095428_701507",
+    "20261006_095732_501270"
+  ],
+  "config_snapshot_scope": "per-run *_config.yaml contains evaluator settings only; full config/ files separately preserved",
+  "artifacts": [
+    {
+      "source": "data/experiments/current/modular_intercept_20261006_093918_367847_mission_1.csv",
+      "path": "modular_intercept_20261006_093918_367847_mission_1.csv",
+      "sha256": "edc5de6a281f67d69fb80de83826966095029085c9f82e136631048572778768",
+      "bytes": 1469393,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/data/experiments/current/modular_intercept_20261006_093918_367847_mission_1.csv"
+    },
+    {
+      "source": "data/experiments/current/modular_intercept_20261006_093918_367847_mission_1_config.yaml",
+      "path": "modular_intercept_20261006_093918_367847_mission_1_config.yaml",
+      "sha256": "c9024fd5dc2440d990dee8ab89d7457f572f6033e85513fb71bd7ed00a4bb929",
+      "bytes": 722,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/data/experiments/current/modular_intercept_20261006_093918_367847_mission_1_config.yaml"
+    },
+    {
+      "source": "data/experiments/current/modular_intercept_20261006_093918_367847_mission_1_summary.json",
+      "path": "modular_intercept_20261006_093918_367847_mission_1_summary.json",
+      "sha256": "c61f0e1f30f40d6dcaa34c20b64443497edd05d10f4b24b278d77ca4b06678ad",
+      "bytes": 25979,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/data/experiments/current/modular_intercept_20261006_093918_367847_mission_1_summary.json"
+    },
+    {
+      "source": "data/experiments/current/modular_intercept_20261006_093918_367847_mission_1_vision.csv",
+      "path": "modular_intercept_20261006_093918_367847_mission_1_vision.csv",
+      "sha256": "229ebb8b2fc913236b1d562609680fddb5af55c398df2665c9e047b639cf7165",
+      "bytes": 1779044,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/data/experiments/current/modular_intercept_20261006_093918_367847_mission_1_vision.csv"
+    },
+    {
+      "source": "data/experiments/current/modular_intercept_20261006_095151_101120_mission_1.csv",
+      "path": "modular_intercept_20261006_095151_101120_mission_1.csv",
+      "sha256": "ac2c730040c590a06a4412bbbc4583bf6b312a1855ff20f66feaa0e9d0961319",
+      "bytes": 781349,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/data/experiments/current/modular_intercept_20261006_095151_101120_mission_1.csv"
+    },
+    {
+      "source": "data/experiments/current/modular_intercept_20261006_095151_101120_mission_1_config.yaml",
+      "path": "modular_intercept_20261006_095151_101120_mission_1_config.yaml",
+      "sha256": "a1c7468797a560fd44dda6c56dba9bc32c6340f372ae47c01075d094af367c29",
+      "bytes": 720,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/data/experiments/current/modular_intercept_20261006_095151_101120_mission_1_config.yaml"
+    },
+    {
+      "source": "data/experiments/current/modular_intercept_20261006_095151_101120_mission_1_summary.json",
+      "path": "modular_intercept_20261006_095151_101120_mission_1_summary.json",
+      "sha256": "bce4caa04638942e2e5ee5b0706e1a8030228094560b32c1cb8745e3777d35db",
+      "bytes": 21904,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/data/experiments/current/modular_intercept_20261006_095151_101120_mission_1_summary.json"
+    },
+    {
+      "source": "data/experiments/current/modular_intercept_20261006_095151_101120_mission_1_vision.csv",
+      "path": "modular_intercept_20261006_095151_101120_mission_1_vision.csv",
+      "sha256": "a9de8fcb4f8884134fd7c947e379ccb6b05448f0f0be7de9f50a06d98f3b2143",
+      "bytes": 1825198,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/data/experiments/current/modular_intercept_20261006_095151_101120_mission_1_vision.csv"
+    },
+    {
+      "source": "data/experiments/current/modular_intercept_20261006_095428_701507_mission_1.csv",
+      "path": "modular_intercept_20261006_095428_701507_mission_1.csv",
+      "sha256": "83ca4db039148ab544bdde7f2872e73ccf59f6be7040d2dafd28c7dcf72fe816",
+      "bytes": 785971,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/data/experiments/current/modular_intercept_20261006_095428_701507_mission_1.csv"
+    },
+    {
+      "source": "data/experiments/current/modular_intercept_20261006_095428_701507_mission_1_config.yaml",
+      "path": "modular_intercept_20261006_095428_701507_mission_1_config.yaml",
+      "sha256": "a1c7468797a560fd44dda6c56dba9bc32c6340f372ae47c01075d094af367c29",
+      "bytes": 720,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/data/experiments/current/modular_intercept_20261006_095428_701507_mission_1_config.yaml"
+    },
+    {
+      "source": "data/experiments/current/modular_intercept_20261006_095428_701507_mission_1_summary.json",
+      "path": "modular_intercept_20261006_095428_701507_mission_1_summary.json",
+      "sha256": "6d0e92faa7e03c4e38a9181194c56ed2ffd91e35a2d03f4b3c35aba08734ae0f",
+      "bytes": 20672,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/data/experiments/current/modular_intercept_20261006_095428_701507_mission_1_summary.json"
+    },
+    {
+      "source": "data/experiments/current/modular_intercept_20261006_095428_701507_mission_1_vision.csv",
+      "path": "modular_intercept_20261006_095428_701507_mission_1_vision.csv",
+      "sha256": "3a639cf053adfd854fa6c3d378ed541ed9df8a6728114ed4d09b2ed83883e155",
+      "bytes": 1827110,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/data/experiments/current/modular_intercept_20261006_095428_701507_mission_1_vision.csv"
+    },
+    {
+      "source": "data/experiments/current/modular_intercept_20261006_095732_501270_mission_1.csv",
+      "path": "modular_intercept_20261006_095732_501270_mission_1.csv",
+      "sha256": "eda609467ed4ff993dc1a025f1b851ac7aae05dd6671b992e0132ddabd6c57ba",
+      "bytes": 783935,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/data/experiments/current/modular_intercept_20261006_095732_501270_mission_1.csv"
+    },
+    {
+      "source": "data/experiments/current/modular_intercept_20261006_095732_501270_mission_1_config.yaml",
+      "path": "modular_intercept_20261006_095732_501270_mission_1_config.yaml",
+      "sha256": "a1c7468797a560fd44dda6c56dba9bc32c6340f372ae47c01075d094af367c29",
+      "bytes": 720,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/data/experiments/current/modular_intercept_20261006_095732_501270_mission_1_config.yaml"
+    },
+    {
+      "source": "data/experiments/current/modular_intercept_20261006_095732_501270_mission_1_summary.json",
+      "path": "modular_intercept_20261006_095732_501270_mission_1_summary.json",
+      "sha256": "7e5020999b9ac60dfeeaafec0e0a17c1eb0b5efaf3eb61a0e1ded268195b1cf7",
+      "bytes": 20691,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/data/experiments/current/modular_intercept_20261006_095732_501270_mission_1_summary.json"
+    },
+    {
+      "source": "data/experiments/current/modular_intercept_20261006_095732_501270_mission_1_vision.csv",
+      "path": "modular_intercept_20261006_095732_501270_mission_1_vision.csv",
+      "sha256": "95073c7bbac8c37b9fc168ba10e110441811c86b12505ade0c10942aa7ea7cb4",
+      "bytes": 1840866,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/data/experiments/current/modular_intercept_20261006_095732_501270_mission_1_vision.csv"
+    },
+    {
+      "source": "docs/tracking/terminal_cruise_validation_20261006.md",
+      "path": "evidence/terminal_cruise_validation_20261006.md",
+      "sha256": "7e9e3450875cec9fce03f83cb647b9e297e135eeb26bd4304522dc22d5f18af3",
+      "bytes": 8079,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/docs/tracking/terminal_cruise_validation_20261006.md"
+    },
+    {
+      "source": "docs/tracking/y_intercept_evidence_20261005/terminal_cruise_build.log",
+      "path": "evidence/terminal_cruise_build.log",
+      "sha256": "bd92916249a56d326a15e663e6b3a169c72af3e2dd5dbc6747fb4d202c006995",
+      "bytes": 162,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/docs/tracking/y_intercept_evidence_20261005/terminal_cruise_build.log"
+    },
+    {
+      "source": "docs/tracking/y_intercept_evidence_20261005/terminal_cruise_code_fingerprint.json",
+      "path": "evidence/terminal_cruise_code_fingerprint.json",
+      "sha256": "c164e3f2320d2f38315fa2a45a0d13ac7465f4350df012e04ebc128e3d815752",
+      "bytes": 518,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/docs/tracking/y_intercept_evidence_20261005/terminal_cruise_code_fingerprint.json"
+    },
+    {
+      "source": "docs/tracking/y_intercept_evidence_20261005/terminal_cruise_feedback_red.log",
+      "path": "evidence/terminal_cruise_feedback_red.log",
+      "sha256": "fdff49294aa61877892fa330e7f74993eb0cf0e39d848c65efa045ebffd9fe38",
+      "bytes": 2447,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/docs/tracking/y_intercept_evidence_20261005/terminal_cruise_feedback_red.log"
+    },
+    {
+      "source": "docs/tracking/y_intercept_evidence_20261005/terminal_cruise_feedback_tests.log",
+      "path": "evidence/terminal_cruise_feedback_tests.log",
+      "sha256": "3146e9e7282a3a27cbdc34098b64d33091c133a6616efc3dc4f6d531334ce127",
+      "bytes": 99,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/docs/tracking/y_intercept_evidence_20261005/terminal_cruise_feedback_tests.log"
+    },
+    {
+      "source": "docs/tracking/y_intercept_evidence_20261005/terminal_cruise_flake8.log",
+      "path": "evidence/terminal_cruise_flake8.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/docs/tracking/y_intercept_evidence_20261005/terminal_cruise_flake8.log"
+    },
+    {
+      "source": "docs/tracking/y_intercept_evidence_20261005/terminal_cruise_full_tests.log",
+      "path": "evidence/terminal_cruise_full_tests.log",
+      "sha256": "219c5727242b5de7e5efd96fe15b452d23762675759fc021f75c7c3cce730d60",
+      "bytes": 1310,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/docs/tracking/y_intercept_evidence_20261005/terminal_cruise_full_tests.log"
+    },
+    {
+      "source": "docs/tracking/y_intercept_evidence_20261005/terminal_cruise_repeat_1.log",
+      "path": "evidence/terminal_cruise_repeat_1.log",
+      "sha256": "2ae466a45bbc6ecbdaa47444c4a6c73529f83a99fa5158a90edfae592235b8ae",
+      "bytes": 2509,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/docs/tracking/y_intercept_evidence_20261005/terminal_cruise_repeat_1.log"
+    },
+    {
+      "source": "docs/tracking/y_intercept_evidence_20261005/terminal_cruise_repeat_1_freeze.json",
+      "path": "evidence/terminal_cruise_repeat_1_freeze.json",
+      "sha256": "aa0eb215fe82307cc30fe68fdf3df9b7f8e441664e2596f6dfb14739c7e24102",
+      "bytes": 38403,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/docs/tracking/y_intercept_evidence_20261005/terminal_cruise_repeat_1_freeze.json"
+    },
+    {
+      "source": "docs/tracking/y_intercept_evidence_20261005/terminal_cruise_repeat_1_freeze.log",
+      "path": "evidence/terminal_cruise_repeat_1_freeze.log",
+      "sha256": "17c255db167c9e39022936f381592d0dbac1683d700781bcc4ba5bf5c1bfa791",
+      "bytes": 1362,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/docs/tracking/y_intercept_evidence_20261005/terminal_cruise_repeat_1_freeze.log"
+    },
+    {
+      "source": "docs/tracking/y_intercept_evidence_20261005/terminal_cruise_repeat_1_speed_audit.json",
+      "path": "evidence/terminal_cruise_repeat_1_speed_audit.json",
+      "sha256": "7313ae3e089ddb6f913c1128269db93ea78aa63df1a20855d0c72d9a3413791a",
+      "bytes": 13239,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/docs/tracking/y_intercept_evidence_20261005/terminal_cruise_repeat_1_speed_audit.json"
+    },
+    {
+      "source": "docs/tracking/y_intercept_evidence_20261005/terminal_cruise_repeat_1_speed_audit.log",
+      "path": "evidence/terminal_cruise_repeat_1_speed_audit.log",
+      "sha256": "312c0bd7f8a01f998d36735dba466b973928b5b48e065eb3dcb9bff8cba619e4",
+      "bytes": 2723,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/docs/tracking/y_intercept_evidence_20261005/terminal_cruise_repeat_1_speed_audit.log"
+    },
+    {
+      "source": "docs/tracking/y_intercept_evidence_20261005/terminal_cruise_repeat_1_speed_audit.png",
+      "path": "evidence/terminal_cruise_repeat_1_speed_audit.png",
+      "sha256": "16c18bbdce55c1836a3fb3a4928349b20beed0a0ef41416a0bebbca8fcf7fdfe",
+      "bytes": 80144,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/docs/tracking/y_intercept_evidence_20261005/terminal_cruise_repeat_1_speed_audit.png"
+    },
+    {
+      "source": "docs/tracking/y_intercept_evidence_20261005/terminal_cruise_repeat_2.log",
+      "path": "evidence/terminal_cruise_repeat_2.log",
+      "sha256": "67a0454017350765eb0157c548defb8e64ac7db1345298f1f8c7e01b2c9b2927",
+      "bytes": 2478,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/docs/tracking/y_intercept_evidence_20261005/terminal_cruise_repeat_2.log"
+    },
+    {
+      "source": "docs/tracking/y_intercept_evidence_20261005/terminal_cruise_repeat_2_cleanup.json",
+      "path": "evidence/terminal_cruise_repeat_2_cleanup.json",
+      "sha256": "b0a16054ca1bba6662fc43ba627a454b1d0b062c23fd619adc978d5551ae5d0f",
+      "bytes": 164,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/docs/tracking/y_intercept_evidence_20261005/terminal_cruise_repeat_2_cleanup.json"
+    },
+    {
+      "source": "docs/tracking/y_intercept_evidence_20261005/terminal_cruise_repeat_2_freeze.json",
+      "path": "evidence/terminal_cruise_repeat_2_freeze.json",
+      "sha256": "e1b6fb4fbae07bb482c653ad5e2367ae183ede3cb5ea6a6aeb8feac675122f98",
+      "bytes": 37014,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/docs/tracking/y_intercept_evidence_20261005/terminal_cruise_repeat_2_freeze.json"
+    },
+    {
+      "source": "docs/tracking/y_intercept_evidence_20261005/terminal_cruise_repeat_2_freeze.log",
+      "path": "evidence/terminal_cruise_repeat_2_freeze.log",
+      "sha256": "1e5db5528a53fa4ebfe2a20e193651ebe0a6d8e7897d705fe26bf666e7be976c",
+      "bytes": 1361,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/docs/tracking/y_intercept_evidence_20261005/terminal_cruise_repeat_2_freeze.log"
+    },
+    {
+      "source": "docs/tracking/y_intercept_evidence_20261005/terminal_cruise_repeat_2_speed_audit.json",
+      "path": "evidence/terminal_cruise_repeat_2_speed_audit.json",
+      "sha256": "c6591e81e5f345966c32576a830db072e0bf99cb1cb83d2343ccefd21484f14b",
+      "bytes": 12791,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/docs/tracking/y_intercept_evidence_20261005/terminal_cruise_repeat_2_speed_audit.json"
+    },
+    {
+      "source": "docs/tracking/y_intercept_evidence_20261005/terminal_cruise_repeat_2_speed_audit.log",
+      "path": "evidence/terminal_cruise_repeat_2_speed_audit.log",
+      "sha256": "1f562cc526650df5016ebd50979e481e87bf263d916f88694eadf704ce8da535",
+      "bytes": 2597,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/docs/tracking/y_intercept_evidence_20261005/terminal_cruise_repeat_2_speed_audit.log"
+    },
+    {
+      "source": "docs/tracking/y_intercept_evidence_20261005/terminal_cruise_repeat_2_speed_audit.png",
+      "path": "evidence/terminal_cruise_repeat_2_speed_audit.png",
+      "sha256": "b9c814eb8c9e14afd98e6de2ec3c8fa8d0a1c915ffd9f6f3d004b93e19957fb0",
+      "bytes": 81104,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/docs/tracking/y_intercept_evidence_20261005/terminal_cruise_repeat_2_speed_audit.png"
+    },
+    {
+      "source": "docs/tracking/y_intercept_evidence_20261005/terminal_cruise_repeat_2_truth_subscribers.log",
+      "path": "evidence/terminal_cruise_repeat_2_truth_subscribers.log",
+      "sha256": "95cfe46421e90471d9be3aecf585503fdb6250d44135b749f7c44743622ed75b",
+      "bytes": 870,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/docs/tracking/y_intercept_evidence_20261005/terminal_cruise_repeat_2_truth_subscribers.log"
+    },
+    {
+      "source": "docs/tracking/y_intercept_evidence_20261005/terminal_cruise_repeat_validation.json",
+      "path": "evidence/terminal_cruise_repeat_validation.json",
+      "sha256": "92134b4e2337726ce0b3e07a631b32d3b733fbac71298f9dd15cb3b3d3cc44eb",
+      "bytes": 8963,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/docs/tracking/y_intercept_evidence_20261005/terminal_cruise_repeat_validation.json"
+    },
+    {
+      "source": "docs/tracking/y_intercept_evidence_20261005/terminal_cruise_user_phase_1.log",
+      "path": "evidence/terminal_cruise_user_phase_1.log",
+      "sha256": "25d20ed079aea19e80eaf518b2ee0b159d2d17b947373ae0c56b965f7dfc7642",
+      "bytes": 2364,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/docs/tracking/y_intercept_evidence_20261005/terminal_cruise_user_phase_1.log"
+    },
+    {
+      "source": "docs/tracking/y_intercept_evidence_20261005/terminal_cruise_user_phase_1_freeze.json",
+      "path": "evidence/terminal_cruise_user_phase_1_freeze.json",
+      "sha256": "e89481851ac7642522c7388f030d3256f003d90734af4da1a40368af0d9810e7",
+      "bytes": 39156,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/docs/tracking/y_intercept_evidence_20261005/terminal_cruise_user_phase_1_freeze.json"
+    },
+    {
+      "source": "docs/tracking/y_intercept_evidence_20261005/terminal_cruise_user_phase_1_freeze.log",
+      "path": "evidence/terminal_cruise_user_phase_1_freeze.log",
+      "sha256": "122797c6f64d24b39653dd8deeab2f5dcfd28a4caec6f63f024f357be85f4b3a",
+      "bytes": 1360,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/docs/tracking/y_intercept_evidence_20261005/terminal_cruise_user_phase_1_freeze.log"
+    },
+    {
+      "source": "docs/tracking/y_intercept_evidence_20261005/terminal_cruise_user_phase_1_speed_audit.json",
+      "path": "evidence/terminal_cruise_user_phase_1_speed_audit.json",
+      "sha256": "a833a2d68591dbdc5a41caae043818f050ad408add544e74b1379ba6b25e94fc",
+      "bytes": 12484,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/docs/tracking/y_intercept_evidence_20261005/terminal_cruise_user_phase_1_speed_audit.json"
+    },
+    {
+      "source": "docs/tracking/y_intercept_evidence_20261005/terminal_cruise_user_phase_1_speed_audit.log",
+      "path": "evidence/terminal_cruise_user_phase_1_speed_audit.log",
+      "sha256": "a3e14c91cf01bda8aea70bb6a9786e70a6ee7cb35d0f18ab91ef3a8658e0aecc",
+      "bytes": 2314,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/docs/tracking/y_intercept_evidence_20261005/terminal_cruise_user_phase_1_speed_audit.log"
+    },
+    {
+      "source": "docs/tracking/y_intercept_evidence_20261005/terminal_cruise_user_phase_1_speed_audit.png",
+      "path": "evidence/terminal_cruise_user_phase_1_speed_audit.png",
+      "sha256": "fa183d28d923c55d9d106209e7f4928bf7dc3795f7b5f6b733c8237eceb13afe",
+      "bytes": 80985,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/docs/tracking/y_intercept_evidence_20261005/terminal_cruise_user_phase_1_speed_audit.png"
+    },
+    {
+      "source": "src/uav_usv_bringup/config/baseline.yaml",
+      "path": "config/baseline.yaml",
+      "sha256": "c957d631a23b1faf6007e4dc99386cf9e782946f1b044944d4476fbeac389f90",
+      "bytes": 23008,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/src/uav_usv_bringup/config/baseline.yaml"
+    },
+    {
+      "source": "src/uav_usv_bringup/config/visual_geometry_diagnostics.yaml",
+      "path": "config/visual_geometry_diagnostics.yaml",
+      "sha256": "1844b1a731c8a10488066a1389300f3e6a15169b7e0b17cdcaab15119875cdb9",
+      "bytes": 22939,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/src/uav_usv_bringup/config/visual_geometry_diagnostics.yaml"
+    }
+  ],
+  "external_recordings_and_tools": [
+    {
+      "source": "data/experiments/current/y_intercept_20261006_terminal_cruise_repeat_1.jsonl",
+      "path": "recordings/y_intercept_20261006_terminal_cruise_repeat_1.jsonl",
+      "sha256": "938c6a8c0f4e577fe9be749af6681b40904ffd8db02101bc130eb1e1b4046af4",
+      "bytes": 25014790,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/data/experiments/current/y_intercept_20261006_terminal_cruise_repeat_1.jsonl"
+    },
+    {
+      "source": "data/experiments/current/y_intercept_20261006_terminal_cruise_repeat_2.jsonl",
+      "path": "recordings/y_intercept_20261006_terminal_cruise_repeat_2.jsonl",
+      "sha256": "974d45d2891215a36809cdb6a00b688e7a1688193a10f64d15091d736e5eca49",
+      "bytes": 29051976,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/data/experiments/current/y_intercept_20261006_terminal_cruise_repeat_2.jsonl"
+    },
+    {
+      "source": "data/experiments/current/y_intercept_20261006_terminal_cruise_user_phase_1.jsonl",
+      "path": "recordings/y_intercept_20261006_terminal_cruise_user_phase_1.jsonl",
+      "sha256": "1731dfde08eda63f623c6c5010b92e0dee2bec08bd5223aedaeb8412983e30ac",
+      "bytes": 23216162,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/data/experiments/current/y_intercept_20261006_terminal_cruise_user_phase_1.jsonl"
+    },
+    {
+      "source": "docs/tracking/y_intercept_evidence_20261005/pause_freeze_record.py",
+      "path": "evidence/tools/pause_freeze_record.py",
+      "sha256": "ce7e22525386f8af97de757d5133995986a7cfe562e53ccb9fad0d743576f1dd",
+      "bytes": 2956,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/docs/tracking/y_intercept_evidence_20261005/pause_freeze_record.py"
+    },
+    {
+      "source": "docs/tracking/y_intercept_evidence_20261005/terminal_speed_audit.py",
+      "path": "evidence/tools/terminal_speed_audit.py",
+      "sha256": "542ea5153e3e2b9906f1a5ff837ea50b87a432385ea7da9b9f2ddcf2e54bb6ed",
+      "bytes": 3203,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/docs/tracking/y_intercept_evidence_20261005/terminal_speed_audit.py"
+    },
+    {
+      "source": "docs/tracking/y_intercept_evidence_20261005/y_user_phase_record.py",
+      "path": "evidence/tools/y_user_phase_record.py",
+      "sha256": "48f9ad0fd28097f346cf898c1705df237006f189dd2c826584901449f06c1ddb",
+      "bytes": 9567,
+      "source_url": "https://github.com/Qinjianheng/uav_usv/blob/85e13461df62b65d34aa55c9d92576c58085d0b3/docs/tracking/y_intercept_evidence_20261005/y_user_phase_record.py"
+    }
+  ],
+  "curation_note": "开发目录保留四轮主记录、配置和关键验证证据；大体量 JSONL 与历史工具通过原仓库/持久归档恢复。"
+}

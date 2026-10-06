@@ -1,8 +1,0 @@
-Starting >>> uav_usv_interfaces
-Finished <<< uav_usv_interfaces [0.94s]
-Starting >>> uav_control
-Finished <<< uav_control [2.08s]
-Starting >>> uav_usv_bringup
-Finished <<< uav_usv_bringup [0.13s]
-
-Summary: 3 packages finished [3.74s]

@@ -1,0 +1,38 @@
+[
+  {
+    "file": "modular_intercept_20261006_093918_367847_mission_1_summary.json",
+    "outcome": "FAILURE",
+    "failure_reason": "TIMEOUT",
+    "minimum_distance": 0.5575738054985829,
+    "first_terminal_approach_hit": false,
+    "recovery_count": 6,
+    "gazebo_pause_succeeded": false
+  },
+  {
+    "file": "modular_intercept_20261006_095151_101120_mission_1_summary.json",
+    "outcome": "SUCCESS",
+    "failure_reason": "",
+    "minimum_distance": 0.46470192364879703,
+    "first_terminal_approach_hit": true,
+    "recovery_count": 0,
+    "gazebo_pause_succeeded": true
+  },
+  {
+    "file": "modular_intercept_20261006_095428_701507_mission_1_summary.json",
+    "outcome": "SUCCESS",
+    "failure_reason": "",
+    "minimum_distance": 0.48256359328943976,
+    "first_terminal_approach_hit": true,
+    "recovery_count": 0,
+    "gazebo_pause_succeeded": true
+  },
+  {
+    "file": "modular_intercept_20261006_095732_501270_mission_1_summary.json",
+    "outcome": "SUCCESS",
+    "failure_reason": "",
+    "minimum_distance": 0.4617056074460784,
+    "first_terminal_approach_hit": true,
+    "recovery_count": 0,
+    "gazebo_pause_succeeded": true
+  }
+]

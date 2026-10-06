@@ -1,8 +1,0 @@
-{
-  "src/uav_control/uav_control/control/trajectory_tracker_node.py": "5e9b28eec3a73e4dcf6d519ac5778ba94e1302d917180fdaf9ecfdd275c1a2ef",
-  "src/uav_control/test/test_terminal_visual_yaw.py": "b496eab7813534d26efbf92b165aa73f20d38fdbb194a6f5c447e9cd78821061",
-  "src/uav_usv_bringup/config/baseline.yaml": "89f56abb2e727511e7f7d8f3fa2b116bbadab124d1bd28528a931cb703597ffd",
-  "src/uav_usv_bringup/launch/modular_intercept.launch.py": "faa4dcb1df895807e61ee21690110b7a7f5bbceff1b7e5d1725233d52611da54",
-  "scripts/build_workspace.sh": "3304ad0e6ebb6c6b77e4ffc178c150e7d3210c2ec4e440de7ddae4090c11dd2d",
-  "scripts/start_px4_ros2.sh": "a759831d404ee284d6112abda8e90e9b53e01473bd6648d26e4ea2deb1a646e7"
-}

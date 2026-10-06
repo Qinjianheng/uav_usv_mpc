@@ -1,7 +1,15 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
-WS_ROOT="${UAV_USV_WS:-/home/qin/data/uav_usv}"
+SCRIPT_DIR="$(
+    cd -- "$(dirname -- "${BASH_SOURCE[0]}")"
+    pwd -P
+)"
+DEFAULT_WS_ROOT="$(
+    cd -- "${SCRIPT_DIR}/.."
+    pwd -P
+)"
+WS_ROOT="${UAV_USV_WS:-${DEFAULT_WS_ROOT}}"
 
 if [[ ! -d "${WS_ROOT}/src" ]]; then
     echo "Workspace source directory not found: ${WS_ROOT}/src" >&2

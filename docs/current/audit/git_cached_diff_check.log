@@ -1,0 +1,2 @@
+Initial check found CRLF in the generated retention TSV. Converted that generated list to LF; original experiment files unchanged.
+Final git diff --cached --check: exit 0, no findings.

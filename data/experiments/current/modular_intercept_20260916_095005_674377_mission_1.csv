@@ -1,1 +1,0 @@
-time,mission_id,phase,uav_x,uav_y,uav_z,uav_vx,uav_vy,uav_vz,target_x,target_y,target_z,target_vx,target_vy,target_vz,distance,horizontal_distance,vertical_error,relative_speed,closing_speed,controller_status,plan_id,plan_source_age,sea_safety_state,sea_safety_margin,prediction_0p5_error,prediction_1p0_error,prediction_2p0_error

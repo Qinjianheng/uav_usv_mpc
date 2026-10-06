@@ -1,1 +1,0 @@
-P6 experiment 1, attempt 1 had zero usable ROI: target moved at horizontal_speed=4.0 m/s and was outside camera view despite velocity_y=1.2 parameter. Attempt 2 sets initial_y=-20, velocity_y=horizontal_speed=0.8 m/s, start_on_command=false. UAV remains disarmed OFFBOARD ground hold; no X/Y.

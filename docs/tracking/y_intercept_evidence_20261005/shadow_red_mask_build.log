@@ -1,8 +1,0 @@
-Building ROS 2 workspace: /home/qin/data/uav_usv
-Starting >>> uav_control
-Finished <<< uav_control [0.75s]
-
-Summary: 1 package finished [0.91s]
-
-Build complete. To use this shell, run:
-source /home/qin/data/uav_usv/install/setup.bash

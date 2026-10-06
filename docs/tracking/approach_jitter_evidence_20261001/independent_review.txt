@@ -1,4 +1,0 @@
-Reviewer repair_review found no important correctness/boundary issue in same-capture pairing, pre-child BLAS limits, and RELIABLE KEEP_LAST8 images.
-PX4 pose/timesync BEST_EFFORT1 and source-age/time-map gates remain unchanged.
-Reviewer independently reran 116 related tests: all passed.
-Earlier review found NO_VALID_PLAN transitional owner/setpoint mismatch; regression reproduced it and final command.mode ownership fixed both call sites.

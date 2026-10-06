@@ -1,9 +1,0 @@
-{
-  "scripts/start_px4_ros2.sh": "a759831d404ee284d6112abda8e90e9b53e01473bd6648d26e4ea2deb1a646e7",
-  "scripts/px4_navigation_audit.py": "1a0461cda553a846be96e43437911c71415ab195a8747f76ddd1f31e900716e7",
-  "patches/px4/px4-rc.gzgnss": "090ffe7714fd3c9127f7c0735c04b5173fb9489272f1e79216b9bf2ec759973c",
-  "patches/px4/gz_gnss_initialization.patch": "ebfe7fda1db2b77008a79b21736015d42cd5c429a600ef5f898c4842a7ac7c13",
-  "src/uav_control/test/test_gz_gnss_initialization.py": "ed67d117142d16811159d640e0a6d7b2fa69be09d194ad427f00e33846474df1",
-  "src/uav_control/test/test_px4_navigation_audit.py": "a7722b2c4b405984828d801c4a95e21651d8a6916bc6c58af2e52b46adbf21f0",
-  "docs/tracking/approach_jitter_evidence_20261001/audit.py": "c9aee5dcca03a043498c58f51933bb99f6ac5839c3068035828dddccaf850a39"
-}

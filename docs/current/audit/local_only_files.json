@@ -1,0 +1,68 @@
+[
+  {
+    "path": "data/experiments/current/modular_intercept_20261006_102846_255769_mission_1.csv",
+    "bytes": 693225,
+    "sha256": "708b14fbe69f9a5a604e51e6ec588d6cc657cf861842a3184395a4323f0f81ea",
+    "tracked": false,
+    "original_sha256": "",
+    "original_relation": "missing",
+    "action": "archive",
+    "destination": "/home/qin/data/uav_usv_mpc_archive/20261006_pre_mpc/repository_before.tar.gz::repository/data/experiments/current/modular_intercept_20261006_102846_255769_mission_1.csv",
+    "source_url": ""
+  },
+  {
+    "path": "data/experiments/current/modular_intercept_20261006_102846_255769_mission_1_config.yaml",
+    "bytes": 722,
+    "sha256": "c9024fd5dc2440d990dee8ab89d7457f572f6033e85513fb71bd7ed00a4bb929",
+    "tracked": false,
+    "original_sha256": "",
+    "original_relation": "missing",
+    "action": "archive",
+    "destination": "/home/qin/data/uav_usv_mpc_archive/20261006_pre_mpc/repository_before.tar.gz::repository/data/experiments/current/modular_intercept_20261006_102846_255769_mission_1_config.yaml",
+    "source_url": ""
+  },
+  {
+    "path": "data/experiments/current/modular_intercept_20261006_102846_255769_mission_1_summary.json",
+    "bytes": 22483,
+    "sha256": "bdff5396a4cde9096845b186a032c3d7e7f158c46b6e0fcd26ed096231ebe4a5",
+    "tracked": false,
+    "original_sha256": "",
+    "original_relation": "missing",
+    "action": "archive",
+    "destination": "/home/qin/data/uav_usv_mpc_archive/20261006_pre_mpc/repository_before.tar.gz::repository/data/experiments/current/modular_intercept_20261006_102846_255769_mission_1_summary.json",
+    "source_url": ""
+  },
+  {
+    "path": "data/experiments/current/modular_intercept_20261006_102846_255769_mission_1_vision.csv",
+    "bytes": 857624,
+    "sha256": "34a6f99cf75699876d436a3fa57f59ed227ca7537c991ddcdd41bff39b5edd9c",
+    "tracked": false,
+    "original_sha256": "",
+    "original_relation": "missing",
+    "action": "archive",
+    "destination": "/home/qin/data/uav_usv_mpc_archive/20261006_pre_mpc/repository_before.tar.gz::repository/data/experiments/current/modular_intercept_20261006_102846_255769_mission_1_vision.csv",
+    "source_url": ""
+  },
+  {
+    "path": "data/experiments/px4_parameter_backups/enu_caLQn2/parameters.bson",
+    "bytes": 468,
+    "sha256": "172363049df3a7c460da097a81eb969b6f7c4765583d9f2af2baaed0c4c009bf",
+    "tracked": false,
+    "original_sha256": "",
+    "original_relation": "missing",
+    "action": "archive",
+    "destination": "/home/qin/data/uav_usv_mpc_archive/20261006_pre_mpc/repository_before.tar.gz::repository/data/experiments/px4_parameter_backups/enu_caLQn2/parameters.bson",
+    "source_url": ""
+  },
+  {
+    "path": "data/experiments/px4_parameter_backups/enu_caLQn2/parameters_backup.bson",
+    "bytes": 468,
+    "sha256": "172363049df3a7c460da097a81eb969b6f7c4765583d9f2af2baaed0c4c009bf",
+    "tracked": false,
+    "original_sha256": "",
+    "original_relation": "missing",
+    "action": "archive",
+    "destination": "/home/qin/data/uav_usv_mpc_archive/20261006_pre_mpc/repository_before.tar.gz::repository/data/experiments/px4_parameter_backups/enu_caLQn2/parameters_backup.bson",
+    "source_url": ""
+  }
+]

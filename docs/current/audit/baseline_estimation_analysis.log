@@ -1,0 +1,12 @@
+USV estimation report: /home/qin/data/uav_usv_mpc/data/baselines/20261006_pre_mpc/modular_intercept_20261006_095151_101120_mission_1.csv
+CSV rows: 722
+Availability: camera=0.0% | Kalman=0.0%
+Error metrics (metres):
+  camera         no valid samples
+  kalman         no valid samples
+  guidance_0.5s  no valid samples
+  guidance_1.0s  no valid samples
+  guidance_2.0s  no valid samples
+  kalman_0.5s    n= 709 | mean=0.588 | RMSE=0.919 | median=0.294 | P95=2.868 | max=2.868
+  kalman_1.0s    n= 699 | mean=1.078 | RMSE=1.557 | median=0.664 | P95=4.417 | max=4.417
+  kalman_2.0s    n= 679 | mean=2.555 | RMSE=3.399 | median=2.028 | P95=8.134 | max=8.134

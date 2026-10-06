@@ -1,0 +1,9 @@
+Building ROS 2 workspace: /tmp/pre_mpc_checks/override
+CWD=/tmp/pre_mpc_checks/override
+ARG=build
+ARG=--base-paths
+ARG=/tmp/pre_mpc_checks/override/src
+ARG=--symlink-install
+
+Build complete. To use this shell, run:
+source /tmp/pre_mpc_checks/override/install/setup.bash

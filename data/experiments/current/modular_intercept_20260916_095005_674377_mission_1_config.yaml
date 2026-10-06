@@ -1,8 +1,0 @@
-{
-  "capture_radius": 0.25,
-  "sea_surface_z": 0.0,
-  "enable_sea_contact_failure": true,
-  "maximum_duration": 30.0,
-  "truth_topic": "/target/state",
-  "truth_role": "evaluation_only"
-}

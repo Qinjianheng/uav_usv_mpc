@@ -1,0 +1,15 @@
+file                                              outcome              reason  hd_min   |ve|  allow  t_min  minco   hold   dt95 alt_err
+trajectory_impact_sim_20260903_180329_837467.csv                                 0.00   0.00   0.25    n/a    n/a    n/a    n/a     n/a
+trajectory_impact_sim_20260903_182606_728443.csv                                 0.00   0.00   0.25    n/a    n/a    n/a    n/a     n/a
+
+Outcome counts:
+
+Notes: hd_min = closest horizontal separation
+       |ve| = vertical error at that instant
+       allow = horizontal separation still inside the capture
+               sphere given |ve| (0 means capture was
+               geometrically impossible at that instant)
+       minco = fraction of intercept rows planned by MINCO
+       hold = fraction executing a retained trajectory
+       dt95 = 95th-percentile measured control period
+       alt_err = max |guidance_altitude_reference - uav_z|

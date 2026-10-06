@@ -1,0 +1,822 @@
+[
+  {
+    "path": "scripts/build_workspace.sh",
+    "line": 4,
+    "text": "WS_ROOT=\"${UAV_USV_WS:-/home/qin/data/uav_usv}\""
+  },
+  {
+    "path": "scripts/p7_attitude_clock_analysis.py",
+    "line": 172,
+    "text": "        'data/experiments/current/p7_kf_20260929'))"
+  },
+  {
+    "path": "scripts/p7_attitude_clock_analysis.py",
+    "line": 174,
+    "text": "        'data/experiments/current/p7_attitude_clock_20260929'))"
+  },
+  {
+    "path": "scripts/start_px4_ros2.sh",
+    "line": 219,
+    "text": "PX4_PARAMETER_BACKUP_ROOT=\"${WS_ROOT}/data/experiments/px4_parameter_backups\""
+  },
+  {
+    "path": "scripts/vision_p4_geometry_gate_analysis.py",
+    "line": 14,
+    "text": "SOURCE = ROOT / 'data/experiments/current'"
+  },
+  {
+    "path": "scripts/vision_p4_px4_mag_audit.py",
+    "line": 16,
+    "text": "          / 'data/experiments/current/p4_20260927_px4_mag_audit.json')"
+  },
+  {
+    "path": "scripts/vision_p4_synthetic_sphere.py",
+    "line": 18,
+    "text": "          / 'data/experiments/current/p4_20260927_synthetic_sphere.json')"
+  },
+  {
+    "path": "scripts/vision_px4_ulog_reference_analysis.py",
+    "line": 39,
+    "text": "    csv_path = (root / 'data/experiments/current'"
+  },
+  {
+    "path": "scripts/vision_static_capture.py",
+    "line": 714,
+    "text": "        'data/experiments/current'"
+  },
+  {
+    "path": "scripts/vision_uav_pose_reference_analysis.py",
+    "line": 80,
+    "text": "        csv_path = (root / 'data/experiments/current'"
+  },
+  {
+    "path": "scripts/vision_uav_pose_reference_analysis.py",
+    "line": 82,
+    "text": "        config_path = (root / 'data/experiments/current'"
+  },
+  {
+    "path": "docs/HANDOVER_2026-09-12.md",
+    "line": 19,
+    "text": "工作目录是 /home/qin/data/uav_usv，ROS 2为Humble，PX4源码位于"
+  },
+  {
+    "path": "docs/HANDOVER_2026-09-12.md",
+    "line": 54,
+    "text": "| ROS 2工作空间 | `/home/qin/data/uav_usv` |"
+  },
+  {
+    "path": "docs/HANDOVER_2026-09-12.md",
+    "line": 56,
+    "text": "| 一键启动 | `/home/qin/data/uav_usv/scripts/uav_lab.sh` |"
+  },
+  {
+    "path": "docs/HANDOVER_2026-09-12.md",
+    "line": 57,
+    "text": "| 实际启动逻辑 | `/home/qin/data/uav_usv/scripts/start_px4_ros2.sh` |"
+  },
+  {
+    "path": "docs/HANDOVER_2026-09-12.md",
+    "line": 58,
+    "text": "| 基准参数 | `/home/qin/data/uav_usv/src/uav_usv_bringup/config/baseline.yaml` |"
+  },
+  {
+    "path": "docs/HANDOVER_2026-09-12.md",
+    "line": 59,
+    "text": "| 统一launch | `/home/qin/data/uav_usv/src/uav_usv_bringup/launch/baseline_intercept.launch.py` |"
+  },
+  {
+    "path": "docs/HANDOVER_2026-09-12.md",
+    "line": 60,
+    "text": "| UAV主控制与CSV | `/home/qin/data/uav_usv/src/uav_control/uav_control/trajectory_impact_sim.py` |"
+  },
+  {
+    "path": "docs/HANDOVER_2026-09-12.md",
+    "line": 61,
+    "text": "| USV运动 | `/home/qin/data/uav_usv/src/uav_control/uav_control/moving_target.py` |"
+  },
+  {
+    "path": "docs/HANDOVER_2026-09-12.md",
+    "line": 62,
+    "text": "| MINCO核心 | `/home/qin/data/uav_usv/src/uav_control/uav_control/guidance/minco_trajectory.py` |"
+  },
+  {
+    "path": "docs/HANDOVER_2026-09-12.md",
+    "line": 63,
+    "text": "| 终端截击规划器 | `/home/qin/data/uav_usv/src/uav_control/uav_control/guidance/finite_horizon_intercept_planner.py` |"
+  },
+  {
+    "path": "docs/HANDOVER_2026-09-12.md",
+    "line": 64,
+    "text": "| 前视RGB-D定位 | `/home/qin/data/uav_usv/src/uav_control/uav_control/perception/rgbd_target_localizer.py` |"
+  },
+  {
+    "path": "docs/HANDOVER_2026-09-12.md",
+    "line": 65,
+    "text": "| 卡尔曼滤波 | `/home/qin/data/uav_usv/src/uav_control/uav_control/tracking/target_kalman_filter.py` |"
+  },
+  {
+    "path": "docs/HANDOVER_2026-09-12.md",
+    "line": 66,
+    "text": "| 预测误差配对 | `/home/qin/data/uav_usv/src/uav_control/uav_control/tracking/prediction_error_tracker.py` |"
+  },
+  {
+    "path": "docs/HANDOVER_2026-09-12.md",
+    "line": 67,
+    "text": "| CSV离线分析 | `/home/qin/data/uav_usv/src/uav_control/uav_control/analysis/usv_estimation_analysis.py` |"
+  },
+  {
+    "path": "docs/HANDOVER_2026-09-12.md",
+    "line": 68,
+    "text": "| UAV相机模型 | `/home/qin/data/uav_usv/src/uav_usv_bringup/models/x500_mono_cam/model.sdf` |"
+  },
+  {
+    "path": "docs/HANDOVER_2026-09-12.md",
+    "line": 69,
+    "text": "| 海面世界 | `/home/qin/data/uav_usv/src/uav_usv_bringup/worlds/ocean.sdf` |"
+  },
+  {
+    "path": "docs/HANDOVER_2026-09-12.md",
+    "line": 70,
+    "text": "| 当前实验CSV | `/home/qin/data/uav_usv/data/experiments/current` |"
+  },
+  {
+    "path": "docs/HANDOVER_2026-09-12.md",
+    "line": 71,
+    "text": "| 用户视频 | `/home/qin/data/uav_usv/data/videos`，当前未纳入Git |"
+  },
+  {
+    "path": "docs/HANDOVER_2026-09-12.md",
+    "line": 237,
+    "text": "日志目录：`/home/qin/data/uav_usv/data/experiments/current`"
+  },
+  {
+    "path": "docs/HANDOVER_2026-09-12.md",
+    "line": 259,
+    "text": "source /home/qin/data/uav_usv/install/setup.bash"
+  },
+  {
+    "path": "docs/HANDOVER_2026-09-12.md",
+    "line": 261,
+    "text": "  /home/qin/data/uav_usv/data/experiments/current/<日志文件.csv>"
+  },
+  {
+    "path": "docs/HANDOVER_2026-09-12.md",
+    "line": 271,
+    "text": "cd /home/qin/data/uav_usv"
+  },
+  {
+    "path": "docs/HANDOVER_2026-09-12.md",
+    "line": 298,
+    "text": "cd /home/qin/data/uav_usv"
+  },
+  {
+    "path": "docs/HANDOVER_2026-09-12.md",
+    "line": 308,
+    "text": "source /home/qin/data/uav_usv/install/setup.bash"
+  },
+  {
+    "path": "docs/HANDOVER_2026-09-12.md",
+    "line": 427,
+    "text": "cd /home/qin/data/uav_usv"
+  },
+  {
+    "path": "docs/HANDOVER_2026-09-12.md",
+    "line": 436,
+    "text": "cd /home/qin/data/uav_usv"
+  },
+  {
+    "path": "docs/P0_sea_contact_root_cause_2026-09-12.md",
+    "line": 4,
+    "text": "数据来源：`data/experiments/current/*.csv` 共 35 个日志（含 11 次基线之前的实验）。"
+  },
+  {
+    "path": "docs/P0_sea_contact_root_cause_2026-09-12.md",
+    "line": 177,
+    "text": "cd /home/qin/data/uav_usv"
+  },
+  {
+    "path": "docs/P0_sea_contact_root_cause_2026-09-12.md",
+    "line": 182,
+    "text": "ros2 run uav_control intercept_outcome_analysis data/experiments/current"
+  },
+  {
+    "path": "docs/P0_sea_contact_root_cause_2026-09-12.md",
+    "line": 186,
+    "text": "  data/experiments/current --detail 20260912_143941"
+  },
+  {
+    "path": "docs/benchmarks/2026-09-15-minco-baseline.yaml",
+    "line": 9,
+    "text": "  csv: \"data/experiments/current/trajectory_impact_sim_20260915_151908_694004.csv\""
+  },
+  {
+    "path": "docs/benchmarks/2026-09-15-minco-baseline.yaml",
+    "line": 11,
+    "text": "  summary: \"data/experiments/current/trajectory_impact_sim_20260915_151908_694004_summary.json\""
+  },
+  {
+    "path": "docs/benchmarks/2026-09-15-modular-performance.yaml",
+    "line": 11,
+    "text": "  workspace: \"/home/qin/data/uav_usv\""
+  },
+  {
+    "path": "docs/migration.md",
+    "line": 4,
+    "text": "- 新工作空间：`/home/qin/data/uav_usv`"
+  },
+  {
+    "path": "docs/migration.md",
+    "line": 6,
+    "text": "- 历史CSV迁移到：`data/experiments/baseline_legacy`"
+  },
+  {
+    "path": "docs/performance/gazebo_gui_performance_optimization_20260927.md",
+    "line": 17,
+    "text": "开始时 HEAD=`d86233a`，工作区干净。使用项目 `scripts/uav_lab.sh --no-build` 的标准 Gazebo 主窗口、PX4、DDS、ROS 启动；普通场景用原 baseline 配置，static5 用已有 `data/experiments/current/p5_20260927/static5_config.yaml`。各普通阶段采 40 s：地面 OFFBOARD hold、按 X 后起飞/FOLLOW、随后 +Y 动态段；未按 Y，没有截击或视觉闭环。static5 用相同 world、相机、目标、控制配置分别运行 38 s；额外在同一新版 GUI 会话中连续运行 HEAD 旧采集器和本轮采集器各 33 s，比较写盘路径。未运行 rqt_image_view。每次结束仅停止本轮启动且已核实 PID/命令行的 Gazebo/PX4/ROS 进程组，最终没有留下仿真进程。"
+  },
+  {
+    "path": "docs/performance/gazebo_gui_performance_optimization_20260927.md",
+    "line": 64,
+    "text": "新增数据：`data/experiments/current/sim_render_performance_before.json`、`sim_render_performance_after.json` 为普通地面；同目录的 `_before_follow`/`_after_follow`、`_before_motion`/`_after_motion`、`_before_capture_static5`/`_after_capture_static5`、`_same_gui_old_collector`/`_same_gui_new_collector` JSON 是其余 A/B；`sim_render_roi_callback_benchmark.json` 为合成同像素回调基准。原始 static5 CSV、四组 ROI/JSONL 和各自捕获摘要保存于 `data/experiments/current/render_perf_20260928/{before_static5,after_static5,same_gui_old,same_gui_new}/`，没有覆盖 P5 历史实验。初始 HEAD=`d86233a`；本轮未 commit、push、reset 或 clean。"
+  },
+  {
+    "path": "docs/project_introduction.md",
+    "line": 7,
+    "text": "工作空间位于 `/home/qin/data/uav_usv`，PX4源码默认位于 `/home/qin/Projects/PX4-Autopilot`。"
+  },
+  {
+    "path": "docs/project_introduction.md",
+    "line": 61,
+    "text": "cd /home/qin/data/uav_usv"
+  },
+  {
+    "path": "docs/project_introduction.md",
+    "line": 82,
+    "text": "控制节点将实验过程保存为CSV，默认目录为 `data/experiments/current/`。日志包含："
+  },
+  {
+    "path": "docs/superpowers/plans/2026-09-30-follow-run-logging.md",
+    "line": 32,
+    "text": "- Final 18-topic report: docs/tracking/follow_run_logging_20260930.md; raw validation and review: docs/tracking/follow_run_evidence_20260930/."
+  },
+  {
+    "path": "docs/superpowers/plans/2026-09-30-strict-visual-loop.md",
+    "line": 66,
+    "text": "- Report: docs/tracking/strict_visual_loop_p8_2_p8_3_20260930.md. No Gazebo, commits, pushes or memory edits."
+  },
+  {
+    "path": "docs/superpowers/plans/2026-10-06-pre-mpc-repository-cleanup.md",
+    "line": 3,
+    "text": "**Goal:** 在 `/home/qin/data/uav_usv_mpc` 完成一次独立整理提交，保持现有控制行为。"
+  },
+  {
+    "path": "docs/tracking/approach_jitter_evidence_20261001/audit.py",
+    "line": 20,
+    "text": "BASE = ROOT / 'data/experiments/current/modular_intercept_20260930_164821_621968_mission_1'"
+  },
+  {
+    "path": "docs/tracking/approach_jitter_fix_20261001.md",
+    "line": 15,
+    "text": "输入为 `data/experiments/current/modular_intercept_20260930_164821_621968_mission_1*` 和原生 ULog `08_48_06.ulg`；[复算脚本](approach_jitter_evidence_20261001/audit.py)、[结果及输入 SHA256](approach_jitter_evidence_20261001/audit.json) 都保留。只用已记录服务器时钟锚点和 native sample time，不拟合延迟、不外推、不修改原日志。"
+  },
+  {
+    "path": "docs/tracking/approach_jitter_fix_20261001.md",
+    "line": 142,
+    "text": "cd /home/qin/data/uav_usv"
+  },
+  {
+    "path": "docs/tracking/approach_jitter_fix_20261001.md",
+    "line": 155,
+    "text": "cd /home/qin/data/uav_usv"
+  },
+  {
+    "path": "docs/tracking/approach_jitter_fix_20261001.md",
+    "line": 162,
+    "text": "cd /home/qin/data/uav_usv"
+  },
+  {
+    "path": "docs/tracking/approach_jitter_fix_20261001.md",
+    "line": 186,
+    "text": "cd /home/qin/data/uav_usv"
+  },
+  {
+    "path": "docs/tracking/approach_jitter_fix_20261001.md",
+    "line": 187,
+    "text": "UAV_USV_EXPERIMENT_CONFIG_FILE=/home/qin/data/uav_usv/src/uav_usv_bringup/config/follow_low_dynamic_diagnostics.yaml \\"
+  },
+  {
+    "path": "docs/tracking/approach_jitter_fix_20261001.md",
+    "line": 194,
+    "text": "python3 /home/qin/data/uav_usv/scripts/p8_visual_bias_analysis.py \\"
+  },
+  {
+    "path": "docs/tracking/approach_jitter_fix_20261001.md",
+    "line": 195,
+    "text": "  --vision /home/qin/data/uav_usv/data/experiments/current/ACTUAL_RUN_vision.csv \\"
+  },
+  {
+    "path": "docs/tracking/attitude_clock_audit_p7_4.md",
+    "line": 12,
+    "text": "- [汇总 JSON](../../data/experiments/current/p7_attitude_clock_20260929/summary.json)"
+  },
+  {
+    "path": "docs/tracking/attitude_clock_audit_p7_4.md",
+    "line": 13,
+    "text": "- [强追赶逐帧数据](../../data/experiments/current/p7_attitude_clock_20260929/plus_y_transition_frames.jsonl)"
+  },
+  {
+    "path": "docs/tracking/attitude_clock_audit_p7_4.md",
+    "line": 17,
+    "text": "cd /home/qin/data/uav_usv"
+  },
+  {
+    "path": "docs/tracking/attitude_clock_audit_p7_4.md",
+    "line": 108,
+    "text": "- [KF→BCTRA 离线消息边界回放](../../data/experiments/current/p7_attitude_clock_20260929/prediction_replay.json)：四段合计 6498 个有效 KF 状态，输出 source 均为 tracking，预测零时刻位置逐条等于 KF 输入。此项检查输入边界，不证明预测精度或闭环稳定性改善。"
+  },
+  {
+    "path": "docs/tracking/follow_bias_evidence_20260930/diagnostic_report.md",
+    "line": 38,
+    "text": "cd /home/qin/data/uav_usv"
+  },
+  {
+    "path": "docs/tracking/follow_bias_evidence_20260930/diagnostic_report.md",
+    "line": 39,
+    "text": "UAV_USV_EXPERIMENT_CONFIG_FILE=/home/qin/data/uav_usv/src/uav_usv_bringup/config/visual_geometry_diagnostics.yaml \\"
+  },
+  {
+    "path": "docs/tracking/follow_bias_evidence_20260930/diagnostic_report.md",
+    "line": 49,
+    "text": "  --vision data/experiments/current/ACTUAL_RUN_vision.csv \\"
+  },
+  {
+    "path": "docs/tracking/follow_bias_evidence_20260930/diagnostic_report.md",
+    "line": 57,
+    "text": "  --vision data/experiments/current/ACTUAL_RUN_vision.csv \\"
+  },
+  {
+    "path": "docs/tracking/follow_failure_fix_20260930.md",
+    "line": 37,
+    "text": "CSV：`data/experiments/current/modular_intercept_20260930_152832_126022_mission_1*`、`...20260930_153030_026898_mission_1*`。"
+  },
+  {
+    "path": "docs/tracking/follow_failure_fix_20260930.md",
+    "line": 132,
+    "text": "5. 启动前将存在的 `parameters.bson` / `parameters_backup.bson` 复制到工作区独立新目录 `data/experiments/px4_parameter_backups/enu_*`，不删除旧数据库。初始化日志打印命中槽及旧 XYZOFF。启动器同时检查实际运行 rootfs 中 hook 和 rcS 是否匹配；ROMFS 显式构建列表已注册脚本，tar 与 rootfs 文件均验证一致。"
+  },
+  {
+    "path": "docs/tracking/follow_failure_fix_20260930.md",
+    "line": 152,
+    "text": "cd /home/qin/data/uav_usv"
+  },
+  {
+    "path": "docs/tracking/follow_failure_fix_20260930.md",
+    "line": 154,
+    "text": "  --main data/experiments/current/modular_intercept_20260930_152832_126022_mission_1.csv \\"
+  },
+  {
+    "path": "docs/tracking/follow_failure_fix_20260930.md",
+    "line": 155,
+    "text": "  --vision data/experiments/current/modular_intercept_20260930_152832_126022_mission_1_vision.csv \\"
+  },
+  {
+    "path": "docs/tracking/follow_failure_fix_20260930.md",
+    "line": 167,
+    "text": "cd /home/qin/data/uav_usv"
+  },
+  {
+    "path": "docs/tracking/follow_failure_fix_20260930.md",
+    "line": 176,
+    "text": "source /home/qin/data/uav_usv/install/setup.bash"
+  },
+  {
+    "path": "docs/tracking/follow_run_logging_20260930.md",
+    "line": 92,
+    "text": "完整证据见 [分层诊断报告](/home/qin/data/uav_usv/docs/tracking/follow_bias_evidence_20260930/diagnostic_report.md) 与同目录四份 JSON。"
+  },
+  {
+    "path": "docs/tracking/follow_run_logging_20260930.md",
+    "line": 120,
+    "text": "新增 root `pytest.ini` 指定真实 package testpaths，避免重复扫描 build/install；ament style测试使用实际 source package绝对路径，使根目录与包目录调用一致。`.flake8` 将裸命令行长度对齐已有 ament99列标准，没有添加 lint忽略规则。独立审查复现并关闭四项日志/参考问题；审查原文和测试输出保存在 [验证证据目录](/home/qin/data/uav_usv/docs/tracking/follow_run_evidence_20260930)。"
+  },
+  {
+    "path": "docs/tracking/follow_run_logging_20260930.md",
+    "line": 125,
+    "text": "cd /home/qin/data/uav_usv"
+  },
+  {
+    "path": "docs/tracking/follow_run_logging_20260930.md",
+    "line": 138,
+    "text": "cd /home/qin/data/uav_usv"
+  },
+  {
+    "path": "docs/tracking/follow_run_logging_20260930.md",
+    "line": 145,
+    "text": "cd /home/qin/data/uav_usv"
+  },
+  {
+    "path": "docs/tracking/follow_run_logging_20260930.md",
+    "line": 159,
+    "text": "ls -lt /home/qin/data/uav_usv/data/experiments/current/ | head -n 16"
+  },
+  {
+    "path": "docs/tracking/follow_run_logging_20260930.md",
+    "line": 175,
+    "text": "cd /home/qin/data/uav_usv"
+  },
+  {
+    "path": "docs/tracking/follow_run_logging_20260930.md",
+    "line": 176,
+    "text": "UAV_USV_EXPERIMENT_CONFIG_FILE=/home/qin/data/uav_usv/src/uav_usv_bringup/config/visual_geometry_diagnostics.yaml \\"
+  },
+  {
+    "path": "docs/tracking/follow_run_logging_20260930.md",
+    "line": 186,
+    "text": "root = Path('/home/qin/data/uav_usv')"
+  },
+  {
+    "path": "docs/tracking/follow_run_logging_20260930.md",
+    "line": 201,
+    "text": "python3 /home/qin/data/uav_usv/scripts/p8_visual_bias_analysis.py \\"
+  },
+  {
+    "path": "docs/tracking/follow_run_logging_20260930.md",
+    "line": 202,
+    "text": "  --vision /home/qin/data/uav_usv/data/experiments/current/ACTUAL_RUN_vision.csv \\"
+  },
+  {
+    "path": "docs/tracking/follow_run_logging_20260930.md",
+    "line": 205,
+    "text": "python3 /home/qin/data/uav_usv/scripts/p8_visual_bias_analysis.py \\"
+  },
+  {
+    "path": "docs/tracking/follow_run_logging_20260930.md",
+    "line": 206,
+    "text": "  --vision /home/qin/data/uav_usv/data/experiments/current/ACTUAL_RUN_vision.csv \\"
+  },
+  {
+    "path": "docs/tracking/kf_current_b_dynamic_baseline_p7_3.md",
+    "line": 15,
+    "text": "使用专用 [`p7_kf_baseline.launch.py`](../../src/uav_usv_bringup/launch/p7_kf_baseline.launch.py) 包含现有安全起飞/FOLLOW 链与只读 [`vision_p6_dynamic_capture.py`](../../scripts/vision_p6_dynamic_capture.py)：视觉与 KF 同一次会话采集，仅发送 `X`，未发送 `Y`。三场从当前 `baseline.yaml` 复制独立配置，保持 P6/P7 的 linear 目标、4 m/s² 启动斜率、零海浪振幅及几何诊断；目标 Y 速度仅设 0、+4、−4 m/s。控制仍由现有 `simulation_truth` predictor 提供目标状态，视觉/KF 保持 shadow-only。每场分析从 Gazebo UAV 首次达到稳定高度约 5 m 后 2 s 起取 30 s；+Y 首次捕获窗口较短，故**同一仿真会话**追加只读 40 s 采集，稳态指标采用后者，早期窗口单列。静态窗口 294/294 严格配对，+Y 稳态 226/226，−Y 237/242（4 帧 `DEPTH_MAD_HIGH`，另 1 帧未形成完整配对）；对应有效率 100%、100%、97.9%，有效样本速率约 9.8、7.5、7.9 Hz。采集/ULog 真值的左右单侧间隔 P95 分别约 16–23/19–20 ms，无外推、无跨 reset。原始文件和每帧源 bracket、拒绝原因保存在 [`data/experiments/current/p7_kf_20260929/`](../../data/experiments/current/p7_kf_20260929/)；下表唯一采用各场 `analysis_validated/analysis.json`，探索版 JSON 保留但不用于结论。"
+  },
+  {
+    "path": "docs/tracking/kf_current_b_dynamic_baseline_p7_3.md",
+    "line": 38,
+    "text": "静态约 0.197 m 主要来自姿态作用在约 6.7 m 目标距离上的几何杠杆（模型/PX4 yaw 残差中位约 −0.040 rad），相机系自身约 0.045 m；没有“固定世界轴旋转”或软件重复旋转的证据。+Y 早期 UAV 为追赶目标曾约 6.4 m/s、目标距离约 17 m，前 10 s raw/KF 达 **1.118/1.173 m**，其中姿态分量 RMSE **1.037 m**；其后回到约 0.088/0.088 m。−Y 首 10 s UAV 平均约 −5.53 m/s 而目标 −4 m/s，raw/KF **0.226/0.238 m**；后 20 s 为 **0.115/0.115 m**。+Y 后期相同 20 s 为 **0.121/0.120 m**。因此“−Y 恒速视觉始终比 +Y 差”不成立；全段差异主要由选择到的追赶阶段、相对运动和姿态误差共同造成。早期 +Y 的更大异常也如实保留，见 [`phase_comparison_validated.json`](../../data/experiments/current/p7_kf_20260929/phase_comparison_validated.json)。"
+  },
+  {
+    "path": "docs/tracking/kf_dynamic_baseline_p7.md",
+    "line": 23,
+    "text": "三场最大 bracket 单侧时间差 P95 分别约 23.18/23.23/23.05 ms；新连续真值没有观察到米级累计漂移。位置差分速度中位数约静态 (0,0,0)、+Y (0,3.986,0)、−Y (0,−3.987,0) m/s，与 0/±4 m/s 命令方向相符；但差分相对命令的速度误差 P95 在动态两场约 0.59/1.68 m/s，不能将单帧差分当作低噪速度真值。原始 XYZ、P50/P95/max、有效帧、时间边距与恒等式数值见 `data/experiments/current/p7_20260928/p7_truth_sanity.json`。"
+  },
+  {
+    "path": "docs/tracking/kf_dynamic_baseline_p7.md",
+    "line": 33,
+    "text": "本轮新增 `scripts/kf_truth_capture.py`（纯离线转换、bracket/epoch 校验）、`src/uav_control/test/test_kf_truth_frame.py`（坐标、速度、时间、reset 测试）、`docs/tracking/kf_truth_frame_audit_p7.md` 和本报告。最终数据在 `data/experiments/current/p7_20260928/`：`static_truth_v2.jsonl`、`plus_y_truth_v2.jsonl`、`minus_y_truth_v2.jsonl`，各有 `.summary.json`，以及 `p7_truth_sanity.json`。目录中无 `v2` 后缀的三份 JSONL 是本轮转换器完善 source bracket 前的探索产物，最终指标只使用 `v2`。P6 原始 CSV、ULog、配置及旧分析未覆盖。"
+  },
+  {
+    "path": "docs/tracking/kf_truth_frame_audit_p7.md",
+    "line": 45,
+    "text": "- `data/experiments/current/p6_20260928/target_acquisition_dynamic_{plus_y,minus_y}/` 的 CSV、`frame_analysis.json`；PX4 ULog `/home/qin/Projects/PX4-Autopilot/build/px4_sitl_default/rootfs/log/2026-09-28/08_50_37.ulg` 与 `08_54_07.ulg`。ULog 采集段通过单调 UAV Y 位置范围筛出，并交叉核对 CSV reset counters；原始日志未改。"
+  },
+  {
+    "path": "docs/tracking/kf_truth_frame_audit_p7.md",
+    "line": 49,
+    "text": "连续相对几何记录器的静态 raw RMSE 为 0.242 m，而旧逐帧 E4 为 0.046 m；差值逐帧严格等于旧映射的姿态旋转项，静态旋转项 RMSE 0.248 m。因此上文提出的相对几何式只是尚待独立校准的操作性 P-frame 参考，不能因其连续就宣称已解决 KF 绝对真值问题，也不能把 E4≈相机误差误读为 PX4 姿态误差不存在。完整数字、失败门槛和下一步见 `docs/tracking/kf_dynamic_baseline_p7.md`。"
+  },
+  {
+    "path": "docs/tracking/p8_2_audit_20260930/bias_analyzer.md",
+    "line": 11,
+    "text": "python3 /home/qin/data/uav_usv/scripts/p8_visual_bias_analysis.py \\"
+  },
+  {
+    "path": "docs/tracking/p8_2_audit_20260930/bias_analyzer.md",
+    "line": 19,
+    "text": "python3 /home/qin/data/uav_usv/scripts/p8_visual_bias_analysis.py \\"
+  },
+  {
+    "path": "docs/tracking/p8_2_audit_20260930/bias_analyzer.md",
+    "line": 46,
+    "text": "Input: `/home/qin/data/uav_usv/data/experiments/current/modular_intercept_20260929_213155_029414_mission_1_vision.csv` (latest available file by mtime)."
+  },
+  {
+    "path": "docs/tracking/p8_2_audit_20260930/visibility_review.md",
+    "line": 100,
+    "text": "cd /home/qin/data/uav_usv/src/uav_control"
+  },
+  {
+    "path": "docs/tracking/p8_2_audit_20260930/visibility_review.md",
+    "line": 102,
+    "text": "source /home/qin/data/uav_usv/install/setup.bash"
+  },
+  {
+    "path": "docs/tracking/px4_local_ned_axis_validation_p7.md",
+    "line": 9,
+    "text": "采集器以 10 Hz、统一 ROS 时间 `now−60 ms` 查询 Gazebo UAV 模型、PX4 `VehicleLocalPosition` 和姿态；逐行保存 ROS/仿真戳、原始和映射 bracket、位置/速度/四元数、参考经纬高与 `ref_timestamp`、各 reset 计数、epoch、状态和拒绝原因。各输入须双侧 bracket、每侧 ≤50 ms；不外推，跨 reset 或时间回退拒绝。全流程原始数据位于 [`data/experiments/current/p7_axis_20260929/`](../../data/experiments/current/p7_axis_20260929/)：完整双轴场 `20260929_151016_362549/`（2984 行，2983 有效；飞行运动段 1003/1003 有效），偏原点 yaw 场 `20260929_152238_306981/`（1165 行，1161 有效；飞行段 652/652 有效）。两场飞行均 `failsafe=false`，参考时间与 reset 计数在飞行窗口内恒定。主场采集 bracket 最大单侧间隔 P50/P95/max 为 21.47/22.83/23.00 ms；偏原点场为 17.02/19.25/19.62 ms。"
+  },
+  {
+    "path": "docs/tracking/px4_local_ned_axis_validation_p7.md",
+    "line": 15,
+    "text": "只用 UAV **位置位移**拟合世界轴：`Δp_P≈R(θ)Δp_G`。NORTH_OUT 和 EAST_OUT 各自前半段训练固定二维旋转；各自后半段与两个返回段留出。`s=1`，不拟合 affine。逐帧机体姿态差只列为反例模型，不用于定义世界轴。原始六段位移和精确结果在主场 [`axis_fit.json`](../../data/experiments/current/p7_axis_20260929/20260929_151016_362549/axis_fit.json) 与 [`axis_holdout.json`](../../data/experiments/current/p7_axis_20260929/20260929_151016_362549/axis_holdout.json)。"
+  },
+  {
+    "path": "docs/tracking/px4_local_ned_axis_validation_p7.md",
+    "line": 25,
+    "text": "近原点悬停估计的平移中位数约 (−0.0060, −0.0009) m，只是该会话 EKF 的位置偏移描述，**没有写入真值公式**。偏离原点的 yaw 补充场更能区分随 yaw 转动的世界轴：352 帧中 Gazebo 模型 yaw −0.794～+1.686 rad，模型 XY 中位 (7.977, −0.017) m，物理模型位置跨度 (0.103, 0.095) m，PX4 local 位置跨度 (0.076, 0.086) m，PX4 EKF−groundtruth 偏移跨度仅 (0.068, 0.050) m。若约 8 m 的世界位置随近 90° 机体 yaw 旋转，位置应有米级摆动；实际仅厘米级。模型并非绝对静止，因而这些厘米波动不可全归结为 yaw 耦合。详见补充场 [`yaw_offset_analysis.json`](../../data/experiments/current/p7_axis_20260929/20260929_152238_306981/yaw_offset_analysis.json)。"
+  },
+  {
+    "path": "docs/tracking/px4_local_ned_axis_validation_p7.md",
+    "line": 29,
+    "text": "PX4 `GZBridge::poseInfoCallback()` 的 `vehicle_local_position_groundtruth` 直接取同一 `/world/default/pose/info` 模型位置并按 ENU `(x,y,z)`→NED `(y,x,−z)` 转换。因此 ULog groundtruth 是**桥接/时间语义对照**，不是第二个独立传感器；独立双轴位移和偏原点 yaw 才是轴向验证的关键。主场 2717 帧 Gazebo→PX4 groundtruth 三维 RMSE **0.000190 m**、P95 0.000557 m；PX4 EKF→groundtruth 三维 RMSE **0.0798 m**、P95 0.151 m、最大 0.221 m、XYZ 有符号均值 (−0.0099, −0.0037, −0.0560) m。偏原点场的对应 RMSE 为 **0.000202 m** 与 **0.0728 m**。详见两场的 [`px4_groundtruth_comparison_final.json`](../../data/experiments/current/p7_axis_20260929/20260929_151016_362549/px4_groundtruth_comparison_final.json) 和 [`px4_groundtruth_comparison.json`](../../data/experiments/current/p7_axis_20260929/20260929_152238_306981/px4_groundtruth_comparison.json)。"
+  },
+  {
+    "path": "docs/tracking/px4_local_ned_axis_validation_p7.md",
+    "line": 31,
+    "text": "主场稳定悬停 EKF−groundtruth 的 XYZ 中位约 (−0.0058, −0.0008, −0.0416) m；相对悬停偏移投影到运动方向，N 出/返、E 出/返段分别约 +0.101/+0.141/+0.125/+0.140 m。方向相关且起返有变化，属于 **PX4 EKF 状态/时间链剩余差异**，不能凭本实验再断言固定时间延迟。完整分段误差见 [`residual_decomposition.json`](../../data/experiments/current/p7_axis_20260929/20260929_151016_362549/residual_decomposition.json)。主场 `ref_timestamp=5604000`、`xy/z/heading` reset 计数 `4/2/1` 恒定；补充场分别 `4872000`、`5/2/1` 恒定。两场跨会话的参考值不同属于重新启动，不是飞行中跳变。每场姿态 `quat_reset_counter` 也在飞行窗口内恒定。本轮未测得可解释为“PX4 local origin 飞行中跳变”的事件。"
+  },
+  {
+    "path": "docs/tracking/px4_local_ned_axis_validation_p7.md",
+    "line": 35,
+    "text": "在本次独立轴向验证通过后，按现有 `scripts/kf_truth_capture.py` 的 `R=I`、同图像时刻相对几何公式重新汇总 P7 已保存的 P6 历史静态和 ±Y 数据，见 [`revalidated_target_truth.json`](../../data/experiments/current/p7_axis_20260929/revalidated_target_truth.json)。这些是**旧 RGB-D 观测的离线复核**，本轮没有重跑追踪，也没有形成 KF 当前版的动态基线。"
+  },
+  {
+    "path": "docs/tracking/px4_navigation_fix_20261001.md",
+    "line": 11,
+    "text": "基线原始文件：data/experiments/current/modular_intercept_20261001_102705_450931_mission_1；ULog：/home/qin/Projects/PX4-Autopilot/build/px4_sitl_default/rootfs/log/2026-10-01/02_26_03.ulg。"
+  },
+  {
+    "path": "docs/tracking/px4_navigation_fix_20261001.md",
+    "line": 29,
+    "text": "该配置写入本机 SITL 的 rootfs 参数数据库，启动前备份目录见 data/experiments/px4_parameter_backups/enu_Sk9j8x/ 与 enu_1rNMDA/；未连接或修改物理飞控。离开此无延迟模拟 GNSS 模型时，应按所选传感器的实际延迟重新配置参数。"
+  },
+  {
+    "path": "docs/tracking/px4_navigation_fix_20261001.md",
+    "line": 48,
+    "text": "![同刻导航与目标误差曲线](/home/qin/data/uav_usv/docs/tracking/px4_navigation_evidence_20261001/navigation_comparison.png)"
+  },
+  {
+    "path": "docs/tracking/px4_navigation_fix_20261001.md",
+    "line": 71,
+    "text": "同图像时刻几何分解使用 docs/tracking/approach_jitter_evidence_20261001/audit.py：传 --base 对应 mission_1 前缀、--ulog 对应原生 ULog、--output 输出目录；本次两轮 ULog 分别是 02_49_48.ulg、02_52_25.ulg，CSV 前缀分别是 modular_intercept_20261001_105018_794586_mission_1 和 modular_intercept_20261001_105303_545916_mission_1。各输入 SHA256 保存于 comparison.json 和各几何 audit.json。新原生 checkout 需先安装既有磁场补丁，然后用 git apply --check 检查本次 gz_gnss_initialization.patch，安装 ROMFS hook 并 make px4_sitl_default；当前机器已经完成，重复应用前可用 git apply --reverse --check 确认已安装状态。"
+  },
+  {
+    "path": "docs/tracking/simulation_verified_fix_20261001.md",
+    "line": 5,
+    "text": "原始实验均在 `data/experiments/current/`，原生 ULog 在 PX4 `rootfs/log/2026-10-01/`；原日志不覆盖。输入哈希、分阶段指标见 [simulation_verification.json](approach_jitter_evidence_20261001/simulation_verification.json)。完整状态机、日志生命周期、Phase A–D 命令及早期误差证据见 [18项报告](approach_jitter_fix_20261001.md)。"
+  },
+  {
+    "path": "docs/tracking/simulation_verified_fix_20261001.md",
+    "line": 37,
+    "text": "![实际水平距离与locked FOLLOW](/home/qin/data/uav_usv/docs/tracking/approach_jitter_evidence_20261001/follow_verification.png)"
+  },
+  {
+    "path": "docs/tracking/simulation_verified_fix_20261001.md",
+    "line": 90,
+    "text": "cd /home/qin/data/uav_usv"
+  },
+  {
+    "path": "docs/tracking/strict_visual_loop_p8_2_p8_3_20260930.md",
+    "line": 3,
+    "text": "2026-09-30，工作区 `/home/qin/data/uav_usv`，在当前 `master` 上修改，未提交、未推送。依据 [原始需求](../superpowers/specs/2026-09-30-strict-visual-loop-requirements.md)。用户明确要求自行仿真，本次没有启动 Gazebo、PX4 SITL 或执行飞行实验。"
+  },
+  {
+    "path": "docs/tracking/strict_visual_loop_p8_2_p8_3_20260930.md",
+    "line": 158,
+    "text": "cd /home/qin/data/uav_usv/src/uav_control"
+  },
+  {
+    "path": "docs/tracking/strict_visual_loop_p8_2_p8_3_20260930.md",
+    "line": 160,
+    "text": "source /home/qin/data/uav_usv/install/setup.bash"
+  },
+  {
+    "path": "docs/tracking/strict_visual_loop_p8_2_p8_3_20260930.md",
+    "line": 171,
+    "text": "cd /home/qin/data/uav_usv"
+  },
+  {
+    "path": "docs/tracking/strict_visual_loop_p8_2_p8_3_20260930.md",
+    "line": 181,
+    "text": "source /home/qin/data/uav_usv/install/setup.bash"
+  },
+  {
+    "path": "docs/tracking/strict_visual_loop_p8_2_p8_3_20260930.md",
+    "line": 206,
+    "text": "  /home/qin/data/uav_usv/scripts/uav_lab.sh --no-build"
+  },
+  {
+    "path": "docs/tracking/strict_visual_loop_p8_2_p8_3_20260930.md",
+    "line": 230,
+    "text": "python3 /home/qin/data/uav_usv/scripts/p8_visual_bias_analysis.py \\"
+  },
+  {
+    "path": "docs/tracking/strict_visual_loop_p8_2_p8_3_20260930.md",
+    "line": 234,
+    "text": "python3 /home/qin/data/uav_usv/scripts/p8_visual_bias_analysis.py \\"
+  },
+  {
+    "path": "docs/tracking/terminal_cruise_validation_20261006.md",
+    "line": 7,
+    "text": "最近一次用户失败记录为 `modular_intercept_20261006_093918_367847_mission_1`：TIMEOUT，评价最小三维距离 0.557574 m，首次末端进近进入恢复。该次失败未触发成功暂停，因此不能归因于捕获后的共同停止功能。"
+  },
+  {
+    "path": "docs/tracking/terminal_cruise_validation_20261006.md",
+    "line": 62,
+    "text": "| 修复后首次 | `modular_intercept_20261006_095151_101120_mission_1` | [曲线](y_intercept_evidence_20261005/terminal_cruise_user_phase_1_speed_audit.png) | [JSON](y_intercept_evidence_20261005/terminal_cruise_user_phase_1_freeze.json) |"
+  },
+  {
+    "path": "docs/tracking/terminal_cruise_validation_20261006.md",
+    "line": 63,
+    "text": "| 重复 1 | `modular_intercept_20261006_095428_701507_mission_1` | [曲线](y_intercept_evidence_20261005/terminal_cruise_repeat_1_speed_audit.png) | [JSON](y_intercept_evidence_20261005/terminal_cruise_repeat_1_freeze.json) |"
+  },
+  {
+    "path": "docs/tracking/terminal_cruise_validation_20261006.md",
+    "line": 64,
+    "text": "| 重复 2 | `modular_intercept_20261006_095732_501270_mission_1` | [曲线](y_intercept_evidence_20261005/terminal_cruise_repeat_2_speed_audit.png) | [JSON](y_intercept_evidence_20261005/terminal_cruise_repeat_2_freeze.json) |"
+  },
+  {
+    "path": "docs/tracking/terminal_cruise_validation_20261006.md",
+    "line": 66,
+    "text": "原始 JSONL 在 `data/experiments/current/y_intercept_20261006_terminal_cruise_{user_phase_1,repeat_1,repeat_2}.jsonl`，同期 CSV、vision CSV、summary JSON 与配置快照按上表前缀保留。记录工具 [y_user_phase_record.py](y_intercept_evidence_20261005/y_user_phase_record.py)、离线速度工具 [terminal_speed_audit.py](y_intercept_evidence_20261005/terminal_speed_audit.py) 与 [pause_freeze_record.py](y_intercept_evidence_20261005/pause_freeze_record.py) 已保留。"
+  },
+  {
+    "path": "docs/tracking/terminal_sphere_validation_20261005.md",
+    "line": 77,
+    "text": "- 任务 1：modular_intercept_20261006_090027_518071_mission_1*。"
+  },
+  {
+    "path": "docs/tracking/terminal_sphere_validation_20261005.md",
+    "line": 78,
+    "text": "- 任务 2：modular_intercept_20261006_090311_805571_mission_1*。"
+  },
+  {
+    "path": "docs/tracking/terminal_sphere_validation_20261005.md",
+    "line": 79,
+    "text": "- 完整 JSONL：data/experiments/current/y_intercept_20261006_camera_origin_{1,2}.jsonl。"
+  },
+  {
+    "path": "docs/tracking/terminal_sphere_validation_20261005.md",
+    "line": 82,
+    "text": "- 最新任务：modular_intercept_20261006_093236_821382_mission_1*；JSONL：data/experiments/current/y_intercept_20261006_stop_only_baseline_1.jsonl；汇总/暂停/订阅边界：final_stop_only_validation.json、stop_only_baseline_1_freeze_audit.json、stop_only_baseline_1_truth_subscribers.log。"
+  },
+  {
+    "path": "docs/tracking/y_intercept_audit_20261002.md",
+    "line": 3,
+    "text": "基线：master / e4a32e4，开始时工作区干净。先只读审计用户指定的五个文件与 docs/tracking，再在未修改基线上重新采集完整预测、规划拒绝阶段及轨迹系数。本文记录的是当前模块化视觉控制链；红球感知仍是接口测试，不代表无标记 USV 感知已验证。"
+  },
+  {
+    "path": "docs/tracking/y_intercept_audit_20261002.md",
+    "line": 41,
+    "text": "新增基线 data/experiments/current/modular_intercept_20261002_091002_124528_mission_1*，以及完整只读 JSONL data/experiments/current/y_intercept_baseline_20261002.jsonl.gz。连续 locked FOLLOW 20 s后自动发送 Y，只依赖 mission/controller 的视觉状态，真值没有进入触发或控制。"
+  },
+  {
+    "path": "docs/tracking/y_intercept_audit_20261005.md",
+    "line": 7,
+    "text": "- `data/experiments/current/y_intercept_20261005_baseline.jsonl`"
+  },
+  {
+    "path": "docs/tracking/y_intercept_audit_20261005.md",
+    "line": 8,
+    "text": "- `data/experiments/current/modular_intercept_20261005_150156_153738_mission_1*`"
+  },
+  {
+    "path": "docs/tracking/y_intercept_evidence_20261005/terminal_speed_audit.py",
+    "line": 4,
+    "text": "sys.path.insert(0,'/home/qin/data/uav_usv/src/uav_control')"
+  },
+  {
+    "path": "docs/tracking/y_intercept_evidence_20261005/terminal_speed_audit.py",
+    "line": 6,
+    "text": "root=Path('/home/qin/data/uav_usv');name=sys.argv[1]"
+  },
+  {
+    "path": "docs/tracking/y_intercept_evidence_20261005/terminal_speed_audit.py",
+    "line": 7,
+    "text": "r=[json.loads(x) for x in (root/f'data/experiments/current/y_intercept_20261006_{name}.jsonl').open()]"
+  },
+  {
+    "path": "docs/tracking/y_intercept_evidence_20261005/terminal_speed_audit.py",
+    "line": 28,
+    "text": "report={'role':'ORIGINAL_SAMPLE_EPOCH_SPEED_AUDIT','results':[x['message'] for x in results],'phases':phases,'last_0p7_seconds':stats,'samples':rows};(root/f'docs/tracking/y_intercept_evidence_20261005/{name}_speed_audit.json').write_text(json.dumps(report,indent=2)+'\\n')"
+  },
+  {
+    "path": "docs/tracking/y_intercept_evidence_20261005/terminal_speed_audit.py",
+    "line": 32,
+    "text": " fig,ax=plt.subplots(figsize=(9,4));a=[x['to_result'] for x in rows];ax.plot(a,[x['minco_speed'] for x in rows],label='MINCO reference');ax.plot(a,[x['command_speed'] for x in rows],label='Command');ax.plot([x['navigation_sample_t']-(end-y) for x in rows],[x['actual_speed'] for x in rows],label='PX4 physical sample');ax.axhline(6.5,color='gray',ls=':',label='Command limit 6.5 m/s');ax.set(xlim=(-2.,0),xlabel='Seconds before result',ylabel='Horizontal speed (m/s)');ax.grid(alpha=.25);ax.legend();fig.tight_layout();fig.savefig(root/f'docs/tracking/y_intercept_evidence_20261005/{name}_speed_audit.png',dpi=160)"
+  },
+  {
+    "path": "docs/tracking/y_intercept_wrapup_20261001.md",
+    "line": 39,
+    "text": "原始文件位于 data/experiments/current/："
+  },
+  {
+    "path": "docs/vision/p6_experiment1_usv_lateral_uav_hold_20260928.md",
+    "line": 7,
+    "text": "独立配置 `data/experiments/current/p6_20260928/usv_lateral_uav_ground_hold/config.yaml` 从 P5 `static5_config.yaml` 复制，目标设为线性横移：`initial_x=8 m`、`initial_y=-20 m`、`velocity_y=horizontal_speed=0.8 m/s`、`start_on_command=false`。不改任务状态机或定位器。现有 `vision_p5_roi_capture.py` 保存有限 ROI、原始及映射时间戳、两个时刻的 UAV/USV Gazebo 位姿和在线观测。"
+  },
+  {
+    "path": "docs/vision/p6_next_step_20260928.md",
+    "line": 38,
+    "text": "上述实验均保持视觉 shadow-only、规划控制使用仿真真值；Gazebo 真值只用于离线评价，不进入在线视觉/KF。数据依据：`data/experiments/current/p5_20260927/p5_roi_analysis_final.json`、`left_mad_recheck_roi_analysis_v2.json`、`left_mad_recheck/vision_p5_capture_20260928_085955_904648.csv`、`p5_kf_baseline_final.json`、`plus_y_groundtruth_timing.json`、`minus_y_groundtruth_timing.json`，及 `docs/vision/vision_rgbd_geometry_timing_kf_p5_20260927.md`。"
+  },
+  {
+    "path": "docs/vision/vision_error_attribution_20260923.md",
+    "line": 25,
+    "text": "独立采集文件前缀为 `vision_static_capture_`，即使文件对应运动实验也沿用此名称。每轮均有唯一 CSV、JSON 和 `_config.yaml`；[汇总 JSON](../../data/experiments/current/vision_attribution_20260923_summary.json)记录全部路径、筛选定义及各字段均值、中位数、RMSE、P95 绝对值。"
+  },
+  {
+    "path": "docs/vision/vision_error_attribution_20260923.md",
+    "line": 98,
+    "text": "所有本轮采集在 [实验目录](../../data/experiments/current/)中；下表给出独立采集文件时间戳，同一前缀对应 `.csv`、`.json` 和 `_config.yaml`。正式 `Y` 任务文件同目录，均对应 `_mission_1.csv`、`_vision.csv`、`_config.yaml`、`_summary.json` 四件套。"
+  },
+  {
+    "path": "docs/vision/vision_error_baseline_20260922.md",
+    "line": 53,
+    "text": "  data/experiments/current/modular_intercept_20260922_210352_962301_mission_1_vision.csv \\"
+  },
+  {
+    "path": "docs/vision/vision_error_baseline_20260922.md",
+    "line": 54,
+    "text": "  data/experiments/current/modular_intercept_20260922_210448_428278_mission_1_vision.csv"
+  },
+  {
+    "path": "docs/vision/vision_pose_frame_attribution_20260923.md",
+    "line": 56,
+    "text": "- 专用配置：`data/experiments/current/p2_20260923_static5_config.yaml`、`p2_20260923_static7_config.yaml`、`p2_20260923_yaw_plus_config.yaml`、`p2_20260923_yaw_minus_config.yaml`、`p2_20260923_motion_plus_v2_config.yaml`、`p2_20260923_motion_minus_v2_config.yaml`。除列明的跟随距离、目标初始 Y 和运动参数外，诊断、相机及控制配置保持相同。"
+  },
+  {
+    "path": "docs/vision/vision_pose_frame_attribution_20260923.md",
+    "line": 57,
+    "text": "- 静态采集 CSV 前缀 `data/experiments/current/vision_static_capture_20260923_`，后缀依次为 `162108_442464`（地面 0）、`162137_767644`（5 m）、`162407_184449`（7 m）、`162559_286251`（地面 +3）、`162617_441613`（起飞 +3）、`162805_447409`（地面 −3）、`163025_736132`（起飞 −3）。每个 CSV 同名 JSON 记录计数。"
+  },
+  {
+    "path": "docs/vision/vision_pose_history_availability_p6_20260928.md",
+    "line": 40,
+    "text": "- 新数据目录：`data/experiments/current/p6_20260928/pose_history_follow/`。其中 `vision_static_capture_20260928_162802_547880.csv` 是原始逐帧数据，同名前缀 `.json` 是采集元数据，`config.yaml` 是本次配置副本，`preflight_status_observation.json` 留存起飞前后状态，`pose_history_follow_analysis.json` 为时间统计，`pose_history_follow_frame_analysis.json` 为 E1/E4 对照。历史数据未覆盖。"
+  },
+  {
+    "path": "docs/vision/vision_rgbd_geometry_px4_reference_p4_20260927.md",
+    "line": 56,
+    "text": "只复制 P2 `motion_minus_v2` 配置并添加 `maximum_depth_mad: 0.25`，其他项通过 `diff` 确认为一致。采集器仅读取 `/perception/front/target_observation`、PX4、Gazebo 实体和目标真值，不发布控制。独立采集 35 s：`data/experiments/current/p4_20260927_sim/vision_static_capture_20260927_160937_825404.csv` 及同名 JSON，共 281 条观测，235 条有效；无效原因 `DEPTH_RATIO_LOW` 31、`IMAGE_INVALID` 14、**`DEPTH_MAD_HIGH` 1**。被新规则拒绝的帧有 180/180 个有效深度点、MAD 0.390 m，说明仅依赖点数或深度比例会放行。巡航有效帧 200 条，相机系 RMSE/P50/P95/最大 **0.159/0.131/0.266/0.414 m**，相对同帧实体的在线 NED 三维 RMSE/P50/P95/最大 **0.968/0.513/2.197/2.573 m**。新会话只证明在线拒绝路径生效且保持控制边界；历史同帧回放才是前后归因依据。按这 281 条实际输出推算，若仅移除该一条新门控拒绝且其他流程不变，有效率会从 235/281（83.63%）增至 236/281（83.99%，差 0.36 个百分点）；这是假设性上界，**没有运行独立的同会话关门控 A/B 实验**。"
+  },
+  {
+    "path": "docs/vision/vision_rgbd_geometry_px4_reference_p4_20260927.md",
+    "line": 68,
+    "text": "海洋世界 `/home/qin/data/uav_usv/src/uav_usv_bringup/worlds/ocean.sdf` 配置磁场 `(6e−6,2.3e−5,−4.2e−5) T`，世界球面坐标约北纬 47.397971°、东经 8.546164°。x500 `base_link` 磁传感器 100 Hz；`GZBridge::magnetometerCallback` 有当前 Gazebo 版本左手坐标/单位兼容转换 `(-y,-x,z)`。四会话 ULog 的实际参数均为 `EKF2_MAG_TYPE=0`、`EKF2_DECL_TYPE=3`、`EKF2_MAG_DECL=3.405765°`、`SIM_GZ_EN_MAG=1`，校准偏置 `CAL_MAG0_X/Y/ZOFF≈−0.00149/+0.00623/+0.00192 G`；参数详情见审计 JSON。"
+  },
+  {
+    "path": "docs/vision/vision_rgbd_geometry_px4_reference_p4_20260927.md",
+    "line": 84,
+    "text": "新增数据：`data/experiments/current/p4_20260927_geometry_gate_analysis.json`（首版 P3 子集）、`p4_20260927_geometry_gate_analysis_v2.json`（全部帧与 P3 子集）、`p4_20260927_synthetic_sphere.json`、`p4_20260927_px4_mag_audit.json`、`p4_20260927_motion_minus_mad025_config.yaml`、`p4_20260927_sim/vision_static_capture_20260927_160937_825404.csv` 及其同名 `.json`；PX4 原始 ULog `/home/qin/Projects/PX4-Autopilot/build/px4_sitl_default/rootfs/log/2026-09-27/08_09_01.ulg`；ROS launch 日志 `/tmp/uav_usv_ros_logs/2026-09-27-16-09-07-813732-qin-GLO-FX6-19106/launch.log`。三个离线脚本均可用 `--output` 指定新路径重跑，默认输出已存在时排他写入会报错，防止覆盖。所有输出为独立新文件，历史 P2/P3 原始数据未修改。"
+  },
+  {
+    "path": "docs/vision/vision_rgbd_geometry_timing_kf_p5_20260927.md",
+    "line": 112,
+    "text": "新增分析与数据在 `data/experiments/current/p5_20260927/`：`minus_y_roi_analysis.json`、`minus_y_kf_baseline.json`、`minus_y_groundtruth_timing.json`、`p5_roi_analysis_final.json`、`p5_kf_baseline_final.json`；短复验原始 `left_mad_recheck/vision_p5_capture_20260928_085955_904648.csv`、同名前缀 ROI 目录（`roi.jsonl`、两个异常 `.npz`、姿态/目标/KF JSONL），以及 `left_mad_recheck_roi_analysis_v2.json`。更早的六场原始目录与旧单场分析均未覆盖。`left_mad_recheck_roi_analysis.json` 是脚本补充在线 B 核对前的同次数据分析版本，也保留。PX4 −Y ULog 见上方；评估器 pose/receipt 和 ULog groundtruth 的对应见 timing JSON。离线最终六场 A/B/C/D 指标在在线 B 修改后重新调用脚本核对，浮点指标一致；新复验线上球心与 B 重建逐帧一致。"
+  },
+  {
+    "path": "docs/vision/vision_target_acquisition_dynamic_acceptance_p6_20260928.md",
+    "line": 73,
+    "text": "- `data/experiments/current/p6_20260928/target_acquisition_dynamic_plus_y/`：一个 CSV、采集元数据 JSON、`kf_states.jsonl`、`frame_analysis.json`、`pose_history_analysis.json`、配置副本。"
+  },
+  {
+    "path": "docs/vision/vision_target_acquisition_dynamic_acceptance_p6_20260928.md",
+    "line": 74,
+    "text": "- `data/experiments/current/p6_20260928/target_acquisition_dynamic_minus_y/`：同上。"
+  },
+  {
+    "path": "docs/vision/vision_target_acquisition_dynamic_acceptance_p6_20260928.md",
+    "line": 75,
+    "text": "- `data/experiments/current/p6_20260928/target_acquisition_dynamic_acceptance_v2.json`：两向统一验收统计；早期同批分析 `target_acquisition_dynamic_acceptance.json` 保留，v2 明确区分有效对与被拒对的 skew max。"
+  },
+  {
+    "path": "docs/vision/vision_target_acquisition_dynamic_acceptance_p6_20260928.md",
+    "line": 76,
+    "text": "- `data/experiments/current/p6_20260928/target_acquisition_dynamic_kf_paired_baseline.json`：同时间 KF 诊断与固定映射限制。"
+  },
+  {
+    "path": "docs/vision/vision_target_position_frame_attribution_p6_20260928.md",
+    "line": 27,
+    "text": "单位：误差为 m。完整 XYZ signed mean、P50/P95/max、每帧 P/G 真值、映射 yaw/平移及样本筛选见 `data/experiments/current/p6_20260928/target_frame_analysis_v2.json`。P6 有效帧 E3 signed mean 为 (+0.243,+1.094,−0.107) m；E4 为 (+0.035,−0.019,−0.099) m。左离轴 E3 为 (−0.059,+0.503,−0.064) m；E4 为 (+0.042,+0.007,−0.018) m。"
+  },
+  {
+    "path": "docs/vision/vision_target_position_frame_attribution_p6_20260928.md",
+    "line": 37,
+    "text": "为验证飞行阶段，本轮只启动一次静态目标配置，发送 `X` 后等待 FOLLOW，计划采集 28 s。实际 PX4 `arming_state=1`（未解锁）、`pre_flight_checks_pass=false`、`nav_state=14`，解锁 `VehicleCommandAck.result=1`；任务停在 TAKEOFF，局部 Z 仍接近地面。同期 QGroundControl AppImage 进程出现段错误，但**没有证据证明它导致预检失败**。因此没有启动 FOLLOW 采集，也没有新 pose-history CSV；仅保存独立配置 `data/experiments/current/p6_20260928/pose_history_hover/config.yaml`。已停止本次启动的 Gazebo/PX4/DDS/ROS 进程，不绕过预检。历史 P5 left_mad_recheck 249/256 条有效、0 条 AFTER_HISTORY；这支持先解决仿真预检、再按新字段判定 63 条原因，不支持现在盲调等待时长。"
+  },
+  {
+    "path": "docs/vision/vision_target_position_frame_attribution_p6_20260928.md",
+    "line": 59,
+    "text": "输出数据：`data/experiments/current/p6_20260928/target_frame_analysis_v2.json`、`representative_ray_analysis.json`；`target_frame_analysis.json` 是本轮早期同批计算版本，均保留；P6 第一组与 P5 旧数据原路径未覆盖。新增短验证因 PX4 预检失败，**没有可报告的改后飞行目标获取率**。下一动作仅为查明并恢复 PX4 安全预检后，用已增加的字段完成一次 20–30 s 稳定 FOLLOW pose-history 采集，再决定是否需要在线等待/回调修复。"
+  },
+  {
+    "path": "docs/vision/vision_uav_pose_reference_attribution_20260923.md",
+    "line": 18,
+    "text": "P2 九组 CSV 与对应配置位于 `data/experiments/current/`：静态/离轴后缀依次为 `162108_442464`、`162137_767644`、`162407_184449`、`162559_286251`、`162617_441613`、`162805_447409`、`163025_736132`；运动为 `163417_715972`、`202327_524289`。文件名统一前缀 `vision_static_capture_20260923_`、后缀 `.csv`，同名 `.json` 保留。PX4 ULog 为 `/home/qin/Projects/PX4-Autopilot/build/px4_sitl_default/rootfs/log/2026-09-23/08_20_54.ulg`（地面/5 m）、`08_23_27.ulg`（7 m）、`08_33_47.ulg`（+Y）、`12_23_02.ulg`（−Y）。这些是历史数据，未重做 P2 实验。"
+  },
+  {
+    "path": "docs/vision/vision_uav_pose_reference_attribution_20260923.md",
+    "line": 79,
+    "text": "新增独立结果：`data/experiments/current/p3_20260927_pose_counterfactuals.csv`、`p3_20260927_pose_counterfactuals.json`、`p3_20260927_px4_ulog_reference.json`。脚本创建结果使用排他写入，不覆盖历史 CSV/JSON。回放脚本直接逐帧校验实际在线输出和物理相机反投影，所有九组通过。"
+  }
+]

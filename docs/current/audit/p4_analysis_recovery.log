@@ -1,0 +1,10 @@
+/tmp/pre_mpc_checks/history/data/experiments/current/p4_20260927_geometry_gate_analysis_v2.json
+ground_center 134 0.119 0.119 0
+follow_5m 125 0.095 0.095 0
+follow_7m 149 0.073 0.073 0
+ground_left 109 0.129 0.129 0
+follow_left 88 0.094 0.094 0
+ground_right 86 0.142 0.142 0
+follow_right 125 0.093 0.093 0
+motion_plus_y 148 0.232 0.153 12
+motion_minus_y 149 0.583 0.199 3

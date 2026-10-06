@@ -20,3 +20,8 @@ data/experiments/current/*.mp4
 data/models/*
 !data/models/.gitkeep
 *.bak
+
+# New runs, PX4 parameter backups and video captures stay local.
+# Curate immutable evidence into data/baselines/ before staging it.
+data/experiments/
+data/videos/

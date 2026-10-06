@@ -1,0 +1,231 @@
+{
+  "offline_only": true,
+  "online_correction": "none",
+  "root_cause": "not_confirmed",
+  "units": {
+    "position_range_error": "m",
+    "bearing_heading": "rad",
+    "timestamp": "s"
+  },
+  "total_rows": 713,
+  "valid_observation_rows": 631,
+  "valid_rate": 0.884992987377279,
+  "position_timestamp_after_history_rows": 0,
+  "rejection_reason_counts": {
+    "": 631,
+    "IMAGE_INVALID": 27,
+    "TARGET_VECTOR_INVALID": 1,
+    "DEPTH_RATIO_LOW": 54
+  },
+  "raw_error": {
+    "sample_count": 630,
+    "selection": "observation_valid and truth_available with positive acquisition stamp and finite XY error",
+    "horizontal_rmse_m": 0.17340068256018637,
+    "y_mean_m": 0.03041327498779507,
+    "x_mean_m": -0.08924493569239327
+  },
+  "image_bearing": {
+    "status": "evaluated",
+    "reason": "",
+    "sample_count": 631,
+    "mean_rad": 0.11387900090668637,
+    "rmse_rad": 0.272924502071461,
+    "definition": "atan((mask_centroid_u - camera_cx) / camera_fx)"
+  },
+  "geometry_layers": {
+    "status": "evaluated_diagnostic_only",
+    "reason": "",
+    "conditioning": "projection_pixel/camera_center/body_flu expected values use PX4 position and attitude; residuals cannot alone distinguish pose error from mask/depth/extrinsics. Rotated camera/body residual norms are coupled and are not independent proof.",
+    "independent_physical_provenance": "legacy physical_* columns require their original capture config and exact camera/model pose bracket audit; these statistics alone do not certify alignment",
+    "root_cause": "not_confirmed",
+    "projection_pixel": {
+      "status": "evaluated_diagnostic_only",
+      "sample_count": 631,
+      "units": "px",
+      "norm_rmse": 11.036518137564403,
+      "signed_axes": {
+        "u": {
+          "mean": 1.9820704127012705,
+          "rmse": 4.412576442315729
+        },
+        "v": {
+          "mean": -1.6668152697484164,
+          "rmse": 10.11602203148591
+        }
+      }
+    },
+    "camera_center": {
+      "status": "evaluated_diagnostic_only",
+      "sample_count": 631,
+      "units": "m",
+      "norm_rmse": 0.18038861349946614,
+      "signed_axes": {
+        "x": {
+          "mean": -0.03351926635068751,
+          "rmse": 0.1027275785424861
+        },
+        "y": {
+          "mean": -0.03835134728776109,
+          "rmse": 0.12811526521425548
+        },
+        "z": {
+          "mean": 0.02568000074613699,
+          "rmse": 0.07465638154999278
+        }
+      }
+    },
+    "body_flu": {
+      "status": "evaluated_diagnostic_only",
+      "sample_count": 631,
+      "units": "m",
+      "norm_rmse": 0.18038861349946617,
+      "signed_axes": {
+        "x": {
+          "mean": -0.017539725456104993,
+          "rmse": 0.10522134585712227
+        },
+        "y": {
+          "mean": -0.03835134728776109,
+          "rmse": 0.12811526521425548
+        },
+        "z": {
+          "mean": 0.03841043720051097,
+          "rmse": 0.07109851668886363
+        }
+      }
+    },
+    "vision_to_entity": {
+      "status": "evaluated_diagnostic_only",
+      "sample_count": 631,
+      "units": "m",
+      "norm_rmse": 0.18038861349946617,
+      "signed_axes": {
+        "x": {
+          "mean": -0.04614556263255041,
+          "rmse": 0.1013324816161238
+        },
+        "y": {
+          "mean": 0.039952876792362216,
+          "rmse": 0.1326643302262067
+        },
+        "z": {
+          "mean": -0.0329369132196979,
+          "rmse": 0.06835170470010017
+        }
+      }
+    },
+    "entity_to_truth": {
+      "status": "evaluated_diagnostic_only",
+      "sample_count": 630,
+      "units": "m",
+      "norm_rmse": 0.09677889585335596,
+      "signed_axes": {
+        "x": {
+          "mean": -0.04301398019297591,
+          "rmse": 0.06335367156242037
+        },
+        "y": {
+          "mean": -0.009443400191766045,
+          "rmse": 0.07314794865798441
+        },
+        "z": {
+          "mean": 6.2755013225706484e-06,
+          "rmse": 0.0013581565758636468
+        }
+      }
+    },
+    "independent_physical_projection": {
+      "status": "not_evaluated",
+      "sample_count": 0,
+      "units": "px",
+      "norm_rmse": null,
+      "signed_axes": {
+        "u": {
+          "mean": null,
+          "rmse": null
+        },
+        "v": {
+          "mean": null,
+          "rmse": null
+        }
+      }
+    },
+    "independent_physical_camera": {
+      "status": "not_evaluated",
+      "sample_count": 0,
+      "units": "m",
+      "norm_rmse": null,
+      "signed_axes": {
+        "x": {
+          "mean": null,
+          "rmse": null
+        },
+        "y": {
+          "mean": null,
+          "rmse": null
+        },
+        "z": {
+          "mean": null,
+          "rmse": null
+        }
+      }
+    },
+    "attitude_only_counterfactual": {
+      "status": "evaluated_diagnostic_only",
+      "sample_count": 631,
+      "units": "m",
+      "norm_rmse": 0.13439541535451138,
+      "signed_axes": {
+        "x": {
+          "mean": -0.016237447254837823,
+          "rmse": 0.0720309089400214
+        },
+        "y": {
+          "mean": 0.006584475963340131,
+          "rmse": 0.09140661713171364
+        },
+        "z": {
+          "mean": -0.031762189517674864,
+          "rmse": 0.06721983464813266
+        }
+      },
+      "conditioning": "PX4 position held fixed; independent UAV attitude replaces PX4 attitude; model-origin position equivalence not established"
+    }
+  },
+  "heading_diagnostic": {
+    "status": "evaluated_diagnostic_only",
+    "reason": "",
+    "reference_source": "embedded_gazebo_uav_model_pose",
+    "reference_requirements": "causal acquisition-aligned headings in the same NED frame",
+    "match_tolerance_s": 1e-06,
+    "reference_rows": 631,
+    "valid_reference_rows": 631,
+    "matched_reference_rows": 630,
+    "unmatched_rows": 0,
+    "ambiguous_reference_rows": 0,
+    "missing_geometry_rows": 0,
+    "sample_count": 630,
+    "yaw_error_rad": {
+      "mean": 0.002704411676150762,
+      "rmse": 0.007423773260523299
+    },
+    "range_sin_yaw_error_m": {
+      "mean": 0.04210884158766915,
+      "rmse": 0.12005707742489713
+    },
+    "signed_ned_error_m": {
+      "x_mean": -0.03012115125266605,
+      "y_mean": 0.03259728725855721,
+      "x_error_correlation": 0.6861688749606372,
+      "y_error_correlation": 0.6608727481663108
+    },
+    "matched_raw_horizontal_rmse_m": 0.17340068256018637,
+    "residual_horizontal_rmse_m": 0.12376299445819776,
+    "root_cause": "not_confirmed",
+    "interpretation": "correlation and residuals are offline diagnostics, not causal proof"
+  },
+  "inputs": {
+    "vision": "/home/qin/data/uav_usv_mpc/data/baselines/20261006_pre_mpc/modular_intercept_20261006_095151_101120_mission_1_vision.csv",
+    "heading_reference": null
+  }
+}

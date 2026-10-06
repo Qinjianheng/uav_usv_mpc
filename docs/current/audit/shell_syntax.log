@@ -1,0 +1,8 @@
+scripts/build_workspace.sh: exit 0
+scripts/start_px4_ros2.sh: exit 0
+scripts/sync_github.sh: exit 0
+scripts/uav_lab.sh: exit 0
+src/px4_msgs/container/build_deb_container.sh: exit 0
+src/px4_msgs/scripts/build_deb_host.sh: exit 0
+src/px4_msgs/scripts/generate_changelog.sh: exit 0
+src/px4_msgs/scripts/generate_release_notes.sh: exit 0

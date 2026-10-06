@@ -1,0 +1,18 @@
+{
+  "inventory_rows": 2345,
+  "unchanged_retained_files": 506,
+  "protected_source_model_test_patch_files": 462,
+  "relocated_baseline_files": 44,
+  "archived_only_files": 1792,
+  "baseline_raw_and_full_config_files": 46,
+  "external_recording_tool_files": 6,
+  "baseline_fingerprint_files": 4,
+  "historical_git_objects_verified": 2339,
+  "current_local_markdown_links": 78,
+  "raw_report_links_verified_in_original_context": 16,
+  "ignore_cases_passed": 7,
+  "archive_sha256_verified": true,
+  "original_worktree_unchanged": true,
+  "control_tests_models_config_patches_unchanged": true,
+  "remotes_verified": true
+}

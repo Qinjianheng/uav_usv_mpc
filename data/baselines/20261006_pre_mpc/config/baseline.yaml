@@ -1,0 +1,548 @@
+trajectory_impact_sim:
+  ros__parameters:
+    control_rate_hz: 20.0
+    offboard_prestream_time: 2.0
+    px4_command_retry_time: 1.0
+    # Representative command envelope for the 2.1 kg PX4 X500 model.
+    max_speed: 7.0
+    max_acceleration: 3.5
+    max_actual_horizontal_acceleration: 4.0
+    horizontal_acceleration_guard_margin: 0.5
+    enable_maneuver_prediction: true
+    turn_rate_filter_alpha: 0.25
+    max_target_turn_rate: 0.7
+    # Bounded CTRA estimates changing curvature and speed without assuming a
+    # cooperative route or using future ground truth.
+    turn_acceleration_filter_alpha: 0.2
+    max_target_turn_acceleration: 1.5
+    speed_acceleration_filter_alpha: 0.2
+    max_target_longitudinal_acceleration: 2.0
+    maneuver_acceleration_decay_time: 1.0
+    maneuver_prediction_horizon: 2.0
+    minimum_target_speed: 0.2
+    intercept_guidance_horizon_min: 1.0
+    intercept_guidance_horizon_max: 2.0
+    intercept_guidance_horizon_distance: 20.0
+    intercept_position_gain: 0.8
+    intercept_reference_position_gain: 1.0
+    intercept_reference_max_speed: 6.2
+    intercept_reference_max_acceleration: 3.2
+    intercept_reference_max_vertical_acceleration: 2.5
+    terminal_radius: 3.0
+    terminal_closing_speed: 1.5
+    terminal_min_closing_speed: 0.3
+    terminal_closing_speed_step: 0.3
+    terminal_plan_duration_step: 0.1
+    # Reachability chooses the online interval.  Four seconds covers the
+    # acceleration-limited five-metre terminal descent while remaining a hard
+    # compute/mission cap rather than a relaxed dynamic limit.
+    terminal_plan_absolute_max_duration: 4.0
+    terminal_plan_horizon_extra_margin: 0.5
+    # Three-piece minimum-jerk trajectory, replanned at the controller rate.
+    enable_minco_planner: true
+    minco_piece_count: 3
+    minco_target_curve_weight: 0.7
+    # GCOPTER-style spatial-temporal deformation: positive interval mapping,
+    # bounded intermediate-point deformation, and cubic integral penalties.
+    enable_minco_geometric_optimization: true
+    minco_optimization_max_iterations: 3
+    minco_spatial_radius: 0.75
+    minco_constraint_penalty_weight: 1000.0
+    minco_quadrature_intervals_per_piece: 8
+    terminal_control_lookahead: 0.15
+    # MINCO search costs tens of milliseconds; replan at 10 Hz and track the
+    # retained trajectory between searches instead of overrunning 20 Hz.
+    terminal_replan_period: 0.1
+    # Never follow a stale manoeuvring-target trajectory for a full horizon.
+    terminal_plan_max_hold_time: 0.2
+    terminal_plan_target_error_limit: 0.5
+    terminal_plan_min_remaining_time: 0.2
+    terminal_plan_failure_limit: 3
+    enable_async_terminal_planner: true
+    # Convert MINCO velocity feed-forward into closed-loop trajectory tracking.
+    terminal_trajectory_position_gain: 1.2
+    terminal_trajectory_vertical_gain: 1.2
+    terminal_contact_clearance: 0.05
+    # Release terminal descent only after the target opens beyond this range.
+    terminal_descent_release_distance: 4.0
+    # Geometric flight-path angle relative to the moving capture point.
+    terminal_dive_angle: 0.78539816339
+    # Preferred terminal clearance above the sea surface.  It is relaxed only
+    # when needed to preserve an intersection with the capture sphere.
+    terminal_minimum_clearance: 0.1
+    # Include command/vehicle response distance in the all-path sea barrier.
+    terminal_safety_response_time: 0.15
+    terminal_safety_margin: 0.02
+    terminal_safety_warning_margin: 0.15
+    # Conservative effective PX4 vertical braking authority used by both the
+    # reachability gate and final post-limiter sea barrier.
+    terminal_effective_vertical_braking_acceleration: 2.5
+    front_camera_max_depression_angle: 0.85
+    terminal_max_acceleration: 3.0
+    terminal_max_vertical_acceleration: 3.0
+    impact_radius: 0.25
+    enable_sea_contact_failure: true
+    sea_surface_z: 0.0
+    max_sim_duration: 30.0
+    state_timeout: 0.5
+    vehicle_status_timeout: 2.0
+    mode_loss_grace_time: 0.5
+    constraint_violation_duration: 0.25
+    enable_gazebo_control: true
+    flight_altitude: -5.0
+    takeoff_tolerance: 0.5
+    takeoff_settle_time: 1.0
+    # Keep horizontal tracking during launch, but avoid large tilt/thrust steps.
+    takeoff_max_horizontal_acceleration: 1.5
+    takeoff_max_vertical_speed: 1.5
+    takeoff_max_vertical_acceleration: 1.0
+    # Do not pitch for translation until the vehicle is safely airborne.
+    takeoff_horizontal_start_height: 0.5
+    takeoff_horizontal_full_height: 1.5
+    follow_distance: 5.0
+    follow_position_gain: 0.8
+    follow_max_closing_speed: 1.5
+    # Retained only for backward-compatible parameter loading.  MINCO failure
+    # no longer enters a high-speed terminal-pursuit fallback.
+    terminal_pursuit_max_closing_speed: 3.0
+    follow_max_acceleration: 2.5
+    altitude_velocity_gain: 1.0
+    # A 4 m/s descent paired with the 4 m/s USV baseline permits a
+    # 45-degree terminal flight-path angle without relaxing XY limits.
+    max_vertical_speed: 4.0
+    max_vertical_acceleration: 3.0
+    max_actual_vertical_acceleration: 4.0
+    speed_guard_margin: 0.5
+    speed_governor_gain: 1.0
+    max_observation_yaw_rate: 1.0
+    target_search_enable_height: 1.5
+    initial_search_yaw_rate: 0.25
+    reacquire_yaw_rate: 0.35
+    maximum_search_yaw_rate: 0.6
+    target_lock_min_frames: 3
+    target_loss_frames: 3
+    target_lock_max_age: 0.15
+    target_lock_max_bearing: 0.15
+    target_center_deadband_rad: 0.03
+    vision_yaw_gain: 1.0
+    target_reacquire_timeout: 2.0
+    search_initial_arc: 0.52
+    search_arc_increment: 0.52
+    terminal_loss_recovery_timeout: 0.3
+
+moving_target:
+  ros__parameters:
+    # Eight metres gives a roughly 23-pixel target diameter at startup.
+    initial_x: 8.0
+    initial_y: 0.0
+    initial_z: 0.0
+    velocity_x: 0.0
+    velocity_y: 4.0
+    velocity_z: 0.0
+    trajectory_type: figure_eight
+    horizontal_speed: 4.0
+    horizontal_acceleration_limit: 1.0
+    maximum_turn_rate: 0.65
+    maximum_lateral_acceleration: 3.2
+    figure_eight_x_amplitude: 40.0
+    figure_eight_y_amplitude: 20.0
+    # Sea state.  The target heave is a scenario parameter, but it is also a
+    # hard geometric budget: the airframe reaches 0.23 m below the PX4
+    # reference and needs roughly 0.32 m of reference clearance to stay out of
+    # the water under tracking overshoot, while the capture sphere the
+    # evaluator scores is only 0.50 m.  A 0.15 m heave would consume the whole
+    # remaining sphere, so every watered-off contact sat exactly on the
+    # boundary.  0.05 m (10 cm peak to peak) is a calm-water assumption that
+    # keeps the contact inside the sphere with margin.
+    vertical_oscillation_amplitude: 0.05
+    vertical_oscillation_frequency: 0.25
+    update_rate_hz: 20.0
+    start_on_command: true
+    enable_gazebo_visualization: true
+    gazebo_world_name: default
+    gazebo_entity_name: usv_target
+    gazebo_sphere_diameter: 0.5
+    # Radius 0.25 m + heave amplitude 0.15 m + 0.02 m clearance.
+    gazebo_visual_height_offset: 0.42
+    pause_gazebo_on_hit: false
+
+target_predictor_node:
+  ros__parameters:
+    # Main BCTRA now consumes KF position/velocity (explicit user opt-in).
+    # Target truth is evaluation-only; tracker also consumes KF.
+    target_state_source: tracking
+    tracking_topic: /tracking/target_state
+    prediction_topic: /planning/target_prediction
+    frame_id: local_ned
+    update_rate_hz: 20.0
+    prediction_horizon: 4.0
+    prediction_sample_period: 0.1
+    input_timeout: 0.125
+    # Horizontal BCTRA settings match the existing controller baseline.
+    turn_rate_filter_alpha: 0.25
+    max_target_turn_rate: 0.7
+    maneuver_prediction_horizon: 2.0
+    minimum_target_speed: 0.2
+    minimum_turn_updates: 3
+    turn_acceleration_filter_alpha: 0.2
+    max_target_turn_acceleration: 1.5
+    speed_acceleration_filter_alpha: 0.2
+    max_target_longitudinal_acceleration: 2.0
+    maneuver_acceleration_decay_time: 1.0
+    # Generic heave bounds; no simulated sine amplitude/frequency is read.
+    vertical_velocity_decay_time: 0.75
+    maximum_vertical_displacement: 0.5
+    vertical_observation_margin: 0.25
+    vertical_history_window: 1.0
+
+
+shadow_target_predictor_node:
+  ros__parameters:
+    # Diagnostic copy of KF BCTRA; its output never feeds the planner.
+    target_state_source: tracking
+    tracking_topic: /tracking/target_state
+    prediction_topic: /planning/shadow_target_prediction
+    frame_id: local_ned
+    update_rate_hz: 20.0
+    prediction_horizon: 4.0
+    prediction_sample_period: 0.1
+    input_timeout: 0.125
+    turn_rate_filter_alpha: 0.25
+    max_target_turn_rate: 0.7
+    maneuver_prediction_horizon: 2.0
+    minimum_target_speed: 0.2
+    minimum_turn_updates: 3
+    turn_acceleration_filter_alpha: 0.2
+    max_target_turn_acceleration: 1.5
+    speed_acceleration_filter_alpha: 0.2
+    max_target_longitudinal_acceleration: 2.0
+    maneuver_acceleration_decay_time: 1.0
+    vertical_velocity_decay_time: 0.75
+    maximum_vertical_displacement: 0.5
+    vertical_observation_margin: 0.25
+    vertical_history_window: 1.0
+
+intercept_planner_node:
+  ros__parameters:
+    planning_rate_hz: 5.0
+    terminal_planning_rate_hz: 10.0
+    completion_poll_rate_hz: 100.0
+    minimum_duration: 1.0
+    terminal_minimum_duration: 0.30
+    terminal_freeze_time: 0.30
+    # Descend during Y preparation before admitting a short terminal plan.
+    # Long forecasts of the manoeuvring target misplace the contact point.
+    maximum_duration: 1.5
+    duration_margin: 0.35
+    sample_step: 0.05
+    # Hard MINCO feasibility limit matches the 7 m/s vehicle envelope.
+    maximum_horizontal_speed: 7.0
+    maximum_vertical_speed: 4.0
+    maximum_horizontal_acceleration: 3.5
+    maximum_vertical_acceleration: 3.0
+    preferred_closing_speed: 1.5
+    conservative_closing_speed: 1.2
+    # The aim sphere must contain the watered-off contact point.  The airframe
+    # reaches 0.23 m below the PX4 reference (see the evaluator's
+    # body_lower_extent), so the contact altitude is chosen at
+    # preferred_clearance above the sea and the aim radius has to cover
+    # clearance + target heave: 0.29 + 0.05 = 0.34 m, which stays inside the
+    # 0.50 m sphere the evaluator scores.  A smaller aim radius makes every
+    # watered-off contact a CAPTURE_GEOMETRY rejection and a smaller clearance
+    # puts the planned endpoint below the body-contact threshold, so the plan
+    # could never be flown without a water strike.
+    planned_capture_radius: 0.50
+    sea_surface_z: 0.0
+    # Hard floor and nominal terminal clearance above the sea surface.  The
+    # budget is tight: the evaluator scores a 0.50 m sphere and the airframe
+    # already occupies 0.23 m of it, so clearance + horizontal closing error
+    # must fit in the remaining 0.27 m.  0.33 m keeps 0.10 m of airframe
+    # margin, which covers the ~0.06 m vertical overshoot measured on the
+    # 2026-09-20 runs, and still leaves sqrt(0.50^2 - 0.33^2) = 0.38 m of
+    # horizontal capture tolerance.  Lowering it to 0.29 put the landing gear
+    # on the water before the vehicle had closed the gap.
+    contact_clearance: 0.31
+    preferred_clearance: 0.33
+    piece_count: 3
+    # Blending the intermediate MINCO waypoints toward the target's curved
+    # path costs lateral acceleration, and the figure-eight target turns hard
+    # enough that 0.7 demanded 4-8 m/s^2 against the 3.0 m/s^2 planning limit.
+    # Every terminal plan was then rejected with DYNAMIC_LIMIT_HORIZONTAL while
+    # the vehicle hovered near the sea, which is exactly the slow jittering
+    # first descent seen on 2026-09-20 (the second, straighter approach
+    # captured by luck before the locked contact expired).  The terminal
+    # velocity boundary already places the contact at the moving capture
+    # point, so the curve weight adds no intercept accuracy; 0.0 keeps the
+    # mid-path inside budget.
+    target_curve_weight: 0.0
+    # Leave 5 ms for message conversion and event diagnostics.
+    solver_deadline_seconds: 0.075
+    deadline_seconds: 0.08
+    maximum_input_age: 0.125
+    endpoint_tolerance: 0.5
+    # The first MINCO descent is published only after horizontal reachability
+    # has converged to the same time scale as the vertical descent.
+    approach_time_sync_tolerance: 0.35
+    approach_reserve_clearance: 0.20
+    # FAR_GUIDANCE must converge on the moving, vertical-time-sized standoff
+    # before the first descent can be admitted.  These are joint position and
+    # relative-velocity checks inside the existing full MINCO/safety gate.
+    approach_preparation_standoff_speed: 1.5
+    approach_preparation_position_tolerance: 0.75
+    approach_preparation_velocity_tolerance: 0.75
+    response_delay: 0.15
+    effective_vertical_braking_acceleration: 2.5
+    quadrature_intervals_per_piece: 6
+    frame_id: local_ned
+
+trajectory_tracker_node:
+  ros__parameters:
+    control_rate_hz: 20.0
+    target_state_topic: /tracking/target_state
+    offboard_prestream_time: 2.0
+    px4_command_retry_time: 1.0
+    vehicle_status_timeout: 2.0
+    flight_altitude: -5.0
+    takeoff_tolerance: 0.5
+    takeoff_settle_time: 1.0
+    takeoff_maximum_vertical_speed: 1.5
+    takeoff_maximum_vertical_acceleration: 1.0
+    takeoff_maximum_horizontal_acceleration: 1.5
+    takeoff_horizontal_start_height: 0.5
+    takeoff_horizontal_full_height: 1.5
+    follow_distance: 5.0
+    follow_position_gain: 0.8
+    # Far acquisition advances from RGB direction without requiring depth/KF.
+    bearing_approach_enabled: true
+    bearing_approach_speed: 6.0
+    altitude_velocity_gain: 1.0
+    # Y preparation lowers altitude with the existing velocity shaper.
+    # The moving standoff is closing_speed * current vertical minimum time.
+    approach_contact_clearance: 0.33
+    approach_preparation_clearance: 1.2
+    approach_closing_speed: 1.5
+    approach_horizon: 4.0
+    approach_response_delay: 0.15
+    maximum_plan_age: 0.125
+    minimum_remaining_time: 0.20
+    maximum_position_error: 0.30
+    maximum_velocity_error: 0.50
+    target_endpoint_tolerance: 0.50
+    terminal_replacement_position_error: 0.15
+    max_observation_yaw_rate: 1.0
+    target_search_enable_height: 1.5
+    initial_search_yaw_rate: 0.25
+    reacquire_yaw_rate: 0.35
+    maximum_search_yaw_rate: 0.6
+    target_lock_min_frames: 3
+    target_loss_frames: 3
+    target_lock_max_age: 0.15
+    target_lock_max_bearing: 0.15
+    target_center_deadband_rad: 0.03
+    vision_yaw_gain: 1.0
+    target_reacquire_timeout: 2.0
+    search_initial_arc: 0.52
+    search_arc_increment: 0.52
+    terminal_loss_recovery_timeout: 0.3
+    position_gain: 1.2
+    # Last 0.7 s: fresh short target prediction steers at the command speed
+    # cap, preserving speed during turns. MINCO vertical/sea limits remain.
+    terminal_cruise_enabled: true
+    # Keep executed PX4 commands below the 7 m/s planning envelope.
+    maximum_horizontal_speed: 6.5
+    # Keep non-MINCO FOLLOW/FAR_GUIDANCE below the tracker command limit.
+    guidance_maximum_horizontal_speed: 6.2
+    maximum_vertical_speed: 4.0
+    maximum_horizontal_acceleration: 3.5
+    # Keep TAKEOFF/FOLLOW/FAR_GUIDANCE acceleration unchanged.
+    guidance_maximum_horizontal_acceleration: 3.0
+    maximum_vertical_acceleration: 3.0
+    sea_surface_z: 0.0
+    # contact_clearance (0.05 m) + terminal_safety_margin (0.02 m).
+    # Last-resort vertical barrier.  It must sit above the airframe's lowest
+    # point, not just above the PX4 reference: the landing gear reaches 0.23 m
+    # below the reference, so the previous 0.07 m reserve reported SAFE while
+    # the gear was already level with the water.  0.20 m engages the brake
+    # around 0.26 m of reference clearance, which still leaves the planned
+    # 0.33 m contact reachable.
+    reserve_clearance: 0.20
+    safety_response_delay: 0.15
+    vertical_braking_acceleration: 2.5
+    # A lost plan must not hold the measured position inside the water margin.
+    # The recovery reference keeps advancing from the last commanded reference
+    # with the same acceleration limiting used while tracking, and climbs back
+    # to this clearance above the sea at a bounded vertical speed.
+    recovery_clearance: 0.5
+    recovery_climb_speed: 1.0
+    # The acceleration limits above bound the COMMAND.  PX4 answers a bounded
+    # command with its own loop acceleration on top: measured runs commanded
+    # 3.0 m/s^2 vertically and produced 4.7-8.9 m/s^2 actual, roughly 1.9x.
+    # maximum_command_dt caps the interval the rate limiter may bank, so a long
+    # gap can no longer authorise a command jump, and
+    # maximum_actual_vertical_acceleration derates the vertical allowance once
+    # the measured acceleration exceeds it.
+    maximum_command_dt: 0.1
+    # The tracker owns position feedback and limits the resulting velocity.
+    # PX4 consumes that velocity directly; it must not add position feedback
+    # a second time to the same command.
+    maximum_actual_vertical_acceleration: 4.0
+    maximum_state_age: 0.125
+    # Replanning now starts from the accepted trajectory's future P/V/A,
+    # rather than repeatedly re-anchoring its velocity to measured speed.
+    # This satisfies the condition missing in the 2026-09-20 velocity trial.
+    use_velocity_control: true
+    frame_id: local_ned
+
+mission_manager_node:
+  ros__parameters:
+    publication_rate_hz: 20.0
+    maximum_tracker_age: 0.125
+    minimum_plan_remaining_time: 0.20
+    plan_recovery_timeout: 0.50
+    terminal_time_threshold: 1.0
+    terminal_distance_threshold: 2.0
+
+intercept_evaluator_node:
+  ros__parameters:
+    evaluation_rate_hz: 20.0
+    evaluation_capture_radius: 0.50
+    # Reported planner aim radius; must stay synchronized with the planner.
+    planned_capture_radius: 0.50
+    sea_surface_z: 0.0
+    enable_sea_contact_failure: true
+    # Distance from the PX4 local-position reference to the lowest point of the
+    # airframe.  The X500 landing-gear skids reach 0.227 m below base_link, so
+    # body contact is tested at a reference altitude of -0.23 m.  Waiting for
+    # the reference point itself to cross z = 0 lets the vehicle fly with its
+    # gear submerged without raising SEA_CONTACT.
+    body_lower_extent: 0.23
+    maximum_duration: 30.0
+    detailed_diagnostics_enabled: false
+    visual_evaluation_enabled: true
+    visual_observation_topic: /perception/front/target_observation
+    log_directory: data/experiments/current
+    # Simulation truth is consumed only by this evaluator and by the explicitly
+    # named offline diagnostics. It never feeds the online command path.
+    truth_topic: /target/state
+    truth_role: evaluation_only
+    shadow_prediction_topic: /planning/shadow_target_prediction
+    gazebo_world_name: default
+    # Evaluator-only actual entity pose capture; enable for dedicated visual
+    # attribution runs because /pose/info can be high rate.
+    gazebo_entity_diagnostics_enabled: false
+    gazebo_target_entity_name: usv_target
+    gazebo_visual_height_offset: 0.42
+    pause_gazebo_on_success: true
+    gazebo_pause_timeout_ms: 250
+    gazebo_pause_maximum_attempts: 2
+    gazebo_pause_retry_delay: 0.05
+
+target_kalman_filter:
+  ros__parameters:
+    frame_id: local_ned
+    # Camera-derived positions are filtered; truth remains evaluation-only.
+    input_topic: /perception/front/target_observation
+    state_topic: /tracking/target_state
+    prediction_topic: /tracking/predicted_position
+    update_rate_hz: 20.0
+    process_acceleration_std: 1.5
+    measurement_position_std: 0.25
+    initial_velocity_std: 5.0
+    prediction_horizon: 0.5
+    measurement_timeout: 0.5
+
+rgbd_target_localizer:
+  ros__parameters:
+    color_topic: /camera/front/image_raw
+    depth_topic: /camera/front/depth/image_raw
+    observation_topic: /perception/front/target_observation
+    position_topic: /perception/front/target_position
+    frame_id: local_ned
+    horizontal_fov: 1.74
+    minimum_red_pixels: 3
+    minimum_depth: 0.05
+    maximum_depth: 25.0
+    minimum_depth_ratio: 0.5
+    # A clean sphere has camera-X depth MAD <= target_radius. Keep this
+    # independent ceiling equal to target_radius if the sphere size changes.
+    maximum_depth_mad: 0.25
+    # One Gazebo RGB-D sensor produces both streams at the same capture time.
+    # Do not apply a new RGB mask to the previous 48/52 ms depth frame.
+    maximum_rgb_depth_skew: 0.001
+    data_timeout: 0.5
+    state_history_duration: 1.0
+    maximum_clock_offset_jump: 0.05
+    # PX4 uXRCE-DDS time sync already converts outgoing sample timestamps
+    # into the ROS agent clock domain; do not apply a second receipt offset.
+    px4_timestamp_is_ros_time: true
+    # Gazebo images keep simulation acquisition stamps. The localizer maps
+    # them with the sim/system pair carried by the same Gazebo Clock message;
+    # image bridge receipt time is never used to estimate this mapping.
+    gazebo_world_name: default
+    image_clock_reference_timeout: 0.5
+    image_clock_history_duration: 2.0
+    image_clock_wait_timeout: 0.15
+    maximum_system_clock_step: 0.25
+    pose_wait_timeout: 0.15
+    maximum_pose_wait_gap: 0.15
+    image_pair_buffer_size: 8
+    time_pair_diagnostics_enabled: false
+    localization_rate_hz: 10.0
+    camera_pitch_down: 0.4886921905584123
+    camera_translation_x: 0.18
+    camera_translation_y: 0.0
+    camera_translation_z: 0.39
+    target_radius: 0.25
+    target_reference_z_offset: 0.42
+    # Optional bounded geometry fields for offline error attribution.
+    geometry_diagnostics_enabled: false
+    base_position_std: 0.08
+    range_position_std_scale: 0.01
+
+front_tof_monitor:
+  ros__parameters:
+    camera_name: front
+    diagnostic_prefix: /perception/front
+    camera_frame_id: front_camera_optical_frame
+    color_gazebo_topic: /uav/camera/front/image
+    depth_gazebo_topic: /uav/camera/front/depth_image
+    color_ros_topic: /camera/front/image_raw
+    depth_ros_topic: /camera/front/depth/image_raw
+    horizontal_fov: 1.74
+    minimum_red_pixels: 3
+    minimum_target_depth_ratio: 0.5
+    image_timeout: 0.5
+    maximum_rgb_depth_skew: 0.1
+    minimum_rgb_distance: 0.05
+    maximum_rgb_distance: 60.0
+    minimum_depth: 0.05
+    maximum_depth: 25.0
+    evaluation_window_seconds: 5.0
+    camera_pitch_down: 0.4886921905584123
+    target_visual_height_offset: 0.42
+    analysis_rate_hz: 5.0
+    gazebo_world_name: default
+    publish_gazebo_rtf: true
+
+dual_tof_selector:
+  ros__parameters:
+    switch_loss_frames: 3
+    front_recovery_frames: 10
+    allow_down_fallback: false
+    selection_rate_hz: 10.0
+
+target_bearing_node:
+  ros__parameters:
+    camera_pitch_down: 0.4886921905584123
+    color_topic: /camera/front/image_raw
+    bearing_topic: /perception/front/target_bearing
+    horizontal_fov: 1.74
+    minimum_red_pixels: 3
+    gazebo_world_name: default
+    image_clock_reference_timeout: 0.5
+    image_clock_history_duration: 2.0
+    image_clock_wait_timeout: 0.15
+    maximum_system_clock_step: 0.25
+    maximum_frame_age: 0.15
+    data_timeout: 0.5
+    processing_rate_hz: 50.0

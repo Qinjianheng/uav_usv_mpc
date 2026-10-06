@@ -1,0 +1,95 @@
+{
+  "role": "ORIGINAL_SAMPLE_EPOCH_SPEED_AUDIT",
+  "results": [
+    {
+      "stamp": {
+        "sec": 1791251546,
+        "nanosec": 712029457
+      },
+      "mission_id": 1,
+      "success": true,
+      "outcome": "SUCCESS",
+      "reason": "CAPTURE_RADIUS_REACHED",
+      "detail": "determined by simulation truth in evaluator only",
+      "elapsed_time": 4.413229703903198,
+      "capture_radius": 0.5,
+      "minimum_distance": 0.46470192364879703,
+      "horizontal_distance": 0.24178051924182778,
+      "vertical_error": 0.39685017117048665,
+      "relative_speed": 2.8260625082540334,
+      "closing_speed": 1.4126196372497488,
+      "max_horizontal_speed": 6.812253635162173,
+      "max_vertical_speed": 2.757541392185898,
+      "max_horizontal_acceleration": 4.313276797003891,
+      "max_vertical_acceleration": 4.015343944673333
+    }
+  ],
+  "phases": [
+    {
+      "state": "GROUND_HOLD",
+      "t": -41.398744344711304
+    },
+    {
+      "state": "TAKEOFF",
+      "t": -31.195504426956177
+    },
+    {
+      "state": "FOLLOW",
+      "t": -22.045004844665527
+    },
+    {
+      "state": "FAR_GUIDANCE",
+      "t": 0.0015971660614013672
+    },
+    {
+      "state": "MINCO_READY",
+      "t": 3.0266051292419434
+    },
+    {
+      "state": "MINCO_TRACKING",
+      "t": 3.0753068923950195
+    },
+    {
+      "state": "MINCO_READY",
+      "t": 3.261272668838501
+    },
+    {
+      "state": "MINCO_TRACKING",
+      "t": 3.2751662731170654
+    },
+    {
+      "state": "TERMINAL_MINCO",
+      "t": 3.5070550441741943
+    },
+    {
+      "state": "SAFE_RECOVERY",
+      "t": 4.5065202713012695
+    }
+  ],
+  "last_0p7_seconds": {
+    "command_speed": {
+      "count": 14,
+      "first": 5.998269331694216,
+      "last": 6.5,
+      "maximum": 6.500000000000001,
+      "minimum": 5.998269331694214,
+      "peak_minus_contact": 8.881784197001252e-16
+    },
+    "actual_speed": {
+      "count": 14,
+      "first": 5.054629806852439,
+      "last": 6.803260152477325,
+      "maximum": 6.803260152477325,
+      "minimum": 5.054629806852439,
+      "peak_minus_contact": 0.0
+    },
+    "minco_speed": {
+      "count": 14,
+      "first": 5.623632441054203,
+      "last": 5.6686886182794645,
+      "maximum": 5.808961877112853,
+      "minimum": 5.623632441054203,
+      "peak_minus_contact": 0.14027325883338815
+    }
+  }
+}

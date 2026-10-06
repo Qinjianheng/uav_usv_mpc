@@ -1,0 +1,17 @@
+{
+  "measurement": "non-generated regular files; excludes .git, build/install/log, caches and sandbox metadata",
+  "before": {
+    "files": 2345,
+    "bytes": 1505745695,
+    "data_bytes": 1326092541,
+    "docs_bytes": 177227600
+  },
+  "after": {
+    "files": 594,
+    "bytes": 15475930,
+    "data_bytes": 11700502,
+    "docs_bytes": 1363345
+  },
+  "archive_bytes": 547049613,
+  "history_rewritten": false
+}

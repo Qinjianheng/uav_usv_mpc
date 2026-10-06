@@ -1,0 +1,11 @@
+{
+  "deletions_exactly_match_manifest": 1830,
+  "modified_files": [
+    ".gitignore",
+    "README.md",
+    "scripts/build_workspace.sh"
+  ],
+  "added_files": 85,
+  "protected_staged_changes": 0,
+  "git_diff_cached_check_exit": 0
+}

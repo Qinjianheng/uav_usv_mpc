@@ -1,0 +1,11 @@
+{
+  "archive_path": "/home/qin/data/uav_usv_mpc_archive/20261006_pre_mpc/repository_before.tar.gz",
+  "archive_sha256": "8e2b72785d197c788bf788d0d64dbb90ad871805dbb8120430cd6f84a1bdf309",
+  "archive_bytes": 547049613,
+  "verified_members": 2345,
+  "verified_original_relations": {
+    "same": 2339,
+    "missing": 6
+  },
+  "metadata_members": 3
+}

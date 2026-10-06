@@ -1,4 +1,0 @@
-Observed during full-fix simulation 102220, using --no-daemon.
-/target/state: Publisher count 1, Subscription count 1; subscriber intercept_evaluator_node.
-/fmu/in/trajectory_setpoint: Publisher count 1; publisher trajectory_tracker_node; subscriber PX4 bare DDS app.
-Geometry references are evaluator-only; see source and strict-visual tests.

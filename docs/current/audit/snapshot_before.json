@@ -1,0 +1,65 @@
+{
+  "base_head": "85e13461df62b65d34aa55c9d92576c58085d0b3",
+  "head": "85e13461df62b65d34aa55c9d92576c58085d0b3",
+  "branch": "main",
+  "status_before": "?? data/experiments/current/modular_intercept_20261006_102846_255769_mission_1.csv\n?? data/experiments/current/modular_intercept_20261006_102846_255769_mission_1_config.yaml\n?? data/experiments/current/modular_intercept_20261006_102846_255769_mission_1_summary.json\n?? data/experiments/current/modular_intercept_20261006_102846_255769_mission_1_vision.csv\n?? data/experiments/px4_parameter_backups/enu_caLQn2/parameters.bson\n?? data/experiments/px4_parameter_backups/enu_caLQn2/parameters_backup.bson\n",
+  "original_head": "85e13461df62b65d34aa55c9d92576c58085d0b3",
+  "original_status_before": "",
+  "remotes": {
+    "github": {
+      "fetch": [
+        "https://github.com/Qinjianheng/uav_usv_mpc.git"
+      ],
+      "push": [
+        "https://github.com/Qinjianheng/uav_usv_mpc.git"
+      ]
+    },
+    "origin": {
+      "fetch": [
+        "https://github.com/Qinjianheng/uav_usv_mpc.git"
+      ],
+      "push": [
+        "https://github.com/Qinjianheng/uav_usv_mpc.git"
+      ]
+    }
+  },
+  "original_remotes": {
+    "github": {
+      "fetch": [
+        "git@github.com:Qinjianheng/uav_usv.git"
+      ],
+      "push": [
+        "git@github.com:Qinjianheng/uav_usv.git"
+      ]
+    }
+  },
+  "files_before": 2345,
+  "bytes_before": 1505745695,
+  "tracked_before": 2339,
+  "tracked_bytes_before": 1504170705,
+  "local_only": [
+    "data/experiments/current/modular_intercept_20261006_102846_255769_mission_1.csv",
+    "data/experiments/current/modular_intercept_20261006_102846_255769_mission_1_config.yaml",
+    "data/experiments/current/modular_intercept_20261006_102846_255769_mission_1_summary.json",
+    "data/experiments/current/modular_intercept_20261006_102846_255769_mission_1_vision.csv",
+    "data/experiments/px4_parameter_backups/enu_caLQn2/parameters.bson",
+    "data/experiments/px4_parameter_backups/enu_caLQn2/parameters_backup.bson"
+  ],
+  "generated_excluded": [
+    ".git",
+    "build",
+    "install",
+    "log",
+    "__pycache__",
+    ".pytest_cache",
+    ".agents",
+    ".aws",
+    ".codex"
+  ],
+  "build_disk_bytes_before": 123415734,
+  "install_disk_bytes_before": 16734298,
+  "log_disk_bytes_before": 4936811,
+  ".git_disk_bytes_before": 552111436,
+  "status_at_archive_preparation": "?? data/experiments/current/modular_intercept_20261006_102846_255769_mission_1.csv\n?? data/experiments/current/modular_intercept_20261006_102846_255769_mission_1_config.yaml\n?? data/experiments/current/modular_intercept_20261006_102846_255769_mission_1_summary.json\n?? data/experiments/current/modular_intercept_20261006_102846_255769_mission_1_vision.csv\n?? data/experiments/px4_parameter_backups/enu_caLQn2/parameters.bson\n?? data/experiments/px4_parameter_backups/enu_caLQn2/parameters_backup.bson\n?? docs/current/audit/reference_audit.json\n?? docs/superpowers/plans/2026-10-06-pre-mpc-repository-cleanup.md\n",
+  "snapshot_note": "status_before reproduces the six entries observed before any audit files were created; status_at_archive_preparation includes newly created audit/plan files"
+}
