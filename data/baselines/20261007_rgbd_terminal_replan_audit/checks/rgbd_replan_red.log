@@ -1,0 +1,48 @@
+.....................FFF                                                 [100%]
+=================================== FAILURES ===================================
+________ test_fresh_valid_replacement_rearms_only_the_new_accepted_plan ________
+
+    def test_fresh_valid_replacement_rearms_only_the_new_accepted_plan():
+        node = terminal_node()
+        node.timer_callback()
+        original = node.tracker.active_trajectory
+        candidate = fresh_replacement(node)
+        node.terminal_replacement_position_error = .15
+>       assert node._evaluate_trajectory(candidate) == TrajectoryRejectReason.NONE
+E       AssertionError: assert <TrajectoryRe...AL_COMMITTED'> == <TrajectoryRe....NONE: 'NONE'>
+E         - NONE
+E         + TERMINAL_COMMITTED
+
+test/test_terminal_execution.py:317: AssertionError
+_______ test_rejected_fresh_replacement_cannot_change_committed_deadline _______
+
+    def test_rejected_fresh_replacement_cannot_change_committed_deadline():
+        node = terminal_node()
+        node.timer_callback()
+        execution = node.terminal_execution
+        node.terminal_replacement_position_error = .15
+        candidate = replace(fresh_replacement(node), terminal_position=(100., 0., -.4))
+>       assert node._evaluate_trajectory(candidate) == (
+            TrajectoryRejectReason.TARGET_ENDPOINT_MISMATCH)
+E       AssertionError: assert <TrajectoryRe...AL_COMMITTED'> == <TrajectoryRe...INT_MISMATCH'>
+E         - TARGET_ENDPOINT_MISMATCH
+E         + TERMINAL_COMMITTED
+
+test/test_terminal_execution.py:334: AssertionError
+___ test_new_tracker_acceptance_clears_only_the_previous_execution_deadline ____
+
+    def test_new_tracker_acceptance_clears_only_the_previous_execution_deadline():
+        core = committed_mission()
+        core.observe_visibility(1, 'TERMINAL_COMMITTED', True, 10.4,
+                                execution_deadline=11., execution_plan_id=7)
+        assert core.observe_tracker(1, 8, 'PLAN_ACCEPTED', .05, .7, 10.5)
+>       assert core.terminal_execution_deadline is None
+E       assert 11.0 is None
+E        +  where 11.0 = <uav_control.mission.mission_manager.MissionManagerCore object at 0x7f6e5ffb8850>.terminal_execution_deadline
+
+test/test_terminal_execution.py:345: AssertionError
+=========================== short test summary info ============================
+FAILED test/test_terminal_execution.py::test_fresh_valid_replacement_rearms_only_the_new_accepted_plan
+FAILED test/test_terminal_execution.py::test_rejected_fresh_replacement_cannot_change_committed_deadline
+FAILED test/test_terminal_execution.py::test_new_tracker_acceptance_clears_only_the_previous_execution_deadline
+3 failed, 21 passed in 0.40s

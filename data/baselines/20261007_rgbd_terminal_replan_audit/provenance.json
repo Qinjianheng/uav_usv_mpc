@@ -1,0 +1,904 @@
+{
+  "repository": "/home/qin/data/uav_usv_mpc",
+  "git_head": "eb9c092727f8a392c3c27cb1407de26fb6125bd2",
+  "production_uncommitted": true,
+  "description": "User-approved fresh terminal revalidation; default front ideal RGB-D, down camera disabled. User requested one final independent repeat after first success.",
+  "sources": [
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/user_observed_before/SHA256.json",
+      "destination": "user_observed_before/SHA256.json",
+      "sha256": "80ce36cdf7cf9b69032b1c5b7c972f9c7adc50dce20fa42dec6176a56df1a618",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/user_observed_before/modular_intercept_20261007_114222_380966_mission_1.csv",
+      "destination": "user_observed_before/modular_intercept_20261007_114222_380966_mission_1.csv",
+      "sha256": "8c2501273e1740bf4a7d1de089eed8daee610cc352f1b9c436ad002a1be8a1e4",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/user_observed_before/modular_intercept_20261007_114222_380966_mission_1_config.yaml",
+      "destination": "user_observed_before/modular_intercept_20261007_114222_380966_mission_1_config.yaml",
+      "sha256": "a1c7468797a560fd44dda6c56dba9bc32c6340f372ae47c01075d094af367c29",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/user_observed_before/modular_intercept_20261007_114222_380966_mission_1_summary.json",
+      "destination": "user_observed_before/modular_intercept_20261007_114222_380966_mission_1_summary.json",
+      "sha256": "800f2bef097bdc2cac30f17fcfac59aac692b28f38246ff88a4211c3dac6a912",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/user_observed_before/modular_intercept_20261007_114222_380966_mission_1_vision.csv",
+      "destination": "user_observed_before/modular_intercept_20261007_114222_380966_mission_1_vision.csv",
+      "sha256": "d950f658d9074194cba076b3a4f356be1b0b006dcbded58d55105bfaa9b9de0c",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/user_observed_before/modular_intercept_20261007_114314_183841_mission_1.csv",
+      "destination": "user_observed_before/modular_intercept_20261007_114314_183841_mission_1.csv",
+      "sha256": "552a5f6fc2fe77451793a867edcd25b2ef16e99e1a50f3fba7b6824dc287cfdc",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/user_observed_before/modular_intercept_20261007_114314_183841_mission_1_config.yaml",
+      "destination": "user_observed_before/modular_intercept_20261007_114314_183841_mission_1_config.yaml",
+      "sha256": "a1c7468797a560fd44dda6c56dba9bc32c6340f372ae47c01075d094af367c29",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/user_observed_before/modular_intercept_20261007_114314_183841_mission_1_summary.json",
+      "destination": "user_observed_before/modular_intercept_20261007_114314_183841_mission_1_summary.json",
+      "sha256": "18c47492f8efb95ac3b66f42bfd31c1ddee3cb720ebacf30a801cb33b70a6717",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/user_observed_before/modular_intercept_20261007_114314_183841_mission_1_vision.csv",
+      "destination": "user_observed_before/modular_intercept_20261007_114314_183841_mission_1_vision.csv",
+      "sha256": "883fbe187033b215319d4cff04e19838028857729f5f5f0622ef0f0cbaf65cef",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/user_observed_before/modular_intercept_20261007_114512_706892_mission_1.csv",
+      "destination": "user_observed_before/modular_intercept_20261007_114512_706892_mission_1.csv",
+      "sha256": "2ac9d407111df75ec717a61d9df251c4e62830f6421cf4d5fae1fc50e5962463",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/user_observed_before/modular_intercept_20261007_114512_706892_mission_1_config.yaml",
+      "destination": "user_observed_before/modular_intercept_20261007_114512_706892_mission_1_config.yaml",
+      "sha256": "a1c7468797a560fd44dda6c56dba9bc32c6340f372ae47c01075d094af367c29",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/user_observed_before/modular_intercept_20261007_114512_706892_mission_1_summary.json",
+      "destination": "user_observed_before/modular_intercept_20261007_114512_706892_mission_1_summary.json",
+      "sha256": "a8085359c5e85abdb8e68440777561b5726c12f0cef09fed024a75de0b87d573",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/user_observed_before/modular_intercept_20261007_114512_706892_mission_1_vision.csv",
+      "destination": "user_observed_before/modular_intercept_20261007_114512_706892_mission_1_vision.csv",
+      "sha256": "077e6ae4d4dc36ef088f3a4a72329fc30c961eb694e278cd3e7cc5503815e9b9",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/user_before_audit.json",
+      "destination": "user_before_audit.json",
+      "sha256": "e9dae9e7796956cd036b5070722902073951cec30c7be6b4bf0e299c19fe85c0",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/source_before/scripts/start_px4_ros2.sh",
+      "destination": "source_before/scripts/start_px4_ros2.sh",
+      "sha256": "c64a3eb0bdba0b7d73369379a73e72777bf1956479e650812bf32138a883dd25",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/source_before/src/uav_control/test/test_terminal_execution.py",
+      "destination": "source_before/src/uav_control/test/test_terminal_execution.py",
+      "sha256": "2ca93489078548ff71a76ed0511552e6cf87e0ccbbbdbbdb7177a68f5ba4b5f5",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/source_before/src/uav_control/uav_control/control/trajectory_tracker_node.py",
+      "destination": "source_before/src/uav_control/uav_control/control/trajectory_tracker_node.py",
+      "sha256": "80d032ff80f9b2246b965a5a8ed53bcec4b2a6ffc517cd3fcefe3ef765534480",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/source_before/src/uav_control/uav_control/control/trajectory_tracking.py",
+      "destination": "source_before/src/uav_control/uav_control/control/trajectory_tracking.py",
+      "sha256": "f1e648ade11a84f284d981eb5a0c18e5f7ffd23729d509ba78c31f3b0b32a27f",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/source_before/src/uav_control/uav_control/mission/mission_manager.py",
+      "destination": "source_before/src/uav_control/uav_control/mission/mission_manager.py",
+      "sha256": "f11d1fcaf4e4f5b1bd88633e85c94c4a7a5a997178f1e64ee7a0315842add4df",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/source_before/src/uav_control/uav_control/mission/mission_manager_node.py",
+      "destination": "source_before/src/uav_control/uav_control/mission/mission_manager_node.py",
+      "sha256": "0ebadf55a252c0711692352563a21206f73882804acf420fbcb42945ecceb0a8",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/source_before/src/uav_usv_bringup/launch/modular_intercept.launch.py",
+      "destination": "source_before/src/uav_usv_bringup/launch/modular_intercept.launch.py",
+      "sha256": "62cde408e1cd9a58790dbf7c4c7d29dd165360827abdc1d80b6c13057832eee8",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run2/source_snapshot/scripts/start_px4_ros2.sh",
+      "destination": "source_after/scripts/start_px4_ros2.sh",
+      "sha256": "c64a3eb0bdba0b7d73369379a73e72777bf1956479e650812bf32138a883dd25",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run2/source_snapshot/src/uav_control/test/test_camera_profile.py",
+      "destination": "source_after/src/uav_control/test/test_camera_profile.py",
+      "sha256": "5dc7e629a73f41d4e41240f63471c5db04096168bf80c107a4693f9aaad41688",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run2/source_snapshot/src/uav_control/test/test_terminal_execution.py",
+      "destination": "source_after/src/uav_control/test/test_terminal_execution.py",
+      "sha256": "243d34f5fbc5a9d93a54ccf589c8ecff8fdc6dbe883f2549e3e71cef947bd69a",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run2/source_snapshot/src/uav_control/test/test_tof_sphere_localization.py",
+      "destination": "source_after/src/uav_control/test/test_tof_sphere_localization.py",
+      "sha256": "ea44b5349bd06a50feea605717944fb302b83b09de44d4a8ba4c80ea824aa984",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run2/source_snapshot/src/uav_control/uav_control/control/trajectory_tracker_node.py",
+      "destination": "source_after/src/uav_control/uav_control/control/trajectory_tracker_node.py",
+      "sha256": "0740b427ecb325e04a039e314f38215c5d014d387dd7e70b0bcda650134ceae1",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run2/source_snapshot/src/uav_control/uav_control/control/trajectory_tracking.py",
+      "destination": "source_after/src/uav_control/uav_control/control/trajectory_tracking.py",
+      "sha256": "5085ea12032b4fae179d21e14f6c47cc1550df1ec77bb16be91d3e0d21c5a221",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run2/source_snapshot/src/uav_control/uav_control/mission/mission_manager.py",
+      "destination": "source_after/src/uav_control/uav_control/mission/mission_manager.py",
+      "sha256": "c7fea2759d347c475e9b4f32439638121c86ffe541f1a4b100142e59a5aea5f1",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run2/source_snapshot/src/uav_control/uav_control/mission/mission_manager_node.py",
+      "destination": "source_after/src/uav_control/uav_control/mission/mission_manager_node.py",
+      "sha256": "0ebadf55a252c0711692352563a21206f73882804acf420fbcb42945ecceb0a8",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run2/source_snapshot/src/uav_control/uav_control/perception/rgbd_target_localizer.py",
+      "destination": "source_after/src/uav_control/uav_control/perception/rgbd_target_localizer.py",
+      "sha256": "6e7261fb11b67b4d88ed3bcfbe21bcb7f30927c105b302358309be3edff89a48",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run2/source_snapshot/src/uav_control/uav_control/perception/tof_depth_model.py",
+      "destination": "source_after/src/uav_control/uav_control/perception/tof_depth_model.py",
+      "sha256": "9d2fe95fc1ba07773c2ec010a8b6ae4810c5f6c845ba4a6dfbfd080ce7d9268c",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run2/source_snapshot/src/uav_control/uav_control/perception/tof_depth_node.py",
+      "destination": "source_after/src/uav_control/uav_control/perception/tof_depth_node.py",
+      "sha256": "ce7777d55c5ca3174305af9691958c6f8e933c15fec97d61918d8bd089eb1864",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run2/source_snapshot/src/uav_control/uav_control/perception/tof_sphere_localization.py",
+      "destination": "source_after/src/uav_control/uav_control/perception/tof_sphere_localization.py",
+      "sha256": "6a994f9b06c1b3cd1d14cb36f57c9522397721ee2e9ab82ddb96da17f93a45f2",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run2/source_snapshot/src/uav_usv_bringup/config/front_tof_simulation.yaml",
+      "destination": "source_after/src/uav_usv_bringup/config/front_tof_simulation.yaml",
+      "sha256": "d74e947e180416a460717447d9bc300a1f60156d8ce04782337da659ce467363",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run2/source_snapshot/src/uav_usv_bringup/config/visual_geometry_diagnostics.yaml",
+      "destination": "source_after/src/uav_usv_bringup/config/visual_geometry_diagnostics.yaml",
+      "sha256": "e53582538abb30bf04afdc7fe27ae3af9d7cc4a95221c32e1697f547cb21db96",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run2/source_snapshot/src/uav_usv_bringup/launch/modular_intercept.launch.py",
+      "destination": "source_after/src/uav_usv_bringup/launch/modular_intercept.launch.py",
+      "sha256": "e60d58881a1d9af34db283b7a2e5bf90a9b0638cf09c543fd82a17a65fd1407f",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/before_run1/raw/modular_intercept_20261007_145227_848420_mission_1.csv",
+      "destination": "before_run1/raw/modular_intercept_20261007_145227_848420_mission_1.csv",
+      "sha256": "178287a2f9f9d6ade15ba35b4645b769accbc4bf70e74ecc8f0b41ec5bce92b5",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/before_run1/raw/modular_intercept_20261007_145227_848420_mission_1_config.yaml",
+      "destination": "before_run1/raw/modular_intercept_20261007_145227_848420_mission_1_config.yaml",
+      "sha256": "c9024fd5dc2440d990dee8ab89d7457f572f6033e85513fb71bd7ed00a4bb929",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/before_run1/raw/modular_intercept_20261007_145227_848420_mission_1_summary.json",
+      "destination": "before_run1/raw/modular_intercept_20261007_145227_848420_mission_1_summary.json",
+      "sha256": "98cadfd1d10560507db577deb9c723cdf832778574a0680eb38e318b85452a3d",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/before_run1/raw/modular_intercept_20261007_145227_848420_mission_1_vision.csv",
+      "destination": "before_run1/raw/modular_intercept_20261007_145227_848420_mission_1_vision.csv",
+      "sha256": "ea67458eb4ea604f76429dac914f5d21424b05e06fe0bdd7c3d50ae86973245c",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/before_run1/analysis/audit.json",
+      "destination": "before_run1/analysis/audit.json",
+      "sha256": "cb40cb5c10f4ea0aa593d5336808f929ebd10e66cb8db486f01759e5fabaab34",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/before_run1/analysis/command_trace.csv",
+      "destination": "before_run1/analysis/command_trace.csv",
+      "sha256": "f251a2e5b4f5e6d5772dbbfd03de5bae40f184532759d53ee6bc81f97ef32b5a",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/before_run1/full_config.yaml",
+      "destination": "before_run1/full_config.yaml",
+      "sha256": "e332192f01a4c3b3a9df04880a124e7acfa4a14a22dc4be9b945fb16cc2e4a43",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/before_run1/mode.txt",
+      "destination": "before_run1/mode.txt",
+      "sha256": "ff2fb9357144c686ead84818feb68c06ec1343079cf4f9d91589255d5d397f4e",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/before_run1/source_fingerprint.json",
+      "destination": "before_run1/source_fingerprint.json",
+      "sha256": "60fbeb254eb206c6fada811ff4b7a1a2696de85516f06984f8f42bb8412e5c79",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/before_run1/probe_summary.json",
+      "destination": "before_run1/probe_summary.json",
+      "sha256": "d7ec33597f7cc330e716c6e201a7de5a1227effc9cc51f7590ac1a1190ababb9",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/before_run1/auto_probe.log",
+      "destination": "before_run1/auto_probe.log",
+      "sha256": "76d4b3274d6339184e03e1d9fd3d8c0b8fdd2f7efd6ab45e74c01dd971a77387",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/before_run1/auto_probe.py",
+      "destination": "before_run1/auto_probe.py",
+      "sha256": "a2b00a19ab44cdafb63321d60d8dc6f99a50e3539f601f9b0877406bc9f7e765",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/before_run1/world_state_1.txt",
+      "destination": "before_run1/world_state_1.txt",
+      "sha256": "8dc76911480689a6fe12c6cbc3f6cd59b00ac7ccad54b34b98914d3e5b5c296f",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/before_run1/world_state_2.txt",
+      "destination": "before_run1/world_state_2.txt",
+      "sha256": "8dc76911480689a6fe12c6cbc3f6cd59b00ac7ccad54b34b98914d3e5b5c296f",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/before_run1/owned_processes_before_cleanup.json",
+      "destination": "before_run1/owned_processes_before_cleanup.json",
+      "sha256": "45e51716e3e7c0bc7a6f0c9b23c3402ffd1be76f9e175becfffd701b4adcee06",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/before_run1/probe.jsonl",
+      "destination": "before_run1/probe.jsonl.gz",
+      "sha256": "072ef7bea2dc703d3e454be43dea1c8d097897ce00b719301403a4357f908492",
+      "transform": "lossless-gzip",
+      "original_sha256": "2714095dd23d812161baae09fe61805ee09b849e2210d0c8254bb7493b09a490",
+      "original_bytes": 14747546
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/before_run2/raw/modular_intercept_20261007_145916_157404_mission_1.csv",
+      "destination": "before_run2/raw/modular_intercept_20261007_145916_157404_mission_1.csv",
+      "sha256": "030a0850f79018ea3776176f07f56712222f09cf200e256784b414bd32a91a4c",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/before_run2/raw/modular_intercept_20261007_145916_157404_mission_1_config.yaml",
+      "destination": "before_run2/raw/modular_intercept_20261007_145916_157404_mission_1_config.yaml",
+      "sha256": "c9024fd5dc2440d990dee8ab89d7457f572f6033e85513fb71bd7ed00a4bb929",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/before_run2/raw/modular_intercept_20261007_145916_157404_mission_1_summary.json",
+      "destination": "before_run2/raw/modular_intercept_20261007_145916_157404_mission_1_summary.json",
+      "sha256": "2d81e5552187068baf9244ce3916d24fff7f0e8722be4f18e0dc0ceeae9b97c1",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/before_run2/raw/modular_intercept_20261007_145916_157404_mission_1_vision.csv",
+      "destination": "before_run2/raw/modular_intercept_20261007_145916_157404_mission_1_vision.csv",
+      "sha256": "0536606639a4e1f586af8be783dbb52142cef193dbacec9fa3cc71e962d248fc",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/before_run2/analysis/audit.json",
+      "destination": "before_run2/analysis/audit.json",
+      "sha256": "d23b1c220ea0fb60eee322c8e5ac5de385895c50d43988c710df9dfc51ca1cb4",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/before_run2/analysis/command_trace.csv",
+      "destination": "before_run2/analysis/command_trace.csv",
+      "sha256": "b996c40be49011fc57b00a6350a16cda788e8cabdabe0f59d49ae3b97af8edc1",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/before_run2/full_config.yaml",
+      "destination": "before_run2/full_config.yaml",
+      "sha256": "e332192f01a4c3b3a9df04880a124e7acfa4a14a22dc4be9b945fb16cc2e4a43",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/before_run2/mode.txt",
+      "destination": "before_run2/mode.txt",
+      "sha256": "2b24265611a34363ee32bad4375b696da1e9f4d9d5ca162f2ceffef5a5792d5c",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/before_run2/source_fingerprint.json",
+      "destination": "before_run2/source_fingerprint.json",
+      "sha256": "60fbeb254eb206c6fada811ff4b7a1a2696de85516f06984f8f42bb8412e5c79",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/before_run2/probe_summary.json",
+      "destination": "before_run2/probe_summary.json",
+      "sha256": "af12d8e4c00e5ecffff66bb29e73d45478ceac78ccdf19151fc4125b51dd3ce0",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/before_run2/auto_probe.log",
+      "destination": "before_run2/auto_probe.log",
+      "sha256": "6caf01c8fd217ad796a894dec472e86dd8e814446fc4fea441d099258e4dad02",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/before_run2/auto_probe.py",
+      "destination": "before_run2/auto_probe.py",
+      "sha256": "c17e939d60bd7dd6e72cd59ba2f550a78491539019c4ac6c6d658adb4fa4355c",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/before_run2/world_state_1.txt",
+      "destination": "before_run2/world_state_1.txt",
+      "sha256": "c2790ad5e53188e882218dda7f61f7e9f364cad28bfb1efceeaf5a12fcb6a507",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/before_run2/world_state_2.txt",
+      "destination": "before_run2/world_state_2.txt",
+      "sha256": "c2790ad5e53188e882218dda7f61f7e9f364cad28bfb1efceeaf5a12fcb6a507",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/before_run2/owned_processes_before_cleanup.json",
+      "destination": "before_run2/owned_processes_before_cleanup.json",
+      "sha256": "95b64fd28c60a834b0eeaec0f15ca43623b81e24992e42168fd3d0beef2f33f1",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/before_run2/probe.jsonl",
+      "destination": "before_run2/probe.jsonl.gz",
+      "sha256": "a6842113e5ca2ef091206e249019adf55166bf6e2cc56dd9fe2276b9099d0407",
+      "transform": "lossless-gzip",
+      "original_sha256": "1f9751ae31ac328c0712bbcca13212b32c7cc65c45e85c518f820e0b5ec4b587",
+      "original_bytes": 14596330
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run1/raw/modular_intercept_20261007_151119_585943_mission_1.csv",
+      "destination": "after_run1/raw/modular_intercept_20261007_151119_585943_mission_1.csv",
+      "sha256": "c589839f1d85e904fa89cf83d6f45ddc9200136253f8ae8532fa3fd659a477a8",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run1/raw/modular_intercept_20261007_151119_585943_mission_1_config.yaml",
+      "destination": "after_run1/raw/modular_intercept_20261007_151119_585943_mission_1_config.yaml",
+      "sha256": "c9024fd5dc2440d990dee8ab89d7457f572f6033e85513fb71bd7ed00a4bb929",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run1/raw/modular_intercept_20261007_151119_585943_mission_1_summary.json",
+      "destination": "after_run1/raw/modular_intercept_20261007_151119_585943_mission_1_summary.json",
+      "sha256": "b8f5463d63afa8b221600e71bf14495a122ebc1ee4acf3defc5778823e58c0bd",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run1/raw/modular_intercept_20261007_151119_585943_mission_1_vision.csv",
+      "destination": "after_run1/raw/modular_intercept_20261007_151119_585943_mission_1_vision.csv",
+      "sha256": "49d474f67c1f3ae8be1ecc982aeda94fc1c9173076a08c6637f9a1c97f3d111d",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run1/analysis/audit.json",
+      "destination": "after_run1/analysis/audit.json",
+      "sha256": "70fd3ab2978a2e2bc51eacf6f6aafd6a7fa216fb3d4ddb43f01f18e2b7c606ab",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run1/analysis/audit.log",
+      "destination": "after_run1/analysis/audit.log",
+      "sha256": "70fd3ab2978a2e2bc51eacf6f6aafd6a7fa216fb3d4ddb43f01f18e2b7c606ab",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run1/analysis/command_trace.csv",
+      "destination": "after_run1/analysis/command_trace.csv",
+      "sha256": "eff89a875243c86a3518072dacc51a85f310b35eb626411e8a627af6f0a4d7e4",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run1/analysis/replan_audit.json",
+      "destination": "after_run1/analysis/replan_audit.json",
+      "sha256": "a134497256d690921352cacbcf0cb425b03f0469dc253e47d4f26209c8b670da",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run1/launcher_logs/dds.pid",
+      "destination": "after_run1/launcher_logs/dds.pid",
+      "sha256": "95275cca8e43bbcd98010c9a4777ae400f47e77b5db9bda4afbce77d531cc884",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run1/launcher_logs/experiment.pid",
+      "destination": "after_run1/launcher_logs/experiment.pid",
+      "sha256": "8ec624ccef5a7806cfc259330554f589dc18f52c854dbeb69d53b24fbd388944",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run1/launcher_logs/gazebo.pid",
+      "destination": "after_run1/launcher_logs/gazebo.pid",
+      "sha256": "aef0339cfab501f21a0e49e26726b3b5f9cf9357a310648843fd2c1536675410",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run1/launcher_logs/magnetometer_enu.config",
+      "destination": "after_run1/launcher_logs/magnetometer_enu.config",
+      "sha256": "71d23e983deb3389bed58a540323f1853c9ddc0176a285bc75d8c1c87499a14e",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run1/launcher_logs/models/x500_mono_cam/model.config",
+      "destination": "after_run1/launcher_logs/models/x500_mono_cam/model.config",
+      "sha256": "d724880d1093db23c9cfebaead55b507ba2f957c1165d434f90ddd77d992b09c",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run1/launcher_logs/models/x500_mono_cam/model.sdf",
+      "destination": "after_run1/launcher_logs/models/x500_mono_cam/model.sdf",
+      "sha256": "f969a679baba39cc532747b93f83ae6beb8fa39e229cbbb6a1fdf4f6f635f618",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run1/launcher_logs/px4.pid",
+      "destination": "after_run1/launcher_logs/px4.pid",
+      "sha256": "cfb5a2ad024c7427089011de59e74dfc20928a4ef4e05d0763beb575d3b14d5d",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run1/launcher_logs/restarting",
+      "destination": "after_run1/launcher_logs/restarting",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run1/full_config.yaml",
+      "destination": "after_run1/full_config.yaml",
+      "sha256": "e332192f01a4c3b3a9df04880a124e7acfa4a14a22dc4be9b945fb16cc2e4a43",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run1/mode.txt",
+      "destination": "after_run1/mode.txt",
+      "sha256": "ff2fb9357144c686ead84818feb68c06ec1343079cf4f9d91589255d5d397f4e",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run1/snapshot_note.txt",
+      "destination": "after_run1/snapshot_note.txt",
+      "sha256": "3be98ea30662c612010a157d176cd1283ef79d9aa8ac4878e5444e803a6d510d",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run1/source_fingerprint.json",
+      "destination": "after_run1/source_fingerprint.json",
+      "sha256": "323cdbb5e032b1b3822be375be3e6c3ff995e95967a7a0ebdcdcaca0f62b53ce",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run1/raw_sources.json",
+      "destination": "after_run1/raw_sources.json",
+      "sha256": "82b4df27f13ed1ac2d7850ce050f93ed74eb3895bba9a7d41be3ca1a9f9e09fc",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run1/probe_summary.json",
+      "destination": "after_run1/probe_summary.json",
+      "sha256": "d8a3fe198607ffe4f0736942bd2a3ebd43c083a5ea9e11a93aba9c56ea1cc70d",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run1/auto_probe.log",
+      "destination": "after_run1/auto_probe.log",
+      "sha256": "2510765d601287c777b223ee93e6788286e8dcbbd5f69a7aa10796b5d8c84b6f",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run1/auto_probe.py",
+      "destination": "after_run1/auto_probe.py",
+      "sha256": "a2b00a19ab44cdafb63321d60d8dc6f99a50e3539f601f9b0877406bc9f7e765",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run1/world_state_1.txt",
+      "destination": "after_run1/world_state_1.txt",
+      "sha256": "bbab0bf82fc57355fbebacc14c8cfbcaacc39819ca630ae6cfc16d7474136d70",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run1/world_state_2.txt",
+      "destination": "after_run1/world_state_2.txt",
+      "sha256": "bbab0bf82fc57355fbebacc14c8cfbcaacc39819ca630ae6cfc16d7474136d70",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run1/owned_processes_before_cleanup.json",
+      "destination": "after_run1/owned_processes_before_cleanup.json",
+      "sha256": "abb6a8b26e20dd4ed6f64d81e4f8f847b6f913f9aa15a7a352a859b72f830df7",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run1/ros_nodes.txt",
+      "destination": "after_run1/ros_nodes.txt",
+      "sha256": "5453d2d24f21c8ded7336f3222817acecc921f16c8311adf6f65a5db9a9d3db6",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run1/ros_topics.txt",
+      "destination": "after_run1/ros_topics.txt",
+      "sha256": "35dafcec0c6c317117e10812010c726cc120dabcb79c7a77cc1d9e0d5f956adc",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run1/truth_topic_endpoints.txt",
+      "destination": "after_run1/truth_topic_endpoints.txt",
+      "sha256": "23cda62e90192e341b9bf8228c2cf552970a11b784b5310e612ea2fd15c40f56",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run1/probe.jsonl",
+      "destination": "after_run1/probe.jsonl.gz",
+      "sha256": "7bedd5d20ba2cf47c27bb2f3adee06e02b0924821bf8eef015784388d38aaa10",
+      "transform": "lossless-gzip",
+      "original_sha256": "5849b8bca99798b39754eb658cbac4ae3b199a54bb2c050c33a85ef643ee190d",
+      "original_bytes": 14663665
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run2/raw/modular_intercept_20261007_151710_496882_mission_1.csv",
+      "destination": "after_run2/raw/modular_intercept_20261007_151710_496882_mission_1.csv",
+      "sha256": "5987e53436fb98a5ff41528e94d9773b311e7bb23b6d30810ffe5b456d1deb6f",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run2/raw/modular_intercept_20261007_151710_496882_mission_1_config.yaml",
+      "destination": "after_run2/raw/modular_intercept_20261007_151710_496882_mission_1_config.yaml",
+      "sha256": "c9024fd5dc2440d990dee8ab89d7457f572f6033e85513fb71bd7ed00a4bb929",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run2/raw/modular_intercept_20261007_151710_496882_mission_1_summary.json",
+      "destination": "after_run2/raw/modular_intercept_20261007_151710_496882_mission_1_summary.json",
+      "sha256": "09e573e42597708a1cadf4b7624b52d6d54288c45dc016ba209fe10304cfe9e0",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run2/raw/modular_intercept_20261007_151710_496882_mission_1_vision.csv",
+      "destination": "after_run2/raw/modular_intercept_20261007_151710_496882_mission_1_vision.csv",
+      "sha256": "e842834e7263997226ea06bcb79ea85230fde9631a0bf75233d8be1db1f400bf",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run2/analysis/audit.json",
+      "destination": "after_run2/analysis/audit.json",
+      "sha256": "f281929902fc84893e8d1349762e1d5790ee0e623a34c86cdbae604c36d57426",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run2/analysis/audit.log",
+      "destination": "after_run2/analysis/audit.log",
+      "sha256": "f281929902fc84893e8d1349762e1d5790ee0e623a34c86cdbae604c36d57426",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run2/analysis/command_trace.csv",
+      "destination": "after_run2/analysis/command_trace.csv",
+      "sha256": "10574e5e9645edf8735623cc5794be3ac59684a21e1d9b879f9e7ae178f367f8",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run2/analysis/replan_audit.json",
+      "destination": "after_run2/analysis/replan_audit.json",
+      "sha256": "770391cb7d715747a69cd43cee943148e7c4e05577fdba5d4ae72e47b1984555",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run2/analysis/replan_audit.log",
+      "destination": "after_run2/analysis/replan_audit.log",
+      "sha256": "770391cb7d715747a69cd43cee943148e7c4e05577fdba5d4ae72e47b1984555",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run2/launcher_logs/dds.pid",
+      "destination": "after_run2/launcher_logs/dds.pid",
+      "sha256": "84599f51e4a0530ac1272fc80f60f21c998aa2b85d29cdb7b2db38ab4673ac69",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run2/launcher_logs/experiment.pid",
+      "destination": "after_run2/launcher_logs/experiment.pid",
+      "sha256": "a3c0f0bdf407fdd126ad42a8495d47c95204ea866c3f749a3683f15285b76436",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run2/launcher_logs/gazebo.pid",
+      "destination": "after_run2/launcher_logs/gazebo.pid",
+      "sha256": "482763e972885d808577c4dca41f99ec199b62f24b9995a8052553a2deb6742b",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run2/launcher_logs/magnetometer_enu.config",
+      "destination": "after_run2/launcher_logs/magnetometer_enu.config",
+      "sha256": "71d23e983deb3389bed58a540323f1853c9ddc0176a285bc75d8c1c87499a14e",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run2/launcher_logs/models/x500_mono_cam/model.config",
+      "destination": "after_run2/launcher_logs/models/x500_mono_cam/model.config",
+      "sha256": "d724880d1093db23c9cfebaead55b507ba2f957c1165d434f90ddd77d992b09c",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run2/launcher_logs/models/x500_mono_cam/model.sdf",
+      "destination": "after_run2/launcher_logs/models/x500_mono_cam/model.sdf",
+      "sha256": "f969a679baba39cc532747b93f83ae6beb8fa39e229cbbb6a1fdf4f6f635f618",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run2/launcher_logs/px4.pid",
+      "destination": "after_run2/launcher_logs/px4.pid",
+      "sha256": "fa8e647b39f7a068137401ad20a191e2f6c767999fc7f4b50f3ccb7bec0e65f6",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run2/launcher_logs/restarting",
+      "destination": "after_run2/launcher_logs/restarting",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run2/full_config.yaml",
+      "destination": "after_run2/full_config.yaml",
+      "sha256": "e332192f01a4c3b3a9df04880a124e7acfa4a14a22dc4be9b945fb16cc2e4a43",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run2/mode.txt",
+      "destination": "after_run2/mode.txt",
+      "sha256": "ff2fb9357144c686ead84818feb68c06ec1343079cf4f9d91589255d5d397f4e",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run2/snapshot_note.txt",
+      "destination": "after_run2/snapshot_note.txt",
+      "sha256": "d42ebb31984f2eea8ccdc7de379645866d7702886502e465a10e2e52a30bcbdf",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run2/source_fingerprint.json",
+      "destination": "after_run2/source_fingerprint.json",
+      "sha256": "323cdbb5e032b1b3822be375be3e6c3ff995e95967a7a0ebdcdcaca0f62b53ce",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run2/raw_sources.json",
+      "destination": "after_run2/raw_sources.json",
+      "sha256": "939153793da2dd86525449dd22e001b0960b3383d95423dc0e20bc374bff139c",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run2/probe_summary.json",
+      "destination": "after_run2/probe_summary.json",
+      "sha256": "b4a93a964a13bee23a4ce2d92372f630b8b00457be209ec10dc89ee5671e65d9",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run2/auto_probe.log",
+      "destination": "after_run2/auto_probe.log",
+      "sha256": "c26b7e807650e0b3ea5a3068fa713146ffd904cb819bbbb02a4edfa5f83d9f39",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run2/auto_probe.py",
+      "destination": "after_run2/auto_probe.py",
+      "sha256": "a2b00a19ab44cdafb63321d60d8dc6f99a50e3539f601f9b0877406bc9f7e765",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run2/world_state_1.txt",
+      "destination": "after_run2/world_state_1.txt",
+      "sha256": "276d5ab07b55fc524abe8198770de35c4a492928aba1bf8001b5086d57fdf027",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run2/world_state_2.txt",
+      "destination": "after_run2/world_state_2.txt",
+      "sha256": "276d5ab07b55fc524abe8198770de35c4a492928aba1bf8001b5086d57fdf027",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run2/owned_processes_before_cleanup.json",
+      "destination": "after_run2/owned_processes_before_cleanup.json",
+      "sha256": "58d576366fc3d82ad8ea18a0c0778c0801c205bbdc84a508943393fffe6d40b7",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/after_run2/probe.jsonl",
+      "destination": "after_run2/probe.jsonl.gz",
+      "sha256": "e0f738c876aaaaa3b2d9287dabf0aa2928313cf1a65a0c9f4e4ab68946a91fc9",
+      "transform": "lossless-gzip",
+      "original_sha256": "95da96b54169c31462767c79606b88bbdd780b5a66c776e957f9d379036a7e45",
+      "original_bytes": 14571520
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/final_static/20261006_pre_mpc_sha256.log",
+      "destination": "checks/20261006_pre_mpc_sha256.log",
+      "sha256": "708ac8b63b29dba34f6e3d65a5f478fdbab122b8e78760ceca77287776bd645c",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/final_static/20261007_front_tof_fit_heave015_audit_sha256.log",
+      "destination": "checks/20261007_front_tof_fit_heave015_audit_sha256.log",
+      "sha256": "4347da7df3dddc903f6b5c41fe3a301827d284b40a1d4c658d4f49344ddf49b6",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/final_static/20261007_front_tof_heave015_audit_sha256.log",
+      "destination": "checks/20261007_front_tof_heave015_audit_sha256.log",
+      "sha256": "df224dbcd395a9c02684d9e001f67130a717a134f06cc6da0c6b0453bf2f60b2",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/final_static/protection_checks.json",
+      "destination": "checks/protection_checks.json",
+      "sha256": "d21789bb6aec10bd157b79484b3c33a1c07b9640f7f9d8cb22812d0c6ea973e0",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/final_static/shell_checks.json",
+      "destination": "checks/shell_checks.json",
+      "sha256": "855b7ea2a61dcec07050df4c331697f2c6f194fd3bde1a185aaf8c3a43ce0dcf",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/tmp/uav_usv_terminal_execution_20261007/rgbd_replan_pytest.log",
+      "destination": "checks/rgbd_replan_pytest.log",
+      "sha256": "8fc40a09c0904959c08df5481aa33542fc1f6032f0f2ff6da5899398ae9405d4",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/tmp/uav_usv_terminal_execution_20261007/rgbd_replan_flake8.log",
+      "destination": "checks/rgbd_replan_flake8.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/tmp/uav_usv_terminal_execution_20261007/rgbd_replan_build.log",
+      "destination": "checks/rgbd_replan_build.log",
+      "sha256": "a4fbc39117fead1ade4417035fa3f8ac3a1ad990d99f86c0bc1dc5d428ece76d",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/tmp/uav_usv_terminal_execution_20261007/rgbd_replan_green.log",
+      "destination": "checks/rgbd_replan_green.log",
+      "sha256": "695f2d434b611714bb5afc7ab94401ed1be6a97d92adf4ae86748680343f44c5",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/tmp/uav_usv_terminal_execution_20261007/rgbd_default_red.log",
+      "destination": "checks/rgbd_default_red.log",
+      "sha256": "5cb1a056dcdddb92d24c0cc532a347c9e5ad296ce0e639f009d03b243d936d7c",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/tmp/uav_usv_terminal_execution_20261007/rgbd_default_green.log",
+      "destination": "checks/rgbd_default_green.log",
+      "sha256": "4c78d91fecebd9ff2601366b209fedef5a34c74b72f29aadd727b0d4e4957970",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/tmp/uav_usv_terminal_execution_20261007/rgbd_replan_red.log",
+      "destination": "checks/rgbd_replan_red.log",
+      "sha256": "37e66c83c6a760ca86646081bb0141e24beb3a85c77d8619bf0e8e48f2428820",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/tmp/uav_usv_terminal_execution_20261007/rgbd_zero_xy_red.log",
+      "destination": "checks/rgbd_zero_xy_red.log",
+      "sha256": "146f24a91e9acaff9e77491bd2122fe489fe2d0411bbcbda7cd0094b9d1648e4",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/tmp/uav_usv_terminal_execution_20261007/rgbd_control_epoch_red.log",
+      "destination": "checks/rgbd_control_epoch_red.log",
+      "sha256": "4d7e9e5c56d2c906c8d752a94e21704464a4cb3e48be6921e0be64aa18d09443",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/terminal_execution_20261007/analyze_run.py",
+      "destination": "tools/analyze_run.py",
+      "sha256": "69086bee86c177fa716aae293ff8aad7300e8af9ac30a78f6b06d81d283d47b1",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/audit_replans.py",
+      "destination": "tools/audit_replans.py",
+      "sha256": "c92f969be3ec59e69a832009dfae5e1f2f20a3d9e3e3e75909aa6ed50b9a2404",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/baseline.yaml",
+      "destination": "config/baseline.yaml",
+      "sha256": "e332192f01a4c3b3a9df04880a124e7acfa4a14a22dc4be9b945fb16cc2e4a43",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/visual_geometry_diagnostics.yaml",
+      "destination": "config/visual_geometry_diagnostics.yaml",
+      "sha256": "e53582538abb30bf04afdc7fe27ae3af9d7cc4a95221c32e1697f547cb21db96",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/front_tof_simulation.yaml",
+      "destination": "config/front_tof_simulation.yaml",
+      "sha256": "d74e947e180416a460717447d9bc300a1f60156d8ce04782337da659ce467363",
+      "transform": "byte-preserving-copy"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/current/rgbd_terminal_20261007/final_static/independent_review.md",
+      "destination": "checks/independent_review.md",
+      "sha256": "e7c5ba545e0f79a7d03d692facefac1afca1a58b9cef289e9fe7d9d8e3af8e63",
+      "transform": "byte-preserving-copy"
+    }
+  ]
+}

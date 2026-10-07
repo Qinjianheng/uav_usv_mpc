@@ -1,0 +1,15 @@
+{
+  "copied_inputs": 148,
+  "lossless_gzip_payload_sha256": true,
+  "recomputed_runs": [
+    "after_run1",
+    "after_run2"
+  ],
+  "json_values_identical": [
+    "audit.json",
+    "replan_audit.json"
+  ],
+  "csv_bytes_identical": [
+    "command_trace.csv"
+  ]
+}

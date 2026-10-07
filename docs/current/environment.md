@@ -28,7 +28,7 @@ cd /home/qin/data/uav_usv_mpc
 
 启动器使用新仓库路径，并打开 Gazebo、PX4、DDS 和实验终端。X 同步启动 UAV 起飞/USV 运动；视觉锁定 FOLLOW 后发送 Y。成功后现有评价器暂停 Gazebo 并冻结目标。R 通过启动器恢复干净会话；Q 只关闭指令控制台，其他终端仍运行。
 
-当前默认前视 ToF、下视关闭、目标升沉 0.15 m。物理传感器开关需要重启完整仿真；详细配置与恢复见 [相机文档](camera_simulation.md)。
+当前默认前视 RGB-D、下视关闭、目标升沉 0.15 m。ToF 暂停使用，代码保留。物理传感器开关需要重启完整仿真；详细配置与切换见 [相机文档](camera_simulation.md)。
 
 已有 PX4/Gazebo/DDS 会话时只启动 ROS 图可用：
 
@@ -57,4 +57,4 @@ bash -n scripts/sync_github.sh
 git diff --check
 ```
 
-全部项目 shell 文件也已逐个做语法检查；完整实际输出见 [交付记录](repository_cleanup.md)。本轮构建/静态验证不新增飞行实验，三次飞行成功证据来自冻结基线。
+仓库整理时的输出见 [交付记录](repository_cleanup.md)。后续 RGB-D/控制修改及新增仿真实际检查见 [当前验证](terminal_replan_rgbd_20261007.md)，不能将原 0.05 m 冻结成功直接作为当前 0.15 m 场景的验收。

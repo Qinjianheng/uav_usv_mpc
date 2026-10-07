@@ -1,14 +1,16 @@
-# 前视 ToF 与 0.15 m 升沉场景
+# 前视 RGB-D、保留的 ToF 与 0.15 m 升沉场景
 
-**带噪球面定位已适配，但第一次闭环复验仍超时；当前任务尚未验收。定位精度与未接触即减速的记录见 [复验报告](tof_fit_validation_20261007.md)。**
+**当前按用户要求暂用前视 RGB-D（理想深度），ToF 实现和配置保留。末端重新验收修复及当前结果见 [RGB-D 验证](terminal_replan_rgbd_20261007.md)；早期带噪定位的失败记录见 [ToF 复验](tof_fit_validation_20261007.md)。**
 
-2026-10-07 按用户要求，默认感知输入为前视 RGB + ToF 功能仿真，下视传感器暂时关闭。RGB 用于现有红球检测，ToF 深度用于定位；不是增加独立的第二台 RGB 相机。现有 BCTRA/MINCO/tracker 速度控制保持，MPC 尚未实现。
+2026-10-07 按用户最新要求，默认感知输入为前视 RGB-D，下视传感器暂时关闭。RGB 用于现有红球检测，渲染深度用于定位；切换 ToF 时才启用测距误差模型。现有 BCTRA/MINCO/tracker 框架保持，MPC 尚未实现。
 
 当前 [baseline.yaml](../../src/uav_usv_bringup/config/baseline.yaml) 的目标升沉幅值为 **0.15 m**，峰峰值 0.30 m；频率仍为 0.25 Hz，周期 4 s。几何诊断配置同步使用该幅值。冻结的 [20261006_pre_mpc](../../data/baselines/20261006_pre_mpc/README.md) 仍为 0.05 m / 理想 RGB-D 成功基线，不能将它的成功直接视为当前场景结果。捕获半径、海面保护、KF Q/R 和控制参数不变。
 
 ## 感知链路
 
-Gazebo 前视 RGB-D 渲染 → RGB 桥 + 理想深度桥 → ToF 测距误差模型 → 理想/带噪分模式的 RGB-D localizer → KF → 原预测/规划/控制。
+默认：Gazebo 前视 RGB-D 渲染 → 图像/深度桥 → 原理想深度 localizer → KF → 原预测/规划/控制。
+
+可选 ToF：RGB-D 渲染 → RGB 桥 + 理想深度桥 → ToF 测距误差模型 → 带噪球面 localizer → KF → 同一预测/规划/控制。以下带噪深度话题和参数只描述显式启用的 ToF 模式。
 
 - RGB：`/camera/front/image_raw`。
 - 渲染器理想深度：`/camera/front/depth/ideal`，仅作 ToF 模型输入。
@@ -36,6 +38,12 @@ cd /home/qin/data/uav_usv_mpc
 ```
 
 完整重新启动后生效；已有 Gazebo 中的传感器不会因 ROS launch 开关自动删除。仅直接 launch 会关闭下视桥与诊断，但物理 sensor 是否存在取决于已加载模型。
+
+显式恢复仅前视 ToF 功能仿真：
+
+```bash
+UAV_USV_FRONT_DEPTH_MODEL=tof ./scripts/uav_lab.sh --no-build
+```
 
 恢复双相机理想深度模式（仍为当前 0.15 m 场景）：
 

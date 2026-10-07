@@ -1,0 +1,70 @@
+{
+  "accepted": [
+    {
+      "elapsed": 9.609599351882935,
+      "plan_id": 41,
+      "previous_execution_status": null,
+      "previous_plan_id": null,
+      "contact_shift": null,
+      "locked": true,
+      "observation_age": 0.0770559310913086,
+      "prediction_age": 0.0770559310913086,
+      "remaining": 1.4660077095031738,
+      "continuity_position": 0.0,
+      "continuity_velocity": 0.0,
+      "continuity_acceleration": 0.0
+    },
+    {
+      "elapsed": 9.883970260620117,
+      "plan_id": 42,
+      "previous_execution_status": "TRACKING",
+      "previous_plan_id": 41,
+      "contact_shift": 0.0,
+      "locked": true,
+      "observation_age": 0.05141806602478027,
+      "prediction_age": 0.05141806602478027,
+      "remaining": 1.1916368007659912,
+      "continuity_position": 1.6100649503656327e-06,
+      "continuity_velocity": 0.0002743418654163212,
+      "continuity_acceleration": 0.030973518528202643
+    },
+    {
+      "elapsed": 10.024403095245361,
+      "plan_id": 43,
+      "previous_execution_status": "TRACKING",
+      "previous_plan_id": 42,
+      "contact_shift": 0.0,
+      "locked": true,
+      "observation_age": 0.03984403610229492,
+      "prediction_age": 0.0918426513671875,
+      "remaining": 1.051203966140747,
+      "continuity_position": 1.953972841005594e-07,
+      "continuity_velocity": 9.735097564564994e-05,
+      "continuity_acceleration": 0.03225324544698137
+    }
+  ],
+  "rejected": [
+    {
+      "elapsed": 10.12421703338623,
+      "active_plan_id": 43,
+      "candidate_plan_id": 44,
+      "reason": "STATE_POSITION_MISMATCH",
+      "trajectory_replaced": false
+    },
+    {
+      "elapsed": 10.283515691757202,
+      "active_plan_id": 43,
+      "candidate_plan_id": 45,
+      "reason": "STATE_POSITION_MISMATCH",
+      "trajectory_replaced": false
+    },
+    {
+      "elapsed": 10.407995462417603,
+      "active_plan_id": 43,
+      "candidate_plan_id": 46,
+      "reason": "STATE_POSITION_MISMATCH",
+      "trajectory_replaced": false
+    }
+  ],
+  "accepted_during_commitment": []
+}
