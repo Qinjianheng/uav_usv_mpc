@@ -1,0 +1,31 @@
+1791339548.6553288 [INFO] [launch]: All log files can be found below /tmp/uav_usv_camera_20261007/run2_roslogs/2026-10-07-10-19-08-654633-qin-GLO-FX6-46452
+1791339548.6554279 [INFO] [launch]: Default logging verbosity is set to INFO
+1791339548.7023892 [INFO] [moving_target-1]: process started with pid [46453]
+1791339548.7026350 [INFO] [target_predictor_node-2]: process started with pid [46455]
+1791339548.7027643 [INFO] [target_predictor_node-3]: process started with pid [46457]
+1791339548.7028782 [INFO] [intercept_planner_node-4]: process started with pid [46459]
+1791339548.7029781 [INFO] [trajectory_tracker_node-5]: process started with pid [46461]
+1791339548.7030809 [INFO] [mission_manager_node-6]: process started with pid [46463]
+1791339548.7031808 [INFO] [intercept_evaluator_node-7]: process started with pid [46465]
+1791339548.7032783 [INFO] [target_kalman_filter-8]: process started with pid [46467]
+1791339548.7033718 [INFO] [image_bridge-9]: process started with pid [46469]
+1791339548.7034640 [INFO] [tof_depth_node-10]: process started with pid [46471]
+1791339548.7035897 [INFO] [target_bearing_node-11]: process started with pid [46473]
+1791339548.7037110 [INFO] [front_tof_monitor-12]: process started with pid [46475]
+1791339548.7038233 [INFO] [rgbd_target_localizer-13]: process started with pid [46477]
+1791339548.7040293 [INFO] [dual_tof_selector-14]: process started with pid [46479]
+1791339636.5877671 [WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+1791339636.7259934 [INFO] [image_bridge-9]: process has finished cleanly [pid 46469]
+1791339636.7791038 [INFO] [target_predictor_node-2]: process has finished cleanly [pid 46455]
+1791339636.7883620 [INFO] [target_kalman_filter-8]: process has finished cleanly [pid 46467]
+1791339636.8015997 [INFO] [target_predictor_node-3]: process has finished cleanly [pid 46457]
+1791339636.8046839 [INFO] [dual_tof_selector-14]: process has finished cleanly [pid 46479]
+1791339636.8201070 [INFO] [moving_target-1]: process has finished cleanly [pid 46453]
+1791339636.8341174 [INFO] [intercept_planner_node-4]: process has finished cleanly [pid 46459]
+1791339636.8391318 [INFO] [rgbd_target_localizer-13]: process has finished cleanly [pid 46477]
+1791339636.8438220 [ERROR] [mission_manager_node-6]: process has died [pid 46463, exit code 1, cmd '/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/mission_manager_node --ros-args -r __node:=mission_manager_node --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/visual_geometry_diagnostics.yaml'].
+1791339636.8634186 [ERROR] [tof_depth_node-10]: process has died [pid 46471, exit code 1, cmd '/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/tof_depth_node --ros-args -r __node:=front_tof_depth_model --params-file /home/qin/data/uav_usv_mpc/install/uav_usv_bringup/share/uav_usv_bringup/config/front_tof_simulation.yaml'].
+1791339636.8672369 [ERROR] [trajectory_tracker_node-5]: process has died [pid 46461, exit code 1, cmd '/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/trajectory_tracker_node --ros-args -r __node:=trajectory_tracker_node --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/visual_geometry_diagnostics.yaml'].
+1791339636.8872027 [ERROR] [target_bearing_node-11]: process has died [pid 46473, exit code 1, cmd '/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/target_bearing_node --ros-args -r __node:=target_bearing_node --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/visual_geometry_diagnostics.yaml'].
+1791339636.8874075 [INFO] [front_tof_monitor-12]: process has finished cleanly [pid 46475]
+1791339636.8903024 [ERROR] [intercept_evaluator_node-7]: process has died [pid 46465, exit code 1, cmd '/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/intercept_evaluator_node --ros-args -r __node:=intercept_evaluator_node --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/visual_geometry_diagnostics.yaml --params-file /tmp/launch_params_tzmk9oc1'].

@@ -1,10 +1,12 @@
 # 当前架构与控制边界
 
+当前默认只有前视 RGB + 功能 ToF 输入，下视关闭；升沉幅值 0.15 m。传感器模型的假设、真机边界和恢复步骤见 [相机文档](camera_simulation.md)。
+
 当前统一入口为 [modular_intercept.launch.py](../../src/uav_usv_bringup/launch/modular_intercept.launch.py)，参数为 [baseline.yaml](../../src/uav_usv_bringup/config/baseline.yaml)。它使用多个进程隔离感知、预测、规划、跟踪、任务和评价，tracker 是 PX4 指令的唯一在线发布者。
 
 ```mermaid
 flowchart LR
-  Camera[前视 RGB-D / 图像采集戳] --> Localizer[RGB-D 定位 / NED]
+  Camera[前视 RGB + 功能 ToF / 图像采集戳] --> Localizer[RGB-D 定位 / NED]
   Localizer --> KF[恒速度 KF]
   KF --> Predictor[BCTRA 目标预测]
   Predictor --> Planner[MINCO 有限时域规划]

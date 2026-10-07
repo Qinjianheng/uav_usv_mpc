@@ -60,10 +60,15 @@ class MissionManagerCore:
         self.recovery_started_at = None
         self.last_transition_time = 0.0
         self.target_locked = False
+        self.terminal_execution_deadline = None
+        self.terminal_execution_plan_id = 0
 
     def _transition(self, phase, now):
         changed = self.phase != MissionPhase(phase)
         self.phase = MissionPhase(phase)
+        if self.phase != MissionPhase.TERMINAL_MINCO:
+            self.terminal_execution_deadline = None
+            self.terminal_execution_plan_id = 0
         if changed:
             self.last_transition_time = float(now)
         return changed
@@ -128,7 +133,8 @@ class MissionManagerCore:
         self._transition(MissionPhase.FOLLOW, now)
         return True
 
-    def observe_visibility(self, mission_id, state, locked, now):
+    def observe_visibility(self, mission_id, state, locked, now,
+                           execution_deadline=None, execution_plan_id=0):
         """Consume only the command owner's visual/safety decision."""
         if int(mission_id) != self.mission_id or self.completed:
             return False
@@ -136,6 +142,23 @@ class MissionManagerCore:
                           MissionPhase.TAKEOFF):
             return False
         self.target_locked = bool(locked)
+        if state == 'TERMINAL_COMMITTED':
+            if (self.phase != MissionPhase.TERMINAL_MINCO
+                    or not self.intercept_requested
+                    or execution_plan_id <= 0
+                    or execution_plan_id != self.active_plan_id
+                    or execution_deadline is None
+                    or not math.isfinite(execution_deadline)
+                    or not now < execution_deadline <= now + .7 + 1e-9):
+                self.active_plan_id = 0
+                return self._transition(MissionPhase.SAFE_RECOVERY, now)
+            if self.terminal_execution_deadline is None:
+                self.terminal_execution_deadline = execution_deadline
+                self.terminal_execution_plan_id = execution_plan_id
+            else:
+                self.terminal_execution_deadline = min(
+                    self.terminal_execution_deadline, execution_deadline)
+            return False
         if self.phase == MissionPhase.FOLLOW:
             if self.intercept_requested and locked:
                 return self._transition(MissionPhase.FAR_GUIDANCE, now)
@@ -228,6 +251,11 @@ class MissionManagerCore:
     def tick(self, now, far_guidance_available=False):
         """Advance transient and timeout-driven recoverable phases."""
         now = float(now)
+        if (self.terminal_execution_deadline is not None
+                and now >= self.terminal_execution_deadline):
+            self.active_plan_id = 0
+            self._transition(MissionPhase.SAFE_RECOVERY, now)
+            return self.phase
         if (
             self.phase == MissionPhase.TARGET_LOCK
             and self.target_locked

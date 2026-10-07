@@ -1,0 +1,1164 @@
+ambient {
+  r: 0.35
+  g: 0.45
+  b: 0.55
+  a: 1
+}
+background {
+  r: 0.45
+  g: 0.68
+  b: 0.9
+  a: 1
+}
+shadows: true
+model {
+  name: "ocean_surface"
+  id: 4
+  pose {
+    position {
+      z: -0.02
+    }
+    orientation {
+      w: 1
+    }
+  }
+  link {
+    id: 5
+    name: "surface_link"
+    pose {
+      position {
+      }
+      orientation {
+        w: 1
+      }
+    }
+    visual {
+      name: "ocean_visual"
+      id: 6
+      parent_id: 5
+      pose {
+        position {
+        }
+        orientation {
+          w: 1
+        }
+      }
+      geometry {
+        type: PLANE
+        plane {
+          normal {
+            z: 1
+          }
+          size {
+            x: 500
+            y: 500
+          }
+        }
+      }
+      material {
+        ambient {
+          r: 0.02
+          g: 0.12
+          b: 0.22
+          a: 1
+        }
+        diffuse {
+          r: 0.03
+          g: 0.28
+          b: 0.5
+          a: 1
+        }
+        specular {
+          r: 0.8
+          g: 0.85
+          b: 0.95
+          a: 1
+        }
+        emissive {
+          a: 1
+        }
+        lighting: true
+        shininess: 80
+      }
+    }
+  }
+}
+model {
+  name: "takeoff_platform"
+  id: 7
+  pose {
+    position {
+      z: -0.05
+    }
+    orientation {
+      w: 1
+    }
+  }
+  link {
+    id: 8
+    name: "platform_link"
+    pose {
+      position {
+      }
+      orientation {
+        w: 1
+      }
+    }
+    visual {
+      name: "platform_visual"
+      id: 9
+      parent_id: 8
+      cast_shadows: true
+      pose {
+        position {
+        }
+        orientation {
+          w: 1
+        }
+      }
+      geometry {
+        box {
+          size {
+            x: 3
+            y: 3
+            z: 0.1
+          }
+        }
+      }
+      material {
+        ambient {
+          r: 0.18
+          g: 0.18
+          b: 0.2
+          a: 1
+        }
+        diffuse {
+          r: 0.28
+          g: 0.28
+          b: 0.32
+          a: 1
+        }
+        specular {
+          r: 0.1
+          g: 0.1
+          b: 0.1
+          a: 1
+        }
+        emissive {
+          a: 1
+        }
+        lighting: true
+      }
+    }
+  }
+}
+model {
+  name: "x500_mono_cam_0"
+  id: 13
+  pose {
+    position {
+      x: -1.1550354865056224e-21
+      y: -3.2995828291803093e-21
+      z: -0.00015680000000001248
+    }
+    orientation {
+      x: -3.3646066248976244e-21
+      y: 6.6839851106704083e-21
+      z: 0.70710678118481629
+      w: 0.70710678118827874
+    }
+  }
+  link {
+    id: 14
+    name: "base_link"
+    pose {
+      position {
+        z: 0.24
+      }
+      orientation {
+        w: 1
+      }
+    }
+    visual {
+      name: "base_link_visual"
+      id: 15
+      parent_id: 14
+      cast_shadows: true
+      pose {
+        position {
+          z: 0.025
+        }
+        orientation {
+          z: 1
+          w: -2.0510342851533115e-10
+        }
+      }
+      geometry {
+        type: MESH
+        mesh {
+          filename: "model://x500_base/meshes/NXP-HGD-CF.dae"
+          scale {
+            x: 1
+            y: 1
+            z: 1
+          }
+        }
+      }
+    }
+    visual {
+      name: "5010_motor_base_0"
+      id: 16
+      parent_id: 14
+      cast_shadows: true
+      pose {
+        position {
+          x: 0.174
+          y: 0.174
+          z: 0.032
+        }
+        orientation {
+          z: -0.22310636213174545
+          w: 0.97479410706894332
+        }
+      }
+      geometry {
+        type: MESH
+        mesh {
+          filename: "model://x500_base/meshes/5010Base.dae"
+          scale {
+            x: 1
+            y: 1
+            z: 1
+          }
+        }
+      }
+    }
+    visual {
+      name: "5010_motor_base_1"
+      id: 17
+      parent_id: 14
+      cast_shadows: true
+      pose {
+        position {
+          x: -0.174
+          y: 0.174
+          z: 0.032
+        }
+        orientation {
+          z: -0.22310636213174545
+          w: 0.97479410706894332
+        }
+      }
+      geometry {
+        type: MESH
+        mesh {
+          filename: "model://x500_base/meshes/5010Base.dae"
+          scale {
+            x: 1
+            y: 1
+            z: 1
+          }
+        }
+      }
+    }
+    visual {
+      name: "5010_motor_base_2"
+      id: 18
+      parent_id: 14
+      cast_shadows: true
+      pose {
+        position {
+          x: 0.174
+          y: -0.174
+          z: 0.032
+        }
+        orientation {
+          z: -0.22310636213174545
+          w: 0.97479410706894332
+        }
+      }
+      geometry {
+        type: MESH
+        mesh {
+          filename: "model://x500_base/meshes/5010Base.dae"
+          scale {
+            x: 1
+            y: 1
+            z: 1
+          }
+        }
+      }
+    }
+    visual {
+      name: "5010_motor_base_3"
+      id: 19
+      parent_id: 14
+      cast_shadows: true
+      pose {
+        position {
+          x: -0.174
+          y: -0.174
+          z: 0.032
+        }
+        orientation {
+          z: -0.22310636213174545
+          w: 0.97479410706894332
+        }
+      }
+      geometry {
+        type: MESH
+        mesh {
+          filename: "model://x500_base/meshes/5010Base.dae"
+          scale {
+            x: 1
+            y: 1
+            z: 1
+          }
+        }
+      }
+    }
+    visual {
+      name: "NXP_FMUK66_FRONT"
+      id: 20
+      parent_id: 14
+      pose {
+        position {
+          x: 0.047
+          y: 0.001
+          z: 0.043
+        }
+        orientation {
+          x: 0.33914000194777966
+          y: 0.33887004315045344
+          z: 0.62029745324307373
+          w: 0.62079160950694778
+        }
+      }
+      geometry {
+        type: PLANE
+        plane {
+          normal {
+            z: 1
+          }
+          size {
+            x: 0.013
+            y: 0.007
+          }
+        }
+      }
+      material {
+        ambient {
+          a: 1
+        }
+        diffuse {
+          r: 1
+          g: 1
+          b: 1
+          a: 1
+        }
+        specular {
+          r: 1
+          g: 1
+          b: 1
+          a: 1
+        }
+        emissive {
+          a: 1
+        }
+        lighting: true
+        pbr {
+          type: METAL
+          albedo_map: "model://x500_base/materials/textures/nxp.png"
+          metalness: 0.5
+          roughness: 0.5
+        }
+      }
+    }
+    visual {
+      name: "NXP_FMUK66_TOP"
+      id: 21
+      parent_id: 14
+      pose {
+        position {
+          x: -0.023
+          z: 0.0515
+        }
+        orientation {
+          z: -0.706825181105366
+          w: 0.70738826916719977
+        }
+      }
+      geometry {
+        type: PLANE
+        plane {
+          normal {
+            z: 1
+          }
+          size {
+            x: 0.013
+            y: 0.007
+          }
+        }
+      }
+      material {
+        ambient {
+          a: 1
+        }
+        diffuse {
+          r: 1
+          g: 1
+          b: 1
+          a: 1
+        }
+        specular {
+          r: 1
+          g: 1
+          b: 1
+          a: 1
+        }
+        emissive {
+          a: 1
+        }
+        lighting: true
+        pbr {
+          type: METAL
+          albedo_map: "model://x500_base/materials/textures/nxp.png"
+          metalness: 0.5
+          roughness: 0.5
+        }
+      }
+    }
+    visual {
+      name: "RDDRONE_FMUK66_TOP"
+      id: 22
+      parent_id: 14
+      pose {
+        position {
+          x: -0.03
+          z: 0.0515
+        }
+        orientation {
+          z: -0.706825181105366
+          w: 0.70738826916719977
+        }
+      }
+      geometry {
+        type: PLANE
+        plane {
+          normal {
+            z: 1
+          }
+          size {
+            x: 0.032
+            y: 0.0034
+          }
+        }
+      }
+      material {
+        ambient {
+          a: 1
+        }
+        diffuse {
+          r: 1
+          g: 1
+          b: 1
+          a: 1
+        }
+        specular {
+          r: 1
+          g: 1
+          b: 1
+          a: 1
+        }
+        emissive {
+          a: 1
+        }
+        lighting: true
+        pbr {
+          type: METAL
+          albedo_map: "model://x500_base/materials/textures/rd.png"
+          metalness: 0.5
+          roughness: 0.5
+        }
+      }
+    }
+    sensor {
+      name: "air_pressure_sensor"
+      id: 28
+      parent_id: 14
+      type: "air_pressure"
+      pose {
+        position {
+        }
+        orientation {
+          w: 1
+        }
+      }
+    }
+    sensor {
+      name: "magnetometer_sensor"
+      id: 29
+      parent_id: 14
+      pose {
+        position {
+        }
+        orientation {
+          w: 1
+        }
+      }
+    }
+    sensor {
+      name: "imu_sensor"
+      id: 30
+      parent_id: 14
+      type: "imu"
+      pose {
+        position {
+        }
+        orientation {
+          w: 1
+        }
+      }
+      imu {
+        angular_velocity {
+          x_noise {
+            type: GAUSSIAN
+            stddev: 0.0008726646
+          }
+          y_noise {
+            type: GAUSSIAN
+            stddev: 0.0008726646
+          }
+          z_noise {
+            type: GAUSSIAN
+            stddev: 0.0008726646
+          }
+        }
+        linear_acceleration {
+          x_noise {
+            type: GAUSSIAN
+            stddev: 0.00637
+          }
+          y_noise {
+            type: GAUSSIAN
+            stddev: 0.00637
+          }
+          z_noise {
+            type: GAUSSIAN
+            stddev: 0.00686
+          }
+        }
+      }
+    }
+    sensor {
+      name: "navsat_sensor"
+      id: 31
+      parent_id: 14
+      pose {
+        position {
+        }
+        orientation {
+          w: 1
+        }
+      }
+    }
+  }
+  link {
+    id: 32
+    name: "rotor_0"
+    pose {
+      position {
+        x: 0.174
+        y: -0.17399999999999996
+        z: 0.3
+      }
+      orientation {
+        w: 1
+      }
+    }
+    visual {
+      name: "rotor_0_visual"
+      id: 33
+      parent_id: 32
+      cast_shadows: true
+      pose {
+        position {
+          x: -0.022
+          y: -0.14638461538461536
+          z: -0.016
+        }
+        orientation {
+          w: 1
+        }
+      }
+      geometry {
+        type: MESH
+        mesh {
+          filename: "model://x500_base/meshes/1345_prop_ccw.stl"
+          scale {
+            x: 0.84615384615384615
+            y: 0.84615384615384615
+            z: 0.84615384615384615
+          }
+        }
+      }
+      material {
+        ambient {
+          r: 0.175
+          g: 0.175
+          b: 0.175
+          a: 1
+        }
+        diffuse {
+          r: 0.175
+          g: 0.175
+          b: 0.175
+          a: 1
+        }
+        specular {
+          r: 0.175
+          g: 0.175
+          b: 0.175
+          a: 1
+        }
+        emissive {
+          a: 1
+        }
+        lighting: true
+      }
+    }
+    visual {
+      name: "rotor_0_visual_motor_bell"
+      id: 34
+      parent_id: 32
+      cast_shadows: true
+      pose {
+        position {
+          z: -0.032
+        }
+        orientation {
+          w: 1
+        }
+      }
+      geometry {
+        type: MESH
+        mesh {
+          filename: "model://x500_base/meshes/5010Bell.dae"
+          scale {
+            x: 1
+            y: 1
+            z: 1
+          }
+        }
+      }
+    }
+  }
+  link {
+    id: 36
+    name: "rotor_1"
+    pose {
+      position {
+        x: -0.174
+        y: 0.17399999999999996
+        z: 0.3
+      }
+      orientation {
+        w: 1
+      }
+    }
+    visual {
+      name: "rotor_1_visual"
+      id: 37
+      parent_id: 36
+      cast_shadows: true
+      pose {
+        position {
+          x: -0.022
+          y: -0.14638461538461536
+          z: -0.016
+        }
+        orientation {
+          w: 1
+        }
+      }
+      geometry {
+        type: MESH
+        mesh {
+          filename: "model://x500_base/meshes/1345_prop_ccw.stl"
+          scale {
+            x: 0.84615384615384615
+            y: 0.84615384615384615
+            z: 0.84615384615384615
+          }
+        }
+      }
+      material {
+        ambient {
+          r: 0.175
+          g: 0.175
+          b: 0.175
+          a: 1
+        }
+        diffuse {
+          r: 0.175
+          g: 0.175
+          b: 0.175
+          a: 1
+        }
+        specular {
+          r: 0.175
+          g: 0.175
+          b: 0.175
+          a: 1
+        }
+        emissive {
+          a: 1
+        }
+        lighting: true
+      }
+    }
+    visual {
+      name: "rotor_1_visual_motor_top"
+      id: 38
+      parent_id: 36
+      cast_shadows: true
+      pose {
+        position {
+          z: -0.032
+        }
+        orientation {
+          w: 1
+        }
+      }
+      geometry {
+        type: MESH
+        mesh {
+          filename: "model://x500_base/meshes/5010Bell.dae"
+          scale {
+            x: 1
+            y: 1
+            z: 1
+          }
+        }
+      }
+    }
+  }
+  link {
+    id: 40
+    name: "rotor_2"
+    pose {
+      position {
+        x: 0.17399999999999996
+        y: 0.174
+        z: 0.3
+      }
+      orientation {
+        w: 1
+      }
+    }
+    visual {
+      name: "rotor_2_visual"
+      id: 41
+      parent_id: 40
+      cast_shadows: true
+      pose {
+        position {
+          x: -0.022
+          y: -0.14638461538461536
+          z: -0.016
+        }
+        orientation {
+          w: 1
+        }
+      }
+      geometry {
+        type: MESH
+        mesh {
+          filename: "model://x500_base/meshes/1345_prop_cw.stl"
+          scale {
+            x: 0.84615384615384615
+            y: 0.84615384615384615
+            z: 0.84615384615384615
+          }
+        }
+      }
+      material {
+        ambient {
+          r: 0.175
+          g: 0.175
+          b: 0.175
+          a: 1
+        }
+        diffuse {
+          r: 0.175
+          g: 0.175
+          b: 0.175
+          a: 1
+        }
+        specular {
+          r: 0.175
+          g: 0.175
+          b: 0.175
+          a: 1
+        }
+        emissive {
+          a: 1
+        }
+        lighting: true
+      }
+    }
+    visual {
+      name: "rotor_2_visual_motor_top"
+      id: 42
+      parent_id: 40
+      cast_shadows: true
+      pose {
+        position {
+          z: -0.032
+        }
+        orientation {
+          w: 1
+        }
+      }
+      geometry {
+        type: MESH
+        mesh {
+          filename: "model://x500_base/meshes/5010Bell.dae"
+          scale {
+            x: 1
+            y: 1
+            z: 1
+          }
+        }
+      }
+    }
+  }
+  link {
+    id: 44
+    name: "rotor_3"
+    pose {
+      position {
+        x: -0.17399999999999996
+        y: -0.174
+        z: 0.3
+      }
+      orientation {
+        w: 1
+      }
+    }
+    visual {
+      name: "rotor_3_visual"
+      id: 45
+      parent_id: 44
+      cast_shadows: true
+      pose {
+        position {
+          x: -0.022
+          y: -0.14638461538461536
+          z: -0.016
+        }
+        orientation {
+          w: 1
+        }
+      }
+      geometry {
+        type: MESH
+        mesh {
+          filename: "model://x500_base/meshes/1345_prop_cw.stl"
+          scale {
+            x: 0.84615384615384615
+            y: 0.84615384615384615
+            z: 0.84615384615384615
+          }
+        }
+      }
+      material {
+        ambient {
+          r: 0.175
+          g: 0.175
+          b: 0.175
+          a: 1
+        }
+        diffuse {
+          r: 0.175
+          g: 0.175
+          b: 0.175
+          a: 1
+        }
+        specular {
+          r: 0.175
+          g: 0.175
+          b: 0.175
+          a: 1
+        }
+        emissive {
+          a: 1
+        }
+        lighting: true
+      }
+    }
+    visual {
+      name: "rotor_3_visual_motor_top"
+      id: 46
+      parent_id: 44
+      cast_shadows: true
+      pose {
+        position {
+          z: -0.032
+        }
+        orientation {
+          w: 1
+        }
+      }
+      geometry {
+        type: MESH
+        mesh {
+          filename: "model://x500_base/meshes/5010Bell.dae"
+          scale {
+            x: 1
+            y: 1
+            z: 1
+          }
+        }
+      }
+    }
+  }
+  link {
+    id: 48
+    name: "front_camera_link"
+    pose {
+      position {
+        x: 0.18
+        y: -1.3878942107233128e-17
+        z: 0.39000000000000007
+      }
+      orientation {
+        y: 0.24192189559966762
+        z: -3.8857805861880479e-16
+        w: 0.97029572627599636
+      }
+    }
+    visual {
+      name: "housing"
+      id: 49
+      parent_id: 48
+      cast_shadows: true
+      pose {
+        position {
+          x: 1.3877787807814457e-17
+          z: 5.5511151231257827e-17
+        }
+        orientation {
+          w: 1
+        }
+      }
+      geometry {
+        box {
+          size {
+            x: 0.03
+            y: 0.05
+            z: 0.04
+          }
+        }
+      }
+      material {
+        ambient {
+          r: 0.12
+          g: 0.12
+          b: 0.14
+          a: 1
+        }
+        diffuse {
+          r: 0.18
+          g: 0.18
+          b: 0.2
+          a: 1
+        }
+        specular {
+          a: 1
+        }
+        emissive {
+          a: 1
+        }
+        lighting: true
+      }
+    }
+    sensor {
+      name: "front_tof_camera"
+      id: 50
+      parent_id: 48
+      type: "rgbd_camera"
+      pose {
+        position {
+          x: 1.3877787807814457e-17
+          z: 5.5511151231257827e-17
+        }
+        orientation {
+          w: 1
+        }
+      }
+    }
+  }
+  link {
+    id: 51
+    name: "down_camera_link"
+    pose {
+      position {
+        x: 0.05
+        y: -3.470601251372284e-18
+        z: 0.12
+      }
+      orientation {
+        y: 0.7071067811848164
+        z: 1.6653345369377348e-16
+        w: 0.70710678118827874
+      }
+    }
+    visual {
+      name: "housing"
+      id: 52
+      parent_id: 51
+      cast_shadows: true
+      pose {
+        position {
+          z: -6.9388939039072284e-18
+        }
+        orientation {
+          w: 1
+        }
+      }
+      geometry {
+        box {
+          size {
+            x: 0.03
+            y: 0.05
+            z: 0.04
+          }
+        }
+      }
+      material {
+        ambient {
+          r: 0.12
+          g: 0.12
+          b: 0.14
+          a: 1
+        }
+        diffuse {
+          r: 0.18
+          g: 0.18
+          b: 0.2
+          a: 1
+        }
+        specular {
+          a: 1
+        }
+        emissive {
+          a: 1
+        }
+        lighting: true
+      }
+    }
+  }
+}
+model {
+  name: "usv_target"
+  id: 59
+  pose {
+    position {
+      x: -4.898587196589413e-15
+      y: 8
+      z: 0.42
+    }
+    orientation {
+      w: 1
+    }
+  }
+  link {
+    id: 60
+    name: "target_link"
+    pose {
+      position {
+      }
+      orientation {
+        w: 1
+      }
+    }
+    visual {
+      name: "target_visual"
+      id: 61
+      parent_id: 60
+      cast_shadows: true
+      pose {
+        position {
+        }
+        orientation {
+          w: 1
+        }
+      }
+      geometry {
+        type: SPHERE
+        sphere {
+          radius: 0.25
+        }
+      }
+      material {
+        ambient {
+          r: 1
+          a: 1
+        }
+        diffuse {
+          r: 1
+          a: 1
+        }
+        specular {
+          r: 0.2
+          g: 0.2
+          b: 0.2
+          a: 1
+        }
+        emissive {
+          a: 1
+        }
+        lighting: true
+      }
+    }
+  }
+}
+light {
+  name: "sunUTC"
+  type: DIRECTIONAL
+  pose {
+    position {
+      z: 500
+    }
+    orientation {
+      w: 1
+    }
+  }
+  diffuse {
+    r: 0.904
+    g: 0.904
+    b: 0.904
+    a: 1
+  }
+  specular {
+    r: 0.271
+    g: 0.271
+    b: 0.271
+    a: 1
+  }
+  attenuation_constant: 1
+  direction {
+    x: 0.001
+    y: 0.625
+    z: -0.78
+  }
+  range: 2000
+  cast_shadows: true
+  id: 11
+  parent_id: 1
+  intensity: 1
+  visualize_visual: true
+}
+origin_visual: true
+

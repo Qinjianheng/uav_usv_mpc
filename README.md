@@ -6,6 +6,7 @@
 
 当前事实以 [baseline.yaml](src/uav_usv_bringup/config/baseline.yaml) 和代码为准：
 
+- 2026-10-07：默认仅前视 RGB + ToF 功能仿真，下视暂时关闭；目标升沉幅值 0.15 m、频率 0.25 Hz。量程参数未标定，详情与恢复见 [相机文档](docs/current/camera_simulation.md)。冻结成功基线仍为原 0.05 m 场景。**带噪定位已适配，任务尚未通过验收**；第一次复验与减速证据见 [当前验证](docs/current/tof_fit_validation_20261007.md)，早期失败及理想对照见 [相机初始验证](docs/current/tof_validation_20261007.md)。
 - 主 predictor 和 tracker 从 `/tracking/target_state` 使用 KF 状态；真值 `/target/state` 供仿真评价及明确的 shadow/离线审计。
 - tracker 自行做位置反馈、限速和加速度整形，向 PX4 发送速度指令；`use_velocity_control: true`。
 - BCTRA 预测窗口为 4.0 s；MINCO 规划最大时域为 1.5 s，常规/末端调度分别为 5/10 Hz。

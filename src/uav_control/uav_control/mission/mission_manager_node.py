@@ -181,6 +181,12 @@ class MissionManagerNode(Node):
         changed = self.core.observe_visibility(
             message.mission_id, message.search_state,
             message.target_locked, self._now(),
+            execution_deadline=(min(
+                message.contact_stamp.sec + message.contact_stamp.nanosec * 1e-9,
+                stamp + message.remaining_time,
+            ) if message.search_state == 'TERMINAL_COMMITTED'
+                and message.terminal_mode else None),
+            execution_plan_id=message.plan_id,
         )
         accepted = self.core.observe_tracker(
             mission_id=message.mission_id,

@@ -28,6 +28,8 @@ cd /home/qin/data/uav_usv_mpc
 
 启动器使用新仓库路径，并打开 Gazebo、PX4、DDS 和实验终端。X 同步启动 UAV 起飞/USV 运动；视觉锁定 FOLLOW 后发送 Y。成功后现有评价器暂停 Gazebo 并冻结目标。R 通过启动器恢复干净会话；Q 只关闭指令控制台，其他终端仍运行。
 
+当前默认前视 ToF、下视关闭、目标升沉 0.15 m。物理传感器开关需要重启完整仿真；详细配置与恢复见 [相机文档](camera_simulation.md)。
+
 已有 PX4/Gazebo/DDS 会话时只启动 ROS 图可用：
 
 ```bash
@@ -37,7 +39,7 @@ export UAV_USV_WS=/home/qin/data/uav_usv_mpc
 ros2 launch uav_usv_bringup modular_intercept.launch.py   config_file:=/home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/baseline.yaml   log_directory:=/home/qin/data/uav_usv_mpc/data/experiments/current
 ```
 
-直接 launch 时显式设置工作区/日志路径：现有 launch 未设置 `UAV_USV_WS` 时仍有原仓库 fallback，本轮保持 launch 源码不变。`enable_shadow_perception` 只控制部分诊断，不应当用它推断主视觉链是否关闭。
+直接 launch 时显式设置工作区/日志路径：现有 launch 未设置 `UAV_USV_WS` 时仍有原仓库 fallback。`enable_shadow_perception` 只控制部分诊断，不应当用它推断主视觉链是否关闭。
 
 ## 本轮静态验证入口
 

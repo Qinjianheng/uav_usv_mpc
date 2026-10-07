@@ -37,6 +37,15 @@ class PendingTrajectory:
     tracker_receipt_stamp: float
 
 
+@dataclass(frozen=True)
+class TerminalExecution:
+    """Non-renewable execution window for one already accepted trajectory."""
+
+    trajectory: PolynomialTrajectory
+    entered_at: float
+    deadline: float
+
+
 def _stamp_seconds(stamp):
     return float(stamp.sec) + float(stamp.nanosec) * 1e-9
 
@@ -349,6 +358,8 @@ class TrajectoryTrackerNode(Node):
         self.declare_parameter('maximum_command_dt', 0.1)
         self.declare_parameter('maximum_actual_vertical_acceleration', 4.0)
         self.declare_parameter('terminal_cruise_enabled', False)
+        self.terminal_cruise_enabled = bool(
+            self.get_parameter('terminal_cruise_enabled').value)
         self.declare_parameter('maximum_state_age', 0.125)
         self.declare_parameter('use_velocity_control', True)
         self.declare_parameter('frame_id', 'local_ned')
@@ -660,6 +671,7 @@ class TrajectoryTrackerNode(Node):
 
         self.latest_state = None
         self.latest_prediction = None
+        self.terminal_execution = None
         self.latest_target_state = None
         self.latest_kf_message = None
         self.latest_body_bearing = None
@@ -762,6 +774,11 @@ class TrajectoryTrackerNode(Node):
         if stamp <= 0.0 and _stamp_seconds(message.raw_stamp) > 0.0:
             return
         if stamp <= 0.0:
+            if getattr(self, 'terminal_execution', None) is not None:
+                self.terminal_execution = None
+                self.tracker.active_trajectory = None
+                self.pending_trajectory = None
+                self.safe_recovery_latched = True
             self.visibility.reset()
             self.latest_body_bearing = None
             self.latest_center_bearing = None
@@ -814,6 +831,7 @@ class TrajectoryTrackerNode(Node):
     def mission_callback(self, message):
         new_mission_id = int(message.mission_id)
         if new_mission_id != self.mission_id:
+            self.terminal_execution = None
             self.tracker.reset()
             self.flight_guidance.reset()
             self.last_rejection = TrajectoryRejectReason.NONE
@@ -840,6 +858,7 @@ class TrajectoryTrackerNode(Node):
         if self.mission_state == MissionState.TERMINAL_MINCO:
             self.terminal_mode_latched = True
         if self.mission_state in self.TERMINAL_STATES:
+            self.terminal_execution = None
             self.tracker.reset()
             self.pending_trajectory = None
             self.terminal_mode_latched = False
@@ -875,6 +894,8 @@ class TrajectoryTrackerNode(Node):
 
     def _evaluate_trajectory(self, trajectory):
         now = self._ros_seconds()
+        if self._terminal_execution_active(now):
+            return TrajectoryRejectReason.TERMINAL_COMMITTED
         if now - trajectory.source_stamp > self.tracker.maximum_plan_age:
             return TrajectoryRejectReason.SOURCE_STALE
         if (trajectory.target_state_source != 'tracking'
@@ -1024,6 +1045,13 @@ class TrajectoryTrackerNode(Node):
         message.thrust_and_torque = False
         message.direct_actuator = False
         self.offboard_pub.publish(message)
+
+    def _remember_emitted_velocity(self, setpoint, now):
+        """Share actual velocity-command history across guidance/tracker owners."""
+        velocity = tuple(float(value) for value in setpoint.velocity)
+        if len(velocity) == 3 and all(math.isfinite(value) for value in velocity):
+            self.tracker.previous_command_velocity = velocity
+            self.tracker.previous_command_stamp = now
 
     def _publish_vehicle_command(self, command, param1, param2=0.0):
         message = VehicleCommand()
@@ -1214,6 +1242,54 @@ class TrajectoryTrackerNode(Node):
             message.safety_state = 'HOLD'
         self.diagnostic_pub.publish(message)
 
+    def _prediction_fresh(self, now):
+        prediction = self.latest_prediction
+        return bool(
+            prediction is not None and prediction.valid
+            and int(prediction.mission_id) == self.mission_id
+            and measurement_age(now, _stamp_seconds(prediction.observation_stamp))
+            <= self.maximum_state_age)
+
+    def _terminal_execution_active(self, now):
+        execution = getattr(self, 'terminal_execution', None)
+        valid = bool(
+            execution is not None
+            and self.mission_state == MissionState.TERMINAL_MINCO
+            and execution.trajectory is self.tracker.active_trajectory
+            and execution.trajectory.mission_id == self.mission_id
+            and execution.entered_at <= now < execution.deadline)
+        if not valid:
+            self.terminal_execution = None
+        return valid
+
+    def _arm_terminal_execution(self, current, now, decision):
+        if (self._terminal_execution_active(now)
+                or not getattr(self, 'terminal_cruise_enabled', False)
+                or self.mission_state != MissionState.TERMINAL_MINCO
+                or not self.intercept_requested or self.safe_recovery_latched
+                or not decision.locked or self.latest_target_state is None
+                or not self._prediction_fresh(now)):
+            return
+        trajectory = self.tracker.active_trajectory
+        if (trajectory is None
+                or not (trajectory.terminal_mode or self.terminal_mode_latched)
+                or trajectory.mission_id != self.mission_id
+                or trajectory.target_state_source != 'tracking'
+                or not 0. < trajectory.contact_stamp - now <= .7
+                or now >= trajectory.valid_until):
+            return
+        relative = tuple(self.latest_target_state.position[a] - current.position[a]
+                         for a in (0, 1))
+        if not 1e-6 < math.hypot(*relative) <= 2.5:
+            return
+        # A plan accepted in MINCO_TRACKING can become the terminal plan
+        # without an accepted replacement. Update only its execution tag.
+        trajectory = trajectory_for_mission(trajectory, self.mission_state)
+        self.tracker.active_trajectory = trajectory
+        self.terminal_execution = TerminalExecution(
+            trajectory, now, min(trajectory.valid_until, trajectory.contact_stamp,
+                                 now + .7))
+
     def _update_visibility(self, current, now, dt):
         """Compute visual authority before selecting XYZ or yaw commands."""
         self.latest_target_state = fresh_flight_target(
@@ -1237,6 +1313,14 @@ class TrajectoryTrackerNode(Node):
             self.latest_target_state is not None,
             terminal=terminal,
         )
+        self._arm_terminal_execution(current, now, decision)
+        if self._terminal_execution_active(now):
+            # Visibility remains truthful. Only execution ownership survives
+            # temporary sensing loss; no new plan can enter this window.
+            decision = replace(decision, state='TERMINAL_COMMITTED')
+            self.visibility_decision = decision
+            self.search_state = decision.state
+            return decision
         if (terminal and not decision.locked) or (
             self.mission_state == MissionState.SAFE_RECOVERY
             and height < max(search_height, self.tracker.recovery_clearance)
@@ -1357,6 +1441,8 @@ class TrajectoryTrackerNode(Node):
                 MissionState.INIT, MissionState.GROUND_HOLD,
                 *self.TERMINAL_STATES,
             ) or self.safe_recovery_latched
+            or (self._terminal_execution_active(current.stamp)
+                and not decision.locked)
             # This is a launch/search gate. A fresh, locked terminal descent
             # still needs visual yaw below it to keep the target in the camera.
             or (height < self.visibility.config.target_search_enable_height
@@ -1428,6 +1514,14 @@ class TrajectoryTrackerNode(Node):
             )
             return
         if now - self.latest_state.stamp > self.maximum_state_age:
+            if getattr(self, 'terminal_execution', None) is not None:
+                self.terminal_execution = None
+                self.tracker.active_trajectory = None
+                self.safe_recovery_latched = True
+                self.search_state = 'SAFE_RECOVERY'
+                if self.visibility_decision is not None:
+                    self.visibility_decision = replace(
+                        self.visibility_decision, state='SAFE_RECOVERY', locked=False)
             self._publish_bool(self.flight_ready_pub, False)
             self._publish_diagnostic(
                 now,
@@ -1452,6 +1546,7 @@ class TrajectoryTrackerNode(Node):
 
         dt = min(dt, self.tracker.maximum_command_dt)
         decision = self._update_visibility(current, now, dt)
+        committed = self._terminal_execution_active(now)
         self.bearing_approach_active = False
         target_yaw = self.current_heading
 
@@ -1547,7 +1642,7 @@ class TrajectoryTrackerNode(Node):
         elif (self.mission_state in (
             MissionState.TARGET_ACQUIRE, MissionState.TARGET_LOCK,
             MissionState.REACQUIRE, MissionState.SAFE_RECOVERY,
-        ) or (not decision.locked and self.mission_state not in (
+        ) or (not committed and not decision.locked and self.mission_state not in (
             MissionState.TAKEOFF, *self.TERMINAL_STATES,
         ))):
             self._publish_bool(self.flight_ready_pub, False)
@@ -1610,13 +1705,14 @@ class TrajectoryTrackerNode(Node):
             self._publish_bool(self.flight_ready_pub, False)
             self._request_flight_mode()
             prediction = self.latest_prediction
-            prediction_fresh = (
-                prediction is not None and prediction.valid
-                and int(prediction.mission_id) == self.mission_id
-                and measurement_age(now, _stamp_seconds(
-                    prediction.observation_stamp)) <= self.maximum_state_age
-            )
-            if not prediction_fresh:
+            prediction_fresh = self._prediction_fresh(now)
+            active = self.tracker.active_trajectory
+            executable = bool(active is not None and active.mission_id == self.mission_id
+                              and now < active.valid_until)
+            if not prediction_fresh and not (
+                committed or (executable and decision.locked
+                              and self.latest_target_state is not None)
+            ):
                 command = self._search_or_recovery_command(current, dt)
                 self._publish_offboard_mode(
                     timestamp_us,
@@ -1628,6 +1724,7 @@ class TrajectoryTrackerNode(Node):
                 status = 'NO_VALID_PLAN'
                 self._final_yaw(setpoint, current, dt)
                 self.setpoint_pub.publish(setpoint)
+                self._remember_emitted_velocity(setpoint, now)
                 self.reference_pub.publish(setpoint)
                 self._publish_diagnostic(now, command, status,
                                          time.perf_counter() - started)
@@ -1638,7 +1735,8 @@ class TrajectoryTrackerNode(Node):
             # limits use the current publication epoch independently.
             terminal_target = (fresh_flight_target(
                 self.latest_kf_message, now, self.maximum_state_age, self.expected_frame_id,
-            ) if self.get_parameter('terminal_cruise_enabled').value else None)
+            ) if prediction_fresh
+                and self.get_parameter('terminal_cruise_enabled').value else None)
             command = self.tracker.command(
                 self.latest_state, self.mission_id, control_stamp=now,
                 terminal_target_at_time=(
@@ -1647,6 +1745,11 @@ class TrajectoryTrackerNode(Node):
                 terminal_target_velocity=(
                     terminal_target.velocity if terminal_target is not None else None
                 ),
+                hold_terminal_velocity=committed,
+                cruise_from_start=bool(
+                    self.use_velocity_control and self.intercept_requested
+                    and executable and active.target_state_source == 'tracking'
+                    and decision.locked and terminal_target is not None),
             )
             velocity_mode = self.use_velocity_control
             if command is None:
@@ -1676,7 +1779,7 @@ class TrajectoryTrackerNode(Node):
                     timestamp_us,
                     velocity_control=velocity_mode,
                 )
-                status = 'TRACKING'
+                status = 'TERMINAL_COMMITTED' if committed else 'TRACKING'
         else:
             self._publish_bool(self.flight_ready_pub, False)
             self._publish_offboard_mode(timestamp_us, velocity_control=False)
@@ -1696,6 +1799,7 @@ class TrajectoryTrackerNode(Node):
             command = None
         self._final_yaw(setpoint, current, dt)
         self.setpoint_pub.publish(setpoint)
+        self._remember_emitted_velocity(setpoint, now)
         self.reference_pub.publish(setpoint)
         self._publish_diagnostic(
             now,

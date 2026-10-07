@@ -49,6 +49,7 @@ setup(
             'uav_control.perception.target_bearing_node:main',
             'rgbd_target_localizer = '
             'uav_control.perception.rgbd_target_localizer:main',
+            'tof_depth_node = uav_control.perception.tof_depth_node:main',
             'dual_tof_selector = '
             'uav_control.perception.dual_tof_selector:main',
         ],
