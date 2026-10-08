@@ -13,6 +13,7 @@
 | [环境](environment.md) | 已核实依赖、构建、启动与检查命令 |
 | [分析与恢复](analysis_and_recovery.md) | 当前分析入口和历史输入恢复 |
 | [MPC 范围](mpc_scope.md) | 后续实现接口和验收边界 |
+| [P1 相机可见性与 MPC–MINCO 接口](mpc_minco_visibility_design.md) | 纯几何、完整姿态、目标整体视场与共同执行起点 |
 | [整理交付](repository_cleanup.md) | 清点、规模、归档和实际检查结果 |
 | [源码冗余清理](redundancy_cleanup.md) | 确认移出项、保留理由、恢复与回归 |
 
