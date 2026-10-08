@@ -24,6 +24,8 @@ setup(
     },
     entry_points={
         'console_scripts': [
+            'follow_mpc_shadow_node = '
+            'uav_control.controllers.follow_mpc_shadow_node:main',
             'position_listener = uav_control.position_listener:main',
             'offboard_takeoff = uav_control.offboard_takeoff:main',
             'moving_target = uav_control.moving_target:main',
