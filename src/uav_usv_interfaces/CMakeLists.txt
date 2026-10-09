@@ -8,6 +8,8 @@ find_package(rosidl_default_generators REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/ControllerDiagnostic.msg"
+  "msg/FollowTrajectory.msg"
+  "msg/FollowPlanAck.msg"
   "msg/InterceptTrajectory.msg"
   "msg/InterceptResult.msg"
   "msg/MissionState.msg"

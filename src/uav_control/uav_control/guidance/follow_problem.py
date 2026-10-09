@@ -45,6 +45,27 @@ def future_request(request, lead=.15):
     return FutureRequest(**payload)
 
 
+@dataclass(frozen=True)
+class HypotheticalRequest(FutureRequest):
+    """Explicit offline ideal-model boundary; never Tracker acceptance or measured navigation."""
+
+    prior_curve: object = None
+    reference_yaw_rate: float = 0.
+    boundary_policy: str = 'hypothetical_previous_curve'
+
+
+def hypothetical_request(request, previous_curve, epoch):
+    """Sample only this rollout's own previous coefficients, retaining logged raw epochs."""
+    sample = previous_curve.sample(epoch)
+    payload = dict(request.__dict__)
+    payload.update(context=replace(request.context, execution_start_stamp=epoch),
+                   state=tuple(sample[:10]), measurement_state=tuple(getattr(
+                       request, 'measurement_state', ()) or request.state),
+                   boundary_policy='hypothetical_previous_curve', prior_curve=previous_curve,
+                   reference_yaw_rate=sample[10])
+    return HypotheticalRequest(**payload)
+
+
 class FollowProblem:
     """Use the P2 camera configuration and the P1 evaluator for all new research modes."""
 
@@ -87,7 +108,15 @@ class FollowProblem:
                 request.now_stamp - c.observation_stamp) > self.limits.maximum_input_age
                 or request.now_stamp >= c.prediction_valid_until):
             raise ValueError('STALE_INPUT')
-        if abs(c.execution_start_stamp - c.navigation_stamp) > 1e-7:
+        if isinstance(request, HypotheticalRequest):
+            if (request.boundary_policy != 'hypothetical_previous_curve'
+                    or request.prior_curve is None or len(request.measurement_state) != 10
+                    or not np.allclose(request.prior_curve.sample(c.execution_start_stamp)[:10],
+                                       self.state, rtol=0., atol=1e-9)
+                    or abs(request.prior_curve.sample(c.execution_start_stamp)[10]
+                           - request.reference_yaw_rate) > 1e-9):
+                raise ValueError('INVALID_HYPOTHETICAL_BOUNDARY')
+        elif abs(c.execution_start_stamp - c.navigation_stamp) > 1e-7:
             if (not isinstance(request, FutureRequest) or len(request.measurement_state) != 10
                     or request.boundary_policy != 'constant_acceleration_projection'):
                 raise ValueError('UNPROVEN_EXECUTION_BOUNDARY')

@@ -123,7 +123,8 @@ class FollowMincoOptimizer:
                 trajectory = _trajectory(seed, q, durations)
                 stamp = self.clock()
                 yaw_values = np.r_[yaw0[0], flat[-3:]]
-                yaw = YawTrajectory(np.r_[0., np.cumsum(durations)], yaw_values)
+                yaw = YawTrajectory(np.r_[0., np.cumsum(durations)], yaw_values,
+                                    start_rate=getattr(request, 'reference_yaw_rate', 0.))
                 yaw_time += self.clock() - stamp
                 return trajectory, yaw, q, durations
 

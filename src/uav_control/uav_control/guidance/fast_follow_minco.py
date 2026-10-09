@@ -22,6 +22,7 @@ class FastConfig:
     freshness_budget: bool = False
     publication_reserve: float = .02
     validation_reserve: float = .025
+    bernstein_precheck: bool = False
     yaw_optimize: bool = True
     visibility_mode: str = 'full'
 
@@ -82,11 +83,21 @@ class FastFollowMinco:
             if f.exact_precheck and candidate.valid_input:
                 trajectory = _trajectory(candidate, candidate.q, candidate.durations)
                 limits = self.model.config
-                peaks = {name: derivative_peak(trajectory.coefficients, trajectory.durations, d,
-                                               axes) for name, d, axes in (
-                    ('horizontal_speed', 1, (0, 1)), ('vertical_speed', 1, (2,)),
-                    ('horizontal_acceleration', 2, (0, 1)), ('vertical_acceleration', 2, (2,)),
-                    ('horizontal_jerk', 3, (0, 1)), ('vertical_jerk', 3, (2,)))}
+                peaks = {}
+                for name, d, axes in (
+                        ('horizontal_speed', 1, (0, 1)), ('vertical_speed', 1, (2,)),
+                        ('horizontal_acceleration', 2, (0, 1)),
+                        ('vertical_acceleration', 2, (2,)),
+                        ('horizontal_jerk', 3, (0, 1)), ('vertical_jerk', 3, (2,))):
+                    upper = float('inf')
+                    if f.bernstein_precheck:
+                        from uav_control.guidance.polynomial_bounds import derivative_upper_bound
+                        upper = derivative_upper_bound(trajectory.coefficients,
+                                                       trajectory.durations, d, axes)
+                    peaks[name] = (dict(value=upper, bound_kind='bernstein_upper')
+                                   if upper <= getattr(limits, 'maximum_'+name)+1e-6 else
+                                   derivative_peak(trajectory.coefficients,
+                                                   trajectory.durations, d, axes))
                 violations = {name: max(0., peak['value']-getattr(limits, 'maximum_'+name))
                               for name, peak in peaks.items()}
                 if max(violations.values()) > 1e-6:
