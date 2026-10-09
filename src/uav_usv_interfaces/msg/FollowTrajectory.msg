@@ -31,3 +31,7 @@ float64[6] dynamic_limits
 float64[2] fov_margins
 bool nominal_sampled_valid
 string reason
+
+# Actual receiver boot identity and independent planner process identity.
+string receiver_boot_id
+string planner_boot_id

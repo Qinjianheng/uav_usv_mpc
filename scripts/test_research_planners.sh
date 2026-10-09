@@ -13,6 +13,8 @@ case "${MODE}" in
             test/test_minco_trajectory.py test/test_maneuvering_target_predictor.py \
             test/test_follow_research_algorithms.py test/test_fast_follow_minco.py \
             test/test_realtime_follow.py test/test_short_follow.py test/test_prediction_batch.py \
+            test/test_tracking_progress.py test/test_follow_epoch.py \
+            test/test_follow_revalidation.py test/test_follow_safety_bounds.py \
             test/test_progress_follow.py test/test_follow_contract.py \
             test/test_hypothetical_follow.py test/test_polynomial_bounds.py \
             test/test_p4_session_safety.py \
@@ -31,7 +33,9 @@ case "${MODE}" in
                 test/test_follow_research_runtime.py test/test_fast_follow_minco.py \
                 test/test_realtime_follow.py test/test_short_follow.py \
                 test/test_prediction_batch.py test/test_target_prediction_engine.py \
-                test/test_progress_follow.py test/test_follow_contract.py \
+                test/test_tracking_progress.py test/test_follow_epoch.py \
+            test/test_follow_revalidation.py test/test_follow_safety_bounds.py \
+            test/test_progress_follow.py test/test_follow_contract.py \
                 test/test_hypothetical_follow.py test/test_polynomial_bounds.py \
                 test/test_p4_receiver_node.py test/test_p4_session_safety.py \
                 test/test_follow_minco_experiment.py

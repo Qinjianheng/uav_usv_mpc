@@ -85,4 +85,8 @@ def forecast_viewpoint(problem, time, beta=0., distance=None):
     return (*state, heading + beta, dict(heading_rate=omega, heading_acceleration=alpha,
                                          heading_fit_rmse=residual,
                                          derivative_clipped=bool(clipped),
-                                         beta_rate_assumption=0., distance_rate_assumption=0.))
+                                         beta_rate_assumption=0., distance_rate_assumption=0.,
+                                         fit_samples=int(np.count_nonzero(mask)),
+                                         derivative_available=bool(np.count_nonzero(mask) >= 3
+                                                                   and np.linalg.norm(
+                                                                       v[0, :2]) >= .2)))

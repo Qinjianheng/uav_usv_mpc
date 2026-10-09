@@ -135,3 +135,101 @@ def test_missing_progress_diagnostics_are_unknown_not_zero():
     measured = progress_counts([{'metrics': {'progress': dict(
         stage_C_progress=False, zero_jerk=False, warm_used=False)}}])
     assert measured == dict(progress_C=0, zero_jerk=0, warm_hits=0)
+
+
+def test_receiver_handshake_is_graph_owned_and_rejects_future_heartbeat():
+    from types import SimpleNamespace
+    from uav_usv_interfaces.msg import FollowReceiverState
+    from uav_control.controllers.p4_follow_planner_node import P4FollowPlannerNode
+    from uav_control.controllers.follow_transport import stamp
+    node = object.__new__(P4FollowPlannerNode)
+    node._ros_seconds = lambda: 100.
+    node.adapter = SimpleNamespace(clock_generation=7)
+    node.runner = SimpleNamespace(current_receiver_epoch=None)
+    node.receiver_epoch = None
+    node.get_publishers_info_by_topic = lambda _: [SimpleNamespace(
+        node_name='trajectory_tracker_node')]
+    heartbeat = FollowReceiverState()
+    heartbeat.stamp = stamp(100.)
+    heartbeat.receiver, heartbeat.receiver_boot_id = 'trajectory_tracker_node', 'boot-a'
+    heartbeat.clock_generation, heartbeat.mission_id = 3, 1
+    node.epoch_callback(heartbeat)
+    assert node.receiver_epoch[0] == ('boot-a', 3, 1, 7)
+    heartbeat.stamp = stamp(101.)
+    node.epoch_callback(heartbeat)
+    assert node.receiver_epoch is None and node.runner.current_receiver_epoch is None
+
+
+def test_prediction_policy_A_rejects_and_B_fully_checks_new_version():
+    from types import SimpleNamespace
+    from io import StringIO
+    from uav_control.controllers.p4_follow_planner_node import P4FollowPlannerNode
+    from uav_control.controllers.follow_mpc_shadow_node import ShadowPrediction
+    e = event()
+    c = e['request']['context']
+    pred = ShadowPrediction(c['mission_id'], c['prediction_sequence_id']+1,
+                            c['prediction_source_stamp'], c['observation_stamp'], 100.,
+                            c['prediction_valid_until'], c['frame_id'], c['prediction_source'],
+                            'fixture', 3., tuple(e['request']['prediction_times']),
+                            tuple(map(tuple, e['request']['target_positions'])),
+                            tuple(map(tuple, e['request']['target_velocities'])))
+    node = object.__new__(P4FollowPlannerNode)
+    node.runner = SimpleNamespace(prediction=pred, solver=SimpleNamespace(model=FollowMpcSeed(
+        MpcConfig(allow_synthetic_predictions=True))))
+    node.log_file = StringIO()
+    node._ros_seconds = lambda: 100.
+    node.prediction_policy = 'latest_only'
+    assert node._prediction_event(e) is None
+    node.prediction_policy = 'full'
+    revised = node._prediction_event(e)
+    assert revised['request']['context']['prediction_sequence_id'] == pred.sequence_id
+    assert revised['request']['context']['navigation_stamp'] == c['navigation_stamp']
+    assert e['request']['context']['prediction_sequence_id'] != pred.sequence_id
+    node.runner.prediction = replace(pred, target_positions=tuple(
+        (x-100, y, z) for x, y, z in pred.target_positions))
+    assert node._prediction_event(e) is None
+
+
+def test_wrong_ack_boot_or_publisher_cannot_be_validated():
+    from io import StringIO
+    import json
+    from types import SimpleNamespace
+    from uav_usv_interfaces.msg import FollowPlanAck
+    from uav_control.controllers.p4_follow_planner_node import P4FollowPlannerNode
+    from uav_control.controllers.follow_transport import stamp
+    node = object.__new__(P4FollowPlannerNode)
+    node._ros_seconds = lambda: 100.
+    node.planner_boot_id = 'planner-a'
+    node.receiver_epoch = (('receiver-a', 3, 1, 7), 100.)
+    node.runner = SimpleNamespace(mission={'mission_id': 1})
+    node.expected_plans = {('receiver-a', 'planner-a', 1, 3, 9): 99.99}
+    node.ack_file = StringIO()
+    node.get_publishers_info_by_topic = lambda _: [SimpleNamespace(node_name='spoof')]
+    ack = FollowPlanAck()
+    ack.stamp, ack.plan_id, ack.mission_id, ack.clock_generation = stamp(100.), 9, 1, 3
+    ack.receiver = 'trajectory_tracker_node'
+    ack.receiver_boot_id, ack.planner_boot_id, ack.state = 'receiver-a', 'planner-a', 'REJECTED'
+    node.ack_callback(ack)
+    assert not json.loads(node.ack_file.getvalue().splitlines()[-1])['identity_valid']
+    node.get_publishers_info_by_topic = lambda _: [SimpleNamespace(
+        node_name='trajectory_tracker_node')]
+    ack.receiver_boot_id = 'old-receiver'
+    node.ack_callback(ack)
+    assert not json.loads(node.ack_file.getvalue().splitlines()[-1])['identity_valid']
+
+
+def test_full_revalidation_cannot_publish_after_whole_cycle_deadline(monkeypatch):
+    from types import SimpleNamespace
+    from uav_control.controllers.p4_follow_planner_node import P4FollowPlannerNode
+    from uav_control.controllers.follow_mpc_seed import MpcConfig
+    node = object.__new__(P4FollowPlannerNode)
+    e = event()
+    e['cycle_started_monotonic'] = 10.
+    node.adapter = SimpleNamespace(clock_generation=e['request']['context']['clock_generation'])
+    node.runner = SimpleNamespace(config=replace(MpcConfig(), solve_budget=.02),
+                                  mission={'mission_id': 1}, _follow=lambda: True)
+    monkeypatch.setattr('uav_control.controllers.p4_follow_planner_node.time.monotonic',
+                        lambda: 10.03)
+    assert node._proposal_rejection(e, 100.) == 'CYCLE_DEADLINE_EXCEEDED'
+    node._ros_seconds = lambda: 100.
+    assert node._publish_proposal(e) == dict(published=False, reason='CYCLE_DEADLINE_EXCEEDED')

@@ -12,10 +12,10 @@ from uav_control.guidance.follow_problem import FollowProblem
 from uav_control.guidance.greedy_follow_initializer import FollowSeed
 
 
-def local_seed(request, duration, jerk, yaw_rate):
+def local_seed(request, duration, jerk, yaw_rate, maximum_horizon=1.6):
     """Sample one cubic at common knots; end PVA progresses rather than forcing a far goal."""
     jerk = np.asarray(jerk, dtype=float)
-    if (not math.isfinite(duration) or not .8 <= duration <= 1.6 or jerk.shape != (3,)
+    if (not math.isfinite(duration) or not .8 <= duration <= maximum_horizon or jerk.shape != (3,)
             or not np.all(np.isfinite(jerk)) or not math.isfinite(yaw_rate)):
         raise ValueError('INVALID_LOCAL_SEED')
     p, v, a = np.asarray(request.state[:9], dtype=float).reshape(3, 3)
@@ -31,10 +31,12 @@ def local_seed(request, duration, jerk, yaw_rate):
 class ShortHorizonFollowSolver:
     """Greedily try at most four short seeds; revalidate each under current predictions."""
 
+    maximum_horizon = 1.6
+
     def __init__(self, model, duration=1.2, rolling=True, clock=time.perf_counter,
                  wall_clock=time.time, publication_reserve=.02, validation_reserve=.025):
         """Select a short research horizon while preserving all existing physical limits."""
-        if not math.isfinite(duration) or not .8 <= duration <= 1.6:
+        if not math.isfinite(duration) or not .8 <= duration <= self.maximum_horizon:
             raise ValueError('INVALID_SHORT_HORIZON')
         self.model, self.config, self.duration = model, model.config, duration
         self.clock, self.wall_clock, self.rolling = clock, wall_clock, rolling

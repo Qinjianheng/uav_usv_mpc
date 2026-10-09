@@ -32,7 +32,8 @@ class ProgressWeights:
             raise ValueError('INVALID_PROGRESS_WEIGHTS')
 
 
-def optimal_local_jerk(state, reference_p, reference_v, duration, weights, previous):
+def optimal_local_jerk(state, reference_p, reference_v, duration, weights, previous,
+                       reference_a=None):
     """Minimize terminal P/V/A + exact H||j||² integral + jerk switching quadratic."""
     weights.validate()
     x = np.asarray(state, dtype=float)
@@ -40,22 +41,30 @@ def optimal_local_jerk(state, reference_p, reference_v, duration, weights, previ
     if (x.shape != (9,) or any(v.shape != (3,) for v in (rp, rv, old))
             or not np.all(np.isfinite(np.r_[x, rp, rv, old, duration])) or duration <= 0):
         raise ValueError('INVALID_PROGRESS_STATE')
+    ra = np.zeros(3) if reference_a is None else np.asarray(reference_a, dtype=float)
+    if ra.shape != (3,) or not np.all(np.isfinite(ra)):
+        raise ValueError('INVALID_REFERENCE_ACCELERATION')
     p, v, a = x.reshape(3, 3)
     h = duration
     kp, kv = h**3/6, h*h/2
     wp, wv, wa = weights.position/25, weights.velocity/9, weights.acceleration/9
     wj, ws = weights.jerk/36, weights.switching/36
     denominator = wp*kp*kp+wv*kv*kv+wa*h*h+wj*h+ws
-    return -(wp*kp*(p+v*h+a*h*h/2-rp)+wv*kv*(v+a*h-rv)+wa*h*a-ws*old)/denominator
+    return -(wp*kp*(p+v*h+a*h*h/2-rp)+wv*kv*(v+a*h-rv)+wa*h*(a-ra)-ws*old)/denominator
 
 
 class ProgressFollowSolver(ShortHorizonFollowSolver):
     """At most six full checks; math hints have no TTL or execution authority."""
 
-    def __init__(self, model, duration=1.2, rolling=True, weights=ProgressWeights(), **kwargs):
+    def __init__(self, model, duration=1.2, rolling=True, weights=ProgressWeights(),
+                 acceleration_target='zero', rear_priority=False, refinement=False, **kwargs):
         """Keep original physical envelope, raw freshness and shared camera model."""
         super().__init__(model, duration, rolling, **kwargs)
         weights.validate()
+        if acceleration_target not in ('zero', 'reference', 'bounded', 'none'):
+            raise ValueError('INVALID_ACCELERATION_TARGET')
+        self.acceleration_target, self.rear_priority = acceleration_target, rear_priority
+        self.refinement = refinement
         self.weights, self.mode, self.stall_count = weights, 'progress_minco', 0
         self.fast = replace(self.fast, bernstein_precheck=True)
 
@@ -84,7 +93,8 @@ class ProgressFollowSolver(ShortHorizonFollowSolver):
             p, v, a = np.asarray(request.state[:9]).reshape(3, 3)
             old = np.asarray(self.hint[1]) if warm else np.zeros(3)
             candidates = []
-            w = self.weights
+            w = (replace(self.weights, acceleration=0.) if self.acceleration_target == 'none'
+                 else self.weights)
 
             def bounded(j):
                 j = np.asarray(j).copy()
@@ -101,9 +111,17 @@ class ProgressFollowSolver(ShortHorizonFollowSolver):
                 return (end_a-a)/self.duration
 
             for beta in (0., -.6, .6):
-                rp, rv, _, heading, details = forecast_viewpoint(problem, self.duration, beta)
+                rp, rv, ra, heading, details = forecast_viewpoint(problem, self.duration, beta)
+                if self.acceleration_target in ('zero', 'none'):
+                    ra = np.zeros(3)
+                if self.acceleration_target == 'bounded':
+                    ra[:2] *= min(1., self.config.maximum_horizontal_acceleration/max(
+                        np.linalg.norm(ra[:2]), 1e-12))
+                    ra[2] = np.clip(ra[2], -self.config.maximum_vertical_acceleration,
+                                    self.config.maximum_vertical_acceleration)
+                details = dict(details, acceleration_target=ra.tolist())
                 wanted = bounded(optimal_local_jerk(request.state[:9], rp, rv,
-                                                    self.duration, w, old))
+                                                    self.duration, w, old, reference_a=ra))
                 for scale in ((1., .5, 0.) if beta == 0. else (1.,)):
                     j = bounded(wanted*scale)
                     end_p = p+v*self.duration+a*self.duration**2/2+j*self.duration**3/6
@@ -111,7 +129,7 @@ class ProgressFollowSolver(ShortHorizonFollowSolver):
                     position_error = float(np.linalg.norm(end_p[:2]-rp[:2]))
                     velocity_error = float(np.linalg.norm(end_v[:2]-rv[:2]))
                     cost = (w.position*position_error**2/25+w.velocity*velocity_error**2/9
-                            + w.acceleration*np.linalg.norm(a+j*self.duration)**2/9
+                            + w.acceleration*np.linalg.norm(a+j*self.duration-ra)**2/9
                             + w.jerk*self.duration*np.dot(j, j)/36
                             + w.switching*(beta*beta+np.sum((j-old)**2)/36))
                     direction = math.atan2(math.sin(heading-request.state[9]),
@@ -138,15 +156,39 @@ class ProgressFollowSolver(ShortHorizonFollowSolver):
                 rp, rv, _, heading, details = forecast_viewpoint(problem, self.duration)
                 candidates.append((float('inf'), bounded(old), 0., 0., rp, rv, details))
             initialization = self.clock()-started
-            for cost, j, rate, beta, rp, rv, details in sorted(candidates, key=lambda z: z[0]):
+            for cost, j, rate, beta, rp, rv, details in sorted(
+                    candidates, key=lambda z: (int(z[3] != 0.) if self.rear_priority else 0,
+                                               z[0])):
                 remaining = min(self.config.solve_budget-(self.clock()-started),
                                 until-self.wall_clock()-self.fast.publication_reserve)
                 if remaining < self.fast.validation_reserve:
                     break
-                seed = local_seed(request, self.duration, j, rate)
+                seed = local_seed(request, self.duration, j, rate, self.maximum_horizon)
                 optimizer = MincoConfig(mode='fixed', budget=remaining, batch_validation=True)
                 tested = FastFollowMinco(optimizer, self.model, self.fast, self.clock,
                                          self.wall_clock).solve(request, seed)
+                if self.refinement and not tested.valid:
+                    from uav_control.guidance.start_jerk import adjust_start
+                    remaining = min(self.config.solve_budget-(self.clock()-started),
+                                    until-self.wall_clock()-self.fast.publication_reserve)
+                    if remaining > self.fast.validation_reserve+.008:
+                        local_deadline = self.clock()+remaining-self.fast.validation_reserve
+                        shaped = adjust_start(seed, 'combined', radius=.25,
+                                              deadline=local_deadline,
+                                              clock=self.clock)
+                        remaining = min(self.config.solve_budget-(self.clock()-started),
+                                        until-self.wall_clock()-self.fast.publication_reserve)
+                        if remaining < self.fast.validation_reserve:
+                            continue
+                        improved = FastFollowMinco(replace(optimizer, mode='qt', budget=remaining,
+                                                           maximum_iterations=1),
+                                                   self.model, self.fast, self.clock,
+                                                   self.wall_clock).solve(request, shaped)
+                        attempts.append(dict(valid=improved.valid,
+                                             status=improved.solver_status,
+                                             refinement=True, metrics=improved.metrics))
+                        if improved.valid:
+                            tested = improved
                 attempts.append(dict(valid=tested.valid, status=tested.solver_status,
                                      jerk=j.tolist(), beta=beta, cost=cost))
                 best = tested
@@ -161,7 +203,9 @@ class ProgressFollowSolver(ShortHorizonFollowSolver):
                            or elapsed >= self.config.solve_budget):
             best = replace(best, valid=False, solver_status='DEADLINE_EXCEEDED')
         progress = dict(warm_used=warm, hint_grants_execution=False, attempts=attempts,
-                        duration=self.duration, stage_A_dynamic=bool(best.valid),
+                        duration=self.duration, acceleration_target=self.acceleration_target,
+                        rear_priority=self.rear_priority, refinement=self.refinement,
+                        stage_A_dynamic=bool(best.valid),
                         stage_B_FOV=bool(best.valid), stage_C_progress=False,
                         stage_D_closed_loop_proven=False, continuous_time_guarantee=False)
         if best.valid and selection:
@@ -181,9 +225,29 @@ class ProgressFollowSolver(ShortHorizonFollowSolver):
                             stage_C_progress=meaningful or equilibrium,
                             stall_count=self.stall_count, stall_detected=self.stall_count >= 5,
                             beta=beta, zero_jerk=bool(np.linalg.norm(j) < 1e-6),
-                            reference_derivatives=details)
+                            reference_derivatives=details,
+                            diagnostics=[name for name, condition in (
+                                ('INSUFFICIENT_PROGRESS', self.stall_count >= 5),
+                                ('VELOCITY_MISMATCH', speed_after > .5),
+                                ('DISTANCE_GROWING', improvement < -.1),
+                                ('VIEWPOINT_CHANGED', getattr(self, 'last_beta', beta) != beta))
+                                if condition])
+            self.last_beta = beta
         else:
+            progress['diagnostics'] = [best.solver_status]
             self.clear_warm_start()
         return replace(best, solve_time=elapsed, timing=dict(best.timing,
                        initialization=initialization, total=elapsed),
                        metrics=dict(best.metrics, progress=progress))
+
+
+class TrackingFollowSolver(ProgressFollowSolver):
+    """P4.1 opt-in dynamic-acceleration and rear-first policy; P3.3 defaults stay unchanged."""
+
+    maximum_horizon = 2.4
+
+    def __init__(self, model, duration=1.2, rolling=True, acceleration_target='bounded',
+                 rear_priority=True, **kwargs):
+        """Use the same local free-terminal family over .8–2.4s without a forced far endpoint."""
+        super().__init__(model, duration, rolling, acceleration_target=acceleration_target,
+                         rear_priority=rear_priority, **kwargs)

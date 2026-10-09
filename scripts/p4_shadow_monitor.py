@@ -3,6 +3,7 @@
 import argparse
 import json
 from pathlib import Path
+import signal
 import threading
 import time
 
@@ -15,16 +16,23 @@ def run(output):
     """Read only; truth is never published or passed to the planner/control receiver."""
     import rclpy
     from rclpy.node import Node
-    from rclpy.qos import qos_profile_sensor_data
+    from rclpy.signals import SignalHandlerOptions
+    from rclpy.qos import (
+        qos_profile_sensor_data, QoSProfile, DurabilityPolicy, ReliabilityPolicy,
+    )
     from uav_usv_interfaces.msg import (
         ControllerDiagnostic, UavState, TargetState, TargetObservation, TargetPrediction,
-        FollowPlanAck, FollowTrajectory, MissionState,
+        FollowPlanAck, FollowTrajectory, FollowReceiverState, MissionState,
     )
     from px4_msgs.msg import TrajectorySetpoint, VehicleAttitude, VehicleStatus
     from gz.msgs10.clock_pb2 import Clock
     from gz.msgs10.pose_v_pb2 import Pose_V
     from gz.transport13 import Node as GzNode
-    rclpy.init()
+    rclpy.init(signal_handler_options=SignalHandlerOptions.NO)
+    stopping = threading.Event()
+    handlers = {sig: signal.getsignal(sig) for sig in (signal.SIGINT, signal.SIGTERM)}
+    for sig in handlers:
+        signal.signal(sig, lambda *_: stopping.set())
     node = Node('p4_offline_evidence_monitor')
     stream = output.open('x')
     lock, latest = threading.Lock(), {}
@@ -82,11 +90,13 @@ def run(output):
               mission=message.mission_id, generation=message.clock_generation,
               state=message.state, reasons=list(message.reasons), receiver=message.receiver,
               active=message.active_plan_id, pending=message.pending_plan_id,
-              owner=message.control_owner, replaced=message.replaced)
+              owner=message.control_owner, replaced=message.replaced,
+              receiver_boot=message.receiver_boot_id, planner_boot=message.planner_boot_id)
 
     def graph():
         topics = ('/fmu/in/trajectory_setpoint', '/fmu/in/offboard_control_mode',
-                  '/fmu/in/vehicle_command', '/control/follow_ack', '/planning/follow_trajectory')
+                  '/fmu/in/vehicle_command', '/control/follow_ack', '/planning/follow_trajectory',
+                  '/control/follow_receiver_state')
         publishers = {t: [dict(node=e.node_name, namespace=e.node_namespace,
                                type=e.topic_type, gid=list(e.endpoint_gid))
                           for e in node.get_publishers_info_by_topic(t)] for t in topics}
@@ -126,10 +136,22 @@ def run(output):
                                  sensor),
         node.create_subscription(TrajectorySetpoint, '/control/reference', reference, 10),
         node.create_subscription(ControllerDiagnostic, '/control/diagnostic', diagnostic, 10),
+        node.create_subscription(FollowReceiverState, '/control/follow_receiver_state',
+                                 lambda m: write(
+                                     'receiver_epoch', stamp=seconds(m.stamp),
+                                     boot=m.receiver_boot_id, generation=m.clock_generation,
+                                     mission=m.mission_id, prediction=m.prediction_sequence_id,
+                                     holding=m.holding_qualified, bridge=m.bridge_qualified),
+                                 QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL,
+                                            reliability=ReliabilityPolicy.RELIABLE)),
         node.create_subscription(FollowPlanAck, '/control/follow_ack', ack, 10),
         node.create_subscription(FollowTrajectory, '/planning/follow_trajectory',
                                  lambda m: write(
                                      'proposal', plan=m.plan_id, stamp=seconds(m.published_stamp),
+                                     receiver_boot=m.receiver_boot_id,
+                                     planner_boot=m.planner_boot_id,
+                                     generation=m.clock_generation,
+                                     prediction=m.prediction_sequence_id,
                                      input_until=seconds(m.input_valid_until),
                                      start=seconds(m.execution_start_stamp),
                                      end=seconds(m.execution_end_stamp),
@@ -149,7 +171,12 @@ def run(output):
         ros_subscriptions=len(subscriptions), timer_period=timer.timer_period_ns/1e9,
         numerical_library=np.__version__)
     try:
-        rclpy.spin(node)
+        while rclpy.ok() and not stopping.is_set():
+            rclpy.spin_once(node, timeout_sec=.1)
+    except RuntimeError as error:
+        if not stopping.is_set():
+            raise
+        write('requested_shutdown_exception', error=str(error))
     except KeyboardInterrupt:
         pass
     finally:
@@ -160,6 +187,8 @@ def run(output):
             rclpy.shutdown()
         with lock:
             stream.close()
+        for sig, handler in handlers.items():
+            signal.signal(sig, handler)
 
 
 if __name__ == '__main__':

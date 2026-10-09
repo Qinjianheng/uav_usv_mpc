@@ -45,7 +45,9 @@ def curve_from_message(message):
                        yaw=tuple(map(tuple, np.asarray(message.yaw_coefficients).reshape(-1, 4))),
                        frame=message.frame_id, constraint_version=message.constraint_version,
                        camera_version=message.camera_version,
-                       holding_model=message.holding_model_id)
+                       holding_model=message.holding_model_id,
+                       receiver_boot_id=message.receiver_boot_id,
+                       planner_boot_id=message.planner_boot_id)
 
 
 def proposal_from_event(event, now):

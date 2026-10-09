@@ -10,6 +10,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/ControllerDiagnostic.msg"
   "msg/FollowTrajectory.msg"
   "msg/FollowPlanAck.msg"
+  "msg/FollowReceiverState.msg"
   "msg/InterceptTrajectory.msg"
   "msg/InterceptResult.msg"
   "msg/MissionState.msg"

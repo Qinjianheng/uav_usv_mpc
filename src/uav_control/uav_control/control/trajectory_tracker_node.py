@@ -10,7 +10,7 @@ from px4_msgs.msg import OffboardControlMode, TrajectorySetpoint
 from px4_msgs.msg import VehicleCommand, VehicleStatus
 from rclpy.node import Node
 from rclpy.qos import DurabilityPolicy, HistoryPolicy, QoSProfile
-from rclpy.qos import ReliabilityPolicy
+from rclpy.qos import ReliabilityPolicy, qos_profile_sensor_data
 from std_msgs.msg import Bool
 from uav_usv_interfaces.msg import ControllerDiagnostic, InterceptTrajectory
 from uav_usv_interfaces.msg import MissionState, PlannerDiagnostic
@@ -336,12 +336,22 @@ class TrajectoryTrackerNode(Node):
         # Safety qualification and initial bridge are absent: no opt-in can bypass this gate.
         self.follow_minco_authorized = False
         self.follow_generation = 0
-        self.follow_last_epoch = 0.
         self.follow_receiver = None
         if self.follow_minco_requested or self.get_parameter('follow_minco_shadow_check').value:
             from uav_control.guidance.follow_contract import FollowReceiver
             from uav_usv_interfaces.msg import FollowTrajectory, FollowPlanAck
+            from uav_control.guidance.follow_epoch import ReceiverClock
+            from uav_usv_interfaces.msg import FollowReceiverState, UavState
+            self.follow_clock = ReceiverClock()
             self.follow_receiver = FollowReceiver()
+            epoch_qos = QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL,
+                                   reliability=ReliabilityPolicy.RELIABLE)
+            self.follow_epoch_pub = self.create_publisher(
+                FollowReceiverState, '/control/follow_receiver_state', epoch_qos)
+            self.follow_epoch_sub = self.create_subscription(
+                UavState, '/navigation/uav_state', self._follow_native_epoch,
+                qos_profile_sensor_data)
+            self.follow_epoch_timer = self.create_timer(.05, self._publish_follow_epoch)
             self.follow_ack_pub = self.create_publisher(FollowPlanAck, '/control/follow_ack', 10)
             self.follow_sub = self.create_subscription(
                 FollowTrajectory, '/planning/follow_trajectory',
@@ -752,13 +762,30 @@ class TrajectoryTrackerNode(Node):
             self.current_heading = heading
         self._process_pending_trajectory()
 
+    def _follow_native_epoch(self, message):
+        """Observe native sample resets independently; never replace original navigation state."""
+        try:
+            self.follow_clock.observe(self._ros_seconds(), int(message.native_timestamp_sample))
+        except (ValueError, TypeError):
+            pass
+
+    def _publish_follow_epoch(self):
+        """Actual receiver owns this read-only heartbeat; it grants no holding or bridge."""
+        from uav_usv_interfaces.msg import FollowReceiverState
+        from uav_control.controllers.follow_transport import stamp
+        context = self._follow_context()
+        message = FollowReceiverState()
+        message.stamp, message.receiver = stamp(context.now), 'trajectory_tracker_node'
+        message.receiver_boot_id = self.follow_clock.boot_id
+        message.clock_generation, message.mission_id = context.generation, context.mission_id
+        message.prediction_sequence_id = context.prediction_id
+        self.follow_epoch_pub.publish(message)
+
     def _follow_context(self):
         """Build local receiver context; never accept a planner-supplied clock or boundary."""
         from uav_control.guidance.follow_contract import ReceiverContext
         now = self._ros_seconds()
-        if self.follow_last_epoch and now < self.follow_last_epoch:
-            self.follow_generation += 1
-        self.follow_last_epoch = now
+        self.follow_generation = self.follow_clock.observe(now)
         prediction = self.latest_prediction
         fresh = bool(self.latest_state and 0 <= now-self.latest_state.stamp <= .125
                      and self._prediction_fresh(now))
@@ -768,7 +795,7 @@ class TrajectoryTrackerNode(Node):
             self.mission_state == MissionState.FOLLOW,
             self.offboard_active, self.vehicle_armed,
             bool(fresh and self.visibility_decision and self.visibility_decision.locked
-                 and not self.safe_recovery_latched))
+                 and not self.safe_recovery_latched), receiver_boot_id=self.follow_clock.boot_id)
 
     def follow_trajectory_callback(self, message):
         """Real receiver rejection ACK. Qualification failure never mutates original control."""
@@ -782,7 +809,9 @@ class TrajectoryTrackerNode(Node):
         except (ValueError, TypeError, OverflowError, FloatingPointError, LinAlgError):
             ack = FollowAck(int(message.plan_id), int(message.mission_id),
                             int(message.clock_generation), context.now, 'REJECTED',
-                            ('INVALID_COEFFICIENTS',))
+                            ('INVALID_COEFFICIENTS',),
+                            receiver_boot_id=context.receiver_boot_id,
+                            planner_boot_id=getattr(message, 'planner_boot_id', ''))
         self.follow_ack_pub.publish(ack_message(ack))
 
     def vehicle_status_callback(self, message):

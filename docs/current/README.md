@@ -23,6 +23,9 @@
 | [P4 滚动 FOLLOW 研究验证](p4_rolling_follow_validation.md) | 进展目标、滚动消融、验收与未获准接管原因 |
 | [P4 FOLLOW 专用接口](p4_follow_interface_contract.md) | 完整系数、真实拒绝 ACK、TTL 与持有/桥接门禁 |
 | [P4 原 FOLLOW 与影子比较](p4_closed_loop_comparison.md) | 本轮实际运动、FOV、负载、故障与证据限制 |
+| [P4.1 跟随优化](p41_follow_tracking_optimization.md) | 动态参考加速度、时域和因果滚动消融 |
+| [P4.2 安全资格](p42_follow_safety_qualification.md) | 共享时间代、新预测重验和仍关闭的接管门禁 |
+| [P4.2 本轮仿真](p42_closed_loop_validation.md) | 独立重复、真实 ACK、故障与未执行项 |
 | [整理交付](repository_cleanup.md) | 清点、规模、归档和实际检查结果 |
 | [源码冗余清理](redundancy_cleanup.md) | 确认移出项、保留理由、恢复与回归 |
 

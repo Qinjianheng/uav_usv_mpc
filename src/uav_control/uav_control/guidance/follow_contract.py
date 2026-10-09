@@ -34,6 +34,8 @@ class FollowCurve:
     constraint_version: str = 'constraints-p4-v1'
     camera_version: str = 'camera-p1-v1'
     holding_model: str = ''
+    receiver_boot_id: str = ''
+    planner_boot_id: str = ''
 
     def fingerprint(self):
         """Bind independent approval to every coefficient, epoch and identity."""
@@ -70,6 +72,7 @@ class ReceiverContext:
     armed: bool
     visible: bool
     boundary: tuple = ()
+    receiver_boot_id: str = ''
 
 
 @dataclass(frozen=True)
@@ -94,6 +97,8 @@ class FollowAck:
     receiver: str = 'trajectory_tracker_node'
     active_plan_id: int = 0
     pending_plan_id: int = 0
+    receiver_boot_id: str = ''
+    planner_boot_id: str = ''
 
 
 def curve_errors(c):
@@ -174,11 +179,13 @@ class FollowReceiver:
         """Require independent holding and first bridge proofs; default to fail closed."""
         self.safety_validator, self.bridge = safety_validator, bridge
         self.pending, self.active, self.seen, self.last_now = None, None, set(), None
+        self.planner_boot, self.retired_planners = '', set()
 
     def _ack(self, c, ctx, state, reasons=()):
         return FollowAck(c.plan_id, c.mission_id, c.generation, ctx.now, state, tuple(reasons),
                          active_plan_id=self.active.plan_id if self.active else 0,
-                         pending_plan_id=self.pending.plan_id if self.pending else 0)
+                         pending_plan_id=self.pending.plan_id if self.pending else 0,
+                         receiver_boot_id=ctx.receiver_boot_id, planner_boot_id=c.planner_boot_id)
 
     @staticmethod
     def context_errors(c, ctx):
@@ -189,12 +196,25 @@ class FollowReceiver:
             (not ctx.armed, 'NOT_ARMED'), (not ctx.visible, 'TARGET_NOT_LOCKED'),
             (c.mission_id != ctx.mission_id, 'MISSION_CHANGED'),
             (c.generation != ctx.generation, 'CLOCK_GENERATION_CHANGED'),
+            (c.receiver_boot_id != ctx.receiver_boot_id, 'RECEIVER_RESTARTED'),
             (c.prediction_id != ctx.prediction_id, 'PREDICTION_CHANGED')) if condition]
 
     def propose(self, c, ctx):
         """Receiver validation cannot trust planner validation flags, TTLs or model strings."""
         errors = curve_errors(c)+self.context_errors(c, ctx)
-        key = (c.mission_id, c.generation, c.plan_id)
+        if c.planner_boot_id in self.retired_planners:
+            errors.append('PLANNER_BOOT_REPLAY')
+        elif (c.planner_boot_id and c.planner_boot_id != self.planner_boot
+              and not self.context_errors(c, ctx)
+              and not any(e != 'HOLDING_DOES_NOT_COVER' for e in errors)
+              and max(c.navigation_stamp, c.attitude_stamp, c.observation_stamp, c.source_stamp)
+              <= ctx.now < min(c.input_until, c.start)):
+            if self.planner_boot:
+                self.retired_planners.add(self.planner_boot)
+                self.active, self.pending = None, None
+                errors.append('PLANNER_RESTARTED')
+            self.planner_boot = c.planner_boot_id
+        key = (c.receiver_boot_id, c.planner_boot_id, c.mission_id, c.generation, c.plan_id)
         if key in self.seen:
             errors.append('PLAN_ID_REPLAY')
         self.seen.add(key)

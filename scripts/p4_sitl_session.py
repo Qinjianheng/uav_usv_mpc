@@ -10,6 +10,8 @@ import socket
 import subprocess
 import time
 
+from experiment_source_snapshot import freeze_sources
+
 
 WORKSPACE = Path(__file__).resolve().parents[1]
 
@@ -104,6 +106,7 @@ def run(root, shadow, follow_seconds, watchdog, kill_planner_after=None):
         ('UAV_USV_', 'ROS_', 'GZ_', 'OPENBLAS_', 'OMP_'))}, indent=2))
     initial_ulogs = set(Path('/home/qin/Projects/PX4-Autopilot/build/px4_sitl_default/rootfs/log')
                         .rglob('*.ulg'))
+    freeze_sources(root, WORKSPACE)
     console = (root/'launcher.txt').open('x')
     command = [str(WORKSPACE/'scripts/uav_lab.sh'), '--no-build']
     launcher = subprocess.Popen(command, cwd=WORKSPACE, env=env, stdin=subprocess.PIPE,
@@ -232,6 +235,8 @@ def run(root, shadow, follow_seconds, watchdog, kill_planner_after=None):
         monitor_log.close()
         ended = dict(start=start, ended=time.time(), reason=reason, x_time=x_time,
                      identities=identities,
+                     monitor_returncode=monitor.returncode,
+                     launcher_returncode=launcher.returncode,
                      still_alive=[e for e in identities.values() if matches(e)])
         (root/'watchdog_end.json').write_text(json.dumps(ended, indent=2))
         (root/'owned_load.json').write_text(json.dumps(loads, indent=2))

@@ -2,6 +2,7 @@
 """Read-only native/ROS evidence analysis with explicit evaluation layers and phase windows."""
 import argparse
 from collections import Counter
+from dataclasses import replace
 import csv
 import json
 from pathlib import Path
@@ -34,6 +35,13 @@ def read(path):
     return rows, errors
 
 
+def rendered_marker_visibility(position, rotation, marker_center, model):
+    """Treat Gazebo's rendered entity pose as its centre, without applying height twice."""
+    sphere = replace(model.target, center_offset_ned=(0., 0., 0.))
+    return evaluate_visibility(position, rotation, marker_center, model.intrinsics,
+                               model.extrinsics, sphere, model.visibility)
+
+
 def analyze(root):
     """Evaluate original flown FOLLOW separately from unexecuted research proposals."""
     raw, malformed = read(root/'offline_evidence.jsonl')
@@ -63,8 +71,7 @@ def analyze(root):
             enu_to_ned = np.array(((0., 1., 0.), (1., 0., 0.), (0., 0., -1.)))
             rotation = (enu_to_ned @ body_frd_to_ned_from_quaternion(uav['q'])
                         @ np.diag((1., -1., -1.)))
-            result = evaluate_visibility(uav['p'], rotation, target['p'], model.intrinsics,
-                                         model.extrinsics, model.target, model.visibility)
+            result = rendered_marker_visibility(uav['p'], rotation, target['p'], model)
             geometry.append(dict(stamp=float(np.interp(uav['sim'], times, epochs)),
                                  valid=result.whole_target_safe,
                                  horizontal=result.horizontal_margin_rad,
