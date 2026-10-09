@@ -224,12 +224,12 @@ class PredictionEngine:
 
         state = self.latest_state
         samples = []
-        for relative_time in self._sample_times():
-            predicted = self.predictor.predict(
-                *state.position,
-                *state.velocity,
-                relative_time,
-            )
+        times = self._sample_times()
+        batch = getattr(self.predictor, 'predict_many', None)
+        predictions = (batch(*state.position, *state.velocity, times) if batch else
+                       tuple(self.predictor.predict(*state.position, *state.velocity, t)
+                             for t in times))
+        for relative_time, predicted in zip(times, predictions):
             acceleration = self.predictor.acceleration(
                 predicted[3],
                 predicted[4],

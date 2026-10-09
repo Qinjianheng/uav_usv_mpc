@@ -125,20 +125,36 @@ class FollowProblem:
         ref[:, 2] = self.limits.flight_altitude
         return ref, v, heading
 
-    def assess(self, times, p, v, a, j, yaw, rate):
+    def assess(self, times, p, v, a, j, yaw, rate, batch=False):
         """Evaluate physical margins and original whole-target geometry at common times."""
         targets, _ = self.target_state(times)
         views, tilts, thrusts = [], [], []
-        for i in range(len(times)):
-            attitude = planned_attitude(a[i], yaw[i], self.model.attitude_config)
-            tilts.append(attitude.tilt_rad if attitude.tilt_rad is not None else math.pi)
-            thrusts.append(attitude.specific_thrust or 0.)
-            rotation = attitude.rotation_frd_to_ned
-            if times[i] == 0. and not isinstance(self.request, FutureRequest):
-                rotation = self.request.actual_rotation
-            views.append(evaluate_visibility(
-                p[i], rotation, targets[i], self.model.intrinsics,
-                self.model.extrinsics, self.model.target, self.model.visibility))
+        if batch:
+            from uav_control.guidance.camera_visibility_batch import (
+                attitude_batch, visibility_batch,
+            )
+            attitudes = attitude_batch(a, yaw, self.model.attitude_config)
+            tilts = [w.tilt_rad if w.tilt_rad is not None else math.pi for w in attitudes]
+            thrusts = [w.specific_thrust or 0. for w in attitudes]
+            rotations = np.array([w.rotation_frd_to_ned if w.valid else
+                                  np.full((3, 3), np.nan) for w in attitudes])
+            if not isinstance(self.request, FutureRequest):
+                rotations[np.asarray(times) == 0.] = self.request.actual_rotation
+            views = visibility_batch(p, rotations, targets, self.model.intrinsics,
+                                     self.model.extrinsics, self.model.target,
+                                     self.model.visibility)
+        else:
+            for i in range(len(times)):
+                attitude = planned_attitude(a[i], yaw[i], self.model.attitude_config)
+                tilts.append(attitude.tilt_rad if attitude.tilt_rad is not None
+                             else math.pi)
+                thrusts.append(attitude.specific_thrust or 0.)
+                rotation = attitude.rotation_frd_to_ned
+                if times[i] == 0. and not isinstance(self.request, FutureRequest):
+                    rotation = self.request.actual_rotation
+                views.append(evaluate_visibility(
+                    p[i], rotation, targets[i], self.model.intrinsics,
+                    self.model.extrinsics, self.model.target, self.model.visibility))
         c = self.limits
         descent = np.maximum(v[:, 2], 0.)
         margin = {

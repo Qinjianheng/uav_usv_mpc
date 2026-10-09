@@ -24,6 +24,24 @@ def viewpoint_state(position, velocity, acceleration, heading, heading_rate,
     return p, v, a
 
 
+def viewpoint_state_batch(position, velocity, acceleration, heading, omega, alpha,
+                          distances, betas, altitude):
+    """Batch the constant-beta/d subset of the same observation reference model."""
+    d, beta = np.asarray(distances), np.asarray(betas)
+    if (d.ndim != 1 or beta.shape != d.shape or np.any(d <= 0)
+            or not np.all(np.isfinite(np.r_[position, velocity, acceleration, heading,
+                                            omega, alpha, d, beta, altitude]))):
+        raise ValueError('INVALID_VIEWPOINT_STATE')
+    theta = heading+beta
+    e = np.c_[np.cos(theta), np.sin(theta), np.zeros(len(d))]
+    n = np.c_[-e[:, 1], e[:, 0], np.zeros(len(d))]
+    p = np.asarray(position)-d[:, None]*e
+    v = np.asarray(velocity)-d[:, None]*omega*n
+    a = np.asarray(acceleration)+d[:, None]*omega**2*e-d[:, None]*alpha*n
+    p[:, 2], v[:, 2], a[:, 2] = altitude, 0., 0.
+    return p, v, a
+
+
 def forecast_viewpoint(problem, time, beta=0., distance=None):
     """
     Fit local forecast heading/speed, with explicit acceleration/jerk-derived bounds.

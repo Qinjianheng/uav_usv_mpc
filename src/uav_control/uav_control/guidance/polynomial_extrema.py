@@ -21,8 +21,7 @@ def derivative_peak(coefficients, durations, derivative, axes):
         polys = piece[derivative:, list(axes)] * factors[:, None]
         squared = np.zeros(2 * len(polys) - 1)
         for poly in polys.T:
-            squared += np.polynomial.polynomial.polymul(poly, poly).tolist() + [0.] * (
-                len(squared) - len(np.polynomial.polynomial.polymul(poly, poly)))
+            squared += np.convolve(poly, poly)
         slope = np.polynomial.polynomial.polyder(squared)
         roots = np.polynomial.polynomial.polyroots(slope)
         candidates = [0., float(duration)] + [float(r.real) for r in roots

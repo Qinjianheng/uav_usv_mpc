@@ -33,6 +33,7 @@ class MincoConfig:
     yaw_weight: float = .05
     spatial_radius: float = .75
     validation_step: float = .05
+    batch_validation: bool = False
     feasible_priority: bool = False
     fast_feasible_seed: bool = False
 
@@ -199,7 +200,7 @@ class FollowMincoOptimizer:
                 p, v, a, j = _samples(trajectory, query)
                 angle, rate = yaw.sample(query)
                 return (p, v, a, j, angle, rate,
-                        *problem.assess(query, p, v, a, j, angle, rate))
+                        *problem.assess(query, p, v, a, j, angle, rate, batch=c.batch_validation))
 
             assessed = assessment(times)
             # Refine near any tight margin, and where adjacent feasibility differs.

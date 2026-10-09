@@ -283,12 +283,14 @@ class TargetPredictorNode(Node):
             mission_id=self.mission_id,
             sequence_id=self.sequence_id,
         )
-        compute_time = time.perf_counter() - start
-        self.prediction_pub.publish(prediction_to_message(
+        message = prediction_to_message(
             result,
-            compute_time=compute_time,
+            compute_time=0.,
             frame_id=self.frame_id,
-        ))
+        )
+        # Include Python ROS message construction; DDS/receiver delay is separate.
+        message.compute_time = time.perf_counter() - start
+        self.prediction_pub.publish(message)
         if result.valid:
             self.last_prediction_observation_stamp = result.observation_stamp
 

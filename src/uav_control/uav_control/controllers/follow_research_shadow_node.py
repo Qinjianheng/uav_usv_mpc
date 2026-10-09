@@ -23,7 +23,10 @@ class FollowResearchShadowNode(FollowMpcShadowNode):
                               ('visibility_weight', 20.), ('minco_engine', 'legacy'),
                               ('initializer_strategy', 'legacy'), ('greedy_strategy', 'D'),
                               ('dynamic_endpoint', True), ('fast_feasible_seed', True),
-                              ('greedy_minimum_distance', 3.), ('greedy_maximum_distance', 10.)):
+                              ('greedy_minimum_distance', 3.), ('greedy_maximum_distance', 10.),
+                              ('p32_profile_every', 0), ('p32_detailed_diagnostics', False),
+                              ('p32_initialization_cap', .012), ('short_horizon', 1.2),
+                              ('short_rolling_hint', True)):
             self.declare_parameter(name, default)
         mode = self.get_parameter('research_mode').value
         optimizer = MincoConfig(mode=self.get_parameter('minco_mode').value,
@@ -32,11 +35,11 @@ class FollowResearchShadowNode(FollowMpcShadowNode):
                                 budget=config.solve_budget)
         optimizer.validate()
         engine = self.get_parameter('minco_engine').value
-        if engine not in ('legacy', 'p31'):
+        if engine not in ('legacy', 'p31', 'p32', 'p32_short'):
             raise ValueError('unsupported minco engine')
         fast, greedy = None, None
         initialization = self.get_parameter('initializer_strategy').value
-        if engine == 'p31':
+        if engine in ('p31', 'p32', 'p32_short'):
             from uav_control.guidance.fast_follow_minco import FastConfig
             from uav_control.guidance.adaptive_follow_initializer import GreedyConfig
             fast = FastConfig(freshness_budget=True, fast_feasible_seed=bool(
@@ -51,6 +54,23 @@ class FollowResearchShadowNode(FollowMpcShadowNode):
         elif initialization != 'legacy':
             raise ValueError('new initialization requires explicit p31 engine')
         solver = FollowResearchSolver(mode, config, optimizer, fast, greedy, initialization)
+        if engine in ('p32', 'p32_short'):
+            if mode != 'greedy_minco':
+                raise ValueError('p32 requires greedy_minco shadow mode')
+            if engine == 'p32_short':
+                from uav_control.controllers.short_follow_solver import ShortHorizonFollowSolver
+                solver = ShortHorizonFollowSolver(solver.model, duration=float(
+                    self.get_parameter('short_horizon').value), rolling=bool(
+                    self.get_parameter('short_rolling_hint').value), wall_clock=lambda: (
+                    self.get_clock().now().nanoseconds/1e9))
+            else:
+                from uav_control.controllers.realtime_follow_solver import RealtimeFollowSolver
+                solver = RealtimeFollowSolver(solver.model, optimizer, wall_clock=lambda: (
+                    self.get_clock().now().nanoseconds/1e9), profile_every=int(
+                        self.get_parameter('p32_profile_every').value), detailed=bool(
+                        self.get_parameter('p32_detailed_diagnostics').value),
+                    initialization_cap=float(
+                            self.get_parameter('p32_initialization_cap').value))
         factory = make_shadow_request
         if mode != 'mpc_seed':
             lead = float(self.get_parameter('execution_lead').value)
