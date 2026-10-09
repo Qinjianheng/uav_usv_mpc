@@ -1,0 +1,170 @@
+{
+  "all": {
+    "events": 402,
+    "completions": 67,
+    "core_statuses": {
+      "NO_REACHABLE_VISIBLE_CANDIDATE": 18,
+      "SAMPLED_FEASIBLE": 9,
+      "DYNAMIC_INFEASIBLE": 38,
+      "DEADLINE_EXCEEDED": 2
+    },
+    "admission_statuses": {
+      "NO_REACHABLE_VISIBLE_CANDIDATE": 18,
+      "STALE_INPUT": 49
+    },
+    "reject_statuses": {
+      "MISSION_NOT_FOLLOW": 141,
+      "INVALID_PREDICTION": 165,
+      "MISSION_CHANGED": 1,
+      "PREDICTION_UNAVAILABLE": 28
+    },
+    "published_valid": 0,
+    "marker_valid": 0,
+    "whole_cycle_s": {
+      "count": 67,
+      "p50": 0.3082645579997916,
+      "p95": 0.44036363709892606,
+      "p99": 0.5207992513787758
+    },
+    "phase_seconds": {
+      "initialization": {
+        "count": 65,
+        "p50": 0.0066020859994750936,
+        "p95": 0.014264102000015553,
+        "p99": 0.01847403112100437
+      },
+      "preparation": {
+        "count": 47,
+        "p50": 0.0003679999972518999,
+        "p95": 0.0020400822999363266,
+        "p99": 0.0034505069214355896
+      },
+      "minco_optimization": {
+        "count": 47,
+        "p50": 0.24633928000184824,
+        "p95": 0.3503764876004423,
+        "p99": 0.3808874187593028
+      },
+      "validation": {
+        "count": 47,
+        "p50": 0.05058024400204886,
+        "p95": 0.09059449819978906,
+        "p99": 0.1062781463786814
+      },
+      "yaw_construction_within_optimization": {
+        "count": 47,
+        "p50": 0.027930870004638564,
+        "p95": 0.039786416127026304,
+        "p99": 0.04346972836479836
+      },
+      "total": {
+        "count": 67,
+        "p50": 0.2929186139990634,
+        "p95": 0.42026604189850325,
+        "p99": 0.5009879673594696
+      }
+    },
+    "metrics": {
+      "visible_fraction": {
+        "count": 47,
+        "p50": 1.0,
+        "p95": 1.0,
+        "p99": 1.0
+      },
+      "minimum_horizontal_margin": {
+        "count": 47,
+        "p50": 0.6566934140423024,
+        "p95": 0.7366799475062533,
+        "p99": 0.7475283585388754
+      },
+      "minimum_vertical_margin": {
+        "count": 47,
+        "p50": 0.26796752946514724,
+        "p95": 0.3208762708116784,
+        "p99": 0.32791587405259803
+      },
+      "follow_rmse": {
+        "count": 47,
+        "p50": 0.166667185211052,
+        "p95": 0.3010356340888253,
+        "p99": 0.3677028157604664
+      },
+      "jerk_integral": {
+        "count": 47,
+        "p50": 310.5721934707202,
+        "p95": 1654.446500307994,
+        "p99": 2472.438800667517
+      },
+      "maximum_horizontal_speed": {
+        "count": 47,
+        "p50": 4.148014615663301,
+        "p95": 4.747839028359459,
+        "p99": 4.929631363446479
+      },
+      "maximum_horizontal_acceleration": {
+        "count": 47,
+        "p50": 1.6455794987517645,
+        "p95": 3.7816803225429454,
+        "p99": 3.9927714144911803
+      },
+      "maximum_horizontal_jerk": {
+        "count": 47,
+        "p50": 10.832329058213908,
+        "p95": 21.35408652329691,
+        "p99": 25.571336932684616
+      },
+      "maximum_yaw_rate": {
+        "count": 47,
+        "p50": 0.3974953090524327,
+        "p95": 0.9950006894358623,
+        "p99": 1.1489512146046756
+      },
+      "maximum_tilt_rad": {
+        "count": 47,
+        "p50": 0.16674407543255143,
+        "p95": 0.36636204874641226,
+        "p99": 0.387273452386863
+      }
+    },
+    "violated_constraints": {
+      "horizontal_jerk": 38,
+      "horizontal_acceleration": 7,
+      "yaw_rate": 3
+    },
+    "input_age_seconds": {
+      "navigation_stamp": {
+        "count": 67,
+        "p50": 0.011927604675292969,
+        "p95": 0.032984685897827146,
+        "p99": 0.03490882396697998
+      },
+      "observation_stamp": {
+        "count": 67,
+        "p50": 0.057652950286865234,
+        "p95": 0.08194673061370848,
+        "p99": 0.0835262680053711
+      },
+      "prediction_source_stamp": {
+        "count": 67,
+        "p50": 0.03162860870361328,
+        "p95": 0.0519214391708374,
+        "p99": 0.05529949188232422
+      }
+    },
+    "execution_lead_s": {
+      "count": 67,
+      "p50": 0.15000009536743164,
+      "p95": 0.15000009536743164,
+      "p99": 0.15000009536743164
+    },
+    "prediction_expires_before_execution": 67,
+    "scheduling_and_serialization_over_solver_s": {
+      "count": 67,
+      "p50": 0.019207858003937872,
+      "p95": 0.02670272589894011,
+      "p99": 0.031190084901027162
+    }
+  },
+  "research_only": true,
+  "accepted_by_tracker": false
+}

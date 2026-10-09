@@ -1,0 +1,138 @@
+{
+  "files": [
+    {
+      "bytes": 5272,
+      "path": "configuration.json",
+      "sha256": "36f7abca61070bdcdebdc3f686e69915287088d9ea2a5901156809ff3ed31571"
+    },
+    {
+      "bytes": 5261703,
+      "path": "records.jsonl",
+      "sha256": "6f1fd5d7faf15fe565f7e922e43399c8e393b93ad12a10a465161073a782fad9"
+    },
+    {
+      "bytes": 42721,
+      "path": "summary.json",
+      "sha256": "fa46b24239d077734a9dee8bfc6ad724c110c91bb6da2fa81abd15760738082b"
+    }
+  ],
+  "provenance": {
+    "acceptance_boundary": "research seed only; never accepted by flight tracker",
+    "common_boundary_policy": "rear reference endpoint P/V/A",
+    "config": {
+      "allow_synthetic_predictions": false,
+      "braking_acceleration": 2.5,
+      "control_blocks": 2,
+      "dt": 0.2,
+      "flight_altitude": -5.0,
+      "follow_distance": 5.0,
+      "horizon_steps": 12,
+      "maximum_horizontal_acceleration": 3.0,
+      "maximum_horizontal_jerk": 6.0,
+      "maximum_horizontal_speed": 6.2,
+      "maximum_input_age": 0.125,
+      "maximum_iterations": 4,
+      "maximum_vertical_acceleration": 3.0,
+      "maximum_vertical_jerk": 4.0,
+      "maximum_vertical_speed": 4.0,
+      "maximum_yaw_rate": 1.0,
+      "reserve_clearance": 0.5,
+      "response_delay": 0.15,
+      "sea_surface_z": 0.0,
+      "solve_budget": 0.5,
+      "validation_substeps": 2
+    },
+    "continuous_time_guarantee": false,
+    "geometry_and_attitude_config": {
+      "attitude_config": {
+        "angular_error_margin_rad": 0.03,
+        "gravity": 9.80665,
+        "maximum_specific_thrust": 18.0,
+        "maximum_tilt_rad": 0.55,
+        "minimum_specific_thrust": 2.0
+      },
+      "extrinsics": {
+        "rotation_camera_to_body_flu": [
+          [
+            0.882947592858927,
+            0.0,
+            0.4694715627858908
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.4694715627858908,
+            0.0,
+            0.882947592858927
+          ]
+        ],
+        "translation_flu": [
+          0.18,
+          0.0,
+          0.39
+        ]
+      },
+      "intrinsics": {
+        "cx": 320.0,
+        "cy": 240.0,
+        "fx": 269.9681840122649,
+        "fy": 269.9681840122649,
+        "height": 480,
+        "width": 640
+      },
+      "target": {
+        "center_offset_ned": [
+          0,
+          0,
+          -0.42
+        ],
+        "radius": 0.25
+      },
+      "visibility": {
+        "depth_epsilon": 1e-09,
+        "distance_mode": "axial",
+        "horizontal_margin_rad": 0.07,
+        "maximum_distance": 25,
+        "minimum_distance": 0.05,
+        "vertical_margin_rad": 0.07
+      }
+    },
+    "git_head": "15d9f520e4c09bf26716775d3ca642309b8e8789",
+    "git_status": " M docs/current/README.md\n M src/uav_control/setup.py\n M src/uav_control/uav_control/controllers/follow_mpc_shadow_node.py\n?? docs/current/p3_architecture_audit.md\n?? scripts/follow_minco_experiment.py\n?? scripts/test_research_planners.sh\n?? src/uav_control/test/test_follow_minco_experiment.py\n?? src/uav_control/test/test_follow_research_algorithms.py\n?? src/uav_control/test/test_follow_research_runtime.py\n?? src/uav_control/uav_control/controllers/follow_research_shadow_node.py\n?? src/uav_control/uav_control/controllers/follow_research_solver.py\n?? src/uav_control/uav_control/guidance/follow_minco_optimizer.py\n?? src/uav_control/uav_control/guidance/follow_problem.py\n?? src/uav_control/uav_control/guidance/greedy_follow_initializer.py\n?? src/uav_control/uav_control/guidance/yaw_trajectory.py\n?? src/uav_usv_bringup/config/follow_research.yaml\n?? src/uav_usv_bringup/launch/follow_research.launch.py\n",
+    "initialization_reused_across_ablations": true,
+    "input_jsonl": "/home/qin/data/uav_usv_mpc/data/experiments/20261008_p3_follow/f2/shadow/mpc_seed_shadow_1791469853331980842_62040.jsonl",
+    "input_sha256": "c0e67528763709d24e09b21f29731f491d8b0bdd69a14ce2581129a5b26e7c57",
+    "mpc_adapter": "intermediate positions and yaw only; common endpoint retained",
+    "prediction_provenance": "recorded tracking; immutable acquisition epochs",
+    "rolling_state_source": "recorded PVA and explicit future projection",
+    "selection": {
+      "maximum_records": 20,
+      "scanned_line_count": 600,
+      "selected_count": 20,
+      "skipped_noncompletion_count": 580
+    },
+    "source_sha256": {
+      "scripts/follow_minco_experiment.py": "5d302ff456b44517a371920bf96cc3c08098b75b5cbc109a8e60e497e5f2e21f",
+      "scripts/mpc_seed_experiment.py": "05b09352c1f27de7b28729fea4031ef55cfde040ffe55c088a6eb49a7a63e5e9",
+      "src/uav_control/uav_control/controllers/follow_mpc_seed.py": "b66b522cb93a3d6431b2d4fe17a0fc5733c81212fcd6bb39bad99b15f6ac67a1",
+      "src/uav_control/uav_control/guidance/camera_visibility.py": "db3bf2b5e80db1b47474b751b1b4d6008f87993ec10500088c12b88e0880cc57",
+      "src/uav_control/uav_control/guidance/follow_minco_optimizer.py": "688905dea23bbde1ab7649bbf3dd6669efef5adc20c713398b1ccde63b978e5a",
+      "src/uav_control/uav_control/guidance/follow_problem.py": "1be2bc551e587e50dc71a558f09a67b06b3908e4bca0e6446d3eb463eea5e2b5",
+      "src/uav_control/uav_control/guidance/greedy_follow_initializer.py": "b03bdaefed1618e107f8cd0036a086b81282948232870850c753db624b69ec7a",
+      "src/uav_control/uav_control/guidance/minco_trajectory.py": "392fb6c561072e49c9358f5ba2d577ae097f94f17863463d95a240cfa6d7ae8c",
+      "src/uav_control/uav_control/guidance/planned_attitude.py": "3562fd15d18e210a680de43f82cb807b2fdc42af4db1a940ce6a8b5c060acace",
+      "src/uav_control/uav_control/guidance/yaw_trajectory.py": "98060707d47fafdb820b5b7e58da426f710b85946ae27c1dac42a5dea474b268"
+    },
+    "timing_boundary": "data prep through first full record JSON output; timing metadata and final summaries/manifest are excluded from per-candidate end_to_end_s",
+    "variants": [
+      "fixed",
+      "q",
+      "qt",
+      "qt_no_visibility_cost"
+    ],
+    "workspace": "/home/qin/data/uav_usv_mpc"
+  }
+}
