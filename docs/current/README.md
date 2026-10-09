@@ -1,6 +1,6 @@
 # 当前文档入口
 
-本目录描述 `85e13461` 保留的成功控制基线及后续开发状态。当前默认前视 RGB-D、0.15 m 升沉与末端修复另见相机文档和 RGB-D 验证报告。MPC 尚未实现；历史报告与代码细节必须结合当前源码核实。
+本目录描述 `85e13461` 保留的成功控制基线及后续开发状态。当前默认前视 RGB-D、0.15 m 升沉与末端修复另见相机文档和 RGB-D 验证报告。原飞行链仍采用 BCTRA/MINCO/Tracker；P2 MPC 和 P3 FOLLOW MINCO 仅作研究输出，尚未在线接入。历史报告与代码细节必须结合当前源码核实。
 
 | 文档 | 用途 |
 |---|---|
@@ -14,6 +14,9 @@
 | [分析与恢复](analysis_and_recovery.md) | 当前分析入口和历史输入恢复 |
 | [MPC 范围](mpc_scope.md) | 后续实现接口和验收边界 |
 | [P1 相机可见性与 MPC–MINCO 接口](mpc_minco_visibility_design.md) | 纯几何、完整姿态、目标整体视场与共同执行起点 |
+| [P2 MPC 影子验证](mpc_seed_validation.md) | 保留的 MPC 基线、原始时间戳和研究准入结果 |
+| [P3 架构审计](p3_architecture_audit.md) | 节点职责、公共研究入口、轻量图与测试分层 |
+| [P3 贪心与可见性 MINCO 验证](greedy_minco_validation.md) | Q/T/yaw 优化、消融、实际影子结果和在线接入缺口 |
 | [整理交付](repository_cleanup.md) | 清点、规模、归档和实际检查结果 |
 | [源码冗余清理](redundancy_cleanup.md) | 确认移出项、保留理由、恢复与回归 |
 

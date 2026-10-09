@@ -24,6 +24,8 @@ setup(
     },
     entry_points={
         'console_scripts': [
+            'follow_research_shadow_node = '
+            'uav_control.controllers.follow_research_shadow_node:main',
             'follow_mpc_shadow_node = '
             'uav_control.controllers.follow_mpc_shadow_node:main',
             'position_listener = uav_control.position_listener:main',

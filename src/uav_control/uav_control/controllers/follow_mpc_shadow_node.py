@@ -101,7 +101,8 @@ def prediction_from_message(message):
         raise ValueError('INVALID_PREDICTION') from error
 
 
-def make_shadow_request(pose, prediction, mission_id, cycle_id, now, config):
+def make_shadow_request(pose, prediction, mission_id, cycle_id, now, config,
+                        execution_lead=None):
     """Preserve paired PVA/attitude and prediction epochs with strict horizon coverage."""
     if prediction.mission_id != mission_id:
         raise ValueError('MISSION_CHANGED')
@@ -113,7 +114,8 @@ def make_shadow_request(pose, prediction, mission_id, cycle_id, now, config):
             now - prediction.source_stamp) > config.maximum_input_age + 1e-9
             or now >= prediction.valid_until):
         raise ValueError('STALE_INPUT')
-    first = pose.stamp - prediction.source_stamp
+    execution_epoch = pose.stamp if execution_lead is None else now + execution_lead
+    first = execution_epoch - prediction.source_stamp
     end = first + config.dt * config.horizon_steps
     if (first < prediction.prediction_times[0] - 1e-8
             or end > prediction.prediction_times[-1] + 1e-8):
@@ -125,9 +127,13 @@ def make_shadow_request(pose, prediction, mission_id, cycle_id, now, config):
         prediction.source_stamp, prediction.observation_stamp, prediction.sequence_id,
         prediction.valid_until, pose.clock_generation, prediction.frame_id, prediction.source,
     )
-    return MpcRequest(context, (*pose.position, *pose.velocity, *pose.acceleration, yaw),
-                      prediction.prediction_times, prediction.target_positions,
-                      prediction.target_velocities, tuple(map(tuple, rotation)), float(now))
+    request = MpcRequest(context, (*pose.position, *pose.velocity, *pose.acceleration, yaw),
+                         prediction.prediction_times, prediction.target_positions,
+                         prediction.target_velocities, tuple(map(tuple, rotation)), float(now))
+    if execution_lead is not None:
+        from uav_control.guidance.follow_problem import future_request
+        request = future_request(request, execution_lead)
+    return request
 
 
 def completion_rejection(request, config, now, mission_id, generation, elapsed, follow):
@@ -147,6 +153,9 @@ def completion_rejection(request, config, now, mission_id, generation, elapsed, 
         return 'STALE_INPUT'
     if not math.isfinite(elapsed) or elapsed < 0 or elapsed > config.solve_budget:
         return 'CYCLE_DEADLINE_EXCEEDED'
+    if (context.execution_start_stamp > context.navigation_stamp + 1e-9
+            and now >= context.execution_start_stamp):
+        return 'FUTURE_EXECUTION_MISSED'
     return ''
 
 
@@ -159,14 +168,16 @@ def _empty_output(reason):
 class ShadowResearchRunner:
     """Maintain one in-flight request; never queue optimization work behind it."""
 
-    def __init__(self, config, adapter, executor, emit, rate_hz=1.0):
+    def __init__(self, config, adapter, executor, emit, rate_hz=1.0,
+                 solver=None, request_factory=make_shadow_request):
         """Keep subscriptions responsive while one bounded solver uses a worker thread."""
         config.validate()
         if (config.allow_synthetic_predictions or config.maximum_input_age > .125
                 or not math.isfinite(rate_hz) or rate_hz <= 0):
             raise ValueError('shadow requires tracking, <=125ms freshness, and positive rate')
         self.config, self.adapter, self.executor, self.emit = config, adapter, executor, emit
-        self.solver = FollowMpcSeed(config)
+        self.solver = solver if solver is not None else FollowMpcSeed(config)
+        self.request_factory = request_factory
         self.period = 1.0 / rate_hz
         self.mission = {'mission_id': 0, 'state': 0, 'completed': False, 'stamp': 0.0}
         self.mission_revision = 0
@@ -254,6 +265,7 @@ class ShadowResearchRunner:
                   or 'CORE_' + output.get('solver_status', 'REJECTED'))
         return {
             'schema_version': 1, 'event': 'completion' if candidate is not None else 'reject',
+            'research_mode': getattr(self.solver, 'mode', 'mpc_seed'),
             'event_stamp': now, 'accepted_by_tracker': False,
             'request': asdict(request) if request else None,
             'input_provenance': {'paired_navigation': asdict(paired) if paired else None,
@@ -269,6 +281,9 @@ class ShadowResearchRunner:
                                      'target': asdict(self.solver.target),
                                      'visibility': asdict(self.solver.visibility),
                                      'attitude': asdict(self.solver.attitude_config),
+                                     'minco': (asdict(self.solver.optimizer_config)
+                                               if hasattr(self.solver, 'optimizer_config')
+                                               else None),
                                  }},
             'output': output, 'candidate_output': candidate, 'core_result': candidate,
             'admission_status': status,
@@ -300,8 +315,8 @@ class ShadowResearchRunner:
             raise ValueError(pair.status)
         if pair.snapshot.clock_generation != self.adapter.clock_generation:
             raise ValueError('CLOCK_GENERATION_CHANGED')
-        request = make_shadow_request(pair.snapshot, self.prediction, self.mission['mission_id'],
-                                      self.cycle_id + 1, now, self.config)
+        request = self.request_factory(pair.snapshot, self.prediction, self.mission['mission_id'],
+                                       self.cycle_id + 1, now, self.config)
         return request, pair.snapshot
 
     def _finish(self, now, monotonic_now):
@@ -374,9 +389,11 @@ def _json_safe(value):
 class FollowMpcShadowNode(Node):
     """Publish only research String JSON; never publish or alter flight/mission commands."""
 
+    node_name = 'follow_mpc_shadow_node'
+
     def __init__(self):
         """Connect fixed navigation/tracking inputs and trusted Gazebo dual-clock anchors."""
-        super().__init__('follow_mpc_shadow_node')
+        super().__init__(self.node_name)
         if self.get_parameter('use_sim_time').value:
             raise ValueError('shadow acquisition epochs require ROS/system clock')
         for name, value in asdict(MpcConfig()).items():
@@ -396,8 +413,7 @@ class FollowMpcShadowNode(Node):
         directory.mkdir(parents=True, exist_ok=True)
         self.log_path = directory / f'mpc_seed_shadow_{time.time_ns()}_{os.getpid()}.jsonl'
         self.log_file = self.log_path.open('x', encoding='utf-8')
-        self.runner = ShadowResearchRunner(config, self.adapter, self.pool, self._publish_event,
-                                           float(self.get_parameter('shadow_rate_hz').value))
+        self.runner = self.make_runner(config)
         sensor_qos = QoSProfile(depth=10, reliability=ReliabilityPolicy.BEST_EFFORT)
         mission_qos = QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL)
         self.subscriptions_owned = (
@@ -423,6 +439,11 @@ class FollowMpcShadowNode(Node):
         self.timer = self.create_timer(.02, self.tick)
         self.get_logger().info(
             f'MPC SHADOW READY | 1 worker | research only | JSONL={self.log_path}')
+
+    def make_runner(self, config):
+        """Provide a solver injection point while retaining the original MPC default."""
+        return ShadowResearchRunner(config, self.adapter, self.pool, self._publish_event,
+                                    float(self.get_parameter('shadow_rate_hz').value))
 
     def _ros_seconds(self):
         return self.get_clock().now().nanoseconds * 1e-9
