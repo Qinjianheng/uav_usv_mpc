@@ -1,0 +1,29 @@
+1791356341.8711696 [INFO] [launch]: All log files can be found below /tmp/uav_usv_terminal_execution_20261007/rgbd_before2_roslogs/2026-10-07-14-59-01-870371-qin-GLO-FX6-102949
+1791356341.8712816 [INFO] [launch]: Default logging verbosity is set to INFO
+1791356341.9354682 [INFO] [moving_target-1]: process started with pid [102951]
+1791356341.9358659 [INFO] [target_predictor_node-2]: process started with pid [102953]
+1791356341.9360738 [INFO] [target_predictor_node-3]: process started with pid [102955]
+1791356341.9362586 [INFO] [intercept_planner_node-4]: process started with pid [102957]
+1791356341.9364643 [INFO] [trajectory_tracker_node-5]: process started with pid [102959]
+1791356341.9366395 [INFO] [mission_manager_node-6]: process started with pid [102961]
+1791356341.9368014 [INFO] [intercept_evaluator_node-7]: process started with pid [102963]
+1791356341.9369695 [INFO] [target_kalman_filter-8]: process started with pid [102965]
+1791356341.9371274 [INFO] [image_bridge-9]: process started with pid [102967]
+1791356341.9372814 [INFO] [target_bearing_node-10]: process started with pid [102969]
+1791356341.9374595 [INFO] [front_tof_monitor-11]: process started with pid [102971]
+1791356341.9376092 [INFO] [rgbd_target_localizer-12]: process started with pid [102973]
+1791356341.9377489 [INFO] [dual_tof_selector-13]: process started with pid [102975]
+1791356522.0460963 [WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+1791356522.1808338 [INFO] [image_bridge-9]: process has finished cleanly [pid 102967]
+1791356522.2378490 [INFO] [target_predictor_node-2]: process has finished cleanly [pid 102953]
+1791356522.2415254 [INFO] [target_kalman_filter-8]: process has finished cleanly [pid 102965]
+1791356522.2428768 [INFO] [target_predictor_node-3]: process has finished cleanly [pid 102955]
+1791356522.2434287 [INFO] [dual_tof_selector-13]: process has finished cleanly [pid 102975]
+1791356522.2667725 [INFO] [moving_target-1]: process has finished cleanly [pid 102951]
+1791356522.2954834 [ERROR] [mission_manager_node-6]: process has died [pid 102961, exit code 1, cmd '/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/mission_manager_node --ros-args -r __node:=mission_manager_node --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/baseline.yaml'].
+1791356522.3039215 [INFO] [rgbd_target_localizer-12]: process has finished cleanly [pid 102973]
+1791356522.3136191 [ERROR] [intercept_planner_node-4]: process has died [pid 102957, exit code 1, cmd '/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/intercept_planner_node --ros-args -r __node:=intercept_planner_node --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/baseline.yaml'].
+1791356522.3190992 [ERROR] [trajectory_tracker_node-5]: process has died [pid 102959, exit code 1, cmd '/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/trajectory_tracker_node --ros-args -r __node:=trajectory_tracker_node --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/baseline.yaml'].
+1791356522.3273904 [ERROR] [target_bearing_node-10]: process has died [pid 102969, exit code 1, cmd '/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/target_bearing_node --ros-args -r __node:=target_bearing_node --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/baseline.yaml'].
+1791356522.3368709 [ERROR] [intercept_evaluator_node-7]: process has died [pid 102963, exit code 1, cmd '/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/intercept_evaluator_node --ros-args -r __node:=intercept_evaluator_node --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/baseline.yaml --params-file /tmp/launch_params_0ico9lgm'].
+1791356522.3387635 [INFO] [front_tof_monitor-11]: process has finished cleanly [pid 102971]

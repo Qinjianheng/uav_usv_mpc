@@ -1,0 +1,1 @@
+Sandbox launch failed before experiment: native display unavailable, probe segfault during DDS/Gazebo initialization. Preserved incomplete output, not counted as an experiment.

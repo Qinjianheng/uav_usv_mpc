@@ -1,0 +1,42 @@
+[
+  {
+    "path": "scripts/build_workspace.sh",
+    "exit_code": 0,
+    "stderr": ""
+  },
+  {
+    "path": "scripts/start_px4_ros2.sh",
+    "exit_code": 0,
+    "stderr": ""
+  },
+  {
+    "path": "scripts/sync_github.sh",
+    "exit_code": 0,
+    "stderr": ""
+  },
+  {
+    "path": "scripts/uav_lab.sh",
+    "exit_code": 0,
+    "stderr": ""
+  },
+  {
+    "path": "src/px4_msgs/container/build_deb_container.sh",
+    "exit_code": 0,
+    "stderr": ""
+  },
+  {
+    "path": "src/px4_msgs/scripts/build_deb_host.sh",
+    "exit_code": 0,
+    "stderr": ""
+  },
+  {
+    "path": "src/px4_msgs/scripts/generate_changelog.sh",
+    "exit_code": 0,
+    "stderr": ""
+  },
+  {
+    "path": "src/px4_msgs/scripts/generate_release_notes.sh",
+    "exit_code": 0,
+    "stderr": ""
+  }
+]

@@ -1,0 +1,39 @@
+{
+  "result": {
+    "stamp": {
+      "sec": 1791342306,
+      "nanosec": 448685646
+    },
+    "mission_id": 1,
+    "success": true,
+    "outcome": "SUCCESS",
+    "reason": "CAPTURE_RADIUS_REACHED",
+    "detail": "determined by simulation truth in evaluator only",
+    "elapsed_time": 11.247197151184082,
+    "capture_radius": 0.5,
+    "minimum_distance": 0.49865320430355575,
+    "horizontal_distance": 0.4311080024343212,
+    "vertical_error": 0.25060109417018317,
+    "relative_speed": 2.711401004963691,
+    "closing_speed": 2.2649056367386278,
+    "max_horizontal_speed": 6.7023694763954405,
+    "max_vertical_speed": 2.74901681663398,
+    "max_horizontal_acceleration": 5.18477136897043,
+    "max_vertical_acceleration": 3.779757616457369
+  },
+  "committed_command_count_before_result": 0,
+  "minco_entry_speed_drops_over_0p3": [],
+  "last_command_before_result": {
+    "time": 1791342306.4128375,
+    "elapsed": 11.21134901046753,
+    "status": "SAFE_RECOVERY",
+    "plan_id": 0,
+    "speed_xy": 6.324805736541748,
+    "vz": 0.03257964518799214,
+    "locked": false,
+    "remaining": 0.0,
+    "kf_age": Infinity,
+    "prediction_age": Infinity,
+    "safety": "SAFE"
+  }
+}

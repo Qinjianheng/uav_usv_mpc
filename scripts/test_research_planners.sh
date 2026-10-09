@@ -11,7 +11,8 @@ case "${MODE}" in
     algorithm)
         python3 -m pytest -q test/test_camera_visibility.py test/test_planned_attitude.py \
             test/test_minco_trajectory.py test/test_maneuvering_target_predictor.py \
-            test/test_follow_research_algorithms.py test/test_follow_minco_experiment.py \
+            test/test_follow_research_algorithms.py test/test_fast_follow_minco.py \
+            test/test_follow_minco_experiment.py \
             -k 'not existing_rgbd_forward_inverse_and_intrinsics_agree'
         ;;
     related|full)
@@ -23,7 +24,8 @@ case "${MODE}" in
                 test/test_maneuvering_target_predictor.py test/test_target_predictor_node.py \
                 test/test_follow_mpc_seed.py test/test_mpc_shadow_inputs.py \
                 test/test_follow_mpc_shadow_node.py test/test_follow_research_algorithms.py \
-                test/test_follow_research_runtime.py test/test_follow_minco_experiment.py
+                test/test_follow_research_runtime.py test/test_fast_follow_minco.py \
+                test/test_follow_minco_experiment.py
         else
             python3 -m pytest -q
         fi

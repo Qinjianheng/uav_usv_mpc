@@ -1,0 +1,54 @@
+{
+  "result": {
+    "stamp": {
+      "sec": 1791342569,
+      "nanosec": 841092348
+    },
+    "mission_id": 1,
+    "success": false,
+    "outcome": "FAILURE",
+    "reason": "TIMEOUT",
+    "detail": "determined by simulation truth in evaluator only",
+    "elapsed_time": 30.04724931716919,
+    "capture_radius": 0.5,
+    "minimum_distance": 1.5630278060562042,
+    "horizontal_distance": 1.7612823808752422,
+    "vertical_error": 1.0510192114886134,
+    "relative_speed": 0.9467280130835474,
+    "closing_speed": 0.6322321619785426,
+    "max_horizontal_speed": 6.381519183494973,
+    "max_vertical_speed": 2.765270626199943,
+    "max_horizontal_acceleration": 8.3057687252866,
+    "max_vertical_acceleration": 5.517458015346304
+  },
+  "committed_command_count_before_result": 28,
+  "minco_entry_speed_drops_over_0p3": [
+    {
+      "elapsed": 11.225066423416138,
+      "from_status": "FAR_GUIDANCE",
+      "to_status": "TRACKING",
+      "before": 4.1171158645006845,
+      "after": 0.35000000000000003
+    },
+    {
+      "elapsed": 21.17513394355774,
+      "from_status": "FAR_GUIDANCE",
+      "to_status": "TRACKING",
+      "before": 3.63617395588227,
+      "after": 0.32510226665382524
+    }
+  ],
+  "last_command_before_result": {
+    "time": 1791342569.8189406,
+    "elapsed": 30.025097608566284,
+    "status": "FAR_GUIDANCE",
+    "plan_id": 0,
+    "speed_xy": 3.6129371736514604,
+    "vz": -0.04338116645812984,
+    "locked": true,
+    "remaining": 0.0,
+    "kf_age": 0.06677627563476562,
+    "prediction_age": 0.011103391647338867,
+    "safety": "SAFE"
+  }
+}

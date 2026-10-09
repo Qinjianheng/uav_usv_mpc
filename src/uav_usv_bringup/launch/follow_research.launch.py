@@ -25,7 +25,9 @@ def generate_launch_description():
         'start_flight_stack': 'true',
         'lightweight': os.environ.get('UAV_USV_RESEARCH_LIGHTWEIGHT', 'true'),
         'research_mode': os.environ.get('UAV_USV_RESEARCH_MODE', 'greedy_minco'),
-        'research_config_file': os.path.join(share, 'config', 'follow_research.yaml'),
+        'research_config_file': os.environ.get('UAV_USV_RESEARCH_CONFIG_FILE',
+                                               os.path.join(share, 'config',
+                                                            'follow_research.yaml')),
         'research_log_directory': os.path.join(experiment, 'shadow'),
     }
     original = ('config_file', 'log_directory', 'enable_evaluator',

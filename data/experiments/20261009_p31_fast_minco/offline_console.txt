@@ -1,0 +1,26 @@
+stationary
+constant_velocity
+left_turn
+right_turn
+figure_eight
+speed_jump
+turn_jump
+wrong_yaw
+fov_edge
+recoverable_lost_view
+too_close
+too_far
+dynamics_infeasible
+expired_prediction
+short_prediction
+stale_observation
+nonmonotonic_prediction
+wrong_frame
+deceleration
+epoch_mismatch
+Traceback (most recent call last):
+  File "/home/qin/data/uav_usv_mpc/scripts/p31_minco_experiment.py", line 170, in <module>
+    main()
+  File "/home/qin/data/uav_usv_mpc/scripts/p31_minco_experiment.py", line 135, in main
+    1., np.maximum(abs(grad), abs(numeric)))))))
+TypeError: bad operand type for abs(): 'list'

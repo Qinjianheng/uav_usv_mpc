@@ -1,0 +1,11 @@
+{
+  "final_verified_host_status": {
+    "dds": "gone",
+    "gazebo": "gone",
+    "experiment": "gone",
+    "px4": "gone"
+  },
+  "research_timeout_seconds": 75,
+  "owned_components_watchdog_seconds": 180,
+  "remaining_simulation_processes": false
+}

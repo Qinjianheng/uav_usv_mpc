@@ -1,0 +1,16 @@
+{
+  "models_worlds_patches_unchanged_from_HEAD": [
+    "src/uav_usv_bringup/models/x500_mono_cam/model.config",
+    "src/uav_usv_bringup/models/x500_mono_cam/model.sdf",
+    "src/uav_usv_bringup/worlds/ocean.sdf",
+    "patches/px4/GzMagneticField.hpp",
+    "patches/px4/gz_gnss_initialization.patch",
+    "patches/px4/gz_magnetic_initialization.patch",
+    "patches/px4/gz_magnetometer_enu.patch",
+    "patches/px4/px4-rc.gzgnss",
+    "patches/px4/px4-rc.gzmag_enu"
+  ],
+  "20261006_pre_mpc_sha256_count": 46,
+  "20261007_front_tof_heave015_audit_sha256_count": 124,
+  "20261007_front_tof_fit_heave015_audit_sha256_count": 63
+}

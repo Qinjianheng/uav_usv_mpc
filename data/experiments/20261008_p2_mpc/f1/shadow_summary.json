@@ -1,0 +1,42 @@
+{
+  "event_count": 317,
+  "completion_count": 53,
+  "follow_window_seconds": 55.45069193840027,
+  "admission_counts": {
+    "MISSION_NOT_FOLLOW": 1,
+    "MISSION_CHANGED": 1,
+    "PREDICTION_UNAVAILABLE": 40,
+    "PREDICTION_HORIZON": 126,
+    "STALE_INPUT": 52,
+    "OBSERVATION_STALE": 41,
+    "INVALID_PREDICTION": 40,
+    "CLOCK_BRACKET_AFTER": 13,
+    "TIMESYNC_TIME_RESET": 1,
+    "CLOCK_GENERATION_CHANGED": 1,
+    "INVALID_NAVIGATION": 1
+  },
+  "core_status_counts": {
+    "DYNAMIC_INFEASIBLE": 21,
+    "DEADLINE_EXCEEDED": 6,
+    "SAFE": 25,
+    "VISIBILITY_INFEASIBLE": 1
+  },
+  "core_valid_count": 25,
+  "final_marker_valid_count": 0,
+  "warm_count": 0,
+  "whole_cycle_p50_p95_p99_s": [
+    0.3819790659999853,
+    0.523562792400844,
+    0.5270752532798361
+  ],
+  "start_navigation_age_p50_p95_p99_s": [
+    0.020299196243286133,
+    0.04361772537231445,
+    0.046790266036987306
+  ],
+  "start_observation_age_p50_p95_p99_s": [
+    0.0739438533782959,
+    0.10726146697998044,
+    0.11881855964660643
+  ]
+}

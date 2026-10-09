@@ -1,0 +1,47 @@
+[
+  {
+    "source": "/home/qin/data/uav_usv_mpc/data/experiments/px4_parameter_backups/enu_M38nW7/parameters_backup.bson",
+    "copy": "data/experiments/20261009_p31_fast_minco/px4_parameter_backups/enu_M38nW7/parameters_backup.bson",
+    "sha256": "bfdc0519a3f1528fe961fb29be01ab8df1e29f19051a4f51d0e4067a25706b13"
+  },
+  {
+    "source": "/home/qin/data/uav_usv_mpc/data/experiments/px4_parameter_backups/enu_M38nW7/parameters.bson",
+    "copy": "data/experiments/20261009_p31_fast_minco/px4_parameter_backups/enu_M38nW7/parameters.bson",
+    "sha256": "bfdc0519a3f1528fe961fb29be01ab8df1e29f19051a4f51d0e4067a25706b13"
+  },
+  {
+    "source": "/home/qin/data/uav_usv_mpc/data/experiments/px4_parameter_backups/enu_H3qPjl/parameters_backup.bson",
+    "copy": "data/experiments/20261009_p31_fast_minco/px4_parameter_backups/enu_H3qPjl/parameters_backup.bson",
+    "sha256": "bfdc0519a3f1528fe961fb29be01ab8df1e29f19051a4f51d0e4067a25706b13"
+  },
+  {
+    "source": "/home/qin/data/uav_usv_mpc/data/experiments/px4_parameter_backups/enu_H3qPjl/parameters.bson",
+    "copy": "data/experiments/20261009_p31_fast_minco/px4_parameter_backups/enu_H3qPjl/parameters.bson",
+    "sha256": "bfdc0519a3f1528fe961fb29be01ab8df1e29f19051a4f51d0e4067a25706b13"
+  },
+  {
+    "source": "/home/qin/data/uav_usv_mpc/data/experiments/px4_parameter_backups/enu_0LOjk0/parameters_backup.bson",
+    "copy": "data/experiments/20261009_p31_fast_minco/px4_parameter_backups/enu_0LOjk0/parameters_backup.bson",
+    "sha256": "bfdc0519a3f1528fe961fb29be01ab8df1e29f19051a4f51d0e4067a25706b13"
+  },
+  {
+    "source": "/home/qin/data/uav_usv_mpc/data/experiments/px4_parameter_backups/enu_0LOjk0/parameters.bson",
+    "copy": "data/experiments/20261009_p31_fast_minco/px4_parameter_backups/enu_0LOjk0/parameters.bson",
+    "sha256": "bfdc0519a3f1528fe961fb29be01ab8df1e29f19051a4f51d0e4067a25706b13"
+  },
+  {
+    "source": "/data/PX4-Autopilot/build/px4_sitl_default/rootfs/log/2026-10-09/01_54_35.ulg",
+    "copy": "data/experiments/20261009_p31_fast_minco/px4_ulog/2026-10-09/01_54_35.ulg",
+    "sha256": "2e1cbe6376b8a579cbcadea751a4f5bdb16650cd97469d137348af322da48222"
+  },
+  {
+    "source": "/data/PX4-Autopilot/build/px4_sitl_default/rootfs/log/2026-10-09/02_01_38.ulg",
+    "copy": "data/experiments/20261009_p31_fast_minco/px4_ulog/2026-10-09/02_01_38.ulg",
+    "sha256": "c681131d1e8375a13442e2d36131e29c02044ceda6400ac963e12ee65def3f34"
+  },
+  {
+    "source": "/data/PX4-Autopilot/build/px4_sitl_default/rootfs/log/2026-10-09/01_57_42.ulg",
+    "copy": "data/experiments/20261009_p31_fast_minco/px4_ulog/2026-10-09/01_57_42.ulg",
+    "sha256": "eb04c2de02cb959a9a99eeea6ef2bfcd26996e09803bee4c625248aacb73ef63"
+  }
+]

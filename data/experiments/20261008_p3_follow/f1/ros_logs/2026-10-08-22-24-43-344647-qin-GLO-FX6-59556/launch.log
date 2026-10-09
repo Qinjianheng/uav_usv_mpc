@@ -1,0 +1,31 @@
+1791469483.3452868 [INFO] [launch]: All log files can be found below /home/qin/data/uav_usv_mpc/data/experiments/20261008_p3_follow/f1/ros_logs/2026-10-08-22-24-43-344647-qin-GLO-FX6-59556
+1791469483.3453803 [INFO] [launch]: Default logging verbosity is set to INFO
+1791469483.3977509 [INFO] [moving_target-1]: process started with pid [59557]
+1791469483.3979404 [INFO] [target_predictor_node-2]: process started with pid [59559]
+1791469483.3980339 [INFO] [target_predictor_node-3]: process started with pid [59561]
+1791469483.3981051 [INFO] [intercept_planner_node-4]: process started with pid [59563]
+1791469483.3981752 [INFO] [trajectory_tracker_node-5]: process started with pid [59565]
+1791469483.3982391 [INFO] [mission_manager_node-6]: process started with pid [59567]
+1791469483.3982947 [INFO] [intercept_evaluator_node-7]: process started with pid [59569]
+1791469483.3983500 [INFO] [target_kalman_filter-8]: process started with pid [59571]
+1791469483.3984020 [INFO] [image_bridge-9]: process started with pid [59573]
+1791469483.3984563 [INFO] [target_bearing_node-10]: process started with pid [59575]
+1791469483.3985147 [INFO] [front_tof_monitor-11]: process started with pid [59577]
+1791469483.3985643 [INFO] [rgbd_target_localizer-12]: process started with pid [59579]
+1791469483.3986166 [INFO] [dual_tof_selector-13]: process started with pid [59581]
+1791469483.3986638 [INFO] [follow_research_shadow_node-14]: process started with pid [59583]
+1791469664.3213770 [INFO] [target_predictor_node-3]: process has finished cleanly [pid 59561]
+1791469664.3269598 [INFO] [dual_tof_selector-13]: process has finished cleanly [pid 59581]
+1791469664.4368742 [INFO] [front_tof_monitor-11]: process has finished cleanly [pid 59577]
+1791469763.7329421 [WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+1791469763.8762019 [INFO] [image_bridge-9]: process has finished cleanly [pid 59573]
+1791469763.9220452 [INFO] [target_kalman_filter-8]: process has finished cleanly [pid 59571]
+1791469763.9267209 [INFO] [target_predictor_node-2]: process has finished cleanly [pid 59559]
+1791469763.9498093 [INFO] [moving_target-1]: process has finished cleanly [pid 59557]
+1791469763.9566791 [INFO] [intercept_planner_node-4]: process has finished cleanly [pid 59563]
+1791469763.9647171 [ERROR] [mission_manager_node-6]: process has died [pid 59567, exit code 1, cmd '/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/mission_manager_node --ros-args -r __node:=mission_manager_node --params-file /home/qin/data/uav_usv_mpc/data/experiments/20261008_p3_follow/f1/config/flight.yaml'].
+1791469763.9842136 [ERROR] [trajectory_tracker_node-5]: process has died [pid 59565, exit code 1, cmd '/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/trajectory_tracker_node --ros-args -r __node:=trajectory_tracker_node --params-file /home/qin/data/uav_usv_mpc/data/experiments/20261008_p3_follow/f1/config/flight.yaml'].
+1791469763.9955034 [INFO] [follow_research_shadow_node-14]: process has finished cleanly [pid 59583]
+1791469763.9981542 [ERROR] [target_bearing_node-10]: process has died [pid 59575, exit code 1, cmd '/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/target_bearing_node --ros-args -r __node:=target_bearing_node --params-file /home/qin/data/uav_usv_mpc/data/experiments/20261008_p3_follow/f1/config/flight.yaml'].
+1791469763.9986072 [ERROR] [rgbd_target_localizer-12]: process has died [pid 59579, exit code 1, cmd '/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/rgbd_target_localizer --ros-args -r __node:=rgbd_target_localizer --params-file /home/qin/data/uav_usv_mpc/data/experiments/20261008_p3_follow/f1/config/flight.yaml --params-file /home/qin/data/uav_usv_mpc/install/uav_usv_bringup/share/uav_usv_bringup/config/front_tof_simulation.yaml --params-file /tmp/launch_params_t74nzs3i'].
+1791469764.0500567 [ERROR] [intercept_evaluator_node-7]: process has died [pid 59569, exit code 1, cmd '/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/intercept_evaluator_node --ros-args -r __node:=intercept_evaluator_node --params-file /home/qin/data/uav_usv_mpc/data/experiments/20261008_p3_follow/f1/config/flight.yaml --params-file /tmp/launch_params_8d9vltye'].

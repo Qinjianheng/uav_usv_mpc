@@ -1,0 +1,2 @@
+[INFO] [1791342269.737282858] [target_predictor_node]: Target predictor ready | source=tracking | input=/tracking/target_state | output=/planning/target_prediction | rate=20.0 Hz
+[WARN] [1791342269.738150645] [target_predictor_node]: New subscription discovered on topic '/planning/target_prediction', requesting incompatible QoS. No messages will be sent to it. Last incompatible policy: RELIABILITY

@@ -17,6 +17,7 @@
 | [P2 MPC 影子验证](mpc_seed_validation.md) | 保留的 MPC 基线、原始时间戳和研究准入结果 |
 | [P3 架构审计](p3_architecture_audit.md) | 节点职责、公共研究入口、轻量图与测试分层 |
 | [P3 贪心与可见性 MINCO 验证](greedy_minco_validation.md) | Q/T/yaw 优化、消融、实际影子结果和在线接入缺口 |
+| [P3.1 快速可见性 MINCO](p31_fast_visibility_minco_validation.md) | 伴随/混合梯度、逐轨迹归因、实际影子时效与 P4 阻碍 |
 | [整理交付](repository_cleanup.md) | 清点、规模、归档和实际检查结果 |
 | [源码冗余清理](redundancy_cleanup.md) | 确认移出项、保留理由、恢复与回归 |
 

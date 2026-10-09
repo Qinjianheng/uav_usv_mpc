@@ -1,0 +1,7 @@
+[INFO] [1791355935.017632030] [mission_manager_node]: Mission manager ready | tracker age<=0.125 s | recovery timeout=0.50 s
+[INFO] [1791355947.847121453] [mission_manager_node]: X accepted | mission=1 | state=TAKEOFF
+[WARN] [1791355947.997302548] [mission_manager_node]: 'X' rejected in TAKEOFF | target_locked=False
+[WARN] [1791355948.156867026] [mission_manager_node]: 'X' rejected in TAKEOFF | target_locked=False
+[INFO] [1791355960.246598215] [mission_manager_node]: Y accepted | mission=1 | state=FAR_GUIDANCE
+[WARN] [1791355960.397120442] [mission_manager_node]: 'Y' rejected in FAR_GUIDANCE | target_locked=True | Y requires FOLLOW; an accepted request waits for a fresh visual/KF lock automatically
+[WARN] [1791355960.546628851] [mission_manager_node]: 'Y' rejected in FAR_GUIDANCE | target_locked=True | Y requires FOLLOW; an accepted request waits for a fresh visual/KF lock automatically

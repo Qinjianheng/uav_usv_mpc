@@ -1,0 +1,14 @@
+PHASE INIT
+PHASE GROUND_HOLD
+PHASE INIT
+PHASE GROUND_HOLD
+SEND X
+PHASE TAKEOFF
+PHASE FOLLOW
+SEND Y
+PHASE FAR_GUIDANCE
+PHASE MINCO_TRACKING
+PHASE MINCO_READY
+PHASE TERMINAL_MINCO
+RESULT OrderedDict([('stamp', OrderedDict([('sec', 1791343150), ('nanosec', 334244490)])), ('mission_id', 1), ('success', True), ('outcome', 'SUCCESS'), ('reason', 'CAPTURE_RADIUS_REACHED'), ('detail', 'determined by simulation truth in evaluator only'), ('elapsed_time', 11.235803604125977), ('capture_radius', 0.5), ('minimum_distance', 0.4575836080685919), ('horizontal_distance', 0.3151631090325025), ('vertical_error', 0.3317453437171917), ('relative_speed', 2.675759954341193), ('closing_speed', 1.5903098185162787), ('max_horizontal_speed', 6.664165431813934), ('max_vertical_speed', 2.781119948641196), ('max_horizontal_acceleration', 4.15712495791987), ('max_vertical_acceleration', 3.5368047119630504)])
+PHASE SAFE_RECOVERY

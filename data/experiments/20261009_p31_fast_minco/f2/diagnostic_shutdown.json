@@ -1,0 +1,49 @@
+{
+  "stamp": 1791511010.7861552,
+  "stopped": [
+    {
+      "pid": 86841,
+      "start": "6103028",
+      "args": [
+        "/usr/bin/python3",
+        "/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/target_predictor_node",
+        "--ros-args",
+        "-r",
+        "__node:=shadow_target_predictor_node",
+        "--params-file",
+        "/home/qin/data/uav_usv_mpc/data/experiments/20261009_p31_fast_minco/f2/config/flight.yaml",
+        ""
+      ]
+    },
+    {
+      "pid": 86857,
+      "start": "6103028",
+      "args": [
+        "/usr/bin/python3",
+        "/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/front_tof_monitor",
+        "--ros-args",
+        "-r",
+        "__node:=front_tof_monitor",
+        "--params-file",
+        "/home/qin/data/uav_usv_mpc/data/experiments/20261009_p31_fast_minco/f2/config/flight.yaml",
+        "--params-file",
+        "/tmp/launch_params_gzg4ylyq",
+        ""
+      ]
+    },
+    {
+      "pid": 86861,
+      "start": "6103028",
+      "args": [
+        "/usr/bin/python3",
+        "/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/dual_tof_selector",
+        "--ros-args",
+        "-r",
+        "__node:=dual_tof_selector",
+        "--params-file",
+        "/home/qin/data/uav_usv_mpc/data/experiments/20261009_p31_fast_minco/f2/config/flight.yaml",
+        ""
+      ]
+    }
+  ]
+}

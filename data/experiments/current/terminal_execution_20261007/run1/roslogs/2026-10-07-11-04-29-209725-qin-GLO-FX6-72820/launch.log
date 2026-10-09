@@ -1,0 +1,31 @@
+1791342269.2106252 [INFO] [launch]: All log files can be found below /tmp/uav_usv_terminal_execution_20261007/run1_roslogs/2026-10-07-11-04-29-209725-qin-GLO-FX6-72820
+1791342269.2107604 [INFO] [launch]: Default logging verbosity is set to INFO
+1791342269.2660284 [INFO] [moving_target-1]: process started with pid [72821]
+1791342269.2662501 [INFO] [target_predictor_node-2]: process started with pid [72823]
+1791342269.2663391 [INFO] [target_predictor_node-3]: process started with pid [72825]
+1791342269.2664061 [INFO] [intercept_planner_node-4]: process started with pid [72827]
+1791342269.2664654 [INFO] [trajectory_tracker_node-5]: process started with pid [72829]
+1791342269.2665207 [INFO] [mission_manager_node-6]: process started with pid [72831]
+1791342269.2665832 [INFO] [intercept_evaluator_node-7]: process started with pid [72833]
+1791342269.2666526 [INFO] [target_kalman_filter-8]: process started with pid [72835]
+1791342269.2667074 [INFO] [image_bridge-9]: process started with pid [72837]
+1791342269.2667623 [INFO] [tof_depth_node-10]: process started with pid [72839]
+1791342269.2668116 [INFO] [target_bearing_node-11]: process started with pid [72841]
+1791342269.2668641 [INFO] [front_tof_monitor-12]: process started with pid [72843]
+1791342269.2669158 [INFO] [rgbd_target_localizer-13]: process started with pid [72845]
+1791342269.2669699 [INFO] [dual_tof_selector-14]: process started with pid [72847]
+1791342422.3239529 [WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+1791342422.4774451 [INFO] [image_bridge-9]: process has finished cleanly [pid 72837]
+1791342422.5189812 [INFO] [target_predictor_node-3]: process has finished cleanly [pid 72825]
+1791342422.5392013 [INFO] [target_predictor_node-2]: process has finished cleanly [pid 72823]
+1791342422.5631144 [INFO] [target_kalman_filter-8]: process has finished cleanly [pid 72835]
+1791342422.5730729 [INFO] [moving_target-1]: process has finished cleanly [pid 72821]
+1791342422.5851622 [INFO] [dual_tof_selector-14]: process has finished cleanly [pid 72847]
+1791342422.5870414 [INFO] [intercept_planner_node-4]: process has finished cleanly [pid 72827]
+1791342422.6015790 [ERROR] [mission_manager_node-6]: process has died [pid 72831, exit code 1, cmd '/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/mission_manager_node --ros-args -r __node:=mission_manager_node --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/visual_geometry_diagnostics.yaml'].
+1791342422.6276140 [ERROR] [trajectory_tracker_node-5]: process has died [pid 72829, exit code 1, cmd '/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/trajectory_tracker_node --ros-args -r __node:=trajectory_tracker_node --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/visual_geometry_diagnostics.yaml'].
+1791342422.6278365 [ERROR] [target_bearing_node-11]: process has died [pid 72841, exit code 1, cmd '/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/target_bearing_node --ros-args -r __node:=target_bearing_node --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/visual_geometry_diagnostics.yaml'].
+1791342422.6378345 [ERROR] [tof_depth_node-10]: process has died [pid 72839, exit code 1, cmd '/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/tof_depth_node --ros-args -r __node:=front_tof_depth_model --params-file /home/qin/data/uav_usv_mpc/install/uav_usv_bringup/share/uav_usv_bringup/config/front_tof_simulation.yaml'].
+1791342422.6528022 [INFO] [rgbd_target_localizer-13]: process has finished cleanly [pid 72845]
+1791342422.6648519 [INFO] [front_tof_monitor-12]: process has finished cleanly [pid 72843]
+1791342422.6736133 [ERROR] [intercept_evaluator_node-7]: process has died [pid 72833, exit code 1, cmd '/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/intercept_evaluator_node --ros-args -r __node:=intercept_evaluator_node --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/visual_geometry_diagnostics.yaml --params-file /tmp/launch_params_rqg1cbc4'].

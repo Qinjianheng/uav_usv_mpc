@@ -1,0 +1,277 @@
+{
+  "groups": [
+    90468,
+    90273,
+    89804,
+    89630
+  ],
+  "samples": [
+    {
+      "stamp": 1791511408.7020721,
+      "cpu_percent": 277.95559214654236,
+      "rss_mib": 1158.5,
+      "research_cpu_percent": 58.99057531167625,
+      "research_rss_mib": 119.4140625
+    },
+    {
+      "stamp": 1791511409.7181418,
+      "cpu_percent": 281.686210888026,
+      "rss_mib": 1158.7890625,
+      "research_cpu_percent": 58.11009245592144,
+      "research_rss_mib": 119.4140625
+    },
+    {
+      "stamp": 1791511410.734119,
+      "cpu_percent": 279.34015755148846,
+      "rss_mib": 1156.41796875,
+      "research_cpu_percent": 59.01552624327221,
+      "research_rss_mib": 119.4140625
+    },
+    {
+      "stamp": 1791511411.7546642,
+      "cpu_percent": 280.5131368341196,
+      "rss_mib": 1158.86328125,
+      "research_cpu_percent": 59.055397228235705,
+      "research_rss_mib": 119.4140625
+    },
+    {
+      "stamp": 1791511412.7810178,
+      "cpu_percent": 291.17492764655015,
+      "rss_mib": 1156.4453125,
+      "research_cpu_percent": 61.764378591692456,
+      "research_rss_mib": 119.4140625
+    },
+    {
+      "stamp": 1791511413.8099983,
+      "cpu_percent": 277.70583437453666,
+      "rss_mib": 1156.53125,
+      "research_cpu_percent": 60.413199056916746,
+      "research_rss_mib": 119.4140625
+    },
+    {
+      "stamp": 1791511414.8191833,
+      "cpu_percent": 273.97928652395126,
+      "rss_mib": 1156.3125,
+      "research_cpu_percent": 58.293465217861964,
+      "research_rss_mib": 119.4140625
+    },
+    {
+      "stamp": 1791511415.8383477,
+      "cpu_percent": 275.3888267603256,
+      "rss_mib": 1156.19140625,
+      "research_cpu_percent": 56.464615558771804,
+      "research_rss_mib": 119.4140625
+    },
+    {
+      "stamp": 1791511416.8511815,
+      "cpu_percent": 263.9900322773669,
+      "rss_mib": 1156.67578125,
+      "research_cpu_percent": 57.901159495779346,
+      "research_rss_mib": 119.4140625
+    },
+    {
+      "stamp": 1791511417.864408,
+      "cpu_percent": 268.5091962519206,
+      "rss_mib": 1160.3828125,
+      "research_cpu_percent": 57.255637436071304,
+      "research_rss_mib": 119.4140625
+    },
+    {
+      "stamp": 1791511418.8742251,
+      "cpu_percent": 254.6784756786412,
+      "rss_mib": 1156.10546875,
+      "research_cpu_percent": 56.26617485923469,
+      "research_rss_mib": 119.4140625
+    },
+    {
+      "stamp": 1791511419.8857942,
+      "cpu_percent": 271.2968620937405,
+      "rss_mib": 1156.38671875,
+      "research_cpu_percent": 57.42780292495237,
+      "research_rss_mib": 119.4140625
+    },
+    {
+      "stamp": 1791511420.8974137,
+      "cpu_percent": 259.15218544490426,
+      "rss_mib": 1156.45703125,
+      "research_cpu_percent": 55.391306812651294,
+      "research_rss_mib": 119.4140625
+    },
+    {
+      "stamp": 1791511421.910782,
+      "cpu_percent": 256.91781376669434,
+      "rss_mib": 1156.33203125,
+      "research_cpu_percent": 56.32428994115992,
+      "research_rss_mib": 119.4140625
+    },
+    {
+      "stamp": 1791511422.9259834,
+      "cpu_percent": 251.72363638688458,
+      "rss_mib": 1156.44140625,
+      "research_cpu_percent": 53.30618182310497,
+      "research_rss_mib": 119.4140625
+    },
+    {
+      "stamp": 1791511423.9443626,
+      "cpu_percent": 259.10320057377936,
+      "rss_mib": 1160.19140625,
+      "research_cpu_percent": 52.21471342361333,
+      "research_rss_mib": 119.4140625
+    },
+    {
+      "stamp": 1791511424.9537284,
+      "cpu_percent": 251.23959407428765,
+      "rss_mib": 1156.328125,
+      "research_cpu_percent": 53.97725653939774,
+      "research_rss_mib": 119.4140625
+    },
+    {
+      "stamp": 1791511425.9667404,
+      "cpu_percent": 259.65413241028136,
+      "rss_mib": 1156.59765625,
+      "research_cpu_percent": 53.51650057311143,
+      "research_rss_mib": 119.4140625
+    },
+    {
+      "stamp": 1791511426.978411,
+      "cpu_percent": 251.73605028562895,
+      "rss_mib": 1156.4609375,
+      "research_cpu_percent": 54.29601084591997,
+      "research_rss_mib": 119.4140625
+    },
+    {
+      "stamp": 1791511427.9981139,
+      "cpu_percent": 273.7115067883455,
+      "rss_mib": 1159.19140625,
+      "research_cpu_percent": 59.28769100108567,
+      "research_rss_mib": 119.4140625
+    }
+  ],
+  "processes": {
+    "89630": {
+      "ticks": 0,
+      "rss": 3407872,
+      "command": "bash -lc \nprintf '%s\\n' \"${BASHPID}\" > '/tmp/uav_usv_lab.Cs01zi/gazebo.pid' &&\nsource '/home/qin/Projects/PX4-Autopilot/build/px4_sitl_default/rootfs/gz_env.sh' &&\nexport GZ_SIM_SERVER_CONFIG_PATH='/tmp/uav_usv_lab.Cs01zi/magnetometer_enu.config' &&\nexport GZ_SIM_RESOURCE_PATH='/tmp/uav_usv_lab.Cs01zi/models':'/home/qin/data/uav_usv_mpc/src/uav_usv_bringup/models':${GZ_SIM_RESOURCE_PATH:-} &&\ngz sim -r '/home/qin/data/uav_usv_mpc/src/uav_usv_bringup/worlds/ocean.sdf';\ncomponent_status=$?;\nif [[ ! -f '/tmp/uav_usv_lab.Cs01zi/restarting' ]]; then exec bash; fi;\nexit ${component_status} "
+    },
+    "89646": {
+      "ticks": 7,
+      "rss": 66445312,
+      "command": "gz sim -r /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/worlds/ocean.sdf               "
+    },
+    "89804": {
+      "ticks": 0,
+      "rss": 3407872,
+      "command": "bash -lc \nprintf '%s\\n' \"${BASHPID}\" > '/tmp/uav_usv_lab.Cs01zi/px4.pid' &&\nsource '/home/qin/Projects/PX4-Autopilot/build/px4_sitl_default/rootfs/gz_env.sh' &&\nexport GZ_SIM_SERVER_CONFIG_PATH='/tmp/uav_usv_lab.Cs01zi/magnetometer_enu.config' &&\nexport PX4_GZ_MAGNETOMETER_ENU=1 &&\nexport PX4_GZ_GNSS_NO_DELAY=1 &&\nexport GZ_SIM_RESOURCE_PATH='/tmp/uav_usv_lab.Cs01zi/models':'/home/qin/data/uav_usv_mpc/src/uav_usv_bringup/models':${GZ_SIM_RESOURCE_PATH:-} &&\nexport PX4_GZ_MODELS='/tmp/uav_usv_lab.Cs01zi/models' &&\nexport PX4_GZ_STANDALONE=1 &&\nexport PX4_GZ_WORLD=default &&\n# Face Gazebo +Y (local NED north), where the USV starts 8 m away.\nexport PX4_GZ_MODEL_POSE='0,0,0,0,0,1.57079632679' &&\ncd '/home/qin/Projects/PX4-Autopilot' &&\nmake px4_sitl gz_x500_mono_cam;\ncomponent_status=$?;\nif [[ ! -f '/tmp/uav_usv_lab.Cs01zi/restarting' ]]; then exec bash; fi;\nexit ${component_status} "
+    },
+    "89829": {
+      "ticks": 0,
+      "rss": 2674688,
+      "command": "make px4_sitl gz_x500_mono_cam "
+    },
+    "89892": {
+      "ticks": 0,
+      "rss": 1675264,
+      "command": "/bin/sh -c cmake --build \"/data/PX4-Autopilot/build/px4_sitl_default\" --  gz_x500_mono_cam "
+    },
+    "89893": {
+      "ticks": 0,
+      "rss": 15134720,
+      "command": "cmake --build /data/PX4-Autopilot/build/px4_sitl_default -- gz_x500_mono_cam "
+    },
+    "89894": {
+      "ticks": 8,
+      "rss": 24322048,
+      "command": "/usr/bin/ninja gz_x500_mono_cam "
+    },
+    "89895": {
+      "ticks": 0,
+      "rss": 1675264,
+      "command": "/bin/sh -c cd /data/PX4-Autopilot/build/px4_sitl_default/src/modules/simulation/gz_bridge && /usr/bin/cmake -E env PX4_SIM_MODEL=gz_x500_mono_cam GZ_IP=127.0.0.1 /data/PX4-Autopilot/build/px4_sitl_default/bin/px4 "
+    },
+    "89896": {
+      "ticks": 0,
+      "rss": 13037568,
+      "command": "/usr/bin/cmake -E env PX4_SIM_MODEL=gz_x500_mono_cam GZ_IP=127.0.0.1 /data/PX4-Autopilot/build/px4_sitl_default/bin/px4 "
+    },
+    "89897": {
+      "ticks": 3107,
+      "rss": 20447232,
+      "command": "/data/PX4-Autopilot/build/px4_sitl_default/bin/px4 "
+    },
+    "90273": {
+      "ticks": 0,
+      "rss": 3407872,
+      "command": "bash -lc \nprintf '%s\\n' \"${BASHPID}\" > '/tmp/uav_usv_lab.Cs01zi/dds.pid' &&\nMicroXRCEAgent udp4 -p 8888;\ncomponent_status=$?;\nif [[ ! -f '/tmp/uav_usv_lab.Cs01zi/restarting' ]]; then exec bash; fi;\nexit ${component_status} "
+    },
+    "90284": {
+      "ticks": 592,
+      "rss": 27480064,
+      "command": "MicroXRCEAgent udp4 -p 8888 "
+    },
+    "90468": {
+      "ticks": 0,
+      "rss": 3407872,
+      "command": "bash -lc \nprintf '%s\\n' \"${BASHPID}\" > '/tmp/uav_usv_lab.Cs01zi/experiment.pid' &&\nexport UAV_USV_WS='/home/qin/data/uav_usv_mpc' &&\nsource /opt/ros/humble/setup.bash &&\nsource '/home/qin/data/uav_usv_mpc/install/setup.bash' &&\ncd '/home/qin/data/uav_usv_mpc' &&\nros2 launch uav_usv_bringup 'follow_research.launch.py'     enable_evaluator:=true     enable_shadow_perception:=true     front_depth_model:=ideal     enable_down_camera:=false config_file:=/home/qin/data/uav_usv_mpc/data/experiments/20261009_p31_fast_minco/f3_retry/config/flight.yaml;\ncomponent_status=$?;\nif [[ ! -f '/tmp/uav_usv_lab.Cs01zi/restarting' ]]; then exec bash; fi;\nexit ${component_status} "
+    },
+    "90521": {
+      "ticks": 26,
+      "rss": 36429824,
+      "command": "/usr/bin/python3 /opt/ros/humble/bin/ros2 launch uav_usv_bringup follow_research.launch.py enable_evaluator:=true enable_shadow_perception:=true front_depth_model:=ideal enable_down_camera:=false config_file:=/home/qin/data/uav_usv_mpc/data/experiments/20261009_p31_fast_minco/f3_retry/config/flight.yaml "
+    },
+    "90522": {
+      "ticks": 1114,
+      "rss": 81391616,
+      "command": "/usr/bin/python3 /home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/moving_target --ros-args -r __node:=moving_target --params-file /home/qin/data/uav_usv_mpc/data/experiments/20261009_p31_fast_minco/f3_retry/config/flight.yaml "
+    },
+    "90524": {
+      "ticks": 2016,
+      "rss": 62418944,
+      "command": "/usr/bin/python3 /home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/target_predictor_node --ros-args -r __node:=target_predictor_node --params-file /home/qin/data/uav_usv_mpc/data/experiments/20261009_p31_fast_minco/f3_retry/config/flight.yaml "
+    },
+    "90526": {
+      "ticks": 2346,
+      "rss": 86654976,
+      "command": "/usr/bin/python3 /home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/intercept_planner_node --ros-args -r __node:=intercept_planner_node --params-file /home/qin/data/uav_usv_mpc/data/experiments/20261009_p31_fast_minco/f3_retry/config/flight.yaml "
+    },
+    "90528": {
+      "ticks": 2955,
+      "rss": 79282176,
+      "command": "/usr/bin/python3 /home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/trajectory_tracker_node --ros-args -r __node:=trajectory_tracker_node --params-file /home/qin/data/uav_usv_mpc/data/experiments/20261009_p31_fast_minco/f3_retry/config/flight.yaml "
+    },
+    "90530": {
+      "ticks": 806,
+      "rss": 62193664,
+      "command": "/usr/bin/python3 /home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/mission_manager_node --ros-args -r __node:=mission_manager_node --params-file /home/qin/data/uav_usv_mpc/data/experiments/20261009_p31_fast_minco/f3_retry/config/flight.yaml "
+    },
+    "90532": {
+      "ticks": 3952,
+      "rss": 114327552,
+      "command": "/usr/bin/python3 /home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/intercept_evaluator_node --ros-args -r __node:=intercept_evaluator_node --params-file /home/qin/data/uav_usv_mpc/data/experiments/20261009_p31_fast_minco/f3_retry/config/flight.yaml --params-file /tmp/launch_params_ng1_qecq "
+    },
+    "90534": {
+      "ticks": 737,
+      "rss": 63881216,
+      "command": "/usr/bin/python3 /home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/target_kalman_filter --ros-args -r __node:=target_kalman_filter --params-file /home/qin/data/uav_usv_mpc/data/experiments/20261009_p31_fast_minco/f3_retry/config/flight.yaml "
+    },
+    "90536": {
+      "ticks": 1246,
+      "rss": 99037184,
+      "command": "/opt/ros/humble/lib/ros_gz_image/image_bridge /uav/camera/front/image /uav/camera/front/depth_image --ros-args -r __node:=dual_tof_image_bridge -r /uav/camera/front/image:=/camera/front/image_raw -r /uav/camera/front/depth_image:=/camera/front/depth/image_raw "
+    },
+    "90538": {
+      "ticks": 2913,
+      "rss": 99262464,
+      "command": "/usr/bin/python3 /home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/target_bearing_node --ros-args -r __node:=target_bearing_node --params-file /home/qin/data/uav_usv_mpc/data/experiments/20261009_p31_fast_minco/f3_retry/config/flight.yaml "
+    },
+    "90540": {
+      "ticks": 4632,
+      "rss": 118882304,
+      "command": "/usr/bin/python3 /home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/rgbd_target_localizer --ros-args -r __node:=rgbd_target_localizer --params-file /home/qin/data/uav_usv_mpc/data/experiments/20261009_p31_fast_minco/f3_retry/config/flight.yaml --params-file /home/qin/data/uav_usv_mpc/install/uav_usv_bringup/share/uav_usv_bringup/config/front_tof_simulation.yaml --params-file /tmp/launch_params_mqikordb "
+    },
+    "90542": {
+      "ticks": 6998,
+      "rss": 125214720,
+      "command": "/usr/bin/python3 /home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/follow_research_shadow_node --ros-args -r __node:=follow_research_shadow_node --params-file /home/qin/data/uav_usv_mpc/data/experiments/20261009_p31_fast_minco/f3_retry/config/research.yaml --params-file /tmp/launch_params_6_0b_fmf "
+    }
+  }
+}

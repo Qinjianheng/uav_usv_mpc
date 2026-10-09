@@ -1,0 +1,46 @@
+{
+  "result": {
+    "stamp": {
+      "sec": 1791342569,
+      "nanosec": 841092348
+    },
+    "mission_id": 1,
+    "success": false,
+    "outcome": "FAILURE",
+    "reason": "TIMEOUT",
+    "detail": "determined by simulation truth in evaluator only",
+    "elapsed_time": 30.04724931716919,
+    "capture_radius": 0.5,
+    "minimum_distance": 1.5630278060562042,
+    "horizontal_distance": 1.7612823808752422,
+    "vertical_error": 1.0510192114886134,
+    "relative_speed": 0.9467280130835474,
+    "closing_speed": 0.6322321619785426,
+    "max_horizontal_speed": 6.381519183494973,
+    "max_vertical_speed": 2.765270626199943,
+    "max_horizontal_acceleration": 8.3057687252866,
+    "max_vertical_acceleration": 5.517458015346304
+  },
+  "first_minco": {
+    "start": 11.225066423416138,
+    "finish": 12.674976348876953,
+    "previous_status": "FAR_GUIDANCE",
+    "previous_speed": 4.1171158645006845,
+    "entry_speed": 0.35000000000000003,
+    "last_speed": 5.000354539772792,
+    "decreases": [],
+    "recovery_before_result": true
+  },
+  "committed_samples_before_result": 28,
+  "freeze": {
+    "applicable": false,
+    "pause_seen": false,
+    "world_samples": 59,
+    "truth_samples": 121,
+    "world_clock_span": 5.940000000000005,
+    "truth_position_span": 17.26518940574359,
+    "maximum_target_speed": 4.00693353994259,
+    "native_world_states": [],
+    "native_poses_identical": false
+  }
+}

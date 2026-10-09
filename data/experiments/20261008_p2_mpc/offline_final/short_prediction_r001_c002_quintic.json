@@ -1,0 +1,219 @@
+{
+  "baseline_controls": [
+    [
+      -6.6309799382715715,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      -3.0140817901234427,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      -0.12056327160494318,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      2.0495756172839408,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      3.496334876543181,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      4.219714506172818,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      4.219714506172831,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      3.4963348765431945,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      2.049575617283903,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      -0.12056327160491875,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      -3.014081790123413,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      -6.6309799382715795,
+      0.0,
+      0.0,
+      0.0
+    ]
+  ],
+  "cycle": 2,
+  "input": {
+    "actual_rotation": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "context": {
+      "attitude_stamp": 100.4,
+      "clock_generation": 0,
+      "cycle_id": 2,
+      "execution_start_stamp": 100.4,
+      "frame_id": "local_ned",
+      "mission_id": 1,
+      "navigation_stamp": 100.4,
+      "observation_stamp": 100.39,
+      "prediction_sequence_id": 3,
+      "prediction_source": "synthetic",
+      "prediction_source_stamp": 100.4,
+      "prediction_valid_until": 100.80000000000001
+    },
+    "now_stamp": 100.4,
+    "prediction_times": [
+      0.0,
+      0.2,
+      0.4
+    ],
+    "state": [
+      -4.6,
+      0.0,
+      -5.0,
+      1.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "target_positions": [
+      [
+        0.4,
+        0.0,
+        0.0
+      ],
+      [
+        0.6000000000000001,
+        0.0,
+        0.0
+      ],
+      [
+        0.8,
+        0.0,
+        0.0
+      ]
+    ],
+    "target_velocities": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ]
+    ]
+  },
+  "input_sha256": "182492f1b618977381ff3cae88ee4e8070909b2668de6480c4d30af123dc951f",
+  "method": "quintic",
+  "metrics": {
+    "core_dense_metrics": {},
+    "follow_error_rms_m": null,
+    "maximum_acceleration_mps2": null,
+    "maximum_jerk_mps3": null,
+    "maximum_speed_mps": null,
+    "maximum_tilt_rad": null,
+    "minimum_horizontal_margin_rad": null,
+    "minimum_vertical_margin_rad": null,
+    "visibility_ratio": null
+  },
+  "output": {
+    "accelerations": [],
+    "candidate_kind": "",
+    "constraint_violations": {},
+    "context": {
+      "attitude_stamp": 100.4,
+      "clock_generation": 0,
+      "cycle_id": 2,
+      "execution_start_stamp": 100.4,
+      "frame_id": "local_ned",
+      "mission_id": 1,
+      "navigation_stamp": 100.4,
+      "observation_stamp": 100.39,
+      "prediction_sequence_id": 3,
+      "prediction_source": "synthetic",
+      "prediction_source_stamp": 100.4,
+      "prediction_valid_until": 100.80000000000001
+    },
+    "initial_visibility": false,
+    "jerks": [],
+    "metrics": {},
+    "objective_value": 0.0,
+    "positions": [],
+    "reason": "prediction does not cover execution horizon",
+    "relative_times": [],
+    "solve_time": 4.150200038566254e-05,
+    "solver_status": "PREDICTION_HORIZON",
+    "timing": {},
+    "valid": false,
+    "velocities": [],
+    "visibility_margins": [],
+    "warm_started": false,
+    "yaw_rates": [],
+    "yaw_refs": []
+  },
+  "repeat": 1,
+  "scenario": "short_prediction",
+  "timing": {
+    "core_timing": {},
+    "end_to_end_s": 0.0012325349998718593,
+    "external_budget_s": 0.5,
+    "shared_data_prep_s": 0.00019975500072177965,
+    "solve_external_s": 5.274800059851259e-05
+  }
+}

@@ -1,0 +1,31 @@
+1791463217.1583884 [INFO] [launch]: All log files can be found below /home/qin/data/uav_usv_mpc/data/experiments/20261008_p2_mpc/f1/ros_logs/2026-10-08-20-40-17-157190-qin-GLO-FX6-42152
+1791463217.1585975 [INFO] [launch]: Default logging verbosity is set to INFO
+1791463217.2549248 [INFO] [moving_target-1]: process started with pid [42163]
+1791463217.2552304 [INFO] [target_predictor_node-2]: process started with pid [42165]
+1791463217.2553356 [INFO] [target_predictor_node-3]: process started with pid [42167]
+1791463217.2553980 [INFO] [intercept_planner_node-4]: process started with pid [42169]
+1791463217.2554514 [INFO] [trajectory_tracker_node-5]: process started with pid [42171]
+1791463217.2555008 [INFO] [mission_manager_node-6]: process started with pid [42173]
+1791463217.2555485 [INFO] [intercept_evaluator_node-7]: process started with pid [42175]
+1791463217.2556224 [INFO] [target_kalman_filter-8]: process started with pid [42177]
+1791463217.2556779 [INFO] [image_bridge-9]: process started with pid [42179]
+1791463217.2557352 [INFO] [target_bearing_node-10]: process started with pid [42181]
+1791463217.2557917 [INFO] [front_tof_monitor-11]: process started with pid [42183]
+1791463217.2558548 [INFO] [rgbd_target_localizer-12]: process started with pid [42185]
+1791463217.2560029 [INFO] [dual_tof_selector-13]: process started with pid [42187]
+1791463217.2560790 [INFO] [follow_mpc_shadow_node-14]: process started with pid [42189]
+1791463711.4841871 [INFO] [follow_mpc_shadow_node-14]: process has finished cleanly [pid 42189]
+1791463767.7865324 [WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+1791463767.9759872 [INFO] [target_kalman_filter-8]: process has finished cleanly [pid 42177]
+1791463767.9817326 [INFO] [target_predictor_node-3]: process has finished cleanly [pid 42167]
+1791463767.9889908 [INFO] [target_predictor_node-2]: process has finished cleanly [pid 42165]
+1791463767.9907684 [INFO] [dual_tof_selector-13]: process has finished cleanly [pid 42187]
+1791463768.0051589 [INFO] [moving_target-1]: process has finished cleanly [pid 42163]
+1791463768.0320215 [INFO] [rgbd_target_localizer-12]: process has finished cleanly [pid 42185]
+1791463768.0361624 [ERROR] [mission_manager_node-6]: process has died [pid 42173, exit code 1, cmd '/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/mission_manager_node --ros-args -r __node:=mission_manager_node --params-file /home/qin/data/uav_usv_mpc/data/experiments/20261008_p2_mpc/f1/flight_config.yaml'].
+1791463768.0579829 [ERROR] [intercept_planner_node-4]: process has died [pid 42169, exit code 1, cmd '/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/intercept_planner_node --ros-args -r __node:=intercept_planner_node --params-file /home/qin/data/uav_usv_mpc/data/experiments/20261008_p2_mpc/f1/flight_config.yaml'].
+1791463768.0590556 [ERROR] [trajectory_tracker_node-5]: process has died [pid 42171, exit code 1, cmd '/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/trajectory_tracker_node --ros-args -r __node:=trajectory_tracker_node --params-file /home/qin/data/uav_usv_mpc/data/experiments/20261008_p2_mpc/f1/flight_config.yaml'].
+1791463768.0660355 [ERROR] [target_bearing_node-10]: process has died [pid 42181, exit code 1, cmd '/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/target_bearing_node --ros-args -r __node:=target_bearing_node --params-file /home/qin/data/uav_usv_mpc/data/experiments/20261008_p2_mpc/f1/flight_config.yaml'].
+1791463768.0739214 [INFO] [front_tof_monitor-11]: process has finished cleanly [pid 42183]
+1791463768.1074347 [ERROR] [intercept_evaluator_node-7]: process has died [pid 42175, exit code 1, cmd '/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/intercept_evaluator_node --ros-args -r __node:=intercept_evaluator_node --params-file /home/qin/data/uav_usv_mpc/data/experiments/20261008_p2_mpc/f1/flight_config.yaml --params-file /tmp/launch_params_r6n8k6y5'].
+1791463768.1770768 [INFO] [image_bridge-9]: process has finished cleanly [pid 42179]

@@ -1,0 +1,176 @@
+{
+  "categories": {
+    "A": 18,
+    "D": 41,
+    "B": 8
+  },
+  "profiled_seconds": {
+    "fixed": [
+      0.027618603002338205,
+      0.029257611000502948,
+      0.02917109899863135,
+      0.03032056100346381,
+      0.03347225899779005,
+      0.040284172995598055,
+      0.04727624999941327,
+      0.059702352999011055
+    ],
+    "q": [
+      0.10637507599312812,
+      0.08418483600689797,
+      0.08653069400315871,
+      0.09041745199647266,
+      0.24018508099834435,
+      0.12479513399739517,
+      0.12037724500260083,
+      0.13732364399766084
+    ],
+    "qt": [
+      0.1259823009968386,
+      0.12734388699755073,
+      0.13004307800292736,
+      0.13347301500471076,
+      0.3852988720027497,
+      0.16495594000298297,
+      0.16546681500039995,
+      0.2104482150025433
+    ]
+  },
+  "functions": {
+    "('/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/minco_trajectory.py', 189, '_minimum_control_system')": {
+      "calls": 856,
+      "self_s": 0.018610212,
+      "cumulative_s": 0.06807431400000001
+    },
+    "('/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/minco_trajectory.py', 278, 'sample')": {
+      "calls": 14461,
+      "self_s": 0.054477239000000004,
+      "cumulative_s": 0.11615966000000001
+    },
+    "('/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/minco_trajectory.py', 328, 'control_effort')": {
+      "calls": 856,
+      "self_s": 0.009107261,
+      "cumulative_s": 0.022655795000000003
+    },
+    "('/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/yaw_trajectory.py', 23, 'sample')": {
+      "calls": 904,
+      "self_s": 0.006421851,
+      "cumulative_s": 0.037027769
+    },
+    "('/usr/lib/python3/dist-packages/scipy/interpolate/_interpolate.py', 1019, '_evaluate')": {
+      "calls": 1856,
+      "self_s": 0.008370131000000001,
+      "cumulative_s": 0.009182772
+    },
+    "('/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/planned_attitude.py', 60, '_finite_real')": {
+      "calls": 130149,
+      "self_s": 0.049005597000000005,
+      "cumulative_s": 0.15899057500000002
+    },
+    "('/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/planned_attitude.py', 72, '<genexpr>')": {
+      "calls": 86766,
+      "self_s": 0.018218926,
+      "cumulative_s": 0.12317944900000001
+    },
+    "('/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/planned_attitude.py', 67, '_valid_config')": {
+      "calls": 14461,
+      "self_s": 0.017872316000000003,
+      "cumulative_s": 0.15392250700000001
+    },
+    "('/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/camera_visibility.py', 213, '_evaluate_geometry')": {
+      "calls": 4773,
+      "self_s": 0.09833686600000001,
+      "cumulative_s": 0.16259436600000002
+    },
+    "('/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/camera_visibility.py', 284, 'evaluate_visibility')": {
+      "calls": 14461,
+      "self_s": 0.038254435,
+      "cumulative_s": 1.183056265
+    },
+    "('/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/planned_attitude.py', 86, '<genexpr>')": {
+      "calls": 57844,
+      "self_s": 0.011286444000000001,
+      "cumulative_s": 0.051461305000000006
+    },
+    "('/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/planned_attitude.py', 88, '<genexpr>')": {
+      "calls": 57844,
+      "self_s": 0.0062191220000000005,
+      "cumulative_s": 0.0062191220000000005
+    },
+    "('/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/planned_attitude.py', 79, '_acceleration_vector')": {
+      "calls": 14461,
+      "self_s": 0.030082073,
+      "cumulative_s": 0.10545027500000001
+    },
+    "('/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/planned_attitude.py', 119, '<genexpr>')": {
+      "calls": 57844,
+      "self_s": 0.006092577,
+      "cumulative_s": 0.006092577
+    },
+    "('/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/planned_attitude.py', 134, '<genexpr>')": {
+      "calls": 19092,
+      "self_s": 0.00205045,
+      "cumulative_s": 0.00205045
+    },
+    "('/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/planned_attitude.py', 138, '<genexpr>')": {
+      "calls": 19092,
+      "self_s": 0.003176812,
+      "cumulative_s": 0.003176812
+    },
+    "('/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/planned_attitude.py', 91, 'planned_attitude')": {
+      "calls": 14461,
+      "self_s": 0.06972790100000001,
+      "cumulative_s": 0.37315027900000003
+    },
+    "('/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/follow_minco_optimizer.py', 55, '_samples')": {
+      "calls": 904,
+      "self_s": 0.001750734,
+      "cumulative_s": 0.144738305
+    },
+    "('/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/follow_minco_optimizer.py', 115, 'construct')": {
+      "calls": 856,
+      "self_s": 0.005544564,
+      "cumulative_s": 0.398172112
+    },
+    "('/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/follow_minco_optimizer.py', 129, 'evaluate')": {
+      "calls": 872,
+      "self_s": 0.022075204,
+      "cumulative_s": 1.7018271230000002
+    },
+    "('/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/follow_minco_optimizer.py', 181, 'assessment')": {
+      "calls": 72,
+      "self_s": 0.001200492,
+      "cumulative_s": 0.909347397
+    },
+    "('/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/follow_minco_optimizer.py', 86, 'solve')": {
+      "calls": 24,
+      "self_s": 0.014990749000000001,
+      "cumulative_s": 2.7285793540000003
+    },
+    "('/usr/lib/python3/dist-packages/scipy/optimize/_numdiff.py', 275, 'approx_derivative')": {
+      "calls": 74,
+      "self_s": 0.001611798,
+      "cumulative_s": 1.5528699300000002
+    },
+    "('/usr/lib/python3/dist-packages/scipy/linalg/_basic.py', 367, 'solve_banded')": {
+      "calls": 856,
+      "self_s": 0.004021496,
+      "cumulative_s": 0.013836755000000001
+    },
+    "('/home/qin/.local/lib/python3.10/site-packages/numpy/linalg/linalg.py', 469, 'inv')": {
+      "calls": 84,
+      "self_s": 0.001518365,
+      "cumulative_s": 0.002041579
+    },
+    "('<__array_function__ internals>', 177, 'inv')": {
+      "calls": 84,
+      "self_s": 5.6106e-05,
+      "cumulative_s": 0.002166261
+    },
+    "('/home/qin/.local/lib/python3.10/site-packages/numpy/core/_methods.py', 108, '_clip_dep_invoke_with_casting')": {
+      "calls": 16,
+      "self_s": 3.4327000000000005e-05,
+      "cumulative_s": 3.4327000000000005e-05
+    }
+  }
+}

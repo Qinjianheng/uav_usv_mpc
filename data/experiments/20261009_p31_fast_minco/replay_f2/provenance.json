@@ -1,0 +1,100 @@
+{
+  "head": {
+    "git_head": "d8f3dc2d0f97e5349cc36ea8d17cb64d34a22b6a",
+    "git_status": " M scripts/test_research_planners.sh\n M src/uav_control/uav_control/controllers/follow_research_shadow_node.py\n M src/uav_control/uav_control/controllers/follow_research_solver.py\n M src/uav_control/uav_control/guidance/follow_minco_optimizer.py\n M src/uav_usv_bringup/launch/follow_research.launch.py\n?? scripts/p31_minco_audit.py\n?? scripts/p31_minco_experiment.py\n?? src/uav_control/test/test_fast_follow_minco.py\n?? src/uav_control/uav_control/guidance/adaptive_follow_initializer.py\n?? src/uav_control/uav_control/guidance/fast_follow_minco.py\n?? src/uav_control/uav_control/guidance/fast_minco_objective.py\n?? src/uav_control/uav_control/guidance/follow_reference.py\n?? src/uav_control/uav_control/guidance/polynomial_extrema.py\n",
+    "workspace": "/home/qin/data/uav_usv_mpc",
+    "source_sha256": {
+      "scripts/mpc_seed_experiment.py": "05b09352c1f27de7b28729fea4031ef55cfde040ffe55c088a6eb49a7a63e5e9",
+      "src/uav_control/uav_control/controllers/follow_mpc_seed.py": "b66b522cb93a3d6431b2d4fe17a0fc5733c81212fcd6bb39bad99b15f6ac67a1",
+      "src/uav_control/uav_control/guidance/planned_attitude.py": "3562fd15d18e210a680de43f82cb807b2fdc42af4db1a940ce6a8b5c060acace",
+      "src/uav_control/uav_control/guidance/camera_visibility.py": "db3bf2b5e80db1b47474b751b1b4d6008f87993ec10500088c12b88e0880cc57"
+    },
+    "config": {
+      "dt": 0.2,
+      "horizon_steps": 12,
+      "control_blocks": 2,
+      "follow_distance": 5.0,
+      "flight_altitude": -5.0,
+      "maximum_horizontal_speed": 6.2,
+      "maximum_vertical_speed": 4.0,
+      "maximum_horizontal_acceleration": 3.0,
+      "maximum_vertical_acceleration": 3.0,
+      "maximum_horizontal_jerk": 6.0,
+      "maximum_vertical_jerk": 4.0,
+      "maximum_yaw_rate": 1.0,
+      "sea_surface_z": 0.0,
+      "reserve_clearance": 0.5,
+      "response_delay": 0.15,
+      "braking_acceleration": 2.5,
+      "maximum_input_age": 0.125,
+      "solve_budget": 0.5,
+      "maximum_iterations": 4,
+      "validation_substeps": 2,
+      "allow_synthetic_predictions": false
+    },
+    "geometry_and_attitude_config": {
+      "intrinsics": {
+        "width": 640,
+        "height": 480,
+        "fx": 269.9681840122649,
+        "fy": 269.9681840122649,
+        "cx": 320.0,
+        "cy": 240.0
+      },
+      "extrinsics": {
+        "translation_flu": [
+          0.18,
+          0.0,
+          0.39
+        ],
+        "rotation_camera_to_body_flu": [
+          [
+            0.882947592858927,
+            0.0,
+            0.4694715627858908
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.4694715627858908,
+            0.0,
+            0.882947592858927
+          ]
+        ]
+      },
+      "target": {
+        "radius": 0.25,
+        "center_offset_ned": [
+          0,
+          0,
+          -0.42
+        ]
+      },
+      "visibility": {
+        "minimum_distance": 0.05,
+        "maximum_distance": 25,
+        "horizontal_margin_rad": 0.07,
+        "vertical_margin_rad": 0.07,
+        "distance_mode": "axial",
+        "depth_epsilon": 1e-09
+      },
+      "attitude_config": {
+        "gravity": 9.80665,
+        "minimum_specific_thrust": 2.0,
+        "maximum_specific_thrust": 18.0,
+        "maximum_tilt_rad": 0.55,
+        "angular_error_margin_rad": 0.03
+      }
+    },
+    "prediction_provenance": "synthetic analytical targets; no BCTRA measurement",
+    "acceptance_boundary": "research seed only; never accepted by flight tracker",
+    "rolling_state_source": "analytical synthetic navigation; seeds are not executed",
+    "timing_boundary": "data prep through first full record JSON output; timing metadata and final summaries/manifest are excluded from per-candidate end_to_end_s"
+  },
+  "suite": "solver",
+  "input": "data/experiments/20261008_p3_follow/f2/shadow/mpc_seed_shadow_1791469853331980842_62040.jsonl",
+  "actual_cases": 20
+}

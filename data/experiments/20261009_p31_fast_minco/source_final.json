@@ -1,0 +1,21 @@
+{
+  "head": "d8f3dc2d0f97e5349cc36ea8d17cb64d34a22b6a",
+  "source_sha256": {
+    "docs/current/README.md": "3af8ca28720a73c5c2fa82c822d8d5bb71a7404fd50a387159e0c6e329793858",
+    "scripts/test_research_planners.sh": "d8436171e19b8f5b2209b1eb9c48e31a5af9ec29df541435723ec0b37ef19391",
+    "src/uav_control/uav_control/controllers/follow_research_shadow_node.py": "d747f7e51633fcb124beb980064898ea22fb932b6aa234e9f7378ee2b51fa097",
+    "src/uav_control/uav_control/controllers/follow_research_solver.py": "b02f9e1b395758f6630704e99e132565e3ecd476a8c6edca525b63c911b198fb",
+    "src/uav_control/uav_control/guidance/follow_minco_optimizer.py": "ffbdf7e7bfe4da39399f5be2c9b0cb8345fd629c42e3987bcb8d86e3429ec8fc",
+    "src/uav_usv_bringup/launch/follow_research.launch.py": "a7c7339fce74f402ad619de376c44422869b9f9bda637326bb4ed6c6c90bb81c",
+    "docs/current/p31_fast_visibility_minco_validation.md": "dc5194cebc553be533ca7e8690e84b3e78ab78baf21797a0754fb51203b71347",
+    "scripts/p31_minco_audit.py": "69a2d597ca6360e1bec02587aac960efaa2d678bae7a24315a65836635cc1f26",
+    "scripts/p31_minco_experiment.py": "a220fa16e373923afbda889a54ec6f274f03fa09d254c84f2c65ec265863927f",
+    "src/uav_control/test/test_fast_follow_minco.py": "3f190e0066933ef8c08622826e397a32b770ab66135e14a64be079a7b186f1f5",
+    "src/uav_control/uav_control/guidance/adaptive_follow_initializer.py": "163f940ceda0e79e67c1aa52a633a890783cec8356e8048fd42dd6331c20f72b",
+    "src/uav_control/uav_control/guidance/fast_follow_minco.py": "d9875cd5f10560da1d28cfc1a7dfc1e2cf166af5dc15a5d4ce94ac1cd032abe8",
+    "src/uav_control/uav_control/guidance/fast_minco_objective.py": "f588dadc00ca0c39559f76972d62d7302398c8cc912984c84abe25a90067faab",
+    "src/uav_control/uav_control/guidance/follow_reference.py": "9b2e90d7dc7cb972efc22e35d4f5269a1d549af13861abedbbe773b75f458916",
+    "src/uav_control/uav_control/guidance/polynomial_extrema.py": "4b91acf7723c6f2e4a332f936d748c777dabb8ca1d6db2a48ebcd758a53d4568",
+    "src/uav_usv_bringup/config/p31_follow_research.yaml": "540f68812c1594470798a8c346c8bd41d64c2ca2a1f90631e136c1035b623fec"
+  }
+}

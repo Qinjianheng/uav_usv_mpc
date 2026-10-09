@@ -1,0 +1,31 @@
+{
+  "ready": false,
+  "ready_since": 10109.465063349,
+  "phase": "SAFE_RECOVERY",
+  "follow_since": null,
+  "x": 10119.465784328,
+  "y": 10131.870354482,
+  "result": {
+    "stamp": {
+      "sec": 1791355970,
+      "nanosec": 945254564
+    },
+    "mission_id": 1,
+    "success": true,
+    "outcome": "SUCCESS",
+    "reason": "CAPTURE_RADIUS_REACHED",
+    "detail": "determined by simulation truth in evaluator only",
+    "elapsed_time": 10.697090864181519,
+    "capture_radius": 0.5,
+    "minimum_distance": 0.4408489953584045,
+    "horizontal_distance": 0.36575166046083385,
+    "vertical_error": 0.24611696320785664,
+    "relative_speed": 2.658457526083547,
+    "closing_speed": 2.31513127818462,
+    "max_horizontal_speed": 6.641843083249376,
+    "max_vertical_speed": 2.758182839103664,
+    "max_horizontal_acceleration": 4.1480768661922784,
+    "max_vertical_acceleration": 3.5676805402098353
+  },
+  "result_time": 10142.609326666
+}

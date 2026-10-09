@@ -1,0 +1,348 @@
+{
+  "baseline_controls": null,
+  "cycle": 2,
+  "input": {
+    "actual_rotation": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "context": {
+      "attitude_stamp": 100.4,
+      "clock_generation": 0,
+      "cycle_id": 2,
+      "execution_start_stamp": 100.4,
+      "frame_id": "local_ned",
+      "mission_id": 1,
+      "navigation_stamp": 100.4,
+      "observation_stamp": 100.39,
+      "prediction_sequence_id": 3,
+      "prediction_source": "synthetic",
+      "prediction_source_stamp": 100.4,
+      "prediction_valid_until": 104.4
+    },
+    "now_stamp": 100.4,
+    "prediction_times": [
+      0.0,
+      0.2,
+      0.2,
+      0.6000000000000001,
+      0.8,
+      1.0,
+      1.2000000000000002,
+      1.4000000000000001,
+      1.6,
+      1.8,
+      2.0,
+      2.2,
+      2.4000000000000004,
+      2.6,
+      2.8000000000000003,
+      3.0,
+      3.2,
+      3.4000000000000004,
+      3.6,
+      3.8000000000000003,
+      4.0
+    ],
+    "state": [
+      -4.6,
+      0.0,
+      -5.0,
+      1.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "target_positions": [
+      [
+        0.4,
+        0.0,
+        0.0
+      ],
+      [
+        0.6000000000000001,
+        0.0,
+        0.0
+      ],
+      [
+        0.8,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.2000000000000002,
+        0.0,
+        0.0
+      ],
+      [
+        1.4,
+        0.0,
+        0.0
+      ],
+      [
+        1.6,
+        0.0,
+        0.0
+      ],
+      [
+        1.8000000000000003,
+        0.0,
+        0.0
+      ],
+      [
+        2.0,
+        0.0,
+        0.0
+      ],
+      [
+        2.2,
+        0.0,
+        0.0
+      ],
+      [
+        2.4,
+        0.0,
+        0.0
+      ],
+      [
+        2.6,
+        0.0,
+        0.0
+      ],
+      [
+        2.8000000000000003,
+        0.0,
+        0.0
+      ],
+      [
+        3.0,
+        0.0,
+        0.0
+      ],
+      [
+        3.2,
+        0.0,
+        0.0
+      ],
+      [
+        3.4,
+        0.0,
+        0.0
+      ],
+      [
+        3.6,
+        0.0,
+        0.0
+      ],
+      [
+        3.8000000000000003,
+        0.0,
+        0.0
+      ],
+      [
+        4.0,
+        0.0,
+        0.0
+      ],
+      [
+        4.2,
+        0.0,
+        0.0
+      ],
+      [
+        4.4,
+        0.0,
+        0.0
+      ]
+    ],
+    "target_velocities": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ]
+    ]
+  },
+  "input_sha256": "9ba0ae3061e36cae671d0c94cfc68143e452735283ee55bf3d7bdd935a3fb754",
+  "method": "mpc_cold",
+  "metrics": {
+    "core_dense_metrics": {},
+    "follow_error_rms_m": null,
+    "maximum_acceleration_mps2": null,
+    "maximum_jerk_mps3": null,
+    "maximum_speed_mps": null,
+    "maximum_tilt_rad": null,
+    "minimum_horizontal_margin_rad": null,
+    "minimum_vertical_margin_rad": null,
+    "visibility_ratio": null
+  },
+  "output": {
+    "accelerations": [],
+    "candidate_kind": "",
+    "constraint_violations": {},
+    "context": {
+      "attitude_stamp": 100.4,
+      "clock_generation": 0,
+      "cycle_id": 2,
+      "execution_start_stamp": 100.4,
+      "frame_id": "local_ned",
+      "mission_id": 1,
+      "navigation_stamp": 100.4,
+      "observation_stamp": 100.39,
+      "prediction_sequence_id": 3,
+      "prediction_source": "synthetic",
+      "prediction_source_stamp": 100.4,
+      "prediction_valid_until": 104.4
+    },
+    "initial_visibility": false,
+    "jerks": [],
+    "metrics": {},
+    "objective_value": 0.0,
+    "positions": [],
+    "reason": "input shape, source, frame or epoch mismatch",
+    "relative_times": [],
+    "solve_time": 2.399299955868628e-05,
+    "solver_status": "INVALID_INPUT",
+    "timing": {
+      "total": 2.399299955868628e-05
+    },
+    "valid": false,
+    "velocities": [],
+    "visibility_margins": [],
+    "warm_started": false,
+    "yaw_rates": [],
+    "yaw_refs": []
+  },
+  "repeat": 1,
+  "scenario": "nonmonotonic_prediction",
+  "timing": {
+    "core_timing": {
+      "total": 2.399299955868628e-05
+    },
+    "end_to_end_s": 0.0014549589996022405,
+    "external_budget_s": 0.5,
+    "shared_data_prep_s": 0.00031560100069327746,
+    "solve_external_s": 2.9698001526412554e-05
+  }
+}

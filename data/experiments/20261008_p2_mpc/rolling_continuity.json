@@ -1,0 +1,455 @@
+{
+  "pairs": 48,
+  "pva_gap_p50_p95_p99": {
+    "positions": [
+      0.0010343910951695532,
+      0.001960077429536971,
+      0.0020126640507954385
+    ],
+    "velocities": [
+      0.015515866427530306,
+      0.02940116144303003,
+      0.03018996076189983
+    ],
+    "accelerations": [
+      0.1551586642752987,
+      0.2940116144302921,
+      0.3018996076189901
+    ]
+  },
+  "interpretation": "shadow measured/synthetic boundary reset against prior research candidate; not an accepted flight trajectory continuity test",
+  "details": [
+    {
+      "scenario": "stationary",
+      "repeat": 0,
+      "cycle": 1,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 8.732717038845793e-06,
+      "velocities_boundary_gap": 0.00013099075558302797,
+      "accelerations_boundary_gap": 0.0013099075558302422
+    },
+    {
+      "scenario": "stationary",
+      "repeat": 0,
+      "cycle": 2,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 7.656189209659455e-06,
+      "velocities_boundary_gap": 0.00011484283814634394,
+      "accelerations_boundary_gap": 0.0011484283814634068
+    },
+    {
+      "scenario": "fov_edge",
+      "repeat": 0,
+      "cycle": 1,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 8.731827367107662e-05,
+      "velocities_boundary_gap": 0.0013097741050393287,
+      "accelerations_boundary_gap": 0.01309774105039389
+    },
+    {
+      "scenario": "fov_edge",
+      "repeat": 0,
+      "cycle": 2,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 6.708782921359392e-05,
+      "velocities_boundary_gap": 0.001006317438165598,
+      "accelerations_boundary_gap": 0.010063174381656341
+    },
+    {
+      "scenario": "fov_edge",
+      "repeat": 2,
+      "cycle": 1,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 8.731827367107662e-05,
+      "velocities_boundary_gap": 0.0013097741050393287,
+      "accelerations_boundary_gap": 0.01309774105039389
+    },
+    {
+      "scenario": "fov_edge",
+      "repeat": 2,
+      "cycle": 2,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 6.708782921359392e-05,
+      "velocities_boundary_gap": 0.001006317438165598,
+      "accelerations_boundary_gap": 0.010063174381656341
+    },
+    {
+      "scenario": "left_turn",
+      "repeat": 0,
+      "cycle": 1,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 0.0010343910784170165,
+      "velocities_boundary_gap": 0.015515866176240243,
+      "accelerations_boundary_gap": 0.15515866176239826
+    },
+    {
+      "scenario": "left_turn",
+      "repeat": 0,
+      "cycle": 2,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 0.001115344994623433,
+      "velocities_boundary_gap": 0.016730174919337534,
+      "accelerations_boundary_gap": 0.1673017491933703
+    },
+    {
+      "scenario": "constant_velocity",
+      "repeat": 2,
+      "cycle": 1,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 7.219368486403184e-05,
+      "velocities_boundary_gap": 0.001082905272922083,
+      "accelerations_boundary_gap": 0.010829052729221151
+    },
+    {
+      "scenario": "constant_velocity",
+      "repeat": 2,
+      "cycle": 2,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 1.0666812099215233e-05,
+      "velocities_boundary_gap": 0.00016000218146307606,
+      "accelerations_boundary_gap": 0.0016000218146306159
+    },
+    {
+      "scenario": "turn_jump",
+      "repeat": 1,
+      "cycle": 1,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 0.0018624165614855319,
+      "velocities_boundary_gap": 0.027936248422271843,
+      "accelerations_boundary_gap": 0.2793624842227102
+    },
+    {
+      "scenario": "turn_jump",
+      "repeat": 1,
+      "cycle": 2,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 0.0017292858263594285,
+      "velocities_boundary_gap": 0.025939287395380026,
+      "accelerations_boundary_gap": 0.2593928739537931
+    },
+    {
+      "scenario": "constant_velocity",
+      "repeat": 1,
+      "cycle": 1,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 7.219368486403184e-05,
+      "velocities_boundary_gap": 0.001082905272922083,
+      "accelerations_boundary_gap": 0.010829052729221151
+    },
+    {
+      "scenario": "constant_velocity",
+      "repeat": 1,
+      "cycle": 2,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 1.0666812099215233e-05,
+      "velocities_boundary_gap": 0.00016000218146307606,
+      "accelerations_boundary_gap": 0.0016000218146306159
+    },
+    {
+      "scenario": "turn_jump",
+      "repeat": 2,
+      "cycle": 1,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 0.0018624165614855319,
+      "velocities_boundary_gap": 0.027936248422271843,
+      "accelerations_boundary_gap": 0.2793624842227102
+    },
+    {
+      "scenario": "turn_jump",
+      "repeat": 2,
+      "cycle": 2,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 0.0017292858263594285,
+      "velocities_boundary_gap": 0.025939287395380026,
+      "accelerations_boundary_gap": 0.2593928739537931
+    },
+    {
+      "scenario": "left_turn",
+      "repeat": 2,
+      "cycle": 1,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 0.0010343910784170165,
+      "velocities_boundary_gap": 0.015515866176240243,
+      "accelerations_boundary_gap": 0.15515866176239826
+    },
+    {
+      "scenario": "left_turn",
+      "repeat": 2,
+      "cycle": 2,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 0.001115344994623433,
+      "velocities_boundary_gap": 0.016730174919337534,
+      "accelerations_boundary_gap": 0.1673017491933703
+    },
+    {
+      "scenario": "left_turn",
+      "repeat": 1,
+      "cycle": 1,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 0.0010343910784170165,
+      "velocities_boundary_gap": 0.015515866176240243,
+      "accelerations_boundary_gap": 0.15515866176239826
+    },
+    {
+      "scenario": "left_turn",
+      "repeat": 1,
+      "cycle": 2,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 0.001115344994623433,
+      "velocities_boundary_gap": 0.016730174919337534,
+      "accelerations_boundary_gap": 0.1673017491933703
+    },
+    {
+      "scenario": "figure_eight",
+      "repeat": 2,
+      "cycle": 1,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 0.0008999759248735885,
+      "velocities_boundary_gap": 0.013499638873102822,
+      "accelerations_boundary_gap": 0.13499638873102413
+    },
+    {
+      "scenario": "figure_eight",
+      "repeat": 2,
+      "cycle": 2,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 0.001281773182176906,
+      "velocities_boundary_gap": 0.019226597732644398,
+      "accelerations_boundary_gap": 0.19226597732643783
+    },
+    {
+      "scenario": "figure_eight",
+      "repeat": 0,
+      "cycle": 1,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 0.0008999759248735885,
+      "velocities_boundary_gap": 0.013499638873102822,
+      "accelerations_boundary_gap": 0.13499638873102413
+    },
+    {
+      "scenario": "figure_eight",
+      "repeat": 0,
+      "cycle": 2,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 0.001281773182176906,
+      "velocities_boundary_gap": 0.019226597732644398,
+      "accelerations_boundary_gap": 0.19226597732643783
+    },
+    {
+      "scenario": "fov_edge",
+      "repeat": 1,
+      "cycle": 1,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 8.731827367107662e-05,
+      "velocities_boundary_gap": 0.0013097741050393287,
+      "accelerations_boundary_gap": 0.01309774105039389
+    },
+    {
+      "scenario": "fov_edge",
+      "repeat": 1,
+      "cycle": 2,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 6.708782921359392e-05,
+      "velocities_boundary_gap": 0.001006317438165598,
+      "accelerations_boundary_gap": 0.010063174381656341
+    },
+    {
+      "scenario": "right_turn",
+      "repeat": 0,
+      "cycle": 1,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 0.00103439111192209,
+      "velocities_boundary_gap": 0.01551586667882037,
+      "accelerations_boundary_gap": 0.15515866678819915
+    },
+    {
+      "scenario": "right_turn",
+      "repeat": 0,
+      "cycle": 2,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 0.0011153450116543407,
+      "velocities_boundary_gap": 0.01673017517480071,
+      "accelerations_boundary_gap": 0.1673017517480026
+    },
+    {
+      "scenario": "turn_jump",
+      "repeat": 0,
+      "cycle": 1,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 0.0018624165614855319,
+      "velocities_boundary_gap": 0.027936248422271843,
+      "accelerations_boundary_gap": 0.2793624842227102
+    },
+    {
+      "scenario": "turn_jump",
+      "repeat": 0,
+      "cycle": 2,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 0.0017292858263594285,
+      "velocities_boundary_gap": 0.025939287395380026,
+      "accelerations_boundary_gap": 0.2593928739537931
+    },
+    {
+      "scenario": "stationary",
+      "repeat": 2,
+      "cycle": 1,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 8.732717038845793e-06,
+      "velocities_boundary_gap": 0.00013099075558302797,
+      "accelerations_boundary_gap": 0.0013099075558302422
+    },
+    {
+      "scenario": "stationary",
+      "repeat": 2,
+      "cycle": 2,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 7.656189209659455e-06,
+      "velocities_boundary_gap": 0.00011484283814634394,
+      "accelerations_boundary_gap": 0.0011484283814634068
+    },
+    {
+      "scenario": "right_turn",
+      "repeat": 2,
+      "cycle": 1,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 0.00103439111192209,
+      "velocities_boundary_gap": 0.01551586667882037,
+      "accelerations_boundary_gap": 0.15515866678819915
+    },
+    {
+      "scenario": "right_turn",
+      "repeat": 2,
+      "cycle": 2,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 0.0011153450116543407,
+      "velocities_boundary_gap": 0.01673017517480071,
+      "accelerations_boundary_gap": 0.1673017517480026
+    },
+    {
+      "scenario": "speed_jump",
+      "repeat": 0,
+      "cycle": 1,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 0.0017741465002119117,
+      "velocities_boundary_gap": 0.026612197503136915,
+      "accelerations_boundary_gap": 0.2661219750313618
+    },
+    {
+      "scenario": "speed_jump",
+      "repeat": 0,
+      "cycle": 2,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 0.0020126640507954385,
+      "velocities_boundary_gap": 0.03018996076189983,
+      "accelerations_boundary_gap": 0.3018996076189901
+    },
+    {
+      "scenario": "figure_eight",
+      "repeat": 1,
+      "cycle": 1,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 0.0008999759248735885,
+      "velocities_boundary_gap": 0.013499638873102822,
+      "accelerations_boundary_gap": 0.13499638873102413
+    },
+    {
+      "scenario": "figure_eight",
+      "repeat": 1,
+      "cycle": 2,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 0.001281773182176906,
+      "velocities_boundary_gap": 0.019226597732644398,
+      "accelerations_boundary_gap": 0.19226597732643783
+    },
+    {
+      "scenario": "speed_jump",
+      "repeat": 2,
+      "cycle": 1,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 0.0017741465002119117,
+      "velocities_boundary_gap": 0.026612197503136915,
+      "accelerations_boundary_gap": 0.2661219750313618
+    },
+    {
+      "scenario": "speed_jump",
+      "repeat": 2,
+      "cycle": 2,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 0.0020126640507954385,
+      "velocities_boundary_gap": 0.03018996076189983,
+      "accelerations_boundary_gap": 0.3018996076189901
+    },
+    {
+      "scenario": "speed_jump",
+      "repeat": 1,
+      "cycle": 1,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 0.0017741465002119117,
+      "velocities_boundary_gap": 0.026612197503136915,
+      "accelerations_boundary_gap": 0.2661219750313618
+    },
+    {
+      "scenario": "speed_jump",
+      "repeat": 1,
+      "cycle": 2,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 0.0020126640507954385,
+      "velocities_boundary_gap": 0.03018996076189983,
+      "accelerations_boundary_gap": 0.3018996076189901
+    },
+    {
+      "scenario": "stationary",
+      "repeat": 1,
+      "cycle": 1,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 8.732717038845793e-06,
+      "velocities_boundary_gap": 0.00013099075558302797,
+      "accelerations_boundary_gap": 0.0013099075558302422
+    },
+    {
+      "scenario": "stationary",
+      "repeat": 1,
+      "cycle": 2,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 7.656189209659455e-06,
+      "velocities_boundary_gap": 0.00011484283814634394,
+      "accelerations_boundary_gap": 0.0011484283814634068
+    },
+    {
+      "scenario": "right_turn",
+      "repeat": 1,
+      "cycle": 1,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 0.00103439111192209,
+      "velocities_boundary_gap": 0.01551586667882037,
+      "accelerations_boundary_gap": 0.15515866678819915
+    },
+    {
+      "scenario": "right_turn",
+      "repeat": 1,
+      "cycle": 2,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 0.0011153450116543407,
+      "velocities_boundary_gap": 0.01673017517480071,
+      "accelerations_boundary_gap": 0.1673017517480026
+    },
+    {
+      "scenario": "constant_velocity",
+      "repeat": 0,
+      "cycle": 1,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 7.219368486403184e-05,
+      "velocities_boundary_gap": 0.001082905272922083,
+      "accelerations_boundary_gap": 0.010829052729221151
+    },
+    {
+      "scenario": "constant_velocity",
+      "repeat": 0,
+      "cycle": 2,
+      "delta_s": 0.20000000000000284,
+      "positions_boundary_gap": 1.0666812099215233e-05,
+      "velocities_boundary_gap": 0.00016000218146307606,
+      "accelerations_boundary_gap": 0.0016000218146306159
+    }
+  ]
+}

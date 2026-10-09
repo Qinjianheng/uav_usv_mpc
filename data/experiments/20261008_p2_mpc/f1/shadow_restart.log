@@ -1,0 +1,4 @@
+[INFO] [launch]: All log files can be found below /home/qin/data/uav_usv_mpc/data/experiments/20261008_p2_mpc/f1/ros_logs/2026-10-08-20-48-31-739630-qin-GLO-FX6-44531
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [follow_mpc_shadow_node-1]: process started with pid [44533]
+[follow_mpc_shadow_node-1] [INFO] [1791463712.429451473] [follow_mpc_shadow_node]: MPC SHADOW READY | 1 worker | research only | JSONL=/home/qin/data/uav_usv_mpc/data/experiments/20261008_p2_mpc/f1/shadow/mpc_seed_shadow_1791463712232338818_44533.jsonl

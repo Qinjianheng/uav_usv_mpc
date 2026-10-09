@@ -20,7 +20,10 @@ class FollowResearchShadowNode(FollowMpcShadowNode):
         """Inject a single solver and explicit execution boundary into the original runner."""
         for name, default in (('research_mode', 'greedy_minco'), ('execution_lead', .15),
                               ('minco_mode', 'qt'), ('minco_iterations', 2),
-                              ('visibility_weight', 20.)):
+                              ('visibility_weight', 20.), ('minco_engine', 'legacy'),
+                              ('initializer_strategy', 'legacy'), ('greedy_strategy', 'D'),
+                              ('dynamic_endpoint', True), ('fast_feasible_seed', True),
+                              ('greedy_minimum_distance', 3.), ('greedy_maximum_distance', 10.)):
             self.declare_parameter(name, default)
         mode = self.get_parameter('research_mode').value
         optimizer = MincoConfig(mode=self.get_parameter('minco_mode').value,
@@ -28,7 +31,26 @@ class FollowResearchShadowNode(FollowMpcShadowNode):
                                 visibility_weight=self.get_parameter('visibility_weight').value,
                                 budget=config.solve_budget)
         optimizer.validate()
-        solver = FollowResearchSolver(mode, config, optimizer)
+        engine = self.get_parameter('minco_engine').value
+        if engine not in ('legacy', 'p31'):
+            raise ValueError('unsupported minco engine')
+        fast, greedy = None, None
+        initialization = self.get_parameter('initializer_strategy').value
+        if engine == 'p31':
+            from uav_control.guidance.fast_follow_minco import FastConfig
+            from uav_control.guidance.adaptive_follow_initializer import GreedyConfig
+            fast = FastConfig(freshness_budget=True, fast_feasible_seed=bool(
+                self.get_parameter('fast_feasible_seed').value))
+            greedy = GreedyConfig(strategy=self.get_parameter('greedy_strategy').value,
+                                  dynamic_endpoint=bool(
+                                      self.get_parameter('dynamic_endpoint').value),
+                                  minimum_distance=float(
+                                      self.get_parameter('greedy_minimum_distance').value),
+                                  maximum_distance=float(
+                                      self.get_parameter('greedy_maximum_distance').value))
+        elif initialization != 'legacy':
+            raise ValueError('new initialization requires explicit p31 engine')
+        solver = FollowResearchSolver(mode, config, optimizer, fast, greedy, initialization)
         factory = make_shadow_request
         if mode != 'mpc_seed':
             lead = float(self.get_parameter('execution_lead').value)

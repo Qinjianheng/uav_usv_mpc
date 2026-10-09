@@ -1,0 +1,9 @@
+stamp:
+  sec: 1791469928
+  nanosec: 164911985
+mission_id: 1
+state: 3
+state_name: FOLLOW
+intercept_requested: false
+completed: false
+---

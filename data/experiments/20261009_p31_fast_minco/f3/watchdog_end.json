@@ -1,0 +1,27 @@
+{
+  "started": 1791511050.352733,
+  "ended": 1791511240.7733207,
+  "components": {
+    "gazebo": {
+      "pid": 87755,
+      "pgid": 87755,
+      "start": "6120442"
+    },
+    "px4": {
+      "pid": 87855,
+      "pgid": 87855,
+      "start": "6120660"
+    },
+    "dds": {
+      "pid": 88395,
+      "pgid": 88395,
+      "start": "6121193"
+    },
+    "experiment": {
+      "pid": 88591,
+      "pgid": 88591,
+      "start": "6121706"
+    }
+  },
+  "reason": "wall bound"
+}

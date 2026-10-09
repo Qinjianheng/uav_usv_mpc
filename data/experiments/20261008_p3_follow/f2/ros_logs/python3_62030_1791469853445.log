@@ -1,0 +1,2 @@
+[INFO] [1791469853.621487860] [intercept_evaluator_node]: Truth-only evaluator ready | truth=/target/state | capture=0.50 m | output=/home/qin/data/uav_usv_mpc/data/experiments/20261008_p3_follow/f2/evaluator
+[INFO] [1791470084.408237366] [intercept_evaluator_node]: Run finalized: NODE_SHUTDOWN | artifacts=/home/qin/data/uav_usv_mpc/data/experiments/20261008_p3_follow/f2/evaluator/modular_intercept_20261008_223057_969215_mission_1.csv

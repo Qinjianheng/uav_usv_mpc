@@ -1,0 +1,2144 @@
+{
+  "files": [
+    {
+      "bytes": 44545,
+      "path": "configuration.json",
+      "sha256": "959d1225d09bc218007a4e70822f3551b568b4bedeb4c44fdda649d64fc963ec"
+    },
+    {
+      "bytes": 84046,
+      "path": "line_00000006_mpc_cold.json",
+      "sha256": "b1bf1a240e89b59a3f72f3ed9e793732a826714c8efaf6f48caa8b1d2900e172"
+    },
+    {
+      "bytes": 84046,
+      "path": "line_00000006_mpc_warm.json",
+      "sha256": "374eeec5bc1e0ec496ce1e88298800108147deae559e8fe1bba6a0db40744d03"
+    },
+    {
+      "bytes": 84745,
+      "path": "line_00000006_quintic.json",
+      "sha256": "f8b5115516e904250900c54670a53235f43ff827d4290288adca769158bce8c9"
+    },
+    {
+      "bytes": 84190,
+      "path": "line_00000006_viewpoint_interpolation.json",
+      "sha256": "55ca99bff202b0c0b43c1ce8aa1283d1fa52b40912953e1641d24b3d6ab4fd28"
+    },
+    {
+      "bytes": 66182,
+      "path": "line_00000015_mpc_cold.json",
+      "sha256": "31218ed6c2f10198de583258f0d8ba1dfee3f132f9e71af22e366480354c6925"
+    },
+    {
+      "bytes": 66182,
+      "path": "line_00000015_mpc_warm.json",
+      "sha256": "017bdfca9848c6f02ca1594d9675544339e5d2ed44bcdafb39f7011cc82a2796"
+    },
+    {
+      "bytes": 66873,
+      "path": "line_00000015_quintic.json",
+      "sha256": "14933dc14fc38e956f553cb12ffe0d4076f16dadaa6159e752feaa2d924a0278"
+    },
+    {
+      "bytes": 66310,
+      "path": "line_00000015_viewpoint_interpolation.json",
+      "sha256": "190a1804fba415952afe47cdc547db6d860ffc18c21c1ea615fe0dde93e4d374"
+    },
+    {
+      "bytes": 66554,
+      "path": "line_00000023_mpc_cold.json",
+      "sha256": "1eda5ccbfd9f0c556dd67530a4c251997f1aad7459723392fbc117614c9ce0b2"
+    },
+    {
+      "bytes": 66604,
+      "path": "line_00000023_mpc_warm.json",
+      "sha256": "cf463a43e441c4a1a8b2cfa95e565499ed640b6c20185f9d62b28f536ed0197c"
+    },
+    {
+      "bytes": 67272,
+      "path": "line_00000023_quintic.json",
+      "sha256": "e8e2e96fcd74d83c995d178ffab7c82fcdda03a8a1605daf5cf42bf0f73fdf44"
+    },
+    {
+      "bytes": 66784,
+      "path": "line_00000023_viewpoint_interpolation.json",
+      "sha256": "7353d25715999028e84aa8d30aa6c01f406fe543f3bb32699b0eb224f58f628f"
+    },
+    {
+      "bytes": 66253,
+      "path": "line_00000063_mpc_cold.json",
+      "sha256": "5a3ca2d8153b7326d646c03add89138e11c860c1fae01f2cc22e37475829b53a"
+    },
+    {
+      "bytes": 66314,
+      "path": "line_00000063_mpc_warm.json",
+      "sha256": "a1f9af520f79e07f5fa5559c48234b154f969c1d08acf3bb9a8fa9ae6f3b8080"
+    },
+    {
+      "bytes": 66879,
+      "path": "line_00000063_quintic.json",
+      "sha256": "9b1955206d9a0256ccffc106125ff3a72130d55796b82865e3995fb910c7a41c"
+    },
+    {
+      "bytes": 66427,
+      "path": "line_00000063_viewpoint_interpolation.json",
+      "sha256": "c299b035392994438637e5356dd84723a8934229715d4cc61f73f6f0025c815f"
+    },
+    {
+      "bytes": 84410,
+      "path": "line_00000068_mpc_cold.json",
+      "sha256": "98777dfdb79016f23cb5beba65c1b2443c5aecd0b561c2c2db125e243ec6af94"
+    },
+    {
+      "bytes": 84376,
+      "path": "line_00000068_mpc_warm.json",
+      "sha256": "4e0a4a3834296c0e9f787a49c20df8ae320248e4fef94d2186398585afe6d578"
+    },
+    {
+      "bytes": 85022,
+      "path": "line_00000068_quintic.json",
+      "sha256": "add0187442191f9372cc59ac3e88ebca0e3a7d0aca406a40d7a5eb750634c96c"
+    },
+    {
+      "bytes": 84549,
+      "path": "line_00000068_viewpoint_interpolation.json",
+      "sha256": "c5cefb438213435c1575822123d0d54bfc53f1a810b2aa01089aa484b710b465"
+    },
+    {
+      "bytes": 66276,
+      "path": "line_00000074_mpc_cold.json",
+      "sha256": "d805950b4e5805fcdb098f82bbeae67e2b20c1f5df9f13e99e9855ba5df1dea7"
+    },
+    {
+      "bytes": 66296,
+      "path": "line_00000074_mpc_warm.json",
+      "sha256": "b3c30cd8087e3173bbb2576a133439ff3da5c7c5f56bed423faf6c8aa6d7ffc4"
+    },
+    {
+      "bytes": 66917,
+      "path": "line_00000074_quintic.json",
+      "sha256": "3fa0dc7edbdfb24074dcf3d05b95ca3102b4bece96ae4c0785791aabfe61e37c"
+    },
+    {
+      "bytes": 66430,
+      "path": "line_00000074_viewpoint_interpolation.json",
+      "sha256": "263a5747d950a2657a1ba1f16c20409b79c296d67836aaa88c754680e548a575"
+    },
+    {
+      "bytes": 84250,
+      "path": "line_00000078_mpc_cold.json",
+      "sha256": "3acbf4fc08e945b0229a967d0fab9feac8aaca83e6b756f5687ac36f68fb0eea"
+    },
+    {
+      "bytes": 84294,
+      "path": "line_00000078_mpc_warm.json",
+      "sha256": "2eb6d83f8e5799e4347d8335d7e802a50105d78e39c2aa0f4471356fec11d6fe"
+    },
+    {
+      "bytes": 84925,
+      "path": "line_00000078_quintic.json",
+      "sha256": "426a070aa0174b706d66c3dc303f087adcb5474c4280408757791118967c533b"
+    },
+    {
+      "bytes": 84449,
+      "path": "line_00000078_viewpoint_interpolation.json",
+      "sha256": "f6cdec2d5edc8146fd34ceae196273a6dd60ec5fba2da9c845a7a13b3a06f76b"
+    },
+    {
+      "bytes": 84495,
+      "path": "line_00000081_mpc_cold.json",
+      "sha256": "0b6f4a1ed311a6570ef35fce32ed93c4dbddb5a34dd56929cbba93a430979d0b"
+    },
+    {
+      "bytes": 84434,
+      "path": "line_00000081_mpc_warm.json",
+      "sha256": "63128eed68a20088cb12731913eb775d0ae42c9fbfd034dfbefc22d5419247fa"
+    },
+    {
+      "bytes": 85064,
+      "path": "line_00000081_quintic.json",
+      "sha256": "cbf68b6dda1dc2651d282cba3045d198f50180bad5a83c1480a8c419b054936f"
+    },
+    {
+      "bytes": 84611,
+      "path": "line_00000081_viewpoint_interpolation.json",
+      "sha256": "f8bfabff35b2266656a4e0ddcf1237f657b090c4306c582bcbef114ee7cc05a7"
+    },
+    {
+      "bytes": 83882,
+      "path": "line_00000084_mpc_cold.json",
+      "sha256": "2898a10a93a39ae07134f30662e7441744c8257ae2421da990fd5032ea5efc78"
+    },
+    {
+      "bytes": 84018,
+      "path": "line_00000084_mpc_warm.json",
+      "sha256": "84b68c52b7efbbc5c33016316cd784c97a1a84350cedf2f8cdfe1ebc08c2b254"
+    },
+    {
+      "bytes": 84651,
+      "path": "line_00000084_quintic.json",
+      "sha256": "d5cb063acb39e0842b462a6ed7d7e8ecd221f93fe2bd478029496469d70e18cb"
+    },
+    {
+      "bytes": 84108,
+      "path": "line_00000084_viewpoint_interpolation.json",
+      "sha256": "d87d6bd13629598b5baf7a1ad0cf9776f408f8bf7ef041ee096ce9cb09a3de5a"
+    },
+    {
+      "bytes": 84652,
+      "path": "line_00000092_mpc_cold.json",
+      "sha256": "2053c84a2b755d3142bc035ae53b3cc2fc86b01eaafe8ba9cb355e3b07c5ca04"
+    },
+    {
+      "bytes": 84621,
+      "path": "line_00000092_mpc_warm.json",
+      "sha256": "40155017279b8815ffe3f4ffac7fd12f446b1a54f0a7a7da1601e5d18cd4bbdb"
+    },
+    {
+      "bytes": 85285,
+      "path": "line_00000092_quintic.json",
+      "sha256": "e2dacbe179527649976f6cc6606358f09c15edc947ea87649861f74351d6282f"
+    },
+    {
+      "bytes": 84740,
+      "path": "line_00000092_viewpoint_interpolation.json",
+      "sha256": "de6fd8fc39020572f79b46ea338d2fbbbecda1f195215c0bc810a27a867151fb"
+    },
+    {
+      "bytes": 84831,
+      "path": "line_00000097_mpc_cold.json",
+      "sha256": "bec455c24d17e90fbe4f5868c3cb15c633250d7152cc706748c76187fb581326"
+    },
+    {
+      "bytes": 84834,
+      "path": "line_00000097_mpc_warm.json",
+      "sha256": "c3f22ea232b221d6584e68a418828ccd0d7eed5a370726d34497b2850cba1cd1"
+    },
+    {
+      "bytes": 85512,
+      "path": "line_00000097_quintic.json",
+      "sha256": "0472b05bf01f164497c0ddb95c0e92406dc2fe22fe3edcc263a0bfa490f17926"
+    },
+    {
+      "bytes": 84964,
+      "path": "line_00000097_viewpoint_interpolation.json",
+      "sha256": "0373b9dc3e77d4d038e45fbeaec0e6b6a5dfd8c608d98dd9c8e190a10dcf25b5"
+    },
+    {
+      "bytes": 84343,
+      "path": "line_00000101_mpc_cold.json",
+      "sha256": "b0509d4c8b56bf5a3cd3e7fb6fb6375e1935d7797304963130d90287eb686d17"
+    },
+    {
+      "bytes": 84318,
+      "path": "line_00000101_mpc_warm.json",
+      "sha256": "c955523b90fa788f1dc3776553664176795ac3dfedd394d8d322420bb4485146"
+    },
+    {
+      "bytes": 84960,
+      "path": "line_00000101_quintic.json",
+      "sha256": "01ffbe31856ebae95bc9406850e35ae3a33e161a85aef84855338fe9da4d3b2f"
+    },
+    {
+      "bytes": 84439,
+      "path": "line_00000101_viewpoint_interpolation.json",
+      "sha256": "9f58169e1ccb4572d715491bb37cb021d98cf3b4357ace177df91e82881c0403"
+    },
+    {
+      "bytes": 84576,
+      "path": "line_00000104_mpc_cold.json",
+      "sha256": "513cc4442aabf629746699beabce920d542289dcc19c36b2350028b7131637df"
+    },
+    {
+      "bytes": 84580,
+      "path": "line_00000104_mpc_warm.json",
+      "sha256": "a6f6f8bed2a279a22c09d37c9976bafa8f8edfbc311b390ae3497795b22b2247"
+    },
+    {
+      "bytes": 85192,
+      "path": "line_00000104_quintic.json",
+      "sha256": "8f8b4c0f0efc6efc267e099503f7e6319ffa0f06ef45c1c013063b60f89e824f"
+    },
+    {
+      "bytes": 84697,
+      "path": "line_00000104_viewpoint_interpolation.json",
+      "sha256": "3a4542591698d49b076640c0f2fa4ac1efa7ac2e2a55864f95b8abfa9e41df0a"
+    },
+    {
+      "bytes": 84717,
+      "path": "line_00000110_mpc_cold.json",
+      "sha256": "bd59b77c0b372a73c3acc3fe230fadc5b1dafdabcd3c06a9b75fd2b3916f7731"
+    },
+    {
+      "bytes": 84741,
+      "path": "line_00000110_mpc_warm.json",
+      "sha256": "e22a660c3e627a28b16a2e235be160cdab385c3a87d5f05c11ae3acdd711cd0d"
+    },
+    {
+      "bytes": 85337,
+      "path": "line_00000110_quintic.json",
+      "sha256": "12a8e6f656dec3822a9a5a3ae2f38f6d8f19fb131dc525088a41dcc44af540be"
+    },
+    {
+      "bytes": 84841,
+      "path": "line_00000110_viewpoint_interpolation.json",
+      "sha256": "72cf02ad6e3ef2803e891f058a9014839ade4d880643a4fa317a3d0237252fce"
+    },
+    {
+      "bytes": 84729,
+      "path": "line_00000113_mpc_cold.json",
+      "sha256": "21e68b931716a06ff8e3f21f6d130e73be08d91910127b6a91ff8ed2f613ea3c"
+    },
+    {
+      "bytes": 84725,
+      "path": "line_00000113_mpc_warm.json",
+      "sha256": "da76a5c54e4912b11138e27c0a8b576461650b6fff5f0264b63e9f177aab19f4"
+    },
+    {
+      "bytes": 85383,
+      "path": "line_00000113_quintic.json",
+      "sha256": "fa9dd11b04fefd199c8f5f7ca5688e0b2d343d960e5fda8d89a6c82e337cbbd7"
+    },
+    {
+      "bytes": 84853,
+      "path": "line_00000113_viewpoint_interpolation.json",
+      "sha256": "244876586e5209f8ee2f6eab53e271b62dfa5fba8f8e5a2745c87e0f380b30ae"
+    },
+    {
+      "bytes": 66180,
+      "path": "line_00000129_mpc_cold.json",
+      "sha256": "f4a550e78ac86d90227592e4ef8c1ddf03dd376f1e7706828883133f1b04a9ad"
+    },
+    {
+      "bytes": 66171,
+      "path": "line_00000129_mpc_warm.json",
+      "sha256": "3ded52e5779abc9a6c523cdbcdd0b2d3f2594878db2cd6e8420273bd2095f366"
+    },
+    {
+      "bytes": 66918,
+      "path": "line_00000129_quintic.json",
+      "sha256": "17abc0dbb0d20176a3e99217b27a0326e9fd38334e531e98fa73b3dbe1818f95"
+    },
+    {
+      "bytes": 66368,
+      "path": "line_00000129_viewpoint_interpolation.json",
+      "sha256": "6f78d7b0b52ebc98d9af4ed5988ddacf06c859ed9e0c7319ee88c43567787eae"
+    },
+    {
+      "bytes": 66267,
+      "path": "line_00000204_mpc_cold.json",
+      "sha256": "991101a6ad17d989b8942e05d3b8b2e3e90886f2949fd0cea1d429f3a2e4fc49"
+    },
+    {
+      "bytes": 66263,
+      "path": "line_00000204_mpc_warm.json",
+      "sha256": "7c5ad33c69a0170d7cc51b96d26e87827e4d4c55125df710843ef16e71207763"
+    },
+    {
+      "bytes": 66894,
+      "path": "line_00000204_quintic.json",
+      "sha256": "ef33d1f4da94f18d680c5c15ff205c39eb06432ccae58e8fdc4a019f81f9f242"
+    },
+    {
+      "bytes": 66434,
+      "path": "line_00000204_viewpoint_interpolation.json",
+      "sha256": "9a3a88945fd102ccb29fc29ffc2cdaa54ee86d02a18d16c987290ee7cb5d8a5c"
+    },
+    {
+      "bytes": 81555,
+      "path": "line_00000207_mpc_cold.json",
+      "sha256": "612a0d92abbd24a933df444e95a6dff72cd81b22dff764da5380d883b4202ea3"
+    },
+    {
+      "bytes": 81554,
+      "path": "line_00000207_mpc_warm.json",
+      "sha256": "cd8a7fc3269a7ffef665cbfde8704f3a11fd784b9e9d160b9018753c40345f04"
+    },
+    {
+      "bytes": 81811,
+      "path": "line_00000207_quintic.json",
+      "sha256": "01fec18cffbbac0f0fc1ece94eb7991e529a7ee6c5472eda6bbaec7deaa2ff5e"
+    },
+    {
+      "bytes": 80729,
+      "path": "line_00000207_viewpoint_interpolation.json",
+      "sha256": "8bb419ac0d369e9476661b9b93b2bc45a4b03395ba1cc5bfd8d259ee507c09a6"
+    },
+    {
+      "bytes": 84666,
+      "path": "line_00000210_mpc_cold.json",
+      "sha256": "7a9dd3246c782ac58c85428a288a8b128cf938dceb4d4dabd4470d9dcc3347ed"
+    },
+    {
+      "bytes": 84665,
+      "path": "line_00000210_mpc_warm.json",
+      "sha256": "b779d137281ae549ac2a36bcb0b837f7e973c78d73c3e244111423d59223a8e5"
+    },
+    {
+      "bytes": 85194,
+      "path": "line_00000210_quintic.json",
+      "sha256": "471f6652ff8b29cbf4d928fa7f24c43b9330ff22ce2b9aba6a826a604c6bec79"
+    },
+    {
+      "bytes": 84803,
+      "path": "line_00000210_viewpoint_interpolation.json",
+      "sha256": "529752f108def1ee4b67b4af2f7b66db122a577255d5842c2b85205ae696e154"
+    },
+    {
+      "bytes": 84769,
+      "path": "line_00000213_mpc_cold.json",
+      "sha256": "64d6d874d422d822d740f15312d3fb9ba6aa257ab557087944d404a32898d388"
+    },
+    {
+      "bytes": 84765,
+      "path": "line_00000213_mpc_warm.json",
+      "sha256": "4b0cc24b4f23f07f5f0e92fe27df2044c2ad2e2b8befa33b73841875192d7928"
+    },
+    {
+      "bytes": 85367,
+      "path": "line_00000213_quintic.json",
+      "sha256": "f8bdc0829faa2c73fffa04499f1559ec7c4787d242b313b6bb38ec1218ef6e82"
+    },
+    {
+      "bytes": 84922,
+      "path": "line_00000213_viewpoint_interpolation.json",
+      "sha256": "d926f1c36dde99ba1786b6c40635889bc08867a828ff5b04ec9402742b4cf54a"
+    },
+    {
+      "bytes": 21240,
+      "path": "summary.json",
+      "sha256": "04d15ba02fae1fa0a8b81e9cff0e5d9a5ec074df2f91d7f01d5367602d089451"
+    }
+  ],
+  "provenance": {
+    "acceptance_boundary": "offline replay only; original node rejection remains unchanged",
+    "config": {
+      "allow_synthetic_predictions": false,
+      "braking_acceleration": 2.5,
+      "control_blocks": 2,
+      "dt": 0.2,
+      "flight_altitude": -5.0,
+      "follow_distance": 5.0,
+      "horizon_steps": 12,
+      "maximum_horizontal_acceleration": 3.0,
+      "maximum_horizontal_jerk": 6.0,
+      "maximum_horizontal_speed": 6.2,
+      "maximum_input_age": 0.125,
+      "maximum_iterations": 4,
+      "maximum_vertical_acceleration": 3.0,
+      "maximum_vertical_jerk": 4.0,
+      "maximum_vertical_speed": 4.0,
+      "maximum_yaw_rate": 1.0,
+      "reserve_clearance": 0.5,
+      "response_delay": 0.15,
+      "sea_surface_z": 0.0,
+      "solve_budget": 0.5,
+      "validation_substeps": 2
+    },
+    "geometry_and_attitude_config": {
+      "attitude_config": {
+        "angular_error_margin_rad": 0.03,
+        "gravity": 9.80665,
+        "maximum_specific_thrust": 18.0,
+        "maximum_tilt_rad": 0.55,
+        "minimum_specific_thrust": 2.0
+      },
+      "extrinsics": {
+        "rotation_camera_to_body_flu": [
+          [
+            0.882947592858927,
+            0.0,
+            0.4694715627858908
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.4694715627858908,
+            0.0,
+            0.882947592858927
+          ]
+        ],
+        "translation_flu": [
+          0.18,
+          0.0,
+          0.39
+        ]
+      },
+      "intrinsics": {
+        "cx": 320.0,
+        "cy": 240.0,
+        "fx": 269.9681840122649,
+        "fy": 269.9681840122649,
+        "height": 480,
+        "width": 640
+      },
+      "target": {
+        "center_offset_ned": [
+          0,
+          0,
+          -0.42
+        ],
+        "radius": 0.25
+      },
+      "visibility": {
+        "depth_epsilon": 1e-09,
+        "distance_mode": "axial",
+        "horizontal_margin_rad": 0.07,
+        "maximum_distance": 25,
+        "minimum_distance": 0.05,
+        "vertical_margin_rad": 0.07
+      }
+    },
+    "git_head": "b388847b17c8d207042cccc39407e7842e5f05c8",
+    "git_status": " M src/uav_control/setup.py\n?? docs/current/mpc_seed_validation.md\n?? scripts/mpc_seed_experiment.py\n?? scripts/mpc_seed_replay.py\n?? src/uav_control/test/test_follow_mpc_seed.py\n?? src/uav_control/test/test_follow_mpc_shadow_node.py\n?? src/uav_control/test/test_mpc_seed_experiment.py\n?? src/uav_control/test/test_mpc_seed_replay.py\n?? src/uav_control/test/test_mpc_shadow_inputs.py\n?? src/uav_control/test/test_planned_attitude.py\n?? src/uav_control/uav_control/controllers/follow_mpc_seed.py\n?? src/uav_control/uav_control/controllers/follow_mpc_shadow_node.py\n?? src/uav_control/uav_control/controllers/mpc_shadow_inputs.py\n?? src/uav_control/uav_control/guidance/planned_attitude.py\n?? src/uav_usv_bringup/config/mpc_seed_shadow.yaml\n?? src/uav_usv_bringup/launch/mpc_seed_shadow.launch.py\n?? src/uav_usv_bringup/launch/mpc_seed_validation.launch.py\n",
+    "input_jsonl": "/home/qin/data/uav_usv_mpc/data/experiments/20261008_p2_mpc/f1/shadow/mpc_seed_shadow_1791463712232338818_44533.jsonl",
+    "input_jsonl_sha256": "913a2256191bf7f4d206606d8822a8ef69d24ff2e5784e572065f3357647e878",
+    "input_load_and_validation_s": 0.07461687899922254,
+    "input_selection": {
+      "maximum_records": 20,
+      "scanned_line_count": 213,
+      "selected_count": 20,
+      "skipped_noncompletion_count": 193
+    },
+    "model_configurations": [
+      {
+        "attitude": {
+          "angular_error_margin_rad": 0.03,
+          "gravity": 9.80665,
+          "maximum_specific_thrust": 18.0,
+          "maximum_tilt_rad": 0.55,
+          "minimum_specific_thrust": 2.0
+        },
+        "extrinsics": {
+          "rotation_camera_to_body_flu": [
+            [
+              0.882947592858927,
+              0.0,
+              0.4694715627858908
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              -0.4694715627858908,
+              0.0,
+              0.882947592858927
+            ]
+          ],
+          "translation_flu": [
+            0.18,
+            0.0,
+            0.39
+          ]
+        },
+        "intrinsics": {
+          "cx": 320.0,
+          "cy": 240.0,
+          "fx": 269.9681840122649,
+          "fy": 269.9681840122649,
+          "height": 480,
+          "width": 640
+        },
+        "mpc": {
+          "allow_synthetic_predictions": false,
+          "braking_acceleration": 2.5,
+          "control_blocks": 2,
+          "dt": 0.2,
+          "flight_altitude": -5.0,
+          "follow_distance": 5.0,
+          "horizon_steps": 12,
+          "maximum_horizontal_acceleration": 3.0,
+          "maximum_horizontal_jerk": 6.0,
+          "maximum_horizontal_speed": 6.2,
+          "maximum_input_age": 0.125,
+          "maximum_iterations": 4,
+          "maximum_vertical_acceleration": 3.0,
+          "maximum_vertical_jerk": 4.0,
+          "maximum_vertical_speed": 4.0,
+          "maximum_yaw_rate": 1.0,
+          "reserve_clearance": 0.5,
+          "response_delay": 0.15,
+          "sea_surface_z": 0.0,
+          "solve_budget": 0.5,
+          "validation_substeps": 2
+        },
+        "target": {
+          "center_offset_ned": [
+            0,
+            0,
+            -0.42
+          ],
+          "radius": 0.25
+        },
+        "visibility": {
+          "depth_epsilon": 1e-09,
+          "distance_mode": "axial",
+          "horizontal_margin_rad": 0.07,
+          "maximum_distance": 25,
+          "minimum_distance": 0.05,
+          "vertical_margin_rad": 0.07
+        }
+      },
+      {
+        "attitude": {
+          "angular_error_margin_rad": 0.03,
+          "gravity": 9.80665,
+          "maximum_specific_thrust": 18.0,
+          "maximum_tilt_rad": 0.55,
+          "minimum_specific_thrust": 2.0
+        },
+        "extrinsics": {
+          "rotation_camera_to_body_flu": [
+            [
+              0.882947592858927,
+              0.0,
+              0.4694715627858908
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              -0.4694715627858908,
+              0.0,
+              0.882947592858927
+            ]
+          ],
+          "translation_flu": [
+            0.18,
+            0.0,
+            0.39
+          ]
+        },
+        "intrinsics": {
+          "cx": 320.0,
+          "cy": 240.0,
+          "fx": 269.9681840122649,
+          "fy": 269.9681840122649,
+          "height": 480,
+          "width": 640
+        },
+        "mpc": {
+          "allow_synthetic_predictions": false,
+          "braking_acceleration": 2.5,
+          "control_blocks": 2,
+          "dt": 0.2,
+          "flight_altitude": -5.0,
+          "follow_distance": 5.0,
+          "horizon_steps": 12,
+          "maximum_horizontal_acceleration": 3.0,
+          "maximum_horizontal_jerk": 6.0,
+          "maximum_horizontal_speed": 6.2,
+          "maximum_input_age": 0.125,
+          "maximum_iterations": 4,
+          "maximum_vertical_acceleration": 3.0,
+          "maximum_vertical_jerk": 4.0,
+          "maximum_vertical_speed": 4.0,
+          "maximum_yaw_rate": 1.0,
+          "reserve_clearance": 0.5,
+          "response_delay": 0.15,
+          "sea_surface_z": 0.0,
+          "solve_budget": 0.5,
+          "validation_substeps": 2
+        },
+        "target": {
+          "center_offset_ned": [
+            0,
+            0,
+            -0.42
+          ],
+          "radius": 0.25
+        },
+        "visibility": {
+          "depth_epsilon": 1e-09,
+          "distance_mode": "axial",
+          "horizontal_margin_rad": 0.07,
+          "maximum_distance": 25,
+          "minimum_distance": 0.05,
+          "vertical_margin_rad": 0.07
+        }
+      },
+      {
+        "attitude": {
+          "angular_error_margin_rad": 0.03,
+          "gravity": 9.80665,
+          "maximum_specific_thrust": 18.0,
+          "maximum_tilt_rad": 0.55,
+          "minimum_specific_thrust": 2.0
+        },
+        "extrinsics": {
+          "rotation_camera_to_body_flu": [
+            [
+              0.882947592858927,
+              0.0,
+              0.4694715627858908
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              -0.4694715627858908,
+              0.0,
+              0.882947592858927
+            ]
+          ],
+          "translation_flu": [
+            0.18,
+            0.0,
+            0.39
+          ]
+        },
+        "intrinsics": {
+          "cx": 320.0,
+          "cy": 240.0,
+          "fx": 269.9681840122649,
+          "fy": 269.9681840122649,
+          "height": 480,
+          "width": 640
+        },
+        "mpc": {
+          "allow_synthetic_predictions": false,
+          "braking_acceleration": 2.5,
+          "control_blocks": 2,
+          "dt": 0.2,
+          "flight_altitude": -5.0,
+          "follow_distance": 5.0,
+          "horizon_steps": 12,
+          "maximum_horizontal_acceleration": 3.0,
+          "maximum_horizontal_jerk": 6.0,
+          "maximum_horizontal_speed": 6.2,
+          "maximum_input_age": 0.125,
+          "maximum_iterations": 4,
+          "maximum_vertical_acceleration": 3.0,
+          "maximum_vertical_jerk": 4.0,
+          "maximum_vertical_speed": 4.0,
+          "maximum_yaw_rate": 1.0,
+          "reserve_clearance": 0.5,
+          "response_delay": 0.15,
+          "sea_surface_z": 0.0,
+          "solve_budget": 0.5,
+          "validation_substeps": 2
+        },
+        "target": {
+          "center_offset_ned": [
+            0,
+            0,
+            -0.42
+          ],
+          "radius": 0.25
+        },
+        "visibility": {
+          "depth_epsilon": 1e-09,
+          "distance_mode": "axial",
+          "horizontal_margin_rad": 0.07,
+          "maximum_distance": 25,
+          "minimum_distance": 0.05,
+          "vertical_margin_rad": 0.07
+        }
+      },
+      {
+        "attitude": {
+          "angular_error_margin_rad": 0.03,
+          "gravity": 9.80665,
+          "maximum_specific_thrust": 18.0,
+          "maximum_tilt_rad": 0.55,
+          "minimum_specific_thrust": 2.0
+        },
+        "extrinsics": {
+          "rotation_camera_to_body_flu": [
+            [
+              0.882947592858927,
+              0.0,
+              0.4694715627858908
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              -0.4694715627858908,
+              0.0,
+              0.882947592858927
+            ]
+          ],
+          "translation_flu": [
+            0.18,
+            0.0,
+            0.39
+          ]
+        },
+        "intrinsics": {
+          "cx": 320.0,
+          "cy": 240.0,
+          "fx": 269.9681840122649,
+          "fy": 269.9681840122649,
+          "height": 480,
+          "width": 640
+        },
+        "mpc": {
+          "allow_synthetic_predictions": false,
+          "braking_acceleration": 2.5,
+          "control_blocks": 2,
+          "dt": 0.2,
+          "flight_altitude": -5.0,
+          "follow_distance": 5.0,
+          "horizon_steps": 12,
+          "maximum_horizontal_acceleration": 3.0,
+          "maximum_horizontal_jerk": 6.0,
+          "maximum_horizontal_speed": 6.2,
+          "maximum_input_age": 0.125,
+          "maximum_iterations": 4,
+          "maximum_vertical_acceleration": 3.0,
+          "maximum_vertical_jerk": 4.0,
+          "maximum_vertical_speed": 4.0,
+          "maximum_yaw_rate": 1.0,
+          "reserve_clearance": 0.5,
+          "response_delay": 0.15,
+          "sea_surface_z": 0.0,
+          "solve_budget": 0.5,
+          "validation_substeps": 2
+        },
+        "target": {
+          "center_offset_ned": [
+            0,
+            0,
+            -0.42
+          ],
+          "radius": 0.25
+        },
+        "visibility": {
+          "depth_epsilon": 1e-09,
+          "distance_mode": "axial",
+          "horizontal_margin_rad": 0.07,
+          "maximum_distance": 25,
+          "minimum_distance": 0.05,
+          "vertical_margin_rad": 0.07
+        }
+      },
+      {
+        "attitude": {
+          "angular_error_margin_rad": 0.03,
+          "gravity": 9.80665,
+          "maximum_specific_thrust": 18.0,
+          "maximum_tilt_rad": 0.55,
+          "minimum_specific_thrust": 2.0
+        },
+        "extrinsics": {
+          "rotation_camera_to_body_flu": [
+            [
+              0.882947592858927,
+              0.0,
+              0.4694715627858908
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              -0.4694715627858908,
+              0.0,
+              0.882947592858927
+            ]
+          ],
+          "translation_flu": [
+            0.18,
+            0.0,
+            0.39
+          ]
+        },
+        "intrinsics": {
+          "cx": 320.0,
+          "cy": 240.0,
+          "fx": 269.9681840122649,
+          "fy": 269.9681840122649,
+          "height": 480,
+          "width": 640
+        },
+        "mpc": {
+          "allow_synthetic_predictions": false,
+          "braking_acceleration": 2.5,
+          "control_blocks": 2,
+          "dt": 0.2,
+          "flight_altitude": -5.0,
+          "follow_distance": 5.0,
+          "horizon_steps": 12,
+          "maximum_horizontal_acceleration": 3.0,
+          "maximum_horizontal_jerk": 6.0,
+          "maximum_horizontal_speed": 6.2,
+          "maximum_input_age": 0.125,
+          "maximum_iterations": 4,
+          "maximum_vertical_acceleration": 3.0,
+          "maximum_vertical_jerk": 4.0,
+          "maximum_vertical_speed": 4.0,
+          "maximum_yaw_rate": 1.0,
+          "reserve_clearance": 0.5,
+          "response_delay": 0.15,
+          "sea_surface_z": 0.0,
+          "solve_budget": 0.5,
+          "validation_substeps": 2
+        },
+        "target": {
+          "center_offset_ned": [
+            0,
+            0,
+            -0.42
+          ],
+          "radius": 0.25
+        },
+        "visibility": {
+          "depth_epsilon": 1e-09,
+          "distance_mode": "axial",
+          "horizontal_margin_rad": 0.07,
+          "maximum_distance": 25,
+          "minimum_distance": 0.05,
+          "vertical_margin_rad": 0.07
+        }
+      },
+      {
+        "attitude": {
+          "angular_error_margin_rad": 0.03,
+          "gravity": 9.80665,
+          "maximum_specific_thrust": 18.0,
+          "maximum_tilt_rad": 0.55,
+          "minimum_specific_thrust": 2.0
+        },
+        "extrinsics": {
+          "rotation_camera_to_body_flu": [
+            [
+              0.882947592858927,
+              0.0,
+              0.4694715627858908
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              -0.4694715627858908,
+              0.0,
+              0.882947592858927
+            ]
+          ],
+          "translation_flu": [
+            0.18,
+            0.0,
+            0.39
+          ]
+        },
+        "intrinsics": {
+          "cx": 320.0,
+          "cy": 240.0,
+          "fx": 269.9681840122649,
+          "fy": 269.9681840122649,
+          "height": 480,
+          "width": 640
+        },
+        "mpc": {
+          "allow_synthetic_predictions": false,
+          "braking_acceleration": 2.5,
+          "control_blocks": 2,
+          "dt": 0.2,
+          "flight_altitude": -5.0,
+          "follow_distance": 5.0,
+          "horizon_steps": 12,
+          "maximum_horizontal_acceleration": 3.0,
+          "maximum_horizontal_jerk": 6.0,
+          "maximum_horizontal_speed": 6.2,
+          "maximum_input_age": 0.125,
+          "maximum_iterations": 4,
+          "maximum_vertical_acceleration": 3.0,
+          "maximum_vertical_jerk": 4.0,
+          "maximum_vertical_speed": 4.0,
+          "maximum_yaw_rate": 1.0,
+          "reserve_clearance": 0.5,
+          "response_delay": 0.15,
+          "sea_surface_z": 0.0,
+          "solve_budget": 0.5,
+          "validation_substeps": 2
+        },
+        "target": {
+          "center_offset_ned": [
+            0,
+            0,
+            -0.42
+          ],
+          "radius": 0.25
+        },
+        "visibility": {
+          "depth_epsilon": 1e-09,
+          "distance_mode": "axial",
+          "horizontal_margin_rad": 0.07,
+          "maximum_distance": 25,
+          "minimum_distance": 0.05,
+          "vertical_margin_rad": 0.07
+        }
+      },
+      {
+        "attitude": {
+          "angular_error_margin_rad": 0.03,
+          "gravity": 9.80665,
+          "maximum_specific_thrust": 18.0,
+          "maximum_tilt_rad": 0.55,
+          "minimum_specific_thrust": 2.0
+        },
+        "extrinsics": {
+          "rotation_camera_to_body_flu": [
+            [
+              0.882947592858927,
+              0.0,
+              0.4694715627858908
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              -0.4694715627858908,
+              0.0,
+              0.882947592858927
+            ]
+          ],
+          "translation_flu": [
+            0.18,
+            0.0,
+            0.39
+          ]
+        },
+        "intrinsics": {
+          "cx": 320.0,
+          "cy": 240.0,
+          "fx": 269.9681840122649,
+          "fy": 269.9681840122649,
+          "height": 480,
+          "width": 640
+        },
+        "mpc": {
+          "allow_synthetic_predictions": false,
+          "braking_acceleration": 2.5,
+          "control_blocks": 2,
+          "dt": 0.2,
+          "flight_altitude": -5.0,
+          "follow_distance": 5.0,
+          "horizon_steps": 12,
+          "maximum_horizontal_acceleration": 3.0,
+          "maximum_horizontal_jerk": 6.0,
+          "maximum_horizontal_speed": 6.2,
+          "maximum_input_age": 0.125,
+          "maximum_iterations": 4,
+          "maximum_vertical_acceleration": 3.0,
+          "maximum_vertical_jerk": 4.0,
+          "maximum_vertical_speed": 4.0,
+          "maximum_yaw_rate": 1.0,
+          "reserve_clearance": 0.5,
+          "response_delay": 0.15,
+          "sea_surface_z": 0.0,
+          "solve_budget": 0.5,
+          "validation_substeps": 2
+        },
+        "target": {
+          "center_offset_ned": [
+            0,
+            0,
+            -0.42
+          ],
+          "radius": 0.25
+        },
+        "visibility": {
+          "depth_epsilon": 1e-09,
+          "distance_mode": "axial",
+          "horizontal_margin_rad": 0.07,
+          "maximum_distance": 25,
+          "minimum_distance": 0.05,
+          "vertical_margin_rad": 0.07
+        }
+      },
+      {
+        "attitude": {
+          "angular_error_margin_rad": 0.03,
+          "gravity": 9.80665,
+          "maximum_specific_thrust": 18.0,
+          "maximum_tilt_rad": 0.55,
+          "minimum_specific_thrust": 2.0
+        },
+        "extrinsics": {
+          "rotation_camera_to_body_flu": [
+            [
+              0.882947592858927,
+              0.0,
+              0.4694715627858908
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              -0.4694715627858908,
+              0.0,
+              0.882947592858927
+            ]
+          ],
+          "translation_flu": [
+            0.18,
+            0.0,
+            0.39
+          ]
+        },
+        "intrinsics": {
+          "cx": 320.0,
+          "cy": 240.0,
+          "fx": 269.9681840122649,
+          "fy": 269.9681840122649,
+          "height": 480,
+          "width": 640
+        },
+        "mpc": {
+          "allow_synthetic_predictions": false,
+          "braking_acceleration": 2.5,
+          "control_blocks": 2,
+          "dt": 0.2,
+          "flight_altitude": -5.0,
+          "follow_distance": 5.0,
+          "horizon_steps": 12,
+          "maximum_horizontal_acceleration": 3.0,
+          "maximum_horizontal_jerk": 6.0,
+          "maximum_horizontal_speed": 6.2,
+          "maximum_input_age": 0.125,
+          "maximum_iterations": 4,
+          "maximum_vertical_acceleration": 3.0,
+          "maximum_vertical_jerk": 4.0,
+          "maximum_vertical_speed": 4.0,
+          "maximum_yaw_rate": 1.0,
+          "reserve_clearance": 0.5,
+          "response_delay": 0.15,
+          "sea_surface_z": 0.0,
+          "solve_budget": 0.5,
+          "validation_substeps": 2
+        },
+        "target": {
+          "center_offset_ned": [
+            0,
+            0,
+            -0.42
+          ],
+          "radius": 0.25
+        },
+        "visibility": {
+          "depth_epsilon": 1e-09,
+          "distance_mode": "axial",
+          "horizontal_margin_rad": 0.07,
+          "maximum_distance": 25,
+          "minimum_distance": 0.05,
+          "vertical_margin_rad": 0.07
+        }
+      },
+      {
+        "attitude": {
+          "angular_error_margin_rad": 0.03,
+          "gravity": 9.80665,
+          "maximum_specific_thrust": 18.0,
+          "maximum_tilt_rad": 0.55,
+          "minimum_specific_thrust": 2.0
+        },
+        "extrinsics": {
+          "rotation_camera_to_body_flu": [
+            [
+              0.882947592858927,
+              0.0,
+              0.4694715627858908
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              -0.4694715627858908,
+              0.0,
+              0.882947592858927
+            ]
+          ],
+          "translation_flu": [
+            0.18,
+            0.0,
+            0.39
+          ]
+        },
+        "intrinsics": {
+          "cx": 320.0,
+          "cy": 240.0,
+          "fx": 269.9681840122649,
+          "fy": 269.9681840122649,
+          "height": 480,
+          "width": 640
+        },
+        "mpc": {
+          "allow_synthetic_predictions": false,
+          "braking_acceleration": 2.5,
+          "control_blocks": 2,
+          "dt": 0.2,
+          "flight_altitude": -5.0,
+          "follow_distance": 5.0,
+          "horizon_steps": 12,
+          "maximum_horizontal_acceleration": 3.0,
+          "maximum_horizontal_jerk": 6.0,
+          "maximum_horizontal_speed": 6.2,
+          "maximum_input_age": 0.125,
+          "maximum_iterations": 4,
+          "maximum_vertical_acceleration": 3.0,
+          "maximum_vertical_jerk": 4.0,
+          "maximum_vertical_speed": 4.0,
+          "maximum_yaw_rate": 1.0,
+          "reserve_clearance": 0.5,
+          "response_delay": 0.15,
+          "sea_surface_z": 0.0,
+          "solve_budget": 0.5,
+          "validation_substeps": 2
+        },
+        "target": {
+          "center_offset_ned": [
+            0,
+            0,
+            -0.42
+          ],
+          "radius": 0.25
+        },
+        "visibility": {
+          "depth_epsilon": 1e-09,
+          "distance_mode": "axial",
+          "horizontal_margin_rad": 0.07,
+          "maximum_distance": 25,
+          "minimum_distance": 0.05,
+          "vertical_margin_rad": 0.07
+        }
+      },
+      {
+        "attitude": {
+          "angular_error_margin_rad": 0.03,
+          "gravity": 9.80665,
+          "maximum_specific_thrust": 18.0,
+          "maximum_tilt_rad": 0.55,
+          "minimum_specific_thrust": 2.0
+        },
+        "extrinsics": {
+          "rotation_camera_to_body_flu": [
+            [
+              0.882947592858927,
+              0.0,
+              0.4694715627858908
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              -0.4694715627858908,
+              0.0,
+              0.882947592858927
+            ]
+          ],
+          "translation_flu": [
+            0.18,
+            0.0,
+            0.39
+          ]
+        },
+        "intrinsics": {
+          "cx": 320.0,
+          "cy": 240.0,
+          "fx": 269.9681840122649,
+          "fy": 269.9681840122649,
+          "height": 480,
+          "width": 640
+        },
+        "mpc": {
+          "allow_synthetic_predictions": false,
+          "braking_acceleration": 2.5,
+          "control_blocks": 2,
+          "dt": 0.2,
+          "flight_altitude": -5.0,
+          "follow_distance": 5.0,
+          "horizon_steps": 12,
+          "maximum_horizontal_acceleration": 3.0,
+          "maximum_horizontal_jerk": 6.0,
+          "maximum_horizontal_speed": 6.2,
+          "maximum_input_age": 0.125,
+          "maximum_iterations": 4,
+          "maximum_vertical_acceleration": 3.0,
+          "maximum_vertical_jerk": 4.0,
+          "maximum_vertical_speed": 4.0,
+          "maximum_yaw_rate": 1.0,
+          "reserve_clearance": 0.5,
+          "response_delay": 0.15,
+          "sea_surface_z": 0.0,
+          "solve_budget": 0.5,
+          "validation_substeps": 2
+        },
+        "target": {
+          "center_offset_ned": [
+            0,
+            0,
+            -0.42
+          ],
+          "radius": 0.25
+        },
+        "visibility": {
+          "depth_epsilon": 1e-09,
+          "distance_mode": "axial",
+          "horizontal_margin_rad": 0.07,
+          "maximum_distance": 25,
+          "minimum_distance": 0.05,
+          "vertical_margin_rad": 0.07
+        }
+      },
+      {
+        "attitude": {
+          "angular_error_margin_rad": 0.03,
+          "gravity": 9.80665,
+          "maximum_specific_thrust": 18.0,
+          "maximum_tilt_rad": 0.55,
+          "minimum_specific_thrust": 2.0
+        },
+        "extrinsics": {
+          "rotation_camera_to_body_flu": [
+            [
+              0.882947592858927,
+              0.0,
+              0.4694715627858908
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              -0.4694715627858908,
+              0.0,
+              0.882947592858927
+            ]
+          ],
+          "translation_flu": [
+            0.18,
+            0.0,
+            0.39
+          ]
+        },
+        "intrinsics": {
+          "cx": 320.0,
+          "cy": 240.0,
+          "fx": 269.9681840122649,
+          "fy": 269.9681840122649,
+          "height": 480,
+          "width": 640
+        },
+        "mpc": {
+          "allow_synthetic_predictions": false,
+          "braking_acceleration": 2.5,
+          "control_blocks": 2,
+          "dt": 0.2,
+          "flight_altitude": -5.0,
+          "follow_distance": 5.0,
+          "horizon_steps": 12,
+          "maximum_horizontal_acceleration": 3.0,
+          "maximum_horizontal_jerk": 6.0,
+          "maximum_horizontal_speed": 6.2,
+          "maximum_input_age": 0.125,
+          "maximum_iterations": 4,
+          "maximum_vertical_acceleration": 3.0,
+          "maximum_vertical_jerk": 4.0,
+          "maximum_vertical_speed": 4.0,
+          "maximum_yaw_rate": 1.0,
+          "reserve_clearance": 0.5,
+          "response_delay": 0.15,
+          "sea_surface_z": 0.0,
+          "solve_budget": 0.5,
+          "validation_substeps": 2
+        },
+        "target": {
+          "center_offset_ned": [
+            0,
+            0,
+            -0.42
+          ],
+          "radius": 0.25
+        },
+        "visibility": {
+          "depth_epsilon": 1e-09,
+          "distance_mode": "axial",
+          "horizontal_margin_rad": 0.07,
+          "maximum_distance": 25,
+          "minimum_distance": 0.05,
+          "vertical_margin_rad": 0.07
+        }
+      },
+      {
+        "attitude": {
+          "angular_error_margin_rad": 0.03,
+          "gravity": 9.80665,
+          "maximum_specific_thrust": 18.0,
+          "maximum_tilt_rad": 0.55,
+          "minimum_specific_thrust": 2.0
+        },
+        "extrinsics": {
+          "rotation_camera_to_body_flu": [
+            [
+              0.882947592858927,
+              0.0,
+              0.4694715627858908
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              -0.4694715627858908,
+              0.0,
+              0.882947592858927
+            ]
+          ],
+          "translation_flu": [
+            0.18,
+            0.0,
+            0.39
+          ]
+        },
+        "intrinsics": {
+          "cx": 320.0,
+          "cy": 240.0,
+          "fx": 269.9681840122649,
+          "fy": 269.9681840122649,
+          "height": 480,
+          "width": 640
+        },
+        "mpc": {
+          "allow_synthetic_predictions": false,
+          "braking_acceleration": 2.5,
+          "control_blocks": 2,
+          "dt": 0.2,
+          "flight_altitude": -5.0,
+          "follow_distance": 5.0,
+          "horizon_steps": 12,
+          "maximum_horizontal_acceleration": 3.0,
+          "maximum_horizontal_jerk": 6.0,
+          "maximum_horizontal_speed": 6.2,
+          "maximum_input_age": 0.125,
+          "maximum_iterations": 4,
+          "maximum_vertical_acceleration": 3.0,
+          "maximum_vertical_jerk": 4.0,
+          "maximum_vertical_speed": 4.0,
+          "maximum_yaw_rate": 1.0,
+          "reserve_clearance": 0.5,
+          "response_delay": 0.15,
+          "sea_surface_z": 0.0,
+          "solve_budget": 0.5,
+          "validation_substeps": 2
+        },
+        "target": {
+          "center_offset_ned": [
+            0,
+            0,
+            -0.42
+          ],
+          "radius": 0.25
+        },
+        "visibility": {
+          "depth_epsilon": 1e-09,
+          "distance_mode": "axial",
+          "horizontal_margin_rad": 0.07,
+          "maximum_distance": 25,
+          "minimum_distance": 0.05,
+          "vertical_margin_rad": 0.07
+        }
+      },
+      {
+        "attitude": {
+          "angular_error_margin_rad": 0.03,
+          "gravity": 9.80665,
+          "maximum_specific_thrust": 18.0,
+          "maximum_tilt_rad": 0.55,
+          "minimum_specific_thrust": 2.0
+        },
+        "extrinsics": {
+          "rotation_camera_to_body_flu": [
+            [
+              0.882947592858927,
+              0.0,
+              0.4694715627858908
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              -0.4694715627858908,
+              0.0,
+              0.882947592858927
+            ]
+          ],
+          "translation_flu": [
+            0.18,
+            0.0,
+            0.39
+          ]
+        },
+        "intrinsics": {
+          "cx": 320.0,
+          "cy": 240.0,
+          "fx": 269.9681840122649,
+          "fy": 269.9681840122649,
+          "height": 480,
+          "width": 640
+        },
+        "mpc": {
+          "allow_synthetic_predictions": false,
+          "braking_acceleration": 2.5,
+          "control_blocks": 2,
+          "dt": 0.2,
+          "flight_altitude": -5.0,
+          "follow_distance": 5.0,
+          "horizon_steps": 12,
+          "maximum_horizontal_acceleration": 3.0,
+          "maximum_horizontal_jerk": 6.0,
+          "maximum_horizontal_speed": 6.2,
+          "maximum_input_age": 0.125,
+          "maximum_iterations": 4,
+          "maximum_vertical_acceleration": 3.0,
+          "maximum_vertical_jerk": 4.0,
+          "maximum_vertical_speed": 4.0,
+          "maximum_yaw_rate": 1.0,
+          "reserve_clearance": 0.5,
+          "response_delay": 0.15,
+          "sea_surface_z": 0.0,
+          "solve_budget": 0.5,
+          "validation_substeps": 2
+        },
+        "target": {
+          "center_offset_ned": [
+            0,
+            0,
+            -0.42
+          ],
+          "radius": 0.25
+        },
+        "visibility": {
+          "depth_epsilon": 1e-09,
+          "distance_mode": "axial",
+          "horizontal_margin_rad": 0.07,
+          "maximum_distance": 25,
+          "minimum_distance": 0.05,
+          "vertical_margin_rad": 0.07
+        }
+      },
+      {
+        "attitude": {
+          "angular_error_margin_rad": 0.03,
+          "gravity": 9.80665,
+          "maximum_specific_thrust": 18.0,
+          "maximum_tilt_rad": 0.55,
+          "minimum_specific_thrust": 2.0
+        },
+        "extrinsics": {
+          "rotation_camera_to_body_flu": [
+            [
+              0.882947592858927,
+              0.0,
+              0.4694715627858908
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              -0.4694715627858908,
+              0.0,
+              0.882947592858927
+            ]
+          ],
+          "translation_flu": [
+            0.18,
+            0.0,
+            0.39
+          ]
+        },
+        "intrinsics": {
+          "cx": 320.0,
+          "cy": 240.0,
+          "fx": 269.9681840122649,
+          "fy": 269.9681840122649,
+          "height": 480,
+          "width": 640
+        },
+        "mpc": {
+          "allow_synthetic_predictions": false,
+          "braking_acceleration": 2.5,
+          "control_blocks": 2,
+          "dt": 0.2,
+          "flight_altitude": -5.0,
+          "follow_distance": 5.0,
+          "horizon_steps": 12,
+          "maximum_horizontal_acceleration": 3.0,
+          "maximum_horizontal_jerk": 6.0,
+          "maximum_horizontal_speed": 6.2,
+          "maximum_input_age": 0.125,
+          "maximum_iterations": 4,
+          "maximum_vertical_acceleration": 3.0,
+          "maximum_vertical_jerk": 4.0,
+          "maximum_vertical_speed": 4.0,
+          "maximum_yaw_rate": 1.0,
+          "reserve_clearance": 0.5,
+          "response_delay": 0.15,
+          "sea_surface_z": 0.0,
+          "solve_budget": 0.5,
+          "validation_substeps": 2
+        },
+        "target": {
+          "center_offset_ned": [
+            0,
+            0,
+            -0.42
+          ],
+          "radius": 0.25
+        },
+        "visibility": {
+          "depth_epsilon": 1e-09,
+          "distance_mode": "axial",
+          "horizontal_margin_rad": 0.07,
+          "maximum_distance": 25,
+          "minimum_distance": 0.05,
+          "vertical_margin_rad": 0.07
+        }
+      },
+      {
+        "attitude": {
+          "angular_error_margin_rad": 0.03,
+          "gravity": 9.80665,
+          "maximum_specific_thrust": 18.0,
+          "maximum_tilt_rad": 0.55,
+          "minimum_specific_thrust": 2.0
+        },
+        "extrinsics": {
+          "rotation_camera_to_body_flu": [
+            [
+              0.882947592858927,
+              0.0,
+              0.4694715627858908
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              -0.4694715627858908,
+              0.0,
+              0.882947592858927
+            ]
+          ],
+          "translation_flu": [
+            0.18,
+            0.0,
+            0.39
+          ]
+        },
+        "intrinsics": {
+          "cx": 320.0,
+          "cy": 240.0,
+          "fx": 269.9681840122649,
+          "fy": 269.9681840122649,
+          "height": 480,
+          "width": 640
+        },
+        "mpc": {
+          "allow_synthetic_predictions": false,
+          "braking_acceleration": 2.5,
+          "control_blocks": 2,
+          "dt": 0.2,
+          "flight_altitude": -5.0,
+          "follow_distance": 5.0,
+          "horizon_steps": 12,
+          "maximum_horizontal_acceleration": 3.0,
+          "maximum_horizontal_jerk": 6.0,
+          "maximum_horizontal_speed": 6.2,
+          "maximum_input_age": 0.125,
+          "maximum_iterations": 4,
+          "maximum_vertical_acceleration": 3.0,
+          "maximum_vertical_jerk": 4.0,
+          "maximum_vertical_speed": 4.0,
+          "maximum_yaw_rate": 1.0,
+          "reserve_clearance": 0.5,
+          "response_delay": 0.15,
+          "sea_surface_z": 0.0,
+          "solve_budget": 0.5,
+          "validation_substeps": 2
+        },
+        "target": {
+          "center_offset_ned": [
+            0,
+            0,
+            -0.42
+          ],
+          "radius": 0.25
+        },
+        "visibility": {
+          "depth_epsilon": 1e-09,
+          "distance_mode": "axial",
+          "horizontal_margin_rad": 0.07,
+          "maximum_distance": 25,
+          "minimum_distance": 0.05,
+          "vertical_margin_rad": 0.07
+        }
+      },
+      {
+        "attitude": {
+          "angular_error_margin_rad": 0.03,
+          "gravity": 9.80665,
+          "maximum_specific_thrust": 18.0,
+          "maximum_tilt_rad": 0.55,
+          "minimum_specific_thrust": 2.0
+        },
+        "extrinsics": {
+          "rotation_camera_to_body_flu": [
+            [
+              0.882947592858927,
+              0.0,
+              0.4694715627858908
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              -0.4694715627858908,
+              0.0,
+              0.882947592858927
+            ]
+          ],
+          "translation_flu": [
+            0.18,
+            0.0,
+            0.39
+          ]
+        },
+        "intrinsics": {
+          "cx": 320.0,
+          "cy": 240.0,
+          "fx": 269.9681840122649,
+          "fy": 269.9681840122649,
+          "height": 480,
+          "width": 640
+        },
+        "mpc": {
+          "allow_synthetic_predictions": false,
+          "braking_acceleration": 2.5,
+          "control_blocks": 2,
+          "dt": 0.2,
+          "flight_altitude": -5.0,
+          "follow_distance": 5.0,
+          "horizon_steps": 12,
+          "maximum_horizontal_acceleration": 3.0,
+          "maximum_horizontal_jerk": 6.0,
+          "maximum_horizontal_speed": 6.2,
+          "maximum_input_age": 0.125,
+          "maximum_iterations": 4,
+          "maximum_vertical_acceleration": 3.0,
+          "maximum_vertical_jerk": 4.0,
+          "maximum_vertical_speed": 4.0,
+          "maximum_yaw_rate": 1.0,
+          "reserve_clearance": 0.5,
+          "response_delay": 0.15,
+          "sea_surface_z": 0.0,
+          "solve_budget": 0.5,
+          "validation_substeps": 2
+        },
+        "target": {
+          "center_offset_ned": [
+            0,
+            0,
+            -0.42
+          ],
+          "radius": 0.25
+        },
+        "visibility": {
+          "depth_epsilon": 1e-09,
+          "distance_mode": "axial",
+          "horizontal_margin_rad": 0.07,
+          "maximum_distance": 25,
+          "minimum_distance": 0.05,
+          "vertical_margin_rad": 0.07
+        }
+      },
+      {
+        "attitude": {
+          "angular_error_margin_rad": 0.03,
+          "gravity": 9.80665,
+          "maximum_specific_thrust": 18.0,
+          "maximum_tilt_rad": 0.55,
+          "minimum_specific_thrust": 2.0
+        },
+        "extrinsics": {
+          "rotation_camera_to_body_flu": [
+            [
+              0.882947592858927,
+              0.0,
+              0.4694715627858908
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              -0.4694715627858908,
+              0.0,
+              0.882947592858927
+            ]
+          ],
+          "translation_flu": [
+            0.18,
+            0.0,
+            0.39
+          ]
+        },
+        "intrinsics": {
+          "cx": 320.0,
+          "cy": 240.0,
+          "fx": 269.9681840122649,
+          "fy": 269.9681840122649,
+          "height": 480,
+          "width": 640
+        },
+        "mpc": {
+          "allow_synthetic_predictions": false,
+          "braking_acceleration": 2.5,
+          "control_blocks": 2,
+          "dt": 0.2,
+          "flight_altitude": -5.0,
+          "follow_distance": 5.0,
+          "horizon_steps": 12,
+          "maximum_horizontal_acceleration": 3.0,
+          "maximum_horizontal_jerk": 6.0,
+          "maximum_horizontal_speed": 6.2,
+          "maximum_input_age": 0.125,
+          "maximum_iterations": 4,
+          "maximum_vertical_acceleration": 3.0,
+          "maximum_vertical_jerk": 4.0,
+          "maximum_vertical_speed": 4.0,
+          "maximum_yaw_rate": 1.0,
+          "reserve_clearance": 0.5,
+          "response_delay": 0.15,
+          "sea_surface_z": 0.0,
+          "solve_budget": 0.5,
+          "validation_substeps": 2
+        },
+        "target": {
+          "center_offset_ned": [
+            0,
+            0,
+            -0.42
+          ],
+          "radius": 0.25
+        },
+        "visibility": {
+          "depth_epsilon": 1e-09,
+          "distance_mode": "axial",
+          "horizontal_margin_rad": 0.07,
+          "maximum_distance": 25,
+          "minimum_distance": 0.05,
+          "vertical_margin_rad": 0.07
+        }
+      },
+      {
+        "attitude": {
+          "angular_error_margin_rad": 0.03,
+          "gravity": 9.80665,
+          "maximum_specific_thrust": 18.0,
+          "maximum_tilt_rad": 0.55,
+          "minimum_specific_thrust": 2.0
+        },
+        "extrinsics": {
+          "rotation_camera_to_body_flu": [
+            [
+              0.882947592858927,
+              0.0,
+              0.4694715627858908
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              -0.4694715627858908,
+              0.0,
+              0.882947592858927
+            ]
+          ],
+          "translation_flu": [
+            0.18,
+            0.0,
+            0.39
+          ]
+        },
+        "intrinsics": {
+          "cx": 320.0,
+          "cy": 240.0,
+          "fx": 269.9681840122649,
+          "fy": 269.9681840122649,
+          "height": 480,
+          "width": 640
+        },
+        "mpc": {
+          "allow_synthetic_predictions": false,
+          "braking_acceleration": 2.5,
+          "control_blocks": 2,
+          "dt": 0.2,
+          "flight_altitude": -5.0,
+          "follow_distance": 5.0,
+          "horizon_steps": 12,
+          "maximum_horizontal_acceleration": 3.0,
+          "maximum_horizontal_jerk": 6.0,
+          "maximum_horizontal_speed": 6.2,
+          "maximum_input_age": 0.125,
+          "maximum_iterations": 4,
+          "maximum_vertical_acceleration": 3.0,
+          "maximum_vertical_jerk": 4.0,
+          "maximum_vertical_speed": 4.0,
+          "maximum_yaw_rate": 1.0,
+          "reserve_clearance": 0.5,
+          "response_delay": 0.15,
+          "sea_surface_z": 0.0,
+          "solve_budget": 0.5,
+          "validation_substeps": 2
+        },
+        "target": {
+          "center_offset_ned": [
+            0,
+            0,
+            -0.42
+          ],
+          "radius": 0.25
+        },
+        "visibility": {
+          "depth_epsilon": 1e-09,
+          "distance_mode": "axial",
+          "horizontal_margin_rad": 0.07,
+          "maximum_distance": 25,
+          "minimum_distance": 0.05,
+          "vertical_margin_rad": 0.07
+        }
+      },
+      {
+        "attitude": {
+          "angular_error_margin_rad": 0.03,
+          "gravity": 9.80665,
+          "maximum_specific_thrust": 18.0,
+          "maximum_tilt_rad": 0.55,
+          "minimum_specific_thrust": 2.0
+        },
+        "extrinsics": {
+          "rotation_camera_to_body_flu": [
+            [
+              0.882947592858927,
+              0.0,
+              0.4694715627858908
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              -0.4694715627858908,
+              0.0,
+              0.882947592858927
+            ]
+          ],
+          "translation_flu": [
+            0.18,
+            0.0,
+            0.39
+          ]
+        },
+        "intrinsics": {
+          "cx": 320.0,
+          "cy": 240.0,
+          "fx": 269.9681840122649,
+          "fy": 269.9681840122649,
+          "height": 480,
+          "width": 640
+        },
+        "mpc": {
+          "allow_synthetic_predictions": false,
+          "braking_acceleration": 2.5,
+          "control_blocks": 2,
+          "dt": 0.2,
+          "flight_altitude": -5.0,
+          "follow_distance": 5.0,
+          "horizon_steps": 12,
+          "maximum_horizontal_acceleration": 3.0,
+          "maximum_horizontal_jerk": 6.0,
+          "maximum_horizontal_speed": 6.2,
+          "maximum_input_age": 0.125,
+          "maximum_iterations": 4,
+          "maximum_vertical_acceleration": 3.0,
+          "maximum_vertical_jerk": 4.0,
+          "maximum_vertical_speed": 4.0,
+          "maximum_yaw_rate": 1.0,
+          "reserve_clearance": 0.5,
+          "response_delay": 0.15,
+          "sea_surface_z": 0.0,
+          "solve_budget": 0.5,
+          "validation_substeps": 2
+        },
+        "target": {
+          "center_offset_ned": [
+            0,
+            0,
+            -0.42
+          ],
+          "radius": 0.25
+        },
+        "visibility": {
+          "depth_epsilon": 1e-09,
+          "distance_mode": "axial",
+          "horizontal_margin_rad": 0.07,
+          "maximum_distance": 25,
+          "minimum_distance": 0.05,
+          "vertical_margin_rad": 0.07
+        }
+      },
+      {
+        "attitude": {
+          "angular_error_margin_rad": 0.03,
+          "gravity": 9.80665,
+          "maximum_specific_thrust": 18.0,
+          "maximum_tilt_rad": 0.55,
+          "minimum_specific_thrust": 2.0
+        },
+        "extrinsics": {
+          "rotation_camera_to_body_flu": [
+            [
+              0.882947592858927,
+              0.0,
+              0.4694715627858908
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              -0.4694715627858908,
+              0.0,
+              0.882947592858927
+            ]
+          ],
+          "translation_flu": [
+            0.18,
+            0.0,
+            0.39
+          ]
+        },
+        "intrinsics": {
+          "cx": 320.0,
+          "cy": 240.0,
+          "fx": 269.9681840122649,
+          "fy": 269.9681840122649,
+          "height": 480,
+          "width": 640
+        },
+        "mpc": {
+          "allow_synthetic_predictions": false,
+          "braking_acceleration": 2.5,
+          "control_blocks": 2,
+          "dt": 0.2,
+          "flight_altitude": -5.0,
+          "follow_distance": 5.0,
+          "horizon_steps": 12,
+          "maximum_horizontal_acceleration": 3.0,
+          "maximum_horizontal_jerk": 6.0,
+          "maximum_horizontal_speed": 6.2,
+          "maximum_input_age": 0.125,
+          "maximum_iterations": 4,
+          "maximum_vertical_acceleration": 3.0,
+          "maximum_vertical_jerk": 4.0,
+          "maximum_vertical_speed": 4.0,
+          "maximum_yaw_rate": 1.0,
+          "reserve_clearance": 0.5,
+          "response_delay": 0.15,
+          "sea_surface_z": 0.0,
+          "solve_budget": 0.5,
+          "validation_substeps": 2
+        },
+        "target": {
+          "center_offset_ned": [
+            0,
+            0,
+            -0.42
+          ],
+          "radius": 0.25
+        },
+        "visibility": {
+          "depth_epsilon": 1e-09,
+          "distance_mode": "axial",
+          "horizontal_margin_rad": 0.07,
+          "maximum_distance": 25,
+          "minimum_distance": 0.05,
+          "vertical_margin_rad": 0.07
+        }
+      }
+    ],
+    "prediction_provenance": "recorded tracking predictions, original offline epochs retained",
+    "rolling_state_source": "original recorded navigation and measured attitude snapshots",
+    "selected_line_numbers": [
+      6,
+      15,
+      23,
+      63,
+      68,
+      74,
+      78,
+      81,
+      84,
+      92,
+      97,
+      101,
+      104,
+      110,
+      113,
+      129,
+      204,
+      207,
+      210,
+      213
+    ],
+    "source_sha256": {
+      "scripts/mpc_seed_experiment.py": "05b09352c1f27de7b28729fea4031ef55cfde040ffe55c088a6eb49a7a63e5e9",
+      "scripts/mpc_seed_replay.py": "4f540fc837c3e272e8c029c2d9702e9dd4d77134f9eebcc133b4c368a19aece0",
+      "src/uav_control/uav_control/controllers/follow_mpc_seed.py": "b66b522cb93a3d6431b2d4fe17a0fc5733c81212fcd6bb39bad99b15f6ac67a1",
+      "src/uav_control/uav_control/controllers/follow_mpc_shadow_node.py": "54222e4b1da8a99255ce62933395833a849785626e60f40ff0df3bf5e824f72a",
+      "src/uav_control/uav_control/guidance/camera_visibility.py": "db3bf2b5e80db1b47474b751b1b4d6008f87993ec10500088c12b88e0880cc57",
+      "src/uav_control/uav_control/guidance/planned_attitude.py": "3562fd15d18e210a680de43f82cb807b2fdc42af4db1a940ce6a8b5c060acace"
+    },
+    "timing_boundary": "data prep through first full record JSON output; timing metadata and final summaries/manifest are excluded from per-candidate end_to_end_s",
+    "workspace": "/home/qin/data/uav_usv_mpc"
+  }
+}

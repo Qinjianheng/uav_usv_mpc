@@ -1,0 +1,86 @@
+{
+  "cases": [
+    {
+      "cycle": 1,
+      "identical": true
+    },
+    {
+      "cycle": 2,
+      "identical": true
+    },
+    {
+      "cycle": 3,
+      "identical": true
+    },
+    {
+      "cycle": 4,
+      "identical": true
+    },
+    {
+      "cycle": 5,
+      "identical": true
+    },
+    {
+      "cycle": 6,
+      "identical": true
+    },
+    {
+      "cycle": 7,
+      "identical": true
+    },
+    {
+      "cycle": 8,
+      "identical": true
+    },
+    {
+      "cycle": 9,
+      "identical": true
+    },
+    {
+      "cycle": 10,
+      "identical": true
+    },
+    {
+      "cycle": 11,
+      "identical": true
+    },
+    {
+      "cycle": 12,
+      "identical": true
+    },
+    {
+      "cycle": 13,
+      "identical": true
+    },
+    {
+      "cycle": 14,
+      "identical": true
+    },
+    {
+      "cycle": 15,
+      "identical": true
+    },
+    {
+      "cycle": 16,
+      "identical": true
+    },
+    {
+      "cycle": 17,
+      "identical": true
+    },
+    {
+      "cycle": 18,
+      "identical": true
+    },
+    {
+      "cycle": 19,
+      "identical": true
+    },
+    {
+      "cycle": 20,
+      "identical": true
+    }
+  ],
+  "all_identical": true,
+  "note": "Only distance parameter exposure, defaults equal live 3/10 constants"
+}

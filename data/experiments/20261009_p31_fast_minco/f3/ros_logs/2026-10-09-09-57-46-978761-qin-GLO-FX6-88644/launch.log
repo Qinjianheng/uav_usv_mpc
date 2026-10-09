@@ -1,0 +1,25 @@
+1791511066.9796588 [INFO] [launch]: All log files can be found below /home/qin/data/uav_usv_mpc/data/experiments/20261009_p31_fast_minco/f3/ros_logs/2026-10-09-09-57-46-978761-qin-GLO-FX6-88644
+1791511066.9798098 [INFO] [launch]: Default logging verbosity is set to INFO
+1791511067.0353155 [INFO] [moving_target-1]: process started with pid [88645]
+1791511067.0355606 [INFO] [target_predictor_node-2]: process started with pid [88647]
+1791511067.0356748 [INFO] [intercept_planner_node-3]: process started with pid [88649]
+1791511067.0357740 [INFO] [trajectory_tracker_node-4]: process started with pid [88651]
+1791511067.0358677 [INFO] [mission_manager_node-5]: process started with pid [88653]
+1791511067.0359607 [INFO] [intercept_evaluator_node-6]: process started with pid [88655]
+1791511067.0360456 [INFO] [target_kalman_filter-7]: process started with pid [88657]
+1791511067.0361392 [INFO] [image_bridge-8]: process started with pid [88659]
+1791511067.0362427 [INFO] [target_bearing_node-9]: process started with pid [88661]
+1791511067.0363269 [INFO] [rgbd_target_localizer-10]: process started with pid [88663]
+1791511067.0364072 [INFO] [follow_research_shadow_node-11]: process started with pid [88665]
+1791511087.5866551 [ERROR] [follow_research_shadow_node-11]: process has died [pid 88665, exit code 1, cmd '/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/follow_research_shadow_node --ros-args -r __node:=follow_research_shadow_node --params-file /home/qin/data/uav_usv_mpc/data/experiments/20261009_p31_fast_minco/f3/config/research.yaml --params-file /tmp/launch_params_rnxtlczs'].
+1791511230.7653265 [WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+1791511230.9078259 [INFO] [image_bridge-8]: process has finished cleanly [pid 88659]
+1791511230.9549866 [INFO] [target_predictor_node-2]: process has finished cleanly [pid 88647]
+1791511230.9690390 [INFO] [target_kalman_filter-7]: process has finished cleanly [pid 88657]
+1791511230.9842153 [INFO] [moving_target-1]: process has finished cleanly [pid 88645]
+1791511230.9901779 [INFO] [intercept_planner_node-3]: process has finished cleanly [pid 88649]
+1791511231.0043964 [ERROR] [mission_manager_node-5]: process has died [pid 88653, exit code 1, cmd '/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/mission_manager_node --ros-args -r __node:=mission_manager_node --params-file /home/qin/data/uav_usv_mpc/data/experiments/20261009_p31_fast_minco/f3/config/flight.yaml'].
+1791511231.0133989 [INFO] [rgbd_target_localizer-10]: process has finished cleanly [pid 88663]
+1791511231.0286589 [ERROR] [trajectory_tracker_node-4]: process has died [pid 88651, exit code 1, cmd '/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/trajectory_tracker_node --ros-args -r __node:=trajectory_tracker_node --params-file /home/qin/data/uav_usv_mpc/data/experiments/20261009_p31_fast_minco/f3/config/flight.yaml'].
+1791511231.0293486 [ERROR] [target_bearing_node-9]: process has died [pid 88661, exit code 1, cmd '/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/target_bearing_node --ros-args -r __node:=target_bearing_node --params-file /home/qin/data/uav_usv_mpc/data/experiments/20261009_p31_fast_minco/f3/config/flight.yaml'].
+1791511231.0564523 [ERROR] [intercept_evaluator_node-6]: process has died [pid 88655, exit code 1, cmd '/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/intercept_evaluator_node --ros-args -r __node:=intercept_evaluator_node --params-file /home/qin/data/uav_usv_mpc/data/experiments/20261009_p31_fast_minco/f3/config/flight.yaml --params-file /tmp/launch_params_23_upshf'].

@@ -1,0 +1,4 @@
+[INFO] [1791469853.230508487] [mission_manager_node]: Mission manager ready | tracker age<=0.125 s | recovery timeout=0.50 s
+[INFO] [1791469857.968645881] [mission_manager_node]: X accepted | mission=1 | state=TAKEOFF
+[WARN] [1791469858.069229580] [mission_manager_node]: 'X' rejected in TAKEOFF | target_locked=False
+[WARN] [1791469858.169071266] [mission_manager_node]: 'X' rejected in TAKEOFF | target_locked=False

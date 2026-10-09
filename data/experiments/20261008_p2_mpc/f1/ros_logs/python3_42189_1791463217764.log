@@ -1,0 +1,2 @@
+[INFO] [1791463218.495117831] [follow_mpc_shadow_node]: MPC SHADOW READY | 1 worker | research only | JSONL=/home/qin/data/uav_usv_mpc/data/experiments/20261008_p2_mpc/f1/shadow/mpc_seed_shadow_1791463217795860865_42189.jsonl
+[WARN] [1791463218.496254111] [follow_mpc_shadow_node]: New publisher discovered on topic '/planning/target_prediction', offering incompatible QoS. No messages will be received from it. Last incompatible policy: RELIABILITY

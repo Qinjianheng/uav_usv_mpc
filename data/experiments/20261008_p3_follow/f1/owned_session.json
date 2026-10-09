@@ -1,0 +1,27 @@
+{
+  "started": 1791469463.4498928,
+  "launcher_pid": 58232,
+  "session": "/tmp/uav_usv_lab.tcC5yz",
+  "components": {
+    "gazebo": {
+      "pid": 58626,
+      "pgid": 58626,
+      "start": "1961780"
+    },
+    "px4": {
+      "pid": 58760,
+      "pgid": 58760,
+      "start": "1962313"
+    },
+    "dds": {
+      "pid": 59308,
+      "pgid": 59308,
+      "start": "1962842"
+    },
+    "experiment": {
+      "pid": 59502,
+      "pgid": 59502,
+      "start": "1963352"
+    }
+  }
+}

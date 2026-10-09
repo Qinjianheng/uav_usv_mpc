@@ -1,0 +1,95 @@
+{
+  "acceptance_boundary": "research seed only; never accepted by flight tracker",
+  "config": {
+    "allow_synthetic_predictions": true,
+    "braking_acceleration": 2.5,
+    "control_blocks": 2,
+    "dt": 0.2,
+    "flight_altitude": -5.0,
+    "follow_distance": 5.0,
+    "horizon_steps": 12,
+    "maximum_horizontal_acceleration": 3.0,
+    "maximum_horizontal_jerk": 6.0,
+    "maximum_horizontal_speed": 6.2,
+    "maximum_input_age": 0.125,
+    "maximum_iterations": 4,
+    "maximum_vertical_acceleration": 3.0,
+    "maximum_vertical_jerk": 4.0,
+    "maximum_vertical_speed": 4.0,
+    "maximum_yaw_rate": 1.0,
+    "reserve_clearance": 0.5,
+    "response_delay": 0.15,
+    "sea_surface_z": 0.0,
+    "solve_budget": 0.5,
+    "validation_substeps": 2
+  },
+  "geometry_and_attitude_config": {
+    "attitude_config": {
+      "angular_error_margin_rad": 0.03,
+      "gravity": 9.80665,
+      "maximum_specific_thrust": 18.0,
+      "maximum_tilt_rad": 0.55,
+      "minimum_specific_thrust": 2.0
+    },
+    "extrinsics": {
+      "rotation_camera_to_body_flu": [
+        [
+          0.882947592858927,
+          0.0,
+          0.4694715627858908
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.4694715627858908,
+          0.0,
+          0.882947592858927
+        ]
+      ],
+      "translation_flu": [
+        0.18,
+        0.0,
+        0.39
+      ]
+    },
+    "intrinsics": {
+      "cx": 320.0,
+      "cy": 240.0,
+      "fx": 269.9681840122649,
+      "fy": 269.9681840122649,
+      "height": 480,
+      "width": 640
+    },
+    "target": {
+      "center_offset_ned": [
+        0,
+        0,
+        -0.42
+      ],
+      "radius": 0.25
+    },
+    "visibility": {
+      "depth_epsilon": 1e-09,
+      "distance_mode": "axial",
+      "horizontal_margin_rad": 0.07,
+      "maximum_distance": 25,
+      "minimum_distance": 0.05,
+      "vertical_margin_rad": 0.07
+    }
+  },
+  "git_head": "b388847b17c8d207042cccc39407e7842e5f05c8",
+  "git_status": " M src/uav_control/setup.py\n?? docs/current/mpc_seed_validation.md\n?? scripts/mpc_seed_experiment.py\n?? scripts/mpc_seed_replay.py\n?? src/uav_control/test/test_follow_mpc_seed.py\n?? src/uav_control/test/test_follow_mpc_shadow_node.py\n?? src/uav_control/test/test_mpc_seed_experiment.py\n?? src/uav_control/test/test_mpc_seed_replay.py\n?? src/uav_control/test/test_mpc_shadow_inputs.py\n?? src/uav_control/test/test_planned_attitude.py\n?? src/uav_control/uav_control/controllers/follow_mpc_seed.py\n?? src/uav_control/uav_control/controllers/follow_mpc_shadow_node.py\n?? src/uav_control/uav_control/controllers/mpc_shadow_inputs.py\n?? src/uav_control/uav_control/guidance/planned_attitude.py\n?? src/uav_usv_bringup/config/mpc_seed_shadow.yaml\n?? src/uav_usv_bringup/launch/mpc_seed_shadow.launch.py\n?? src/uav_usv_bringup/launch/mpc_seed_validation.launch.py\n",
+  "prediction_provenance": "synthetic analytical targets; no BCTRA measurement",
+  "rolling_state_source": "analytical synthetic navigation; seeds are not executed",
+  "source_sha256": {
+    "scripts/mpc_seed_experiment.py": "05b09352c1f27de7b28729fea4031ef55cfde040ffe55c088a6eb49a7a63e5e9",
+    "src/uav_control/uav_control/controllers/follow_mpc_seed.py": "b66b522cb93a3d6431b2d4fe17a0fc5733c81212fcd6bb39bad99b15f6ac67a1",
+    "src/uav_control/uav_control/guidance/camera_visibility.py": "db3bf2b5e80db1b47474b751b1b4d6008f87993ec10500088c12b88e0880cc57",
+    "src/uav_control/uav_control/guidance/planned_attitude.py": "3562fd15d18e210a680de43f82cb807b2fdc42af4db1a940ce6a8b5c060acace"
+  },
+  "timing_boundary": "data prep through first full record JSON output; timing metadata and final summaries/manifest are excluded from per-candidate end_to_end_s",
+  "workspace": "/home/qin/data/uav_usv_mpc"
+}
