@@ -3,6 +3,7 @@ from types import SimpleNamespace
 from dataclasses import replace
 
 import numpy as np
+import pytest
 
 from test_follow_research_algorithms import request
 from test_progress_follow import model
@@ -29,7 +30,8 @@ def inputs():
 
 def test_same_geometry_new_version_checks_full_curve_preserves_boundary_and_navigation():
     req, output, pred = inputs()
-    updated, report = revalidate_prediction(req, output, pred, req.now_stamp, model())
+    updated, report = revalidate_prediction(
+        req, output, pred, req.now_stamp, model(), clock=lambda: 0.)
     assert report['valid'] and report['samples'] >= 25
     assert updated.context.prediction_sequence_id == pred.sequence_id
     assert updated.context.navigation_stamp == req.context.navigation_stamp
@@ -40,17 +42,34 @@ def test_same_geometry_new_version_checks_full_curve_preserves_boundary_and_navi
 def test_changed_prediction_behind_camera_rejects_even_small_solver_cost():
     req, output, pred = inputs()
     pred.target_positions = tuple((x-100, y, z) for x, y, z in pred.target_positions)
-    _, report = revalidate_prediction(req, output, pred, req.now_stamp, model())
+    _, report = revalidate_prediction(
+        req, output, pred, req.now_stamp, model(), clock=lambda: 0.)
     assert not report['valid'] and report['reason'] == 'PREDICTION_REVALIDATION_FAILED'
+
+
+@pytest.mark.parametrize('prediction_shift', (0., -100.))
+@pytest.mark.parametrize('elapsed', (.03, .031))
+def test_revalidation_deadline_rejects_without_refreshing_request(prediction_shift, elapsed):
+    req, output, pred = inputs()
+    pred.target_positions = tuple(
+        (x+prediction_shift, y, z) for x, y, z in pred.target_positions)
+    ticks = iter((0., elapsed))
+    updated, report = revalidate_prediction(
+        req, output, pred, req.now_stamp, model(), clock=lambda: next(ticks, elapsed))
+    assert updated is req
+    assert not report['valid'] and report['reason'] == 'REVALIDATION_DEADLINE'
+    assert report['elapsed'] >= .03
 
 
 def test_new_prediction_cannot_refresh_old_navigation_or_missed_start():
     req, output, pred = inputs()
     for now in (req.context.navigation_stamp+.126, req.context.execution_start_stamp+.001):
-        _, report = revalidate_prediction(req, output, pred, now, model())
+        _, report = revalidate_prediction(
+            req, output, pred, now, model(), clock=lambda: 0.)
         assert not report['valid']
     pred.mission_id += 1
-    _, report = revalidate_prediction(req, output, pred, req.now_stamp, model())
+    _, report = revalidate_prediction(
+        req, output, pred, req.now_stamp, model(), clock=lambda: 0.)
     assert report['reason'] == 'MISSION_CHANGED'
 
 
@@ -59,15 +78,18 @@ def test_dynamics_and_prediction_coverage_are_revalidated():
     bad = np.asarray(output.metrics['xyz_coefficients']).copy()
     bad[0, 3, 0] = 50.
     output = replace(output, metrics=dict(output.metrics, xyz_coefficients=bad.tolist()))
-    _, report = revalidate_prediction(req, output, pred, req.now_stamp, model())
+    _, report = revalidate_prediction(
+        req, output, pred, req.now_stamp, model(), clock=lambda: 0.)
     assert not report['valid']
     pred.prediction_times = (0., .1)
-    _, report = revalidate_prediction(req, output, pred, req.now_stamp, model())
+    _, report = revalidate_prediction(
+        req, output, pred, req.now_stamp, model(), clock=lambda: 0.)
     assert not report['valid']
 
 
 def test_nonfinite_generated_epoch_is_not_a_causal_new_prediction():
     req, output, pred = inputs()
     pred.generated_stamp = float('nan')
-    _, report = revalidate_prediction(req, output, pred, req.now_stamp, model())
+    _, report = revalidate_prediction(
+        req, output, pred, req.now_stamp, model(), clock=lambda: 0.)
     assert not report['valid'] and report['reason'] == 'INVALID_PREDICTION'

@@ -29,7 +29,11 @@ p4_follow_planner_node:
     maximum_iterations: 4
     validation_substeps: 2
     allow_synthetic_predictions: false
-    minco_engine: p44_adaptive
+    minco_engine: follow_guided_minco
+    # P4.4/D comparison: set minco_engine back to p44_adaptive; settings retained below.
+    follow_guided_refinement: none
+    follow_guided_response_time: 0.5
+    follow_guided_optimization_budget: 0.025
     initializer_strategy: adaptive
     greedy_strategy: D
     dynamic_endpoint: true

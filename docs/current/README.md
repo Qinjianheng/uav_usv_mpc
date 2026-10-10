@@ -33,6 +33,7 @@
 | [P4.4 候选计算审计](p44_candidate_profiling.md) | 五候选贡献、互斥计时及共享/批量/按需构造收益 |
 | [P4.4 自适应候选验证](p44_adaptive_candidate_validation.md) | A–F消融、逐请求反例、共同初始化与时域质量 |
 | [P4.4 在线影子验证](p44_online_follow_validation.md) | 本轮SITL、真实Tracker到达年龄及未获接管资格 |
+| [P4.6 原 FOLLOW 引导 MINCO](p46_follow_guided_minco.md) | 完整FOLLOW滚动、Q/T/yaw消融、离线退化及未通过替代验收的原因 |
 | [整理交付](repository_cleanup.md) | 清点、规模、归档和实际检查结果 |
 | [源码冗余清理](redundancy_cleanup.md) | 确认移出项、保留理由、恢复与回归 |
 
