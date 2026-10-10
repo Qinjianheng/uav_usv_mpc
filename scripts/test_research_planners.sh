@@ -23,7 +23,7 @@ case "${MODE}" in
             test/test_progress_follow.py test/test_follow_contract.py \
             test/test_hypothetical_follow.py test/test_polynomial_bounds.py \
             test/test_p4_session_safety.py \
-            test/test_follow_minco_experiment.py \
+            test/test_follow_minco_experiment.py test/test_follow_sitl_execution.py \
             -k 'not existing_rgbd_forward_inverse_and_intrinsics_agree'
         ;;
     related|full)
@@ -48,7 +48,8 @@ case "${MODE}" in
             test/test_progress_follow.py test/test_follow_contract.py \
                 test/test_hypothetical_follow.py test/test_polynomial_bounds.py \
                 test/test_p4_receiver_node.py test/test_p4_session_safety.py test/test_p43_analysis.py \
-                test/test_follow_minco_experiment.py
+                test/test_p45_isolation.py \
+                test/test_follow_minco_experiment.py test/test_follow_sitl_execution.py
         else
             python3 -m pytest -q
         fi

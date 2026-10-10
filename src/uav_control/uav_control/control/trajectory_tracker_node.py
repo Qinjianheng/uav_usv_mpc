@@ -1,6 +1,7 @@
 """Independent 20 Hz polynomial tracker and final PX4 safety barrier."""
 
 import math
+import json
 import time
 from dataclasses import dataclass, replace
 
@@ -11,7 +12,7 @@ from px4_msgs.msg import VehicleCommand, VehicleStatus
 from rclpy.node import Node
 from rclpy.qos import DurabilityPolicy, HistoryPolicy, QoSProfile
 from rclpy.qos import ReliabilityPolicy, qos_profile_sensor_data
-from std_msgs.msg import Bool
+from std_msgs.msg import Bool, String
 from uav_usv_interfaces.msg import ControllerDiagnostic, InterceptTrajectory
 from uav_usv_interfaces.msg import MissionState, PlannerDiagnostic
 from uav_usv_interfaces.msg import TargetPrediction, TargetState
@@ -333,6 +334,12 @@ class TrajectoryTrackerNode(Node):
         self.declare_parameter('follow_minco_enabled', True)
         self.declare_parameter('follow_minco_shadow_check', False)
         self.follow_minco_requested = bool(self.get_parameter('follow_minco_enabled').value)
+        if self.follow_minco_requested:
+            from uav_control.guidance.follow_sitl_gate import require_isolated_sitl
+            self.follow_sitl_grant = require_isolated_sitl()
+        self.follow_stable_ticks = 0
+        self.follow_debug_pub = self.create_publisher(
+            String, '/control/follow_execution_debug', 10)
         # Nominal feedback execution does not claim independently qualified holding.
         self.follow_minco_authorized = False
         self.follow_generation = 0
@@ -822,6 +829,7 @@ class TrajectoryTrackerNode(Node):
         context = self._follow_context()
         try:
             candidate = curve_from_message(message)
+            validated_prediction_id = None
             if getattr(self, 'follow_minco_requested', False):
                 from uav_control.guidance.follow_minco_execution import (
                     nominal_curve, nominal_attitude,
@@ -830,13 +838,20 @@ class TrajectoryTrackerNode(Node):
                 endpoints = self.get_publishers_info_by_topic('/planning/follow_trajectory')
                 if len(endpoints) != 1 or endpoints[0].node_name != 'p4_follow_planner_node':
                     raise ValueError('PLANNER_AUTHORITY_CONFLICT')
+                if self.follow_stable_ticks < 10:
+                    raise ValueError('FOLLOW_NOT_STABLE')
                 prediction = prediction_from_message(self.latest_prediction)
+                validated_prediction_id = int(self.latest_prediction.sequence_id)
                 if (not nominal_attitude(candidate, self.follow_model)
                         or not nominal_curve(candidate, prediction, self.follow_model,
                                              candidate.start, candidate.end)):
                     raise ValueError('RECEIVER_NOMINAL_REVALIDATION_FAILED')
                 context = self._follow_context()
-            ack = self.follow_receiver.propose(candidate, context)
+            if getattr(self, 'follow_minco_requested', False):
+                ack = self.follow_receiver.propose(
+                    candidate, context, validated_prediction_id=validated_prediction_id)
+            else:
+                ack = self.follow_receiver.propose(candidate, context)
         except (ValueError, TypeError, AttributeError, OverflowError, FloatingPointError,
                 LinAlgError) as error:
             ack = FollowAck(int(message.plan_id), int(message.mission_id),
@@ -850,24 +865,62 @@ class TrajectoryTrackerNode(Node):
         response.receiver_compute_seconds = time.perf_counter()-received_monotonic
         self.follow_ack_pub.publish(response)
 
+    def _revoke_nominal_follow(self, reason):
+        """Every loss of the execution context emits a real revocation ACK, including nav loss."""
+        if not getattr(self, 'follow_minco_requested', False):
+            return
+        from uav_control.controllers.follow_transport import ack_message
+        context = self._follow_context()
+        receiver = self.follow_receiver
+        for slot in ('pending', 'active'):
+            curve = getattr(receiver, slot)
+            if curve is not None:
+                setattr(receiver, slot, None)
+                ack = receiver._ack(curve, context, 'REVOKED', (reason,))
+                self.follow_ack_pub.publish(ack_message(ack))
+        self.follow_stable_ticks = 0
+
     def _nominal_follow_command(self, current, now, dt):
         """Finite nominal reference lease; measured-feedback shaping and visual yaw stay local."""
         from uav_control.controllers.follow_transport import ack_message
         from uav_control.controllers.follow_mpc_shadow_node import prediction_from_message
         from uav_control.guidance.follow_minco_execution import nominal_curve, reference_velocity
         receiver = self.follow_receiver
+        started = time.perf_counter()
         context = self._follow_context()
-        nominal = {}
+        self.follow_stable_ticks = self.follow_stable_ticks+1 if context.visible else 0
+        nominal, prefix_details = {}, {}
         try:
             prediction = prediction_from_message(self.latest_prediction)
             for curve in (receiver.active, receiver.pending):
                 if curve and now < min(curve.end, curve.start+receiver.lease_seconds):
+                    detail = dict(reason='CONTEXT_NOT_VISIBLE', visible=context.visible)
                     nominal[curve.plan_id] = context.visible and nominal_curve(
                         curve, prediction, self.follow_model, max(now, curve.start),
-                        min(curve.end, curve.start+receiver.lease_seconds))
+                        min(curve.end, curve.start+receiver.lease_seconds), detail)
+                    prefix_details[curve.plan_id] = detail
         except (ValueError, TypeError, AttributeError):
             nominal = {}
+        # Recheck the actual clock/freshness after validation; computing cannot extend a lease.
+        context = self._follow_context()
         ack = receiver.tick(context, nominal_valid=nominal)
+        curve = receiver.active
+        debug = dict(stamp=context.now, validation_seconds=time.perf_counter()-started,
+                     prefix_checks=prefix_details, prediction=context.prediction_id,
+                     plan=curve.plan_id if curve else 0, state_stamp=self.latest_state.stamp,
+                     active_start=curve.start if curve else None,
+                     lease_deadline=receiver.deadline if curve else None,
+                     initial=bool(ack and ack.state == 'ACTIVE' and not curve.parent_id)
+                     if curve else False)
+        if curve:
+            sample = curve.sample(max(curve.start, self.latest_state.stamp))
+            debug.update(reference=list(sample), actual_position=list(current.position),
+                         actual_velocity=list(current.velocity), parent=curve.parent_id,
+                         reference_position_error=list(
+                sample[i]-current.position[i] for i in range(3)),
+                reference_velocity_error=list(sample[i+3]-current.velocity[i] for i in range(3)),
+                previous_command=self.tracker.previous_command_velocity)
+        self.follow_debug_pub.publish(String(data=json.dumps(debug)))
         if ack:
             response = ack_message(ack)
             response.control_owner = 'MINCO_FOLLOW' if receiver.active else 'ORIGINAL_FOLLOW'
@@ -877,13 +930,13 @@ class TrajectoryTrackerNode(Node):
         if curve is None:
             return None
         try:
-            desired = reference_velocity(curve, now, self.latest_state.stamp,
+            desired = reference_velocity(curve, context.now, self.latest_state.stamp,
                                          current.position,
                                          self.flight_guidance.follow_position_gain)
             return self.flight_guidance._velocity_command(
                 FlightKinematicState(current.position, current.velocity), desired, dt, False, True)
         except (ValueError, TypeError, OverflowError):
-            receiver.active = None
+            self._revoke_nominal_follow('REFERENCE_COMMAND_INVALID')
             return None
 
     def vehicle_status_callback(self, message):
@@ -1685,9 +1738,10 @@ class TrajectoryTrackerNode(Node):
         started = time.perf_counter()
         now = self._ros_seconds()
         self._process_pending_trajectory()
+        if self.mission_state != MissionState.FOLLOW:
+            self._revoke_nominal_follow('FOLLOW_EXITED')
         if self.latest_state is None:
-            if getattr(self, 'follow_minco_requested', False):
-                self.follow_receiver.active = self.follow_receiver.pending = None
+            self._revoke_nominal_follow('NAVIGATION_UNAVAILABLE')
             self._publish_bool(self.flight_ready_pub, False)
             self._publish_diagnostic(
                 now,
@@ -1697,8 +1751,7 @@ class TrajectoryTrackerNode(Node):
             )
             return
         if now - self.latest_state.stamp > self.maximum_state_age:
-            if getattr(self, 'follow_minco_requested', False):
-                self.follow_receiver.active = self.follow_receiver.pending = None
+            self._revoke_nominal_follow('NAVIGATION_STALE')
             if getattr(self, 'terminal_execution', None) is not None:
                 self.terminal_execution = None
                 self.tracker.active_trajectory = None

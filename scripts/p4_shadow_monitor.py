@@ -24,6 +24,7 @@ def run(output):
         ControllerDiagnostic, UavState, TargetState, TargetObservation, TargetPrediction,
         FollowPlanAck, FollowTrajectory, FollowReceiverState, MissionState,
     )
+    from std_msgs.msg import String
     from px4_msgs.msg import TrajectorySetpoint, VehicleAttitude, VehicleStatus
     from gz.msgs10.clock_pb2 import Clock
     from gz.msgs10.pose_v_pb2 import Pose_V
@@ -57,6 +58,9 @@ def run(output):
               a=xyz(message.acceleration))
 
     def uav(message):
+        latest['navigation'] = dict(receipt=time.time(), valid=message.valid,
+                                    p=xyz(message.position),
+                                    v=xyz(message.velocity))
         write('uav', stamp=seconds(message.stamp), native=message.native_timestamp_sample,
               valid=message.valid, p=xyz(message.position), v=xyz(message.velocity),
               a=xyz(message.acceleration), yaw=message.heading)
@@ -67,8 +71,12 @@ def run(output):
               rate=message.yawspeed)
 
     def diagnostic(message):
+        latest['control'] = dict(receipt=time.time(), status=message.status,
+                                 locked=message.target_locked,
+                                 compute=message.callback_compute_time)
         write('diagnostic', stamp=seconds(message.stamp), mission=message.mission_id,
-              plan=message.plan_id, status=message.status, locked=message.target_locked,
+              plan=message.plan_id, status=message.status, compute=message.callback_compute_time,
+              locked=message.target_locked,
               visible=message.target_visible, search=message.search_state,
               yaw_owner=message.yaw_owner)
 
@@ -96,6 +104,9 @@ def run(output):
               receiver_boot=message.receiver_boot_id, planner_boot=message.planner_boot_id)
 
     def graph():
+        health = output.parent/'live_health.tmp'
+        health.write_text(json.dumps(latest))
+        health.replace(output.parent/'live_health.json')
         topics = ('/fmu/in/trajectory_setpoint', '/fmu/in/offboard_control_mode',
                   '/fmu/in/vehicle_command', '/control/follow_ack', '/planning/follow_trajectory',
                   '/control/follow_receiver_state')
@@ -128,6 +139,8 @@ def run(output):
 
     sensor = qos_profile_sensor_data
     subscriptions = [
+        node.create_subscription(String, '/control/follow_execution_debug',
+                                 lambda m: write('execution_debug', **json.loads(m.data)), 10),
         node.create_subscription(UavState, '/navigation/uav_state', uav, sensor),
         node.create_subscription(TargetObservation, '/perception/front/target_observation',
                                  observation, sensor),
@@ -150,6 +163,9 @@ def run(output):
         node.create_subscription(FollowTrajectory, '/planning/follow_trajectory',
                                  lambda m: write(
                                      'proposal', plan=m.plan_id, stamp=seconds(m.published_stamp),
+                                     parent=m.parent_plan_id, durations=list(m.durations),
+                                     xyz=list(m.xyz_coefficients), yaw=list(m.yaw_coefficients),
+                                     source=seconds(m.source_stamp),
                                      receiver_boot=m.receiver_boot_id,
                                      planner_boot=m.planner_boot_id,
                                      generation=m.clock_generation,
@@ -162,8 +178,10 @@ def run(output):
             'mission', state=m.state, name=m.state_name, mission=m.mission_id), 10),
         node.create_subscription(VehicleAttitude, '/fmu/out/vehicle_attitude', lambda m: write(
             'attitude', stamp=m.timestamp_sample/1e6, q=list(m.q)), sensor),
-        node.create_subscription(VehicleStatus, '/fmu/out/vehicle_status_v4', lambda m: write(
-            'vehicle_status', nav_state=m.nav_state, armed=m.arming_state), sensor),
+        node.create_subscription(VehicleStatus, '/fmu/out/vehicle_status_v4', lambda m: (
+            latest.update(vehicle=dict(receipt=time.time(), nav_state=m.nav_state,
+                                       armed=m.arming_state)), write(
+                'vehicle_status', nav_state=m.nav_state, armed=m.arming_state)), sensor),
     ]
     timer = node.create_timer(1., graph)
     transport = GzNode()

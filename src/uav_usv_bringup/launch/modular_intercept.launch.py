@@ -49,14 +49,6 @@ def generate_launch_description():
                               choices=['true', 'false']),
         DeclareLaunchArgument('enable_follow_planner', default_value='true',
                               choices=['true', 'false']),
-        Node(package='uav_control', executable='p4_follow_planner_node',
-             name='p4_follow_planner_node', output='screen',
-             condition=IfCondition(PythonExpression([
-                 "'", LaunchConfiguration('enable_follow_minco'), "' == 'true' and '",
-                 LaunchConfiguration('enable_follow_planner'), "' == 'true'",
-             ])),
-             parameters=[os.path.join(package_share, 'config/follow_minco.yaml'),
-                         {'log_directory': log_directory}]),
         DeclareLaunchArgument(
             'log_directory',
             default_value=default_log_directory,
@@ -87,6 +79,14 @@ def generate_launch_description():
             default_value=os.path.join(package_share, 'config', 'front_tof_simulation.yaml'),
             description='Explicit functional ToF range/noise test assumptions.',
         ),
+        Node(package='uav_control', executable='p4_follow_planner_node',
+             name='p4_follow_planner_node', output='screen',
+             condition=IfCondition(PythonExpression([
+                 "'", LaunchConfiguration('enable_follow_minco'), "' == 'true' and '",
+                 LaunchConfiguration('enable_follow_planner'), "' == 'true'",
+             ])),
+             parameters=[os.path.join(package_share, 'config/follow_minco.yaml'),
+                         {'log_directory': log_directory}]),
         Node(
             package='uav_control',
             executable='moving_target',

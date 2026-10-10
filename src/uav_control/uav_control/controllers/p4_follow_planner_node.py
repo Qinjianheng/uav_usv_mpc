@@ -114,6 +114,8 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
             curve = self.accepted_curve
             start = request.context.execution_start_stamp
             if (self.follow_execution_enabled and curve is not None
+                    and self.receiver_epoch is not None
+                    and (curve.receiver_boot_id, curve.generation) == self.receiver_epoch[0][:2]
                     and curve.mission_id == request.context.mission_id
                     and curve.start <= start < min(curve.end, curve.start+.45)):
                 from uav_control.guidance.follow_minco_execution import accepted_request

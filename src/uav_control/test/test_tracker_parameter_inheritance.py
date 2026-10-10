@@ -22,7 +22,7 @@ def test_legacy_follow_limit_is_inherited_unless_explicitly_overridden(
     monkeypatch.setattr(Node, '__init__', lambda *args, **kwargs: None)
 
     def declare(self, name, default, descriptor=None):
-        values[name] = overrides.get(name, default)
+        values[name] = False if name == 'follow_minco_enabled' else overrides.get(name, default)
         return SimpleNamespace(value=values[name])
 
     monkeypatch.setattr(Node, 'declare_parameter', declare)

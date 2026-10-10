@@ -94,7 +94,9 @@ for required_command in gnome-terminal gz MicroXRCEAgent timeout rg; do
     fi
 done
 
-if ! pgrep -f '[Q]GroundControl' >/dev/null; then
+if [[ "${UAV_USV_HEADLESS_GCS:-false}" == true ]]; then
+    echo "Using task-owned local SITL GCS heartbeat (no flight commands)."
+elif ! pgrep -f '[Q]GroundControl' >/dev/null; then
     if [[ ! -x "${QGC_APPIMAGE}" ]]; then
         echo "QGroundControl is not running and its AppImage was not found:" >&2
         echo "  ${QGC_APPIMAGE}" >&2

@@ -85,7 +85,7 @@ def session_exit_code(ended):
                  and ended['monitor_returncode'] == 0 and not ended['still_alive']) else 1
 
 
-def run(root, shadow, follow_seconds, watchdog, kill_planner_after=None):
+def run(root, shadow, follow_seconds, watchdog, kill_planner_after=None, fault_suite=False):
     """Reuse repository launcher only after exclusion gates; preserve every failure/run log."""
     root = root.resolve()
     if not root.is_relative_to(WORKSPACE/'data/experiments'):
@@ -109,6 +109,15 @@ def run(root, shadow, follow_seconds, watchdog, kill_planner_after=None):
                OPENBLAS_NUM_THREADS='1', OMP_NUM_THREADS='1', ROS_LOCALHOST_ONLY='0',
                ROS_DOMAIN_ID=str(check['domain']), GZ_PARTITION='p4_'+str(int(start)),
                UAV_USV_TERMINAL_LOG_ROOT=str(root), PATH=str(shim)+':'+os.environ['PATH'])
+    if env.get('UAV_USV_MINCO_EXECUTE') == 'true':
+        grant = dict(pid=os.getpid(), process_start=identity(os.getpid())['start'],
+                     issued=start, domain=check['domain'], partition=env['GZ_PARTITION'],
+                     preflight_clear=True,
+                     authorization='P4.5 explicit user authorization, isolated X-only SITL')
+        grant_path = root/'sitl_execution_grant.json'
+        grant_path.write_text(json.dumps(grant, indent=2))
+        grant_path.chmod(0o600)
+        env['UAV_USV_SITL_GRANT'] = str(grant_path)
     (root/'environment.json').write_text(json.dumps({k: v for k, v in env.items() if k.startswith(
         ('UAV_USV_', 'ROS_', 'GZ_', 'OPENBLAS_', 'OMP_'))}, indent=2))
     initial_ulogs = set(Path('/home/qin/Projects/PX4-Autopilot/build/px4_sitl_default/rootfs/log')
@@ -116,11 +125,27 @@ def run(root, shadow, follow_seconds, watchdog, kill_planner_after=None):
     freeze_sources(root, WORKSPACE)
     console = (root/'launcher.txt').open('x')
     command = [str(WORKSPACE/'scripts/uav_lab.sh'), '--no-build']
+    gcs = None
+    if env.get('UAV_USV_HEADLESS_GCS') == 'true':
+        udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        try:
+            udp.bind(('127.0.0.1', 14550))
+        finally:
+            udp.close()
+        gcs = subprocess.Popen(['python3', str(WORKSPACE/'scripts/p45_gcs_heartbeat.py')],
+                               stdout=(root/'gcs_heartbeat.txt').open('x'),
+                               stderr=subprocess.STDOUT, start_new_session=True, env=env)
     launcher = subprocess.Popen(command, cwd=WORKSPACE, env=env, stdin=subprocess.PIPE,
                                 stdout=console, stderr=console, start_new_session=True)
     identities = {'launcher': identity(launcher.pid)}
+    if gcs is not None:
+        identities['gcs'] = identity(gcs.pid)
     owned_session, x_time, reason = None, None, 'WATCHDOG'
+    from p45_fault_injection import FaultInjector
+    injector = FaultInjector(root) if fault_suite else None
     planner_killed = False
+    follow_seen = False
+    unlocked_since = None
     previous_load, load_time, loads = {}, time.monotonic(), []
     monitor_log = (root/'monitor.txt').open('x')
     overlay = shlex.quote(str(WORKSPACE/'install/setup.bash'))
@@ -201,6 +226,8 @@ def run(root, shadow, follow_seconds, watchdog, kill_planner_after=None):
                     reason = 'X_DELIVERY_FAILED'
                     break
                 x_time = time.time()
+            if injector and x_time:
+                injector.tick(time.time()-x_time, identities)
             if (shadow and x_time and kill_planner_after is not None and not planner_killed
                     and time.time()-x_time >= kill_planner_after and 'experiment' in identities):
                 for process in Path('/proc').iterdir():
@@ -220,6 +247,37 @@ def run(root, shadow, follow_seconds, watchdog, kill_planner_after=None):
                                      task_owned_child=True), indent=2))
                     except (OSError, ValueError):
                         pass
+            health_path = root/'live_health.json'
+            if x_time and health_path.exists():
+                health = json.loads(health_path.read_text())
+                control = health.get('control', {})
+                if control.get('status') in ('FOLLOW', 'MINCO_FOLLOW'):
+                    follow_seen = True
+                if follow_seen:
+                    nav, vehicle = health.get('navigation', {}), health.get('vehicle', {})
+                    problem = None
+                    unlocked_since = (unlocked_since or time.time()) if not control.get(
+                        'locked', False) else None
+                    # Experiment stop bounds, not relaxed controller constraints.
+                    if time.time()-control.get('receipt', 0) > 2.:
+                        problem = 'CONTROL_OUTPUT_LOST'
+                    elif control.get('status') in ('STATE_STALE', 'WAITING_FOR_STATE'):
+                        problem = 'NAVIGATION_LOST'
+                    elif vehicle.get('nav_state') != 14 or vehicle.get('armed') != 2:
+                        problem = 'OFFBOARD_OR_ARMING_LOST'
+                    elif unlocked_since is not None and time.time()-unlocked_since > 2.:
+                        problem = 'TARGET_LOCK_LOST_FOR_2S'
+                    elif control.get('compute', 0) > .2:
+                        problem = 'CONTROL_CALLBACK_OVERRUN_200MS'
+                    elif nav.get('p', [0, 0, -5])[2] > -.5:
+                        problem = 'SEA_CLEARANCE_VIOLATED'
+                    elif sum(v*v for v in nav.get('v', ())) > 8.5**2:
+                        problem = 'VELOCITY_DIVERGENCE'
+                    if problem:
+                        (root/'safety_stop.json').write_text(json.dumps(
+                            dict(stamp=time.time(), reason=problem, health=health), indent=2))
+                        reason = problem
+                        break
             if x_time and time.time()-x_time >= follow_seconds:
                 reason = 'FOLLOW_WINDOW_COMPLETE'
                 break
@@ -229,8 +287,10 @@ def run(root, shadow, follow_seconds, watchdog, kill_planner_after=None):
             if monitor.poll() is not None:
                 reason = 'MONITOR_FAILED'
                 break
-            time.sleep(.5)
+            time.sleep(.025 if injector else .5)
     finally:
+        if injector:
+            injector.resume(force=True)
         for sig, delay in ((signal.SIGINT, 6), (signal.SIGTERM, 3), (signal.SIGKILL, 1)):
             for entry in identities.values():
                 if matches(entry):
@@ -238,6 +298,8 @@ def run(root, shadow, follow_seconds, watchdog, kill_planner_after=None):
             time.sleep(delay)
         launcher.wait(timeout=5)
         monitor.wait(timeout=5)
+        if gcs is not None:
+            gcs.wait(timeout=5)
         console.close()
         monitor_log.close()
         ended = dict(start=start, ended=time.time(), reason=reason, x_time=x_time,
@@ -264,6 +326,7 @@ if __name__ == '__main__':
     parser.add_argument('--follow-seconds', type=float, default=90.)
     parser.add_argument('--watchdog', type=float, default=200.)
     parser.add_argument('--kill-planner-after', type=float)
+    parser.add_argument('--fault-suite', action='store_true')
     args = parser.parse_args()
     raise SystemExit(run(args.root, args.shadow, args.follow_seconds, args.watchdog,
-                         args.kill_planner_after))
+                         args.kill_planner_after, args.fault_suite))

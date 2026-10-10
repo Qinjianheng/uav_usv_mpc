@@ -55,8 +55,10 @@ def reference_velocity(curve, now, navigation_stamp, position, gain):
     return tuple(np.asarray(current[3:6])+gain*(np.asarray(reference[:3])-position))
 
 
-def nominal_curve(curve, prediction, model, start, end):
+def nominal_curve(curve, prediction, model, start, end, diagnostics=None):
     """Receiver-local full sphere/range, ideal attitude and sea checks, never a robust proof."""
+    detail = diagnostics if diagnostics is not None else {}
+    detail['reason'] = 'INVALID_INTERVAL_OR_INPUT'
     try:
         if not curve.start <= start < end <= curve.end:
             return False
@@ -86,7 +88,12 @@ def nominal_curve(curve, prediction, model, start, end):
         descent = np.maximum(v[:, 2], 0.)
         clearance = (c.sea_surface_z-c.reserve_clearance-p[:, 2]-descent*c.response_delay
                      - descent**2/(2*c.braking_acceleration))
-        return bool(all(view.whole_target_safe for view in views) and clearance.min() >= 0)
+        detail.update(horizontal_margin=min(v.horizontal_margin_rad for v in views),
+                      vertical_margin=min(v.vertical_margin_rad for v in views),
+                      sea_margin=float(clearance.min()),
+                      reason=('VALID' if all(v.whole_target_safe for v in views)
+                              and clearance.min() >= 0 else 'FOV_OR_SEA'))
+        return detail['reason'] == 'VALID'
     except (ValueError, TypeError, IndexError, OverflowError, FloatingPointError):
         return False
 
@@ -102,10 +109,12 @@ class NominalFollowReceiver(FollowReceiver):
         super().__init__(limits=limits)
         self.deadline = 0.
 
-    def propose(self, curve, ctx):
+    def propose(self, curve, ctx, validated_prediction_id=None):
         """Admit a locally revalidated nominal curve; retain the old lease on rejection."""
         errors = [e for e in curve_errors(curve, self.limits) if e != 'HOLDING_DOES_NOT_COVER']
-        errors += self.context_errors(curve, ctx)
+        errors += [e for e in self.context_errors(curve, ctx)
+                   if not (e == 'PREDICTION_CHANGED'
+                           and validated_prediction_id == ctx.prediction_id)]
         if curve.holding_until != 0. or curve.holding_model:
             errors.append('UNEXPECTED_HOLDING_CLAIM')
         if not curve.planner_boot_id or not curve.receiver_boot_id:
@@ -143,7 +152,7 @@ class NominalFollowReceiver(FollowReceiver):
         self.pending = curve
         return self._ack(curve, ctx, 'ACCEPTED', ('NOMINAL_EXECUTION',))
 
-    def tick(self, ctx, nominal_valid=True):
+    def tick(self, ctx, nominal_valid=False):
         """Require a local prefix check for new predictions, without deadline renewal."""
         reversed_clock = self.last_now is not None and ctx.now < self.last_now
         self.last_now = ctx.now
@@ -157,9 +166,9 @@ class NominalFollowReceiver(FollowReceiver):
                 errors.append('CLOCK_REVERSED')
             checked = (nominal_valid.get(curve.plan_id, False)
                        if isinstance(nominal_valid, dict) else nominal_valid)
-            if not checked:
-                errors.append('LATEST_PREFIX_INVALID')
             until = min(curve.end, curve.start+self.lease_seconds)
+            if not checked and ctx.now < until:
+                errors.append('LATEST_PREFIX_INVALID')
             if errors or ctx.now >= until:
                 setattr(self, slot, None)
                 result = self._ack(curve, ctx, 'REVOKED' if errors else 'EXPIRED', errors)

@@ -25,13 +25,13 @@ def test_nominal_pending_activation_has_finite_nonrenewable_lease():
     r, c = receiver(), candidate()
     assert r.propose(c, ctx()).state == 'ACCEPTED'
     assert r.active is None
-    assert r.tick(ctx(c.start+.02)).state == 'ACTIVE'
+    assert r.tick(ctx(c.start+.02), nominal_valid=True).state == 'ACTIVE'
     assert r.active == c
     assert r.deadline == pytest.approx(c.start+.45)
     until = r.deadline
     assert r.propose(candidate(2), ctx(100.2)).state == 'REJECTED'
     assert r.deadline == until
-    assert r.tick(ctx(until)).state == 'EXPIRED'
+    assert r.tick(ctx(until), nominal_valid=True).state == 'EXPIRED'
     assert r.active is None
 
 
@@ -49,19 +49,19 @@ def test_admission_retains_original_fail_closed_checks(change, reason):
 def test_late_activation_and_reset_cannot_leave_stale_reference():
     r, c = receiver(), candidate()
     r.propose(c, ctx())
-    assert r.tick(ctx(c.start+.051)).state == 'REJECTED'
+    assert r.tick(ctx(c.start+.051), nominal_valid=True).state == 'REJECTED'
     assert r.active is None
     r = receiver()
     r.propose(c, ctx())
-    r.tick(ctx(c.start))
-    assert r.tick(ctx(c.start+.01, generation=2)).state == 'REVOKED'
+    r.tick(ctx(c.start), nominal_valid=True)
+    assert r.tick(ctx(c.start+.01, generation=2), nominal_valid=True).state == 'REVOKED'
     assert r.active is None
 
 
 def test_parent_boundary_uses_actual_handover_instead_of_old_endpoint():
     r, c = receiver(), candidate()
     r.propose(c, ctx())
-    r.tick(ctx(c.start))
+    r.tick(ctx(c.start), nominal_valid=True)
     new = replace(candidate(2, 100.1, 1), xyz=((.06, 0., -5.), *c.xyz[1:]))
     assert r.propose(new, ctx(100.06)).state == 'ACCEPTED'
     bad = replace(new, plan_id=3, xyz=((1.2, 0., -5.), *new.xyz[1:]))
@@ -72,7 +72,7 @@ def test_parent_boundary_uses_actual_handover_instead_of_old_endpoint():
 def test_latest_prediction_requires_fresh_prefix_check_and_never_extends_lease():
     r, c = receiver(), candidate()
     r.propose(c, ctx())
-    r.tick(ctx(c.start))
+    r.tick(ctx(c.start), nominal_valid=True)
     until = r.deadline
     # Caller supplies the result of its receiver-local full remaining-prefix check.
     assert r.tick(ctx(c.start+.1, prediction_id=8), nominal_valid=True) is None
@@ -84,7 +84,7 @@ def test_latest_prediction_requires_fresh_prefix_check_and_never_extends_lease()
 def test_invalid_pending_prefix_keeps_valid_active_and_original_deadline():
     r, c = receiver(), candidate()
     r.propose(c, ctx())
-    r.tick(ctx(c.start))
+    r.tick(ctx(c.start), nominal_valid=True)
     new = replace(candidate(2, 100.1, 1), xyz=((.06, 0., -5.), *c.xyz[1:]))
     r.propose(new, ctx(100.06))
     until = r.deadline
@@ -133,7 +133,7 @@ def test_velocity_shaping_preserves_emitted_command_on_entry_and_fallback():
     from uav_control.guidance.follow_minco_execution import reference_velocity
     r, c = receiver(), candidate()
     r.propose(c, ctx())
-    r.tick(ctx(c.start))
+    r.tick(ctx(c.start), nominal_valid=True)
     guidance = FlightGuidanceCore()
     actual = FlightKinematicState((0., 0., -5.), (3., 0., 0.))
     guidance.previous_velocity = (3., 0., 0.)
@@ -169,3 +169,30 @@ def test_analysis_includes_minco_control_cycles_in_follow_windows(tmp_path):
                      actual_controller='NOMINAL_MINCO')
     assert result['minco_closed_loop']
     assert result['windows']['all_follow']['visible_fraction'] == 1.
+
+
+def test_admission_can_use_independently_checked_latest_prediction_without_rewriting_curve():
+    r, c = receiver(), candidate()
+    latest = ctx(prediction_id=8)
+    assert 'PREDICTION_CHANGED' in r.propose(c, latest).reasons
+    r = receiver()
+    assert r.propose(c, latest, validated_prediction_id=8).state == 'ACCEPTED'
+    assert r.pending.prediction_id == c.prediction_id
+    r = receiver()
+    assert 'PREDICTION_CHANGED' in r.propose(c, latest, validated_prediction_id=7).reasons
+
+
+def test_expired_lease_is_expired_even_when_no_prefix_remains_to_check():
+    r, c = receiver(), candidate()
+    r.propose(c, ctx())
+    r.tick(ctx(c.start), nominal_valid=True)
+    assert r.tick(ctx(c.start+.45), nominal_valid={}).state == 'EXPIRED'
+    assert r.active is None
+
+
+def test_missing_local_validation_never_activates_nominal_curve():
+    r, c = receiver(), candidate()
+    r.propose(c, ctx())
+    ack = r.tick(ctx(c.start))
+    assert ack.state == 'REVOKED'
+    assert r.active is None
