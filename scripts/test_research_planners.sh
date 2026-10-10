@@ -18,6 +18,8 @@ case "${MODE}" in
             test/test_follow_profile.py test/test_follow_limits.py \
             test/test_follow_fast_validation.py test/test_p43_objective.py \
             test/test_p43_follow_solver.py test/test_follow_attitude_bounds.py \
+            test/test_p44_follow_solver.py test/test_p44_invariant_cache.py \
+            test/test_p44_analysis.py \
             test/test_progress_follow.py test/test_follow_contract.py \
             test/test_hypothetical_follow.py test/test_polynomial_bounds.py \
             test/test_p4_session_safety.py \
@@ -41,6 +43,8 @@ case "${MODE}" in
             test/test_follow_profile.py test/test_follow_limits.py \
             test/test_follow_fast_validation.py test/test_p43_objective.py \
             test/test_p43_follow_solver.py test/test_follow_attitude_bounds.py \
+            test/test_p44_follow_solver.py test/test_p44_invariant_cache.py \
+            test/test_p44_analysis.py \
             test/test_progress_follow.py test/test_follow_contract.py \
                 test/test_hypothetical_follow.py test/test_polynomial_bounds.py \
                 test/test_p4_receiver_node.py test/test_p4_session_safety.py test/test_p43_analysis.py \

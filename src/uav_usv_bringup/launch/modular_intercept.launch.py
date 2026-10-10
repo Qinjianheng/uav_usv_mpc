@@ -8,13 +8,14 @@ from launch.actions import DeclareLaunchArgument, SetEnvironmentVariable
 from launch.conditions import IfCondition
 from launch.substitutions import LaunchConfiguration, PythonExpression
 from launch_ros.actions import Node
+from launch_ros.parameter_descriptions import ParameterValue
 
 
 def generate_launch_description():
     """Return one launch graph with a single PX4 command owner."""
     package_share = get_package_share_directory('uav_usv_bringup')
     default_config = os.path.join(package_share, 'config', 'baseline.yaml')
-    workspace = os.environ.get('UAV_USV_WS', '/home/qin/data/uav_usv')
+    workspace = os.environ.get('UAV_USV_WS', '/home/qin/data/uav_usv_mpc')
     default_log_directory = os.path.join(
         workspace,
         'data',
@@ -44,6 +45,18 @@ def generate_launch_description():
             default_value=default_config,
             description='Shared modular interception parameter YAML.',
         ),
+        DeclareLaunchArgument('enable_follow_minco', default_value='true',
+                              choices=['true', 'false']),
+        DeclareLaunchArgument('enable_follow_planner', default_value='true',
+                              choices=['true', 'false']),
+        Node(package='uav_control', executable='p4_follow_planner_node',
+             name='p4_follow_planner_node', output='screen',
+             condition=IfCondition(PythonExpression([
+                 "'", LaunchConfiguration('enable_follow_minco'), "' == 'true' and '",
+                 LaunchConfiguration('enable_follow_planner'), "' == 'true'",
+             ])),
+             parameters=[os.path.join(package_share, 'config/follow_minco.yaml'),
+                         {'log_directory': log_directory}]),
         DeclareLaunchArgument(
             'log_directory',
             default_value=default_log_directory,
@@ -108,7 +121,8 @@ def generate_launch_description():
             executable='trajectory_tracker_node',
             name='trajectory_tracker_node',
             output='screen',
-            parameters=[config_file],
+            parameters=[config_file, {'follow_minco_enabled': ParameterValue(
+                LaunchConfiguration('enable_follow_minco'), value_type=bool)}],
         ),
         Node(
             package='uav_control',

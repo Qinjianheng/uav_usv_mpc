@@ -42,19 +42,20 @@ def rendered_marker_visibility(position, rotation, marker_center, model):
                                model.extrinsics, sphere, model.visibility)
 
 
-def analyze(root):
+def analyze(root, follow_statuses=('FOLLOW',), actual_controller='ORIGINAL_FOLLOW'):
     """Evaluate original flown FOLLOW separately from unexecuted research proposals."""
     raw, malformed = read(root/'offline_evidence.jsonl')
     kinds = {k: [r for r in raw if r['kind'] == k] for k in set(r['kind'] for r in raw)}
     diagnostics = kinds.get('diagnostic', [])
-    follow = [r for r in diagnostics if r['status'] == 'FOLLOW']
+    follow = [r for r in diagnostics if r['status'] in follow_statuses]
     start = follow[0]['stamp'] if follow else None
     csv_rows = [r for p in (root/'evaluator').glob('*mission_1.csv')
                 for r in csv.DictReader(p.open()) if r['phase'] == 'FOLLOW'
                 and r['truth_available'] == 'True' and r['uav_available'] == 'True']
     csv_start = float(csv_rows[0]['time']) if csv_rows else None
     report = dict(kind_counts={k: len(v) for k, v in kinds.items()}, malformed_lines=malformed,
-                  actual_controller='ORIGINAL_FOLLOW', minco_closed_loop=False,
+                  actual_controller=actual_controller,
+                  minco_closed_loop=any(r['status'] == 'MINCO_FOLLOW' for r in follow),
                   end=json.loads((root/'watchdog_end.json').read_text()), windows={})
     model = FollowMpcSeed()
     # Same-message native poses: no interpolated attitude, fitted lag or truth input.

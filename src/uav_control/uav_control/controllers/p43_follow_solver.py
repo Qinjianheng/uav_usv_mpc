@@ -14,7 +14,7 @@ from uav_control.guidance.follow_fast_validation import InvariantCache, validate
 from uav_control.guidance.follow_limits import constraint_snapshot
 from uav_control.guidance.follow_minco_optimizer import MincoConfig
 from uav_control.guidance.follow_problem import FollowProblem
-from uav_control.guidance.follow_profile import profiled, stage, current, CycleProfile
+from uav_control.guidance.follow_profile import profiled, stage, current, CycleProfile, count
 from uav_control.guidance.follow_reference import forecast_viewpoint
 from uav_control.guidance.p43_minco_objective import TrackingMincoObjective
 from uav_control.guidance.yaw_trajectory import YawTrajectory
@@ -49,66 +49,42 @@ class P43FollowSolver(TrackingFollowSolver):
         end = started+min(self.config.solve_budget, until-self.wall_clock()-.02)
         best = MpcSeedResult(request.context, solver_status='NO_FRESHNESS_BUDGET')
         attempts, refinements, selected = [], [], None
+        candidates, ranked, budget_stopped = [], [], False
         try:
             if end <= started:
                 raise ValueError('NO_FRESHNESS_BUDGET')
             problem = FollowProblem(request, self.model, self.duration)
-            p, v, a = np.asarray(request.state[:9]).reshape(3, 3)
             old = np.asarray(self.hint[1]) if self.usable_hint(request) else np.zeros(3)
-            template = local_seed(request, self.duration, np.zeros(3), 0., self.maximum_horizon)
-            proxy = FastMincoObjective(problem, template, MincoConfig(mode='q'))
-            candidates = []
-            query = np.array((0., self.duration/2, self.duration))
-            targets, _ = problem.target_state(query)
-            for beta in (0., -.6, .6):
-                rp, rv, ra, heading, details = forecast_viewpoint(problem, self.duration, beta)
-                ra[:2] *= min(1., self.config.maximum_horizontal_acceleration/max(
-                    np.linalg.norm(ra[:2]), 1e-12))
-                for scale in ((1., .5, 0.) if beta == 0. else (1.,)):
-                    with stage('jerk_candidates'):
-                        j = optimal_local_jerk(request.state[:9], rp, rv, self.duration,
-                                               self.weights, old, ra)*scale
-                        j[:2] *= min(1., self.config.maximum_horizontal_jerk/max(
-                            np.linalg.norm(j[:2]), 1e-12))
-                        j[2] = np.clip(j[2], -self.config.maximum_vertical_jerk,
-                                       self.config.maximum_vertical_jerk)
-                        end_a = a+j*self.duration
-                        end_a[:2] *= min(1., self.config.maximum_horizontal_acceleration/max(
-                            np.linalg.norm(end_a[:2]), 1e-12))
-                        end_a[2] = np.clip(end_a[2], -self.config.maximum_vertical_acceleration,
-                                           self.config.maximum_vertical_acceleration)
-                        j = (end_a-a)/self.duration
-                        direction = math.atan2(math.sin(heading-request.state[9]),
-                                               math.cos(heading-request.state[9]))
-                        rate = np.clip(direction/self.duration, -self.config.maximum_yaw_rate,
-                                       self.config.maximum_yaw_rate)
-                        seed = local_seed(request, self.duration, j, rate, self.maximum_horizon)
-                    with stage('coarse_geometry'):
-                        cp = p+v*query[:, None]+a*query[:, None]**2/2+j*query[:, None]**3/6
-                        cv = v+a*query[:, None]+j*query[:, None]**2/2
-                        ca = a+j*query[:, None]
-                        ys = YawTrajectory(np.r_[0., np.cumsum(seed.durations)], seed.yaw,
-                                           start_rate=getattr(request, 'reference_yaw_rate', 0.))
-                        angles, _ = ys.sample(query)
-                        _, margin, _, _ = proxy.geometry(cp, ca, angles, targets)
-                        cost = (4*np.sum((cp[-1, :2]-rp[:2])**2)/25
-                                + 2*np.sum((cv[-1, :2]-rv[:2])**2)/9
-                                + np.sum((ca[-1]-ra)**2)/9
-                                + .03*self.duration*np.dot(j, j)/36
-                                + .01*(beta**2+np.sum((j-old)**2)/36)
-                                + .05*np.mean(np.maximum(.1-margin, 0.)**2/.01))
-                    candidates.append((int(beta != 0.), cost, seed, beta, j, details))
-            for _, cost, seed, beta, j, details in sorted(candidates, key=lambda row: row[:2]):
+            candidates = self.candidates(request, problem, old)
+            count('candidate_generated', len(candidates))
+            with stage('candidate_sort'):
+                ranked = sorted(candidates, key=lambda row: row[:2])
+            remaining = list(ranked)
+            while remaining:
                 if end-self.clock() <= .003:
+                    budget_stopped = True
                     break
-                tested = validate_seed(request, seed, self.model, self.invariant_cache,
-                                       end-self.clock(), self.clock)
+                _, cost, seed, beta, j, details = remaining.pop(0)
+                if seed is None:
+                    with stage('candidate_seed_construction'):
+                        seed = local_seed(request, self.duration, j, details['yaw_rate'],
+                                          self.maximum_horizon)
+                count('candidate_strict_attempts')
+                strict_started = self.clock()
+                with stage('candidate_strict_validation'):
+                    tested = validate_seed(request, seed, self.model, self.invariant_cache,
+                                           end-self.clock(), self.clock)
                 attempts.append(dict(valid=tested.valid, status=tested.solver_status,
-                                     beta=beta, cost=float(cost), jerk=j.tolist()))
+                                     beta=beta, cost=float(cost), jerk=j.tolist(),
+                                     scale=details['scale'],
+                                     candidate_index=details['candidate_index'],
+                                     strict_seconds=self.clock()-strict_started))
                 best = tested
                 if best.valid:
                     selected = (seed, beta, j, details)
                     break
+                with stage('candidate_fallback'):
+                    remaining = self.reorder(remaining, tested)
             if selected and self.refinement_mode != 'none':
                 seed, beta, j, _ = selected
                 refinement_end = min(end-.005, self.clock()+self.refinement_budget)
@@ -173,10 +149,76 @@ class P43FollowSolver(TrackingFollowSolver):
         elapsed = self.clock()-started
         if self.clock() >= end or self.wall_clock() >= until-.02:
             best = replace(best, valid=False, solver_status='DEADLINE_EXCEEDED')
-        snapshot = constraint_snapshot(self.model)
-        return replace(best, solve_time=elapsed, timing=dict(best.timing, total=elapsed),
-                       metrics=dict(best.metrics, p43=dict(
-                           refinements=refinements, refinement_mode=self.refinement_mode,
-                           holding_qualified=False, cheap_proxy_grants_admission=False,
-                           attempts=attempts), constraint_snapshot=snapshot.payload,
-                           constraint_fingerprint=snapshot.fingerprint))
+        with stage('candidate_result_packaging'):
+            snapshot = constraint_snapshot(self.model)
+            return replace(best, solve_time=elapsed, timing=dict(best.timing, total=elapsed),
+                           metrics=dict(best.metrics, p43=dict(
+                               refinements=refinements, refinement_mode=self.refinement_mode,
+                               holding_qualified=False, cheap_proxy_grants_admission=False,
+                               attempts=attempts, generated=len(candidates),
+                               ranked_candidates=[dict(beta=r[3], cost=float(r[1]),
+                                                       candidate_index=r[5]['candidate_index'],
+                                                       scale=r[5]['scale']) for r in ranked],
+                               budget_stopped=budget_stopped,
+                               unattempted=len(candidates)-len(attempts)),
+                               constraint_snapshot=snapshot.payload,
+                               constraint_fingerprint=snapshot.fingerprint))
+
+    def candidates(self, request, problem, old, references=None):
+        """Scalar oracle: unchanged five candidates, explicit measurement-only stages."""
+        p, v, a = np.asarray(request.state[:9]).reshape(3, 3)
+        template = local_seed(request, self.duration, np.zeros(3), 0., self.maximum_horizon)
+        proxy = FastMincoObjective(problem, template, MincoConfig(mode='q'))
+        candidates = []
+        query = np.array((0., self.duration/2, self.duration))
+        targets, _ = problem.target_state(query)
+        for beta in (0., -.6, .6):
+            with stage('candidate_reference'):
+                rp, rv, ra, heading, details = (
+                    forecast_viewpoint(problem, self.duration, beta) if references is None
+                    else references[beta])
+            ra[:2] *= min(1., self.config.maximum_horizontal_acceleration/max(
+                np.linalg.norm(ra[:2]), 1e-12))
+            for scale in ((1., .5, 0.) if beta == 0. else (1.,)):
+                with stage('candidate_jerk'):
+                    j = optimal_local_jerk(request.state[:9], rp, rv, self.duration,
+                                           self.weights, old, ra)*scale
+                    j[:2] *= min(1., self.config.maximum_horizontal_jerk/max(
+                        np.linalg.norm(j[:2]), 1e-12))
+                    j[2] = np.clip(j[2], -self.config.maximum_vertical_jerk,
+                                   self.config.maximum_vertical_jerk)
+                    end_a = a+j*self.duration
+                    end_a[:2] *= min(1., self.config.maximum_horizontal_acceleration/max(
+                        np.linalg.norm(end_a[:2]), 1e-12))
+                    end_a[2] = np.clip(end_a[2], -self.config.maximum_vertical_acceleration,
+                                       self.config.maximum_vertical_acceleration)
+                    j = (end_a-a)/self.duration
+                with stage('candidate_yaw'):
+                    direction = math.atan2(math.sin(heading-request.state[9]),
+                                           math.cos(heading-request.state[9]))
+                    rate = np.clip(direction/self.duration, -self.config.maximum_yaw_rate,
+                                   self.config.maximum_yaw_rate)
+                with stage('candidate_seed_construction'):
+                    seed = local_seed(request, self.duration, j, rate, self.maximum_horizon)
+                with stage('candidate_proxy_geometry'):
+                    cp = p+v*query[:, None]+a*query[:, None]**2/2+j*query[:, None]**3/6
+                    cv = v+a*query[:, None]+j*query[:, None]**2/2
+                    ca = a+j*query[:, None]
+                    ys = YawTrajectory(np.r_[0., np.cumsum(seed.durations)], seed.yaw,
+                                       start_rate=getattr(request, 'reference_yaw_rate', 0.))
+                    angles, _ = ys.sample(query)
+                    _, margin, _, _ = proxy.geometry(cp, ca, angles, targets)
+                with stage('candidate_proxy_score'):
+                    cost = (4*np.sum((cp[-1, :2]-rp[:2])**2)/25
+                            + 2*np.sum((cv[-1, :2]-rv[:2])**2)/9
+                            + np.sum((ca[-1]-ra)**2)/9
+                            + .03*self.duration*np.dot(j, j)/36
+                            + .01*(beta**2+np.sum((j-old)**2)/36)
+                            + .05*np.mean(np.maximum(.1-margin, 0.)**2/.01))
+                candidates.append((int(beta != 0.), cost, seed, beta, j,
+                                   dict(details, scale=scale, candidate_index=len(candidates))))
+        return candidates
+
+    def reorder(self, remaining, tested):
+        """Original stable sequence; P44 opt-in may only reprioritize remaining rows."""
+        return remaining

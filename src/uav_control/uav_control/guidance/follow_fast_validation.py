@@ -51,6 +51,8 @@ class InvariantCache:
     def __init__(self, capacity=8):
         self.capacity, self.entries = capacity, OrderedDict()
 
+    attitude_check = staticmethod(attitude_extrema)
+
     def key(self, request, metrics, model):
         """Bind full coefficients/time/yaw, calibration, policy and local mission/epoch."""
         h = hashlib.sha256()
@@ -92,7 +94,7 @@ class InvariantCache:
                 np.polynomial.polynomial.polyval(times, np.polynomial.polynomial.polyder(yc))))))
         if maximum_rate > model.config.maximum_yaw_rate+1e-6:
             raise ValueError('YAW_RATE_LIMIT')
-        attitude = attitude_extrema(xyz, ts, model.attitude_config)
+        attitude = self.attitude_check(xyz, ts, model.attitude_config)
         if not attitude['valid']:
             raise ValueError('ATTITUDE_LIMIT')
         # Arrays are private immutable copies; no caller output dictionary can mutate them.

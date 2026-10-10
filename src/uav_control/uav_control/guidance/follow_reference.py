@@ -45,7 +45,7 @@ def viewpoint_state_batch(position, velocity, acceleration, heading, omega, alph
 
 
 @profiled('future_reference')
-def forecast_viewpoint(problem, time, beta=0., distance=None):
+def forecast_target_kinematics(problem, time):
     """
     Fit local forecast heading/speed, with explicit acceleration/jerk-derived bounds.
 
@@ -82,14 +82,19 @@ def forecast_viewpoint(problem, time, beta=0., distance=None):
         residual = float(np.sqrt(np.mean((np.polynomial.polynomial.polyval(x, h)-angles)**2)))
         clipped = abs(omega-h[1]) > 1e-9 or abs(alpha-2*h[2]) > 1e-9 or abs(
             tangential-s[1]) > 1e-9
+    details = dict(heading_rate=omega, heading_acceleration=alpha,
+                   heading_fit_rmse=residual, derivative_clipped=bool(clipped),
+                   beta_rate_assumption=0., distance_rate_assumption=0.,
+                   fit_samples=int(np.count_nonzero(mask)),
+                   derivative_available=bool(np.count_nonzero(mask) >= 3
+                                             and np.linalg.norm(v[0, :2]) >= .2))
+    return p[0], v[0], acceleration, heading, omega, alpha, details
+
+
+def forecast_viewpoint(problem, time, beta=0., distance=None):
+    """Original scalar reference; P44 shares only target-dependent forecast fitting."""
+    p, v, acceleration, heading, omega, alpha, details = forecast_target_kinematics(problem, time)
     distance = problem.limits.follow_distance if distance is None else distance
-    state = viewpoint_state(p[0], v[0], acceleration, heading, omega, alpha,
+    state = viewpoint_state(p, v, acceleration, heading, omega, alpha,
                             distance=distance, beta=beta, altitude=problem.limits.flight_altitude)
-    return (*state, heading + beta, dict(heading_rate=omega, heading_acceleration=alpha,
-                                         heading_fit_rmse=residual,
-                                         derivative_clipped=bool(clipped),
-                                         beta_rate_assumption=0., distance_rate_assumption=0.,
-                                         fit_samples=int(np.count_nonzero(mask)),
-                                         derivative_available=bool(np.count_nonzero(mask) >= 3
-                                                                   and np.linalg.norm(
-                                                                       v[0, :2]) >= .2)))
+    return (*state, heading + beta, details)

@@ -21,7 +21,7 @@ def test_legacy_follow_limit_is_inherited_unless_explicitly_overridden(
     values = {}
     monkeypatch.setattr(Node, '__init__', lambda *args, **kwargs: None)
 
-    def declare(self, name, default):
+    def declare(self, name, default, descriptor=None):
         values[name] = overrides.get(name, default)
         return SimpleNamespace(value=values[name])
 
@@ -32,7 +32,8 @@ def test_legacy_follow_limit_is_inherited_unless_explicitly_overridden(
     for method in ('create_subscription', 'create_publisher', 'create_timer'):
         monkeypatch.setattr(Node, method, lambda *args, **kwargs: None)
     monkeypatch.setattr(Node, 'get_logger',
-                        lambda self: SimpleNamespace(info=lambda *args: None))
+                        lambda self: SimpleNamespace(info=lambda *args: None,
+                                                     warning=lambda *args: None))
     node = TrajectoryTrackerNode()
     assert node.flight_guidance.maximum_horizontal_acceleration == expected
     assert node.tracker.maximum_horizontal_acceleration == overrides[

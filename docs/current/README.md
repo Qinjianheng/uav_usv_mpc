@@ -30,6 +30,9 @@
 | [P4.3 高效可见性 MINCO](p43_fast_visibility_minco.md) | 互斥计时、缓存与Q/T/yaw及负结果 |
 | [P4.3 在线验证](p43_online_follow_validation.md) | 本轮独立SITL、真实拒绝ACK、失败轮与验证清单 |
 | [P4.3 安全资格](p43_safety_qualification.md) | 本地约束快照、PX4响应及未获准接管的原因 |
+| [P4.4 候选计算审计](p44_candidate_profiling.md) | 五候选贡献、互斥计时及共享/批量/按需构造收益 |
+| [P4.4 自适应候选验证](p44_adaptive_candidate_validation.md) | A–F消融、逐请求反例、共同初始化与时域质量 |
+| [P4.4 在线影子验证](p44_online_follow_validation.md) | 本轮SITL、真实Tracker到达年龄及未获接管资格 |
 | [整理交付](repository_cleanup.md) | 清点、规模、归档和实际检查结果 |
 | [源码冗余清理](redundancy_cleanup.md) | 确认移出项、保留理由、恢复与回归 |
 

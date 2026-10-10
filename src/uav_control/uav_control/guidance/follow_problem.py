@@ -110,8 +110,11 @@ class FollowProblem:
                 request.now_stamp - c.observation_stamp) > self.limits.maximum_input_age
                 or request.now_stamp >= c.prediction_valid_until):
             raise ValueError('STALE_INPUT')
-        if isinstance(request, HypotheticalRequest):
-            if (request.boundary_policy != 'hypothetical_previous_curve'
+        from uav_control.guidance.follow_minco_execution import AcceptedFollowRequest
+        if isinstance(request, (HypotheticalRequest, AcceptedFollowRequest)):
+            policy = ('tracker_accepted_reference' if isinstance(request, AcceptedFollowRequest)
+                      else 'hypothetical_previous_curve')
+            if (request.boundary_policy != policy
                     or request.prior_curve is None or len(request.measurement_state) != 10
                     or not np.allclose(request.prior_curve.sample(c.execution_start_stamp)[:10],
                                        self.state, rtol=0., atol=1e-9)

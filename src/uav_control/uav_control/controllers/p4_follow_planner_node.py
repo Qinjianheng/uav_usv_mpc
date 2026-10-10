@@ -104,9 +104,25 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
     def make_runner(self, config):
         """Retain the original synchronization factory, with explicitly separate cache policy."""
         old = super().make_runner(config)
+        self.declare_parameter('follow_execution_enabled', False)
+        self.follow_execution_enabled = bool(self.get_parameter('follow_execution_enabled').value)
+        self.execution_curves, self.accepted_curve = {}, None
+        original_factory = old.request_factory
+
+        def factory(*args, **kwargs):
+            request = original_factory(*args, **kwargs)
+            curve = self.accepted_curve
+            start = request.context.execution_start_stamp
+            if (self.follow_execution_enabled and curve is not None
+                    and curve.mission_id == request.context.mission_id
+                    and curve.start <= start < min(curve.end, curve.start+.45)):
+                from uav_control.guidance.follow_minco_execution import accepted_request
+                return accepted_request(request, curve)
+            return request
+
         old.solver.profile_enabled = True
         return P4ResearchRunner(old.config, old.adapter, old.executor, self._publish_event,
-                                1/old.period, old.solver, old.request_factory)
+                                1/old.period, old.solver, factory)
 
     def ack_callback(self, message):
         """Log wrong receiver/identity as invalid ACK; REJECTED never grants execution."""
@@ -125,7 +141,15 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
                      and key[:1] == self.receiver_epoch[0][:1]
                      and key[3] == self.receiver_epoch[0][1]
                      and key[1] == self.planner_boot_id)
-        unexpected_accept = message.state in ('ACCEPTED', 'ACTIVE')
+        executing = getattr(self, 'follow_execution_enabled', False)
+        unexpected_accept = not executing and message.state in ('ACCEPTED', 'ACTIVE')
+        if executing and valid:
+            curve = self.execution_curves.get(key)
+            if message.state == 'ACTIVE' and curve is not None:
+                self.accepted_curve = curve
+            elif (message.state in ('REVOKED', 'EXPIRED') and self.accepted_curve is not None
+                  and self.accepted_curve.plan_id == message.plan_id):
+                self.accepted_curve = None
         self.ack_file.write(_serialize(dict(
             receipt=self._ros_seconds(), stamp=seconds(message.stamp),
             identity=key, state=message.state, reasons=list(message.reasons),
@@ -133,7 +157,9 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
             control_owner=message.control_owner, replaced=message.replaced,
             identity_valid=valid,
             publish_to_ack_seconds=seconds(message.stamp)-publication if valid else None,
-            accepted_by_tracker=False, unexpected_accept=unexpected_accept))+'\n')
+            accepted_by_tracker=bool(executing and valid
+                                     and message.state in ('ACCEPTED', 'ACTIVE')),
+            unexpected_accept=unexpected_accept))+'\n')
         self.ack_file.flush()
 
     def _proposal_rejection(self, event, now):
@@ -200,9 +226,18 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
             return dict(published=False, reason='RECEIVER_EPOCH_CHANGED')
         message.receiver_boot_id, message.clock_generation = epoch[:2]
         message.planner_boot_id = self.planner_boot_id
+        if getattr(self, 'follow_execution_enabled', False):
+            from uav_control.controllers.follow_transport import curve_from_message
+            prior = proposal_event['request'].get('prior_curve')
+            message.parent_plan_id = int(prior['plan_id']) if prior else 0
+            message.planner_type, message.reason = 'rolling_minco', 'NOMINAL_EXECUTION'
         key = (message.receiver_boot_id, message.planner_boot_id, message.mission_id,
                message.clock_generation, message.plan_id)
         self.expected_plans[key] = now
+        if getattr(self, 'follow_execution_enabled', False):
+            self.execution_curves[key] = curve_from_message(message)
+            if len(self.execution_curves) > 1024:
+                self.execution_curves.pop(next(iter(self.execution_curves)))
         if len(self.expected_plans) > 1024:
             self.expected_plans.pop(next(iter(self.expected_plans)))
         self._publish_wire_proposal(message)
@@ -231,11 +266,11 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
         proposed = None
         if self.prediction_policy == 'full':
             from uav_control.controllers.follow_mpc_seed import MpcSeedResult, PlanningContext
-            from uav_control.guidance.follow_problem import FutureRequest
             from uav_control.guidance.follow_revalidation import revalidate_prediction
             payload = dict(request_data)
             payload['context'] = PlanningContext(**payload['context'])
-            request = FutureRequest(**payload)
+            from uav_control.guidance.follow_minco_execution import request_from_payload
+            request = request_from_payload(request_data)
             until = min(request.context.navigation_stamp+.125,
                         request.context.attitude_stamp+.125,
                         prediction.observation_stamp+.125, prediction.source_stamp+.125,

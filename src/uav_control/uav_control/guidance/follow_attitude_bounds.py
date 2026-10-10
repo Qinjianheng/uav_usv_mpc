@@ -12,7 +12,7 @@ def roots_inside(polynomial, duration):
                            if abs(r.imag) < 1e-8 and 0 < r.real < duration]
 
 
-@profiled('derivative_extrema')
+@profiled('attitude_extrema')
 def attitude_extrema(xyz, durations, config):
     """Evaluate squared force and horizontal/vertical force ratio extrema exactly in model."""
     poly = np.polynomial.polynomial

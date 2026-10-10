@@ -29,7 +29,10 @@ def generate_launch_description():
         *(DeclareLaunchArgument(name, default_value=value) for name, value in defaults.items()),
         IncludeLaunchDescription(PythonLaunchDescriptionSource(os.path.join(
             share, 'launch/modular_intercept.launch.py')),
-            launch_arguments={k: LaunchConfiguration(k) for k in original}.items()),
+            launch_arguments={**{k: LaunchConfiguration(k) for k in original},
+                              'enable_follow_planner': 'false',
+                              'enable_follow_minco': os.environ.get(
+                                  'UAV_USV_MINCO_EXECUTE', 'false')}.items()),
         Node(package='uav_control', executable='p4_follow_planner_node',
              name='p4_follow_planner_node', output='screen',
              condition=IfCondition(LaunchConfiguration('enable_planner')),
