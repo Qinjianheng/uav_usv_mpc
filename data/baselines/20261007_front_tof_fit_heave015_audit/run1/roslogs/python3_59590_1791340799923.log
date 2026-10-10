@@ -1,0 +1,5 @@
+[INFO] [1791340800.414736560] [trajectory_tracker_node]: Trajectory tracker ready | rate=20.0 Hz | plan age<=0.125 s | vxy<=6.5 m/s | vz<=4.0 m/s
+[INFO] [1791340800.885080403] [trajectory_tracker_node]: PREPARING | waiting for PX4 preflight checks
+[INFO] [1791340801.284963926] [trajectory_tracker_node]: PX4 preflight checks passed
+[INFO] [1791340802.985266483] [trajectory_tracker_node]: FLIGHT READY | PX4 is disarmed in OFFBOARD ground hold
+[INFO] [1791340822.385322393] [trajectory_tracker_node]: TAKEOFF COMPLETE | entering FOLLOW

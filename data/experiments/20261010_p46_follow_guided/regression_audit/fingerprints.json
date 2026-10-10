@@ -1,0 +1,7 @@
+{
+  "data/experiments/20261010_p45_minco_execution/full_initial.log": "60de25195f2a9ff872edf6b7e865467c8c8052d71bc9fc2166cf88c29cd7985c",
+  "src/uav_control/uav_control/guidance/follow_revalidation.py": "cb2fe4052e69d17ed7b82b18d6f65a638b60e24bc87e4d5de599c1d40ec87fab",
+  "src/uav_control/test/test_follow_revalidation.py": "734cc7d6d2df9927c551eaf183536e2169d53a7c80af6828877c28a8e655ab71",
+  "old_log_matches_HEAD": true,
+  "production_revalidation_matches_HEAD": true
+}

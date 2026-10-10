@@ -1,0 +1,35 @@
+/trajectory_tracker_node
+  Subscribers:
+    /fmu/out/vehicle_status_v4: px4_msgs/msg/VehicleStatus
+    /mission/state: uav_usv_interfaces/msg/MissionState
+    /navigation/uav_state: uav_usv_interfaces/msg/UavState
+    /perception/front/target_bearing: uav_usv_interfaces/msg/TargetBearing
+    /perception/front/target_observation: uav_usv_interfaces/msg/TargetObservation
+    /planning/diagnostic: uav_usv_interfaces/msg/PlannerDiagnostic
+    /planning/intercept_trajectory: uav_usv_interfaces/msg/InterceptTrajectory
+    /planning/target_prediction: uav_usv_interfaces/msg/TargetPrediction
+    /tracking/target_state: uav_usv_interfaces/msg/TargetState
+  Publishers:
+    /control/diagnostic: uav_usv_interfaces/msg/ControllerDiagnostic
+    /control/far_guidance_available: std_msgs/msg/Bool
+    /control/reference: px4_msgs/msg/TrajectorySetpoint
+    /control/takeoff_complete: std_msgs/msg/Bool
+    /fmu/in/offboard_control_mode: px4_msgs/msg/OffboardControlMode
+    /fmu/in/trajectory_setpoint: px4_msgs/msg/TrajectorySetpoint
+    /fmu/in/vehicle_command: px4_msgs/msg/VehicleCommand
+    /parameter_events: rcl_interfaces/msg/ParameterEvent
+    /rosout: rcl_interfaces/msg/Log
+    /simulation/impact/flight_ready: std_msgs/msg/Bool
+  Service Servers:
+    /trajectory_tracker_node/describe_parameters: rcl_interfaces/srv/DescribeParameters
+    /trajectory_tracker_node/get_parameter_types: rcl_interfaces/srv/GetParameterTypes
+    /trajectory_tracker_node/get_parameters: rcl_interfaces/srv/GetParameters
+    /trajectory_tracker_node/list_parameters: rcl_interfaces/srv/ListParameters
+    /trajectory_tracker_node/set_parameters: rcl_interfaces/srv/SetParameters
+    /trajectory_tracker_node/set_parameters_atomically: rcl_interfaces/srv/SetParametersAtomically
+  Service Clients:
+
+  Action Servers:
+
+  Action Clients:
+

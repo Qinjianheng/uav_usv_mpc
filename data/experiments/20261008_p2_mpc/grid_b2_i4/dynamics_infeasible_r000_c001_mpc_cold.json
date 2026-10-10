@@ -1,0 +1,747 @@
+{
+  "baseline_controls": null,
+  "cycle": 1,
+  "input": {
+    "actual_rotation": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "context": {
+      "attitude_stamp": 100.2,
+      "clock_generation": 0,
+      "cycle_id": 1,
+      "execution_start_stamp": 100.2,
+      "frame_id": "local_ned",
+      "mission_id": 1,
+      "navigation_stamp": 100.2,
+      "observation_stamp": 100.19,
+      "prediction_sequence_id": 2,
+      "prediction_source": "synthetic",
+      "prediction_source_stamp": 100.2,
+      "prediction_valid_until": 104.2
+    },
+    "now_stamp": 100.2,
+    "prediction_times": [
+      0.0,
+      0.2,
+      0.4,
+      0.6000000000000001,
+      0.8,
+      1.0,
+      1.2000000000000002,
+      1.4000000000000001,
+      1.6,
+      1.8,
+      2.0,
+      2.2,
+      2.4000000000000004,
+      2.6,
+      2.8000000000000003,
+      3.0,
+      3.2,
+      3.4000000000000004,
+      3.6,
+      3.8000000000000003,
+      4.0
+    ],
+    "state": [
+      -4.8,
+      0.0,
+      -5.0,
+      20.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "target_positions": [
+      [
+        0.2,
+        0.0,
+        0.0
+      ],
+      [
+        0.4,
+        0.0,
+        0.0
+      ],
+      [
+        0.6000000000000001,
+        0.0,
+        0.0
+      ],
+      [
+        0.8,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.2,
+        0.0,
+        0.0
+      ],
+      [
+        1.4000000000000001,
+        0.0,
+        0.0
+      ],
+      [
+        1.6,
+        0.0,
+        0.0
+      ],
+      [
+        1.8,
+        0.0,
+        0.0
+      ],
+      [
+        2.0,
+        0.0,
+        0.0
+      ],
+      [
+        2.2,
+        0.0,
+        0.0
+      ],
+      [
+        2.4000000000000004,
+        0.0,
+        0.0
+      ],
+      [
+        2.6000000000000005,
+        0.0,
+        0.0
+      ],
+      [
+        2.8000000000000003,
+        0.0,
+        0.0
+      ],
+      [
+        3.0000000000000004,
+        0.0,
+        0.0
+      ],
+      [
+        3.2,
+        0.0,
+        0.0
+      ],
+      [
+        3.4000000000000004,
+        0.0,
+        0.0
+      ],
+      [
+        3.6000000000000005,
+        0.0,
+        0.0
+      ],
+      [
+        3.8000000000000003,
+        0.0,
+        0.0
+      ],
+      [
+        4.0,
+        0.0,
+        0.0
+      ],
+      [
+        4.2,
+        0.0,
+        0.0
+      ]
+    ],
+    "target_velocities": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ]
+    ]
+  },
+  "input_sha256": "21b7c2368f0577b22417504c424e4f3f6d5f420b74d999f1b484532f7ba4c1b2",
+  "method": "mpc_cold",
+  "metrics": {
+    "core_dense_metrics": {
+      "dynamics_residual": 0.0,
+      "follow_rmse": 26.599999999999998,
+      "maximum_horizontal_acceleration": 0.0,
+      "maximum_horizontal_jerk": 0.0,
+      "maximum_horizontal_speed": 20.0,
+      "maximum_tilt_rad": 0.0,
+      "maximum_vertical_acceleration": 0.0,
+      "maximum_vertical_jerk": 0.0,
+      "maximum_vertical_speed": 0.0,
+      "maximum_yaw_rate": 0.0,
+      "minimum_horizontal_margin": -3.141592653589793,
+      "minimum_vertical_margin": -3.141592653589793,
+      "visible_fraction": 0.08
+    },
+    "dynamics_residual": 0.0,
+    "follow_error_rms_m": 26.599999999999998,
+    "maximum_acceleration_mps2": 0.0,
+    "maximum_horizontal_acceleration": 0.0,
+    "maximum_horizontal_jerk": 0.0,
+    "maximum_horizontal_speed": 20.0,
+    "maximum_jerk_mps3": 0.0,
+    "maximum_speed_mps": 20.0,
+    "maximum_tilt_rad": 0.0,
+    "maximum_vertical_acceleration": 0.0,
+    "maximum_vertical_jerk": 0.0,
+    "maximum_vertical_speed": 0.0,
+    "maximum_yaw_rate": 0.0,
+    "minimum_horizontal_margin_rad": -3.141592653589793,
+    "minimum_vertical_margin_rad": -3.141592653589793,
+    "visibility_ratio": 0.08
+  },
+  "output": {
+    "accelerations": [
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "candidate_kind": "baseline",
+    "constraint_violations": {
+      "attitude_model": 0.0,
+      "horizontal_acceleration": 0.0,
+      "horizontal_jerk": 0.0,
+      "horizontal_speed": 13.8,
+      "maximum_thrust": 0.0,
+      "minimum_thrust": 0.0,
+      "sea_clearance": 0.0,
+      "tilt": 0.0,
+      "vertical_acceleration": 0.0,
+      "vertical_jerk": 0.0,
+      "vertical_speed": 0.0,
+      "visibility": 33.973329169741156,
+      "yaw_rate": 0.0
+    },
+    "context": {
+      "attitude_stamp": 100.2,
+      "clock_generation": 0,
+      "cycle_id": 1,
+      "execution_start_stamp": 100.2,
+      "frame_id": "local_ned",
+      "mission_id": 1,
+      "navigation_stamp": 100.2,
+      "observation_stamp": 100.19,
+      "prediction_sequence_id": 2,
+      "prediction_source": "synthetic",
+      "prediction_source_stamp": 100.2,
+      "prediction_valid_until": 104.2
+    },
+    "initial_visibility": true,
+    "jerks": [
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "metrics": {
+      "dynamics_residual": 0.0,
+      "follow_rmse": 26.599999999999998,
+      "maximum_horizontal_acceleration": 0.0,
+      "maximum_horizontal_jerk": 0.0,
+      "maximum_horizontal_speed": 20.0,
+      "maximum_tilt_rad": 0.0,
+      "maximum_vertical_acceleration": 0.0,
+      "maximum_vertical_jerk": 0.0,
+      "maximum_vertical_speed": 0.0,
+      "maximum_yaw_rate": 0.0,
+      "minimum_horizontal_margin": -3.141592653589793,
+      "minimum_vertical_margin": -3.141592653589793,
+      "visible_fraction": 0.08
+    },
+    "objective_value": 0.0,
+    "positions": [
+      [
+        -4.8,
+        0.0,
+        -5.0
+      ],
+      [
+        -0.7999999999999998,
+        0.0,
+        -5.0
+      ],
+      [
+        3.2,
+        0.0,
+        -5.0
+      ],
+      [
+        7.2,
+        0.0,
+        -5.0
+      ],
+      [
+        11.2,
+        0.0,
+        -5.0
+      ],
+      [
+        15.2,
+        0.0,
+        -5.0
+      ],
+      [
+        19.2,
+        0.0,
+        -5.0
+      ],
+      [
+        23.2,
+        0.0,
+        -5.0
+      ],
+      [
+        27.2,
+        0.0,
+        -5.0
+      ],
+      [
+        31.2,
+        0.0,
+        -5.0
+      ],
+      [
+        35.2,
+        0.0,
+        -5.0
+      ],
+      [
+        39.2,
+        0.0,
+        -5.0
+      ],
+      [
+        43.2,
+        0.0,
+        -5.0
+      ]
+    ],
+    "reason": "initial boundary violates dynamic/model/sea constraints",
+    "relative_times": [
+      0.0,
+      0.2,
+      0.4,
+      0.6000000000000001,
+      0.8,
+      1.0,
+      1.2000000000000002,
+      1.4000000000000001,
+      1.6,
+      1.8,
+      2.0,
+      2.2,
+      2.4000000000000004
+    ],
+    "solve_time": 0.006510036999316071,
+    "solver_status": "DYNAMIC_INFEASIBLE",
+    "timing": {},
+    "valid": false,
+    "velocities": [
+      [
+        20.0,
+        0.0,
+        0.0
+      ],
+      [
+        20.0,
+        0.0,
+        0.0
+      ],
+      [
+        20.0,
+        0.0,
+        0.0
+      ],
+      [
+        20.0,
+        0.0,
+        0.0
+      ],
+      [
+        20.0,
+        0.0,
+        0.0
+      ],
+      [
+        20.0,
+        0.0,
+        0.0
+      ],
+      [
+        20.0,
+        0.0,
+        0.0
+      ],
+      [
+        20.0,
+        0.0,
+        0.0
+      ],
+      [
+        20.0,
+        0.0,
+        0.0
+      ],
+      [
+        20.0,
+        0.0,
+        0.0
+      ],
+      [
+        20.0,
+        0.0,
+        0.0
+      ],
+      [
+        20.0,
+        0.0,
+        0.0
+      ],
+      [
+        20.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "visibility_margins": [
+      [
+        0.7620493331044109,
+        0.3085569848604609
+      ],
+      [
+        0.7226162788816697,
+        -0.2722773867846981
+      ],
+      [
+        null,
+        null
+      ],
+      [
+        null,
+        null
+      ],
+      [
+        null,
+        null
+      ],
+      [
+        null,
+        null
+      ],
+      [
+        null,
+        null
+      ],
+      [
+        null,
+        null
+      ],
+      [
+        null,
+        null
+      ],
+      [
+        null,
+        null
+      ],
+      [
+        null,
+        null
+      ],
+      [
+        null,
+        null
+      ],
+      [
+        null,
+        null
+      ]
+    ],
+    "warm_started": false,
+    "yaw_rates": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "yaw_refs": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "repeat": 0,
+  "scenario": "dynamics_infeasible",
+  "timing": {
+    "core_timing": {},
+    "end_to_end_s": 0.008924028999899747,
+    "external_budget_s": 0.5,
+    "shared_data_prep_s": 0.00029009600075369235,
+    "solve_external_s": 0.006519926000692067
+  }
+}

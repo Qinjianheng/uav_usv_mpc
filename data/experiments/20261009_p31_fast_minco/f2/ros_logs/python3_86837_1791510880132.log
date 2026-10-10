@@ -1,0 +1,14 @@
+[INFO] [1791510880.600417101] [moving_target]: Moving target node ready; waiting for X to start motion.
+[WARN] [1791510880.804123022] [moving_target]: Gazebo red target sphere not ready: Gazebo services unavailable: /world/default/create
+[INFO] [1791510881.637359710] [moving_target]: Gazebo red USV target sphere is visible.
+[WARN] [1791510886.439462405] [moving_target]: Gazebo red target sphere not ready: Gazebo pose update failed: /world/default/set_pose
+[INFO] [1791510886.767867546] [moving_target]: X received. Moving target motion started.
+[WARN] [1791510900.038172673] [moving_target]: Gazebo red target sphere not ready: Gazebo pose update failed: /world/default/set_pose
+[WARN] [1791510905.637506408] [moving_target]: Gazebo red target sphere not ready: Gazebo pose update failed: /world/default/set_pose
+[WARN] [1791510940.539038065] [moving_target]: Gazebo red target sphere not ready: Gazebo pose update failed: /world/default/set_pose
+[WARN] [1791510946.787776921] [moving_target]: Gazebo red target sphere not ready: Gazebo pose update failed: /world/default/set_pose
+[WARN] [1791510955.688677937] [moving_target]: Gazebo red target sphere not ready: Gazebo pose update failed: /world/default/set_pose
+[WARN] [1791510981.337477250] [moving_target]: Gazebo red target sphere not ready: Gazebo pose update failed: /world/default/set_pose
+[WARN] [1791511006.237986729] [moving_target]: Gazebo red target sphere not ready: Gazebo pose update failed: /world/default/set_pose
+[WARN] [1791511014.638508844] [moving_target]: Gazebo red target sphere not ready: Gazebo pose update failed: /world/default/set_pose
+[WARN] [1791511020.487669787] [moving_target]: Gazebo red target sphere not ready: Gazebo pose update failed: /world/default/set_pose

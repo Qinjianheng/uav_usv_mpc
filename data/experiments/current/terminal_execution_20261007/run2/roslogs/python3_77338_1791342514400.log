@@ -1,0 +1,1 @@
+[INFO] [1791342514.885616530] [target_predictor_node]: Target predictor ready | source=tracking | input=/tracking/target_state | output=/planning/target_prediction | rate=20.0 Hz

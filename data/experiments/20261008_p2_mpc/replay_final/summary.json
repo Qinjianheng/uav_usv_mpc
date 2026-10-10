@@ -1,0 +1,722 @@
+{
+  "accepted_by_tracker": false,
+  "candidate_count": 80,
+  "methods": {
+    "mpc_cold": {
+      "count": 20,
+      "dynamics_residual": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 0.0,
+        "minimum": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      },
+      "end_to_end_s": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 0.1184027529998275,
+        "minimum": 0.10180569399926753,
+        "p50": 0.11490311099987593,
+        "p95": 0.11738973189994795,
+        "p99": 0.11820014877985159
+      },
+      "failure_rate": 0.44999999999999996,
+      "feasible_rate": 0.55,
+      "follow_error_rms_m": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 5.113079683813284,
+        "minimum": 1.2302762802304958,
+        "p50": 2.275901350131579,
+        "p95": 4.843769733332643,
+        "p99": 5.059217693717155
+      },
+      "maximum_acceleration_mps2": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 3.1558511090696877,
+        "minimum": 1.326355755613868,
+        "p50": 1.9514509349080624,
+        "p95": 3.1330701986673537,
+        "p99": 3.151294926989221
+      },
+      "maximum_horizontal_acceleration": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 3.1510700018040003,
+        "minimum": 1.3221828367614803,
+        "p50": 1.9457129810365168,
+        "p95": 3.0653009773308533,
+        "p99": 3.1339161969093707
+      },
+      "maximum_horizontal_jerk": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 3.7532000915015913,
+        "minimum": 0.9364582753278856,
+        "p50": 1.724154782205161,
+        "p95": 3.603881605725,
+        "p99": 3.7233363943462727
+      },
+      "maximum_horizontal_speed": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 7.586652934612515,
+        "minimum": 3.575519452340627,
+        "p50": 5.986506759811535,
+        "p95": 6.453477970456352,
+        "p99": 7.3600179417812805
+      },
+      "maximum_jerk_mps3": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 3.808485518168746,
+        "minimum": 0.9414655157439101,
+        "p50": 1.7525541757764023,
+        "p95": 3.612680560418345,
+        "p99": 3.7693245266186652
+      },
+      "maximum_speed_mps": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 7.617519631287182,
+        "minimum": 3.5757183775755235,
+        "p50": 5.9869019272811705,
+        "p95": 6.455677563259559,
+        "p99": 7.385151217681656
+      },
+      "maximum_tilt_rad": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 0.31614093064729826,
+        "minimum": 0.135451632279611,
+        "p50": 0.1947684663247744,
+        "p95": 0.30093565929285887,
+        "p99": 0.31309987637641035
+      },
+      "maximum_vertical_acceleration": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 0.862413689876592,
+        "minimum": 0.04690227150926609,
+        "p50": 0.1691874569128532,
+        "p95": 0.7812476300690216,
+        "p99": 0.8461804779150778
+      },
+      "maximum_vertical_jerk": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 1.0025283763946053,
+        "minimum": 0.05725862671681515,
+        "p50": 0.1425180032632447,
+        "p95": 0.6643666334477623,
+        "p99": 0.9348960278052363
+      },
+      "maximum_vertical_speed": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 1.1927500277626362,
+        "minimum": 0.038252294612762756,
+        "p50": 0.1643356114041034,
+        "p95": 1.010764218616071,
+        "p99": 1.1563528659333229
+      },
+      "maximum_yaw_rate": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 1.0,
+        "minimum": 0.028378184063337777,
+        "p50": 0.4127163113217279,
+        "p95": 0.9999999999999999,
+        "p99": 1.0
+      },
+      "minimum_horizontal_margin_rad": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 0.7517201596803267,
+        "minimum": -0.07197931380856254,
+        "p50": 0.3399418776189186,
+        "p95": 0.7406488737533826,
+        "p99": 0.7495059024949379
+      },
+      "minimum_vertical_margin_rad": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 0.3528999302957055,
+        "minimum": -0.6118688541713091,
+        "p50": 0.13494697522654325,
+        "p95": 0.2802859110984315,
+        "p99": 0.33837712645625057
+      },
+      "pipeline_budget_exceeded_rate": 0.0,
+      "pipeline_budget_sample_count": 20,
+      "pipeline_feasible_rate": 0.55,
+      "reason_counts": {
+        "all sampled constraints passed": 11,
+        "strict P1 whole-target view/range failed": 1,
+        "strict dynamic/attitude/sea validation failed": 8
+      },
+      "solve_external_s": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 0.10839621200102556,
+        "minimum": 0.09431741000116745,
+        "p50": 0.10535553700083256,
+        "p95": 0.10735113885011742,
+        "p99": 0.10818719737084394
+      },
+      "timeout_rate": 0.0,
+      "visibility_ratio": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 1.0,
+        "minimum": 0.12,
+        "p50": 1.0,
+        "p95": 1.0,
+        "p99": 1.0
+      }
+    },
+    "mpc_warm": {
+      "count": 20,
+      "dynamics_residual": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 0.0,
+        "minimum": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      },
+      "end_to_end_s": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 0.13846666800054663,
+        "minimum": 0.10481381399949896,
+        "p50": 0.11708617649856023,
+        "p95": 0.11933613515029722,
+        "p99": 0.1346405614304967
+      },
+      "failure_rate": 0.25,
+      "feasible_rate": 0.75,
+      "follow_error_rms_m": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 5.113079683813284,
+        "minimum": 0.23044006423717794,
+        "p50": 0.7778873148958227,
+        "p95": 4.843769733332643,
+        "p99": 5.059217693717155
+      },
+      "maximum_acceleration_mps2": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 2.9295951929463597,
+        "minimum": 0.23475929060654285,
+        "p50": 1.4831187370889318,
+        "p95": 2.791787959989952,
+        "p99": 2.902033746355078
+      },
+      "maximum_horizontal_acceleration": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 2.9107920097973468,
+        "minimum": 0.23450894744600614,
+        "p50": 1.4727953505970541,
+        "p95": 2.790833033299727,
+        "p99": 2.8868002144978226
+      },
+      "maximum_horizontal_jerk": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 3.7532000915015913,
+        "minimum": 0.1705538996822657,
+        "p50": 0.7122432421773466,
+        "p95": 3.603881605725,
+        "p99": 3.7233363943462727
+      },
+      "maximum_horizontal_speed": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 7.586652934612515,
+        "minimum": 3.575519452340627,
+        "p50": 4.201142630659433,
+        "p95": 6.453477970456352,
+        "p99": 7.3600179417812805
+      },
+      "maximum_jerk_mps3": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 3.808485518168746,
+        "minimum": 0.1733994508812205,
+        "p50": 0.7134920542829377,
+        "p95": 3.612680560418345,
+        "p99": 3.7693245266186652
+      },
+      "maximum_speed_mps": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 7.617519631287182,
+        "minimum": 3.5757183775755235,
+        "p50": 4.203035746523335,
+        "p95": 6.455677563259559,
+        "p99": 7.385151217681656
+      },
+      "maximum_tilt_rad": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 0.2980483160937413,
+        "minimum": 0.02388231521725796,
+        "p50": 0.151072322662647,
+        "p95": 0.2774931007508708,
+        "p99": 0.29393727302516715
+      },
+      "maximum_vertical_acceleration": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 0.862413689876592,
+        "minimum": 0.034034061649590414,
+        "p50": 0.13461403236133315,
+        "p95": 0.7713698734875875,
+        "p99": 0.8442049265987909
+      },
+      "maximum_vertical_jerk": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 1.0025283763946053,
+        "minimum": 0.005704964796989873,
+        "p50": 0.11926025256747722,
+        "p95": 0.6643666334477623,
+        "p99": 0.9348960278052363
+      },
+      "maximum_vertical_speed": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 1.1927500277626362,
+        "minimum": 0.0317645428727645,
+        "p50": 0.14541374175827276,
+        "p95": 0.899926911276338,
+        "p99": 1.134185404465376
+      },
+      "maximum_yaw_rate": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 0.9019409555626342,
+        "minimum": 0.028378184063337777,
+        "p50": 0.2800127279496739,
+        "p95": 0.8766240884236716,
+        "p99": 0.8968775821348417
+      },
+      "minimum_horizontal_margin_rad": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 0.7517201596803267,
+        "minimum": -0.07197931380856254,
+        "p50": 0.5620336810785044,
+        "p95": 0.7406488737533826,
+        "p99": 0.7495059024949379
+      },
+      "minimum_vertical_margin_rad": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 0.3528999302957055,
+        "minimum": -0.6118688541713091,
+        "p50": 0.26031373561102045,
+        "p95": 0.3312150788426522,
+        "p99": 0.3485629600050948
+      },
+      "pipeline_budget_exceeded_rate": 0.0,
+      "pipeline_budget_sample_count": 20,
+      "pipeline_feasible_rate": 0.75,
+      "reason_counts": {
+        "all sampled constraints passed": 15,
+        "strict P1 whole-target view/range failed": 1,
+        "strict dynamic/attitude/sea validation failed": 4
+      },
+      "solve_external_s": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 0.12517284499881498,
+        "minimum": 0.09721876800176688,
+        "p50": 0.10720726850013307,
+        "p95": 0.10948852550000085,
+        "p99": 0.12203598109905213
+      },
+      "timeout_rate": 0.0,
+      "visibility_ratio": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 1.0,
+        "minimum": 0.12,
+        "p50": 1.0,
+        "p95": 1.0,
+        "p99": 1.0
+      }
+    },
+    "quintic": {
+      "count": 20,
+      "dynamics_residual": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 0.0,
+        "minimum": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      },
+      "end_to_end_s": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 0.030958319999626838,
+        "minimum": 0.014359945000251173,
+        "p50": 0.016828933000397228,
+        "p95": 0.01806374294883427,
+        "p99": 0.028379404589468304
+      },
+      "failure_rate": 0.5,
+      "feasible_rate": 0.5,
+      "follow_error_rms_m": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 2.903772964700786,
+        "minimum": 0.11946371481145698,
+        "p50": 0.21946950195677706,
+        "p95": 1.7874587983513162,
+        "p99": 2.68051013143089
+      },
+      "maximum_acceleration_mps2": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 7.759299028132263,
+        "minimum": 0.3456331596940362,
+        "p50": 1.6055380771330838,
+        "p95": 6.917370192456365,
+        "p99": 7.590913260997082
+      },
+      "maximum_horizontal_acceleration": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 7.752662088029982,
+        "minimum": 0.34562209113332165,
+        "p50": 1.6055318194441184,
+        "p95": 6.916369792743838,
+        "p99": 7.585403628972752
+      },
+      "maximum_horizontal_jerk": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 22.14745032588129,
+        "minimum": 1.0715148560077539,
+        "p50": 4.662364983828722,
+        "p95": 20.21944526884393,
+        "p99": 21.761849314473817
+      },
+      "maximum_horizontal_speed": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 9.216382912169738,
+        "minimum": 3.575519452340627,
+        "p50": 4.1967423297723085,
+        "p95": 5.871288969984147,
+        "p99": 8.547364123732615
+      },
+      "maximum_jerk_mps3": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 22.198585518311322,
+        "minimum": 1.0715816157880529,
+        "p50": 4.662393109277007,
+        "p95": 20.261257879219105,
+        "p99": 21.811119990492877
+      },
+      "maximum_speed_mps": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 9.154243973277774,
+        "minimum": 3.5757183775755235,
+        "p50": 4.196143667927661,
+        "p95": 5.868676873622327,
+        "p99": 8.497130553346679
+      },
+      "maximum_tilt_rad": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 0.6851964485201179,
+        "minimum": 0.03523899498824401,
+        "p50": 0.16234988809829942,
+        "p95": 0.6194579860945157,
+        "p99": 0.6720487560349974
+      },
+      "maximum_vertical_acceleration": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 0.44572770595550537,
+        "minimum": 0.009087379090487957,
+        "p50": 0.09773368525202376,
+        "p95": 0.4313097149133682,
+        "p99": 0.44284410774707794
+      },
+      "maximum_vertical_jerk": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 1.5058695416276595,
+        "minimum": 0.01460395182759925,
+        "p50": 0.1551485896296651,
+        "p95": 1.3008800194982064,
+        "p99": 1.4648716372017685
+      },
+      "maximum_vertical_speed": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 0.27699977926289054,
+        "minimum": 0.0018900630176973577,
+        "p50": 0.06844097247309883,
+        "p95": 0.19558745660974342,
+        "p99": 0.260717314732261
+      },
+      "maximum_yaw_rate": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 2.7516717253164824,
+        "minimum": 0.04339072769828256,
+        "p50": 0.7694058925759029,
+        "p95": 2.569190501789551,
+        "p99": 2.7151754806110957
+      },
+      "minimum_horizontal_margin_rad": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 0.7533860283131246,
+        "minimum": -3.141592653589793,
+        "p50": 0.6100269029430894,
+        "p95": 0.7306184472229383,
+        "p99": 0.7488325120950874
+      },
+      "minimum_vertical_margin_rad": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 0.34239621671287945,
+        "minimum": -3.141592653589793,
+        "p50": 0.2644980863940801,
+        "p95": 0.3409554333959695,
+        "p99": 0.34210806004949745
+      },
+      "pipeline_budget_exceeded_rate": 0.0,
+      "pipeline_budget_sample_count": 20,
+      "pipeline_feasible_rate": 0.5,
+      "reason_counts": {
+        "all sampled constraints passed": 10,
+        "strict dynamic/attitude/sea validation failed": 10
+      },
+      "solve_external_s": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 0.011309792998872581,
+        "minimum": 0.006030742000803002,
+        "p50": 0.006991526000092563,
+        "p95": 0.007422789149313761,
+        "p99": 0.01053239222896081
+      },
+      "timeout_rate": 0.0,
+      "visibility_ratio": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 1.0,
+        "minimum": 0.52,
+        "p50": 1.0,
+        "p95": 1.0,
+        "p99": 1.0
+      }
+    },
+    "viewpoint_interpolation": {
+      "count": 20,
+      "dynamics_residual": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 0.0,
+        "minimum": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      },
+      "end_to_end_s": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 0.03095445100007055,
+        "minimum": 0.014215225997759262,
+        "p50": 0.016948874999798136,
+        "p95": 0.017995654899732483,
+        "p99": 0.028362691780002915
+      },
+      "failure_rate": 0.65,
+      "feasible_rate": 0.35,
+      "follow_error_rms_m": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 7.640157515892524,
+        "minimum": 0.2631274461569761,
+        "p50": 0.6769632112496691,
+        "p95": 5.606493607730759,
+        "p99": 7.233424734260168
+      },
+      "maximum_acceleration_mps2": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 8.771815481575052,
+        "minimum": 0.19690600677200534,
+        "p50": 1.5761946890326402,
+        "p95": 6.943379689753458,
+        "p99": 8.40612832321073
+      },
+      "maximum_horizontal_acceleration": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 8.771815481575052,
+        "minimum": 0.19690600677200534,
+        "p50": 1.5760399303512185,
+        "p95": 6.943379689753457,
+        "p99": 8.40612832321073
+      },
+      "maximum_horizontal_jerk": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 40.39666925212814,
+        "minimum": 0.8593224861665915,
+        "p50": 7.517495607609736,
+        "p95": 32.31861751858811,
+        "p99": 38.781058905420124
+      },
+      "maximum_horizontal_speed": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 5.197739385277612,
+        "minimum": 2.665253754271308,
+        "p50": 4.190048588566622,
+        "p95": 5.03017478113258,
+        "p99": 5.164226464448605
+      },
+      "maximum_jerk_mps3": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 40.39666925212814,
+        "minimum": 0.8593224861665915,
+        "p50": 7.517495607609736,
+        "p95": 32.31861751858811,
+        "p99": 38.781058905420124
+      },
+      "maximum_speed_mps": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 5.199899742846901,
+        "minimum": 2.6441733571163657,
+        "p50": 4.189406379117729,
+        "p95": 5.022141814782654,
+        "p99": 5.164348157234051
+      },
+      "maximum_tilt_rad": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 0.7297549085523128,
+        "minimum": 0.02007612708534114,
+        "p50": 0.1595873275574911,
+        "p95": 0.6155381155413868,
+        "p99": 0.7069115499501275
+      },
+      "maximum_vertical_acceleration": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 0.44572770595550537,
+        "minimum": 0.0002603046305011958,
+        "p50": 0.02819322794675827,
+        "p95": 0.4313097149133682,
+        "p99": 0.44284410774707794
+      },
+      "maximum_vertical_jerk": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 2.228638529777527,
+        "minimum": 0.001301523152505979,
+        "p50": 0.14096613973379135,
+        "p95": 2.156548574566841,
+        "p99": 2.2142205387353897
+      },
+      "maximum_vertical_speed": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 0.2808090776205063,
+        "minimum": 0.0006987691158428788,
+        "p50": 0.04374563599703833,
+        "p95": 0.19771527254022664,
+        "p99": 0.26419031660445025
+      },
+      "maximum_yaw_rate": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 2.7516717253164824,
+        "minimum": 0.04339072769828256,
+        "p50": 0.7694058925759029,
+        "p95": 2.569190501789551,
+        "p99": 2.7151754806110957
+      },
+      "minimum_horizontal_margin_rad": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 0.7554812988535173,
+        "minimum": -3.141592653589793,
+        "p50": 0.5763099909524296,
+        "p95": 0.7406215426501228,
+        "p99": 0.7525093476128384
+      },
+      "minimum_vertical_margin_rad": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 0.4610511902703845,
+        "minimum": -3.141592653589793,
+        "p50": 0.2504754486900228,
+        "p95": 0.3634877167699004,
+        "p99": 0.4415384955702875
+      },
+      "pipeline_budget_exceeded_rate": 0.0,
+      "pipeline_budget_sample_count": 20,
+      "pipeline_feasible_rate": 0.35,
+      "reason_counts": {
+        "all sampled constraints passed": 7,
+        "strict dynamic/attitude/sea validation failed": 13
+      },
+      "solve_external_s": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 0.011377580000043963,
+        "minimum": 0.0062715920012124116,
+        "p50": 0.007053462500152818,
+        "p95": 0.00739020009968954,
+        "p99": 0.010580104019973072
+      },
+      "timeout_rate": 0.0,
+      "visibility_ratio": {
+        "count": 20,
+        "finite_count": 20,
+        "maximum": 1.0,
+        "minimum": 0.08,
+        "p50": 1.0,
+        "p95": 1.0,
+        "p99": 1.0
+      }
+    }
+  },
+  "paired_warm_minus_cold_s": {
+    "count": 20,
+    "finite_count": 20,
+    "maximum": 0.027143828998305253,
+    "minimum": -0.0029298520003067097,
+    "p50": 0.0017233529988516239,
+    "p95": 0.005563421898386893,
+    "p99": 0.02282774757832155
+  },
+  "paired_warm_started_count": 13,
+  "replay_only": true,
+  "request_count": 20,
+  "same_input_pair_count": 20,
+  "total_wall_s_before_summary": 5.483495152000614
+}

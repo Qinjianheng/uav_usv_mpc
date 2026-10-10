@@ -1,0 +1,4 @@
+report: False REVALIDATION_DEADLINE elapsed: 0.0417308430041885
+test_same_geometry_new_version_checks_full_curve_preserves_boundary_and_navigation ASSERTION_FAILED
+report: False REVALIDATION_DEADLINE elapsed: 0.04134277399862185
+test_changed_prediction_behind_camera_rejects_even_small_solver_cost ASSERTION_FAILED

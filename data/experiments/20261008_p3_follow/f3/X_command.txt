@@ -1,0 +1,4 @@
+Waiting for at least 2 matching subscription(s)...
+publisher: beginning loop
+publishing #3: std_msgs.msg.String(data='X')
+

@@ -1,0 +1,9 @@
+{
+  "path": "/tmp/uav_usv_lab.p6CTtw",
+  "pids": {
+    "dds": "42069",
+    "gazebo": "40961",
+    "experiment": "42108",
+    "px4": "41313"
+  }
+}

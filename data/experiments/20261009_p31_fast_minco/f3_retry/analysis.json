@@ -1,0 +1,172 @@
+{
+  "all": {
+    "events": 516,
+    "completions": 146,
+    "core_statuses": {
+      "NO_FRESHNESS_BUDGET": 102,
+      "DEADLINE_EXCEEDED": 21,
+      "DYNAMIC_INFEASIBLE": 23
+    },
+    "admission_statuses": {
+      "no time after publication reserve": 25,
+      "whole effective budget expired": 18,
+      "STALE_INPUT": 80,
+      "analytic derivative peak precheck": 23
+    },
+    "reject_statuses": {
+      "MISSION_NOT_FOLLOW": 147,
+      "INVALID_PREDICTION": 178,
+      "MISSION_CHANGED": 1,
+      "PREDICTION_UNAVAILABLE": 34,
+      "TIMESYNC_TIME_RESET": 2,
+      "OBSERVATION_STALE": 7,
+      "ATTITUDE_BEFORE_HISTORY": 1
+    },
+    "published_valid": 0,
+    "marker_valid": 0,
+    "whole_cycle_s": {
+      "count": 146,
+      "p50": 0.07121842549895518,
+      "p95": 0.09541211325449694,
+      "p99": 0.12800983185043188
+    },
+    "phase_seconds": {
+      "initialization": {
+        "count": 146,
+        "p50": 0.05290172699824325,
+        "p95": 0.07307873775425833,
+        "p99": 0.09422020175152286
+      },
+      "preparation": {
+        "count": 3,
+        "p50": 0.0004009040058008395,
+        "p95": 0.0004729931009933352,
+        "p99": 0.00047940102056600155
+      },
+      "minco_optimization": {
+        "count": 1,
+        "p50": 1.772998075466603e-06,
+        "p95": 1.772998075466603e-06,
+        "p99": 1.772998075466603e-06
+      },
+      "validation": {
+        "count": 0
+      },
+      "yaw_construction_within_optimization": {
+        "count": 0
+      },
+      "total": {
+        "count": 146,
+        "p50": 0.05512285200165934,
+        "p95": 0.0739918627532461,
+        "p99": 0.09430584665133213
+      }
+    },
+    "metrics": {
+      "visible_fraction": {
+        "count": 0
+      },
+      "minimum_horizontal_margin": {
+        "count": 0
+      },
+      "minimum_vertical_margin": {
+        "count": 0
+      },
+      "follow_rmse": {
+        "count": 0
+      },
+      "jerk_integral": {
+        "count": 35,
+        "p50": 1325.5187686551217,
+        "p95": 37815.756206855825,
+        "p99": 1977799.070390784
+      },
+      "maximum_horizontal_speed": {
+        "count": 0
+      },
+      "maximum_horizontal_acceleration": {
+        "count": 0
+      },
+      "maximum_horizontal_jerk": {
+        "count": 0
+      },
+      "maximum_yaw_rate": {
+        "count": 0
+      },
+      "maximum_tilt_rad": {
+        "count": 0
+      }
+    },
+    "violated_constraints": {
+      "horizontal_speed": 3,
+      "horizontal_acceleration": 11,
+      "horizontal_jerk": 35,
+      "vertical_jerk": 1
+    },
+    "input_age_seconds": {
+      "navigation_stamp": {
+        "count": 146,
+        "p50": 0.030333280563354492,
+        "p95": 0.03754621744155884,
+        "p99": 0.04334256649017336
+      },
+      "observation_stamp": {
+        "count": 146,
+        "p50": 0.06174659729003906,
+        "p95": 0.08639758825302124,
+        "p99": 0.09085100889205934
+      },
+      "prediction_source_stamp": {
+        "count": 146,
+        "p50": 0.028051137924194336,
+        "p95": 0.05275237560272217,
+        "p99": 0.05555410385131837
+      }
+    },
+    "execution_lead_s": {
+      "count": 146,
+      "p50": 0.15000009536743164,
+      "p95": 0.15000009536743164,
+      "p99": 0.15000009536743164
+    },
+    "prediction_expires_before_execution": 146,
+    "scheduling_and_serialization_over_solver_s": {
+      "count": 146,
+      "p50": 0.018758073998469627,
+      "p95": 0.03014291675935965,
+      "p99": 0.03881029959957247
+    }
+  },
+  "research_only": true,
+  "accepted_by_tracker": false,
+  "light_load": {
+    "cpu_percent": {
+      "mean": 267.97283293790076,
+      "count": 20,
+      "p50": 269.90302917283054,
+      "p95": 282.1606467259522,
+      "p99": 289.37207146243054
+    },
+    "rss_mib": {
+      "mean": 1157.280078125,
+      "count": 20,
+      "p50": 1156.458984375,
+      "p95": 1160.2009765625,
+      "p99": 1160.3464453125
+    },
+    "research_cpu_percent": {
+      "mean": 56.96359876702153,
+      "count": 20,
+      "p50": 57.341720180511835,
+      "p95": 60.48075803365553,
+      "p99": 61.507654480085066
+    },
+    "research_rss_mib": {
+      "mean": 119.4140625,
+      "count": 20,
+      "p50": 119.4140625,
+      "p95": 119.4140625,
+      "p99": 119.4140625
+    }
+  }
+}

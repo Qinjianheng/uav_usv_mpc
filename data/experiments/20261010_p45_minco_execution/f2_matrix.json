@@ -1,0 +1,1026 @@
+[
+  {
+    "name": "a_f2_1",
+    "returncode": 0,
+    "healthy": true,
+    "reason": "FOLLOW_WINDOW_COMPLETE",
+    "ownership": {
+      "all_follow": {
+        "seconds": {
+          "FOLLOW": 71.64997243881226
+        },
+        "minco_fraction": 0.0,
+        "continuous_seconds": null,
+        "fallback_count": 0
+      },
+      "stable": {
+        "seconds": {
+          "FOLLOW": 40.0
+        },
+        "minco_fraction": 0.0,
+        "continuous_seconds": null,
+        "fallback_count": 0
+      }
+    },
+    "windows": {
+      "all_follow": {
+        "samples": 1435,
+        "evaluation": "evaluator native UAV snapshot vs ideal scene TargetState; not KF error",
+        "position_horizontal_rmse": 4.921559269528384,
+        "distance_rmse": 4.921495566798357,
+        "relative_velocity_rmse": 1.1621329464453207,
+        "altitude_rmse": 0.052753686511873885,
+        "visible_fraction": 0.997907949790795,
+        "locked_fraction": 0.9804741980474198,
+        "actual_whole_marker_safe_fraction": 0.9805122494432071,
+        "actual_horizontal_margin": {
+          "count": 1796,
+          "min": 0.7282387667075094,
+          "p50": 0.7553746051031972,
+          "p95": 0.7804836201413584,
+          "p99": 0.7876638868184929,
+          "max": 0.7881351175657099
+        },
+        "actual_vertical_margin": {
+          "count": 1796,
+          "min": -0.07311604155723278,
+          "p50": 0.31892968432152063,
+          "p95": 0.39169156925678006,
+          "p99": 0.4924685944675521,
+          "max": 0.6269817161080724
+        },
+        "actual_horizontal_speed": {
+          "count": 3562,
+          "min": 0.001687541377884415,
+          "p50": 2.0029901946974245,
+          "p95": 6.11190190383718,
+          "p99": 6.494329729485958,
+          "max": 6.503989293234955
+        },
+        "actual_horizontal_acceleration": {
+          "count": 3562,
+          "min": 0.0011730773560073109,
+          "p50": 0.045157109905331956,
+          "p95": 1.8184164747463394,
+          "p99": 3.0380292978758208,
+          "max": 3.1736041793273766
+        },
+        "estimated_horizontal_jerk": {
+          "count": 3561,
+          "min": 0.006846160968475789,
+          "p50": 0.3752919369281202,
+          "p95": 2.004164822747472,
+          "p99": 3.8591261730312483,
+          "max": 4.958871800678971
+        },
+        "reference_velocity_delta_over_receipt_dt": {
+          "count": 1433,
+          "min": 0.0,
+          "p50": 0.34401046123059187,
+          "p95": 2.9728778845606634,
+          "p99": 3.1761184774033517,
+          "max": 5.684775914028208
+        },
+        "reference_gaps_seconds": {
+          "count": 1433,
+          "min": 0.026386260986328125,
+          "p50": 0.04999208450317383,
+          "p95": 0.051751708984375,
+          "p99": 0.05598729133605958,
+          "max": 0.06331777572631836
+        }
+      },
+      "follow_20_to_60": {
+        "samples": 800,
+        "evaluation": "evaluator native UAV snapshot vs ideal scene TargetState; not KF error",
+        "position_horizontal_rmse": 0.06317825523900031,
+        "distance_rmse": 0.05799457891955532,
+        "relative_velocity_rmse": 0.03615838311577191,
+        "altitude_rmse": 0.04491856066067425,
+        "visible_fraction": 0.99875,
+        "locked_fraction": 0.98375,
+        "actual_whole_marker_safe_fraction": 1.0,
+        "actual_horizontal_margin": {
+          "count": 1001,
+          "min": 0.7327831557641555,
+          "p50": 0.7552524109445826,
+          "p95": 0.7612172860810544,
+          "p99": 0.7619423254271791,
+          "max": 0.7623534011657822
+        },
+        "actual_vertical_margin": {
+          "count": 1001,
+          "min": 0.2865783877411368,
+          "p50": 0.3201147498167994,
+          "p95": 0.347571855386311,
+          "p99": 0.35899168335086645,
+          "max": 0.3634683594774207
+        },
+        "actual_horizontal_speed": {
+          "count": 1988,
+          "min": 1.94060499982839,
+          "p50": 2.003614195063821,
+          "p95": 2.0487177848566276,
+          "p99": 2.09764792901589,
+          "max": 2.1375954676846285
+        },
+        "actual_horizontal_acceleration": {
+          "count": 1988,
+          "min": 0.0026914812848074514,
+          "p50": 0.04232801733235549,
+          "p95": 0.09893249175968827,
+          "p99": 0.2985977556255222,
+          "max": 0.40112965529645056
+        },
+        "estimated_horizontal_jerk": {
+          "count": 1987,
+          "min": 0.008233364501552067,
+          "p50": 0.34752150339843885,
+          "p95": 0.9108796487549587,
+          "p99": 1.4936463721449733,
+          "max": 2.604084673767386
+        },
+        "reference_velocity_delta_over_receipt_dt": {
+          "count": 799,
+          "min": 0.0,
+          "p50": 0.33938811878418135,
+          "p95": 0.5420720886191546,
+          "p99": 3.073982848552905,
+          "max": 5.684775914028208
+        },
+        "reference_gaps_seconds": {
+          "count": 799,
+          "min": 0.026386260986328125,
+          "p50": 0.04998612403869629,
+          "p95": 0.05214083194732665,
+          "p99": 0.05665123462677002,
+          "max": 0.06331777572631836
+        }
+      }
+    }
+  },
+  {
+    "name": "b_f2_1",
+    "returncode": 0,
+    "healthy": true,
+    "reason": "FOLLOW_WINDOW_COMPLETE",
+    "ownership": {
+      "all_follow": {
+        "seconds": {
+          "FOLLOW": 30.450976371765137,
+          "MINCO_FOLLOW": 41.60060429573059
+        },
+        "minco_fraction": 0.5773725421474017,
+        "continuous_seconds": {
+          "count": 36,
+          "min": 0.4490351676940918,
+          "p50": 0.8750854730606079,
+          "p95": 2.899543344974518,
+          "p99": 3.772380757331847,
+          "max": 3.9999959468841553
+        },
+        "fallback_count": 35
+      },
+      "stable": {
+        "seconds": {
+          "MINCO_FOLLOW": 23.951838970184326,
+          "FOLLOW": 16.048161029815674
+        },
+        "minco_fraction": 0.5987959742546082,
+        "continuous_seconds": {
+          "count": 23,
+          "min": 0.05003762245178223,
+          "p50": 0.6517949104309082,
+          "p95": 2.0799160242080688,
+          "p99": 3.581979718208315,
+          "max": 3.9999959468841553
+        },
+        "fallback_count": 22
+      }
+    },
+    "windows": {
+      "all_follow": {
+        "samples": 1442,
+        "evaluation": "evaluator native UAV snapshot vs ideal scene TargetState; not KF error",
+        "position_horizontal_rmse": 5.3388323626440055,
+        "distance_rmse": 5.338394966780041,
+        "relative_velocity_rmse": 1.3493042357859162,
+        "altitude_rmse": 0.06433608435958767,
+        "visible_fraction": 0.9930651872399445,
+        "locked_fraction": 0.9916782246879334,
+        "actual_whole_marker_safe_fraction": 0.9666851749028318,
+        "actual_horizontal_margin": {
+          "count": 1801,
+          "min": 0.6594969223406006,
+          "p50": 0.7524510956375805,
+          "p95": 0.7813562740387687,
+          "p99": 0.7882933374073211,
+          "max": 0.788796532665146
+        },
+        "actual_vertical_margin": {
+          "count": 1801,
+          "min": -0.1939990851216829,
+          "p50": 0.35739594717557915,
+          "p95": 0.6006167687476209,
+          "p99": 0.6222629311098224,
+          "max": 0.6316913439522933
+        },
+        "actual_horizontal_speed": {
+          "count": 3588,
+          "min": 0.002913538363196637,
+          "p50": 2.01461923406679,
+          "p95": 5.844576270289339,
+          "p99": 6.4928612401124095,
+          "max": 6.5047042789106735
+        },
+        "actual_horizontal_acceleration": {
+          "count": 3588,
+          "min": 0.0008333112399400254,
+          "p50": 0.33317009049708346,
+          "p95": 2.457105807583683,
+          "p99": 2.9090086257259395,
+          "max": 3.094883067585492
+        },
+        "estimated_horizontal_jerk": {
+          "count": 3587,
+          "min": 0.008507307606749647,
+          "p50": 1.0643474823660244,
+          "p95": 4.765239268907802,
+          "p99": 6.36953265221012,
+          "max": 7.704599744263837
+        },
+        "reference_velocity_delta_over_receipt_dt": {
+          "count": 1441,
+          "min": 0.0,
+          "p50": 0.6359177448569886,
+          "p95": 3.1467822243284957,
+          "p99": 3.4885558743123593,
+          "max": 26.52607904996605
+        },
+        "reference_gaps_seconds": {
+          "count": 1441,
+          "min": 0.005654811859130859,
+          "p50": 0.04998326301574707,
+          "p95": 0.05720663070678711,
+          "p99": 0.06092276573181149,
+          "max": 0.07109642028808594
+        }
+      },
+      "follow_20_to_60": {
+        "samples": 800,
+        "evaluation": "evaluator native UAV snapshot vs ideal scene TargetState; not KF error",
+        "position_horizontal_rmse": 2.4037547142616553,
+        "distance_rmse": 2.4022899044202473,
+        "relative_velocity_rmse": 0.8690200042164824,
+        "altitude_rmse": 0.07108352252548954,
+        "visible_fraction": 1.0,
+        "locked_fraction": 1.0,
+        "actual_whole_marker_safe_fraction": 0.978978978978979,
+        "actual_horizontal_margin": {
+          "count": 999,
+          "min": 0.7138033182201793,
+          "p50": 0.7521583669215028,
+          "p95": 0.7685650612985242,
+          "p99": 0.771607649659312,
+          "max": 0.7752803244344249
+        },
+        "actual_vertical_margin": {
+          "count": 999,
+          "min": -0.1333736127957717,
+          "p50": 0.3868274162292751,
+          "p95": 0.6125776982677895,
+          "p99": 0.6246378879844716,
+          "max": 0.6316913439522933
+        },
+        "actual_horizontal_speed": {
+          "count": 1992,
+          "min": 0.32803048986353706,
+          "p50": 2.055226624801781,
+          "p95": 3.3933346710271435,
+          "p99": 4.108462005808538,
+          "max": 4.237144626502969
+        },
+        "actual_horizontal_acceleration": {
+          "count": 1992,
+          "min": 0.0012549652272445372,
+          "p50": 0.36434404560932515,
+          "p95": 1.9592473086039652,
+          "p99": 2.4697744160943254,
+          "max": 2.575205137104379
+        },
+        "estimated_horizontal_jerk": {
+          "count": 1991,
+          "min": 0.008507307606749647,
+          "p50": 1.1007652317748098,
+          "p95": 4.769284730932569,
+          "p99": 6.301572387669934,
+          "max": 7.651690015869501
+        },
+        "reference_velocity_delta_over_receipt_dt": {
+          "count": 799,
+          "min": 0.011138858346048598,
+          "p50": 0.7062938245507046,
+          "p95": 3.1469490630615655,
+          "p99": 3.492880238452603,
+          "max": 3.9252919387859757
+        },
+        "reference_gaps_seconds": {
+          "count": 799,
+          "min": 0.03009796142578125,
+          "p50": 0.04999566078186035,
+          "p95": 0.056864380836486816,
+          "p99": 0.06069810390472412,
+          "max": 0.07109642028808594
+        }
+      }
+    }
+  },
+  {
+    "name": "c_f2_1",
+    "returncode": 0,
+    "healthy": true,
+    "reason": "FOLLOW_WINDOW_COMPLETE",
+    "ownership": {
+      "all_follow": {
+        "seconds": {
+          "FOLLOW": 26.000523805618286,
+          "MINCO_FOLLOW": 46.0498263835907
+        },
+        "minco_fraction": 0.6391339703785035,
+        "continuous_seconds": {
+          "count": 29,
+          "min": 0.4498469829559326,
+          "p50": 1.299833059310913,
+          "p95": 2.9399758338928215,
+          "p99": 6.699968605041498,
+          "max": 8.099977016448975
+        },
+        "fallback_count": 28
+      },
+      "stable": {
+        "seconds": {
+          "FOLLOW": 11.900930166244507,
+          "MINCO_FOLLOW": 28.099069833755493
+        },
+        "minco_fraction": 0.7024767458438873,
+        "continuous_seconds": {
+          "count": 17,
+          "min": 0.4498469829559326,
+          "p50": 1.2501564025878906,
+          "p95": 4.099952983856197,
+          "p99": 7.299972209930419,
+          "max": 8.099977016448975
+        },
+        "fallback_count": 16
+      }
+    },
+    "windows": {
+      "all_follow": {
+        "samples": 1443,
+        "evaluation": "evaluator native UAV snapshot vs ideal scene TargetState; not KF error",
+        "position_horizontal_rmse": 4.565187544984177,
+        "distance_rmse": 4.5642823373283825,
+        "relative_velocity_rmse": 1.139461469505107,
+        "altitude_rmse": 1.8359720489556939,
+        "visible_fraction": 1.0,
+        "locked_fraction": 0.9993065187239945,
+        "actual_whole_marker_safe_fraction": 0.9756367663344407,
+        "actual_horizontal_margin": {
+          "count": 1806,
+          "min": 0.7233803135680066,
+          "p50": 0.7529506444548755,
+          "p95": 0.7798124770826762,
+          "p99": 0.7872330425365437,
+          "max": 0.7880126410934105
+        },
+        "actual_vertical_margin": {
+          "count": 1806,
+          "min": -0.04871861087653978,
+          "p50": 0.34253700766763956,
+          "p95": 0.5540127623708493,
+          "p99": 0.6034978510675154,
+          "max": 0.6269472840805999
+        },
+        "actual_horizontal_speed": {
+          "count": 3601,
+          "min": 0.004837668886096947,
+          "p50": 1.985414949263373,
+          "p95": 5.85441130793379,
+          "p99": 6.493065360979839,
+          "max": 6.499676687390361
+        },
+        "actual_horizontal_acceleration": {
+          "count": 3601,
+          "min": 0.001109927073450134,
+          "p50": 0.11173480902496095,
+          "p95": 1.949882414991875,
+          "p99": 3.035722285522442,
+          "max": 3.16538466848761
+        },
+        "estimated_horizontal_jerk": {
+          "count": 3600,
+          "min": 0.0031055418723765593,
+          "p50": 0.5553102480926947,
+          "p95": 3.37870764487675,
+          "p99": 5.156516803019651,
+          "max": 7.921665822915268
+        },
+        "reference_velocity_delta_over_receipt_dt": {
+          "count": 1441,
+          "min": 0.00023687079534593045,
+          "p50": 0.16655047110944207,
+          "p95": 3.047742967568049,
+          "p99": 3.2617788339394775,
+          "max": 15.411907224472982
+        },
+        "reference_gaps_seconds": {
+          "count": 1441,
+          "min": 0.009750127792358398,
+          "p50": 0.050003767013549805,
+          "p95": 0.055789947509765625,
+          "p99": 0.0600532054901123,
+          "max": 0.0704350471496582
+        }
+      },
+      "follow_20_to_60": {
+        "samples": 800,
+        "evaluation": "evaluator native UAV snapshot vs ideal scene TargetState; not KF error",
+        "position_horizontal_rmse": 0.6244329327553215,
+        "distance_rmse": 0.615659827146461,
+        "relative_velocity_rmse": 0.2390372187546308,
+        "altitude_rmse": 2.24553216914561,
+        "visible_fraction": 1.0,
+        "locked_fraction": 1.0,
+        "actual_whole_marker_safe_fraction": 0.9840319361277445,
+        "actual_horizontal_margin": {
+          "count": 1002,
+          "min": 0.7233803135680066,
+          "p50": 0.7517548677105943,
+          "p95": 0.764690231894648,
+          "p99": 0.7748243402781962,
+          "max": 0.7782336232488756
+        },
+        "actual_vertical_margin": {
+          "count": 1002,
+          "min": -0.020874089637867133,
+          "p50": 0.3455090359186545,
+          "p95": 0.5528481597137133,
+          "p99": 0.602665264090807,
+          "max": 0.6148639016521458
+        },
+        "actual_horizontal_speed": {
+          "count": 2000,
+          "min": 1.5667537866981225,
+          "p50": 1.9568784631235117,
+          "p95": 2.419685388548417,
+          "p99": 2.988860958088802,
+          "max": 3.017007430447778
+        },
+        "actual_horizontal_acceleration": {
+          "count": 2000,
+          "min": 0.001109927073450134,
+          "p50": 0.09508232295766647,
+          "p95": 0.8343960283250235,
+          "p99": 1.2561594177922544,
+          "max": 1.485788188991633
+        },
+        "estimated_horizontal_jerk": {
+          "count": 1999,
+          "min": 0.0034285662511057825,
+          "p50": 0.5362852414365997,
+          "p95": 2.5154926559368262,
+          "p99": 5.200475821169047,
+          "max": 7.921665822915268
+        },
+        "reference_velocity_delta_over_receipt_dt": {
+          "count": 799,
+          "min": 0.0037919077866513853,
+          "p50": 0.1415582936004867,
+          "p95": 3.0162529666342057,
+          "p99": 3.2250222975651384,
+          "max": 4.385117322779383
+        },
+        "reference_gaps_seconds": {
+          "count": 799,
+          "min": 0.030879735946655273,
+          "p50": 0.04991960525512695,
+          "p95": 0.05560314655303954,
+          "p99": 0.060918917655944815,
+          "max": 0.0704350471496582
+        }
+      }
+    }
+  },
+  {
+    "name": "a_f2_2",
+    "returncode": 0,
+    "healthy": true,
+    "reason": "FOLLOW_WINDOW_COMPLETE",
+    "ownership": {
+      "all_follow": {
+        "seconds": {
+          "FOLLOW": 72.00013065338135
+        },
+        "minco_fraction": 0.0,
+        "continuous_seconds": null,
+        "fallback_count": 0
+      },
+      "stable": {
+        "seconds": {
+          "FOLLOW": 40.0
+        },
+        "minco_fraction": 0.0,
+        "continuous_seconds": null,
+        "fallback_count": 0
+      }
+    },
+    "windows": {
+      "all_follow": {
+        "samples": 1441,
+        "evaluation": "evaluator native UAV snapshot vs ideal scene TargetState; not KF error",
+        "position_horizontal_rmse": 4.625821746462012,
+        "distance_rmse": 4.625278230778998,
+        "relative_velocity_rmse": 1.21258830777276,
+        "altitude_rmse": 0.023886945648733483,
+        "visible_fraction": 0.993060374739764,
+        "locked_fraction": 0.9916724496877168,
+        "actual_whole_marker_safe_fraction": 0.9727323316638843,
+        "actual_horizontal_margin": {
+          "count": 1797,
+          "min": 0.6941827710034576,
+          "p50": 0.7567934601960098,
+          "p95": 0.7791074878064974,
+          "p99": 0.7879208260747694,
+          "max": 0.7888669325515307
+        },
+        "actual_vertical_margin": {
+          "count": 1797,
+          "min": -0.25402525846193563,
+          "p50": 0.32821908443740355,
+          "p95": 0.5282324036499005,
+          "p99": 0.6106533723474088,
+          "max": 0.6249708832188603
+        },
+        "actual_horizontal_speed": {
+          "count": 3581,
+          "min": 0.00657092827785838,
+          "p50": 2.0042324712082418,
+          "p95": 5.88841959976388,
+          "p99": 6.495080537713663,
+          "max": 6.505464353254218
+        },
+        "actual_horizontal_acceleration": {
+          "count": 3581,
+          "min": 0.0005007540178022603,
+          "p50": 0.06628085997489672,
+          "p95": 2.6612467940254567,
+          "p99": 3.0300003841098166,
+          "max": 3.138977335056977
+        },
+        "estimated_horizontal_jerk": {
+          "count": 3580,
+          "min": 0.0074577069321345195,
+          "p50": 0.4910943330264582,
+          "p95": 4.5090251155545555,
+          "p99": 6.612922531657876,
+          "max": 7.775244282263284
+        },
+        "reference_velocity_delta_over_receipt_dt": {
+          "count": 1440,
+          "min": 0.0,
+          "p50": 0.3712231361300448,
+          "p95": 3.0379007845203163,
+          "p99": 3.142076262334235,
+          "max": 3.316637656868098
+        },
+        "reference_gaps_seconds": {
+          "count": 1440,
+          "min": 0.042821407318115234,
+          "p50": 0.050006985664367676,
+          "p95": 0.052243494987487794,
+          "p99": 0.05403161525726318,
+          "max": 0.05725860595703125
+        }
+      },
+      "follow_20_to_60": {
+        "samples": 800,
+        "evaluation": "evaluator native UAV snapshot vs ideal scene TargetState; not KF error",
+        "position_horizontal_rmse": 0.7589924940140264,
+        "distance_rmse": 0.7545465841590522,
+        "relative_velocity_rmse": 0.5851026638600927,
+        "altitude_rmse": 0.013834823650004144,
+        "visible_fraction": 0.9975,
+        "locked_fraction": 0.99625,
+        "actual_whole_marker_safe_fraction": 0.9829659318637275,
+        "actual_horizontal_margin": {
+          "count": 998,
+          "min": 0.7099507090759489,
+          "p50": 0.7558211109140107,
+          "p95": 0.7642711758080144,
+          "p99": 0.7682298672087032,
+          "max": 0.7700748824896315
+        },
+        "actual_vertical_margin": {
+          "count": 998,
+          "min": -0.15186377092147546,
+          "p50": 0.3269647354795225,
+          "p95": 0.5207201387289734,
+          "p99": 0.6133283584456027,
+          "max": 0.6249708832188603
+        },
+        "actual_horizontal_speed": {
+          "count": 1990,
+          "min": 0.1347981989984694,
+          "p50": 1.998884505093857,
+          "p95": 3.2154696665595552,
+          "p99": 3.5630134576080676,
+          "max": 3.6353069584403803
+        },
+        "actual_horizontal_acceleration": {
+          "count": 1990,
+          "min": 0.0005007540178022603,
+          "p50": 0.0539735672940616,
+          "p95": 2.3562358152598284,
+          "p99": 2.9441541513719702,
+          "max": 3.0114083062827905
+        },
+        "estimated_horizontal_jerk": {
+          "count": 1989,
+          "min": 0.0074577069321345195,
+          "p50": 0.49010161649005557,
+          "p95": 5.398696650060882,
+          "p99": 6.957704806489079,
+          "max": 7.775244282263284
+        },
+        "reference_velocity_delta_over_receipt_dt": {
+          "count": 799,
+          "min": 0.029956287523948827,
+          "p50": 0.36896302481478566,
+          "p95": 3.040807251597121,
+          "p99": 3.171903633009788,
+          "max": 3.316637656868098
+        },
+        "reference_gaps_seconds": {
+          "count": 799,
+          "min": 0.04466557502746582,
+          "p50": 0.05001044273376465,
+          "p95": 0.052502679824829104,
+          "p99": 0.05412386417388916,
+          "max": 0.05546450614929199
+        }
+      }
+    }
+  },
+  {
+    "name": "b_f2_2",
+    "returncode": 0,
+    "healthy": true,
+    "reason": "FOLLOW_WINDOW_COMPLETE",
+    "ownership": {
+      "all_follow": {
+        "seconds": {
+          "FOLLOW": 30.142754554748535,
+          "MINCO_FOLLOW": 41.70720815658569
+        },
+        "minco_fraction": 0.5804764064269506,
+        "continuous_seconds": {
+          "count": 32,
+          "min": 0.4493138790130615,
+          "p50": 1.1750357151031494,
+          "p95": 2.5901782512664795,
+          "p99": 3.601389074325563,
+          "max": 4.006284475326538
+        },
+        "fallback_count": 31
+      },
+      "stable": {
+        "seconds": {
+          "FOLLOW": 13.543904304504395,
+          "MINCO_FOLLOW": 26.456095695495605
+        },
+        "minco_fraction": 0.6614023923873902,
+        "continuous_seconds": {
+          "count": 19,
+          "min": 0.4493138790130615,
+          "p50": 1.2500548362731934,
+          "p95": 2.830781698226926,
+          "p99": 3.7711839199066164,
+          "max": 4.006284475326538
+        },
+        "fallback_count": 19
+      }
+    },
+    "windows": {
+      "all_follow": {
+        "samples": 1439,
+        "evaluation": "evaluator native UAV snapshot vs ideal scene TargetState; not KF error",
+        "position_horizontal_rmse": 5.092465844661456,
+        "distance_rmse": 5.091469251476185,
+        "relative_velocity_rmse": 1.2903145254944233,
+        "altitude_rmse": 0.10712713281633325,
+        "visible_fraction": 0.9874826147426982,
+        "locked_fraction": 0.9860917941585535,
+        "actual_whole_marker_safe_fraction": 0.9682451253481894,
+        "actual_horizontal_margin": {
+          "count": 1795,
+          "min": 0.5959698524559247,
+          "p50": 0.7477515198862825,
+          "p95": 0.7841044047026798,
+          "p99": 0.7877212003882044,
+          "max": 0.7885081630247439
+        },
+        "actual_vertical_margin": {
+          "count": 1795,
+          "min": -0.2724467660417787,
+          "p50": 0.3190994524112775,
+          "p95": 0.5729079445735048,
+          "p99": 0.6167415752006534,
+          "max": 0.6275133987939856
+        },
+        "actual_horizontal_speed": {
+          "count": 3572,
+          "min": 0.0007914135859974523,
+          "p50": 2.02760175254949,
+          "p95": 6.104708442837857,
+          "p99": 6.492610070668665,
+          "max": 6.503380659622707
+        },
+        "actual_horizontal_acceleration": {
+          "count": 3572,
+          "min": 0.0033628493972038434,
+          "p50": 0.3008368933826644,
+          "p95": 2.297124149767342,
+          "p99": 3.0737689460349653,
+          "max": 3.1469241883503054
+        },
+        "estimated_horizontal_jerk": {
+          "count": 3571,
+          "min": 0.008274190973497757,
+          "p50": 1.0137461494197149,
+          "p95": 4.565097769827922,
+          "p99": 6.07982020276384,
+          "max": 7.1872136748584765
+        },
+        "reference_velocity_delta_over_receipt_dt": {
+          "count": 1437,
+          "min": 0.0,
+          "p50": 0.5149118931059701,
+          "p95": 3.14189715086797,
+          "p99": 3.501544871972827,
+          "max": 96.40600545953014
+        },
+        "reference_gaps_seconds": {
+          "count": 1437,
+          "min": 0.0015559196472167969,
+          "p50": 0.050023555755615234,
+          "p95": 0.057362937927246095,
+          "p99": 0.06181003570556642,
+          "max": 0.07267236709594727
+        }
+      },
+      "follow_20_to_60": {
+        "samples": 800,
+        "evaluation": "evaluator native UAV snapshot vs ideal scene TargetState; not KF error",
+        "position_horizontal_rmse": 0.9912900397126343,
+        "distance_rmse": 0.9883002187830341,
+        "relative_velocity_rmse": 0.5644176544801467,
+        "altitude_rmse": 0.052041178338058505,
+        "visible_fraction": 0.978776529338327,
+        "locked_fraction": 0.978776529338327,
+        "actual_whole_marker_safe_fraction": 0.9659318637274549,
+        "actual_horizontal_margin": {
+          "count": 998,
+          "min": 0.6651224461924141,
+          "p50": 0.7465520179643697,
+          "p95": 0.7611898702923134,
+          "p99": 0.7653136772925929,
+          "max": 0.76576829186333
+        },
+        "actual_vertical_margin": {
+          "count": 998,
+          "min": -0.2724467660417787,
+          "p50": 0.32482879709292,
+          "p95": 0.5480044413821074,
+          "p99": 0.6105181466654459,
+          "max": 0.6233534475049718
+        },
+        "actual_horizontal_speed": {
+          "count": 1989,
+          "min": 0.5906769742373169,
+          "p50": 1.9812890183473952,
+          "p95": 3.3664413248657166,
+          "p99": 3.822331212991616,
+          "max": 3.85217654749122
+        },
+        "actual_horizontal_acceleration": {
+          "count": 1989,
+          "min": 0.004387830930906576,
+          "p50": 0.20490437509473508,
+          "p95": 1.8012669350207948,
+          "p99": 2.6161898319791326,
+          "max": 2.819576019972208
+        },
+        "estimated_horizontal_jerk": {
+          "count": 1988,
+          "min": 0.010177442556026412,
+          "p50": 0.8404016422473599,
+          "p95": 4.364399766132444,
+          "p99": 6.246118504416434,
+          "max": 7.1872136748584765
+        },
+        "reference_velocity_delta_over_receipt_dt": {
+          "count": 799,
+          "min": 0.0,
+          "p50": 0.38982983235661633,
+          "p95": 3.1047318184413633,
+          "p99": 3.381521409054934,
+          "max": 4.637673710779796
+        },
+        "reference_gaps_seconds": {
+          "count": 799,
+          "min": 0.028818368911743164,
+          "p50": 0.05005836486816406,
+          "p95": 0.058023142814636226,
+          "p99": 0.06346002101898193,
+          "max": 0.07267236709594727
+        }
+      }
+    }
+  },
+  {
+    "name": "c_f2_2",
+    "returncode": 0,
+    "healthy": true,
+    "reason": "FOLLOW_WINDOW_COMPLETE",
+    "ownership": {
+      "all_follow": {
+        "seconds": {
+          "FOLLOW": 29.005380868911743,
+          "MINCO_FOLLOW": 43.64456844329834
+        },
+        "minco_fraction": 0.6007515332975341,
+        "continuous_seconds": {
+          "count": 37,
+          "min": 0.4493076801300049,
+          "p50": 1.0499238967895508,
+          "p95": 2.2301136493682834,
+          "p99": 2.8460754108428956,
+          "max": 2.8998489379882812
+        },
+        "fallback_count": 37
+      },
+      "stable": {
+        "seconds": {
+          "MINCO_FOLLOW": 24.64394211769104,
+          "FOLLOW": 15.35605788230896
+        },
+        "minco_fraction": 0.616098552942276,
+        "continuous_seconds": {
+          "count": 24,
+          "min": 0.3501124382019043,
+          "p50": 0.8501296043395996,
+          "p95": 1.8919431209564208,
+          "p99": 2.053769428730011,
+          "max": 2.099729299545288
+        },
+        "fallback_count": 23
+      }
+    },
+    "windows": {
+      "all_follow": {
+        "samples": 1454,
+        "evaluation": "evaluator native UAV snapshot vs ideal scene TargetState; not KF error",
+        "position_horizontal_rmse": 4.478235473149105,
+        "distance_rmse": 4.477429905470139,
+        "relative_velocity_rmse": 1.1163002694209712,
+        "altitude_rmse": 0.8748241748876404,
+        "visible_fraction": 1.0,
+        "locked_fraction": 1.0,
+        "actual_whole_marker_safe_fraction": 0.9911942762795817,
+        "actual_horizontal_margin": {
+          "count": 1817,
+          "min": 0.7058644560869194,
+          "p50": 0.7551179892678481,
+          "p95": 0.7827215915597129,
+          "p99": 0.7881196548950931,
+          "max": 0.7890397951734833
+        },
+        "actual_vertical_margin": {
+          "count": 1817,
+          "min": -0.013188667077365823,
+          "p50": 0.3235848696119641,
+          "p95": 0.5406187850793266,
+          "p99": 0.5760878631664645,
+          "max": 0.6262124431259077
+        },
+        "actual_horizontal_speed": {
+          "count": 3625,
+          "min": 0.000675289640275782,
+          "p50": 1.9827991064551542,
+          "p95": 5.755885081262464,
+          "p99": 6.495402359534446,
+          "max": 6.508561731045773
+        },
+        "actual_horizontal_acceleration": {
+          "count": 3625,
+          "min": 0.0008736158639896991,
+          "p50": 0.11890612065314159,
+          "p95": 1.6811838454170995,
+          "p99": 3.083136901064928,
+          "max": 3.157760002877544
+        },
+        "estimated_horizontal_jerk": {
+          "count": 3624,
+          "min": 0.01461932859356262,
+          "p50": 0.5678392092071116,
+          "p95": 2.8775554150952396,
+          "p99": 4.024488951425784,
+          "max": 6.249209330650626
+        },
+        "reference_velocity_delta_over_receipt_dt": {
+          "count": 1453,
+          "min": 0.000909232433045331,
+          "p50": 0.19058101241435893,
+          "p95": 3.0161469397265335,
+          "p99": 3.236004047751985,
+          "max": 12.780139924298881
+        },
+        "reference_gaps_seconds": {
+          "count": 1453,
+          "min": 0.011747360229492188,
+          "p50": 0.04997825622558594,
+          "p95": 0.05478730201721191,
+          "p99": 0.06040410041809082,
+          "max": 0.06991434097290039
+        }
+      },
+      "follow_20_to_60": {
+        "samples": 800,
+        "evaluation": "evaluator native UAV snapshot vs ideal scene TargetState; not KF error",
+        "position_horizontal_rmse": 0.34621969104292033,
+        "distance_rmse": 0.3311186314601103,
+        "relative_velocity_rmse": 0.15123982242262327,
+        "altitude_rmse": 1.0894229559101714,
+        "visible_fraction": 1.0,
+        "locked_fraction": 1.0,
+        "actual_whole_marker_safe_fraction": 1.0,
+        "actual_horizontal_margin": {
+          "count": 1000,
+          "min": 0.7058644560869194,
+          "p50": 0.7523847679083976,
+          "p95": 0.7640968347197781,
+          "p99": 0.7676417680924272,
+          "max": 0.7715739540399953
+        },
+        "actual_vertical_margin": {
+          "count": 1000,
+          "min": 0.08804903159264515,
+          "p50": 0.31531005429458436,
+          "p95": 0.5299202339743005,
+          "p99": 0.5626941744080662,
+          "max": 0.5762788910396961
+        },
+        "actual_horizontal_speed": {
+          "count": 1995,
+          "min": 1.6672778180658754,
+          "p50": 1.9839320006117511,
+          "p95": 2.266143125967964,
+          "p99": 2.3774606372874936,
+          "max": 2.4043773666555976
+        },
+        "actual_horizontal_acceleration": {
+          "count": 1995,
+          "min": 0.002064323258168133,
+          "p50": 0.10779713652910071,
+          "p95": 0.4399973847308494,
+          "p99": 0.8892130120660691,
+          "max": 1.1013911137025874
+        },
+        "estimated_horizontal_jerk": {
+          "count": 1994,
+          "min": 0.01461932859356262,
+          "p50": 0.5172541996056205,
+          "p95": 2.332289427489127,
+          "p99": 3.631833699991655,
+          "max": 5.629219390382782
+        },
+        "reference_velocity_delta_over_receipt_dt": {
+          "count": 799,
+          "min": 0.000909232433045331,
+          "p50": 0.17505247694583279,
+          "p95": 2.974826124627011,
+          "p99": 3.205005445197276,
+          "max": 3.809424701715739
+        },
+        "reference_gaps_seconds": {
+          "count": 799,
+          "min": 0.03340625762939453,
+          "p50": 0.0499727725982666,
+          "p95": 0.05511338710784912,
+          "p99": 0.061453580856323235,
+          "max": 0.06991434097290039
+        }
+      }
+    }
+  }
+]

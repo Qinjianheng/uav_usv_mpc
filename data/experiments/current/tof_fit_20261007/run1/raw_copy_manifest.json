@@ -1,0 +1,22 @@
+{
+  "/home/qin/data/uav_usv_mpc/data/experiments/current/modular_intercept_20261007_104013_014381_mission_1.csv": {
+    "copy": "raw/modular_intercept_20261007_104013_014381_mission_1.csv",
+    "sha256": "ee126995ab629815f11bd3d1581146bd569ab0f5afcdec0761ffd422a75b0a0d",
+    "bytes": 3967092
+  },
+  "/home/qin/data/uav_usv_mpc/data/experiments/current/modular_intercept_20261007_104013_014381_mission_1_config.yaml": {
+    "copy": "raw/modular_intercept_20261007_104013_014381_mission_1_config.yaml",
+    "sha256": "a1c7468797a560fd44dda6c56dba9bc32c6340f372ae47c01075d094af367c29",
+    "bytes": 720
+  },
+  "/home/qin/data/uav_usv_mpc/data/experiments/current/modular_intercept_20261007_104013_014381_mission_1_summary.json": {
+    "copy": "raw/modular_intercept_20261007_104013_014381_mission_1_summary.json",
+    "sha256": "3be7053d80c924460382a29083f3de04326f8444f8c4a3f01db8229961fc1bc9",
+    "bytes": 25728
+  },
+  "/home/qin/data/uav_usv_mpc/data/experiments/current/modular_intercept_20261007_104013_014381_mission_1_vision.csv": {
+    "copy": "raw/modular_intercept_20261007_104013_014381_mission_1_vision.csv",
+    "sha256": "6d635398adcfa586ad8b98b7638bb9c4e8f70064176b7bd95bb2857acd6d8259",
+    "bytes": 9248899
+  }
+}

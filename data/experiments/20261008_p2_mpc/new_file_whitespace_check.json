@@ -1,0 +1,82 @@
+[
+  {
+    "path": "docs/current/mpc_seed_validation.md",
+    "diff_exit": 1,
+    "whitespace_diagnostics": ""
+  },
+  {
+    "path": "scripts/mpc_seed_experiment.py",
+    "diff_exit": 1,
+    "whitespace_diagnostics": ""
+  },
+  {
+    "path": "scripts/mpc_seed_replay.py",
+    "diff_exit": 1,
+    "whitespace_diagnostics": ""
+  },
+  {
+    "path": "src/uav_control/test/test_follow_mpc_seed.py",
+    "diff_exit": 1,
+    "whitespace_diagnostics": ""
+  },
+  {
+    "path": "src/uav_control/test/test_follow_mpc_shadow_node.py",
+    "diff_exit": 1,
+    "whitespace_diagnostics": ""
+  },
+  {
+    "path": "src/uav_control/test/test_mpc_seed_experiment.py",
+    "diff_exit": 1,
+    "whitespace_diagnostics": ""
+  },
+  {
+    "path": "src/uav_control/test/test_mpc_seed_replay.py",
+    "diff_exit": 1,
+    "whitespace_diagnostics": ""
+  },
+  {
+    "path": "src/uav_control/test/test_mpc_shadow_inputs.py",
+    "diff_exit": 1,
+    "whitespace_diagnostics": ""
+  },
+  {
+    "path": "src/uav_control/test/test_planned_attitude.py",
+    "diff_exit": 1,
+    "whitespace_diagnostics": ""
+  },
+  {
+    "path": "src/uav_control/uav_control/controllers/follow_mpc_seed.py",
+    "diff_exit": 1,
+    "whitespace_diagnostics": ""
+  },
+  {
+    "path": "src/uav_control/uav_control/controllers/follow_mpc_shadow_node.py",
+    "diff_exit": 1,
+    "whitespace_diagnostics": ""
+  },
+  {
+    "path": "src/uav_control/uav_control/controllers/mpc_shadow_inputs.py",
+    "diff_exit": 1,
+    "whitespace_diagnostics": ""
+  },
+  {
+    "path": "src/uav_control/uav_control/guidance/planned_attitude.py",
+    "diff_exit": 1,
+    "whitespace_diagnostics": ""
+  },
+  {
+    "path": "src/uav_usv_bringup/config/mpc_seed_shadow.yaml",
+    "diff_exit": 1,
+    "whitespace_diagnostics": ""
+  },
+  {
+    "path": "src/uav_usv_bringup/launch/mpc_seed_shadow.launch.py",
+    "diff_exit": 1,
+    "whitespace_diagnostics": ""
+  },
+  {
+    "path": "src/uav_usv_bringup/launch/mpc_seed_validation.launch.py",
+    "diff_exit": 1,
+    "whitespace_diagnostics": ""
+  }
+]

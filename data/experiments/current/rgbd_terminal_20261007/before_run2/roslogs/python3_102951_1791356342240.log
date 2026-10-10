@@ -1,0 +1,7 @@
+[INFO] [1791356342.453235799] [moving_target]: Moving target node ready; waiting for X to start motion.
+[INFO] [1791356342.453521194] [moving_target]: USV figure-eight trajectory enabled | speed=0.00->4.00 m/s | acceleration<=1.00 m/s^2 | turn rate<=0.48 rad/s | lateral acceleration<=1.92 m/s^2 | X=[8.0, 88.0] m | Y=[-20.0, 20.0] m
+[WARN] [1791356342.662698770] [moving_target]: Gazebo red target sphere not ready: Gazebo services unavailable: /world/default/create
+[INFO] [1791356343.492844884] [moving_target]: Gazebo red USV target sphere is visible.
+[WARN] [1791356350.843094239] [moving_target]: Gazebo red target sphere not ready: Gazebo pose update failed: /world/default/set_pose
+[INFO] [1791356356.156521751] [moving_target]: X received. Moving target motion started.
+[WARN] [1791356379.912767916] [moving_target]: Gazebo red target sphere not ready: Gazebo pose update failed: /world/default/set_pose

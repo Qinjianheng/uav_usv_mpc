@@ -1,0 +1,5 @@
+[INFO] [1791469853.416368589] [moving_target]: Moving target node ready; waiting for X to start motion.
+[WARN] [1791469853.720289881] [moving_target]: Gazebo red target sphere not ready: Gazebo services unavailable: /world/default/create
+[INFO] [1791469854.458882194] [moving_target]: Gazebo red USV target sphere is visible.
+[INFO] [1791469857.968789222] [moving_target]: X received. Moving target motion started.
+[WARN] [1791469866.708541073] [moving_target]: Gazebo red target sphere not ready: Gazebo pose update failed: /world/default/set_pose

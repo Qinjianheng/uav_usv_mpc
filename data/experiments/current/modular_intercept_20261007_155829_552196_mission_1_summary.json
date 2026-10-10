@@ -1,0 +1,647 @@
+{
+  "outcome": "SUCCESS",
+  "failure_reason": "",
+  "elapsed_time": 6.6125648021698,
+  "evaluation_capture_radius": 0.5,
+  "planned_capture_radius": 0.5,
+  "minimum_distance": 0.40800707515051504,
+  "minimum_body_clearance": -0.2067667027063792,
+  "terminal_approach_count": 1,
+  "recovery_count": 0,
+  "handover_jump_count": 0,
+  "first_terminal_approach_result": "SUCCESS",
+  "first_terminal_approach_hit": true,
+  "safety_event_histogram": {
+    "WARNING": 3,
+    "BRAKE": 0,
+    "UNRECOVERABLE": 1,
+    "SEA_CONTACT": 0
+  },
+  "horizontal_distance": 0.3176443183256163,
+  "vertical_error": 0.25607003028143016,
+  "relative_speed": 2.6735281619405367,
+  "closing_speed": 2.2432863528469333,
+  "max_horizontal_speed": 6.651348709419166,
+  "max_vertical_speed": 2.7708914279937744,
+  "max_horizontal_acceleration": 4.10861308352294,
+  "max_vertical_acceleration": 3.3522404241041412,
+  "truth_topic": "/target/state",
+  "truth_role": "evaluation_only",
+  "controller_callback_p95": 0.0017826470011641504,
+  "terminal_event": "CAPTURE_RADIUS_REACHED",
+  "gazebo_pause_requested": true,
+  "gazebo_pause_succeeded": true,
+  "gazebo_pause_attempts": 1,
+  "controller_callback_p50": 0.0008056880005824496,
+  "controller_callback_max": 0.003184306999173714,
+  "planner_started": 32,
+  "planner_completed": 32,
+  "planner_succeeded": 6,
+  "planner_failed": 24,
+  "planner_admission_wait": 2,
+  "planner_deadline": 0,
+  "planner_failure_histogram": {
+    "CAPTURE_GEOMETRY": 6,
+    "DYNAMIC_LIMIT_HORIZONTAL": 3,
+    "HORIZON_INSUFFICIENT": 15
+  },
+  "planner_primary_failure_reason": "HORIZON_INSUFFICIENT",
+  "planner_success_rate": 0.2,
+  "attempt_rate": 4.839272046075034,
+  "execution_rate": 0.6666666666666666,
+  "hold_rate": 0.0,
+  "tracker_rejection_histogram": {
+    "STATE_POSITION_MISMATCH": 2
+  },
+  "actual_completion_hz": 4.804175480432608,
+  "planner_compute_p50": 0.016600798999206745,
+  "planner_compute_p95": 0.0327851889996964,
+  "planner_compute_max": 0.04053864200068347,
+  "reachability_compute_p50": 0.01549264899949776,
+  "reachability_compute_p95": 0.03260479900018254,
+  "reachability_compute_max": 0.03349344500020379,
+  "generation_compute_p50": 0.0,
+  "generation_compute_p95": 0.0069310379985836335,
+  "generation_compute_max": 0.007499041999835754,
+  "validation_compute_p50": 0.0,
+  "validation_compute_p95": 0.001870647000032477,
+  "validation_compute_max": 0.0020428259995242115,
+  "planner_source_age_at_publish_p50": 0.07209205627441406,
+  "planner_source_age_at_publish_p95": 0.10227155685424805,
+  "planner_source_age_at_publish_max": 0.11429190635681152,
+  "planner_publish_delay_p50": 0.0005633831024169922,
+  "planner_publish_delay_p95": 0.04185962677001953,
+  "planner_publish_delay_max": 0.042394161224365234,
+  "vision": {
+    "front": {
+      "observation_count": 452,
+      "valid_observation_count": 376,
+      "valid_observation_rate": 0.831858407079646,
+      "raw_position_x": {
+        "count": 375,
+        "available": true,
+        "p50": 0.07804992009806355,
+        "p95": 0.3426973132490012,
+        "rmse": 0.15138542437645078
+      },
+      "raw_position_y": {
+        "count": 375,
+        "available": true,
+        "p50": 0.05507144293890942,
+        "p95": 0.3670295556558152,
+        "rmse": 0.12735538363999235
+      },
+      "raw_position_z": {
+        "count": 375,
+        "available": true,
+        "p50": 0.0686019467536072,
+        "p95": 0.09341713937253149,
+        "rmse": 0.07090083056795421
+      },
+      "raw_signed_position_x": {
+        "count": 375,
+        "available": true,
+        "mean": -0.10872627802292707,
+        "median": -0.07804992009806355,
+        "rmse": 0.15138542437645078,
+        "p95_abs": 0.3426973132490012
+      },
+      "raw_signed_position_y": {
+        "count": 375,
+        "available": true,
+        "mean": 0.07110202011900828,
+        "median": 0.04505715693254153,
+        "rmse": 0.12735538363999235,
+        "p95_abs": 0.3670295556558152
+      },
+      "raw_signed_position_z": {
+        "count": 375,
+        "available": true,
+        "mean": -0.06926183213230869,
+        "median": -0.0686019467536072,
+        "rmse": 0.07090083056795421,
+        "p95_abs": 0.09341713937253149
+      },
+      "raw_position_horizontal": {
+        "count": 375,
+        "available": true,
+        "p50": 0.10888702353978655,
+        "p95": 0.4543157146940075,
+        "rmse": 0.1978305852382986
+      },
+      "raw_position_3d": {
+        "count": 375,
+        "available": true,
+        "p50": 0.1262729940549258,
+        "p95": 0.45673519487128145,
+        "rmse": 0.21015201219820248
+      },
+      "observation_age": {
+        "count": 376,
+        "available": true,
+        "p50": 0.028447389602661133,
+        "p95": 0.040389299392700195,
+        "rmse": 0.029806111554891723
+      },
+      "longest_continuous_loss": 2.5802395343780518,
+      "rejection_histogram": {
+        "DEPTH_RATIO_LOW": 51,
+        "IMAGE_INVALID": 25
+      }
+    },
+    "kf_position_3d": {
+      "count": 2,
+      "available": true,
+      "p50": 0.1203992679686516,
+      "p95": 0.1436803872048892,
+      "rmse": 0.13255194716550578
+    },
+    "kf_velocity_3d": {
+      "count": 2,
+      "available": true,
+      "p50": 0.10371042505343066,
+      "p95": 0.129803501026669,
+      "rmse": 0.11748361831239221
+    },
+    "kf_state_age": {
+      "count": 2,
+      "available": true,
+      "p50": 0.03636813163757324,
+      "p95": 0.0365290641784668,
+      "rmse": 0.03644868672917038
+    },
+    "strata": [
+      {
+        "camera": "front",
+        "distance_bin": "FAR",
+        "motion_regime": "STRAIGHT",
+        "approach_phase": "PREPARATION",
+        "observation_count": 132,
+        "valid_observation_rate": 1.0,
+        "raw_position_3d": {
+          "count": 132,
+          "available": true,
+          "p50": 0.15190938107689672,
+          "p95": 0.38433988240047967,
+          "rmse": 0.1886867673290384
+        },
+        "observation_age": {
+          "count": 132,
+          "available": true,
+          "p50": 0.029586315155029297,
+          "p95": 0.04249310493469238,
+          "rmse": 0.03183025551233533
+        }
+      },
+      {
+        "camera": "front",
+        "distance_bin": "FAR",
+        "motion_regime": "TURNING",
+        "approach_phase": "PREPARATION",
+        "observation_count": 77,
+        "valid_observation_rate": 1.0,
+        "raw_position_3d": {
+          "count": 77,
+          "available": true,
+          "p50": 0.3315489165445368,
+          "p95": 0.5198735269247776,
+          "rmse": 0.36500531390758345
+        },
+        "observation_age": {
+          "count": 77,
+          "available": true,
+          "p50": 0.027833938598632812,
+          "p95": 0.03677868843078613,
+          "rmse": 0.02837753305842465
+        }
+      },
+      {
+        "camera": "front",
+        "distance_bin": "MID",
+        "motion_regime": "STRAIGHT",
+        "approach_phase": "PREPARATION",
+        "observation_count": 104,
+        "valid_observation_rate": 1.0,
+        "raw_position_3d": {
+          "count": 103,
+          "available": true,
+          "p50": 0.08535754563878688,
+          "p95": 0.14142872938263223,
+          "rmse": 0.09667072324554593
+        },
+        "observation_age": {
+          "count": 104,
+          "available": true,
+          "p50": 0.026967287063598633,
+          "p95": 0.036870718002319336,
+          "rmse": 0.027292309750291736
+        }
+      },
+      {
+        "camera": "front",
+        "distance_bin": "MID",
+        "motion_regime": "UNKNOWN",
+        "approach_phase": "PREPARATION",
+        "observation_count": 4,
+        "valid_observation_rate": 1.0,
+        "raw_position_3d": {
+          "count": 4,
+          "available": true,
+          "p50": 0.1493898827040544,
+          "p95": 0.15797176662470183,
+          "rmse": 0.15149638289850795
+        },
+        "observation_age": {
+          "count": 4,
+          "available": true,
+          "p50": 0.03058934211730957,
+          "p95": 0.0383296012878418,
+          "rmse": 0.03090060262145106
+        }
+      },
+      {
+        "camera": "front",
+        "distance_bin": "NEAR",
+        "motion_regime": "STRAIGHT",
+        "approach_phase": "PREPARATION",
+        "observation_count": 35,
+        "valid_observation_rate": 1.0,
+        "raw_position_3d": {
+          "count": 35,
+          "available": true,
+          "p50": 0.10591598965392768,
+          "p95": 0.13262935271386497,
+          "rmse": 0.10709579122952019
+        },
+        "observation_age": {
+          "count": 35,
+          "available": true,
+          "p50": 0.027959108352661133,
+          "p95": 0.04177260398864746,
+          "rmse": 0.029784704651777034
+        }
+      },
+      {
+        "camera": "front",
+        "distance_bin": "NEAR",
+        "motion_regime": "STRAIGHT",
+        "approach_phase": "TERMINAL_APPROACH",
+        "observation_count": 24,
+        "valid_observation_rate": 1.0,
+        "raw_position_3d": {
+          "count": 24,
+          "available": true,
+          "p50": 0.060570049725441416,
+          "p95": 0.12392347383548481,
+          "rmse": 0.07838872761859988
+        },
+        "observation_age": {
+          "count": 24,
+          "available": true,
+          "p50": 0.0326082706451416,
+          "p95": 0.03914141654968262,
+          "rmse": 0.03288865260624931
+        }
+      },
+      {
+        "camera": "front",
+        "distance_bin": "UNKNOWN",
+        "motion_regime": "STRAIGHT",
+        "approach_phase": "TERMINAL_APPROACH",
+        "observation_count": 1,
+        "valid_observation_rate": 0.0,
+        "raw_position_3d": {
+          "count": 0,
+          "available": false,
+          "p50": null,
+          "p95": null,
+          "rmse": null
+        },
+        "observation_age": {
+          "count": 0,
+          "available": false,
+          "p50": null,
+          "p95": null,
+          "rmse": null
+        }
+      },
+      {
+        "camera": "front",
+        "distance_bin": "UNKNOWN",
+        "motion_regime": "TURNING",
+        "approach_phase": "PREPARATION",
+        "observation_count": 75,
+        "valid_observation_rate": 0.0,
+        "raw_position_3d": {
+          "count": 0,
+          "available": false,
+          "p50": null,
+          "p95": null,
+          "rmse": null
+        },
+        "observation_age": {
+          "count": 0,
+          "available": false,
+          "p50": null,
+          "p95": null,
+          "rmse": null
+        }
+      }
+    ]
+  },
+  "run_started_at": 1791359909.5516236,
+  "intercept_started_at": 1791359925.5929224,
+  "intercept_started": true,
+  "run_elapsed_time": 22.66846537590027,
+  "intercept_elapsed_time": 6.627166509628296,
+  "run_end_reason": "CAPTURE_RADIUS_REACHED",
+  "run_metrics": {
+    "phase_durations": {
+      "TAKEOFF": 9.07424521446228,
+      "FOLLOW": 6.967053651809692,
+      "FAR_GUIDANCE": 5.404571056365967,
+      "MINCO_READY": 0.06557369232177734,
+      "MINCO_TRACKING": 0.3163485527038574,
+      "TERMINAL_MINCO": 0.8406732082366943
+    },
+    "takeoff_duration": 9.07424521446228,
+    "follow_duration": 6.967053651809692,
+    "bearing_approach_duration": 0.0,
+    "visual_braking_duration": 0.0,
+    "time_to_first_visible": 0.07446002960205078,
+    "time_to_first_lock": 0.17554759979248047,
+    "lock_loss_count": 2,
+    "reacquire_count": 0,
+    "reacquire_duration": {
+      "count": 0,
+      "mean": null,
+      "minimum": null,
+      "maximum": null
+    },
+    "open_reacquire_duration": null,
+    "follow_estimated_distance": {
+      "count": 110,
+      "mean": 23.662984037939044,
+      "minimum": 14.893550507651538,
+      "maximum": 32.030880970954556
+    },
+    "follow_evaluation_distance": {
+      "count": 139,
+      "mean": 25.248305468286564,
+      "minimum": 14.80537874955264,
+      "maximum": 32.08912801356867
+    },
+    "search_xy_drift_max": null,
+    "event_time_basis": "evaluator ROS callback/sample timestamps"
+  },
+  "prediction_errors": {
+    "guidance_prediction_0p5": {
+      "count": 329,
+      "rmse": 0.5093718312752725,
+      "p95": 1.2233921046849794
+    },
+    "guidance_prediction_1p0": {
+      "count": 321,
+      "rmse": 0.8656129931881609,
+      "p95": 2.0582557146254215
+    },
+    "guidance_prediction_2p0": {
+      "count": 304,
+      "rmse": 1.8607968306733016,
+      "p95": 3.7607690832544054
+    },
+    "kf_prediction_0p5": {
+      "count": 384,
+      "rmse": 0.6728317143102509,
+      "p95": 1.5937923198425936
+    },
+    "kf_prediction_1p0": {
+      "count": 374,
+      "rmse": 1.2250643463835986,
+      "p95": 2.9374159701619504
+    },
+    "kf_prediction_2p0": {
+      "count": 354,
+      "rmse": 2.8626668963153756,
+      "p95": 6.554630212430536
+    },
+    "shadow_bctra_prediction_0p5": {
+      "count": 329,
+      "rmse": 0.5093718312752725,
+      "p95": 1.2233921046849794
+    },
+    "shadow_bctra_prediction_1p0": {
+      "count": 321,
+      "rmse": 0.8656129931881609,
+      "p95": 2.0582557146254215
+    },
+    "shadow_bctra_prediction_2p0": {
+      "count": 304,
+      "rmse": 1.8607968306733016,
+      "p95": 3.7607690832544054
+    }
+  },
+  "runtime_performance_by_distance": {
+    "less_than_2m": {
+      "rgbd_localizer_compute_time": {
+        "count": 16,
+        "p50": 4.377200093585998e-05,
+        "p95": 0.008819157257676125,
+        "max": 0.008819157257676125
+      },
+      "gazebo_real_time_factor": {
+        "count": 16,
+        "p50": 0.999674379825592,
+        "p95": 1.0010178089141846,
+        "max": 1.0010178089141846
+      },
+      "front_rgb_hz": {
+        "count": 16,
+        "p50": 20.027751922607422,
+        "p95": 20.104230880737305,
+        "max": 20.104230880737305
+      },
+      "front_depth_hz": {
+        "count": 16,
+        "p50": 20.04050064086914,
+        "p95": 20.08071517944336,
+        "max": 20.08071517944336
+      },
+      "front_monitor_compute_time": {
+        "count": 16,
+        "p50": 0.002822333015501499,
+        "p95": 0.004671168047934771,
+        "max": 0.004671168047934771
+      },
+      "tracker_hz": {
+        "count": 16,
+        "p50": 29.508570865740104,
+        "p95": 31.616516585784304,
+        "max": 31.616516585784304
+      },
+      "tracker_callback_time": {
+        "count": 16,
+        "p50": 0.0007453880007233238,
+        "p95": 0.0012864380005339626,
+        "max": 0.0012864380005339626
+      },
+      "planner_compute_time": {
+        "count": 16,
+        "p50": 0.011704151998856105,
+        "p95": 0.016486246000567917,
+        "max": 0.016486246000567917
+      }
+    },
+    "between_2m_and_5m": {
+      "rgbd_localizer_compute_time": {
+        "count": 42,
+        "p50": 4.9701000534696504e-05,
+        "p95": 0.00699720811098814,
+        "max": 0.007410373073071241
+      },
+      "gazebo_real_time_factor": {
+        "count": 42,
+        "p50": 0.9996681213378906,
+        "p95": 1.000282883644104,
+        "max": 1.0014818906784058
+      },
+      "front_rgb_hz": {
+        "count": 42,
+        "p50": 19.99820899963379,
+        "p95": 20.13857650756836,
+        "max": 20.13857650756836
+      },
+      "front_depth_hz": {
+        "count": 42,
+        "p50": 19.99223518371582,
+        "p95": 20.124027252197266,
+        "max": 20.12921142578125
+      },
+      "front_monitor_compute_time": {
+        "count": 42,
+        "p50": 0.002472094027325511,
+        "p95": 0.0062737371772527695,
+        "max": 0.0062737371772527695
+      },
+      "tracker_hz": {
+        "count": 42,
+        "p50": 20.014761719387693,
+        "p95": 23.082319421357877,
+        "max": 23.166736796861112
+      },
+      "tracker_callback_time": {
+        "count": 42,
+        "p50": 0.0011275260003458243,
+        "p95": 0.002113607999490341,
+        "max": 0.0028487429990491364
+      },
+      "planner_compute_time": {
+        "count": 42,
+        "p50": 0.017698153000310413,
+        "p95": 0.04053864200068347,
+        "max": 0.04053864200068347
+      }
+    },
+    "between_5m_and_10m": {
+      "rgbd_localizer_compute_time": {
+        "count": 106,
+        "p50": 5.826399865327403e-05,
+        "p95": 0.006954580079764128,
+        "max": 0.00879567489027977
+      },
+      "gazebo_real_time_factor": {
+        "count": 106,
+        "p50": 0.9996803402900696,
+        "p95": 1.0013056993484497,
+        "max": 1.0948330163955688
+      },
+      "front_rgb_hz": {
+        "count": 106,
+        "p50": 20.01536750793457,
+        "p95": 20.166847229003906,
+        "max": 20.20242691040039
+      },
+      "front_depth_hz": {
+        "count": 106,
+        "p50": 20.00761604309082,
+        "p95": 20.156415939331055,
+        "max": 20.196170806884766
+      },
+      "front_monitor_compute_time": {
+        "count": 106,
+        "p50": 0.0031907239463180304,
+        "p95": 0.005941892974078655,
+        "max": 0.0062737371772527695
+      },
+      "tracker_hz": {
+        "count": 106,
+        "p50": 20.003141595441523,
+        "p95": 20.096637986073763,
+        "max": 20.517368058035387
+      },
+      "tracker_callback_time": {
+        "count": 106,
+        "p50": 0.000882723999893642,
+        "p95": 0.00189789699834364,
+        "max": 0.002703003001442994
+      },
+      "planner_compute_time": {
+        "count": 106,
+        "p50": 0.0,
+        "p95": 0.022412676000385545,
+        "max": 0.030134279000776587
+      }
+    },
+    "greater_than_10m": {
+      "rgbd_localizer_compute_time": {
+        "count": 289,
+        "p50": 7.083200034685433e-05,
+        "p95": 0.007167786825448275,
+        "max": 0.008567415177822113
+      },
+      "gazebo_real_time_factor": {
+        "count": 289,
+        "p50": 0.9996503591537476,
+        "p95": 1.0022178888320923,
+        "max": 1.0038570165634155
+      },
+      "front_rgb_hz": {
+        "count": 289,
+        "p50": 20.009056091308594,
+        "p95": 20.127389907836914,
+        "max": 20.70806121826172
+      },
+      "front_depth_hz": {
+        "count": 289,
+        "p50": 20.01266098022461,
+        "p95": 20.134925842285156,
+        "max": 20.72830581665039
+      },
+      "front_monitor_compute_time": {
+        "count": 289,
+        "p50": 0.0034917211160063744,
+        "p95": 0.0056779650039970875,
+        "max": 0.0069488720037043095
+      },
+      "tracker_hz": {
+        "count": 289,
+        "p50": 19.99931137046813,
+        "p95": 20.025016515433293,
+        "max": 20.105202688673497
+      },
+      "tracker_callback_time": {
+        "count": 289,
+        "p50": 0.0007712930000707274,
+        "p95": 0.0016111119984998368,
+        "max": 0.003184306999173714
+      },
+      "planner_compute_time": {
+        "count": 289,
+        "p50": 0.0,
+        "p95": 0.015743320000183303,
+        "max": 0.02214469399950758
+      }
+    }
+  },
+  "mission_id": 1
+}

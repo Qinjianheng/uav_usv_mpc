@@ -1,0 +1,150 @@
+{
+  "baseline_controls": null,
+  "cycle": 1,
+  "input": {
+    "actual_rotation": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "context": {
+      "attitude_stamp": 100.2,
+      "clock_generation": 0,
+      "cycle_id": 1,
+      "execution_start_stamp": 100.2,
+      "frame_id": "local_ned",
+      "mission_id": 1,
+      "navigation_stamp": 100.2,
+      "observation_stamp": 100.19,
+      "prediction_sequence_id": 2,
+      "prediction_source": "synthetic",
+      "prediction_source_stamp": 100.2,
+      "prediction_valid_until": 100.60000000000001
+    },
+    "now_stamp": 100.2,
+    "prediction_times": [
+      0.0,
+      0.2,
+      0.4
+    ],
+    "state": [
+      -4.8,
+      0.0,
+      -5.0,
+      1.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "target_positions": [
+      [
+        0.2,
+        0.0,
+        0.0
+      ],
+      [
+        0.4,
+        0.0,
+        0.0
+      ],
+      [
+        0.6000000000000001,
+        0.0,
+        0.0
+      ]
+    ],
+    "target_velocities": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ]
+    ]
+  },
+  "input_sha256": "701406f05e3020efc75c6b65ca0374ee2de1d162f3ffcd9680c4b3e0673d7ae5",
+  "method": "mpc_cold",
+  "metrics": {
+    "core_dense_metrics": {},
+    "follow_error_rms_m": null,
+    "maximum_acceleration_mps2": null,
+    "maximum_jerk_mps3": null,
+    "maximum_speed_mps": null,
+    "maximum_tilt_rad": null,
+    "minimum_horizontal_margin_rad": null,
+    "minimum_vertical_margin_rad": null,
+    "visibility_ratio": null
+  },
+  "output": {
+    "accelerations": [],
+    "candidate_kind": "",
+    "constraint_violations": {},
+    "context": {
+      "attitude_stamp": 100.2,
+      "clock_generation": 0,
+      "cycle_id": 1,
+      "execution_start_stamp": 100.2,
+      "frame_id": "local_ned",
+      "mission_id": 1,
+      "navigation_stamp": 100.2,
+      "observation_stamp": 100.19,
+      "prediction_sequence_id": 2,
+      "prediction_source": "synthetic",
+      "prediction_source_stamp": 100.2,
+      "prediction_valid_until": 100.60000000000001
+    },
+    "initial_visibility": false,
+    "jerks": [],
+    "metrics": {},
+    "objective_value": 0.0,
+    "positions": [],
+    "reason": "prediction does not cover execution horizon",
+    "relative_times": [],
+    "solve_time": 4.0204999095294625e-05,
+    "solver_status": "PREDICTION_HORIZON",
+    "timing": {
+      "total": 4.0204999095294625e-05
+    },
+    "valid": false,
+    "velocities": [],
+    "visibility_margins": [],
+    "warm_started": false,
+    "yaw_rates": [],
+    "yaw_refs": []
+  },
+  "repeat": 0,
+  "scenario": "short_prediction",
+  "timing": {
+    "core_timing": {
+      "total": 4.0204999095294625e-05
+    },
+    "end_to_end_s": 0.0010261350016662618,
+    "external_budget_s": 0.5,
+    "shared_data_prep_s": 0.00020616300025722012,
+    "solve_external_s": 4.579199958243407e-05
+  }
+}

@@ -243,3 +243,18 @@ def test_duplicate_kf_projection_and_timer_do_not_double_prediction_rate():
     assert message.invalid_reason == 'STATE_STALE'
     assert message.observation_stamp.nanosec == 50_000_000
     assert message.valid_until.nanosec == 175_000_000
+
+
+def test_optin_producer_profile_measures_actual_bctra_batch_without_epoch_changes():
+    import json
+    clock = [10.02]
+    node = make_publication_node(clock)
+    records = []
+    node.p43_profile_enabled = True
+    node.get_logger = lambda: SimpleNamespace(info=records.append)
+    node.state_callback(make_tracking_message(stamp=10.02))
+    assert len(records) == 1
+    record = json.loads(records[0].split('P43_PREDICTOR_PROFILE ', 1)[1])
+    assert record['producer_process'] != 'planner'
+    assert record['stages']['bctra_batch']['calls'] == 1
+    assert node.prediction_pub.messages[0].observation_stamp.nanosec == 0

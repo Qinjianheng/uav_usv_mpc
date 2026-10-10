@@ -1,6 +1,7 @@
 """Independent 20 Hz polynomial tracker and final PX4 safety barrier."""
 
 import math
+import json
 import time
 from dataclasses import dataclass, replace
 
@@ -10,8 +11,8 @@ from px4_msgs.msg import OffboardControlMode, TrajectorySetpoint
 from px4_msgs.msg import VehicleCommand, VehicleStatus
 from rclpy.node import Node
 from rclpy.qos import DurabilityPolicy, HistoryPolicy, QoSProfile
-from rclpy.qos import ReliabilityPolicy
-from std_msgs.msg import Bool
+from rclpy.qos import ReliabilityPolicy, qos_profile_sensor_data
+from std_msgs.msg import Bool, String
 from uav_usv_interfaces.msg import ControllerDiagnostic, InterceptTrajectory
 from uav_usv_interfaces.msg import MissionState, PlannerDiagnostic
 from uav_usv_interfaces.msg import TargetPrediction, TargetState
@@ -35,6 +36,15 @@ class PendingTrajectory:
     trajectory: PolynomialTrajectory
     planner_published_stamp: float
     tracker_receipt_stamp: float
+
+
+@dataclass(frozen=True)
+class TerminalExecution:
+    """Non-renewable execution window for one already accepted trajectory."""
+
+    trajectory: PolynomialTrajectory
+    entered_at: float
+    deadline: float
 
 
 def _stamp_seconds(stamp):
@@ -321,6 +331,56 @@ class TrajectoryTrackerNode(Node):
 
     def __init__(self):
         super().__init__('trajectory_tracker_node')
+        self.declare_parameter('follow_minco_enabled', True)
+        self.declare_parameter('follow_minco_shadow_check', False)
+        self.follow_minco_requested = bool(self.get_parameter('follow_minco_enabled').value)
+        if self.follow_minco_requested:
+            from uav_control.guidance.follow_sitl_gate import require_isolated_sitl
+            self.follow_sitl_grant = require_isolated_sitl()
+        self.follow_stable_ticks = 0
+        self.follow_debug_pub = self.create_publisher(
+            String, '/control/follow_execution_debug', 10)
+        # Nominal feedback execution does not claim independently qualified holding.
+        self.follow_minco_authorized = False
+        self.follow_generation = 0
+        self.follow_receiver = None
+        if self.follow_minco_requested or self.get_parameter('follow_minco_shadow_check').value:
+            from uav_control.guidance.follow_contract import FollowReceiver
+            from uav_usv_interfaces.msg import FollowTrajectory, FollowPlanAck
+            from uav_control.guidance.follow_epoch import ReceiverClock
+            from uav_usv_interfaces.msg import FollowReceiverState, UavState
+            self.follow_clock = ReceiverClock()
+            from rcl_interfaces.msg import ParameterDescriptor
+            from uav_control.controllers.follow_mpc_seed import FollowMpcSeed
+            from uav_control.guidance.follow_limits import ResearchConfig, constraint_snapshot
+            for name, value in (('follow_research_horizontal_acceleration', 3.),
+                                ('follow_research_yaw_rate', 1.)):
+                self.declare_parameter(name, value, ParameterDescriptor(read_only=True))
+            research = ResearchConfig(maximum_horizontal_acceleration=float(self.get_parameter(
+                'follow_research_horizontal_acceleration').value), maximum_yaw_rate=float(
+                self.get_parameter('follow_research_yaw_rate').value))
+            self.follow_receiver = FollowReceiver(
+                limits=constraint_snapshot(FollowMpcSeed(research)))
+            if self.follow_minco_requested:
+                from uav_control.guidance.follow_minco_execution import NominalFollowReceiver
+                self.follow_model = FollowMpcSeed(research)
+                self.follow_receiver = NominalFollowReceiver(
+                    limits=constraint_snapshot(self.follow_model))
+            epoch_qos = QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL,
+                                   reliability=ReliabilityPolicy.RELIABLE)
+            self.follow_epoch_pub = self.create_publisher(
+                FollowReceiverState, '/control/follow_receiver_state', epoch_qos)
+            self.follow_epoch_sub = self.create_subscription(
+                UavState, '/navigation/uav_state', self._follow_native_epoch,
+                qos_profile_sensor_data)
+            self.follow_epoch_timer = self.create_timer(.05, self._publish_follow_epoch)
+            self.follow_ack_pub = self.create_publisher(FollowPlanAck, '/control/follow_ack', 10)
+            self.follow_sub = self.create_subscription(
+                FollowTrajectory, '/planning/follow_trajectory',
+                self.follow_trajectory_callback, 1)
+            self.get_logger().warning(
+                'FOLLOW controller: nominal rolling MINCO' if self.follow_minco_requested else
+                'FOLLOW controller: original guidance with research rejection ACK')
         self.declare_parameter('control_rate_hz', 20.0)
         self.declare_parameter('maximum_plan_age', 0.125)
         self.declare_parameter('minimum_remaining_time', 0.20)
@@ -349,6 +409,8 @@ class TrajectoryTrackerNode(Node):
         self.declare_parameter('maximum_command_dt', 0.1)
         self.declare_parameter('maximum_actual_vertical_acceleration', 4.0)
         self.declare_parameter('terminal_cruise_enabled', False)
+        self.terminal_cruise_enabled = bool(
+            self.get_parameter('terminal_cruise_enabled').value)
         self.declare_parameter('maximum_state_age', 0.125)
         self.declare_parameter('use_velocity_control', True)
         self.declare_parameter('frame_id', 'local_ned')
@@ -660,6 +722,7 @@ class TrajectoryTrackerNode(Node):
 
         self.latest_state = None
         self.latest_prediction = None
+        self.terminal_execution = None
         self.latest_target_state = None
         self.latest_kf_message = None
         self.latest_body_bearing = None
@@ -722,6 +785,160 @@ class TrajectoryTrackerNode(Node):
             self.current_heading = heading
         self._process_pending_trajectory()
 
+    def _follow_native_epoch(self, message):
+        """Observe native sample resets independently; never replace original navigation state."""
+        try:
+            self.follow_clock.observe(self._ros_seconds(), int(message.native_timestamp_sample))
+        except (ValueError, TypeError):
+            pass
+
+    def _publish_follow_epoch(self):
+        """Actual receiver owns this read-only heartbeat; it grants no holding or bridge."""
+        from uav_usv_interfaces.msg import FollowReceiverState
+        from uav_control.controllers.follow_transport import stamp
+        context = self._follow_context()
+        message = FollowReceiverState()
+        message.stamp, message.receiver = stamp(context.now), 'trajectory_tracker_node'
+        message.receiver_boot_id = self.follow_clock.boot_id
+        message.clock_generation, message.mission_id = context.generation, context.mission_id
+        message.prediction_sequence_id = context.prediction_id
+        self.follow_epoch_pub.publish(message)
+
+    def _follow_context(self):
+        """Build local receiver context; never accept a planner-supplied clock or boundary."""
+        from uav_control.guidance.follow_contract import ReceiverContext
+        now = self._ros_seconds()
+        self.follow_generation = self.follow_clock.observe(now)
+        prediction = self.latest_prediction
+        fresh = bool(self.latest_state and 0 <= now-self.latest_state.stamp <= .125
+                     and self._prediction_fresh(now))
+        return ReceiverContext(
+            now, self.mission_id, self.follow_generation,
+            int(prediction.sequence_id) if prediction is not None else 0,
+            self.mission_state == MissionState.FOLLOW,
+            self.offboard_active, self.vehicle_armed,
+            bool(fresh and self.visibility_decision and self.visibility_decision.locked
+                 and not self.safe_recovery_latched), receiver_boot_id=self.follow_clock.boot_id)
+
+    def follow_trajectory_callback(self, message):
+        """Real receiver rejection ACK. Qualification failure never mutates original control."""
+        from uav_control.controllers.follow_transport import curve_from_message, ack_message
+        from uav_control.guidance.follow_contract import FollowAck
+        from numpy.linalg import LinAlgError
+        received_monotonic = time.perf_counter()
+        context = self._follow_context()
+        try:
+            candidate = curve_from_message(message)
+            validated_prediction_id = None
+            if getattr(self, 'follow_minco_requested', False):
+                from uav_control.guidance.follow_minco_execution import (
+                    nominal_curve, nominal_attitude,
+                )
+                from uav_control.controllers.follow_mpc_shadow_node import prediction_from_message
+                endpoints = self.get_publishers_info_by_topic('/planning/follow_trajectory')
+                if len(endpoints) != 1 or endpoints[0].node_name != 'p4_follow_planner_node':
+                    raise ValueError('PLANNER_AUTHORITY_CONFLICT')
+                if self.follow_stable_ticks < 10:
+                    raise ValueError('FOLLOW_NOT_STABLE')
+                prediction = prediction_from_message(self.latest_prediction)
+                validated_prediction_id = int(self.latest_prediction.sequence_id)
+                if (not nominal_attitude(candidate, self.follow_model)
+                        or not nominal_curve(candidate, prediction, self.follow_model,
+                                             candidate.start, candidate.end)):
+                    raise ValueError('RECEIVER_NOMINAL_REVALIDATION_FAILED')
+                context = self._follow_context()
+            if getattr(self, 'follow_minco_requested', False):
+                ack = self.follow_receiver.propose(
+                    candidate, context, validated_prediction_id=validated_prediction_id)
+            else:
+                ack = self.follow_receiver.propose(candidate, context)
+        except (ValueError, TypeError, AttributeError, OverflowError, FloatingPointError,
+                LinAlgError) as error:
+            ack = FollowAck(int(message.plan_id), int(message.mission_id),
+                            int(message.clock_generation), context.now, 'REJECTED',
+                            (str(error) or 'INVALID_COEFFICIENTS',),
+                            receiver_boot_id=context.receiver_boot_id,
+                            planner_boot_id=getattr(message, 'planner_boot_id', ''))
+        response = ack_message(ack)
+        if getattr(self, 'follow_minco_requested', False) and self.follow_receiver.active:
+            response.control_owner = 'MINCO_FOLLOW'
+        response.receiver_compute_seconds = time.perf_counter()-received_monotonic
+        self.follow_ack_pub.publish(response)
+
+    def _revoke_nominal_follow(self, reason):
+        """Every loss of the execution context emits a real revocation ACK, including nav loss."""
+        if not getattr(self, 'follow_minco_requested', False):
+            return
+        from uav_control.controllers.follow_transport import ack_message
+        context = self._follow_context()
+        receiver = self.follow_receiver
+        for slot in ('pending', 'active'):
+            curve = getattr(receiver, slot)
+            if curve is not None:
+                setattr(receiver, slot, None)
+                ack = receiver._ack(curve, context, 'REVOKED', (reason,))
+                self.follow_ack_pub.publish(ack_message(ack))
+        self.follow_stable_ticks = 0
+
+    def _nominal_follow_command(self, current, now, dt):
+        """Finite nominal reference lease; measured-feedback shaping and visual yaw stay local."""
+        from uav_control.controllers.follow_transport import ack_message
+        from uav_control.controllers.follow_mpc_shadow_node import prediction_from_message
+        from uav_control.guidance.follow_minco_execution import nominal_curve, reference_velocity
+        receiver = self.follow_receiver
+        started = time.perf_counter()
+        context = self._follow_context()
+        self.follow_stable_ticks = self.follow_stable_ticks+1 if context.visible else 0
+        nominal, prefix_details = {}, {}
+        try:
+            prediction = prediction_from_message(self.latest_prediction)
+            for curve in (receiver.active, receiver.pending):
+                if curve and now < min(curve.end, curve.start+receiver.lease_seconds):
+                    detail = dict(reason='CONTEXT_NOT_VISIBLE', visible=context.visible)
+                    nominal[curve.plan_id] = context.visible and nominal_curve(
+                        curve, prediction, self.follow_model, max(now, curve.start),
+                        min(curve.end, curve.start+receiver.lease_seconds), detail)
+                    prefix_details[curve.plan_id] = detail
+        except (ValueError, TypeError, AttributeError):
+            nominal = {}
+        # Recheck the actual clock/freshness after validation; computing cannot extend a lease.
+        context = self._follow_context()
+        ack = receiver.tick(context, nominal_valid=nominal)
+        curve = receiver.active
+        debug = dict(stamp=context.now, validation_seconds=time.perf_counter()-started,
+                     prefix_checks=prefix_details, prediction=context.prediction_id,
+                     plan=curve.plan_id if curve else 0, state_stamp=self.latest_state.stamp,
+                     active_start=curve.start if curve else None,
+                     lease_deadline=receiver.deadline if curve else None,
+                     initial=bool(ack and ack.state == 'ACTIVE' and not curve.parent_id)
+                     if curve else False)
+        if curve:
+            sample = curve.sample(max(curve.start, self.latest_state.stamp))
+            debug.update(reference=list(sample), actual_position=list(current.position),
+                         actual_velocity=list(current.velocity), parent=curve.parent_id,
+                         reference_position_error=list(
+                sample[i]-current.position[i] for i in range(3)),
+                reference_velocity_error=list(sample[i+3]-current.velocity[i] for i in range(3)),
+                previous_command=self.tracker.previous_command_velocity)
+        self.follow_debug_pub.publish(String(data=json.dumps(debug)))
+        if ack:
+            response = ack_message(ack)
+            response.control_owner = 'MINCO_FOLLOW' if receiver.active else 'ORIGINAL_FOLLOW'
+            response.replaced = ack.state == 'ACTIVE'
+            self.follow_ack_pub.publish(response)
+        curve = receiver.active
+        if curve is None:
+            return None
+        try:
+            desired = reference_velocity(curve, context.now, self.latest_state.stamp,
+                                         current.position,
+                                         self.flight_guidance.follow_position_gain)
+            return self.flight_guidance._velocity_command(
+                FlightKinematicState(current.position, current.velocity), desired, dt, False, True)
+        except (ValueError, TypeError, OverflowError):
+            self._revoke_nominal_follow('REFERENCE_COMMAND_INVALID')
+            return None
+
     def vehicle_status_callback(self, message):
         self.vehicle_status_stamp = self._ros_seconds()
         self.offboard_active = (
@@ -762,6 +979,11 @@ class TrajectoryTrackerNode(Node):
         if stamp <= 0.0 and _stamp_seconds(message.raw_stamp) > 0.0:
             return
         if stamp <= 0.0:
+            if getattr(self, 'terminal_execution', None) is not None:
+                self.terminal_execution = None
+                self.tracker.active_trajectory = None
+                self.pending_trajectory = None
+                self.safe_recovery_latched = True
             self.visibility.reset()
             self.latest_body_bearing = None
             self.latest_center_bearing = None
@@ -814,6 +1036,7 @@ class TrajectoryTrackerNode(Node):
     def mission_callback(self, message):
         new_mission_id = int(message.mission_id)
         if new_mission_id != self.mission_id:
+            self.terminal_execution = None
             self.tracker.reset()
             self.flight_guidance.reset()
             self.last_rejection = TrajectoryRejectReason.NONE
@@ -840,6 +1063,7 @@ class TrajectoryTrackerNode(Node):
         if self.mission_state == MissionState.TERMINAL_MINCO:
             self.terminal_mode_latched = True
         if self.mission_state in self.TERMINAL_STATES:
+            self.terminal_execution = None
             self.tracker.reset()
             self.pending_trajectory = None
             self.terminal_mode_latched = False
@@ -875,6 +1099,17 @@ class TrajectoryTrackerNode(Node):
 
     def _evaluate_trajectory(self, trajectory):
         now = self._ros_seconds()
+        committed = self._terminal_execution_active(now)
+        fresh_replacement = not committed or bool(
+            self._prediction_fresh(now)
+            and self.latest_state is not None
+            and 0. <= now - self.latest_state.stamp <= self.maximum_state_age
+            and fresh_flight_target(self.latest_kf_message, now, self.maximum_state_age,
+                                    self.expected_frame_id) is not None
+            and self.visibility_decision and self.visibility_decision.locked
+            and not self.safe_recovery_latched)
+        if committed and not fresh_replacement:
+            return TrajectoryRejectReason.TERMINAL_COMMITTED
         if now - trajectory.source_stamp > self.tracker.maximum_plan_age:
             return TrajectoryRejectReason.SOURCE_STALE
         if (trajectory.target_state_source != 'tracking'
@@ -894,6 +1129,12 @@ class TrajectoryTrackerNode(Node):
             return TrajectoryRejectReason.PREDICTION_MISMATCH
         if int(self.latest_prediction.mission_id) != self.mission_id:
             return TrajectoryRejectReason.PREDICTION_MISMATCH
+        # Geometry uses the physical sample epoch; execution authority must
+        # satisfy the mission's remaining-time gate at the control epoch.
+        if now >= trajectory.valid_until:
+            return TrajectoryRejectReason.EXPIRED
+        if trajectory.valid_until - now < self.tracker.minimum_remaining_time:
+            return TrajectoryRejectReason.INSUFFICIENT_REMAINING_TIME
         try:
             endpoint = self._candidate_endpoint(trajectory)
         except (TypeError, ValueError):
@@ -915,6 +1156,13 @@ class TrajectoryTrackerNode(Node):
             and trajectory.terminal_mode
         ):
             self.terminal_mode_latched = True
+        if (committed and rejection == TrajectoryRejectReason.NONE
+                and self.tracker.last_replacement_performed):
+            # Only a completely accepted fresh plan grants a new deadline.
+            # Rejected/stale candidates leave the old commitment untouched.
+            self.terminal_execution = None
+            self.visibility_decision = replace(self.visibility_decision, state='TARGET_LOCK')
+            self.search_state = 'TARGET_LOCK'
         return rejection
 
     def _publish_candidate_result(self, pending, rejection, started):
@@ -1025,6 +1273,13 @@ class TrajectoryTrackerNode(Node):
         message.direct_actuator = False
         self.offboard_pub.publish(message)
 
+    def _remember_emitted_velocity(self, setpoint, now):
+        """Share actual velocity-command history across guidance/tracker owners."""
+        velocity = tuple(float(value) for value in setpoint.velocity)
+        if len(velocity) == 3 and all(math.isfinite(value) for value in velocity):
+            self.tracker.previous_command_velocity = velocity
+            self.tracker.previous_command_stamp = now
+
     def _publish_vehicle_command(self, command, param1, param2=0.0):
         message = VehicleCommand()
         message.timestamp = self._timestamp_us()
@@ -1075,6 +1330,13 @@ class TrajectoryTrackerNode(Node):
         message.mission_id = self.mission_id
         message.attempted_plan_id = int(attempted_plan_id)
         active = self.tracker.active_trajectory
+        if status == 'MINCO_FOLLOW' and getattr(self, 'follow_minco_requested', False):
+            follow = self.follow_receiver.active
+            if follow is not None:
+                message.plan_id = follow.plan_id
+                message.prediction_sequence_id = follow.prediction_id
+                message.source_age = max(0., now-follow.source_stamp)
+                message.remaining_time = max(0., self.follow_receiver.deadline-now)
         if active is not None:
             message.plan_id = active.plan_id
             message.prediction_sequence_id = active.prediction_sequence_id
@@ -1214,6 +1476,54 @@ class TrajectoryTrackerNode(Node):
             message.safety_state = 'HOLD'
         self.diagnostic_pub.publish(message)
 
+    def _prediction_fresh(self, now):
+        prediction = self.latest_prediction
+        return bool(
+            prediction is not None and prediction.valid
+            and int(prediction.mission_id) == self.mission_id
+            and measurement_age(now, _stamp_seconds(prediction.observation_stamp))
+            <= self.maximum_state_age)
+
+    def _terminal_execution_active(self, now):
+        execution = getattr(self, 'terminal_execution', None)
+        valid = bool(
+            execution is not None
+            and self.mission_state == MissionState.TERMINAL_MINCO
+            and execution.trajectory is self.tracker.active_trajectory
+            and execution.trajectory.mission_id == self.mission_id
+            and execution.entered_at <= now < execution.deadline)
+        if not valid:
+            self.terminal_execution = None
+        return valid
+
+    def _arm_terminal_execution(self, current, now, decision):
+        if (self._terminal_execution_active(now)
+                or not getattr(self, 'terminal_cruise_enabled', False)
+                or self.mission_state != MissionState.TERMINAL_MINCO
+                or not self.intercept_requested or self.safe_recovery_latched
+                or not decision.locked or self.latest_target_state is None
+                or not self._prediction_fresh(now)):
+            return
+        trajectory = self.tracker.active_trajectory
+        if (trajectory is None
+                or not (trajectory.terminal_mode or self.terminal_mode_latched)
+                or trajectory.mission_id != self.mission_id
+                or trajectory.target_state_source != 'tracking'
+                or not 0. < trajectory.contact_stamp - now <= .7
+                or now >= trajectory.valid_until):
+            return
+        relative = tuple(self.latest_target_state.position[a] - current.position[a]
+                         for a in (0, 1))
+        if math.hypot(*relative) > 2.5:
+            return
+        # A plan accepted in MINCO_TRACKING can become the terminal plan
+        # without an accepted replacement. Update only its execution tag.
+        trajectory = trajectory_for_mission(trajectory, self.mission_state)
+        self.tracker.active_trajectory = trajectory
+        self.terminal_execution = TerminalExecution(
+            trajectory, now, min(trajectory.valid_until, trajectory.contact_stamp,
+                                 now + .7))
+
     def _update_visibility(self, current, now, dt):
         """Compute visual authority before selecting XYZ or yaw commands."""
         self.latest_target_state = fresh_flight_target(
@@ -1237,6 +1547,14 @@ class TrajectoryTrackerNode(Node):
             self.latest_target_state is not None,
             terminal=terminal,
         )
+        self._arm_terminal_execution(current, now, decision)
+        if self._terminal_execution_active(now):
+            # Visibility remains truthful. Only execution ownership survives
+            # temporary sensing loss; no new plan can enter this window.
+            decision = replace(decision, state='TERMINAL_COMMITTED')
+            self.visibility_decision = decision
+            self.search_state = decision.state
+            return decision
         if (terminal and not decision.locked) or (
             self.mission_state == MissionState.SAFE_RECOVERY
             and height < max(search_height, self.tracker.recovery_clearance)
@@ -1357,6 +1675,8 @@ class TrajectoryTrackerNode(Node):
                 MissionState.INIT, MissionState.GROUND_HOLD,
                 *self.TERMINAL_STATES,
             ) or self.safe_recovery_latched
+            or (self._terminal_execution_active(current.stamp)
+                and not decision.locked)
             # This is a launch/search gate. A fresh, locked terminal descent
             # still needs visual yaw below it to keep the target in the camera.
             or (height < self.visibility.config.target_search_enable_height
@@ -1418,7 +1738,10 @@ class TrajectoryTrackerNode(Node):
         started = time.perf_counter()
         now = self._ros_seconds()
         self._process_pending_trajectory()
+        if self.mission_state != MissionState.FOLLOW:
+            self._revoke_nominal_follow('FOLLOW_EXITED')
         if self.latest_state is None:
+            self._revoke_nominal_follow('NAVIGATION_UNAVAILABLE')
             self._publish_bool(self.flight_ready_pub, False)
             self._publish_diagnostic(
                 now,
@@ -1428,6 +1751,15 @@ class TrajectoryTrackerNode(Node):
             )
             return
         if now - self.latest_state.stamp > self.maximum_state_age:
+            self._revoke_nominal_follow('NAVIGATION_STALE')
+            if getattr(self, 'terminal_execution', None) is not None:
+                self.terminal_execution = None
+                self.tracker.active_trajectory = None
+                self.safe_recovery_latched = True
+                self.search_state = 'SAFE_RECOVERY'
+                if self.visibility_decision is not None:
+                    self.visibility_decision = replace(
+                        self.visibility_decision, state='SAFE_RECOVERY', locked=False)
             self._publish_bool(self.flight_ready_pub, False)
             self._publish_diagnostic(
                 now,
@@ -1452,6 +1784,7 @@ class TrajectoryTrackerNode(Node):
 
         dt = min(dt, self.tracker.maximum_command_dt)
         decision = self._update_visibility(current, now, dt)
+        committed = self._terminal_execution_active(now)
         self.bearing_approach_active = False
         target_yaw = self.current_heading
 
@@ -1519,7 +1852,15 @@ class TrajectoryTrackerNode(Node):
         elif self.mission_state == MissionState.FOLLOW:
             self._publish_bool(self.flight_ready_pub, False)
             self._request_flight_mode()
-            command = self._continuous_follow_command(current, now, dt)
+            command = None
+            if getattr(self, 'follow_minco_requested', False):
+                # Both owners shape from the last actually emitted command at every switch.
+                if self.tracker.previous_command_velocity is not None:
+                    self.flight_guidance.previous_velocity = self.tracker.previous_command_velocity
+                command = self._nominal_follow_command(current, now, dt)
+            minco_active = command is not None
+            if command is None:
+                command = self._continuous_follow_command(current, now, dt)
             velocity_control = getattr(command, 'mode', '') == 'VELOCITY'
             self._publish_offboard_mode(
                 timestamp_us, velocity_control=velocity_control,
@@ -1528,7 +1869,7 @@ class TrajectoryTrackerNode(Node):
                         if hasattr(command, 'mode')
                         else command_to_setpoint(command, timestamp_us))
             self._publish_bool(self.far_guidance_pub, False)
-            status = 'FOLLOW'
+            status = 'MINCO_FOLLOW' if minco_active else 'FOLLOW'
         elif self._bearing_approach_available(current, now):
             self._publish_bool(self.flight_ready_pub, False)
             self._request_flight_mode()
@@ -1547,7 +1888,7 @@ class TrajectoryTrackerNode(Node):
         elif (self.mission_state in (
             MissionState.TARGET_ACQUIRE, MissionState.TARGET_LOCK,
             MissionState.REACQUIRE, MissionState.SAFE_RECOVERY,
-        ) or (not decision.locked and self.mission_state not in (
+        ) or (not committed and not decision.locked and self.mission_state not in (
             MissionState.TAKEOFF, *self.TERMINAL_STATES,
         ))):
             self._publish_bool(self.flight_ready_pub, False)
@@ -1610,13 +1951,14 @@ class TrajectoryTrackerNode(Node):
             self._publish_bool(self.flight_ready_pub, False)
             self._request_flight_mode()
             prediction = self.latest_prediction
-            prediction_fresh = (
-                prediction is not None and prediction.valid
-                and int(prediction.mission_id) == self.mission_id
-                and measurement_age(now, _stamp_seconds(
-                    prediction.observation_stamp)) <= self.maximum_state_age
-            )
-            if not prediction_fresh:
+            prediction_fresh = self._prediction_fresh(now)
+            active = self.tracker.active_trajectory
+            executable = bool(active is not None and active.mission_id == self.mission_id
+                              and now < active.valid_until)
+            if not prediction_fresh and not (
+                committed or (executable and decision.locked
+                              and self.latest_target_state is not None)
+            ):
                 command = self._search_or_recovery_command(current, dt)
                 self._publish_offboard_mode(
                     timestamp_us,
@@ -1628,6 +1970,7 @@ class TrajectoryTrackerNode(Node):
                 status = 'NO_VALID_PLAN'
                 self._final_yaw(setpoint, current, dt)
                 self.setpoint_pub.publish(setpoint)
+                self._remember_emitted_velocity(setpoint, now)
                 self.reference_pub.publish(setpoint)
                 self._publish_diagnostic(now, command, status,
                                          time.perf_counter() - started)
@@ -1638,7 +1981,8 @@ class TrajectoryTrackerNode(Node):
             # limits use the current publication epoch independently.
             terminal_target = (fresh_flight_target(
                 self.latest_kf_message, now, self.maximum_state_age, self.expected_frame_id,
-            ) if self.get_parameter('terminal_cruise_enabled').value else None)
+            ) if prediction_fresh
+                and self.get_parameter('terminal_cruise_enabled').value else None)
             command = self.tracker.command(
                 self.latest_state, self.mission_id, control_stamp=now,
                 terminal_target_at_time=(
@@ -1647,6 +1991,11 @@ class TrajectoryTrackerNode(Node):
                 terminal_target_velocity=(
                     terminal_target.velocity if terminal_target is not None else None
                 ),
+                hold_terminal_velocity=committed,
+                cruise_from_start=bool(
+                    self.use_velocity_control and self.intercept_requested
+                    and executable and active.target_state_source == 'tracking'
+                    and decision.locked and terminal_target is not None),
             )
             velocity_mode = self.use_velocity_control
             if command is None:
@@ -1676,7 +2025,7 @@ class TrajectoryTrackerNode(Node):
                     timestamp_us,
                     velocity_control=velocity_mode,
                 )
-                status = 'TRACKING'
+                status = 'TERMINAL_COMMITTED' if committed else 'TRACKING'
         else:
             self._publish_bool(self.flight_ready_pub, False)
             self._publish_offboard_mode(timestamp_us, velocity_control=False)
@@ -1696,6 +2045,7 @@ class TrajectoryTrackerNode(Node):
             command = None
         self._final_yaw(setpoint, current, dt)
         self.setpoint_pub.publish(setpoint)
+        self._remember_emitted_velocity(setpoint, now)
         self.reference_pub.publish(setpoint)
         self._publish_diagnostic(
             now,

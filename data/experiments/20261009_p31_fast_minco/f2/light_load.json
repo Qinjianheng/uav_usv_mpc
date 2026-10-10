@@ -1,0 +1,162 @@
+{
+  "groups": [
+    85856,
+    86129,
+    86579,
+    86781
+  ],
+  "samples": [
+    {
+      "stamp": 1791511011.8586226,
+      "cpu_percent": 282.84816767000285,
+      "rss_mib": 1171.30859375,
+      "research_cpu_percent": 60.967272890000615,
+      "research_rss_mib": 120.48828125
+    },
+    {
+      "stamp": 1791511012.880445,
+      "cpu_percent": 293.24417390636796,
+      "rss_mib": 1165.234375,
+      "research_cpu_percent": 63.962655382261474,
+      "research_rss_mib": 120.48828125
+    },
+    {
+      "stamp": 1791511013.890567,
+      "cpu_percent": 268.15573402188306,
+      "rss_mib": 1168.84375,
+      "research_cpu_percent": 56.762892603172325,
+      "research_rss_mib": 120.48828125
+    },
+    {
+      "stamp": 1791511014.9087849,
+      "cpu_percent": 284.15351095695195,
+      "rss_mib": 1167.46875,
+      "research_cpu_percent": 62.37516094176995,
+      "research_rss_mib": 120.48828125
+    },
+    {
+      "stamp": 1791511015.92338,
+      "cpu_percent": 284.88063684122193,
+      "rss_mib": 1169.9375,
+      "research_cpu_percent": 61.88786248619649,
+      "research_rss_mib": 120.48828125
+    },
+    {
+      "stamp": 1791511016.94015,
+      "cpu_percent": 279.7954202098803,
+      "rss_mib": 1167.46484375,
+      "research_cpu_percent": 60.09690363662922,
+      "research_rss_mib": 120.48828125
+    },
+    {
+      "stamp": 1791511017.9633446,
+      "cpu_percent": 226.16116459028086,
+      "rss_mib": 1167.15625,
+      "research_cpu_percent": 51.13208938562872,
+      "research_rss_mib": 120.48828125
+    },
+    {
+      "stamp": 1791511018.986148,
+      "cpu_percent": 232.65031943768216,
+      "rss_mib": 1166.21875,
+      "research_cpu_percent": 49.85363987950332,
+      "research_rss_mib": 120.61328125
+    },
+    {
+      "stamp": 1791511020.0031736,
+      "cpu_percent": 224.82834331652472,
+      "rss_mib": 1168.5546875,
+      "research_cpu_percent": 46.920697735622554,
+      "research_rss_mib": 120.61328125
+    },
+    {
+      "stamp": 1791511021.0234203,
+      "cpu_percent": 217.30541954210437,
+      "rss_mib": 1167.65234375,
+      "research_cpu_percent": 45.230992302881454,
+      "research_rss_mib": 120.61328125
+    },
+    {
+      "stamp": 1791511022.03786,
+      "cpu_percent": 229.41276669971816,
+      "rss_mib": 1167.82421875,
+      "research_cpu_percent": 49.019821944384226,
+      "research_rss_mib": 120.61328125
+    },
+    {
+      "stamp": 1791511023.045161,
+      "cpu_percent": 2.958284374142169,
+      "rss_mib": 29.3203125,
+      "research_cpu_percent": 0.0,
+      "research_rss_mib": 0.0
+    },
+    {
+      "stamp": 1791511024.0536735,
+      "cpu_percent": 1.9843388044254737,
+      "rss_mib": 10.125,
+      "research_cpu_percent": 0.0,
+      "research_rss_mib": 0.0
+    },
+    {
+      "stamp": 1791511025.0617697,
+      "cpu_percent": 0.0,
+      "rss_mib": 10.125,
+      "research_cpu_percent": 0.0,
+      "research_rss_mib": 0.0
+    },
+    {
+      "stamp": 1791511026.069411,
+      "cpu_percent": 0.0,
+      "rss_mib": 10.125,
+      "research_cpu_percent": 0.0,
+      "research_rss_mib": 0.0
+    },
+    {
+      "stamp": 1791511027.0771813,
+      "cpu_percent": 0.0,
+      "rss_mib": 10.125,
+      "research_cpu_percent": 0.0,
+      "research_rss_mib": 0.0
+    },
+    {
+      "stamp": 1791511028.093183,
+      "cpu_percent": 0.0,
+      "rss_mib": 10.125,
+      "research_cpu_percent": 0.0,
+      "research_rss_mib": 0.0
+    },
+    {
+      "stamp": 1791511029.1119447,
+      "cpu_percent": 0.0,
+      "rss_mib": 10.125,
+      "research_cpu_percent": 0.0,
+      "research_rss_mib": 0.0
+    },
+    {
+      "stamp": 1791511030.127361,
+      "cpu_percent": 0.0,
+      "rss_mib": 10.125,
+      "research_cpu_percent": 0.0,
+      "research_rss_mib": 0.0
+    },
+    {
+      "stamp": 1791511031.1419249,
+      "cpu_percent": 0.0,
+      "rss_mib": 10.125,
+      "research_cpu_percent": 0.0,
+      "research_rss_mib": 0.0
+    }
+  ],
+  "processes": {
+    "85856": {
+      "ticks": 2,
+      "rss": 5373952,
+      "command": "bash "
+    },
+    "86781": {
+      "ticks": 3,
+      "rss": 5242880,
+      "command": "bash "
+    }
+  }
+}

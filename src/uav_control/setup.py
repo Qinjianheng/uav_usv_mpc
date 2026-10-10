@@ -24,6 +24,11 @@ setup(
     },
     entry_points={
         'console_scripts': [
+            'p4_follow_planner_node = uav_control.controllers.p4_follow_planner_node:main',
+            'follow_research_shadow_node = '
+            'uav_control.controllers.follow_research_shadow_node:main',
+            'follow_mpc_shadow_node = '
+            'uav_control.controllers.follow_mpc_shadow_node:main',
             'position_listener = uav_control.position_listener:main',
             'offboard_takeoff = uav_control.offboard_takeoff:main',
             'moving_target = uav_control.moving_target:main',
@@ -49,6 +54,7 @@ setup(
             'uav_control.perception.target_bearing_node:main',
             'rgbd_target_localizer = '
             'uav_control.perception.rgbd_target_localizer:main',
+            'tof_depth_node = uav_control.perception.tof_depth_node:main',
             'dual_tof_selector = '
             'uav_control.perception.dual_tof_selector:main',
         ],

@@ -1,0 +1,15 @@
+Building ROS 2 workspace: /home/qin/data/uav_usv_mpc
+Starting >>> px4_msgs
+Starting >>> uav_usv_interfaces
+Finished <<< uav_usv_interfaces [0.50s]
+Finished <<< px4_msgs [1.64s]
+Starting >>> uav_control
+[Processing: uav_control]
+Finished <<< uav_control [30.8s]
+Starting >>> uav_usv_bringup
+Finished <<< uav_usv_bringup [0.08s]
+
+Summary: 4 packages finished [32.7s]
+
+Build complete. To use this shell, run:
+source /home/qin/data/uav_usv_mpc/install/setup.bash

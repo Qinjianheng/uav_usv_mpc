@@ -1,0 +1,106 @@
+{
+  "result": {
+    "stamp": {
+      "sec": 1791357102,
+      "nanosec": 432063818
+    },
+    "mission_id": 1,
+    "success": true,
+    "outcome": "SUCCESS",
+    "reason": "CAPTURE_RADIUS_REACHED",
+    "detail": "determined by simulation truth in evaluator only",
+    "elapsed_time": 10.448018789291382,
+    "capture_radius": 0.5,
+    "minimum_distance": 0.4600856583525302,
+    "horizontal_distance": 0.38550204163514606,
+    "vertical_error": 0.25113141762195995,
+    "relative_speed": 2.6873421967959117,
+    "closing_speed": 2.3128912889229625,
+    "max_horizontal_speed": 6.670630650718124,
+    "max_vertical_speed": 2.75352518952256,
+    "max_horizontal_acceleration": 3.9686953637631066,
+    "max_vertical_acceleration": 3.852758545422604
+  },
+  "first_minco": {
+    "start": 9.280362606048584,
+    "finish": 10.430232048034668,
+    "previous_status": "FAR_GUIDANCE",
+    "previous_speed": 3.808504944426153,
+    "entry_speed": 3.9760128278987024,
+    "last_speed": 6.5,
+    "decreases": [],
+    "recovery_before_result": false
+  },
+  "committed_samples_before_result": 5,
+  "last_second_physical_speed": {
+    "count": 20,
+    "minimum": 4.443770087811456,
+    "maximum": 6.644648336637208
+  },
+  "closest_sample": {
+    "intercept_elapsed_time": "10.447431564331055",
+    "distance": "0.5906034357940667",
+    "horizontal_distance": "0.5243964515829584",
+    "vertical_error": "0.2716997974584415",
+    "phase": "TERMINAL_MINCO",
+    "controller_status": "TERMINAL_COMMITTED",
+    "sea_safety_state": "WARNING"
+  },
+  "terminal_vision": {
+    "count": 22,
+    "rmse": 0.13243492409236018,
+    "p95": 0.18364225289129704
+  },
+  "freeze": {
+    "applicable": true,
+    "pause_seen": true,
+    "world_samples": 60,
+    "truth_samples": 121,
+    "world_clock_span": 0.0,
+    "truth_position_span": 0.0,
+    "maximum_target_speed": 0.0,
+    "native_world_states": [
+      {
+        "paused": true,
+        "sim_time": 45.94,
+        "x500_mono_cam_0": [
+          -15.2846,
+          64.6737,
+          0.277352,
+          0.105955,
+          0.057733,
+          2.07529
+        ],
+        "usv_target": [
+          -15.4919,
+          65.1475,
+          0.569999,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "paused": true,
+        "sim_time": 45.94,
+        "x500_mono_cam_0": [
+          -15.2846,
+          64.6737,
+          0.277352,
+          0.105955,
+          0.057733,
+          2.07529
+        ],
+        "usv_target": [
+          -15.4919,
+          65.1475,
+          0.569999,
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    ],
+    "native_poses_identical": true
+  }
+}

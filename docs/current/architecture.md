@@ -1,10 +1,12 @@
 # 当前架构与控制边界
 
+当前默认只有前视 RGB-D 输入，下视关闭；升沉幅值 0.15 m。ToF 实现保留并由显式开关启用；模型假设、真机边界和切换步骤见 [相机文档](camera_simulation.md)。
+
 当前统一入口为 [modular_intercept.launch.py](../../src/uav_usv_bringup/launch/modular_intercept.launch.py)，参数为 [baseline.yaml](../../src/uav_usv_bringup/config/baseline.yaml)。它使用多个进程隔离感知、预测、规划、跟踪、任务和评价，tracker 是 PX4 指令的唯一在线发布者。
 
 ```mermaid
 flowchart LR
-  Camera[前视 RGB-D / 图像采集戳] --> Localizer[RGB-D 定位 / NED]
+  Camera[前视 RGB-D / 可选功能 ToF / 图像采集戳] --> Localizer[RGB-D 定位 / NED]
   Localizer --> KF[恒速度 KF]
   KF --> Predictor[BCTRA 目标预测]
   Predictor --> Planner[MINCO 有限时域规划]
@@ -29,10 +31,10 @@ flowchart LR
 | 任务 | `mission/mission_manager_node.py` | X 起飞和 FOLLOW；Y 进近与截击；恢复、任务终态 |
 | 评价 | `evaluation/intercept_evaluator_node.py` | 真值误差、0.50 m 捕获球、触海/超时、日志与暂停 |
 
-`use_velocity_control: true` 时，PX4 位置 setpoint 为 NaN，使用 tracker 的速度命令及加速度前馈。这里仍有 tracker 内部位置反馈，不能因此将系统描述成 PX4 位置控制。最后 0.7 s 的既有 `terminal_cruise_enabled` 根据新鲜 KF/BCTRA 修正水平方向并保持速度；竖直 MINCO 与海面保护保留。
+`use_velocity_control: true` 时，PX4 位置 setpoint 为 NaN，使用 tracker 的速度命令及加速度前馈。这里仍有 tracker 内部位置反馈，不能因此将系统描述成 PX4 位置控制。`terminal_cruise_enabled` 在已接纳 MINCO 执行期间根据新鲜 KF/BCTRA 保持水平速度，并继承上一条实际速度指令。感知失效后的连续执行仅限最后 0.7 s 和已验收轨迹原期限。新鲜轨迹仍须完整验收才能接替；竖直 MINCO 与海面保护保留，实际验证见 [报告](terminal_replan_rgbd_20261007.md)。
 
 tracker 和主 predictor 的目标输入均为 KF，不能再将 tracker 描述成使用真值。真值只进入评价、显式 shadow 诊断和离线对比；评价终态可结束任务/暂停仿真，但真值坐标或速度不用于在线预测、轨迹生成和几何反馈。可用现有 `test_strict_visual_control.py` 及相关测试核对隔离。
 
 图像采集戳、因果 pose history 等待、显式超时拒绝、原始导航 sample epoch 保持。125 ms 新鲜度限制、捕获球、KF Q/R 和安全约束本轮不变。红球仍只是仿真感知接口测试，不能作为无标记真实 USV 感知验证。
 
-`src/uav_control/uav_control/archive/`、旧单体入口及历史 launch 保留供回归；当前运行以 modular 入口为准。MPC 的新增位置与验收见 [后续范围](mpc_scope.md)。
+三个旧单体控制入口及其测试、兼容 launch 保留供回归；两个未引用的退役 archive 版本和 planner `.bak` 已外置，来源与恢复见 [源码冗余清理](redundancy_cleanup.md)。当前运行以 modular 入口为准。MPC 的新增位置与验收见 [后续范围](mpc_scope.md)。

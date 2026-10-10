@@ -23,5 +23,4 @@ data/models/*
 
 # New runs, PX4 parameter backups and video captures stay local.
 # Curate immutable evidence into data/baselines/ before staging it.
-data/experiments/
 data/videos/

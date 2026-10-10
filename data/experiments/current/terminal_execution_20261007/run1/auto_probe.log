@@ -1,0 +1,15 @@
+[WARN] [1791342269.735097806] [tof_validation_probe]: New publisher discovered on topic '/planning/target_prediction', offering incompatible QoS. No messages will be received from it. Last incompatible policy: RELIABILITY
+PHASE INIT
+PHASE GROUND_HOLD
+PHASE INIT
+PHASE GROUND_HOLD
+SEND X
+PHASE TAKEOFF
+PHASE FOLLOW
+SEND Y
+PHASE FAR_GUIDANCE
+PHASE MINCO_READY
+PHASE MINCO_TRACKING
+PHASE TERMINAL_MINCO
+PHASE SAFE_RECOVERY
+RESULT OrderedDict([('stamp', OrderedDict([('sec', 1791342306), ('nanosec', 448685646)])), ('mission_id', 1), ('success', True), ('outcome', 'SUCCESS'), ('reason', 'CAPTURE_RADIUS_REACHED'), ('detail', 'determined by simulation truth in evaluator only'), ('elapsed_time', 11.247197151184082), ('capture_radius', 0.5), ('minimum_distance', 0.49865320430355575), ('horizontal_distance', 0.4311080024343212), ('vertical_error', 0.25060109417018317), ('relative_speed', 2.711401004963691), ('closing_speed', 2.2649056367386278), ('max_horizontal_speed', 6.7023694763954405), ('max_vertical_speed', 2.74901681663398), ('max_horizontal_acceleration', 5.18477136897043), ('max_vertical_acceleration', 3.779757616457369)])

@@ -1,0 +1,87 @@
+{
+  "result": {
+    "stamp": {
+      "sec": 1791342306,
+      "nanosec": 448685646
+    },
+    "mission_id": 1,
+    "success": true,
+    "outcome": "SUCCESS",
+    "reason": "CAPTURE_RADIUS_REACHED",
+    "detail": "determined by simulation truth in evaluator only",
+    "elapsed_time": 11.247197151184082,
+    "capture_radius": 0.5,
+    "minimum_distance": 0.49865320430355575,
+    "horizontal_distance": 0.4311080024343212,
+    "vertical_error": 0.25060109417018317,
+    "relative_speed": 2.711401004963691,
+    "closing_speed": 2.2649056367386278,
+    "max_horizontal_speed": 6.7023694763954405,
+    "max_vertical_speed": 2.74901681663398,
+    "max_horizontal_acceleration": 5.18477136897043,
+    "max_vertical_acceleration": 3.779757616457369
+  },
+  "first_minco": {
+    "start": 9.961230039596558,
+    "finish": 11.161293506622314,
+    "previous_status": "FAR_GUIDANCE",
+    "previous_speed": 3.674563221418952,
+    "entry_speed": 4.118992739278931,
+    "last_speed": 6.5,
+    "decreases": [],
+    "recovery_before_result": true
+  },
+  "committed_samples_before_result": 0,
+  "freeze": {
+    "applicable": true,
+    "pause_seen": true,
+    "world_samples": 60,
+    "truth_samples": 121,
+    "world_clock_span": 0.0,
+    "truth_position_span": 0.0,
+    "maximum_target_speed": 0.0,
+    "native_world_states": [
+      {
+        "paused": true,
+        "sim_time": 46.764,
+        "x500_mono_cam_0": [
+          -15.3325,
+          64.8565,
+          0.409226,
+          0.00719155,
+          0.0142576,
+          2.09856
+        ],
+        "usv_target": [
+          -15.6417,
+          65.3626,
+          0.569142,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "paused": true,
+        "sim_time": 46.764,
+        "x500_mono_cam_0": [
+          -15.3325,
+          64.8565,
+          0.409226,
+          0.00719155,
+          0.0142576,
+          2.09856
+        ],
+        "usv_target": [
+          -15.6417,
+          65.3626,
+          0.569142,
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    ],
+    "native_poses_identical": true
+  }
+}

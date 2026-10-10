@@ -1,0 +1,4 @@
+report: True  elapsed: 0.0
+test_same_geometry_new_version_checks_full_curve_preserves_boundary_and_navigation PASS
+report: False PREDICTION_REVALIDATION_FAILED elapsed: 0.0
+test_changed_prediction_behind_camera_rejects_even_small_solver_cost PASS

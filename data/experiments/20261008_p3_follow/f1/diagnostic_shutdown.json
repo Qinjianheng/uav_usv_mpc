@@ -1,0 +1,9 @@
+{
+  "stamp": 1791469664.1717827,
+  "pgid": 59502,
+  "processes": {
+    "59561": "/usr/bin/python3 /home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/target_predictor_node --ros-args -r __node:=shadow_target_predictor_node --params-file /home/qin/data/uav_usv_mpc/data/experiments/20261008_p3_follow/f1/config/flight.yaml ",
+    "59577": "/usr/bin/python3 /home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/front_tof_monitor --ros-args -r __node:=front_tof_monitor --params-file /home/qin/data/uav_usv_mpc/data/experiments/20261008_p3_follow/f1/config/flight.yaml --params-file /tmp/launch_params_t0x8ewec ",
+    "59581": "/usr/bin/python3 /home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/dual_tof_selector --ros-args -r __node:=dual_tof_selector --params-file /home/qin/data/uav_usv_mpc/data/experiments/20261008_p3_follow/f1/config/flight.yaml "
+  }
+}

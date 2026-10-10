@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/home/qin/data/uav_usv_mpc/scripts/p31_minco_experiment.py", line 172, in <module>
+    main()
+  File "/home/qin/data/uav_usv_mpc/scripts/p31_minco_experiment.py", line 38, in main
+    cases, _ = base.replay.load_replay_cases(args.input, args.maximum)
+  File "/home/qin/data/uav_usv_mpc/scripts/mpc_seed_replay.py", line 36, in load_replay_cases
+    raise ValueError('maximum_records must be between 1 and 20')
+ValueError: maximum_records must be between 1 and 20

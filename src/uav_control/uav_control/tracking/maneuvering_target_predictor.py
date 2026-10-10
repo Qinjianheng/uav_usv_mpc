@@ -1,5 +1,7 @@
 """Bounded short-horizon prediction for an independently manoeuvring target."""
 
+from uav_control.guidance.follow_profile import profiled
+
 import math
 from collections import deque
 
@@ -405,6 +407,59 @@ class ManeuveringTargetPredictor:
             predicted_vy,
             predicted_vz,
         )
+
+    @profiled('bctra_batch')
+    def predict_many(self, x, y, z, vx, vy, vz, horizons):
+        """
+        Reuse grid-aligned integration prefixes; retain scalar handling off the grid.
+
+        No derivative estimate, integration step, clamp or forecast epoch changes.
+        The scalar method remains the numerical reference and irregular-time fallback.
+        """
+        times = tuple(float(t) for t in horizons)
+        self.predict(x, y, z, vx, vy, vz, 0.)  # Validate even an empty series.
+        if any(not math.isfinite(t) or t < 0. for t in times):
+            raise ValueError('prediction horizon must be finite and non-negative')
+        state = tuple(float(v) for v in (x, y, z, vx, vy, vz))
+        x, y, z, vx, vy, vz = state
+        speed = math.hypot(vx, vy)
+        if (not times or not self.maneuver_model_active or speed < self.minimum_speed
+                or (abs(self.turn_acceleration) <= 1e-12
+                    and abs(self.speed_acceleration) <= 1e-12)):
+            return tuple(self.predict(*state, t) for t in times)
+        step = self.integration_step
+        aligned = [t for t in times if t > 0. and math.isclose(
+            min(t, self.maneuver_horizon)/step,
+            round(min(t, self.maneuver_horizon)/step), rel_tol=0., abs_tol=1e-10)]
+        if not aligned or round(min(max(aligned), self.maneuver_horizon)/step) > 10000:
+            return tuple(self.predict(*state, t) for t in times)
+        count = round(min(max(aligned), self.maneuver_horizon)/step)
+        heading, turn, elapsed = math.atan2(vy, vx), self.turn_rate, 0.
+        px, py, pspeed = x, y, speed
+        prefixes = [(px, py, vx, vy)]
+        for _ in range(count):
+            decay = math.exp(-(elapsed+.5*step)/self.acceleration_decay_time)
+            next_turn = max(min(turn+self.turn_acceleration*decay*step,
+                                self.max_turn_rate), -self.max_turn_rate)
+            next_speed = max(pspeed+self.speed_acceleration*decay*step, 0.)
+            midpoint_turn, midpoint_speed = .5*(turn+next_turn), .5*(pspeed+next_speed)
+            midpoint_heading = heading+.5*midpoint_turn*step
+            px += midpoint_speed*math.cos(midpoint_heading)*step
+            py += midpoint_speed*math.sin(midpoint_heading)*step
+            heading += midpoint_turn*step
+            turn, pspeed, elapsed = next_turn, next_speed, elapsed+step
+            prefixes.append((px, py, pspeed*math.cos(heading), pspeed*math.sin(heading)))
+        results = []
+        for t in times:
+            curved = min(t, self.maneuver_horizon)
+            index = round(curved/step)
+            if t == 0. or not math.isclose(curved/step, index, rel_tol=0., abs_tol=1e-10):
+                results.append(self.predict(*state, t))
+                continue
+            px, py, pvx, pvy = prefixes[index]
+            pz, pvz = self._predict_vertical(z, vz, t)
+            results.append((px+pvx*(t-curved), py+pvy*(t-curved), pz, pvx, pvy, pvz))
+        return tuple(results)
 
     def vertical_acceleration(self, initial_vz, horizon):
         """Return acceleration from the decaying vertical-velocity model."""

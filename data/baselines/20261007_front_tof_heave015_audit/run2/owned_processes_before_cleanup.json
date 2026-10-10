@@ -1,0 +1,152 @@
+{
+  "44984": {
+    "ppid": 32664,
+    "pgid": 44984,
+    "args": "bash -lc  printf '%s\\n' \"${BASHPID}\" > '/tmp/uav_usv_lab.GUZkSU/gazebo.pid' && source '/home/qin/Projects/PX4-Autopilot/build/px4_sitl_default/rootfs/gz_env.sh' && export GZ_SIM_SERVER_CONFIG_PATH='/tmp/uav_usv_lab.GUZkSU/magnetometer_enu.config' && export GZ_SIM_RESOURCE_PATH='/tmp/uav_usv_lab.GUZkSU/models':'/home/qin/data/uav_usv_mpc/src/uav_usv_bringup/models':${GZ_SIM_RESOURCE_PATH:-} && gz sim -r '/home/qin/data/uav_usv_mpc/src/uav_usv_bringup/worlds/ocean.sdf'; component_status=$?; if [[ ! -f '/tmp/uav_usv_lab.GUZkSU/restarting' ]]; then exec bash; fi; exit ${component_status}"
+  },
+  "44996": {
+    "ppid": 44984,
+    "pgid": 44984,
+    "args": "gz sim -r /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/worlds/ocean.sdf"
+  },
+  "45004": {
+    "ppid": 44996,
+    "pgid": 45004,
+    "args": "gz sim server"
+  },
+  "45005": {
+    "ppid": 44996,
+    "pgid": 45005,
+    "args": "gz sim gui"
+  },
+  "45268": {
+    "ppid": 32664,
+    "pgid": 45268,
+    "args": "bash -lc  printf '%s\\n' \"${BASHPID}\" > '/tmp/uav_usv_lab.GUZkSU/px4.pid' && source '/home/qin/Projects/PX4-Autopilot/build/px4_sitl_default/rootfs/gz_env.sh' && export GZ_SIM_SERVER_CONFIG_PATH='/tmp/uav_usv_lab.GUZkSU/magnetometer_enu.config' && export PX4_GZ_MAGNETOMETER_ENU=1 && export PX4_GZ_GNSS_NO_DELAY=1 && export GZ_SIM_RESOURCE_PATH='/tmp/uav_usv_lab.GUZkSU/models':'/home/qin/data/uav_usv_mpc/src/uav_usv_bringup/models':${GZ_SIM_RESOURCE_PATH:-} && export PX4_GZ_MODELS='/tmp/uav_usv_lab.GUZkSU/models' && export PX4_GZ_STANDALONE=1 && export PX4_GZ_WORLD=default && # Face Gazebo +Y (local NED north), where the USV starts 8 m away. export PX4_GZ_MODEL_POSE='0,0,0,0,0,1.57079632679' && cd '/home/qin/Projects/PX4-Autopilot' && make px4_sitl gz_x500_mono_cam; component_status=$?; if [[ ! -f '/tmp/uav_usv_lab.GUZkSU/restarting' ]]; then exec bash; fi; exit ${component_status}"
+  },
+  "45279": {
+    "ppid": 45268,
+    "pgid": 45268,
+    "args": "make px4_sitl gz_x500_mono_cam"
+  },
+  "45337": {
+    "ppid": 45279,
+    "pgid": 45268,
+    "args": "/bin/sh -c cmake --build \"/data/PX4-Autopilot/build/px4_sitl_default\" --  gz_x500_mono_cam"
+  },
+  "45338": {
+    "ppid": 45337,
+    "pgid": 45268,
+    "args": "cmake --build /data/PX4-Autopilot/build/px4_sitl_default -- gz_x500_mono_cam"
+  },
+  "45339": {
+    "ppid": 45338,
+    "pgid": 45268,
+    "args": "/usr/bin/ninja gz_x500_mono_cam"
+  },
+  "45346": {
+    "ppid": 45339,
+    "pgid": 45268,
+    "args": "/bin/sh -c cd /data/PX4-Autopilot/build/px4_sitl_default/src/modules/simulation/gz_bridge && /usr/bin/cmake -E env PX4_SIM_MODEL=gz_x500_mono_cam GZ_IP=127.0.0.1 /data/PX4-Autopilot/build/px4_sitl_default/bin/px4"
+  },
+  "45347": {
+    "ppid": 45346,
+    "pgid": 45268,
+    "args": "/usr/bin/cmake -E env PX4_SIM_MODEL=gz_x500_mono_cam GZ_IP=127.0.0.1 /data/PX4-Autopilot/build/px4_sitl_default/bin/px4"
+  },
+  "45348": {
+    "ppid": 45347,
+    "pgid": 45268,
+    "args": "/data/PX4-Autopilot/build/px4_sitl_default/bin/px4"
+  },
+  "45790": {
+    "ppid": 32664,
+    "pgid": 45790,
+    "args": "bash -lc  printf '%s\\n' \"${BASHPID}\" > '/tmp/uav_usv_lab.GUZkSU/dds.pid' && MicroXRCEAgent udp4 -p 8888; component_status=$?; if [[ ! -f '/tmp/uav_usv_lab.GUZkSU/restarting' ]]; then exec bash; fi; exit ${component_status}"
+  },
+  "45799": {
+    "ppid": 45790,
+    "pgid": 45790,
+    "args": "MicroXRCEAgent udp4 -p 8888"
+  },
+  "46397": {
+    "ppid": 32664,
+    "pgid": 46397,
+    "args": "bash -lc  printf '%s\\n' \"${BASHPID}\" > '/tmp/uav_usv_lab.GUZkSU/experiment.pid' && export UAV_USV_WS='/home/qin/data/uav_usv_mpc' && source /opt/ros/humble/setup.bash && source '/home/qin/data/uav_usv_mpc/install/setup.bash' && cd '/home/qin/data/uav_usv_mpc' && ros2 launch uav_usv_bringup 'modular_intercept.launch.py'     enable_evaluator:=true     enable_shadow_perception:=true     front_depth_model:=tof     enable_down_camera:=false config_file:=/home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/visual_geometry_diagnostics.yaml; component_status=$?; if [[ ! -f '/tmp/uav_usv_lab.GUZkSU/restarting' ]]; then exec bash; fi; exit ${component_status}"
+  },
+  "46452": {
+    "ppid": 46397,
+    "pgid": 46397,
+    "args": "/usr/bin/python3 /opt/ros/humble/bin/ros2 launch uav_usv_bringup modular_intercept.launch.py enable_evaluator:=true enable_shadow_perception:=true front_depth_model:=tof enable_down_camera:=false config_file:=/home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/visual_geometry_diagnostics.yaml"
+  },
+  "46453": {
+    "ppid": 46452,
+    "pgid": 46397,
+    "args": "/usr/bin/python3 /home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/moving_target --ros-args -r __node:=moving_target --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/visual_geometry_diagnostics.yaml"
+  },
+  "46455": {
+    "ppid": 46452,
+    "pgid": 46397,
+    "args": "/usr/bin/python3 /home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/target_predictor_node --ros-args -r __node:=target_predictor_node --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/visual_geometry_diagnostics.yaml"
+  },
+  "46457": {
+    "ppid": 46452,
+    "pgid": 46397,
+    "args": "/usr/bin/python3 /home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/target_predictor_node --ros-args -r __node:=shadow_target_predictor_node --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/visual_geometry_diagnostics.yaml"
+  },
+  "46459": {
+    "ppid": 46452,
+    "pgid": 46397,
+    "args": "/usr/bin/python3 /home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/intercept_planner_node --ros-args -r __node:=intercept_planner_node --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/visual_geometry_diagnostics.yaml"
+  },
+  "46461": {
+    "ppid": 46452,
+    "pgid": 46397,
+    "args": "/usr/bin/python3 /home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/trajectory_tracker_node --ros-args -r __node:=trajectory_tracker_node --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/visual_geometry_diagnostics.yaml"
+  },
+  "46463": {
+    "ppid": 46452,
+    "pgid": 46397,
+    "args": "/usr/bin/python3 /home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/mission_manager_node --ros-args -r __node:=mission_manager_node --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/visual_geometry_diagnostics.yaml"
+  },
+  "46465": {
+    "ppid": 46452,
+    "pgid": 46397,
+    "args": "/usr/bin/python3 /home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/intercept_evaluator_node --ros-args -r __node:=intercept_evaluator_node --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/visual_geometry_diagnostics.yaml --params-file /tmp/launch_params_tzmk9oc1"
+  },
+  "46467": {
+    "ppid": 46452,
+    "pgid": 46397,
+    "args": "/usr/bin/python3 /home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/target_kalman_filter --ros-args -r __node:=target_kalman_filter --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/visual_geometry_diagnostics.yaml"
+  },
+  "46469": {
+    "ppid": 46452,
+    "pgid": 46397,
+    "args": "/opt/ros/humble/lib/ros_gz_image/image_bridge /uav/camera/front/image /uav/camera/front/depth_image --ros-args -r __node:=dual_tof_image_bridge -r /uav/camera/front/image:=/camera/front/image_raw -r /uav/camera/front/depth_image:=/camera/front/depth/ideal"
+  },
+  "46471": {
+    "ppid": 46452,
+    "pgid": 46397,
+    "args": "/usr/bin/python3 /home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/tof_depth_node --ros-args -r __node:=front_tof_depth_model --params-file /home/qin/data/uav_usv_mpc/install/uav_usv_bringup/share/uav_usv_bringup/config/front_tof_simulation.yaml"
+  },
+  "46473": {
+    "ppid": 46452,
+    "pgid": 46397,
+    "args": "/usr/bin/python3 /home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/target_bearing_node --ros-args -r __node:=target_bearing_node --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/visual_geometry_diagnostics.yaml"
+  },
+  "46475": {
+    "ppid": 46452,
+    "pgid": 46397,
+    "args": "/usr/bin/python3 /home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/front_tof_monitor --ros-args -r __node:=front_tof_monitor --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/visual_geometry_diagnostics.yaml --params-file /tmp/launch_params_2y6oqrqa"
+  },
+  "46477": {
+    "ppid": 46452,
+    "pgid": 46397,
+    "args": "/usr/bin/python3 /home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/rgbd_target_localizer --ros-args -r __node:=rgbd_target_localizer --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/visual_geometry_diagnostics.yaml"
+  },
+  "46479": {
+    "ppid": 46452,
+    "pgid": 46397,
+    "args": "/usr/bin/python3 /home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/dual_tof_selector --ros-args -r __node:=dual_tof_selector --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/visual_geometry_diagnostics.yaml"
+  }
+}

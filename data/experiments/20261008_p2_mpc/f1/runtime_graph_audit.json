@@ -1,0 +1,18 @@
+{
+  "provenance": "live ROS graph read in this task, retained in tool outputs",
+  "trajectory_setpoint_publisher_count": 1,
+  "trajectory_setpoint_publisher": "trajectory_tracker_node",
+  "shadow_subscriptions": [
+    "/navigation/uav_state",
+    "/fmu/out/vehicle_attitude",
+    "/fmu/out/timesync_status",
+    "/planning/target_prediction",
+    "/mission/state"
+  ],
+  "shadow_research_publishers": [
+    "/research/mpc_seed/diagnostic",
+    "/research/mpc_seed/trajectory"
+  ],
+  "shadow_fmu_in_publishers": [],
+  "package_prefix": "/home/qin/data/uav_usv_mpc/install/uav_control"
+}

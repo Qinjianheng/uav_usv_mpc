@@ -1,0 +1,147 @@
+{
+  "107613": {
+    "ppid": 107574,
+    "pgid": 107613,
+    "args": "bash -lc  printf '%s\\n' \"${BASHPID}\" > '/tmp/uav_usv_lab.stgC7D/gazebo.pid' && source '/home/qin/Projects/PX4-Autopilot/build/px4_sitl_default/rootfs/gz_env.sh' && export GZ_SIM_SERVER_CONFIG_PATH='/tmp/uav_usv_lab.stgC7D/magnetometer_enu.config' && export GZ_SIM_RESOURCE_PATH='/tmp/uav_usv_lab.stgC7D/models':'/home/qin/data/uav_usv_mpc/src/uav_usv_bringup/models':${GZ_SIM_RESOURCE_PATH:-} && gz sim -r '/home/qin/data/uav_usv_mpc/src/uav_usv_bringup/worlds/ocean.sdf'; component_status=$?; if [[ ! -f '/tmp/uav_usv_lab.stgC7D/restarting' ]]; then exec bash; fi; exit ${component_status}"
+  },
+  "107625": {
+    "ppid": 107613,
+    "pgid": 107613,
+    "args": "gz sim -r /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/worlds/ocean.sdf"
+  },
+  "107627": {
+    "ppid": 107625,
+    "pgid": 107627,
+    "args": "gz sim server"
+  },
+  "107628": {
+    "ppid": 107625,
+    "pgid": 107628,
+    "args": "gz sim gui"
+  },
+  "107824": {
+    "ppid": 107574,
+    "pgid": 107824,
+    "args": "bash -lc  printf '%s\\n' \"${BASHPID}\" > '/tmp/uav_usv_lab.stgC7D/px4.pid' && source '/home/qin/Projects/PX4-Autopilot/build/px4_sitl_default/rootfs/gz_env.sh' && export GZ_SIM_SERVER_CONFIG_PATH='/tmp/uav_usv_lab.stgC7D/magnetometer_enu.config' && export PX4_GZ_MAGNETOMETER_ENU=1 && export PX4_GZ_GNSS_NO_DELAY=1 && export GZ_SIM_RESOURCE_PATH='/tmp/uav_usv_lab.stgC7D/models':'/home/qin/data/uav_usv_mpc/src/uav_usv_bringup/models':${GZ_SIM_RESOURCE_PATH:-} && export PX4_GZ_MODELS='/tmp/uav_usv_lab.stgC7D/models' && export PX4_GZ_STANDALONE=1 && export PX4_GZ_WORLD=default && # Face Gazebo +Y (local NED north), where the USV starts 8 m away. export PX4_GZ_MODEL_POSE='0,0,0,0,0,1.57079632679' && cd '/home/qin/Projects/PX4-Autopilot' && make px4_sitl gz_x500_mono_cam; component_status=$?; if [[ ! -f '/tmp/uav_usv_lab.stgC7D/restarting' ]]; then exec bash; fi; exit ${component_status}"
+  },
+  "107838": {
+    "ppid": 107824,
+    "pgid": 107824,
+    "args": "make px4_sitl gz_x500_mono_cam"
+  },
+  "107895": {
+    "ppid": 107838,
+    "pgid": 107824,
+    "args": "/bin/sh -c cmake --build \"/data/PX4-Autopilot/build/px4_sitl_default\" --  gz_x500_mono_cam"
+  },
+  "107896": {
+    "ppid": 107895,
+    "pgid": 107824,
+    "args": "cmake --build /data/PX4-Autopilot/build/px4_sitl_default -- gz_x500_mono_cam"
+  },
+  "107897": {
+    "ppid": 107896,
+    "pgid": 107824,
+    "args": "/usr/bin/ninja gz_x500_mono_cam"
+  },
+  "107904": {
+    "ppid": 107897,
+    "pgid": 107824,
+    "args": "/bin/sh -c cd /data/PX4-Autopilot/build/px4_sitl_default/src/modules/simulation/gz_bridge && /usr/bin/cmake -E env PX4_SIM_MODEL=gz_x500_mono_cam GZ_IP=127.0.0.1 /data/PX4-Autopilot/build/px4_sitl_default/bin/px4"
+  },
+  "107905": {
+    "ppid": 107904,
+    "pgid": 107824,
+    "args": "/usr/bin/cmake -E env PX4_SIM_MODEL=gz_x500_mono_cam GZ_IP=127.0.0.1 /data/PX4-Autopilot/build/px4_sitl_default/bin/px4"
+  },
+  "107906": {
+    "ppid": 107905,
+    "pgid": 107824,
+    "args": "/data/PX4-Autopilot/build/px4_sitl_default/bin/px4"
+  },
+  "108276": {
+    "ppid": 107574,
+    "pgid": 108276,
+    "args": "bash -lc  printf '%s\\n' \"${BASHPID}\" > '/tmp/uav_usv_lab.stgC7D/dds.pid' && MicroXRCEAgent udp4 -p 8888; component_status=$?; if [[ ! -f '/tmp/uav_usv_lab.stgC7D/restarting' ]]; then exec bash; fi; exit ${component_status}"
+  },
+  "108286": {
+    "ppid": 108276,
+    "pgid": 108276,
+    "args": "MicroXRCEAgent udp4 -p 8888"
+  },
+  "108473": {
+    "ppid": 107574,
+    "pgid": 108473,
+    "args": "bash -lc  printf '%s\\n' \"${BASHPID}\" > '/tmp/uav_usv_lab.stgC7D/experiment.pid' && export UAV_USV_WS='/home/qin/data/uav_usv_mpc' && source /opt/ros/humble/setup.bash && source '/home/qin/data/uav_usv_mpc/install/setup.bash' && cd '/home/qin/data/uav_usv_mpc' && ros2 launch uav_usv_bringup 'modular_intercept.launch.py'     enable_evaluator:=true     enable_shadow_perception:=true     front_depth_model:=ideal     enable_down_camera:=false config_file:=/home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/baseline.yaml; component_status=$?; if [[ ! -f '/tmp/uav_usv_lab.stgC7D/restarting' ]]; then exec bash; fi; exit ${component_status}"
+  },
+  "108528": {
+    "ppid": 108473,
+    "pgid": 108473,
+    "args": "/usr/bin/python3 /opt/ros/humble/bin/ros2 launch uav_usv_bringup modular_intercept.launch.py enable_evaluator:=true enable_shadow_perception:=true front_depth_model:=ideal enable_down_camera:=false config_file:=/home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/baseline.yaml"
+  },
+  "108530": {
+    "ppid": 108528,
+    "pgid": 108473,
+    "args": "/usr/bin/python3 /home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/moving_target --ros-args -r __node:=moving_target --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/baseline.yaml"
+  },
+  "108532": {
+    "ppid": 108528,
+    "pgid": 108473,
+    "args": "/usr/bin/python3 /home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/target_predictor_node --ros-args -r __node:=target_predictor_node --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/baseline.yaml"
+  },
+  "108534": {
+    "ppid": 108528,
+    "pgid": 108473,
+    "args": "/usr/bin/python3 /home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/target_predictor_node --ros-args -r __node:=shadow_target_predictor_node --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/baseline.yaml"
+  },
+  "108536": {
+    "ppid": 108528,
+    "pgid": 108473,
+    "args": "/usr/bin/python3 /home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/intercept_planner_node --ros-args -r __node:=intercept_planner_node --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/baseline.yaml"
+  },
+  "108538": {
+    "ppid": 108528,
+    "pgid": 108473,
+    "args": "/usr/bin/python3 /home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/trajectory_tracker_node --ros-args -r __node:=trajectory_tracker_node --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/baseline.yaml"
+  },
+  "108540": {
+    "ppid": 108528,
+    "pgid": 108473,
+    "args": "/usr/bin/python3 /home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/mission_manager_node --ros-args -r __node:=mission_manager_node --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/baseline.yaml"
+  },
+  "108542": {
+    "ppid": 108528,
+    "pgid": 108473,
+    "args": "/usr/bin/python3 /home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/intercept_evaluator_node --ros-args -r __node:=intercept_evaluator_node --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/baseline.yaml --params-file /tmp/launch_params_jiyrqzhh"
+  },
+  "108544": {
+    "ppid": 108528,
+    "pgid": 108473,
+    "args": "/usr/bin/python3 /home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/target_kalman_filter --ros-args -r __node:=target_kalman_filter --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/baseline.yaml"
+  },
+  "108546": {
+    "ppid": 108528,
+    "pgid": 108473,
+    "args": "/opt/ros/humble/lib/ros_gz_image/image_bridge /uav/camera/front/image /uav/camera/front/depth_image --ros-args -r __node:=dual_tof_image_bridge -r /uav/camera/front/image:=/camera/front/image_raw -r /uav/camera/front/depth_image:=/camera/front/depth/image_raw"
+  },
+  "108548": {
+    "ppid": 108528,
+    "pgid": 108473,
+    "args": "/usr/bin/python3 /home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/target_bearing_node --ros-args -r __node:=target_bearing_node --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/baseline.yaml"
+  },
+  "108550": {
+    "ppid": 108528,
+    "pgid": 108473,
+    "args": "/usr/bin/python3 /home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/front_tof_monitor --ros-args -r __node:=front_tof_monitor --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/baseline.yaml --params-file /tmp/launch_params_xhohbp59"
+  },
+  "108552": {
+    "ppid": 108528,
+    "pgid": 108473,
+    "args": "/usr/bin/python3 /home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/rgbd_target_localizer --ros-args -r __node:=rgbd_target_localizer --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/baseline.yaml --params-file /home/qin/data/uav_usv_mpc/install/uav_usv_bringup/share/uav_usv_bringup/config/front_tof_simulation.yaml --params-file /tmp/launch_params_w_q5wc44"
+  },
+  "108554": {
+    "ppid": 108528,
+    "pgid": 108473,
+    "args": "/usr/bin/python3 /home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/dual_tof_selector --ros-args -r __node:=dual_tof_selector --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/baseline.yaml"
+  }
+}

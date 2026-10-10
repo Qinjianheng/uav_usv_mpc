@@ -1,0 +1,1535 @@
+{
+  "accepted_by_tracker": false,
+  "continuous_time_guarantee": false,
+  "groups": {
+    "greedy/fixed": {
+      "count": 40,
+      "metrics": {
+        "follow_rmse": {
+          "count": 16,
+          "finite_count": 16,
+          "maximum": 0.3675107870254722,
+          "minimum": 4.608531526730982e-16,
+          "p50": 0.07213754516188894,
+          "p95": 0.3292377431668032,
+          "p99": 0.3598561782537384
+        },
+        "jerk_integral": {
+          "count": 16,
+          "finite_count": 16,
+          "maximum": 17690.715636156325,
+          "minimum": 2.374504141328903e-27,
+          "p50": 1400.519554605156,
+          "p95": 14693.542735383056,
+          "p99": 17091.28105600167
+        },
+        "minimum_horizontal_margin": {
+          "count": 16,
+          "finite_count": 16,
+          "maximum": 0.7620493331044109,
+          "minimum": -3.141592653589793,
+          "p50": 0.5889093222148107,
+          "p95": 0.7620493331044109,
+          "p99": 0.7620493331044109
+        },
+        "minimum_vertical_margin": {
+          "count": 16,
+          "finite_count": 16,
+          "maximum": 0.30855698486046057,
+          "minimum": -3.141592653589793,
+          "p50": 0.25894153317034563,
+          "p95": 0.30855698486046057,
+          "p99": 0.30855698486046057
+        },
+        "visible_fraction": {
+          "count": 16,
+          "finite_count": 16,
+          "maximum": 1.0,
+          "minimum": 0.616580310880829,
+          "p50": 1.0,
+          "p95": 1.0,
+          "p99": 1.0
+        }
+      },
+      "optimizer_success": 0,
+      "pipeline_feasible": 4,
+      "sampled_feasible": 4,
+      "seconds": {
+        "end_to_end": {
+          "count": 40,
+          "finite_count": 40,
+          "maximum": 0.06194949600103428,
+          "minimum": 0.00030275699828052893,
+          "p50": 0.0019388875025470043,
+          "p95": 0.06100105719960993,
+          "p99": 0.06182100932972389
+        },
+        "initialization": {
+          "count": 40,
+          "finite_count": 40,
+          "maximum": 0.0038537779983016662,
+          "minimum": 1.3582000974565744e-05,
+          "p50": 0.0015524875016126316,
+          "p95": 0.0036744629493114184,
+          "p99": 0.0038326173789755558
+        },
+        "joint_yaw_optimization_overlaps_minco": {
+          "count": 16,
+          "finite_count": 16,
+          "maximum": 1.1539996194187552e-06,
+          "minimum": 7.2900002123788e-07,
+          "p50": 8.275001164292917e-07,
+          "p95": 1.0812500477186404e-06,
+          "p99": 1.1394497050787322e-06
+        },
+        "minco_optimization": {
+          "count": 16,
+          "finite_count": 16,
+          "maximum": 1.1539996194187552e-06,
+          "minimum": 7.2900002123788e-07,
+          "p50": 8.275001164292917e-07,
+          "p95": 1.0812500477186404e-06,
+          "p99": 1.1394497050787322e-06
+        },
+        "preparation": {
+          "count": 16,
+          "finite_count": 16,
+          "maximum": 0.00016776999837020412,
+          "minimum": 0.00014904700219631195,
+          "p50": 0.0001566225018905243,
+          "p95": 0.00016720525127311703,
+          "p99": 0.0001676570489507867
+        },
+        "validation": {
+          "count": 16,
+          "finite_count": 16,
+          "maximum": 0.04429139599960763,
+          "minimum": 0.00729070599845727,
+          "p50": 0.029434112500894116,
+          "p95": 0.04375159324990818,
+          "p99": 0.04418343544966774
+        },
+        "yaw_construction_within_optimization": {
+          "count": 16,
+          "finite_count": 16,
+          "maximum": 0.00036842800182057545,
+          "minimum": 0.00030021499696886167,
+          "p50": 0.00030890000198269263,
+          "p95": 0.0003642917481556651,
+          "p99": 0.00036760075108759337
+        }
+      },
+      "statuses": {
+        "DYNAMIC_INFEASIBLE": 12,
+        "INVALID_INPUT": 6,
+        "NO_REACHABLE_VISIBLE_CANDIDATE": 12,
+        "PREDICTION_HORIZON": 2,
+        "SAMPLED_FEASIBLE": 4,
+        "STALE_INPUT": 4
+      },
+      "timeout": 0
+    },
+    "greedy/q": {
+      "count": 40,
+      "metrics": {
+        "follow_rmse": {
+          "count": 16,
+          "finite_count": 16,
+          "maximum": 0.6371282910617079,
+          "minimum": 1.4010995992065004e-06,
+          "p50": 0.07731499040833732,
+          "p95": 0.5768384381489079,
+          "p99": 0.6250703204791479
+        },
+        "jerk_integral": {
+          "count": 16,
+          "finite_count": 16,
+          "maximum": 4355.658708388218,
+          "minimum": 1.4659122874658697e-08,
+          "p50": 136.66968729141982,
+          "p95": 3735.2173623502345,
+          "p99": 4231.570439180621
+        },
+        "minimum_horizontal_margin": {
+          "count": 16,
+          "finite_count": 16,
+          "maximum": 0.7620493117402234,
+          "minimum": -3.141592653589793,
+          "p50": 0.6023564964822028,
+          "p95": 0.7620493117402234,
+          "p99": 0.7620493117402234
+        },
+        "minimum_vertical_margin": {
+          "count": 16,
+          "finite_count": 16,
+          "maximum": 0.30855629010621954,
+          "minimum": -3.141592653589793,
+          "p50": 0.2659109334904338,
+          "p95": 0.30855629010597263,
+          "p99": 0.30855629010617014
+        },
+        "visible_fraction": {
+          "count": 16,
+          "finite_count": 16,
+          "maximum": 1.0,
+          "minimum": 0.6865671641791045,
+          "p50": 1.0,
+          "p95": 1.0,
+          "p99": 1.0
+        }
+      },
+      "optimizer_success": 4,
+      "pipeline_feasible": 8,
+      "sampled_feasible": 8,
+      "seconds": {
+        "end_to_end": {
+          "count": 40,
+          "finite_count": 40,
+          "maximum": 0.16162775799966766,
+          "minimum": 0.00028787299743271433,
+          "p50": 0.0018733159995463211,
+          "p95": 0.1453330795493457,
+          "p99": 0.15592878549923625
+        },
+        "initialization": {
+          "count": 40,
+          "finite_count": 40,
+          "maximum": 0.0038537779983016662,
+          "minimum": 1.3582000974565744e-05,
+          "p50": 0.0015524875016126316,
+          "p95": 0.0036744629493114184,
+          "p99": 0.0038326173789755558
+        },
+        "joint_yaw_optimization_overlaps_minco": {
+          "count": 16,
+          "finite_count": 16,
+          "maximum": 0.12818978500217781,
+          "minimum": 0.04190076799932285,
+          "p50": 0.07100474949947966,
+          "p95": 0.12798498174925044,
+          "p99": 0.12814882435159233
+        },
+        "minco_optimization": {
+          "count": 16,
+          "finite_count": 16,
+          "maximum": 0.12818978500217781,
+          "minimum": 0.04190076799932285,
+          "p50": 0.07100474949947966,
+          "p95": 0.12798498174925044,
+          "p99": 0.12814882435159233
+        },
+        "preparation": {
+          "count": 16,
+          "finite_count": 16,
+          "maximum": 0.0003435520011407789,
+          "minimum": 0.00020527800006675534,
+          "p50": 0.0002367154993407894,
+          "p95": 0.00032120125251822174,
+          "p99": 0.00033908185141626743
+        },
+        "validation": {
+          "count": 16,
+          "finite_count": 16,
+          "maximum": 0.05920974500259035,
+          "minimum": 0.0073018090006371494,
+          "p50": 0.024564723500589025,
+          "p95": 0.04997579450082412,
+          "p99": 0.057362954902237105
+        },
+        "yaw_construction_within_optimization": {
+          "count": 16,
+          "finite_count": 16,
+          "maximum": 0.013456276999932015,
+          "minimum": 0.004518318994087167,
+          "p50": 0.007850306488762726,
+          "p95": 0.013358879009501834,
+          "p99": 0.013436797401845979
+        }
+      },
+      "statuses": {
+        "DYNAMIC_INFEASIBLE": 8,
+        "INVALID_INPUT": 6,
+        "NO_REACHABLE_VISIBLE_CANDIDATE": 12,
+        "PREDICTION_HORIZON": 2,
+        "SAMPLED_FEASIBLE": 8,
+        "STALE_INPUT": 4
+      },
+      "timeout": 0
+    },
+    "greedy/qt": {
+      "count": 40,
+      "metrics": {
+        "follow_rmse": {
+          "count": 16,
+          "finite_count": 16,
+          "maximum": 0.7148515339825751,
+          "minimum": 1.06553682908831e-06,
+          "p50": 0.06328306208769409,
+          "p95": 0.6180140167434625,
+          "p99": 0.6954840305347525
+        },
+        "jerk_integral": {
+          "count": 16,
+          "finite_count": 16,
+          "maximum": 3017.794355299282,
+          "minimum": 1.1128357527819633e-08,
+          "p50": 374.06663228022956,
+          "p95": 2389.8455778454168,
+          "p99": 2892.2045998085086
+        },
+        "minimum_horizontal_margin": {
+          "count": 16,
+          "finite_count": 16,
+          "maximum": 0.7620493182664387,
+          "minimum": 0.1613232127361663,
+          "p50": 0.6193663121607744,
+          "p95": 0.7620493182664371,
+          "p99": 0.7620493182664384
+        },
+        "minimum_vertical_margin": {
+          "count": 16,
+          "finite_count": 16,
+          "maximum": 0.30855636407221293,
+          "minimum": 0.06131599176183039,
+          "p50": 0.23529917124978605,
+          "p95": 0.3085563640721548,
+          "p99": 0.30855636407220133
+        },
+        "visible_fraction": {
+          "count": 16,
+          "finite_count": 16,
+          "maximum": 1.0,
+          "minimum": 1.0,
+          "p50": 1.0,
+          "p95": 1.0,
+          "p99": 1.0
+        }
+      },
+      "optimizer_success": 4,
+      "pipeline_feasible": 5,
+      "sampled_feasible": 5,
+      "seconds": {
+        "end_to_end": {
+          "count": 40,
+          "finite_count": 40,
+          "maximum": 0.16997821099721477,
+          "minimum": 0.0002918520003731828,
+          "p50": 0.001855872502346756,
+          "p95": 0.15782154059834283,
+          "p99": 0.16696066516829888
+        },
+        "initialization": {
+          "count": 40,
+          "finite_count": 40,
+          "maximum": 0.0038537779983016662,
+          "minimum": 1.3582000974565744e-05,
+          "p50": 0.0015524875016126316,
+          "p95": 0.0036744629493114184,
+          "p99": 0.0038326173789755558
+        },
+        "joint_yaw_optimization_overlaps_minco": {
+          "count": 16,
+          "finite_count": 16,
+          "maximum": 0.13255413599836174,
+          "minimum": 0.05178121299832128,
+          "p50": 0.09608890600065934,
+          "p95": 0.12094351050018304,
+          "p99": 0.130232010898726
+        },
+        "minco_optimization": {
+          "count": 16,
+          "finite_count": 16,
+          "maximum": 0.13255413599836174,
+          "minimum": 0.05178121299832128,
+          "p50": 0.09608890600065934,
+          "p95": 0.12094351050018304,
+          "p99": 0.130232010898726
+        },
+        "preparation": {
+          "count": 16,
+          "finite_count": 16,
+          "maximum": 0.0004114049988857005,
+          "minimum": 0.00020378499903017655,
+          "p50": 0.0002255139988847077,
+          "p95": 0.000370470749658125,
+          "p99": 0.00040321814904018536
+        },
+        "validation": {
+          "count": 16,
+          "finite_count": 16,
+          "maximum": 0.046487061998050194,
+          "minimum": 0.007287250999070238,
+          "p50": 0.026244284001222695,
+          "p95": 0.04582243374989048,
+          "p99": 0.04635413634841825
+        },
+        "yaw_construction_within_optimization": {
+          "count": 16,
+          "finite_count": 16,
+          "maximum": 0.01407969200226944,
+          "minimum": 0.005433264002931537,
+          "p50": 0.0106006345104106,
+          "p95": 0.012959105773916235,
+          "p99": 0.013855574756598798
+        }
+      },
+      "statuses": {
+        "DYNAMIC_INFEASIBLE": 11,
+        "INVALID_INPUT": 6,
+        "NO_REACHABLE_VISIBLE_CANDIDATE": 12,
+        "PREDICTION_HORIZON": 2,
+        "SAMPLED_FEASIBLE": 5,
+        "STALE_INPUT": 4
+      },
+      "timeout": 0
+    },
+    "greedy/qt_no_visibility_cost": {
+      "count": 40,
+      "metrics": {
+        "follow_rmse": {
+          "count": 16,
+          "finite_count": 16,
+          "maximum": 0.7494811357048565,
+          "minimum": 1.2560739669470201e-15,
+          "p50": 0.09596844720372802,
+          "p95": 0.6641020609747272,
+          "p99": 0.7324053207588306
+        },
+        "jerk_integral": {
+          "count": 16,
+          "finite_count": 16,
+          "maximum": 2323.0205306562766,
+          "minimum": 1.1080361100662239e-26,
+          "p50": 34.20578183812984,
+          "p95": 1760.162941545023,
+          "p99": 2210.449012834026
+        },
+        "minimum_horizontal_margin": {
+          "count": 16,
+          "finite_count": 16,
+          "maximum": 0.7620493331044109,
+          "minimum": 0.1613232127361663,
+          "p50": 0.6115241106750625,
+          "p95": 0.7620493331044109,
+          "p99": 0.7620493331044109
+        },
+        "minimum_vertical_margin": {
+          "count": 16,
+          "finite_count": 16,
+          "maximum": 0.3085569848604557,
+          "minimum": 0.1180134076297002,
+          "p50": 0.237620503417097,
+          "p95": 0.3085569848604557,
+          "p99": 0.3085569848604557
+        },
+        "visible_fraction": {
+          "count": 16,
+          "finite_count": 16,
+          "maximum": 1.0,
+          "minimum": 1.0,
+          "p50": 1.0,
+          "p95": 1.0,
+          "p99": 1.0
+        }
+      },
+      "optimizer_success": 4,
+      "pipeline_feasible": 8,
+      "sampled_feasible": 8,
+      "seconds": {
+        "end_to_end": {
+          "count": 40,
+          "finite_count": 40,
+          "maximum": 0.16650114299773122,
+          "minimum": 0.0002849809970939532,
+          "p50": 0.0018503815026633674,
+          "p95": 0.1490580030980709,
+          "p99": 0.15983436677761345
+        },
+        "initialization": {
+          "count": 40,
+          "finite_count": 40,
+          "maximum": 0.0038537779983016662,
+          "minimum": 1.3582000974565744e-05,
+          "p50": 0.0015524875016126316,
+          "p95": 0.0036744629493114184,
+          "p99": 0.0038326173789755558
+        },
+        "joint_yaw_optimization_overlaps_minco": {
+          "count": 16,
+          "finite_count": 16,
+          "maximum": 0.14970817500216071,
+          "minimum": 0.016350440000678645,
+          "p50": 0.0717696324991266,
+          "p95": 0.1369916347493927,
+          "p99": 0.1471648669516071
+        },
+        "minco_optimization": {
+          "count": 16,
+          "finite_count": 16,
+          "maximum": 0.14970817500216071,
+          "minimum": 0.016350440000678645,
+          "p50": 0.0717696324991266,
+          "p95": 0.1369916347493927,
+          "p99": 0.1471648669516071
+        },
+        "preparation": {
+          "count": 16,
+          "finite_count": 16,
+          "maximum": 0.0003825530002359301,
+          "minimum": 0.0002146500009985175,
+          "p50": 0.00022879649986862205,
+          "p95": 0.000335410249135748,
+          "p99": 0.00037312445001589365
+        },
+        "validation": {
+          "count": 16,
+          "finite_count": 16,
+          "maximum": 0.04586739700243925,
+          "minimum": 0.007324957001401344,
+          "p50": 0.01648088000001735,
+          "p95": 0.04517338600089715,
+          "p99": 0.04572859480213083
+        },
+        "yaw_construction_within_optimization": {
+          "count": 16,
+          "finite_count": 16,
+          "maximum": 0.015915753010631306,
+          "minimum": 0.0019339710015628953,
+          "p50": 0.008211566000682069,
+          "p95": 0.014612646731620771,
+          "p99": 0.0156551317548292
+        }
+      },
+      "statuses": {
+        "DYNAMIC_INFEASIBLE": 8,
+        "INVALID_INPUT": 6,
+        "NO_REACHABLE_VISIBLE_CANDIDATE": 12,
+        "PREDICTION_HORIZON": 2,
+        "SAMPLED_FEASIBLE": 8,
+        "STALE_INPUT": 4
+      },
+      "timeout": 0
+    },
+    "mpc/fixed": {
+      "count": 40,
+      "metrics": {
+        "follow_rmse": {
+          "count": 18,
+          "finite_count": 18,
+          "maximum": 4.393905616549086,
+          "minimum": 0.0024000382742128358,
+          "p50": 0.34060873475912445,
+          "p95": 4.026973370535949,
+          "p99": 4.320519167346458
+        },
+        "jerk_integral": {
+          "count": 18,
+          "finite_count": 18,
+          "maximum": 89561.63850993883,
+          "minimum": 0.180773986943608,
+          "p50": 1460.834075647345,
+          "p95": 84075.28105897132,
+          "p99": 88464.36701974532
+        },
+        "minimum_horizontal_margin": {
+          "count": 18,
+          "finite_count": 18,
+          "maximum": 0.7620129199571541,
+          "minimum": -3.141592653589793,
+          "p50": 0.1613232127361663,
+          "p95": 0.7620129199571541,
+          "p99": 0.7620129199571541
+        },
+        "minimum_vertical_margin": {
+          "count": 18,
+          "finite_count": 18,
+          "maximum": 0.3073863545517502,
+          "minimum": -3.141592653589793,
+          "p50": 0.008853706595385147,
+          "p95": 0.3073863545517502,
+          "p99": 0.3073863545517502
+        },
+        "visible_fraction": {
+          "count": 18,
+          "finite_count": 18,
+          "maximum": 1.0,
+          "minimum": 0.32195121951219513,
+          "p50": 1.0,
+          "p95": 1.0,
+          "p99": 1.0
+        }
+      },
+      "optimizer_success": 0,
+      "pipeline_feasible": 6,
+      "sampled_feasible": 6,
+      "seconds": {
+        "end_to_end": {
+          "count": 40,
+          "finite_count": 40,
+          "maximum": 0.14674501400077133,
+          "minimum": 0.00029532500047935173,
+          "p50": 0.09131914700083144,
+          "p95": 0.14103235414986556,
+          "p99": 0.1465511598210287
+        },
+        "initialization": {
+          "count": 40,
+          "finite_count": 40,
+          "maximum": 0.10326731700115488,
+          "minimum": 2.1497999114217237e-05,
+          "p50": 0.09080647449991375,
+          "p95": 0.09677059724945138,
+          "p99": 0.10179861522046849
+        },
+        "joint_yaw_optimization_overlaps_minco": {
+          "count": 18,
+          "finite_count": 18,
+          "maximum": 1.5570003597531468e-06,
+          "minimum": 7.180024113040417e-07,
+          "p50": 1.0000021575251594e-06,
+          "p95": 1.523851096862927e-06,
+          "p99": 1.5503705071751027e-06
+        },
+        "minco_optimization": {
+          "count": 18,
+          "finite_count": 18,
+          "maximum": 1.5570003597531468e-06,
+          "minimum": 7.180024113040417e-07,
+          "p50": 1.0000021575251594e-06,
+          "p95": 1.523851096862927e-06,
+          "p99": 1.5503705071751027e-06
+        },
+        "preparation": {
+          "count": 18,
+          "finite_count": 18,
+          "maximum": 0.00020340999981272034,
+          "minimum": 0.00017086200023186393,
+          "p50": 0.00018618849935592152,
+          "p95": 0.0001993223493627738,
+          "p99": 0.00020259246972273104
+        },
+        "validation": {
+          "count": 18,
+          "finite_count": 18,
+          "maximum": 0.03606014500110177,
+          "minimum": 0.007248698002513265,
+          "p50": 0.029417181498502032,
+          "p95": 0.03423461445054272,
+          "p99": 0.03569503889098996
+        },
+        "yaw_construction_within_optimization": {
+          "count": 18,
+          "finite_count": 18,
+          "maximum": 0.0003923029980796855,
+          "minimum": 0.00030766600320930593,
+          "p50": 0.0003341645006003091,
+          "p95": 0.00038556930048798675,
+          "p99": 0.00039095625856134576
+        }
+      },
+      "statuses": {
+        "DYNAMIC_INFEASIBLE": 12,
+        "SAMPLED_FEASIBLE": 6,
+        "initial boundary violates dynamic/model/sea constraints": 4,
+        "initially invisible; only future reacquisition predicted": 2,
+        "input shape, source, frame or epoch mismatch": 6,
+        "navigation or image acquisition expired": 4,
+        "prediction does not cover execution horizon": 2,
+        "strict dynamic/attitude/sea validation failed": 4
+      },
+      "timeout": 0
+    },
+    "mpc/q": {
+      "count": 40,
+      "metrics": {
+        "follow_rmse": {
+          "count": 18,
+          "finite_count": 18,
+          "maximum": 4.391077678417335,
+          "minimum": 0.0014738667681001016,
+          "p50": 0.22534512969871512,
+          "p95": 3.874959344781304,
+          "p99": 4.287854011690128
+        },
+        "jerk_integral": {
+          "count": 18,
+          "finite_count": 18,
+          "maximum": 21412.121540377582,
+          "minimum": 0.011924612086615341,
+          "p50": 774.8131849981762,
+          "p95": 19852.475887011227,
+          "p99": 21100.19240970431
+        },
+        "minimum_horizontal_margin": {
+          "count": 18,
+          "finite_count": 18,
+          "maximum": 0.7620318370028496,
+          "minimum": -3.141592653589793,
+          "p50": 0.1613232127361663,
+          "p95": 0.7620318370028496,
+          "p99": 0.7620318370028496
+        },
+        "minimum_vertical_margin": {
+          "count": 18,
+          "finite_count": 18,
+          "maximum": 0.3082078611336502,
+          "minimum": -3.141592653589793,
+          "p50": 0.039579962354495624,
+          "p95": 0.3082078611336502,
+          "p99": 0.3082078611336502
+        },
+        "visible_fraction": {
+          "count": 18,
+          "finite_count": 18,
+          "maximum": 1.0,
+          "minimum": 0.4097560975609756,
+          "p50": 0.9818840579710144,
+          "p95": 1.0,
+          "p99": 1.0
+        }
+      },
+      "optimizer_success": 0,
+      "pipeline_feasible": 6,
+      "sampled_feasible": 6,
+      "seconds": {
+        "end_to_end": {
+          "count": 40,
+          "finite_count": 40,
+          "maximum": 0.2651225810041069,
+          "minimum": 0.00029723999978159554,
+          "p50": 0.09288753900000302,
+          "p95": 0.23339528380292895,
+          "p99": 0.26436816188299417
+        },
+        "initialization": {
+          "count": 40,
+          "finite_count": 40,
+          "maximum": 0.10326731700115488,
+          "minimum": 2.1497999114217237e-05,
+          "p50": 0.09080647449991375,
+          "p95": 0.09677059724945138,
+          "p99": 0.10179861522046849
+        },
+        "joint_yaw_optimization_overlaps_minco": {
+          "count": 18,
+          "finite_count": 18,
+          "maximum": 0.14088046600227244,
+          "minimum": 0.03199762000076589,
+          "p50": 0.08406235600159562,
+          "p95": 0.1394414890990447,
+          "p99": 0.1405926706216269
+        },
+        "minco_optimization": {
+          "count": 18,
+          "finite_count": 18,
+          "maximum": 0.14088046600227244,
+          "minimum": 0.03199762000076589,
+          "p50": 0.08406235600159562,
+          "p95": 0.1394414890990447,
+          "p99": 0.1405926706216269
+        },
+        "preparation": {
+          "count": 18,
+          "finite_count": 18,
+          "maximum": 0.00030216400045901537,
+          "minimum": 0.0002158249990316108,
+          "p50": 0.00023786400015524123,
+          "p95": 0.00029516680024244124,
+          "p99": 0.0003007645604157005
+        },
+        "validation": {
+          "count": 18,
+          "finite_count": 18,
+          "maximum": 0.04506071000287193,
+          "minimum": 0.00725032199989073,
+          "p50": 0.02431732849800028,
+          "p95": 0.04374580420098936,
+          "p99": 0.044797728842495416
+        },
+        "yaw_construction_within_optimization": {
+          "count": 18,
+          "finite_count": 18,
+          "maximum": 0.014852963013254339,
+          "minimum": 0.004566077004710678,
+          "p50": 0.00898947299720021,
+          "p95": 0.01472017600590334,
+          "p99": 0.014826405611784138
+        }
+      },
+      "statuses": {
+        "DYNAMIC_INFEASIBLE": 12,
+        "SAMPLED_FEASIBLE": 6,
+        "initial boundary violates dynamic/model/sea constraints": 4,
+        "initially invisible; only future reacquisition predicted": 2,
+        "input shape, source, frame or epoch mismatch": 6,
+        "navigation or image acquisition expired": 4,
+        "prediction does not cover execution horizon": 2,
+        "strict dynamic/attitude/sea validation failed": 4
+      },
+      "timeout": 0
+    },
+    "mpc/qt": {
+      "count": 40,
+      "metrics": {
+        "follow_rmse": {
+          "count": 18,
+          "finite_count": 18,
+          "maximum": 3.50546759712019,
+          "minimum": 0.001473870088857246,
+          "p50": 0.21437655399227365,
+          "p95": 3.0311963081872992,
+          "p99": 3.410613339333611
+        },
+        "jerk_integral": {
+          "count": 18,
+          "finite_count": 18,
+          "maximum": 16353.513868654827,
+          "minimum": 0.011924658846846535,
+          "p50": 661.3065214874043,
+          "p95": 15471.68009831453,
+          "p99": 16177.147114586765
+        },
+        "minimum_horizontal_margin": {
+          "count": 18,
+          "finite_count": 18,
+          "maximum": 0.7620318369867625,
+          "minimum": -3.141592653589793,
+          "p50": 0.2899893994809191,
+          "p95": 0.7620318369867625,
+          "p99": 0.7620318369867625
+        },
+        "minimum_vertical_margin": {
+          "count": 18,
+          "finite_count": 18,
+          "maximum": 0.3082078621431226,
+          "minimum": -3.141592653589793,
+          "p50": 0.11211081474146939,
+          "p95": 0.3082078621431226,
+          "p99": 0.3082078621431226
+        },
+        "visible_fraction": {
+          "count": 18,
+          "finite_count": 18,
+          "maximum": 1.0,
+          "minimum": 0.47783251231527096,
+          "p50": 1.0,
+          "p95": 1.0,
+          "p99": 1.0
+        }
+      },
+      "optimizer_success": 0,
+      "pipeline_feasible": 7,
+      "sampled_feasible": 7,
+      "seconds": {
+        "end_to_end": {
+          "count": 40,
+          "finite_count": 40,
+          "maximum": 0.27749039599802927,
+          "minimum": 0.0002950609996332787,
+          "p50": 0.09286687700114271,
+          "p95": 0.2236895269528759,
+          "p99": 0.2570736471789132
+        },
+        "initialization": {
+          "count": 40,
+          "finite_count": 40,
+          "maximum": 0.10326731700115488,
+          "minimum": 2.1497999114217237e-05,
+          "p50": 0.09080647449991375,
+          "p95": 0.09677059724945138,
+          "p99": 0.10179861522046849
+        },
+        "joint_yaw_optimization_overlaps_minco": {
+          "count": 18,
+          "finite_count": 18,
+          "maximum": 0.14024051900196355,
+          "minimum": 0.05227887400178588,
+          "p50": 0.06602749150079035,
+          "p95": 0.13942261074753332,
+          "p99": 0.1400769373510775
+        },
+        "minco_optimization": {
+          "count": 18,
+          "finite_count": 18,
+          "maximum": 0.14024051900196355,
+          "minimum": 0.05227887400178588,
+          "p50": 0.06602749150079035,
+          "p95": 0.13942261074753332,
+          "p99": 0.1400769373510775
+        },
+        "preparation": {
+          "count": 18,
+          "finite_count": 18,
+          "maximum": 0.00037051899926154874,
+          "minimum": 0.00020628299898817204,
+          "p50": 0.00023046349997457583,
+          "p95": 0.0003585603501051082,
+          "p99": 0.0003681272694302606
+        },
+        "validation": {
+          "count": 18,
+          "finite_count": 18,
+          "maximum": 0.04542252200189978,
+          "minimum": 0.0073981960013043135,
+          "p50": 0.026880645000346703,
+          "p95": 0.044021052200150734,
+          "p99": 0.045142228041549964
+        },
+        "yaw_construction_within_optimization": {
+          "count": 18,
+          "finite_count": 18,
+          "maximum": 0.014259229978051735,
+          "minimum": 0.007146609994379105,
+          "p50": 0.00755715649574995,
+          "p95": 0.014222274536587065,
+          "p99": 0.0142518388897588
+        }
+      },
+      "statuses": {
+        "DYNAMIC_INFEASIBLE": 11,
+        "SAMPLED_FEASIBLE": 7,
+        "initial boundary violates dynamic/model/sea constraints": 4,
+        "initially invisible; only future reacquisition predicted": 2,
+        "input shape, source, frame or epoch mismatch": 6,
+        "navigation or image acquisition expired": 4,
+        "prediction does not cover execution horizon": 2,
+        "strict dynamic/attitude/sea validation failed": 4
+      },
+      "timeout": 0
+    },
+    "mpc/qt_no_visibility_cost": {
+      "count": 40,
+      "metrics": {
+        "follow_rmse": {
+          "count": 18,
+          "finite_count": 18,
+          "maximum": 3.4766681364925924,
+          "minimum": 0.0014738162722498969,
+          "p50": 0.1966182906767226,
+          "p95": 3.0074333893396985,
+          "p99": 3.382821187062013
+        },
+        "jerk_integral": {
+          "count": 18,
+          "finite_count": 18,
+          "maximum": 16005.08581132582,
+          "minimum": 0.011923788012592747,
+          "p50": 500.8967369879084,
+          "p95": 15120.715276279758,
+          "p99": 15828.211704316605
+        },
+        "minimum_horizontal_margin": {
+          "count": 18,
+          "finite_count": 18,
+          "maximum": 0.7620318291994839,
+          "minimum": -3.141592653589793,
+          "p50": 0.3080652677512362,
+          "p95": 0.7620318291994839,
+          "p99": 0.7620318291994839
+        },
+        "minimum_vertical_margin": {
+          "count": 18,
+          "finite_count": 18,
+          "maximum": 0.3082072979702914,
+          "minimum": -3.141592653589793,
+          "p50": 0.11571735363218405,
+          "p95": 0.3082072979702914,
+          "p99": 0.3082072979702914
+        },
+        "visible_fraction": {
+          "count": 18,
+          "finite_count": 18,
+          "maximum": 1.0,
+          "minimum": 0.47029702970297027,
+          "p50": 1.0,
+          "p95": 1.0,
+          "p99": 1.0
+        }
+      },
+      "optimizer_success": 0,
+      "pipeline_feasible": 7,
+      "sampled_feasible": 7,
+      "seconds": {
+        "end_to_end": {
+          "count": 40,
+          "finite_count": 40,
+          "maximum": 0.22415240900227218,
+          "minimum": 0.0003120300025329925,
+          "p50": 0.09286668599997938,
+          "p95": 0.22301061845264486,
+          "p99": 0.22381454420134106
+        },
+        "initialization": {
+          "count": 40,
+          "finite_count": 40,
+          "maximum": 0.10326731700115488,
+          "minimum": 2.1497999114217237e-05,
+          "p50": 0.09080647449991375,
+          "p95": 0.09677059724945138,
+          "p99": 0.10179861522046849
+        },
+        "joint_yaw_optimization_overlaps_minco": {
+          "count": 18,
+          "finite_count": 18,
+          "maximum": 0.14394460700350464,
+          "minimum": 0.052282291999290464,
+          "p50": 0.07949249549892556,
+          "p95": 0.1408703236014844,
+          "p99": 0.14332975032310058
+        },
+        "minco_optimization": {
+          "count": 18,
+          "finite_count": 18,
+          "maximum": 0.14394460700350464,
+          "minimum": 0.052282291999290464,
+          "p50": 0.07949249549892556,
+          "p95": 0.1408703236014844,
+          "p99": 0.14332975032310058
+        },
+        "preparation": {
+          "count": 18,
+          "finite_count": 18,
+          "maximum": 0.0005375239998102188,
+          "minimum": 0.0002058669997495599,
+          "p50": 0.00024247150031442288,
+          "p95": 0.0003826412523267206,
+          "p99": 0.0005065474503135189
+        },
+        "validation": {
+          "count": 18,
+          "finite_count": 18,
+          "maximum": 0.04582086300069932,
+          "minimum": 0.007392778999928851,
+          "p50": 0.02679723099936382,
+          "p95": 0.04388895409992983,
+          "p99": 0.04543448122054542
+        },
+        "yaw_construction_within_optimization": {
+          "count": 18,
+          "finite_count": 18,
+          "maximum": 0.015043946998048341,
+          "minimum": 0.00711327200406231,
+          "p50": 0.008853039995301515,
+          "p95": 0.014308764154702657,
+          "p99": 0.014896910429379203
+        }
+      },
+      "statuses": {
+        "DYNAMIC_INFEASIBLE": 11,
+        "SAMPLED_FEASIBLE": 7,
+        "initial boundary violates dynamic/model/sea constraints": 4,
+        "initially invisible; only future reacquisition predicted": 2,
+        "input shape, source, frame or epoch mismatch": 6,
+        "navigation or image acquisition expired": 4,
+        "prediction does not cover execution horizon": 2,
+        "strict dynamic/attitude/sea validation failed": 4
+      },
+      "timeout": 0
+    },
+    "simple/fixed": {
+      "count": 40,
+      "metrics": {
+        "follow_rmse": {
+          "count": 28,
+          "finite_count": 28,
+          "maximum": 12.502176942437334,
+          "minimum": 4.608531526730982e-16,
+          "p50": 0.11647638696664069,
+          "p95": 9.137164450846885,
+          "p99": 12.502176942437334
+        },
+        "jerk_integral": {
+          "count": 28,
+          "finite_count": 28,
+          "maximum": 8776060.715807391,
+          "minimum": 2.374504141328903e-27,
+          "p50": 5748.730161654323,
+          "p95": 6114047.442372532,
+          "p99": 8776060.715807391
+        },
+        "minimum_horizontal_margin": {
+          "count": 28,
+          "finite_count": 28,
+          "maximum": 0.7620493331044109,
+          "minimum": -3.141592653589793,
+          "p50": 0.051326127697121304,
+          "p95": 0.7620493331044108,
+          "p99": 0.7620493331044109
+        },
+        "minimum_vertical_margin": {
+          "count": 28,
+          "finite_count": 28,
+          "maximum": 0.30855698486046057,
+          "minimum": -3.141592653589793,
+          "p50": -0.07406806147170891,
+          "p95": 0.3085569848604579,
+          "p99": 0.30855698486046057
+        },
+        "visible_fraction": {
+          "count": 28,
+          "finite_count": 28,
+          "maximum": 1.0,
+          "minimum": 0.03414634146341464,
+          "p50": 0.8611111111111112,
+          "p95": 1.0,
+          "p99": 1.0
+        }
+      },
+      "optimizer_success": 0,
+      "pipeline_feasible": 4,
+      "sampled_feasible": 4,
+      "seconds": {
+        "end_to_end": {
+          "count": 40,
+          "finite_count": 40,
+          "maximum": 0.05941241399705177,
+          "minimum": 0.0002882369954022579,
+          "p50": 0.03313148300003377,
+          "p95": 0.058872691847500394,
+          "p99": 0.05927533211743139
+        },
+        "initialization": {
+          "count": 40,
+          "finite_count": 40,
+          "maximum": 0.0006302920010057278,
+          "minimum": 7.70299811847508e-06,
+          "p50": 0.0003118384993285872,
+          "p95": 0.0004566193014397866,
+          "p99": 0.0005831097998452605
+        },
+        "joint_yaw_optimization_overlaps_minco": {
+          "count": 28,
+          "finite_count": 28,
+          "maximum": 1.0320000001229346e-06,
+          "minimum": 7.279995770659298e-07,
+          "p50": 8.749993867240846e-07,
+          "p95": 1.0083003871841356e-06,
+          "p99": 1.0257901885779574e-06
+        },
+        "minco_optimization": {
+          "count": 28,
+          "finite_count": 28,
+          "maximum": 1.0320000001229346e-06,
+          "minimum": 7.279995770659298e-07,
+          "p50": 8.749993867240846e-07,
+          "p95": 1.0083003871841356e-06,
+          "p99": 1.0257901885779574e-06
+        },
+        "preparation": {
+          "count": 28,
+          "finite_count": 28,
+          "maximum": 0.00019475700173643418,
+          "minimum": 0.0001558660005684942,
+          "p50": 0.00017036149984051008,
+          "p95": 0.00019101419929938855,
+          "p99": 0.00019427073086262682
+        },
+        "validation": {
+          "count": 28,
+          "finite_count": 28,
+          "maximum": 0.04481623900210252,
+          "minimum": 0.007271843998751137,
+          "p50": 0.026778853500218247,
+          "p95": 0.04446830495217,
+          "p99": 0.04473480511198431
+        },
+        "yaw_construction_within_optimization": {
+          "count": 28,
+          "finite_count": 28,
+          "maximum": 0.00039410500176018104,
+          "minimum": 0.0003025739970325958,
+          "p50": 0.0003371484999661334,
+          "p95": 0.00036608780010283226,
+          "p99": 0.00038723323137674015
+        }
+      },
+      "statuses": {
+        "DYNAMIC_INFEASIBLE": 24,
+        "INVALID_INPUT": 6,
+        "PREDICTION_HORIZON": 2,
+        "SAMPLED_FEASIBLE": 4,
+        "STALE_INPUT": 4
+      },
+      "timeout": 0
+    },
+    "simple/q": {
+      "count": 40,
+      "metrics": {
+        "follow_rmse": {
+          "count": 28,
+          "finite_count": 28,
+          "maximum": 12.598712828026152,
+          "minimum": 1.4010995992065004e-06,
+          "p50": 0.22397989960667802,
+          "p95": 9.265537420313157,
+          "p99": 12.59871278877276
+        },
+        "jerk_integral": {
+          "count": 28,
+          "finite_count": 28,
+          "maximum": 7762559.862284137,
+          "minimum": 1.4659122874658697e-08,
+          "p50": 367.0193292456175,
+          "p95": 5338036.309841683,
+          "p99": 7762559.862015668
+        },
+        "minimum_horizontal_margin": {
+          "count": 28,
+          "finite_count": 28,
+          "maximum": 0.7620493117402234,
+          "minimum": -3.141592653589793,
+          "p50": 0.1613232127361663,
+          "p95": 0.7620493117402167,
+          "p99": 0.7620493117402234
+        },
+        "minimum_vertical_margin": {
+          "count": 28,
+          "finite_count": 28,
+          "maximum": 0.30855629010621954,
+          "minimum": -3.141592653589793,
+          "p50": 0.08439161024058378,
+          "p95": 0.3085562901058529,
+          "p99": 0.30855629010613067
+        },
+        "visible_fraction": {
+          "count": 28,
+          "finite_count": 28,
+          "maximum": 1.0,
+          "minimum": 0.05365853658536585,
+          "p50": 1.0,
+          "p95": 1.0,
+          "p99": 1.0
+        }
+      },
+      "optimizer_success": 6,
+      "pipeline_feasible": 8,
+      "sampled_feasible": 8,
+      "seconds": {
+        "end_to_end": {
+          "count": 40,
+          "finite_count": 40,
+          "maximum": 0.15799716499896022,
+          "minimum": 0.0003012979977938812,
+          "p50": 0.06942165199870942,
+          "p95": 0.14223946285164857,
+          "p99": 0.15272987842883592
+        },
+        "initialization": {
+          "count": 40,
+          "finite_count": 40,
+          "maximum": 0.0006302920010057278,
+          "minimum": 7.70299811847508e-06,
+          "p50": 0.0003118384993285872,
+          "p95": 0.0004566193014397866,
+          "p99": 0.0005831097998452605
+        },
+        "joint_yaw_optimization_overlaps_minco": {
+          "count": 28,
+          "finite_count": 28,
+          "maximum": 0.13052298999900813,
+          "minimum": 0.021204429998761043,
+          "p50": 0.056894314499004395,
+          "p95": 0.12803063020019181,
+          "p99": 0.12992081898937613
+        },
+        "minco_optimization": {
+          "count": 28,
+          "finite_count": 28,
+          "maximum": 0.13052298999900813,
+          "minimum": 0.021204429998761043,
+          "p50": 0.056894314499004395,
+          "p95": 0.12803063020019181,
+          "p99": 0.12992081898937613
+        },
+        "preparation": {
+          "count": 28,
+          "finite_count": 28,
+          "maximum": 0.0003215750002709683,
+          "minimum": 0.0002078809993690811,
+          "p50": 0.0002255729996250011,
+          "p95": 0.00030547270180250044,
+          "p99": 0.0003212869109847816
+        },
+        "validation": {
+          "count": 28,
+          "finite_count": 28,
+          "maximum": 0.04687556299904827,
+          "minimum": 0.00725184900147724,
+          "p50": 0.024776381500487332,
+          "p95": 0.04512785545048246,
+          "p99": 0.04646889952924539
+        },
+        "yaw_construction_within_optimization": {
+          "count": 28,
+          "finite_count": 28,
+          "maximum": 0.013627287982671987,
+          "minimum": 0.003086367007199442,
+          "p50": 0.0061132640003052074,
+          "p95": 0.013398803956260964,
+          "p99": 0.01357246016861609
+        }
+      },
+      "statuses": {
+        "DYNAMIC_INFEASIBLE": 20,
+        "INVALID_INPUT": 6,
+        "PREDICTION_HORIZON": 2,
+        "SAMPLED_FEASIBLE": 8,
+        "STALE_INPUT": 4
+      },
+      "timeout": 0
+    },
+    "simple/qt": {
+      "count": 40,
+      "metrics": {
+        "follow_rmse": {
+          "count": 28,
+          "finite_count": 28,
+          "maximum": 15.900161851844405,
+          "minimum": 1.06553682908831e-06,
+          "p50": 0.20097052936755333,
+          "p95": 11.548065688050393,
+          "p99": 15.900161840531647
+        },
+        "jerk_integral": {
+          "count": 28,
+          "finite_count": 28,
+          "maximum": 1002199.0561103716,
+          "minimum": 1.1128357527819633e-08,
+          "p50": 1025.1342730563051,
+          "p95": 846609.8968194502,
+          "p99": 1002199.0471271236
+        },
+        "minimum_horizontal_margin": {
+          "count": 28,
+          "finite_count": 28,
+          "maximum": 0.7620493182664387,
+          "minimum": -3.141592653589793,
+          "p50": 0.2554380386626386,
+          "p95": 0.7620493159822365,
+          "p99": 0.7620493182664382
+        },
+        "minimum_vertical_margin": {
+          "count": 28,
+          "finite_count": 28,
+          "maximum": 0.30855636407221293,
+          "minimum": -3.141592653589793,
+          "p50": 0.11820975829758645,
+          "p95": 0.30855633818380335,
+          "p99": 0.308556364072192
+        },
+        "visible_fraction": {
+          "count": 28,
+          "finite_count": 28,
+          "maximum": 1.0,
+          "minimum": 0.2146341463414634,
+          "p50": 1.0,
+          "p95": 1.0,
+          "p99": 1.0
+        }
+      },
+      "optimizer_success": 4,
+      "pipeline_feasible": 5,
+      "sampled_feasible": 5,
+      "seconds": {
+        "end_to_end": {
+          "count": 40,
+          "finite_count": 40,
+          "maximum": 0.15940510599830304,
+          "minimum": 0.00028663299963227473,
+          "p50": 0.1138817699993524,
+          "p95": 0.15854499244960607,
+          "p99": 0.15927933841016056
+        },
+        "initialization": {
+          "count": 40,
+          "finite_count": 40,
+          "maximum": 0.0006302920010057278,
+          "minimum": 7.70299811847508e-06,
+          "p50": 0.0003118384993285872,
+          "p95": 0.0004566193014397866,
+          "p99": 0.0005831097998452605
+        },
+        "joint_yaw_optimization_overlaps_minco": {
+          "count": 28,
+          "finite_count": 28,
+          "maximum": 0.13375579100102186,
+          "minimum": 0.04822997600058443,
+          "p50": 0.09034854900164646,
+          "p95": 0.1195475610989888,
+          "p99": 0.13007636465030373
+        },
+        "minco_optimization": {
+          "count": 28,
+          "finite_count": 28,
+          "maximum": 0.13375579100102186,
+          "minimum": 0.04822997600058443,
+          "p50": 0.09034854900164646,
+          "p95": 0.1195475610989888,
+          "p99": 0.13007636465030373
+        },
+        "preparation": {
+          "count": 28,
+          "finite_count": 28,
+          "maximum": 0.0003698389991768636,
+          "minimum": 0.0002064319996861741,
+          "p50": 0.0002310030013177311,
+          "p95": 0.00031589724985678905,
+          "p99": 0.00035970724962680834
+        },
+        "validation": {
+          "count": 28,
+          "finite_count": 28,
+          "maximum": 0.046663165998324985,
+          "minimum": 0.007314211998163955,
+          "p50": 0.025992703498559422,
+          "p95": 0.044315191398891327,
+          "p99": 0.046143032058571405
+        },
+        "yaw_construction_within_optimization": {
+          "count": 28,
+          "finite_count": 28,
+          "maximum": 0.014146972040180117,
+          "minimum": 0.005403104991273722,
+          "p50": 0.010666616000889917,
+          "p95": 0.012779595660322229,
+          "p99": 0.01380687706059689
+        }
+      },
+      "statuses": {
+        "DYNAMIC_INFEASIBLE": 23,
+        "INVALID_INPUT": 6,
+        "PREDICTION_HORIZON": 2,
+        "SAMPLED_FEASIBLE": 5,
+        "STALE_INPUT": 4
+      },
+      "timeout": 0
+    },
+    "simple/qt_no_visibility_cost": {
+      "count": 40,
+      "metrics": {
+        "follow_rmse": {
+          "count": 28,
+          "finite_count": 28,
+          "maximum": 15.900161841920298,
+          "minimum": 1.2560739669470201e-15,
+          "p50": 0.22836656562634136,
+          "p95": 11.537838749718752,
+          "p99": 15.889729161047752
+        },
+        "jerk_integral": {
+          "count": 28,
+          "finite_count": 28,
+          "maximum": 1002199.0326394448,
+          "minimum": 1.1080361100662239e-26,
+          "p50": 672.9680686293615,
+          "p95": 835861.6942762479,
+          "p99": 1002199.0297117202
+        },
+        "minimum_horizontal_margin": {
+          "count": 28,
+          "finite_count": 28,
+          "maximum": 0.7620493331044109,
+          "minimum": -3.141592653589793,
+          "p50": 0.2632621053798898,
+          "p95": 0.7620493331044108,
+          "p99": 0.7620493331044109
+        },
+        "minimum_vertical_margin": {
+          "count": 28,
+          "finite_count": 28,
+          "maximum": 0.3085569848604557,
+          "minimum": -3.141592653589793,
+          "p50": 0.13335973654926547,
+          "p95": 0.3085569848604548,
+          "p99": 0.3085569848604557
+        },
+        "visible_fraction": {
+          "count": 28,
+          "finite_count": 28,
+          "maximum": 1.0,
+          "minimum": 0.17073170731707318,
+          "p50": 1.0,
+          "p95": 1.0,
+          "p99": 1.0
+        }
+      },
+      "optimizer_success": 4,
+      "pipeline_feasible": 8,
+      "sampled_feasible": 8,
+      "seconds": {
+        "end_to_end": {
+          "count": 40,
+          "finite_count": 40,
+          "maximum": 0.16422231799879228,
+          "minimum": 0.0002836969979398418,
+          "p50": 0.08935138399829157,
+          "p95": 0.14785054830008448,
+          "p99": 0.15790634677825435
+        },
+        "initialization": {
+          "count": 40,
+          "finite_count": 40,
+          "maximum": 0.0006302920010057278,
+          "minimum": 7.70299811847508e-06,
+          "p50": 0.0003118384993285872,
+          "p95": 0.0004566193014397866,
+          "p99": 0.0005831097998452605
+        },
+        "joint_yaw_optimization_overlaps_minco": {
+          "count": 28,
+          "finite_count": 28,
+          "maximum": 0.15035246799743618,
+          "minimum": 0.016154046999872662,
+          "p50": 0.06103462449937069,
+          "p95": 0.1342954703997748,
+          "p99": 0.14604907029803144
+        },
+        "minco_optimization": {
+          "count": 28,
+          "finite_count": 28,
+          "maximum": 0.15035246799743618,
+          "minimum": 0.016154046999872662,
+          "p50": 0.06103462449937069,
+          "p95": 0.1342954703997748,
+          "p99": 0.14604907029803144
+        },
+        "preparation": {
+          "count": 28,
+          "finite_count": 28,
+          "maximum": 0.00031376100014313124,
+          "minimum": 0.0002099859993904829,
+          "p50": 0.00023512900042987894,
+          "p95": 0.000295759300388454,
+          "p99": 0.000309641610365361
+        },
+        "validation": {
+          "count": 28,
+          "finite_count": 28,
+          "maximum": 0.04631827599951066,
+          "minimum": 0.007220528998004738,
+          "p50": 0.025179636999382637,
+          "p95": 0.0447016051499304,
+          "p99": 0.045890972649431205
+        },
+        "yaw_construction_within_optimization": {
+          "count": 28,
+          "finite_count": 28,
+          "maximum": 0.015868210011831252,
+          "minimum": 0.001917009001772385,
+          "p50": 0.007253797006342211,
+          "p95": 0.014219066202167596,
+          "p99": 0.015430966882013309
+        }
+      },
+      "statuses": {
+        "DYNAMIC_INFEASIBLE": 20,
+        "INVALID_INPUT": 6,
+        "PREDICTION_HORIZON": 2,
+        "SAMPLED_FEASIBLE": 8,
+        "STALE_INPUT": 4
+      },
+      "timeout": 0
+    }
+  },
+  "request_count": 40
+}

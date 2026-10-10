@@ -1,0 +1,23 @@
+{
+  "changed": [
+    "docs/current/README.md",
+    "scripts/test_research_planners.sh",
+    "src/uav_control/uav_control/controllers/follow_research_shadow_node.py",
+    "src/uav_control/uav_control/controllers/follow_research_solver.py",
+    "src/uav_control/uav_control/guidance/follow_minco_optimizer.py",
+    "src/uav_usv_bringup/launch/follow_research.launch.py",
+    "docs/current/p31_fast_visibility_minco_validation.md",
+    "scripts/p31_minco_audit.py",
+    "scripts/p31_minco_experiment.py",
+    "src/uav_control/test/test_fast_follow_minco.py",
+    "src/uav_control/uav_control/guidance/adaptive_follow_initializer.py",
+    "src/uav_control/uav_control/guidance/fast_follow_minco.py",
+    "src/uav_control/uav_control/guidance/fast_minco_objective.py",
+    "src/uav_control/uav_control/guidance/follow_reference.py",
+    "src/uav_control/uav_control/guidance/polynomial_extrema.py",
+    "src/uav_usv_bringup/config/p31_follow_research.yaml"
+  ],
+  "unexpected": [],
+  "staged": [],
+  "protected_original_control_unchanged": true
+}

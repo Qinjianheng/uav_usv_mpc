@@ -1,0 +1,26 @@
+a00aebb0af6d89acf94751d083f2ba5830ecd0fb
+github	https://github.com/Qinjianheng/uav_usv_mpc.git (fetch)
+github	https://github.com/Qinjianheng/uav_usv_mpc.git (push)
+origin	https://github.com/Qinjianheng/uav_usv_mpc.git (fetch)
+origin	https://github.com/Qinjianheng/uav_usv_mpc.git (push)
+Matrix source hashes: all 166 match current source
+f2 original frozen input hash matches
+f3 original frozen input hash matches
+All 16 tracked shell syntax checks: PASS
+Pre-MPC baseline Git diff empty; index empty; diff checks: PASS
+Report/index basic text checks: PASS
+/home/qin/data/uav_usv_mpc/install/uav_control
+ M docs/current/README.md
+ M scripts/p45_minco_sitl.py
+ M src/uav_control/test/test_follow_revalidation.py
+ M src/uav_control/uav_control/controllers/direct_reference_minco.py
+ M src/uav_control/uav_control/controllers/follow_research_shadow_node.py
+ M src/uav_control/uav_control/guidance/p43_minco_objective.py
+ M src/uav_usv_bringup/config/follow_minco.yaml
+?? data/experiments/20261010_p46_follow_guided/
+?? docs/current/p46_follow_guided_minco.md
+?? docs/superpowers/
+?? scripts/p46_follow_study.py
+?? src/uav_control/test/test_follow_guided_minco.py
+?? src/uav_control/test/test_p46_follow_study.py
+?? src/uav_control/uav_control/guidance/follow_rollout.py

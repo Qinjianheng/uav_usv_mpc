@@ -1,0 +1,11 @@
+{
+  "src/uav_control/uav_control/guidance/follow_problem.py": "1be2bc551e587e50dc71a558f09a67b06b3908e4bca0e6446d3eb463eea5e2b5",
+  "src/uav_control/uav_control/guidance/greedy_follow_initializer.py": "a079a593b7cea4ebcf5ec0694065ada0802017db9f912ee03761b73f1550a298",
+  "src/uav_control/uav_control/guidance/follow_minco_optimizer.py": "688905dea23bbde1ab7649bbf3dd6669efef5adc20c713398b1ccde63b978e5a",
+  "src/uav_control/uav_control/guidance/yaw_trajectory.py": "98060707d47fafdb820b5b7e58da426f710b85946ae27c1dac42a5dea474b268",
+  "src/uav_control/uav_control/controllers/follow_research_solver.py": "ae6c60261d852b2756bddd6de55a2592612d8e510ee8e403ced19ee60df984be",
+  "src/uav_control/uav_control/controllers/follow_research_shadow_node.py": "409c8efb9536316931be5965d6d9768901269a061347d7f78597946105964ec1",
+  "src/uav_control/uav_control/controllers/follow_mpc_shadow_node.py": "9a1cf5ba10087d8e5e33ff989e90163823e9d1aab9b55210f28462b5baaca506",
+  "src/uav_usv_bringup/launch/follow_research.launch.py": "6eacffb22a950ecd6a5fd563fceaba28264eb819a6f0bb17548ba9e8610e2f21",
+  "src/uav_usv_bringup/config/follow_research.yaml": "566307b96b53a628aa38bf02ee5a00244e4a02c65651ac3a9d74c264b791a922"
+}

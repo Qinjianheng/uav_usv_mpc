@@ -1,0 +1,21 @@
+stationary
+constant_velocity
+left_turn
+right_turn
+figure_eight
+speed_jump
+turn_jump
+wrong_yaw
+fov_edge
+recoverable_lost_view
+too_close
+too_far
+dynamics_infeasible
+expired_prediction
+short_prediction
+stale_observation
+nonmonotonic_prediction
+wrong_frame
+deceleration
+epoch_mismatch
+{"A": {"count": 20, "feasible": 5, "initialized": 14, "status": {"SAMPLED_FEASIBLE": 5, "DYNAMIC_INFEASIBLE": 9, "STALE_INPUT": 2, "PREDICTION_HORIZON": 1, "INVALID_INPUT": 3}, "seconds": {"count": 20, "finite_count": 20, "p50": 0.04887959349798621, "p95": 0.10715972220386905, "p99": 0.12641326124146868, "minimum": 0.00012227200204506516, "maximum": 0.13122664600086864}, "adaptive_initialization_seconds": {"count": 20, "finite_count": 20, "p50": 0.0029282750001584645, "p95": 0.013456126751043485, "p99": 0.01363569575252768, "minimum": 9.14499833015725e-06, "maximum": 0.01368058800289873}, "optimizer_calls": 21}, "B": {"count": 20, "feasible": 5, "initialized": 14, "status": {"SAMPLED_FEASIBLE": 5, "DYNAMIC_INFEASIBLE": 9, "STALE_INPUT": 2, "PREDICTION_HORIZON": 1, "INVALID_INPUT": 3}, "seconds": {"count": 20, "finite_count": 20, "p50": 0.04890407999846502, "p95": 0.10377780760136376, "p99": 0.1243153271241317, "minimum": 0.00011038600496249273, "maximum": 0.12944970700482372}, "adaptive_initialization_seconds": {"count": 20, "finite_count": 20, "p50": 0.0029282750001584645, "p95": 0.013456126751043485, "p99": 0.01363569575252768, "minimum": 9.14499833015725e-06, "maximum": 0.01368058800289873}, "optimizer_calls": 21}, "C": {"count": 20, "feasible": 5, "initialized": 14, "status": {"SAMPLED_FEASIBLE": 5, "DYNAMIC_INFEASIBLE": 9, "STALE_INPUT": 2, "PREDICTION_HORIZON": 1, "INVALID_INPUT": 3}, "seconds": {"count": 20, "finite_count": 20, "p50": 0.04830605650204234, "p95": 0.10522565175560887, "p99": 0.12547551355048195, "minimum": 0.00010448700049892068, "maximum": 0.13053797899920028}, "adaptive_initialization_seconds": {"count": 20, "finite_count": 20, "p50": 0.0029282750001584645, "p95": 0.013456126751043485, "p99": 0.01363569575252768, "minimum": 9.14499833015725e-06, "maximum": 0.01368058800289873}, "optimizer_calls": 21}, "D": {"count": 20, "feasible": 5, "initialized": 14, "status": {"SAMPLED_FEASIBLE": 5, "DYNAMIC_INFEASIBLE": 9, "STALE_INPUT": 2, "PREDICTION_HORIZON": 1, "INVALID_INPUT": 3}, "seconds": {"count": 20, "finite_count": 20, "p50": 0.04855716299789492, "p95": 0.1046261698480521, "p99": 0.12508065557005463, "minimum": 0.00011545199959073216, "maximum": 0.1301942770005553}, "adaptive_initialization_seconds": {"count": 20, "finite_count": 20, "p50": 0.0029282750001584645, "p95": 0.013456126751043485, "p99": 0.01363569575252768, "minimum": 9.14499833015725e-06, "maximum": 0.01368058800289873}, "optimizer_calls": 21}, "D_horizon_2.8": {"count": 20, "feasible": 7, "initialized": 14, "status": {"SAMPLED_FEASIBLE": 7, "DYNAMIC_INFEASIBLE": 7, "STALE_INPUT": 2, "PREDICTION_HORIZON": 1, "INVALID_INPUT": 3}, "seconds": {"count": 20, "finite_count": 20, "p50": 0.028668707000178983, "p95": 0.10092493129850487, "p99": 0.15455742145553805, "minimum": 0.00010126100096385926, "maximum": 0.16796554399479646}, "adaptive_initialization_seconds": {"count": 20, "finite_count": 20, "p50": 0.0029282750001584645, "p95": 0.013456126751043485, "p99": 0.01363569575252768, "minimum": 9.14499833015725e-06, "maximum": 0.01368058800289873}, "optimizer_calls": 17}}

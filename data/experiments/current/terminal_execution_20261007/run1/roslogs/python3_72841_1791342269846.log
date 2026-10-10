@@ -1,0 +1,1 @@
+[INFO] [1791342270.126148409] [target_bearing_node]: RGB TARGET BEARING READY | RGB=/camera/front/image_raw | output=/perception/front/target_bearing | image-right=positive PX4 yaw | detector=red validation sphere

@@ -1,0 +1,25 @@
+1791471000.7928154 [INFO] [launch]: All log files can be found below /home/qin/data/uav_usv_mpc/data/experiments/20261008_p3_follow/f3/ros_logs/2026-10-08-22-50-00-792219-qin-GLO-FX6-65276
+1791471000.7929070 [INFO] [launch]: Default logging verbosity is set to INFO
+1791471000.8395026 [INFO] [moving_target-1]: process started with pid [65277]
+1791471000.8396730 [INFO] [target_predictor_node-2]: process started with pid [65279]
+1791471000.8397586 [INFO] [intercept_planner_node-3]: process started with pid [65281]
+1791471000.8398156 [INFO] [trajectory_tracker_node-4]: process started with pid [65283]
+1791471000.8398635 [INFO] [mission_manager_node-5]: process started with pid [65285]
+1791471000.8399093 [INFO] [intercept_evaluator_node-6]: process started with pid [65287]
+1791471000.8399503 [INFO] [target_kalman_filter-7]: process started with pid [65289]
+1791471000.8399827 [INFO] [image_bridge-8]: process started with pid [65291]
+1791471000.8400137 [INFO] [target_bearing_node-9]: process started with pid [65293]
+1791471000.8400450 [INFO] [rgbd_target_localizer-10]: process started with pid [65295]
+1791471000.8400760 [INFO] [follow_research_shadow_node-11]: process started with pid [65297]
+1791471084.2869692 [WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+1791471084.4333456 [INFO] [image_bridge-8]: process has finished cleanly [pid 65291]
+1791471084.4743900 [ERROR] [moving_target-1]: process has died [pid 65277, exit code -11, cmd '/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/moving_target --ros-args -r __node:=moving_target --params-file /home/qin/data/uav_usv_mpc/data/experiments/20261008_p3_follow/f3/config/flight.yaml'].
+1791471084.4830630 [INFO] [target_predictor_node-2]: process has finished cleanly [pid 65279]
+1791471084.4853840 [INFO] [target_kalman_filter-7]: process has finished cleanly [pid 65289]
+1791471084.5081697 [INFO] [intercept_planner_node-3]: process has finished cleanly [pid 65281]
+1791471084.5270050 [ERROR] [mission_manager_node-5]: process has died [pid 65285, exit code 1, cmd '/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/mission_manager_node --ros-args -r __node:=mission_manager_node --params-file /home/qin/data/uav_usv_mpc/data/experiments/20261008_p3_follow/f3/config/flight.yaml'].
+1791471084.5309641 [INFO] [rgbd_target_localizer-10]: process has finished cleanly [pid 65295]
+1791471084.5439045 [ERROR] [trajectory_tracker_node-4]: process has died [pid 65283, exit code 1, cmd '/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/trajectory_tracker_node --ros-args -r __node:=trajectory_tracker_node --params-file /home/qin/data/uav_usv_mpc/data/experiments/20261008_p3_follow/f3/config/flight.yaml'].
+1791471084.5480454 [INFO] [follow_research_shadow_node-11]: process has finished cleanly [pid 65297]
+1791471084.5564694 [ERROR] [target_bearing_node-9]: process has died [pid 65293, exit code 1, cmd '/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/target_bearing_node --ros-args -r __node:=target_bearing_node --params-file /home/qin/data/uav_usv_mpc/data/experiments/20261008_p3_follow/f3/config/flight.yaml'].
+1791471084.5677280 [ERROR] [intercept_evaluator_node-6]: process has died [pid 65287, exit code 1, cmd '/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/intercept_evaluator_node --ros-args -r __node:=intercept_evaluator_node --params-file /home/qin/data/uav_usv_mpc/data/experiments/20261008_p3_follow/f3/config/flight.yaml --params-file /tmp/launch_params_j4fuy826'].

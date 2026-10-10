@@ -1,0 +1,60 @@
+{
+  "post_result_exclusion_s": 1,
+  "stats_samples": 60,
+  "target_samples": 121,
+  "world_paused": true,
+  "world_clock_frozen": true,
+  "target_position_frozen": true,
+  "target_velocity_zero": true,
+  "native_pose_snapshots": [
+    {
+      "sim_time": 47.068,
+      "iterations": 11767,
+      "paused": true,
+      "models_xyz_rpy": {
+        "x500_mono_cam_0": [
+          -16.5903,
+          66.6257,
+          0.433221,
+          0.0599053,
+          0.0574248,
+          2.02009
+        ],
+        "usv_target": [
+          -16.8164,
+          67.1559,
+          0.50739,
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "sim_time": 47.068,
+      "iterations": 11767,
+      "paused": true,
+      "models_xyz_rpy": {
+        "usv_target": [
+          -16.8164,
+          67.1559,
+          0.50739,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "x500_mono_cam_0": [
+          -16.5903,
+          66.6257,
+          0.433221,
+          0.0599053,
+          0.0574248,
+          2.02009
+        ]
+      }
+    }
+  ],
+  "native_uav_target_poses_frozen": true,
+  "scene_info_is_initial_pose_only": true,
+  "native_pose_source": "world/default/state SerializedStepMap Pose component 10918813941671183356"
+}

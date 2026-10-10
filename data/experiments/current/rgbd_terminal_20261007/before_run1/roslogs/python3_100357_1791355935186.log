@@ -1,0 +1,4 @@
+[INFO] [1791355935.403783622] [intercept_evaluator_node]: Truth-only evaluator ready | truth=/target/state | capture=0.50 m | output=/home/qin/data/uav_usv_mpc/data/experiments/current
+[INFO] [1791355970.976677388] [intercept_evaluator_node]: SUCCESS: CAPTURE_RADIUS_REACHED | minimum distance=0.441 m | run artifacts: /home/qin/data/uav_usv_mpc/data/experiments/current/modular_intercept_20261007_145227_848420_mission_1.csv
+[INFO] [1791355971.079379211] [intercept_evaluator_node]: Capture complete | Gazebo world paused
+[INFO] [1791355971.095633319] [intercept_evaluator_node]: Run finalized: CAPTURE_RADIUS_REACHED | artifacts=/home/qin/data/uav_usv_mpc/data/experiments/current/modular_intercept_20261007_145227_848420_mission_1.csv

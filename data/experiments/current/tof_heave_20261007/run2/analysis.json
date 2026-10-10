@@ -1,0 +1,13 @@
+{
+  "run": "run2",
+  "rows": 1483,
+  "valid_observation_count": 0,
+  "valid_with_truth_count": 0,
+  "rejections": {
+    "TARGET_VECTOR_INVALID": 871,
+    "IMAGE_INVALID": 495,
+    "DEPTH_RATIO_LOW": 117
+  },
+  "median_rgb_depth_raw_skew_s": 0.0,
+  "position_rmse_m": null
+}

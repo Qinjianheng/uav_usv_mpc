@@ -1,0 +1,132 @@
+....FFFF..                                                               [100%]
+=================================== FAILURES ===================================
+____ test_camera_launch_conditions_preserve_front_and_gate_down[true-true] _____
+
+shadow = 'true', down = 'true'
+tmp_path = PosixPath('/tmp/pytest-of-qin/pytest-19/test_camera_launch_conditions_0')
+
+    @pytest.mark.parametrize('shadow', ['true', 'false'])
+    @pytest.mark.parametrize('down', ['true', 'false'])
+    def test_camera_launch_conditions_preserve_front_and_gate_down(shadow, down, tmp_path):
+        from launch import LaunchContext
+        from launch.conditions import IfCondition
+        from launch.substitutions import LaunchConfiguration, PythonExpression
+    
+        tree = ast.parse(LAUNCH.read_text())
+        nodes = {}
+        declarations = {}
+        for call in ast.walk(tree):
+            if not isinstance(call, ast.Call) or not isinstance(call.func, ast.Name):
+                continue
+            kwargs = {item.arg: item.value for item in call.keywords}
+            if call.func.id == 'Node':
+                nodes[kwargs['name'].value] = kwargs
+            elif call.func.id == 'DeclareLaunchArgument':
+                declarations[call.args[0].value] = kwargs
+        assert 'enable_down_camera' in declarations, 'down camera toggle is missing'
+        assert declarations['enable_down_camera']['default_value'].value == 'false'
+>       assert declarations['front_depth_model']['default_value'].value == 'ideal'
+E       AssertionError: assert 'tof' == 'ideal'
+E         - ideal
+E         + tof
+
+test/test_camera_profile.py:83: AssertionError
+____ test_camera_launch_conditions_preserve_front_and_gate_down[true-false] ____
+
+shadow = 'false', down = 'true'
+tmp_path = PosixPath('/tmp/pytest-of-qin/pytest-19/test_camera_launch_conditions_1')
+
+    @pytest.mark.parametrize('shadow', ['true', 'false'])
+    @pytest.mark.parametrize('down', ['true', 'false'])
+    def test_camera_launch_conditions_preserve_front_and_gate_down(shadow, down, tmp_path):
+        from launch import LaunchContext
+        from launch.conditions import IfCondition
+        from launch.substitutions import LaunchConfiguration, PythonExpression
+    
+        tree = ast.parse(LAUNCH.read_text())
+        nodes = {}
+        declarations = {}
+        for call in ast.walk(tree):
+            if not isinstance(call, ast.Call) or not isinstance(call.func, ast.Name):
+                continue
+            kwargs = {item.arg: item.value for item in call.keywords}
+            if call.func.id == 'Node':
+                nodes[kwargs['name'].value] = kwargs
+            elif call.func.id == 'DeclareLaunchArgument':
+                declarations[call.args[0].value] = kwargs
+        assert 'enable_down_camera' in declarations, 'down camera toggle is missing'
+        assert declarations['enable_down_camera']['default_value'].value == 'false'
+>       assert declarations['front_depth_model']['default_value'].value == 'ideal'
+E       AssertionError: assert 'tof' == 'ideal'
+E         - ideal
+E         + tof
+
+test/test_camera_profile.py:83: AssertionError
+____ test_camera_launch_conditions_preserve_front_and_gate_down[false-true] ____
+
+shadow = 'true', down = 'false'
+tmp_path = PosixPath('/tmp/pytest-of-qin/pytest-19/test_camera_launch_conditions_2')
+
+    @pytest.mark.parametrize('shadow', ['true', 'false'])
+    @pytest.mark.parametrize('down', ['true', 'false'])
+    def test_camera_launch_conditions_preserve_front_and_gate_down(shadow, down, tmp_path):
+        from launch import LaunchContext
+        from launch.conditions import IfCondition
+        from launch.substitutions import LaunchConfiguration, PythonExpression
+    
+        tree = ast.parse(LAUNCH.read_text())
+        nodes = {}
+        declarations = {}
+        for call in ast.walk(tree):
+            if not isinstance(call, ast.Call) or not isinstance(call.func, ast.Name):
+                continue
+            kwargs = {item.arg: item.value for item in call.keywords}
+            if call.func.id == 'Node':
+                nodes[kwargs['name'].value] = kwargs
+            elif call.func.id == 'DeclareLaunchArgument':
+                declarations[call.args[0].value] = kwargs
+        assert 'enable_down_camera' in declarations, 'down camera toggle is missing'
+        assert declarations['enable_down_camera']['default_value'].value == 'false'
+>       assert declarations['front_depth_model']['default_value'].value == 'ideal'
+E       AssertionError: assert 'tof' == 'ideal'
+E         - ideal
+E         + tof
+
+test/test_camera_profile.py:83: AssertionError
+___ test_camera_launch_conditions_preserve_front_and_gate_down[false-false] ____
+
+shadow = 'false', down = 'false'
+tmp_path = PosixPath('/tmp/pytest-of-qin/pytest-19/test_camera_launch_conditions_3')
+
+    @pytest.mark.parametrize('shadow', ['true', 'false'])
+    @pytest.mark.parametrize('down', ['true', 'false'])
+    def test_camera_launch_conditions_preserve_front_and_gate_down(shadow, down, tmp_path):
+        from launch import LaunchContext
+        from launch.conditions import IfCondition
+        from launch.substitutions import LaunchConfiguration, PythonExpression
+    
+        tree = ast.parse(LAUNCH.read_text())
+        nodes = {}
+        declarations = {}
+        for call in ast.walk(tree):
+            if not isinstance(call, ast.Call) or not isinstance(call.func, ast.Name):
+                continue
+            kwargs = {item.arg: item.value for item in call.keywords}
+            if call.func.id == 'Node':
+                nodes[kwargs['name'].value] = kwargs
+            elif call.func.id == 'DeclareLaunchArgument':
+                declarations[call.args[0].value] = kwargs
+        assert 'enable_down_camera' in declarations, 'down camera toggle is missing'
+        assert declarations['enable_down_camera']['default_value'].value == 'false'
+>       assert declarations['front_depth_model']['default_value'].value == 'ideal'
+E       AssertionError: assert 'tof' == 'ideal'
+E         - ideal
+E         + tof
+
+test/test_camera_profile.py:83: AssertionError
+=========================== short test summary info ============================
+FAILED test/test_camera_profile.py::test_camera_launch_conditions_preserve_front_and_gate_down[true-true]
+FAILED test/test_camera_profile.py::test_camera_launch_conditions_preserve_front_and_gate_down[true-false]
+FAILED test/test_camera_profile.py::test_camera_launch_conditions_preserve_front_and_gate_down[false-true]
+FAILED test/test_camera_profile.py::test_camera_launch_conditions_preserve_front_and_gate_down[false-false]
+4 failed, 6 passed in 0.05s

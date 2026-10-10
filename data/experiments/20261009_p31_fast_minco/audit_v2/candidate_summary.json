@@ -1,0 +1,18 @@
+{
+  "candidate_counts": {
+    "all": 519,
+    "feasible": 253,
+    "side": 240,
+    "horizontal_speed": 131,
+    "horizontal_acceleration": 259,
+    "yaw_rate": 65,
+    "tilt": 40,
+    "maximum_thrust": 16,
+    "whole_target_visibility": 40,
+    "rear": 279
+  },
+  "final_jerk_peak_locations": {
+    "start": 46,
+    "interior": 1
+  }
+}

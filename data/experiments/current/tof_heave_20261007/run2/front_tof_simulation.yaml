@@ -1,0 +1,16 @@
+# Uncalibrated functional simulation. These are engineering test assumptions,
+# not a manufacturer's specification or evidence of outdoor/sea performance.
+# The rendering backend retains the baseline aligned RGB/depth optical geometry.
+front_tof_depth_model:
+  ros__parameters:
+    input_topic: /camera/front/depth/ideal
+    output_topic: /camera/front/depth/image_raw
+    horizontal_fov: 1.74
+    minimum_range: 0.25
+    maximum_range: 25.0
+    # Per-pixel radial error sigma [m] = noise_std + range_noise_scale * range.
+    noise_std: 0.01
+    range_noise_scale: 0.001
+    dropout_probability: 0.01
+    quantization: 0.001
+    seed: 0

@@ -1,0 +1,13 @@
+{
+  "head": "d823aacf225aa8d125b549117e629f89cfeafbf6",
+  "branch": "master",
+  "experiment_id": "20261007_104013_014381",
+  "outcome": "FAILURE",
+  "reason": "TIMEOUT",
+  "stage": "noise-aware sphere fit; before terminal execution changes",
+  "source_workspace": "/home/qin/data/uav_usv_mpc",
+  "control_changed_in_this_stage": false,
+  "truth_scope": "evaluator, shadow diagnostics, offline accuracy only",
+  "raw_records_include_post_timeout": true,
+  "analysis_cutoff_ros_s": 1791340855.4614508
+}

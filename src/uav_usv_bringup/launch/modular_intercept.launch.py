@@ -6,15 +6,16 @@ from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, SetEnvironmentVariable
 from launch.conditions import IfCondition
-from launch.substitutions import LaunchConfiguration
+from launch.substitutions import LaunchConfiguration, PythonExpression
 from launch_ros.actions import Node
+from launch_ros.parameter_descriptions import ParameterValue
 
 
 def generate_launch_description():
     """Return one launch graph with a single PX4 command owner."""
     package_share = get_package_share_directory('uav_usv_bringup')
     default_config = os.path.join(package_share, 'config', 'baseline.yaml')
-    workspace = os.environ.get('UAV_USV_WS', '/home/qin/data/uav_usv')
+    workspace = os.environ.get('UAV_USV_WS', '/home/qin/data/uav_usv_mpc')
     default_log_directory = os.path.join(
         workspace,
         'data',
@@ -27,6 +28,9 @@ def generate_launch_description():
     enable_shadow_perception = LaunchConfiguration(
         'enable_shadow_perception'
     )
+    enable_down_camera = LaunchConfiguration('enable_down_camera')
+    front_depth_model = LaunchConfiguration('front_depth_model')
+    tof_config_file = LaunchConfiguration('tof_config_file')
 
     return LaunchDescription([
         # Online KF/MINCO matrices are small. A BLAS worker pool was consuming
@@ -41,6 +45,10 @@ def generate_launch_description():
             default_value=default_config,
             description='Shared modular interception parameter YAML.',
         ),
+        DeclareLaunchArgument('enable_follow_minco', default_value='true',
+                              choices=['true', 'false']),
+        DeclareLaunchArgument('enable_follow_planner', default_value='true',
+                              choices=['true', 'false']),
         DeclareLaunchArgument(
             'log_directory',
             default_value=default_log_directory,
@@ -57,6 +65,28 @@ def generate_launch_description():
             'enable_evaluator', default_value='true',
             description='Record evaluation-only truth; never affects control.',
         ),
+        DeclareLaunchArgument(
+            'enable_down_camera', default_value='false',
+            choices=['true', 'false'],
+            description='Bridge and diagnose an explicitly enabled down sensor.',
+        ),
+        DeclareLaunchArgument(
+            'front_depth_model', default_value='ideal', choices=['tof', 'ideal'],
+            description='Functional uncalibrated ToF model, or ideal baseline depth.',
+        ),
+        DeclareLaunchArgument(
+            'tof_config_file',
+            default_value=os.path.join(package_share, 'config', 'front_tof_simulation.yaml'),
+            description='Explicit functional ToF range/noise test assumptions.',
+        ),
+        Node(package='uav_control', executable='p4_follow_planner_node',
+             name='p4_follow_planner_node', output='screen',
+             condition=IfCondition(PythonExpression([
+                 "'", LaunchConfiguration('enable_follow_minco'), "' == 'true' and '",
+                 LaunchConfiguration('enable_follow_planner'), "' == 'true'",
+             ])),
+             parameters=[os.path.join(package_share, 'config/follow_minco.yaml'),
+                         {'log_directory': log_directory}]),
         Node(
             package='uav_control',
             executable='moving_target',
@@ -91,7 +121,8 @@ def generate_launch_description():
             executable='trajectory_tracker_node',
             name='trajectory_tracker_node',
             output='screen',
-            parameters=[config_file],
+            parameters=[config_file, {'follow_minco_enabled': ParameterValue(
+                LaunchConfiguration('enable_follow_minco'), value_type=bool)}],
         ),
         Node(
             package='uav_control',
@@ -126,20 +157,36 @@ def generate_launch_description():
             arguments=[
                 '/uav/camera/front/image',
                 '/uav/camera/front/depth_image',
-                '/uav/camera/down/image',
-                '/uav/camera/down/depth_image',
             ],
             remappings=[
                 ('/uav/camera/front/image', '/camera/front/image_raw'),
                 (
                     '/uav/camera/front/depth_image',
-                    '/camera/front/depth/image_raw',
+                    PythonExpression([
+                        "'/camera/front/depth/ideal' if '", front_depth_model,
+                        "' == 'tof' else '/camera/front/depth/image_raw'",
+                    ]),
                 ),
+            ],
+        ),
+        Node(
+            package='uav_control', executable='tof_depth_node',
+            name='front_tof_depth_model', output='screen',
+            parameters=[tof_config_file],
+            condition=IfCondition(PythonExpression([
+                "'", front_depth_model, "' == 'tof'",
+            ])),
+        ),
+        Node(
+            package='ros_gz_image', executable='image_bridge',
+            name='down_camera_image_bridge', output='screen',
+            condition=IfCondition(enable_down_camera),
+            arguments=[
+                '/uav/camera/down/image', '/uav/camera/down/depth_image',
+            ],
+            remappings=[
                 ('/uav/camera/down/image', '/camera/down/image_raw'),
-                (
-                    '/uav/camera/down/depth_image',
-                    '/camera/down/depth/image_raw',
-                ),
+                ('/uav/camera/down/depth_image', '/camera/down/depth/image_raw'),
             ],
         ),
         Node(
@@ -154,7 +201,9 @@ def generate_launch_description():
             executable='front_tof_monitor',
             name='front_tof_monitor',
             output='screen',
-            parameters=[config_file],
+            parameters=[config_file, {'depth_input_ros': PythonExpression([
+                "'", front_depth_model, "' == 'tof'",
+            ])}],
             condition=IfCondition(enable_shadow_perception),
         ),
         Node(
@@ -162,7 +211,9 @@ def generate_launch_description():
             executable='rgbd_target_localizer',
             name='rgbd_target_localizer',
             output='screen',
-            parameters=[config_file],
+            parameters=[config_file, tof_config_file, {
+                'sphere_fit_mode': front_depth_model,
+            }],
         ),
         Node(
             package='uav_control',
@@ -184,7 +235,10 @@ def generate_launch_description():
                     'publish_gazebo_rtf': False,
                 },
             ],
-            condition=IfCondition(enable_shadow_perception),
+            condition=IfCondition(PythonExpression([
+                "'", enable_shadow_perception, "' == 'true' and '",
+                enable_down_camera, "' == 'true'",
+            ])),
         ),
         Node(
             package='uav_control',
