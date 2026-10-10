@@ -26,6 +26,10 @@
 | [P4.1 跟随优化](p41_follow_tracking_optimization.md) | 动态参考加速度、时域和因果滚动消融 |
 | [P4.2 安全资格](p42_follow_safety_qualification.md) | 共享时间代、新预测重验和仍关闭的接管门禁 |
 | [P4.2 本轮仿真](p42_closed_loop_validation.md) | 独立重复、真实 ACK、故障与未执行项 |
+| [P4.3 动力学与时域](p43_dynamic_limits_study.md) | 12组限值扫描、共同初始化与四时域消融 |
+| [P4.3 高效可见性 MINCO](p43_fast_visibility_minco.md) | 互斥计时、缓存与Q/T/yaw及负结果 |
+| [P4.3 在线验证](p43_online_follow_validation.md) | 本轮独立SITL、真实拒绝ACK、失败轮与验证清单 |
+| [P4.3 安全资格](p43_safety_qualification.md) | 本地约束快照、PX4响应及未获准接管的原因 |
 | [整理交付](repository_cleanup.md) | 清点、规模、归档和实际检查结果 |
 | [源码冗余清理](redundancy_cleanup.md) | 确认移出项、保留理由、恢复与回归 |
 

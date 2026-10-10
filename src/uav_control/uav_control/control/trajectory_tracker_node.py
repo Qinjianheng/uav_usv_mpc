@@ -343,7 +343,17 @@ class TrajectoryTrackerNode(Node):
             from uav_control.guidance.follow_epoch import ReceiverClock
             from uav_usv_interfaces.msg import FollowReceiverState, UavState
             self.follow_clock = ReceiverClock()
-            self.follow_receiver = FollowReceiver()
+            from rcl_interfaces.msg import ParameterDescriptor
+            from uav_control.controllers.follow_mpc_seed import FollowMpcSeed
+            from uav_control.guidance.follow_limits import ResearchConfig, constraint_snapshot
+            for name, value in (('follow_research_horizontal_acceleration', 3.),
+                                ('follow_research_yaw_rate', 1.)):
+                self.declare_parameter(name, value, ParameterDescriptor(read_only=True))
+            research = ResearchConfig(maximum_horizontal_acceleration=float(self.get_parameter(
+                'follow_research_horizontal_acceleration').value), maximum_yaw_rate=float(
+                self.get_parameter('follow_research_yaw_rate').value))
+            self.follow_receiver = FollowReceiver(
+                limits=constraint_snapshot(FollowMpcSeed(research)))
             epoch_qos = QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL,
                                    reliability=ReliabilityPolicy.RELIABLE)
             self.follow_epoch_pub = self.create_publisher(
@@ -802,6 +812,7 @@ class TrajectoryTrackerNode(Node):
         from uav_control.controllers.follow_transport import curve_from_message, ack_message
         from uav_control.guidance.follow_contract import FollowAck
         from numpy.linalg import LinAlgError
+        received_monotonic = time.perf_counter()
         context = self._follow_context()
         try:
             candidate = curve_from_message(message)
@@ -812,7 +823,9 @@ class TrajectoryTrackerNode(Node):
                             ('INVALID_COEFFICIENTS',),
                             receiver_boot_id=context.receiver_boot_id,
                             planner_boot_id=getattr(message, 'planner_boot_id', ''))
-        self.follow_ack_pub.publish(ack_message(ack))
+        response = ack_message(ack)
+        response.receiver_compute_seconds = time.perf_counter()-received_monotonic
+        self.follow_ack_pub.publish(response)
 
     def vehicle_status_callback(self, message):
         self.vehicle_status_stamp = self._ros_seconds()

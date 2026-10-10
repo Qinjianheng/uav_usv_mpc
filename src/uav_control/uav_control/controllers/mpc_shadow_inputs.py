@@ -10,6 +10,8 @@ limits freshness and waiting; it never supplies an acquisition timestamp.
 
 import math
 import threading
+from uav_control.guidance.follow_profile import profiled
+
 from collections import deque
 from dataclasses import dataclass
 from typing import Optional
@@ -460,6 +462,7 @@ class ShadowInputAdapter:
             elif result.snapshot is not None:
                 navigation.ready = True
 
+    @profiled('navigation_sync')
     def pair_latest(self, now_ros_time, now_monotonic, observation_stamp=None):
         """
         Select the newest complete historical navigation acquisition epoch.

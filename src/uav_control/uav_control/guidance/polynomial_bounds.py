@@ -1,9 +1,12 @@
 """Conservative derivative norm upper bounds from exact power-to-Bernstein conversion."""
+from uav_control.guidance.follow_profile import profiled
+
 import math
 
 import numpy as np
 
 
+@profiled('derivative_bounds')
 def derivative_upper_bound(coefficients, durations, derivative, axes):
     """Convex hull of Bernstein vectors bounds every value; retains all polynomial terms."""
     c, ts = np.asarray(coefficients, dtype=float), np.asarray(durations, dtype=float)

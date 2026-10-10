@@ -35,11 +35,12 @@ def test_prelaunch_snapshot_contains_untracked_source_and_is_immutable(tmp_path,
     workspace = tmp_path/'workspace'
     (workspace/'src').mkdir(parents=True)
     (workspace/'src/new.py').write_text('value = 1\n')
+    (workspace/'src/setup.cfg').write_text('[settings]\n')
     (workspace/'README.md').write_text('snapshot\n')
 
     def git(command, **kwargs):
         if 'ls-files' in command:
-            return b'src/new.py\x00README.md\x00'
+            return b'src/new.py\x00src/setup.cfg\x00README.md\x00'
         return b'test-head\n'
     monkeypatch.setattr(session.subprocess, 'check_output', git)
     output = tmp_path/'run'
@@ -47,6 +48,7 @@ def test_prelaunch_snapshot_contains_untracked_source_and_is_immutable(tmp_path,
     freeze_sources(output, workspace)
     (workspace/'src/new.py').write_text('value = 2\n')
     assert (output/'source_snapshot/src/new.py').read_text() == 'value = 1\n'
+    assert (output/'source_snapshot/src/setup.cfg').read_text() == '[settings]\n'
     with pytest.raises(FileExistsError):
         freeze_sources(output, workspace)
 
@@ -68,3 +70,12 @@ def test_rendered_sphere_pose_is_already_its_visual_center():
     view = rendered_marker_visibility((0., 0., 0.), np.eye(3), (10., 0., 0.), model)
     assert view.image_center_uv == pytest.approx((320., 240.))
     assert model.target.center_offset_ned == (0., 0., -.42)
+
+
+def test_monitor_shutdown_abort_cannot_make_session_successful():
+    from p4_sitl_session import session_exit_code
+    good = dict(reason='FOLLOW_WINDOW_COMPLETE', monitor_returncode=0, still_alive=[])
+    assert session_exit_code(good) == 0
+    assert session_exit_code(dict(good, monitor_returncode=-6)) == 1
+    assert session_exit_code(dict(good, still_alive=[{'pid': 7}])) == 1
+    assert session_exit_code(dict(good, reason='WATCHDOG')) == 1

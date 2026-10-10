@@ -35,3 +35,7 @@ string reason
 # Actual receiver boot identity and independent planner process identity.
 string receiver_boot_id
 string planner_boot_id
+
+# Full declared policy/calibration; receiver compares with its immutable LOCAL policy.
+string constraint_snapshot
+string constraint_fingerprint

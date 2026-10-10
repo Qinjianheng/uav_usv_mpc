@@ -1,6 +1,9 @@
 """Dedicated FOLLOW proposal conversion; no intercept epochs or control publication."""
+from uav_control.guidance.follow_profile import profiled
+
 from dataclasses import asdict
 import math
+import json
 
 import numpy as np
 from builtin_interfaces.msg import Time
@@ -47,9 +50,12 @@ def curve_from_message(message):
                        camera_version=message.camera_version,
                        holding_model=message.holding_model_id,
                        receiver_boot_id=message.receiver_boot_id,
-                       planner_boot_id=message.planner_boot_id)
+                       planner_boot_id=message.planner_boot_id,
+                       constraint_snapshot=message.constraint_snapshot,
+                       constraint_fingerprint=message.constraint_fingerprint)
 
 
+@profiled('message_conversion')
 def proposal_from_event(event, now):
     """Publish nominal research coefficients with explicit missing holding/first bridge."""
     result, req = event['output'], event['request']
@@ -85,7 +91,12 @@ def proposal_from_event(event, now):
     msg.durations = list(durations)
     msg.xyz_coefficients = xyz.ravel().tolist()
     msg.yaw_coefficients = yaw[::-1].T.ravel().tolist()
-    msg.dynamic_limits = [6.2, 4., 3., 3., 6., 4.]
+    msg.constraint_snapshot = metrics.get('constraint_snapshot', '')
+    msg.constraint_fingerprint = metrics.get('constraint_fingerprint', '')
+    policy = json.loads(msg.constraint_snapshot)['mpc'] if msg.constraint_snapshot else {}
+    msg.dynamic_limits = [policy.get('maximum_'+name, default) for name, default in (
+        ('horizontal_speed', 6.2), ('vertical_speed', 4.), ('horizontal_acceleration', 3.),
+        ('vertical_acceleration', 3.), ('horizontal_jerk', 6.), ('vertical_jerk', 4.))]
     msg.fov_margins = [metrics['minimum_horizontal_margin'], metrics['minimum_vertical_margin']]
     msg.nominal_sampled_valid = True
     msg.reason = 'HOLDING_AND_INITIAL_BRIDGE_UNQUALIFIED'

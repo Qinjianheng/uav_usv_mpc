@@ -41,6 +41,7 @@ class FastMincoObjective:
         """Precompute calibration and normalized Gauss nodes, preserving explicit bounds."""
         self.problem, self.seed, self.config = problem, seed, config
         self.yaw_optimize, self.visibility_mode = yaw_optimize, visibility_mode
+        self.start_rate = getattr(problem.request, 'reference_yaw_rate', 0.)
         self.total = sum(seed.durations)
         self.u = np.array((.21132486540518713, .7886751345948129))
         self.pieces = np.repeat(np.arange(3), 2)
@@ -154,34 +155,21 @@ class FastMincoObjective:
         fields = [np.einsum('nk,nkd->nd', b, trajectory.coefficients[self.pieces])
                   for b in basis]
         stamp = time.perf_counter()
-        spline = CubicSpline(knots, values, bc_type=((1, 0.), (1, 0.)))
+        spline = CubicSpline(knots, values, bc_type=((1, self.start_rate), (1, 0.)))
         self.counts['yaw_constructions'] += 1
         yaw, rate = spline(times), spline(times, 1)
         target, _ = self.problem.target_state(times)
-        reference, _, _ = self.problem.reference(times)
         weights = durations[self.pieces]/(2*self.total)
         args = [*fields[:4], yaw, rate, target]
         local_cost = self.local_cost(*args)
-        follow = self.config.follow_weight*np.sum((fields[0]-reference)**2, axis=1)
+        follow, tracking_partials, tracking_time = self.tracking(fields, times)
         jerk_cost, jerk_gradient, explicit_t = self.jerk(trajectory)
         cost = jerk_cost + np.dot(weights, local_cost+follow)
         self.timing['yaw'] += time.perf_counter()-stamp
         stamp = time.perf_counter()
-        partials = []
-        for k, field in enumerate(args):
-            derivative = np.empty_like(field)
-            for axis in range(field.shape[1] if field.ndim == 2 else 1):
-                perturbed = list(args)
-                perturbed[k] = field.astype(complex)
-                if field.ndim == 2:
-                    perturbed[k][:, axis] += 1e-24j
-                    derivative[:, axis] = self.local_cost(*perturbed).imag/1e-24
-                else:
-                    perturbed[k] += 1e-24j
-                    derivative[:] = self.local_cost(*perturbed).imag/1e-24
-                self.counts['local_complex_steps'] += 1
-            partials.append(derivative)
-        partials[0] += 2*self.config.follow_weight*(fields[0]-reference)
+        partials = self.local_partials(args)
+        for k in range(4):
+            partials[k] += tracking_partials[k]
         self.timing['local_partials'] += time.perf_counter()-stamp
         gc = jerk_gradient.copy()
         for d in range(4):
@@ -193,21 +181,8 @@ class FastMincoObjective:
             self.problem.request.context.prediction_source_stamp)
         index = np.clip(np.searchsorted(ts, rt, side='right')-1, 0, len(ts)-2)
         tp = np.asarray(self.problem.request.target_positions)
-        tv = np.asarray(self.problem.request.target_velocities)
         slope_p = (tp[index+1]-tp[index])/(ts[index+1]-ts[index])[:, None]
-        slope_v = (tv[index+1]-tv[index])/(ts[index+1]-ts[index])[:, None]
-        speed2 = np.sum(self.problem.target_state(times)[1][:, :2]**2, axis=1)
-        vp = self.problem.target_state(times)[1]
-        heading_rate = np.where(speed2 >= .04,
-                                (vp[:, 0]*slope_v[:, 1]-vp[:, 1]*slope_v[:, 0]) /
-                                np.maximum(speed2, .04), 0.)
-        headings = np.arctan2(vp[:, 1], vp[:, 0])
-        slope_ref = slope_p.copy()
-        slope_ref[:, :2] -= self.problem.limits.follow_distance*heading_rate[:, None]*np.c_[
-            -np.sin(headings), np.cos(headings)]
-        slope_ref[:, 2] = 0.
-        time_cost = np.sum(partials[6]*slope_p, axis=1) - 2*self.config.follow_weight*np.sum(
-            (fields[0]-reference)*slope_ref, axis=1)
+        time_cost = np.sum(partials[6]*slope_p, axis=1)+tracking_time
         for i in range(3):
             selector = self.pieces == i
             gt[i] += np.sum((local_cost+follow)[selector])/(2*self.total)
@@ -224,7 +199,7 @@ class FastMincoObjective:
                 varied[i] += sign*step
                 nodes = np.r_[0., np.cumsum(varied)]
                 query = nodes[self.pieces]+self.local_u*varied[self.pieces]
-                ys = CubicSpline(nodes, values, bc_type=((1, 0.), (1, 0.)))
+                ys = CubicSpline(nodes, values, bc_type=((1, self.start_rate), (1, 0.)))
                 samples.append((ys(query), ys(query, 1)))
                 self.counts['yaw_constructions'] += 1
             gt[i] += np.dot(weights, partials[4]*(samples[1][0]-samples[0][0])/(2*step)
@@ -260,6 +235,48 @@ class FastMincoObjective:
         self.timing['objective_gradient'] += time.perf_counter()-start
         self.cache_key, self.cache_value = key, (float(cost), gradient)
         return self.cache_value
+
+    def local_partials(self, args):
+        """Original complex-step implementation remains available for P31 comparisons."""
+        partials = []
+        for k, field in enumerate(args):
+            derivative = np.empty_like(field)
+            for axis in range(field.shape[1] if field.ndim == 2 else 1):
+                perturbed = list(args)
+                perturbed[k] = field.astype(complex)
+                if field.ndim == 2:
+                    perturbed[k][:, axis] += 1e-24j
+                    derivative[:, axis] = self.local_cost(*perturbed).imag/1e-24
+                else:
+                    perturbed[k] += 1e-24j
+                    derivative[:] = self.local_cost(*perturbed).imag/1e-24
+                self.counts['local_complex_steps'] += 1
+            partials.append(derivative)
+        return partials
+
+    def tracking(self, fields, times):
+        """Original position-only objective; P43 overrides through the same adjoint chain."""
+        reference, vp, headings = self.problem.reference(times)
+        rt = self.problem.request.context.execution_start_stamp + times - (
+            self.problem.request.context.prediction_source_stamp)
+        ts = np.asarray(self.problem.request.prediction_times)
+        index = np.clip(np.searchsorted(ts, rt, side='right')-1, 0, len(ts)-2)
+        tp = np.asarray(self.problem.request.target_positions)
+        tv = np.asarray(self.problem.request.target_velocities)
+        dt = (ts[index+1]-ts[index])[:, None]
+        slope_p, slope_v = (tp[index+1]-tp[index])/dt, (tv[index+1]-tv[index])/dt
+        speed2 = np.sum(vp[:, :2]**2, axis=1)
+        heading_rate = np.where(speed2 >= .04, (vp[:, 0]*slope_v[:, 1]-vp[:, 1]*slope_v[:, 0]) /
+                                np.maximum(speed2, .04), 0.)
+        slope_ref = slope_p.copy()
+        slope_ref[:, :2] -= self.problem.limits.follow_distance*heading_rate[:, None]*np.c_[
+            -np.sin(headings), np.cos(headings)]
+        slope_ref[:, 2] = 0.
+        delta = fields[0]-reference
+        partials = [2*self.config.follow_weight*delta,
+                    *[np.zeros_like(delta) for _ in range(3)]]
+        return (self.config.follow_weight*np.sum(delta**2, axis=1), partials,
+                -np.sum(partials[0]*slope_ref, axis=1))
 
     def jerk(self, trajectory):
         """Analytic coefficient gradient and explicit endpoint derivative of jerk integral."""

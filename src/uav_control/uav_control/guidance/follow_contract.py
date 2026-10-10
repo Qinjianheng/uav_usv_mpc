@@ -36,6 +36,8 @@ class FollowCurve:
     holding_model: str = ''
     receiver_boot_id: str = ''
     planner_boot_id: str = ''
+    constraint_snapshot: str = ''
+    constraint_fingerprint: str = ''
 
     def fingerprint(self):
         """Bind independent approval to every coefficient, epoch and identity."""
@@ -101,16 +103,16 @@ class FollowAck:
     planner_boot_id: str = ''
 
 
-def curve_errors(c):
+def curve_errors(c, limits=None):
     """Fail closed on finite inputs whose coefficient arithmetic cannot be validated."""
     try:
         with np.errstate(over='raise', invalid='raise', divide='raise'):
-            return _curve_errors(c)
+            return _curve_errors(c, limits)
     except (ValueError, TypeError, OverflowError, FloatingPointError, np.linalg.LinAlgError):
         return ['INVALID_COEFFICIENTS']
 
 
-def _curve_errors(c):
+def _curve_errors(c, limits=None):
     """Independent coefficient/time/analytic dynamics checks; no sampled-FOV safety claim."""
     reasons = []
     stamps = (c.navigation_stamp, c.attitude_stamp, c.observation_stamp, c.source_stamp,
@@ -140,10 +142,18 @@ def _curve_errors(c):
     if (c.frame != 'local_ned' or c.constraint_version != 'constraints-p4-v1'
             or c.camera_version != 'camera-p1-v1'):
         reasons.append('FRAME_OR_VERSION')
+    if limits is not None and (c.constraint_fingerprint != limits.fingerprint
+                               or c.constraint_snapshot != limits.payload):
+        reasons.append('CONSTRAINT_MISMATCH')
+    policy = limits.values['mpc'] if limits is not None else {}
     coefficients = a.reshape(n, 6, 3)
-    for derivative, axes, limit in ((1, (0, 1), 6.2), (1, (2,), 4.),
-                                    (2, (0, 1), 3.), (2, (2,), 3.),
-                                    (3, (0, 1), 6.), (3, (2,), 4.)):
+    for derivative, axes, limit in (
+            (1, (0, 1), policy.get('maximum_horizontal_speed', 6.2)),
+            (1, (2,), policy.get('maximum_vertical_speed', 4.)),
+            (2, (0, 1), policy.get('maximum_horizontal_acceleration', 3.)),
+            (2, (2,), policy.get('maximum_vertical_acceleration', 3.)),
+            (3, (0, 1), policy.get('maximum_horizontal_jerk', 6.)),
+            (3, (2,), policy.get('maximum_vertical_jerk', 4.))):
         if derivative_peak(coefficients, c.durations, derivative, axes)['value'] > limit+1e-6:
             reasons.append('DYNAMIC_LIMIT')
     for i, duration in enumerate(c.durations):
@@ -152,7 +162,8 @@ def _curve_errors(c):
         if abs(yc[3]) > 1e-12 and 0 < -yc[2]/(3*yc[3]) < duration:
             queries.append(-yc[2]/(3*yc[3]))
         if np.max(np.abs(np.polynomial.polynomial.polyval(
-                queries, np.polynomial.polynomial.polyder(yc)))) > 1.+1e-7:
+                queries, np.polynomial.polynomial.polyder(yc)))) > (
+                    policy.get('maximum_yaw_rate', 1.)+1e-7):
             reasons.append('YAW_RATE_LIMIT')
         if i < n-1:
             for d in range(3):
@@ -175,11 +186,18 @@ def _curve_errors(c):
 class FollowReceiver:
     """Latest pending, old active retained on rejection, bounded nonrenewable authorization."""
 
-    def __init__(self, safety_validator=None, bridge=None):
+    def __init__(self, safety_validator=None, bridge=None, limits=None):
         """Require independent holding and first bridge proofs; default to fail closed."""
         self.safety_validator, self.bridge = safety_validator, bridge
+        self.limits = limits
         self.pending, self.active, self.seen, self.last_now = None, None, set(), None
         self.planner_boot, self.retired_planners = '', set()
+
+    def set_limits(self, limits):
+        """Only a receiver-local configuration change can revoke/update the envelope."""
+        if self.limits != limits:
+            self.active, self.pending = None, None
+            self.limits = limits
 
     def _ack(self, c, ctx, state, reasons=()):
         return FollowAck(c.plan_id, c.mission_id, c.generation, ctx.now, state, tuple(reasons),
@@ -201,7 +219,7 @@ class FollowReceiver:
 
     def propose(self, c, ctx):
         """Receiver validation cannot trust planner validation flags, TTLs or model strings."""
-        errors = curve_errors(c)+self.context_errors(c, ctx)
+        errors = curve_errors(c, self.limits)+self.context_errors(c, ctx)
         if c.planner_boot_id in self.retired_planners:
             errors.append('PLANNER_BOOT_REPLAY')
         elif (c.planner_boot_id and c.planner_boot_id != self.planner_boot
@@ -278,6 +296,8 @@ class FollowReceiver:
             if c is None:
                 continue
             errors = self.context_errors(c, ctx)
+            if self.limits is not None and c.constraint_fingerprint != self.limits.fingerprint:
+                errors.append('CONSTRAINT_MISMATCH')
             if reversed_clock:
                 errors.append('CLOCK_REVERSED')
             if errors or ctx.now >= min(c.holding_until, c.end):

@@ -26,7 +26,7 @@ class FollowResearchShadowNode(FollowMpcShadowNode):
                               ('greedy_minimum_distance', 3.), ('greedy_maximum_distance', 10.),
                               ('p32_profile_every', 0), ('p32_detailed_diagnostics', False),
                               ('p32_initialization_cap', .012), ('short_horizon', 1.2),
-                              ('short_rolling_hint', True)):
+                              ('short_rolling_hint', True), ('p43_refinement', 'qt')):
             self.declare_parameter(name, default)
         mode = self.get_parameter('research_mode').value
         optimizer = MincoConfig(mode=self.get_parameter('minco_mode').value,
@@ -35,11 +35,12 @@ class FollowResearchShadowNode(FollowMpcShadowNode):
                                 budget=config.solve_budget)
         optimizer.validate()
         engine = self.get_parameter('minco_engine').value
-        if engine not in ('legacy', 'p31', 'p32', 'p32_short', 'p33_progress', 'p41_tracking'):
+        engines = ('legacy', 'p31', 'p32', 'p32_short', 'p33_progress', 'p41_tracking', 'p43_fast')
+        if engine not in engines:
             raise ValueError('unsupported minco engine')
         fast, greedy = None, None
         initialization = self.get_parameter('initializer_strategy').value
-        if engine in ('p31', 'p32', 'p32_short', 'p33_progress', 'p41_tracking'):
+        if engine in ('p31', 'p32', 'p32_short', 'p33_progress', 'p41_tracking', 'p43_fast'):
             from uav_control.guidance.fast_follow_minco import FastConfig
             from uav_control.guidance.adaptive_follow_initializer import GreedyConfig
             fast = FastConfig(freshness_budget=True, fast_feasible_seed=bool(
@@ -54,12 +55,15 @@ class FollowResearchShadowNode(FollowMpcShadowNode):
         elif initialization != 'legacy':
             raise ValueError('new initialization requires explicit p31 engine')
         solver = FollowResearchSolver(mode, config, optimizer, fast, greedy, initialization)
-        if engine in ('p32', 'p32_short', 'p33_progress', 'p41_tracking'):
+        if engine in ('p32', 'p32_short', 'p33_progress', 'p41_tracking', 'p43_fast'):
             if mode != 'greedy_minco':
                 raise ValueError('p32 requires greedy_minco shadow mode')
-            if engine in ('p32_short', 'p33_progress', 'p41_tracking'):
+            if engine in ('p32_short', 'p33_progress', 'p41_tracking', 'p43_fast'):
                 from uav_control.controllers.short_follow_solver import ShortHorizonFollowSolver
-                if engine == 'p41_tracking':
+                if engine == 'p43_fast':
+                    from uav_control.controllers.p43_follow_solver import P43FollowSolver
+                    selected_solver = P43FollowSolver
+                elif engine == 'p41_tracking':
                     from uav_control.controllers.progress_follow_solver import TrackingFollowSolver
                     selected_solver = TrackingFollowSolver
                 elif engine == 'p33_progress':
@@ -67,10 +71,12 @@ class FollowResearchShadowNode(FollowMpcShadowNode):
                     selected_solver = ProgressFollowSolver
                 else:
                     selected_solver = ShortHorizonFollowSolver
-                solver = selected_solver(solver.model, duration=float(
-                    self.get_parameter('short_horizon').value), rolling=bool(
-                    self.get_parameter('short_rolling_hint').value), wall_clock=lambda: (
-                    self.get_clock().now().nanoseconds/1e9))
+                extra = (dict(refinement=self.get_parameter('p43_refinement').value)
+                         if engine == 'p43_fast' else {})
+                solver = selected_solver(
+                    solver.model, duration=float(self.get_parameter('short_horizon').value),
+                    rolling=bool(self.get_parameter('short_rolling_hint').value),
+                    wall_clock=lambda: self.get_clock().now().nanoseconds/1e9, **extra)
             else:
                 from uav_control.controllers.realtime_follow_solver import RealtimeFollowSolver
                 solver = RealtimeFollowSolver(solver.model, optimizer, wall_clock=lambda: (

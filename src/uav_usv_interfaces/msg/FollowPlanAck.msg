@@ -16,3 +16,6 @@ bool replaced
 # Actual receiver boot identity and independent planner process identity.
 string receiver_boot_id
 string planner_boot_id
+
+# Receiver-local monotonic compute duration, not an epoch or holding proof.
+float64 receiver_compute_seconds

@@ -1,4 +1,6 @@
 """Prediction policy B: full nominal curve revalidation, without execution permission."""
+from uav_control.guidance.follow_profile import profiled
+
 from dataclasses import replace
 import math
 import time
@@ -10,8 +12,9 @@ from uav_control.guidance.polynomial_bounds import derivative_upper_bound
 from uav_control.guidance.polynomial_extrema import derivative_peak
 
 
+@profiled('prediction_revalidation')
 def revalidate_prediction(request, output, prediction, now, model, budget=.03,
-                          clock=time.perf_counter):
+                          clock=time.perf_counter, cache=None):
     """
     Retain raw navigation and the exact curve; replace only explicit prediction inputs.
 
@@ -49,6 +52,16 @@ def revalidate_prediction(request, output, prediction, now, model, budget=.03,
                           target_positions=prediction.target_positions,
                           target_velocities=prediction.target_velocities)
         metrics = output.metrics
+        if cache is not None:
+            from uav_control.guidance.follow_fast_validation import assess_curve
+            if now >= min(c.navigation_stamp+.125, c.attitude_stamp+.125,
+                          prediction.source_stamp+.125, prediction.observation_stamp+.125,
+                          prediction.valid_until):
+                raise ValueError('INPUT_EXPIRED')
+            checked, _ = assess_curve(updated, metrics, model, cache,
+                                      budget-(clock()-started), clock)
+            report.update(checked)
+            return updated, dict(report, elapsed=clock()-started)
         ts = np.asarray(metrics['durations'])
         xyz = np.asarray(metrics['xyz_coefficients'])
         yaw = np.asarray(metrics['yaw_coefficients'])[::-1].T

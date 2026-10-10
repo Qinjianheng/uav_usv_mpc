@@ -1,9 +1,12 @@
 """Exact real-root extrema of polynomial derivative norms (no time grid)."""
+from uav_control.guidance.follow_profile import profiled, count
+
 import math
 
 import numpy as np
 
 
+@profiled('derivative_extrema')
 def derivative_peak(coefficients, durations, derivative, axes):
     """Return the largest derivative norm, physical time, piece and endpoint class."""
     c = np.asarray(coefficients, dtype=float)
@@ -23,7 +26,7 @@ def derivative_peak(coefficients, durations, derivative, axes):
         for poly in polys.T:
             squared += np.convolve(poly, poly)
         slope = np.polynomial.polynomial.polyder(squared)
-        roots = np.polynomial.polynomial.polyroots(slope)
+        roots = _counted_roots(slope)
         candidates = [0., float(duration)] + [float(r.real) for r in roots
                                               if abs(r.imag) < 1e-8 and 0 < r.real < duration]
         for t in candidates:
@@ -36,3 +39,8 @@ def derivative_peak(coefficients, durations, derivative, axes):
                             local_time=t, location=location)
         offset += duration
     return best
+
+
+def _counted_roots(coefficients):
+    count('root_searches')
+    return np.polynomial.polynomial.polyroots(coefficients)

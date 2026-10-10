@@ -1,4 +1,6 @@
 """Shared-calibration batch adapters; the original P1 geometry kernel is unchanged."""
+from uav_control.guidance.follow_profile import profiled, count
+
 import numpy as np
 
 from uav_control.guidance.camera_visibility import (
@@ -9,6 +11,7 @@ from uav_control.guidance.planned_attitude import (
 )
 
 
+@profiled('planned_attitude')
 def attitude_batch(acceleration, yaw, config):
     """Vectorize ideal FRD axes; scalar rejection retains exact P2 reason precedence."""
     a, y = np.asarray(acceleration), np.asarray(yaw)
@@ -35,6 +38,7 @@ def attitude_batch(acceleration, yaw, config):
             else planned_attitude(a[i], y[i], config) for i in range(len(a))]
 
 
+@profiled('full_fov')
 def visibility_batch(positions, rotations, targets, intrinsics, extrinsics, target, constraints):
     """
     Validate mount once and SO(3) in batch, then use exactly the P1 sphere projection.
@@ -42,6 +46,7 @@ def visibility_batch(positions, rotations, targets, intrinsics, extrinsics, targ
     Invalid rows use the scalar adapter to preserve its input/error priority. No
     smooth optimization proxy, horizontal-only FOV, or center-only admission is used.
     """
+    count('projection_samples', len(positions))
     p, r, t = np.asarray(positions), np.asarray(rotations), np.asarray(targets)
     if p.ndim != 2 or p.shape[1] != 3 or t.shape != p.shape or r.shape != (len(p), 3, 3):
         raise ValueError('INVALID_BATCH_SHAPE')

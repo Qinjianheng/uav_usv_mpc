@@ -1,4 +1,6 @@
 """Explicit observation-point kinematics; bounded forecast fitting is a research model."""
+from uav_control.guidance.follow_profile import profiled
+
 import numpy as np
 
 
@@ -42,6 +44,7 @@ def viewpoint_state_batch(position, velocity, acceleration, heading, omega, alph
     return p, v, a
 
 
+@profiled('future_reference')
 def forecast_viewpoint(problem, time, beta=0., distance=None):
     """
     Fit local forecast heading/speed, with explicit acceleration/jerk-derived bounds.

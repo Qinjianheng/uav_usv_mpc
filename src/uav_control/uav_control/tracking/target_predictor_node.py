@@ -1,6 +1,10 @@
 """ROS 2 wrapper for bounded target prediction."""
 
 import math
+import json
+import os
+from contextlib import nullcontext
+from uav_control.guidance.follow_profile import CycleProfile, stage
 import time
 
 import rclpy
@@ -111,6 +115,9 @@ class TargetPredictorNode(Node):
 
     def __init__(self):
         super().__init__('target_predictor_node')
+        self.declare_parameter('p43_profile_enabled',
+                               os.environ.get('UAV_USV_PROFILE_PREDICTOR') == '1')
+        self.p43_profile_enabled = self.get_parameter('p43_profile_enabled').value
         self.declare_parameter('target_state_source', 'tracking')
         self.declare_parameter('tracking_topic', '/tracking/target_state')
         self.declare_parameter(
@@ -278,19 +285,20 @@ class TargetPredictorNode(Node):
             # invalid/stale input without resetting acquisition deadlines.
             return
         self.sequence_id += 1
-        result = self.engine.generate(
-            now=now,
-            mission_id=self.mission_id,
-            sequence_id=self.sequence_id,
-        )
-        message = prediction_to_message(
-            result,
-            compute_time=0.,
-            frame_id=self.frame_id,
-        )
-        # Include Python ROS message construction; DDS/receiver delay is separate.
-        message.compute_time = time.perf_counter() - start
-        self.prediction_pub.publish(message)
+        profiling = bool(getattr(self, 'p43_profile_enabled', False))
+        profile = CycleProfile(self.sequence_id) if profiling else nullcontext()
+        with profile:
+            result = self.engine.generate(now=now, mission_id=self.mission_id,
+                                          sequence_id=self.sequence_id)
+            with stage('prediction_message_conversion'):
+                message = prediction_to_message(result, compute_time=0., frame_id=self.frame_id)
+            message.compute_time = time.perf_counter()-start
+            with stage('prediction_publication'):
+                self.prediction_pub.publish(message)
+        if profiling:
+            report = dict(profile.report(), producer_process='target_predictor_node',
+                          sequence=self.sequence_id, source_stamp=result.source_stamp)
+            self.get_logger().info('P43_PREDICTOR_PROFILE '+json.dumps(report))
         if result.valid:
             self.last_prediction_observation_stamp = result.observation_stamp
 

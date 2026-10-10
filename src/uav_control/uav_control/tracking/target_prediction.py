@@ -1,6 +1,7 @@
 """Timestamp-preserving target prediction independent of ROS transport."""
 
 import math
+from uav_control.guidance.follow_profile import profiled
 from dataclasses import dataclass
 
 from .maneuvering_target_predictor import ManeuveringTargetPredictor
@@ -194,6 +195,7 @@ class PredictionEngine:
             observation_stamp=observation_stamp,
         )
 
+    @profiled('prediction_prepare')
     def generate(self, now, mission_id, sequence_id):
         """Generate one prediction while retaining the input source stamp."""
         now = float(now)

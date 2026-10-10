@@ -27,6 +27,7 @@ def run(output):
     from px4_msgs.msg import TrajectorySetpoint, VehicleAttitude, VehicleStatus
     from gz.msgs10.clock_pb2 import Clock
     from gz.msgs10.pose_v_pb2 import Pose_V
+    from gz.msgs10.world_stats_pb2 import WorldStatistics
     from gz.transport13 import Node as GzNode
     rclpy.init(signal_handler_options=SignalHandlerOptions.NO)
     stopping = threading.Event()
@@ -91,6 +92,7 @@ def run(output):
               state=message.state, reasons=list(message.reasons), receiver=message.receiver,
               active=message.active_plan_id, pending=message.pending_plan_id,
               owner=message.control_owner, replaced=message.replaced,
+              receiver_compute_seconds=message.receiver_compute_seconds,
               receiver_boot=message.receiver_boot_id, planner_boot=message.planner_boot_id)
 
     def graph():
@@ -167,9 +169,12 @@ def run(output):
     transport = GzNode()
     write('start', evaluation_only=True, gazebo_subscriptions=[
         transport.subscribe(Clock, '/world/default/clock', clock),
-        transport.subscribe(Pose_V, '/world/default/pose/info', poses)],
-        ros_subscriptions=len(subscriptions), timer_period=timer.timer_period_ns/1e9,
-        numerical_library=np.__version__)
+        transport.subscribe(Pose_V, '/world/default/pose/info', poses),
+        transport.subscribe(WorldStatistics, '/world/default/stats',
+                            lambda m: write('gazebo_stats', rtf=m.real_time_factor,
+                                            paused=m.paused, sim=seconds(m.sim_time, True)))],
+          ros_subscriptions=len(subscriptions), timer_period=timer.timer_period_ns/1e9,
+          numerical_library=np.__version__)
     try:
         while rclpy.ok() and not stopping.is_set():
             rclpy.spin_once(node, timeout_sec=.1)
@@ -182,6 +187,7 @@ def run(output):
     finally:
         transport.unsubscribe('/world/default/clock')
         transport.unsubscribe('/world/default/pose/info')
+        transport.unsubscribe('/world/default/stats')
         node.destroy_node()
         if rclpy.ok():
             rclpy.shutdown()

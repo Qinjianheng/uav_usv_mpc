@@ -29,6 +29,7 @@ from uav_control.controllers.follow_mpc_seed import (
 )
 from uav_control.controllers.mpc_shadow_inputs import ShadowInputAdapter
 from uav_control.guidance.camera_visibility import body_frd_to_ned_from_quaternion
+from uav_control.guidance.follow_profile import profiled
 
 
 def _seconds(stamp):
@@ -101,6 +102,7 @@ def prediction_from_message(message):
         raise ValueError('INVALID_PREDICTION') from error
 
 
+@profiled('input_prepare')
 def make_shadow_request(pose, prediction, mission_id, cycle_id, now, config,
                         execution_lead=None):
     """Preserve paired PVA/attitude and prediction epochs with strict horizon coverage."""
@@ -390,6 +392,7 @@ class FollowMpcShadowNode(Node):
     """Publish only research String JSON; never publish or alter flight/mission commands."""
 
     node_name = 'follow_mpc_shadow_node'
+    config_class = MpcConfig
 
     def __init__(self):
         """Connect fixed navigation/tracking inputs and trusted Gazebo dual-clock anchors."""
@@ -403,8 +406,8 @@ class FollowMpcShadowNode(Node):
         workspace = os.environ.get('UAV_USV_WS', '/home/qin/data/uav_usv_mpc')
         self.declare_parameter('log_directory', str(
             Path(workspace) / 'data/experiments/mpc_shadow'))
-        config = MpcConfig(**{name: self.get_parameter(name).value
-                              for name in asdict(MpcConfig())})
+        values = {name: self.get_parameter(name).value for name in asdict(MpcConfig())}
+        config = self.config_class(**values)
         self.adapter = ShadowInputAdapter()
         self.pool = ThreadPoolExecutor(max_workers=1, thread_name_prefix='mpc-shadow-research')
         self.diagnostic_pub = self.create_publisher(String, '/research/mpc_seed/diagnostic', 1)
@@ -478,6 +481,7 @@ class FollowMpcShadowNode(Node):
         """Service bounded research work without delaying subscription delivery."""
         self.runner.tick(self._ros_seconds(), time.monotonic())
 
+    @profiled('ros_publication')
     def _publish_attempt(self, publisher, topic, message, event):
         """Preserve every actual publication flag and its call-time epoch/wall cost."""
         monotonic_now = time.monotonic()
@@ -491,7 +495,7 @@ class FollowMpcShadowNode(Node):
 
     def _publish_event(self, event):
         # Include JSON serialization and final publication checks in the wall budget.
-        serialized = json.dumps(_json_safe(event), allow_nan=False, separators=(',', ':'))
+        serialized = _serialize(event, separators=(',', ':'))
         request_data = event['request']
         now, monotonic_now = self._ros_seconds(), time.monotonic()
         if event['output']['valid'] and request_data:
@@ -505,7 +509,7 @@ class FollowMpcShadowNode(Node):
             if reason:
                 event['output'] = _empty_output(reason)
                 event['admission_status'] = reason
-                serialized = json.dumps(_json_safe(event), allow_nan=False, separators=(',', ':'))
+                serialized = _serialize(event, separators=(',', ':'))
         message = String(data=serialized)
         self._publish_attempt(self.trajectory_pub, '/research/mpc_seed/trajectory', message, event)
         self._publish_attempt(self.diagnostic_pub, '/research/mpc_seed/diagnostic', message, event)
@@ -521,8 +525,8 @@ class FollowMpcShadowNode(Node):
                 event['output'] = _empty_output(reason)
                 event['admission_status'] = reason
                 event['publication_crossed_deadline'] = True
-                clear_message = String(data=json.dumps(
-                    _json_safe(event), allow_nan=False, separators=(',', ':')))
+                clear_message = String(data=_serialize(
+                    event, separators=(',', ':')))
                 self._publish_attempt(self.trajectory_pub, '/research/mpc_seed/trajectory',
                                       clear_message, event)
                 self._publish_attempt(self.diagnostic_pub, '/research/mpc_seed/diagnostic',
@@ -534,7 +538,7 @@ class FollowMpcShadowNode(Node):
         event['published_valid'] = any(
             attempt['valid'] for attempt in event['publication_attempts'])
         event['final_marker_valid'] = bool(event['output']['valid'])
-        self.log_file.write(json.dumps(_json_safe(event), allow_nan=False) + '\n')
+        self.log_file.write(_serialize(event) + '\n')
         self.log_file.flush()
 
     def destroy_node(self):
@@ -542,6 +546,11 @@ class FollowMpcShadowNode(Node):
         self.pool.shutdown(wait=True, cancel_futures=True)
         self.log_file.close()
         return super().destroy_node()
+
+
+@profiled('json_serialization')
+def _serialize(event, **kwargs):
+    return json.dumps(_json_safe(event), allow_nan=False, **kwargs)
 
 
 def main(args=None):

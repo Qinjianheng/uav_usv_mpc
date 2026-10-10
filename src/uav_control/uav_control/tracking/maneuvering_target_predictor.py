@@ -1,5 +1,7 @@
 """Bounded short-horizon prediction for an independently manoeuvring target."""
 
+from uav_control.guidance.follow_profile import profiled
+
 import math
 from collections import deque
 
@@ -406,6 +408,7 @@ class ManeuveringTargetPredictor:
             predicted_vz,
         )
 
+    @profiled('bctra_batch')
     def predict_many(self, x, y, z, vx, vy, vz, horizons):
         """
         Reuse grid-aligned integration prefixes; retain scalar handling off the grid.

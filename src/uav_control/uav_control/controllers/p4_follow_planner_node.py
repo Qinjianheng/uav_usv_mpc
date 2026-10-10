@@ -1,6 +1,5 @@
 """P4 nominal FOLLOW proposals and actual rejection ACK recording; no control publisher."""
 from dataclasses import asdict
-import json
 import time
 import secrets
 from types import SimpleNamespace
@@ -10,6 +9,9 @@ from rclpy.qos import QoSProfile, DurabilityPolicy, ReliabilityPolicy
 from uav_usv_interfaces.msg import FollowTrajectory, FollowPlanAck, FollowReceiverState
 
 from uav_control.controllers.follow_research_shadow_node import FollowResearchShadowNode
+from uav_control.guidance.follow_limits import ResearchConfig, constraint_snapshot
+from uav_control.guidance.follow_profile import CycleProfile, profiled
+from uav_control.controllers.follow_mpc_shadow_node import _serialize
 from uav_control.controllers.follow_transport import proposal_from_event, seconds
 from uav_control.controllers.follow_mpc_shadow_node import (
     ShadowResearchRunner, completion_rejection,
@@ -30,8 +32,16 @@ class P4ResearchRunner(ShadowResearchRunner):
     def event(self, *args, **kwargs):
         """Bind each completed solve to the receiver identity observed at dispatch."""
         result = super().event(*args, **kwargs)
+        result['preparation_profile'] = (self.pending.get('preparation_profile')
+                                         if self.pending else None)
         result['receiver_epoch_at_dispatch'] = (self.pending.get('receiver_epoch')
                                                 if self.pending else None)
+        return result
+
+    def _prepare(self, now, monotonic_now):
+        with CycleProfile(self.cycle_id+1) as profile:
+            result = super()._prepare(now, monotonic_now)
+        self.preparation_profile = profile.report()
         return result
 
     def tick(self, now, monotonic_now):
@@ -41,6 +51,7 @@ class P4ResearchRunner(ShadowResearchRunner):
         previous = self.pending
         super().tick(now, monotonic_now)
         if self.pending is not None and self.pending is not previous:
+            self.pending['preparation_profile'] = self.preparation_profile
             self.pending['receiver_epoch'] = getattr(self, 'current_receiver_epoch', None)
 
 
@@ -48,6 +59,7 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
     """Keep one worker/latest input and all existing completion/serialization TTL checks."""
 
     node_name = 'p4_follow_planner_node'
+    config_class = ResearchConfig
 
     def __init__(self):
         """Publish a distinct proposal topic; ACK is subscribed only, never synthesized."""
@@ -92,6 +104,7 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
     def make_runner(self, config):
         """Retain the original synchronization factory, with explicitly separate cache policy."""
         old = super().make_runner(config)
+        old.solver.profile_enabled = True
         return P4ResearchRunner(old.config, old.adapter, old.executor, self._publish_event,
                                 1/old.period, old.solver, old.request_factory)
 
@@ -113,7 +126,7 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
                      and key[3] == self.receiver_epoch[0][1]
                      and key[1] == self.planner_boot_id)
         unexpected_accept = message.state in ('ACCEPTED', 'ACTIVE')
-        self.ack_file.write(json.dumps(dict(
+        self.ack_file.write(_serialize(dict(
             receipt=self._ros_seconds(), stamp=seconds(message.stamp),
             identity=key, state=message.state, reasons=list(message.reasons),
             active_plan_id=message.active_plan_id, pending_plan_id=message.pending_plan_id,
@@ -138,15 +151,24 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
 
     def _publish_event(self, event):
         """Include prediction revalidation and wire publication in the final cycle audit."""
-        super()._publish_event(event)
-        if not event['output'].get('valid') or not event.get('request'):
+        cycle_id = event['request']['context']['cycle_id'] if event.get('request') else 0
+        with CycleProfile(cycle_id) as profile:
+            super()._publish_event(event)
+            if event['output'].get('valid') and event.get('request'):
+                outcome = self._publish_proposal(event)
+            else:
+                outcome = dict(published=False, reason=event['output'].get('solver_status'))
+        if event.get('cycle_started_monotonic') is None or not event.get('request'):
             return
-        outcome = self._publish_proposal(event)
         finished = time.monotonic()
-        self.log_file.write(json.dumps(dict(
+        self.log_file.write(_serialize(dict(
             event='follow_publication_final', cycle_id=event['request']['context']['cycle_id'],
             stamp=self._ros_seconds(), whole_cycle_time=finished-event['cycle_started_monotonic'],
-            **outcome))+'\n')
+            remaining_raw_ttl=event['expires_at_ros_stamp']-self._ros_seconds(),
+            preparation_profile=event.get('preparation_profile'),
+            worker_profile=(event.get('candidate_output') or event['output'])
+            .get('metrics', {}).get('cycle_profile'),
+            publication_profile=profile.report(), **outcome))+'\n')
         self.log_file.flush()
 
     def _publish_proposal(self, event):
@@ -158,6 +180,10 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
         proposal_event = self._prediction_event(event)
         if proposal_event is None:
             return dict(published=False, reason='PREDICTION_CHANGED_OR_REVALIDATION_FAILED')
+        snapshot = constraint_snapshot(self.runner.solver.model)
+        proposal_event = dict(proposal_event, output=dict(proposal_event['output'], metrics=dict(
+            proposal_event['output']['metrics'], constraint_snapshot=snapshot.payload,
+            constraint_fingerprint=snapshot.fingerprint)))
         message = proposal_from_event(proposal_event, self._ros_seconds())
         if message is None:
             return dict(published=False, reason='INPUT_OR_START_EXPIRED')
@@ -179,15 +205,20 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
         self.expected_plans[key] = now
         if len(self.expected_plans) > 1024:
             self.expected_plans.pop(next(iter(self.expected_plans)))
-        self.follow_proposal_pub.publish(message)
+        self._publish_wire_proposal(message)
         crossed = self._proposal_rejection(proposal_event, self._ros_seconds())
-        self.log_file.write(json.dumps(dict(event='follow_proposal', identity=key,
+        self.log_file.write(_serialize(dict(event='follow_proposal', identity=key,
                                             stamp=now, holding_valid_until=0., authority=False,
                                             conversion_publish_seconds=time.perf_counter()-before))
                             + '\n')
         self.log_file.flush()
         return dict(published=True, reason=crossed, publication_crossed_deadline=bool(crossed))
 
+    @profiled('ros_publication')
+    def _publish_wire_proposal(self, message):
+        self.follow_proposal_pub.publish(message)
+
+    @profiled('prediction_revalidation')
     def _prediction_event(self, event):
         """Reject superseded output (A) or fully reassess unchanged coefficients (B)."""
         prediction = self.runner.prediction
@@ -217,7 +248,8 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
                 return None
             updated, report = revalidate_prediction(
                 request, MpcSeedResult(**event['output']), prediction, self._ros_seconds(),
-                self.runner.solver.model, budget=remaining)
+                self.runner.solver.model, budget=remaining,
+                cache=getattr(self.runner.solver, 'invariant_cache', None))
             if report['valid'] and self.runner.prediction is prediction:
                 proposed = dict(event, request=asdict(updated))
                 proposed['output'] = dict(
@@ -226,7 +258,7 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
                         minimum_horizontal_margin=report['minimum_horizontal_margin'],
                         minimum_vertical_margin=report['minimum_vertical_margin'],
                         prediction_revalidation=report))
-        self.log_file.write(json.dumps(dict(event='prediction_revalidation',
+        self.log_file.write(_serialize(dict(event='prediction_revalidation',
                                             cycle_id=request_data['context']['cycle_id'],
                                             stamp=self._ros_seconds(), report=report,
                                             new_prediction=asdict(prediction)))+'\n')

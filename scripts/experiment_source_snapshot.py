@@ -18,9 +18,7 @@ def freeze_sources(output, workspace):
     hashes = {}
     for name in sorted(set(paths)):
         source = workspace/name
-        if (not name or not source.is_file() or source.is_symlink()
-                or source.suffix not in ('.py', '.sh', '.yaml', '.yml', '.sdf', '.msg', '.xml',
-                                         '.cpp', '.hpp', '.h', '.txt', '.md')):
+        if not name or not source.is_file() or source.is_symlink():
             continue
         payload = source.read_bytes()
         target = snapshot/name

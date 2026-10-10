@@ -4,6 +4,8 @@ Visibility-aware research Q/T/yaw optimization using the existing MINCO map.
 Optimizer convergence, sampled feasibility, and live research admission are
 separate. Dense/adaptive sampling is not a continuous-time safety proof.
 """
+from uav_control.guidance.follow_profile import profiled, count
+
 
 from dataclasses import dataclass, replace
 import math
@@ -50,11 +52,14 @@ class MincoConfig:
             raise ValueError('INVALID_MINCO_CONFIG')
 
 
+@profiled('minco_coefficients')
 def _trajectory(seed, q, durations):
+    count('minco_builds')
     return MincoS3Trajectory(seed.start[:3], seed.start[3:6], seed.start[6:9],
                              seed.end[:3], seed.end[3:6], seed.end[6:9], q, durations)
 
 
+@profiled('trajectory_samples')
 def _samples(trajectory, times):
     samples = [trajectory.sample(t) for t in times]
     return tuple(np.asarray([getattr(s, name) for s in samples])
@@ -86,6 +91,7 @@ class FollowMincoOptimizer:
         config.validate()
         self.config, self.model, self.clock = config, model, clock
 
+    @profiled('full_validation')
     def solve(self, request, seed):
         """Optimize real coefficients and reject any unverified or over-budget output."""
         start = self.clock()

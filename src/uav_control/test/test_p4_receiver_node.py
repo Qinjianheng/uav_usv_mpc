@@ -5,6 +5,7 @@ from pathlib import Path
 import sys
 
 import numpy as np
+import pytest
 
 from uav_usv_interfaces.msg import FollowTrajectory
 from uav_control.controllers.follow_transport import (
@@ -233,3 +234,32 @@ def test_full_revalidation_cannot_publish_after_whole_cycle_deadline(monkeypatch
     assert node._proposal_rejection(e, 100.) == 'CYCLE_DEADLINE_EXCEEDED'
     node._ros_seconds = lambda: 100.
     assert node._publish_proposal(e) == dict(published=False, reason='CYCLE_DEADLINE_EXCEEDED')
+
+
+@pytest.mark.parametrize('during_publication', (False, True))
+def test_final_profile_keeps_worker_on_empty_rejection_output(monkeypatch, during_publication):
+    from io import StringIO
+    import json
+    import time
+    from uav_control.controllers.p4_follow_planner_node import P4FollowPlannerNode
+    from uav_control.controllers.follow_mpc_shadow_node import FollowMpcShadowNode
+    node = object.__new__(P4FollowPlannerNode)
+    node.log_file = StringIO()
+    node._ros_seconds = lambda: 100.
+    worker = dict(cycle_id=4, stages={}, counts={}, total_seconds=.01)
+    e = dict(request={'context': {'cycle_id': 4}},
+             output=dict(valid=False, solver_status='SHADOW_REJECTED'),
+             candidate_output={'metrics': {'cycle_profile': worker}},
+             cycle_started_monotonic=time.monotonic(), expires_at_ros_stamp=100.125)
+    if during_publication:
+        e['output'] = dict(valid=True, metrics={'cycle_profile': worker})
+
+    def parent_publish(_, payload):
+        if during_publication:
+            payload['output'] = dict(valid=False, solver_status='SHADOW_REJECTED')
+
+    monkeypatch.setattr(FollowMpcShadowNode, '_publish_event', parent_publish)
+    node._publish_event(e)
+    row = json.loads(node.log_file.getvalue())
+    assert not row['published'] and row['worker_profile'] == worker
+    assert row['reason'] == 'SHADOW_REJECTED'

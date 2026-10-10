@@ -1,4 +1,6 @@
 """Normalized local progress candidates mapped through existing MINCO, shadow only."""
+from uav_control.guidance.follow_profile import profiled, current, CycleProfile
+
 from dataclasses import dataclass, replace
 import math
 
@@ -32,6 +34,7 @@ class ProgressWeights:
             raise ValueError('INVALID_PROGRESS_WEIGHTS')
 
 
+@profiled('jerk_candidates')
 def optimal_local_jerk(state, reference_p, reference_v, duration, weights, previous,
                        reference_a=None):
     """Minimize terminal P/V/A + exact H||j||² integral + jerk switching quadratic."""
@@ -82,6 +85,15 @@ class ProgressFollowSolver(ShortHorizonFollowSolver):
                 and old.execution_start_stamp <= c.execution_start_stamp)
 
     def solve(self, request):
+        """Profile only explicit live P4 research; historical/offline defaults stay disabled."""
+        if not getattr(self, 'profile_enabled', False) or current() is not None:
+            return self._solve(request)
+        with CycleProfile(request.context.cycle_id, self.clock) as cycle:
+            result = self._solve(request)
+        return replace(result, metrics=dict(result.metrics, cycle_profile=cycle.report()))
+
+    @profiled('candidate_selection')
+    def _solve(self, request):
         """Rank progress seeds, then require independent full dynamic/FOV admission."""
         started = self.clock()
         until, _ = freshness(request, self.wall_clock())

@@ -79,6 +79,12 @@ def preflight():
     return dict(processes=processes, hardware_serial=serial, udp8888_free=True, domain=domain)
 
 
+def session_exit_code(ended):
+    """Require both a complete flight window and clean evidence-monitor/process shutdown."""
+    return 0 if (ended['reason'] == 'FOLLOW_WINDOW_COMPLETE'
+                 and ended['monitor_returncode'] == 0 and not ended['still_alive']) else 1
+
+
 def run(root, shadow, follow_seconds, watchdog, kill_planner_after=None):
     """Reuse repository launcher only after exclusion gates; preserve every failure/run log."""
     root = root.resolve()
@@ -97,6 +103,7 @@ def run(root, shadow, follow_seconds, watchdog, kill_planner_after=None):
                UAV_USV_EXPERIMENT_CONFIG_FILE=str(root/'config/flight.yaml'),
                UAV_USV_RESEARCH_CONFIG_FILE=str(root/'config/research.yaml'),
                UAV_USV_P4_SHADOW='true' if shadow else 'false',
+               UAV_USV_PROFILE_PREDICTOR='1' if shadow else '0',
                UAV_USV_ENABLE_SHADOW_PERCEPTION='false', ROS_LOG_DIR=str(root/'ros_logs'),
                CAMERA_STARTUP_TIMEOUT='90', FLIGHT_READY_TIMEOUT='60',
                OPENBLAS_NUM_THREADS='1', OMP_NUM_THREADS='1', ROS_LOCALHOST_ONLY='0',
@@ -247,7 +254,7 @@ def run(root, shadow, follow_seconds, watchdog, kill_planner_after=None):
             if file.stat().st_mtime >= start:
                 (logs/file.name).write_bytes(file.read_bytes())
         print(json.dumps(ended), flush=True)
-    return 0 if reason == 'FOLLOW_WINDOW_COMPLETE' else 1
+    return session_exit_code(ended)
 
 
 if __name__ == '__main__':

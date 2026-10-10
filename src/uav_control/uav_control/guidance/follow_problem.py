@@ -4,6 +4,8 @@ Shared research prediction, boundary and constraint evaluation without ROS.
 Original acquisition epochs are immutable. A future boundary is explicitly
 predicted with constant acceleration, never called an accepted tracker state.
 """
+from uav_control.guidance.follow_profile import profiled
+
 
 from dataclasses import dataclass, replace
 import math
@@ -130,6 +132,7 @@ class FollowProblem:
                 raise ValueError('INVALID_BOUNDARY_PROJECTION')
         self.target_state((0., self.duration))
 
+    @profiled('target_interpolation')
     def target_state(self, relative_times):
         """Interpolate only inside the original source-stamped prediction window."""
         query = (np.asarray(relative_times) + self.request.context.execution_start_stamp
@@ -154,6 +157,7 @@ class FollowProblem:
         ref[:, 2] = self.limits.flight_altitude
         return ref, v, heading
 
+    @profiled('other_constraints')
     def assess(self, times, p, v, a, j, yaw, rate, batch=False):
         """Evaluate physical margins and original whole-target geometry at common times."""
         targets, _ = self.target_state(times)
