@@ -135,3 +135,101 @@ def rollout_follow(problem, config=FollowRolloutConfig(), initial_command=None,
                                prediction_sequence_id=req.context.prediction_sequence_id,
                                flight_altitude=limits.flight_altitude,
                                safety_states=tuple(sorted(set(safety_states)))))
+
+
+def _bound_xyz(x, y, z, horizontal, vertical):
+    """Scalar equivalent of _bound; avoid allocating tiny arrays in integration."""
+    scale = min(1., horizontal/max(math.hypot(x, y), 1e-12))
+    return x*scale, y*scale, max(-vertical, min(z, vertical))
+
+
+def rollout_follow_fast(problem, config=FollowRolloutConfig(), initial_command=None,
+                        deadline=None, clock=time.perf_counter):
+    """Opt-in equivalent scalar integrator; original rollout_follow stays unchanged.
+
+    FlightGuidanceCore still produces every 20 Hz command, including its measured
+    state feedback, shaping and sea guard. Only the private constant-jerk response
+    integration uses scalar arithmetic. The default integration step remains 10 ms;
+    coarser/finer steps are explicit numerical research comparisons.
+    """
+    config.validate()
+    limits, req, duration = problem.limits, problem.request, problem.duration
+    if duration/config.control_dt > 10000 or duration/config.integration_dt > 10000:
+        raise ValueError('FOLLOW_ROLLOUT_STEP_LIMIT')
+
+    def check_deadline():
+        if deadline is not None and (not math.isfinite(deadline) or clock() >= deadline):
+            raise ValueError('DEADLINE_EXCEEDED')
+
+    check_deadline()
+    px, py, pz, vx, vy, vz, ax, ay, az = map(float, req.state[:9])
+    source = 'provided' if initial_command is not None else 'execution_velocity_initialization'
+    if initial_command is None:
+        command = _bound_xyz(vx, vy, vz, limits.maximum_horizontal_speed,
+                             limits.maximum_vertical_speed)
+    else:
+        initial = np.asarray(initial_command, dtype=float)
+        if initial.shape != (3,):
+            raise ValueError('INVALID_FOLLOW_INITIAL_COMMAND')
+        command = tuple(map(float, initial))
+    clipped = initial_command is None and command != (vx, vy, vz)
+    if (len(command) != 3 or not all(math.isfinite(v) for v in command)
+            or math.hypot(*command[:2]) > limits.maximum_horizontal_speed+1e-6
+            or abs(command[2]) > limits.maximum_vertical_speed+1e-6):
+        raise ValueError('INVALID_FOLLOW_INITIAL_COMMAND')
+    core = FlightGuidanceCore(
+        flight_altitude=limits.flight_altitude, follow_distance=limits.follow_distance,
+        follow_position_gain=config.position_gain, altitude_velocity_gain=config.altitude_gain,
+        maximum_horizontal_speed=limits.maximum_horizontal_speed,
+        maximum_vertical_speed=limits.maximum_vertical_speed,
+        maximum_horizontal_acceleration=limits.maximum_horizontal_acceleration,
+        maximum_vertical_acceleration=limits.maximum_vertical_acceleration,
+        sea_surface_z=limits.sea_surface_z, reserve_clearance=limits.reserve_clearance,
+        safety_response_delay=limits.response_delay,
+        vertical_braking_acceleration=limits.braking_acceleration, control_dt=config.control_dt)
+    core.previous_velocity = command
+    control_times = np.arange(0., duration-1e-10, config.control_dt)
+    target_p, target_v = problem.target_state(control_times)
+    times = [0.]
+    positions, velocities, accelerations = [(px, py, pz)], [(vx, vy, vz)], [(ax, ay, az)]
+    commands, safety_states = [], []
+    for i, start in enumerate(control_times):
+        check_deadline()
+        target = FlightKinematicState(tuple(target_p[i]), tuple(target_v[i]))
+        output = core.command('FOLLOW', FlightKinematicState((px, py, pz), (vx, vy, vz)),
+                              target, config.control_dt)
+        cx, cy, cz = map(float, output.velocity)
+        commands.append(tuple(output.velocity))
+        safety_states.append(output.safety_state)
+        stop = float(min(start+config.control_dt, duration))
+        while times[-1] < stop-1e-10:
+            check_deadline()
+            dt = float(min(config.integration_dt, stop-times[-1]))
+            dx, dy, dz = _bound_xyz(
+                (cx-vx)/config.response_time, (cy-vy)/config.response_time,
+                (cz-vz)/config.response_time, limits.maximum_horizontal_acceleration,
+                limits.maximum_vertical_acceleration)
+            dax, day, daz = _bound_xyz(
+                dx-ax, dy-ay, dz-az, limits.maximum_horizontal_jerk*dt,
+                limits.maximum_vertical_jerk*dt)
+            jx, jy, jz = dax/dt, day/dt, daz/dt
+            dt2, dt3 = dt**2, dt**3
+            px = px+vx*dt+ax*dt2/2+jx*dt3/6
+            py = py+vy*dt+ay*dt2/2+jy*dt3/6
+            pz = pz+vz*dt+az*dt2/2+jz*dt3/6
+            vx, vy, vz = vx+ax*dt+jx*dt2/2, vy+ay*dt+jy*dt2/2, vz+az*dt+jz*dt2/2
+            ax, ay, az = ax+dax, ay+day, az+daz
+            times.append(float(stop if abs(times[-1]+dt-stop) < 1e-10 else times[-1]+dt))
+            positions.append((px, py, pz))
+            velocities.append((vx, vy, vz))
+            accelerations.append((ax, ay, az))
+    return FollowReference(tuple(times), tuple(positions), tuple(velocities),
+                           tuple(accelerations), tuple(commands), dict(
+                               command_source=source, response_model='jerk_limited_velocity_lag',
+                               command_initialization_clipped=bool(clipped),
+                               response_time=config.response_time, control_dt=config.control_dt,
+                               integration_dt=config.integration_dt,
+                               future_target_source=req.context.prediction_source,
+                               prediction_sequence_id=req.context.prediction_sequence_id,
+                               flight_altitude=limits.flight_altitude,
+                               safety_states=tuple(sorted(set(safety_states)))))

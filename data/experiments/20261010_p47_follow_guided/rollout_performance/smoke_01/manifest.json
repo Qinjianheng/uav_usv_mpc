@@ -1,0 +1,136 @@
+{
+  "inputs": {
+    "f2": {
+      "original_request_count": 118,
+      "common_initial": {
+        "source": "data/experiments/20261009_p32_realtime_follow/f2_retry/shadow/mpc_seed_shadow_1791515236281436128_111866.jsonl",
+        "line": 597,
+        "sha": "075df73e4b1ad7122c4563503edf884c79c3a364a3d56b080abdbb090ac5aacd",
+        "same_initial": true
+      },
+      "initial_file_sha256": "93f4d93a33ae5d2120e874c24ef54b5651c258d4b781905ba63196562d420216",
+      "sources": {
+        "/home/qin/data/uav_usv_mpc/data/experiments/20261009_p32_realtime_follow/f2_retry/shadow/mpc_seed_shadow_1791515236281436128_111866.jsonl": "7641b2b5453839ef92968fd84f9f74f86d1808a0b83abcabe557ce49f91a3c95"
+      },
+      "selected": {
+        "single": [
+          {
+            "path": "/home/qin/data/uav_usv_mpc/data/experiments/20261009_p32_realtime_follow/f2_retry/shadow/mpc_seed_shadow_1791515236281436128_111866.jsonl",
+            "line": 585,
+            "line_sha256": "8297b4905f6a7aadeda5624131338274551e4902446d334552cb0382cb94198a"
+          },
+          {
+            "path": "/home/qin/data/uav_usv_mpc/data/experiments/20261009_p32_realtime_follow/f2_retry/shadow/mpc_seed_shadow_1791515236281436128_111866.jsonl",
+            "line": 586,
+            "line_sha256": "b31d86044965d934bff228b5ac3286e9699f77b379b81c486487aad319d2a1c5"
+          }
+        ],
+        "rolling": [
+          {
+            "path": "/home/qin/data/uav_usv_mpc/data/experiments/20261009_p32_realtime_follow/f2_retry/shadow/mpc_seed_shadow_1791515236281436128_111866.jsonl",
+            "line": 597,
+            "line_sha256": "075df73e4b1ad7122c4563503edf884c79c3a364a3d56b080abdbb090ac5aacd"
+          },
+          {
+            "path": "/home/qin/data/uav_usv_mpc/data/experiments/20261009_p32_realtime_follow/f2_retry/shadow/mpc_seed_shadow_1791515236281436128_111866.jsonl",
+            "line": 598,
+            "line_sha256": "3b3737f40c0834832bd2598345400ef3bcf2ae11f9d4417e62fdf09677915cc8"
+          }
+        ]
+      }
+    },
+    "f3": {
+      "original_request_count": 489,
+      "common_initial": {
+        "source": "data/experiments/20261009_p32_realtime_follow/f3_short/shadow/mpc_seed_shadow_1791517694786638951_126448.jsonl",
+        "line": 436,
+        "sha": "e545ce14d664f18c37a315b6091a2a06c520b10a7c71d784780929acb257a891",
+        "same_initial": true
+      },
+      "initial_file_sha256": "e93521d61eba5627a9dfffa6d81e5bc6003093e66e821b1fff7b411e857d3f34",
+      "sources": {
+        "/home/qin/data/uav_usv_mpc/data/experiments/20261009_p32_realtime_follow/f3_short/shadow/mpc_seed_shadow_1791517694786638951_126448.jsonl": "f7fc246f85f75632925b83b358a126034c8be2b929a520c01b04c2409b191fed"
+      },
+      "selected": {
+        "single": [
+          {
+            "path": "/home/qin/data/uav_usv_mpc/data/experiments/20261009_p32_realtime_follow/f3_short/shadow/mpc_seed_shadow_1791517694786638951_126448.jsonl",
+            "line": 407,
+            "line_sha256": "7eca5dd7c31e4025b2e785a0ad5b397e3e04ab98dbcb0536d67a4196e02b525d"
+          },
+          {
+            "path": "/home/qin/data/uav_usv_mpc/data/experiments/20261009_p32_realtime_follow/f3_short/shadow/mpc_seed_shadow_1791517694786638951_126448.jsonl",
+            "line": 408,
+            "line_sha256": "fae7086dd84ed4887123d9ddaf550e3799727c73bc905d6a8b98d99dd2d4a330"
+          }
+        ],
+        "rolling": [
+          {
+            "path": "/home/qin/data/uav_usv_mpc/data/experiments/20261009_p32_realtime_follow/f3_short/shadow/mpc_seed_shadow_1791517694786638951_126448.jsonl",
+            "line": 436,
+            "line_sha256": "e545ce14d664f18c37a315b6091a2a06c520b10a7c71d784780929acb257a891"
+          },
+          {
+            "path": "/home/qin/data/uav_usv_mpc/data/experiments/20261009_p32_realtime_follow/f3_short/shadow/mpc_seed_shadow_1791517694786638951_126448.jsonl",
+            "line": 437,
+            "line_sha256": "e13a543e5c9b4b32435477a1a9dacee89b120e8d6da9079b9bf7e75ed2b7bab0"
+          }
+        ]
+      }
+    }
+  },
+  "source_sha256": {
+    "scripts/p47_rollout_performance.py": "844dc6362b9bfefe7096ae43a3b6359ac212461b6ecb3feb6b5cbd6f0e92b8c4",
+    "scripts/p46_follow_study.py": "0cd5bbfed8583d66cf14b685ad00ceeb8dbc7e0c455ecf9e4a2a8f8b7dc78631",
+    "src/uav_control/uav_control/guidance/follow_rollout.py": "88f7ab317c8c7c93e2b66716e575de74bbe96a602d5e3569b60679fbb4b57e5a",
+    "src/uav_control/uav_control/control/flight_guidance.py": "0f96a489166b3085ea34eff88c73bd4e5ac0f8c02ca744fff5bc0cf624b18824",
+    "src/uav_control/uav_control/common/sea_safety.py": "522dbcc5afe28f0a03a6acca28dda5d74bcb411a2626d2df2f2cec95117e235c",
+    "src/uav_control/uav_control/guidance/follow_problem.py": "72edda75981acb88c2048e7344f1797511239798c1c5f9594f003efcaba8c427",
+    "src/uav_control/uav_control/controllers/direct_reference_minco.py": "1ee31f2db1489a65bf8f9601cf8504771760d7097183e2ef06890cc53d37c513",
+    "src/uav_control/uav_control/guidance/follow_fast_validation.py": "83f76e6c3f0b9457f4cacd0729204a6fedbfb0cd5007eebce43d4444260a748f",
+    "src/uav_control/uav_control/guidance/follow_minco_optimizer.py": "676d1e8b407c05376a226b3779a48f3abc0684c96a6fbe6b3c1bf9e9fd7bc709",
+    "src/uav_control/uav_control/guidance/p44_invariant_cache.py": "bf9205d162e9d46bb6e9f3f5085a5dfdb52fad21eec978200b51741c1a68d306",
+    "src/uav_control/test/test_p47_follow_rollout_fast.py": "e506d3fdb4156b5d050593fb5e322afb0952dca4948993a7b0916cd845dd9463"
+  },
+  "original_module_prefix_preserved": true,
+  "original_module_sha256": "2cb55592706adb5f12604c094405c518a95edce9c98c908a98b6ec760ad6988f",
+  "selected_step_seconds": 0.01,
+  "original_control_period_seconds": 0.05,
+  "default_original_function_unchanged": true,
+  "no_sitl": true,
+  "quick_run": true,
+  "request_policy": "all original F2/F3 single-input requests; same PVA/start/constraints",
+  "initial_command_policy": "bounded execution velocity, same for each method; no emitted command was recorded in these P32 inputs",
+  "strict_validation": "same follow_guided_seed + validate_seed with a fresh P44InvariantCache for each method; frozen clock budget for numerical comparison",
+  "timing": "rollout only; rotating method order, one untimed warmup each; seed construction/strict validation/fit excluded from rollout timer",
+  "methods": {
+    "numpy_10ms": {
+      "position_gain": 0.8,
+      "altitude_gain": 1.0,
+      "control_dt": 0.05,
+      "integration_dt": 0.01,
+      "response_time": 0.5
+    },
+    "scalar_10ms": {
+      "position_gain": 0.8,
+      "altitude_gain": 1.0,
+      "control_dt": 0.05,
+      "integration_dt": 0.01,
+      "response_time": 0.5
+    },
+    "scalar_5ms": {
+      "position_gain": 0.8,
+      "altitude_gain": 1.0,
+      "control_dt": 0.05,
+      "integration_dt": 0.005,
+      "response_time": 0.5
+    },
+    "scalar_20ms": {
+      "position_gain": 0.8,
+      "altitude_gain": 1.0,
+      "control_dt": 0.05,
+      "integration_dt": 0.02,
+      "response_time": 0.5
+    }
+  }
+}

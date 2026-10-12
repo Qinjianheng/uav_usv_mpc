@@ -1,0 +1,956 @@
+{
+  "run": "c_f2_2",
+  "condition": {
+    "name": "c_f2_2",
+    "scene": "f2",
+    "shadow": true,
+    "engine": "p44_adaptive",
+    "acceleration": 3.0,
+    "yaw": 1.0,
+    "horizon": 1.6,
+    "refinement": "none",
+    "actual_controller": "NOMINAL_MINCO",
+    "minco_authorized": false,
+    "config_source": "/home/qin/data/uav_usv_mpc/data/experiments/20261009_p41_rolling_follow/f2_original_retry_1/config/flight.yaml",
+    "qualified_holding": false,
+    "execution_lease_seconds": 0.45,
+    "authorization": "2026-10-10 user requested default MINCO and SITL experiment"
+  },
+  "follow_start": 1791602315.1670623,
+  "follow_end": 1791602387.8170116,
+  "source": "/home/qin/data/uav_usv_mpc/data/experiments/20261010_p45_minco_execution/c_f2_2",
+  "provenance": {
+    "recorded_head": "6842a9388018a654418073609f9e6e626a810b2e",
+    "files": {
+      "src/uav_control/uav_control/control/trajectory_tracker_node.py": {
+        "current_sha256": "4f3b1a87e5ff2db3d28b843e5ce0844e13e23c56d51a9bc431f409ebf86c82b9",
+        "recorded_sha256": "4f3b1a87e5ff2db3d28b843e5ce0844e13e23c56d51a9bc431f409ebf86c82b9",
+        "matches": true
+      },
+      "src/uav_control/uav_control/control/flight_guidance.py": {
+        "current_sha256": "0f96a489166b3085ea34eff88c73bd4e5ac0f8c02ca744fff5bc0cf624b18824",
+        "recorded_sha256": "0f96a489166b3085ea34eff88c73bd4e5ac0f8c02ca744fff5bc0cf624b18824",
+        "matches": true
+      },
+      "src/uav_control/uav_control/guidance/follow_minco_execution.py": {
+        "current_sha256": "d5823e451f1a20242cd813dc02bbb4d0f1d137b1981cd0ea09b73aa9114de752",
+        "recorded_sha256": "d5823e451f1a20242cd813dc02bbb4d0f1d137b1981cd0ea09b73aa9114de752",
+        "matches": true
+      },
+      "src/uav_control/uav_control/common/sea_safety.py": {
+        "current_sha256": "522dbcc5afe28f0a03a6acca28dda5d74bcb411a2626d2df2f2cec95117e235c",
+        "recorded_sha256": "522dbcc5afe28f0a03a6acca28dda5d74bcb411a2626d2df2f2cec95117e235c",
+        "matches": true
+      },
+      "src/uav_control/uav_control/controllers/follow_p44_solver.py": {
+        "current_sha256": null,
+        "recorded_sha256": null,
+        "matches": false
+      },
+      "src/uav_control/uav_control/guidance/adaptive_follow_initializer.py": {
+        "current_sha256": "754157c1fd3d0d1306fd2f549dfa620d4cd6b21fb3b91d3fc89ba5fd58607d01",
+        "recorded_sha256": "754157c1fd3d0d1306fd2f549dfa620d4cd6b21fb3b91d3fc89ba5fd58607d01",
+        "matches": true
+      },
+      "scripts/p4_shadow_monitor.py": {
+        "current_sha256": "dd2b50f5e71cb299de481beaa94e8f264cd9654f873cfbab83e157b7b9628948",
+        "recorded_sha256": "dd2b50f5e71cb299de481beaa94e8f264cd9654f873cfbab83e157b7b9628948",
+        "matches": true
+      }
+    },
+    "replay_source_matches": true
+  },
+  "input_kind_counts": {
+    "start": 1,
+    "graph": 104,
+    "gazebo_stats": 964,
+    "clock": 3504,
+    "rendered_uav": 2368,
+    "prediction": 1757,
+    "mission": 1763,
+    "ideal": 1745,
+    "receiver_epoch": 1755,
+    "diagnostic": 1754,
+    "rendered_target": 2189,
+    "observation": 1746,
+    "attitude": 4350,
+    "vehicle_status": 175,
+    "uav": 4348,
+    "reference": 1743,
+    "kf": 3479,
+    "execution_debug": 1454,
+    "proposal": 159,
+    "follow_ack": 346
+  },
+  "exclusions": {
+    "physical_OUTSIDE_SUPPORT": 1,
+    "reference_sample_clamped_to_future_active_start": 66
+  },
+  "native": {
+    "dataset_inventory": [
+      {
+        "path": "/home/qin/data/uav_usv_mpc/data/experiments/20261010_p45_minco_execution/c_f2_2/ulogs/03_18_14.ulg",
+        "name": "trajectory_setpoint",
+        "multi_id": 0,
+        "count": 464,
+        "fields": [
+          "timestamp",
+          "position[0]",
+          "position[1]",
+          "position[2]",
+          "velocity[0]",
+          "velocity[1]",
+          "velocity[2]",
+          "acceleration[0]",
+          "acceleration[1]",
+          "acceleration[2]",
+          "jerk[0]",
+          "jerk[1]",
+          "jerk[2]",
+          "yaw",
+          "yawspeed"
+        ]
+      },
+      {
+        "path": "/home/qin/data/uav_usv_mpc/data/experiments/20261010_p45_minco_execution/c_f2_2/ulogs/03_18_14.ulg",
+        "name": "vehicle_angular_velocity",
+        "multi_id": 0,
+        "count": 9256,
+        "fields": [
+          "timestamp",
+          "timestamp_sample",
+          "xyz[0]",
+          "xyz[1]",
+          "xyz[2]",
+          "xyz_derivative[0]",
+          "xyz_derivative[1]",
+          "xyz_derivative[2]"
+        ]
+      },
+      {
+        "path": "/home/qin/data/uav_usv_mpc/data/experiments/20261010_p45_minco_execution/c_f2_2/ulogs/03_18_14.ulg",
+        "name": "vehicle_local_position",
+        "multi_id": 0,
+        "count": 11568,
+        "fields": [
+          "timestamp",
+          "timestamp_sample",
+          "ref_timestamp",
+          "ref_lat",
+          "ref_lon",
+          "x",
+          "y",
+          "z",
+          "delta_xy[0]",
+          "delta_xy[1]",
+          "delta_z",
+          "vx",
+          "vy",
+          "vz",
+          "z_deriv",
+          "delta_vxy[0]",
+          "delta_vxy[1]",
+          "delta_vz",
+          "ax",
+          "ay",
+          "az",
+          "heading",
+          "heading_var",
+          "unaided_heading",
+          "delta_heading",
+          "tilt_var",
+          "ref_alt",
+          "dist_bottom",
+          "dist_bottom_var",
+          "delta_dist_bottom",
+          "eph",
+          "epv",
+          "evh",
+          "evv",
+          "vxy_max",
+          "vz_max",
+          "hagl_min",
+          "hagl_max_z",
+          "hagl_max_xy",
+          "xy_valid",
+          "z_valid",
+          "v_xy_valid",
+          "v_z_valid",
+          "xy_reset_counter",
+          "z_reset_counter",
+          "vxy_reset_counter",
+          "vz_reset_counter",
+          "heading_reset_counter",
+          "heading_good_for_control",
+          "xy_global",
+          "z_global",
+          "dist_bottom_valid",
+          "dist_bottom_reset_counter",
+          "dist_bottom_sensor_bitfield",
+          "dead_reckoning"
+        ]
+      },
+      {
+        "path": "/home/qin/data/uav_usv_mpc/data/experiments/20261010_p45_minco_execution/c_f2_2/ulogs/03_18_14.ulg",
+        "name": "vehicle_local_position_setpoint",
+        "multi_id": 0,
+        "count": 927,
+        "fields": [
+          "timestamp",
+          "x",
+          "y",
+          "z",
+          "vx",
+          "vy",
+          "vz",
+          "acceleration[0]",
+          "acceleration[1]",
+          "acceleration[2]",
+          "thrust[0]",
+          "thrust[1]",
+          "thrust[2]",
+          "yaw",
+          "yawspeed"
+        ]
+      },
+      {
+        "path": "/home/qin/data/uav_usv_mpc/data/experiments/20261010_p45_minco_execution/c_f2_2/ulogs/03_18_14.ulg",
+        "name": "vehicle_thrust_setpoint",
+        "multi_id": 0,
+        "count": 4629,
+        "fields": [
+          "timestamp",
+          "timestamp_sample",
+          "xyz[0]",
+          "xyz[1]",
+          "xyz[2]"
+        ]
+      }
+    ],
+    "mapping_rejections": {
+      "OUTSIDE_SUPPORT": 1627
+    },
+    "exact_navigation_native_matches": 4287,
+    "max_position_difference_on_exact_native_match": 0.0,
+    "mapping_convention": "original native_timestamp_sample -> navigation stamp pairs; bracketed interpolation <=100 ms; command timestamp is publication epoch",
+    "vehicle_local_position": {
+      "count": 4988,
+      "logged_period_seconds": {
+        "count": 4987,
+        "min": 0.007999999999995566,
+        "max": 0.008000000000009777,
+        "mean": 0.008,
+        "rmse": 0.008,
+        "p95_abs": 0.008000000000009777
+      },
+      "vz": {
+        "count": 4988,
+        "min": -3.4047441482543945,
+        "max": 3.1551461219787598,
+        "mean": -0.003287611897172368,
+        "rmse": 0.8986607754022699,
+        "p95_abs": 2.2682767748832693
+      }
+    },
+    "trajectory_setpoint": {
+      "count": 199,
+      "logged_period_seconds": {
+        "count": 198,
+        "min": 0.14799999999999613,
+        "max": 0.25199999999999534,
+        "mean": 0.20002020202020201,
+        "rmse": 0.20015892675470653,
+        "p95_abs": 0.20460000000000625
+      },
+      "vz": {
+        "count": 199,
+        "min": -3.259094476699829,
+        "max": 3.008488416671753,
+        "mean": -0.002994190599803284,
+        "rmse": 0.8554843824968974,
+        "p95_abs": 2.11284544467926
+      }
+    },
+    "vehicle_local_position_setpoint": {
+      "count": 399,
+      "logged_period_seconds": {
+        "count": 398,
+        "min": 0.09599999999998943,
+        "max": 0.10400000000000631,
+        "mean": 0.09999999999999999,
+        "rmse": 0.10007996802557441,
+        "p95_abs": 0.1039999999999992
+      },
+      "vz": {
+        "count": 399,
+        "min": -3.3015031814575195,
+        "max": 3.0212631225585938,
+        "mean": -0.0021398140845924176,
+        "rmse": 0.8545598048296196,
+        "p95_abs": 2.112845444679259
+      }
+    },
+    "vehicle_thrust_setpoint": {
+      "count": 1995,
+      "logged_period_seconds": {
+        "count": 1994,
+        "min": 0.015999999999991132,
+        "max": 0.02400000000000091,
+        "mean": 0.019999999999999997,
+        "rmse": 0.02000561606204783,
+        "p95_abs": 0.020000000000010232
+      },
+      "vz": {
+        "count": 0,
+        "min": null,
+        "max": null,
+        "mean": null,
+        "rmse": null,
+        "p95_abs": null
+      }
+    },
+    "vehicle_angular_velocity": {
+      "count": 3990,
+      "logged_period_seconds": {
+        "count": 3989,
+        "min": 0.003999999999990678,
+        "max": 0.016000000000005343,
+        "mean": 0.010000501378791675,
+        "rmse": 0.010208751204391785,
+        "p95_abs": 0.012000000000000455
+      },
+      "vz": {
+        "count": 0,
+        "min": null,
+        "max": null,
+        "mean": null,
+        "rmse": null,
+        "p95_abs": null
+      }
+    }
+  },
+  "missing_signals": [
+    "Direct pre-shaping velocity and intermediate shaped velocity were not logged.",
+    "Recorder omitted ControllerDiagnostic safety_state and safety_margin.",
+    "ULog trajectory_setpoint is decimated; no full-rate PX4 receive history.",
+    "No physical plant counterfactual or new flight was performed."
+  ],
+  "conventions": {
+    "desired": "truth XY -5 m * unit truth horizontal velocity, fixed z=-5 m; offline only",
+    "attribution": "actual-desired=(reference-desired)+(actual-reference), vectors",
+    "epoch": "exact debug state_stamp paired to original navigation record; reject state_stamp<active_start; truth bracket <=150 ms, no extrapolation",
+    "command": "ROS header is control tick time, debug header later in same callback; velocities shown at their recorded epochs; no receipt-time alignment",
+    "replay": "derived from logged inputs and byte-matching runtime sources; never labelled as directly observed shaping or safety state"
+  },
+  "windows": {
+    "all_follow": {
+      "active_decomposition": {
+        "samples": 807,
+        "xy": {
+          "reference_rmse": 0.5347613564392848,
+          "tracking_rmse": 0.0783658735054323,
+          "actual_rmse": 0.5370953609673282,
+          "reference_mse": 0.2859697083407838,
+          "tracking_mse": 0.006141210130269415,
+          "actual_mse": 0.2884714267726246,
+          "cross_term": -0.0036394916984285623,
+          "centered_cross_covariance": -0.0029932418152031183,
+          "mean_reference_error": [
+            -0.2459268757615366,
+            -0.04984702687900853
+          ],
+          "mean_tracking_error": [
+            -0.004668692933629526,
+            -0.0005083332049646434
+          ],
+          "mean_actual_error": [
+            -0.25059556869516614,
+            -0.05035536008397317
+          ],
+          "closure_max_abs": 0.0,
+          "mse_identity_residual": -2.6020852139652106e-17
+        },
+        "z": {
+          "reference_rmse": 0.5378777024856564,
+          "tracking_rmse": 0.06259189273419002,
+          "actual_rmse": 0.5548268137119603,
+          "reference_mse": 0.2893124228312483,
+          "tracking_mse": 0.00391774503604835,
+          "actual_mse": 0.30783279321376633,
+          "cross_term": 0.01460262534646967,
+          "centered_cross_covariance": 0.006822453273671019,
+          "mean_reference_error": [
+            0.031363548770815985
+          ],
+          "mean_tracking_error": [
+            0.015268023496416198
+          ],
+          "mean_actual_error": [
+            0.046631572267232184
+          ],
+          "closure_max_abs": 0.0,
+          "mse_identity_residual": 5.204170427930421e-18
+        },
+        "xyz": {
+          "reference_rmse": 0.7584735533768017,
+          "tracking_rmse": 0.10029434264362952,
+          "actual_rmse": 0.7722073685134007,
+          "reference_mse": 0.5752821311720321,
+          "tracking_mse": 0.010058955166317763,
+          "actual_mse": 0.5963042199863909,
+          "cross_term": 0.010963133648041112,
+          "centered_cross_covariance": 0.0038292114584679024,
+          "mean_reference_error": [
+            -0.2459268757615366,
+            -0.04984702687900853,
+            0.031363548770815985
+          ],
+          "mean_tracking_error": [
+            -0.004668692933629526,
+            -0.0005083332049646434,
+            0.015268023496416198
+          ],
+          "mean_actual_error": [
+            -0.25059556869516614,
+            -0.05035536008397317,
+            0.046631572267232184
+          ],
+          "closure_max_abs": 0.0,
+          "mse_identity_residual": -2.2551405187698492e-17
+        }
+      },
+      "all_owner_physical": {
+        "samples": 3624,
+        "xy_rmse": 4.420792377082151,
+        "z_error": {
+          "count": 3624,
+          "min": -4.3860063552856445,
+          "max": 1.760664701461792,
+          "mean": -0.15401075606051395,
+          "rmse": 0.8766637797169455,
+          "p95_abs": 1.7580377459526062
+        }
+      },
+      "z_ref": {
+        "count": 807,
+        "min": -7.005436020176517,
+        "max": -3.3351221743420525,
+        "mean": -4.968636451229185,
+        "rmse": 4.9975671016128524,
+        "p95_abs": 5.759456394855886
+      },
+      "vz_ref": {
+        "count": 807,
+        "min": -3.166585214114427,
+        "max": 1.8869375908059296,
+        "mean": -0.08270320452065867,
+        "rmse": 0.6898117006603154,
+        "p95_abs": 1.5944765765444302
+      },
+      "vz_final_ros": {
+        "count": 807,
+        "min": -3.3015031814575195,
+        "max": 1.9858732223510742,
+        "mean": -0.10297737025255024,
+        "rmse": 0.7259898500565534,
+        "p95_abs": 1.654399585723876
+      },
+      "vz_actual": {
+        "count": 807,
+        "min": -3.352306842803955,
+        "max": 2.00019907951355,
+        "mean": -0.07205985555466723,
+        "rmse": 0.681920032120822,
+        "p95_abs": 1.5838677167892452
+      },
+      "replay": {
+        "samples": 807,
+        "residual": {
+          "count": 807,
+          "min": 3.5231189493556414e-10,
+          "max": 1.1895881879553372e-07,
+          "mean": 4.456622188747471e-08,
+          "rmse": 5.3201083989032606e-08,
+          "p95_abs": 1.0386614839319463e-07
+        },
+        "shape_changes": 29,
+        "sea_changes": 0,
+        "derived_sea_states": {
+          "SAFE": 807
+        }
+      },
+      "high_altitude_error": {
+        "samples": 93,
+        "unique_plans": 18,
+        "scale_counts": {
+          "1.0": 36,
+          "0.5": 57
+        },
+        "parented_samples": 81,
+        "zero_scale_parented_samples": 0
+      }
+    },
+    "transition_0_20": {
+      "active_decomposition": {
+        "samples": 170,
+        "xy": {
+          "reference_rmse": 0.9578035017359164,
+          "tracking_rmse": 0.14266758145458536,
+          "actual_rmse": 0.9935853328715816,
+          "reference_mse": 0.9173875479375837,
+          "tracking_mse": 0.020354038798100747,
+          "actual_mse": 0.9872118136975316,
+          "cross_term": 0.04947022696184705,
+          "centered_cross_covariance": 0.011331764418932376,
+          "mean_reference_error": [
+            -0.6745718005595225,
+            -0.05602648878262585
+          ],
+          "mean_tracking_error": [
+            -0.019915752902873403,
+            0.000557883134885736
+          ],
+          "mean_actual_error": [
+            -0.6944875534623959,
+            -0.055468605647740116
+          ],
+          "closure_max_abs": 0.0,
+          "mse_identity_residual": 1.3877787807814457e-16
+        },
+        "z": {
+          "reference_rmse": 0.0282623158506927,
+          "tracking_rmse": 0.006814953481613712,
+          "actual_rmse": 0.024383107993874515,
+          "reference_mse": 0.0007987584972443159,
+          "tracking_mse": 4.644359095655886e-05,
+          "actual_mse": 0.0005945359554409473,
+          "cross_term": -0.00025066613275992754,
+          "centered_cross_covariance": -0.00012215187295854888,
+          "mean_reference_error": [
+            -0.0015204939610458806
+          ],
+          "mean_tracking_error": [
+            0.0020922104940335876
+          ],
+          "mean_actual_error": [
+            0.0005717165329877068
+          ],
+          "closure_max_abs": 0.0,
+          "mse_identity_residual": 0.0
+        },
+        "xyz": {
+          "reference_rmse": 0.9582203851071152,
+          "tracking_rmse": 0.1428302572603484,
+          "actual_rmse": 0.9938844750034949,
+          "reference_mse": 0.9181863064348281,
+          "tracking_mse": 0.020400482389057305,
+          "actual_mse": 0.9878063496529725,
+          "cross_term": 0.049219560829087135,
+          "centered_cross_covariance": 0.011209612545973828,
+          "mean_reference_error": [
+            -0.6745718005595225,
+            -0.05602648878262585,
+            -0.0015204939610458806
+          ],
+          "mean_tracking_error": [
+            -0.019915752902873403,
+            0.000557883134885736,
+            0.0020922104940335876
+          ],
+          "mean_actual_error": [
+            -0.6944875534623959,
+            -0.055468605647740116,
+            0.0005717165329877068
+          ],
+          "closure_max_abs": 0.0,
+          "mse_identity_residual": -2.7755575615628914e-17
+        }
+      },
+      "all_owner_physical": {
+        "samples": 999,
+        "xy_rmse": 8.40463284127649,
+        "z_error": {
+          "count": 999,
+          "min": -0.04092979431152344,
+          "max": 0.1869182586669922,
+          "mean": 0.017122727375966054,
+          "rmse": 0.04028879998689098,
+          "p95_abs": 0.07942805290222145
+        }
+      },
+      "z_ref": {
+        "count": 170,
+        "min": -5.048730559511689,
+        "max": -4.942075690460044,
+        "mean": -5.001520493961046,
+        "rmse": 5.001600113774361,
+        "p95_abs": 5.045072628287448
+      },
+      "vz_ref": {
+        "count": 170,
+        "min": -0.02889781040201233,
+        "max": 0.03514076754749765,
+        "mean": 9.549255760931522e-05,
+        "rmse": 0.02103352586041363,
+        "p95_abs": 0.03136935457954716
+      },
+      "vz_final_ros": {
+        "count": 170,
+        "min": -0.0349043570458889,
+        "max": 0.0369747057557106,
+        "mean": -0.0015188325856904745,
+        "rmse": 0.022835791441653427,
+        "p95_abs": 0.03452886715531349
+      },
+      "vz_actual": {
+        "count": 170,
+        "min": -0.03174490109086037,
+        "max": 0.03995710611343384,
+        "mean": -0.000590792186481207,
+        "rmse": 0.023491295453711154,
+        "p95_abs": 0.03764334991574288
+      },
+      "replay": {
+        "samples": 170,
+        "residual": {
+          "count": 170,
+          "min": 1.1443759273532805e-09,
+          "max": 1.1895881879553372e-07,
+          "mean": 4.659719995741127e-08,
+          "rmse": 5.515362594332665e-08,
+          "p95_abs": 1.0291138301532496e-07
+        },
+        "shape_changes": 0,
+        "sea_changes": 0,
+        "derived_sea_states": {
+          "SAFE": 170
+        }
+      },
+      "high_altitude_error": {
+        "samples": 0,
+        "unique_plans": 0,
+        "scale_counts": {},
+        "parented_samples": 0,
+        "zero_scale_parented_samples": 0
+      }
+    },
+    "stable_20_60": {
+      "active_decomposition": {
+        "samples": 457,
+        "xy": {
+          "reference_rmse": 0.38495357066194613,
+          "tracking_rmse": 0.050985946924932135,
+          "actual_rmse": 0.3539434197606266,
+          "reference_mse": 0.14818925156538196,
+          "tracking_mse": 0.0025995667838319965,
+          "actual_mse": 0.1252759443918471,
+          "cross_term": -0.025512873957366823,
+          "centered_cross_covariance": -0.01246680395546533,
+          "mean_reference_error": [
+            -0.13009858544958625,
+            -0.05314374369232749
+          ],
+          "mean_tracking_error": [
+            0.002152931124161911,
+            0.00017950804236632707
+          ],
+          "mean_actual_error": [
+            -0.12794565432542435,
+            -0.05296423564996115
+          ],
+          "closure_max_abs": 0.0,
+          "mse_identity_residual": -2.0816681711721685e-17
+        },
+        "z": {
+          "reference_rmse": 0.5226616824972109,
+          "tracking_rmse": 0.05885440965594027,
+          "actual_rmse": 0.5211510882165992,
+          "reference_mse": 0.2731752343508153,
+          "tracking_mse": 0.0034638415359492356,
+          "actual_mse": 0.2715984567493456,
+          "cross_term": -0.005040619137419053,
+          "centered_cross_covariance": -0.003698771859682707,
+          "mean_reference_error": [
+            0.08029465515237347
+          ],
+          "mean_tracking_error": [
+            0.014676721492069895
+          ],
+          "mean_actual_error": [
+            0.09497137664444337
+          ],
+          "closure_max_abs": 0.0,
+          "mse_identity_residual": 8.153200337090993e-17
+        },
+        "xyz": {
+          "reference_rmse": 0.6491259399501743,
+          "tracking_rmse": 0.07786789017163129,
+          "actual_rmse": 0.6299796831177913,
+          "reference_mse": 0.4213644859161973,
+          "tracking_mse": 0.006063408319781233,
+          "actual_mse": 0.3968744011411927,
+          "cross_term": -0.030553493094785878,
+          "centered_cross_covariance": -0.016165575815148037,
+          "mean_reference_error": [
+            -0.13009858544958625,
+            -0.05314374369232749,
+            0.08029465515237347
+          ],
+          "mean_tracking_error": [
+            0.002152931124161911,
+            0.00017950804236632707,
+            0.014676721492069895
+          ],
+          "mean_actual_error": [
+            -0.12794565432542435,
+            -0.05296423564996115,
+            0.09497137664444337
+          ],
+          "closure_max_abs": 0.0,
+          "mse_identity_residual": 6.245004513516506e-17
+        }
+      },
+      "all_owner_physical": {
+        "samples": 1995,
+        "xy_rmse": 0.3392239885994667,
+        "z_error": {
+          "count": 1995,
+          "min": -4.3860063552856445,
+          "max": 1.760664701461792,
+          "mean": -0.24586329221127923,
+          "rmse": 1.090855542620525,
+          "p95_abs": 2.777839374542236
+        }
+      },
+      "z_ref": {
+        "count": 457,
+        "min": -7.005436020176517,
+        "max": -3.3351221743420525,
+        "mean": -4.919705344847626,
+        "rmse": 4.946739196968755,
+        "p95_abs": 5.62882213938564
+      },
+      "vz_ref": {
+        "count": 457,
+        "min": -3.166585214114427,
+        "max": 1.4631284292203477,
+        "mean": -0.09570097611598104,
+        "rmse": 0.745841585537246,
+        "p95_abs": 1.9052912242620963
+      },
+      "vz_final_ros": {
+        "count": 457,
+        "min": -3.3015031814575195,
+        "max": 1.4837754964828491,
+        "mean": -0.11959585529016901,
+        "rmse": 0.776459941927215,
+        "p95_abs": 1.987691926956176
+      },
+      "vz_actual": {
+        "count": 457,
+        "min": -3.352306842803955,
+        "max": 1.4408104419708252,
+        "mean": -0.07916049889423982,
+        "rmse": 0.720987834589647,
+        "p95_abs": 1.688830018043517
+      },
+      "replay": {
+        "samples": 457,
+        "residual": {
+          "count": 457,
+          "min": 3.5231189493556414e-10,
+          "max": 1.1850232972676622e-07,
+          "mean": 4.3074215075981686e-08,
+          "rmse": 5.167245771173477e-08,
+          "p95_abs": 1.0155828658042765e-07
+        },
+        "shape_changes": 24,
+        "sea_changes": 0,
+        "derived_sea_states": {
+          "SAFE": 457
+        }
+      },
+      "high_altitude_error": {
+        "samples": 43,
+        "unique_plans": 9,
+        "scale_counts": {
+          "1.0": 20,
+          "0.5": 23
+        },
+        "parented_samples": 39,
+        "zero_scale_parented_samples": 0
+      }
+    },
+    "late_60_end": {
+      "active_decomposition": {
+        "samples": 180,
+        "xy": {
+          "reference_rmse": 0.19859483483609583,
+          "tracking_rmse": 0.041349993902933084,
+          "actual_rmse": 0.20708729358860523,
+          "reference_mse": 0.039439908423576184,
+          "tracking_mse": 0.0017098219957726033,
+          "actual_mse": 0.04288514716585317,
+          "cross_term": 0.0017354167465043866,
+          "centered_cross_covariance": -0.0002742207614800104,
+          "mean_reference_error": [
+            -0.13517071718877957,
+            -0.03564087072733239
+          ],
+          "mean_tracking_error": [
+            -0.007588037376069679,
+            -0.0032616678038803006
+          ],
+          "mean_actual_error": [
+            -0.14275875456484927,
+            -0.038902538531212685
+          ],
+          "closure_max_abs": 0.0,
+          "mse_identity_residual": -3.686287386450715e-18
+        },
+        "z": {
+          "reference_rmse": 0.7763814003366417,
+          "tracking_rmse": 0.09341512046593133,
+          "actual_rmse": 0.8306607085013497,
+          "reference_mse": 0.6027680787886847,
+          "tracking_mse": 0.008726384731664462,
+          "actual_mse": 0.6899972126479642,
+          "cross_term": 0.0785027491276151,
+          "centered_cross_covariance": 0.04105703439570088,
+          "mean_reference_error": [
+            -0.06180994207337988
+          ],
+          "mean_tracking_error": [
+            0.02921309697636789
+          ],
+          "mean_actual_error": [
+            -0.03259684509701199
+          ],
+          "closure_max_abs": 0.0,
+          "mse_identity_residual": 0.0
+        },
+        "xyz": {
+          "reference_rmse": 0.801378803820179,
+          "tracking_rmse": 0.10215775412291064,
+          "actual_rmse": 0.8560854862768189,
+          "reference_mse": 0.6422079872122609,
+          "tracking_mse": 0.010436206727437067,
+          "actual_mse": 0.7328823598138174,
+          "cross_term": 0.08023816587411949,
+          "centered_cross_covariance": 0.04078281363422086,
+          "mean_reference_error": [
+            -0.13517071718877957,
+            -0.03564087072733239,
+            -0.06180994207337988
+          ],
+          "mean_tracking_error": [
+            -0.007588037376069679,
+            -0.0032616678038803006,
+            0.02921309697636789
+          ],
+          "mean_actual_error": [
+            -0.14275875456484927,
+            -0.038902538531212685,
+            -0.03259684509701199
+          ],
+          "closure_max_abs": 0.0,
+          "mse_identity_residual": -2.7755575615628914e-17
+        }
+      },
+      "all_owner_physical": {
+        "samples": 630,
+        "xy_rmse": 0.21274765802484383,
+        "z_error": {
+          "count": 630,
+          "min": -1.4675445556640625,
+          "max": 1.6055476665496826,
+          "mean": -0.13451320103236608,
+          "rmse": 0.8063078284051658,
+          "p95_abs": 1.5122001051902767
+        }
+      },
+      "z_ref": {
+        "count": 180,
+        "min": -6.418087840891721,
+        "max": -3.5432456809390698,
+        "mean": -5.0618099420733795,
+        "rmse": 5.120631552799174,
+        "p95_abs": 6.340897137614505
+      },
+      "vz_ref": {
+        "count": 180,
+        "min": -1.62501852102548,
+        "max": 1.8869375908059296,
+        "mean": -0.12790207609978776,
+        "rmse": 0.8488816436531132,
+        "p95_abs": 1.6103913585883227
+      },
+      "vz_final_ros": {
+        "count": 180,
+        "min": -1.662882685661316,
+        "max": 1.9858732223510742,
+        "mean": -0.1566068354812968,
+        "rmse": 0.9120460494707168,
+        "p95_abs": 1.6832187891006463
+      },
+      "vz_actual": {
+        "count": 180,
+        "min": -1.6628600358963013,
+        "max": 2.00019907951355,
+        "mean": -0.1215306709235948,
+        "rmse": 0.8743693459949781,
+        "p95_abs": 1.6519081950187682
+      },
+      "replay": {
+        "samples": 180,
+        "residual": {
+          "count": 180,
+          "min": 2.3140127591858572e-09,
+          "max": 1.1856806114707297e-07,
+          "mean": 4.64361154483808e-08,
+          "rmse": 5.5114040420376224e-08,
+          "p95_abs": 1.091526761864969e-07
+        },
+        "shape_changes": 5,
+        "sea_changes": 0,
+        "derived_sea_states": {
+          "SAFE": 180
+        }
+      },
+      "high_altitude_error": {
+        "samples": 50,
+        "unique_plans": 9,
+        "scale_counts": {
+          "1.0": 16,
+          "0.5": 34
+        },
+        "parented_samples": 42,
+        "zero_scale_parented_samples": 0
+      }
+    }
+  },
+  "coefficient_sample_max_abs": 2.842170943040401e-14,
+  "stable_owner_switches": {
+    "count": 46,
+    "delta_vxy": {
+      "count": 46,
+      "min": 0.017583214817022935,
+      "max": 0.15324420272887007,
+      "mean": 0.11589901596891901,
+      "rmse": 0.12429620775619549,
+      "p95_abs": 0.15111160478817087
+    },
+    "delta_vz": {
+      "count": 46,
+      "min": -0.1532442569732666,
+      "max": 0.15117788314819336,
+      "mean": 0.019478096370458723,
+      "rmse": 0.09895845182566695,
+      "p95_abs": 0.15087034553289413
+    }
+  },
+  "stable_ownership_ticks": {
+    "MINCO_FOLLOW": 493,
+    "FOLLOW": 307
+  }
+}

@@ -30,7 +30,9 @@ class FollowResearchShadowNode(FollowMpcShadowNode):
                               ('p44_ablation', 'D'), ('p44_refinement', 'none'),
                               ('follow_guided_refinement', 'none'),
                               ('follow_guided_response_time', .5),
-                              ('follow_guided_optimization_budget', .025)):
+                              ('follow_guided_optimization_budget', .025),
+                              ('p47_terminal_mode', 'qva'), ('p47_refinement', True),
+                              ('p47_scheduling', 'adaptive')):
             self.declare_parameter(name, default)
         mode = self.get_parameter('research_mode').value
         optimizer = MincoConfig(mode=self.get_parameter('minco_mode').value,
@@ -40,7 +42,8 @@ class FollowResearchShadowNode(FollowMpcShadowNode):
         optimizer.validate()
         engine = self.get_parameter('minco_engine').value
         engines = ('legacy', 'p31', 'p32', 'p32_short', 'p33_progress',
-                   'p41_tracking', 'p43_fast', 'p44_adaptive', 'follow_guided_minco')
+                   'p41_tracking', 'p43_fast', 'p44_adaptive', 'follow_guided_minco',
+                   'p47_follow_guided')
         if engine not in engines:
             raise ValueError('unsupported minco engine')
         fast, greedy = None, None
@@ -64,9 +67,12 @@ class FollowResearchShadowNode(FollowMpcShadowNode):
             if mode != 'greedy_minco':
                 raise ValueError('p32 requires greedy_minco shadow mode')
             if engine in ('p32_short', 'p33_progress', 'p41_tracking', 'p43_fast',
-                          'p44_adaptive', 'follow_guided_minco'):
+                          'p44_adaptive', 'follow_guided_minco', 'p47_follow_guided'):
                 from uav_control.controllers.short_follow_solver import ShortHorizonFollowSolver
-                if engine == 'follow_guided_minco':
+                if engine == 'p47_follow_guided':
+                    from uav_control.controllers.follow_guided_feasible import P47FollowGuidedMinco
+                    selected_solver = P47FollowGuidedMinco
+                elif engine == 'follow_guided_minco':
                     from uav_control.controllers.direct_reference_minco import FollowGuidedMinco
                     selected_solver = FollowGuidedMinco
                 elif engine == 'p44_adaptive':
@@ -88,6 +94,14 @@ class FollowResearchShadowNode(FollowMpcShadowNode):
                 if engine == 'p44_adaptive':
                     extra = dict(ablation=self.get_parameter('p44_ablation').value,
                                  refinement=self.get_parameter('p44_refinement').value)
+                elif engine == 'p47_follow_guided':
+                    from uav_control.guidance.follow_rollout import FollowRolloutConfig
+                    extra = dict(
+                        terminal_mode=self.get_parameter('p47_terminal_mode').value,
+                        refinement=self.get_parameter('p47_refinement').value,
+                        scheduling=self.get_parameter('p47_scheduling').value,
+                        rollout_config=FollowRolloutConfig(response_time=float(
+                            self.get_parameter('follow_guided_response_time').value)))
                 elif engine == 'follow_guided_minco':
                     from uav_control.guidance.follow_rollout import FollowRolloutConfig
                     extra = dict(

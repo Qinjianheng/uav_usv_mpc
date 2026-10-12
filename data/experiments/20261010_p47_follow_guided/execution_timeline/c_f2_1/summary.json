@@ -1,0 +1,193 @@
+{
+  "lifecycle": {
+    "ack_states": {
+      "REJECTED": 6,
+      "ACCEPTED": 166,
+      "ACTIVE": 165,
+      "EXPIRED": 28
+    },
+    "rejection_reasons": {
+      "FOLLOW_NOT_STABLE": 2,
+      "PARENT_REFERENCE_INVALID": 1,
+      "INPUT_EXPIRED": 2,
+      "START_MISSED": 1
+    }
+  },
+  "direct_causes": {
+    "NOMINAL_LEASE_EXPIRED": 28
+  },
+  "cause_evidence": {
+    "EXPIRED_ACK": 28
+  },
+  "upstream_update_states": {
+    "NO_REPLACEMENT_PROPOSAL_DURING_ACTIVE_LEASE": 25,
+    "REPLACEMENT_REJECTED": 2,
+    "ACCEPTED_REPLACEMENT_START_MISSED": 1
+  },
+  "ownership_seconds": {
+    "FOLLOW": 26.000523805618286,
+    "MINCO_FOLLOW": 46.0498263835907
+  },
+  "cadence": {
+    "proposal": {
+      "count": 171,
+      "interval_seconds": {
+        "count": 170,
+        "min": 0.16208219528198242,
+        "median": 0.21582770347595215,
+        "p95": 1.0291037678718502,
+        "max": 7.622995615005493
+      },
+      "intervals_ge_lease": 29,
+      "published_to_start_seconds": {
+        "count": 171,
+        "min": 0.045285701751708984,
+        "median": 0.09536337852478027,
+        "p95": 0.11411714553833008,
+        "max": 0.1243133544921875
+      },
+      "input_ttl_at_publication_seconds": {
+        "count": 171,
+        "min": 0.0063686370849609375,
+        "median": 0.03952932357788086,
+        "p95": 0.058309197425842285,
+        "max": 0.06864333152770996
+      }
+    },
+    "accepted": {
+      "count": 166,
+      "interval_seconds": {
+        "count": 165,
+        "min": 0.16600584983825684,
+        "median": 0.21645212173461914,
+        "p95": 0.8289546012878417,
+        "max": 4.66831111907959
+      },
+      "intervals_ge_lease": 30,
+      "published_to_start_seconds": {
+        "count": 0,
+        "min": null,
+        "median": null,
+        "p95": null,
+        "max": null
+      },
+      "input_ttl_at_publication_seconds": {
+        "count": 0,
+        "min": null,
+        "median": null,
+        "p95": null,
+        "max": null
+      }
+    },
+    "active": {
+      "count": 165,
+      "interval_seconds": {
+        "count": 164,
+        "min": 0.19378232955932617,
+        "median": 0.20346784591674805,
+        "p95": 0.848809015750885,
+        "max": 4.695770263671875
+      },
+      "intervals_ge_lease": 28,
+      "published_to_start_seconds": {
+        "count": 0,
+        "min": null,
+        "median": null,
+        "p95": null,
+        "max": null
+      },
+      "input_ttl_at_publication_seconds": {
+        "count": 0,
+        "min": null,
+        "median": null,
+        "p95": null,
+        "max": null
+      }
+    }
+  },
+  "run": "c_f2_1",
+  "condition": {
+    "name": "c_f2_1",
+    "scene": "f2",
+    "shadow": true,
+    "engine": "p44_adaptive",
+    "acceleration": 3.0,
+    "yaw": 1.0,
+    "horizon": 1.6,
+    "refinement": "none",
+    "actual_controller": "NOMINAL_MINCO",
+    "minco_authorized": false,
+    "config_source": "/home/qin/data/uav_usv_mpc/data/experiments/20261009_p41_rolling_follow/f2_original_retry_1/config/flight.yaml",
+    "qualified_holding": false,
+    "execution_lease_seconds": 0.45,
+    "authorization": "2026-10-10 user requested default MINCO and SITL experiment"
+  },
+  "config_caveat": "flight.yaml records follow_minco_enabled=false; runtime launch overrides must be read with final diagnostics and real ACKs",
+  "execution_lead_seconds": 0.15,
+  "execution_lease_seconds": 0.45,
+  "independent_ack_recorder_crosscheck": {
+    "monitor_count": 365,
+    "shadow_count": 365,
+    "monitor_only": 0,
+    "shadow_only": 0
+  },
+  "px4_ulog_crosscheck": {
+    "status": "CHECKED",
+    "setpoints_inside_native_mapping": 426,
+    "callbacks_checked": 56,
+    "velocity_matches": 15,
+    "mapping": "ULog native timestamp -> original navigation sample epoch pairs",
+    "join": "same finite velocity <=1e-6 m/s within 125 ms mapped epoch; no extrapolation",
+    "note": "Mapping is a clock cross-check, not an exact PX4 receive-to-control-tick latency"
+  },
+  "limitations": [
+    "Original FOLLOW desired geometric P/V/A is not logged. PX4 velocity mode P/A are NaN.",
+    "Actual acceleration uses the exact recorded navigation sample, not a finite difference.",
+    "Before/after are consecutive actual control callbacks, not one common instant.",
+    "Prediction IDs in execution_debug are tracker-used IDs; receipt is not causal proof.",
+    "LATEST_PREFIX_INVALID and parent candidate rejection differ from active lease expiry.",
+    "No measured-PVA divergence gate exists in this nominal execution receiver.",
+    "Two c_f2_2 EXPIRED ACKs are overwritten by pending START_MISSED in the same tick.",
+    "Planner nonpublication is an upstream event, not proof of a unique physical root cause.",
+    "No robust holding qualification or counterfactual closed-loop validation is claimed."
+  ],
+  "source_inputs_unchanged": true,
+  "fallback_count": 28,
+  "switch_statistics": {
+    "elapsed_since_last_active_seconds": {
+      "count": 28,
+      "min": 0.43668651580810547,
+      "median": 0.4431670904159546,
+      "p95": 0.4465930461883545,
+      "max": 0.4475107192993164
+    },
+    "old_reference_age_seconds": {
+      "count": 28,
+      "min": 0.4505276679992676,
+      "median": 0.46587371826171875,
+      "p95": 0.4909223437309265,
+      "max": 0.49109911918640137
+    },
+    "expiry_overrun_seconds": {
+      "count": 28,
+      "min": 0.0005276203155517578,
+      "median": 0.01587367057800293,
+      "p95": 0.04092229604721069,
+      "max": 0.04109907150268555
+    },
+    "actual_reference_position_error_before_m": {
+      "count": 28,
+      "min": 0.011055556508142805,
+      "median": 0.0598579650529763,
+      "p95": 0.17578443859571236,
+      "max": 0.2567932812220935
+    },
+    "command_velocity_step_mps": {
+      "count": 28,
+      "min": 0.0628000539514922,
+      "median": 0.2121320232794464,
+      "p95": 0.21309286461054927,
+      "max": 0.2134325950260116
+    }
+  }
+}

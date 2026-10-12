@@ -1,0 +1,153 @@
+{
+  "horizon": 1.6,
+  "requests": 489,
+  "initial_rejects": 176,
+  "horizontal_jerk_failures": 118,
+  "initial_violation_counts": {
+    "horizontal_jerk": 118,
+    "yaw_rate": 142,
+    "horizontal_acceleration": 4,
+    "horizontal_speed": 30
+  },
+  "start_infeasible": 32,
+  "original_p46_initial_statuses": {
+    "DYNAMIC_INFEASIBLE": 127,
+    "NOT_ATTEMPTED": 33,
+    "YAW_RATE_LIMIT": 32,
+    "SAMPLED_FEASIBLE": 297
+  },
+  "original_p46_horizontal_jerk_population": 112,
+  "original_jerk_peak_locations": {
+    "start": 112
+  },
+  "original_jerk_peak_pieces": {
+    "0": 112
+  },
+  "counterfactuals": {
+    "A": {
+      "attempted": 176,
+      "full_validation_valid": 0,
+      "horizontal_jerk_failures": 117,
+      "remaining_violations": {
+        "horizontal_jerk": 117,
+        "yaw_rate": 142,
+        "horizontal_acceleration": 4,
+        "horizontal_speed": 30
+      },
+      "validation_statuses": {
+        "DYNAMIC_INFEASIBLE": 135,
+        "YAW_RATE_LIMIT": 41
+      },
+      "original_jerk_population": {
+        "count": 112,
+        "horizontal_jerk_resolved": 1,
+        "full_validation_valid": 0
+      }
+    },
+    "VA": {
+      "attempted": 176,
+      "full_validation_valid": 3,
+      "horizontal_jerk_failures": 114,
+      "remaining_violations": {
+        "horizontal_jerk": 114,
+        "yaw_rate": 142,
+        "horizontal_acceleration": 4,
+        "horizontal_speed": 30
+      },
+      "validation_statuses": {
+        "DYNAMIC_INFEASIBLE": 132,
+        "YAW_RATE_LIMIT": 41,
+        "SAMPLED_FEASIBLE": 3
+      },
+      "original_jerk_population": {
+        "count": 112,
+        "horizontal_jerk_resolved": 4,
+        "full_validation_valid": 3
+      }
+    },
+    "QVA": {
+      "attempted": 176,
+      "full_validation_valid": 25,
+      "horizontal_jerk_failures": 2,
+      "remaining_violations": {
+        "yaw_rate": 142,
+        "horizontal_acceleration": 4,
+        "horizontal_jerk": 2,
+        "horizontal_speed": 34
+      },
+      "validation_statuses": {
+        "YAW_RATE_LIMIT": 113,
+        "DYNAMIC_INFEASIBLE": 38,
+        "SAMPLED_FEASIBLE": 25
+      },
+      "original_jerk_population": {
+        "count": 112,
+        "horizontal_jerk_resolved": 110,
+        "full_validation_valid": 24
+      }
+    },
+    "Q": {
+      "attempted": 176,
+      "full_validation_valid": 25,
+      "horizontal_jerk_failures": 13,
+      "remaining_violations": {
+        "horizontal_jerk": 13,
+        "yaw_rate": 142,
+        "horizontal_acceleration": 4,
+        "horizontal_speed": 31
+      },
+      "validation_statuses": {
+        "DYNAMIC_INFEASIBLE": 38,
+        "YAW_RATE_LIMIT": 113,
+        "SAMPLED_FEASIBLE": 25
+      },
+      "original_jerk_population": {
+        "count": 112,
+        "horizontal_jerk_resolved": 100,
+        "full_validation_valid": 24
+      }
+    },
+    "T": {
+      "attempted": 176,
+      "full_validation_valid": 0,
+      "horizontal_jerk_failures": 118,
+      "remaining_violations": {
+        "horizontal_jerk": 118,
+        "yaw_rate": 142,
+        "horizontal_acceleration": 4,
+        "horizontal_speed": 30
+      },
+      "validation_statuses": {
+        "DYNAMIC_INFEASIBLE": 136,
+        "YAW_RATE_LIMIT": 40
+      },
+      "original_jerk_population": {
+        "count": 112,
+        "horizontal_jerk_resolved": 0,
+        "full_validation_valid": 0
+      }
+    },
+    "yaw": {
+      "attempted": 176,
+      "full_validation_valid": 35,
+      "horizontal_jerk_failures": 118,
+      "remaining_violations": {
+        "horizontal_jerk": 118,
+        "yaw_rate": 65,
+        "horizontal_acceleration": 4,
+        "horizontal_speed": 30
+      },
+      "validation_statuses": {
+        "DYNAMIC_INFEASIBLE": 136,
+        "YAW_RATE_LIMIT": 5,
+        "SAMPLED_FEASIBLE": 35
+      },
+      "original_jerk_population": {
+        "count": 112,
+        "horizontal_jerk_resolved": 0,
+        "full_validation_valid": 0
+      }
+    }
+  },
+  "seconds": 16.288071731993114
+}
