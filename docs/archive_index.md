@@ -1,5 +1,9 @@
 # 历史归档索引
 
+2026-10-12 新增 [待推送提交体积整理与恢复](current/submission_size_cleanup_20261012.md)：
+P4.7 的 470 个新增大体量/重复实验文件保留本机并从候选提交移出，完整原提交
+另存为持久 bundle；逐文件清单、归档 SHA256 和独立恢复核验见该入口。
+
 这个工作区用于后续修改。原仓库 `/home/qin/data/uav_usv` 仍完整保存实验历史；原始文件逐字节备份也在 `/home/qin/data/uav_usv_mpc_archive/20261006_pre_mpc/repository_before.tar.gz`。本轮只精简新目录副本。
 
 当前入口：[README](../README.md)、[当前文档](current/README.md)。逐文件去向、SHA256、大小、原仓库关系及原仓库 `85e13461` 文件链接统一放在 [保留清单](current/audit/retention_manifest.tsv)，无需在开发文档中重复列数千条历史文件。

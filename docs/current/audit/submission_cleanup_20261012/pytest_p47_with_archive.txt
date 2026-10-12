@@ -1,0 +1,16 @@
+................F....................................................... [ 85%]
+............                                                             [100%]
+=================================== FAILURES ===================================
+_____ test_new_engine_preserves_full_validation_and_fixed_endpoint_height ______
+
+    def test_new_engine_preserves_full_validation_and_fixed_endpoint_height():
+        req = future_request(request(2.), .15)
+        result = solver(req).solve(req)
+>       assert result.valid
+E       AssertionError: assert False
+E        +  where False = MpcSeedResult(context=PlanningContext(mission_id=1, cycle_id=1, execution_start_stamp=100.15, navigation_stamp=100.0, ...70245298719965}}, warm_started=False, initial_visibility=True, candidate_kind='p47_follow_guided', objective_value=0.0).valid
+
+test/test_p47_follow_guided_solver.py:20: AssertionError
+=========================== short test summary info ============================
+FAILED test/test_p47_follow_guided_solver.py::test_new_engine_preserves_full_validation_and_fixed_endpoint_height
+1 failed, 83 passed in 213.23s (0:03:33)
