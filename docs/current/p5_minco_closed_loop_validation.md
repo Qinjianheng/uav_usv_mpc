@@ -1,5 +1,8 @@
 # P5 名义 MINCO 实际闭环验证
 
+最新续做结果见 [修复后复验](p5_revalidation_20261012.md)：研究 Planner 已实际加载，
+F2 因原始输入失效停止，MINCO ACTIVE 仍为 0，F3 未准入。下文保留首次任务的预定判据和原始结果。
+
 执行前预定状态（实际结果见下文）：H1.6 离线限定门禁通过，实际执行尚未验证。旧 P4.7 全时域门禁仍失败。
 本轮唯一主配置为 P47/C、qva、refinement=false、adaptive、H1.6；P44/D 后备。
 
@@ -76,7 +79,7 @@ Planner和只读健康监视均有独立PID/start/pgid记录，清理INT→TERM�
 `px4_msgs/VehicleAttitude` float32数组、监视器死亡及停滞均完成RED→GREEN测试。
 没有改动原Tracker、BCTRA、PX4、lease、125ms时效或旧P47门禁。修复后未重新SITL。
 
-## 最终问题逐项回答
+## 首次任务交付时的问题逐项回答
 
 | 问题 | 结论 |
 |---|---|

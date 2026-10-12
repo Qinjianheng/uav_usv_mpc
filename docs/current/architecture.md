@@ -44,3 +44,6 @@ P4.4/D 后备，未切换运行配置或增加 PX4 发布者。本轮冻结对�
 三个旧单体控制入口及其测试、兼容 launch 保留供回归；两个未引用的退役 archive 版本和 planner `.bak` 已外置，来源与恢复见 [源码冗余清理](redundancy_cleanup.md)。当前运行以 modular 入口为准。MPC 的新增位置与验收见 [后续范围](mpc_scope.md)。
 
 P5新增独立 H1.6 候选配置和仅P47/P44两个选择的研究入口，旧控制链不改。本轮一次F2因健康记录工具错误在研究Planner启动前中止，MINCO proposal/ACTIVE为0。范围和恢复见 [P5架构](p5_architecture_and_baseline.md)、[实际验证](p5_minco_closed_loop_validation.md)。
+
+续做已实际加载P47 Planner，但原始输入失效保护触发、ACTIVE仍为0；F3未准入。
+最后新增实验启动收敛门禁，尚未再次SITL；见 [修复后复验](p5_revalidation_20261012.md)。

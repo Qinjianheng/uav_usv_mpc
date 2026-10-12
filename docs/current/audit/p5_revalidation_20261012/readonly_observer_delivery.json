@@ -1,0 +1,8 @@
+{
+  "samples": 185,
+  "min_age": 0.0002918243408203125,
+  "max_age": 0.05015397071838379,
+  "monitor_returncode": 0,
+  "no_input_never_settled": true,
+  "flight_launched": false
+}

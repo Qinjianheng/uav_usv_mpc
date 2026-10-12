@@ -35,3 +35,5 @@ ros2 pkg prefix uav_control
 只暂存明确审核的路径，不使用 `git add -A`。现有 `sync_github.sh` 会全量暂存并推送，不作为精选基线的默认提交入口。`origin` 和 `github` 的 fetch/push 均指向 [新仓库](https://github.com/Qinjianheng/uav_usv_mpc)。本轮检查与规模见 [整理交付记录](docs/current/repository_cleanup.md)。
 
 P4.7 H1.6 离线候选封版与有条件 P5 名义执行：见 [封版决定](docs/current/p47_release_decision.md)、[P5 验证](docs/current/p5_minco_closed_loop_validation.md) 和 [入口/Git 审计](docs/current/p5_code_cleanup_report.md)。新研究入口保留 P47/C 与 P44/D 两种选择；生产资格仍未通过。
+
+最新 [P5 修复后复验](docs/current/p5_revalidation_20261012.md) 已实际加载 Planner，但触发原始输入时效停止，MINCO ACTIVE 为0、F3未准入。实验工具和稳态启动门禁已修复；持续闭环仍待验证。

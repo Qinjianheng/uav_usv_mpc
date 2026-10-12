@@ -18,7 +18,7 @@ ros2 launch uav_usv_bringup p5_follow_research.launch.py engine:=p44_adaptive
 
 实际执行只能使用独立 P5 实验入口 `scripts/p5_minco_sitl.py`。
 它核验新 H1.6 证据 SHA 和限定门禁、排除其他仿真/串口硬件/占用 DDS 端口，
-复用原隔离 harness 签发的真实进程身份授权。原 FOLLOW 健康稳定 5s 后才启动研究 Planner，
+复用原隔离 harness 签发的真实进程身份授权。原 FOLLOW 收敛稳定 5s 后才启动研究 Planner，
 不通过动态改参冒充已加载 engine，不强制 ACTIVE。
 Planner 仅发布 FollowTrajectory；Tracker 自主验收、发送真实 ACCEPTED/ACTIVE/EXPIRED 并执行。
 20Hz 只读健康监视保留 sample/source/observation 时间，检查原始输入期限。
@@ -35,3 +35,9 @@ terminal_mode、refinement、fallback、Git commit、约束指纹、源码及配
 
 后续仅在持续实际执行验证通过后研究预测误差、自适应机动、FOV 裕度和不确定性。
 本轮不增加新优化器、视觉网络、目标、障碍物或学习控制。
+
+2026-10-12 续做：原先仅以健康状态计时，已根据实际启动过渡数据补为共同 epoch 的
+位置/相对速度/高度连续收敛门禁；仅只读 KF 与 native navigation，不外推或使用真值。
+同时修复快照计时、环境文件发布竞态及晚启动组件清理。最后稳态门禁尚未重新 SITL。
+当前脚本固定目录为 `data/experiments/20261012_p5_revalidation_02`，F2次数已消耗；
+完整判据、已有用户授权和实际失败结果见 [复验报告](p5_revalidation_20261012.md)。

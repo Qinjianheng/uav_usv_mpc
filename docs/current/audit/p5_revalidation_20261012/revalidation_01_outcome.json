@@ -1,0 +1,66 @@
+{
+  "result": "TOOLING_ABORT_BEFORE_X",
+  "actual_f2_attempts": 1,
+  "actual_f3_runs": 0,
+  "x_command_sent": false,
+  "planner_started": false,
+  "proposals": 0,
+  "accepted": 0,
+  "active": 0,
+  "reason": "HEALTH_MONITOR_STALLED",
+  "runtime_comparison_values_recorded": false,
+  "causal_limit": "The triggering snapshot and comparison timestamp were not preserved, so a negative age versus a real observer stall cannot be distinguished for this run.",
+  "confirmed_code_defect": "Wall time was captured before launching/reading the health observer; a snapshot written during the read can be later than that time and be falsely rejected as future.",
+  "deterministic_reproduction": "p5_revalidation_clock_order_red.txt: assert 100.0 >= 100.01 failed",
+  "repair": "Capture wall time after atomic snapshot read; preserve stop snapshot and observation time; future/stale snapshots remain rejected with unchanged 250ms observer bound and 125ms navigation/prediction TTL.",
+  "cleanup_limit": "Inner harness missed a PX4 group created while cleanup began; its still_alive=[] did not establish complete cleanup.",
+  "late_component_identity": {
+    "pid": 782031,
+    "pgid": 782031,
+    "start": "34697856"
+  },
+  "late_px4_pid": 782103,
+  "late_cleanup_scope": "Exact experiment root + ROS domain + Gazebo partition and PID/start identity verified on host before SIGINT/SIGTERM",
+  "postflight_file": "postflight_preflight.json",
+  "flight_safety_success": false,
+  "old_records_rewritten": false,
+  "full_local_directory": "/home/qin/data/uav_usv_mpc/data/experiments/20261012_p5_revalidation_01/f2_h16_01",
+  "source_files": {
+    "condition.json": {
+      "bytes": 1057,
+      "sha256": "2a8be8c5c20c09457e168cb7e9ae4a9151d276520fb5a8f6209d6242de3916bb"
+    },
+    "bounded_stop.json": {
+      "bytes": 118,
+      "sha256": "1bddc9e59e75a38fe6d349ee813f26ab2fb30e63f78e3e41afb5768077ec645b"
+    },
+    "p5_run_summary.json": {
+      "bytes": 1110,
+      "sha256": "2e4ee8c2c7c7f7f46804e45120760a319e2fa45e3ed255fc5e767080331e300b"
+    },
+    "watchdog_end.json": {
+      "bytes": 573,
+      "sha256": "10283545f2a59fa0106182943eb6a648298e44dd2321ec143e2565dd36cbc619"
+    },
+    "p5_cleanup.json": {
+      "bytes": 38,
+      "sha256": "b8e510f08d46449badf05c6aff3f357492dda1a55d1fec5f9fa2372660ae5830"
+    },
+    "late_component_cleanup.json": {
+      "bytes": 281,
+      "sha256": "59962886bac9352e3f79bc42fed736e51103886f614d288de425559aa70ef7d3"
+    },
+    "postflight_preflight.json": {
+      "bytes": 156,
+      "sha256": "ee9ce928f18bb7ec2a06902e00af9859d4dfe8ce00247f2865e36cce066ce374"
+    },
+    "failure_attribution.json": {
+      "bytes": 1498,
+      "sha256": "5a7a86ba4c0bc98f2a5fddb06e38a09d8e350498787d7892169ab7ece7905726"
+    },
+    "P5_DELIVERY_SHA256SUMS": {
+      "bytes": 96229,
+      "sha256": "63d0b9b306514b64972ae677fbad618fdfb151c3b5435b3c2fead026c53692bf"
+    }
+  }
+}

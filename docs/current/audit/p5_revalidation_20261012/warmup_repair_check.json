@@ -1,0 +1,25 @@
+{
+  "counterfactual_start_gate": {
+    "settled": false,
+    "epoch": 1791802863.0451622,
+    "source_stamp": 1791802863.0116358,
+    "navigation_bracket": [
+      1791802863.0356371,
+      1791802863.0516443
+    ],
+    "horizontal_error": 8.255264790635243,
+    "relative_speed": 4.525037137983847,
+    "height_error": 0.03294003181847849,
+    "method": "native bracket interpolation; no extrapolation"
+  },
+  "actual_planner_start": 1791802863.0652294,
+  "original_raw_unchanged": true,
+  "source": "offline_evidence.jsonl samples already received before actual start; strict common epoch interpolation only",
+  "online_sitl_after_warmup_repair": false,
+  "thresholds": {
+    "horizontal_error_max": 1.0,
+    "relative_speed_max": 0.5,
+    "height_error_max": 0.1,
+    "continuous_seconds": 5.0
+  }
+}

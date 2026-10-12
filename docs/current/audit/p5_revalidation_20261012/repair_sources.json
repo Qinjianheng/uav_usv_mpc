@@ -1,0 +1,13 @@
+{
+  "base_commit": "877ec707d88213b1c4b3527a4e5ebf316e3358da",
+  "source_checks_verified": 173,
+  "original_algorithms_control_modified": false,
+  "current_files": {
+    "scripts/p5_minco_sitl.py": "e300c8b86b5f563a0d380e33473353c7899ff3281715e7481ac068efb2859f07",
+    "scripts/p5_live_health.py": "a1d6f701c63e885032454beef3f61c6623bd099c70d555870031f6b0566aa243",
+    "src/uav_control/test/test_p5_sitl.py": "16148eae51eca3e14df91c4aa163b9c31b51372c59e06348d7aed2b3276c9085"
+  },
+  "qualification": "docs/current/audit/p5_20261012/release.json",
+  "qualified_source_hashes_unchanged": true,
+  "actual_run_snapshot": "Actual run source_snapshot predates the final warmup repair; do not attribute current repair to that flight."
+}

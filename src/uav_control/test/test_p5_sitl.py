@@ -222,3 +222,124 @@ def test_missing_real_ack_or_command_evidence_never_proves_minco_execution():
         assert not execution_chain_proven(bad)
     report['native_command']['period_seconds'] = None
     assert not execution_chain_proven(report)
+
+
+def test_health_written_during_file_read_is_measured_after_read(tmp_path, monkeypatch):
+    import json
+    import p5_minco_sitl as sitl
+    from pathlib import Path
+    path = tmp_path/'health.json'
+    path.write_text(json.dumps({'written': 100.}))
+    current = [100.]
+    original_read = Path.read_text
+
+    def concurrent_read(file, *args, **kwargs):
+        current[0] = 100.01
+        file.write_text(json.dumps({'written': current[0]}))
+        return original_read(file, *args, **kwargs)
+
+    monkeypatch.setattr(Path, 'read_text', concurrent_read)
+    monkeypatch.setattr(sitl.time, 'time', lambda: current[0])
+    snapshot, observed = sitl.read_health_snapshot(path)
+    assert observed >= snapshot['written']
+    assert sitl.health_monitor_reason(None, snapshot['written'], observed, 99.) is None
+
+
+def test_snapshot_fix_keeps_future_and_stale_observers_rejected():
+    from p5_minco_sitl import health_monitor_reason
+    assert health_monitor_reason(None, 100.001, 100., 99.) == 'HEALTH_MONITOR_STALLED'
+    assert health_monitor_reason(None, 99.749, 100., 99.) == 'HEALTH_MONITOR_STALLED'
+
+
+def test_late_component_cleanup_uses_exact_task_scope_and_preserves_other_session(tmp_path):
+    import json
+    import os
+    import signal
+    import subprocess
+    import p5_minco_sitl as sitl
+    scope = dict(UAV_USV_RESEARCH_DIRECTORY=str(tmp_path), ROS_DOMAIN_ID='48',
+                 GZ_PARTITION='p5_late_cleanup_test')
+    (tmp_path/'environment.json').write_text(json.dumps(scope))
+    command = [sys.executable, '-u', '-c', 'import signal,time;'
+               'signal.signal(signal.SIGINT,signal.SIG_IGN);'
+               'signal.signal(signal.SIGTERM,signal.SIG_IGN);print("ready");time.sleep(60)']
+    owned = subprocess.Popen(command, env=dict(os.environ, **scope),
+                             stdout=subprocess.PIPE, start_new_session=True)
+    other = subprocess.Popen(command, env=dict(os.environ, **(scope | {'GZ_PARTITION': 'other'})),
+                             stdout=subprocess.PIPE, start_new_session=True)
+    try:
+        assert owned.stdout.readline() == other.stdout.readline() == b'ready\n'
+        captured = sitl.scoped_processes(tmp_path)
+        assert any(v['pid'] == owned.pid for v in captured)
+        assert not any(v['pid'] == other.pid for v in captured)
+        result = sitl.stop_late_components(tmp_path, timeouts=(.02, .02, .5))
+        owned.wait(timeout=2.)
+        assert result['survivors'] == []
+        assert owned.returncode == -signal.SIGKILL
+        assert other.poll() is None
+    finally:
+        for process in (owned, other):
+            if process.poll() is None:
+                process.kill()
+            process.wait(timeout=2.)
+
+
+def test_environment_publication_waits_for_complete_scope(tmp_path):
+    import json
+    from p5_minco_sitl import read_environment_snapshot
+    path = tmp_path/'environment.json'
+    assert read_environment_snapshot(tmp_path) is None
+    for partial in ('', '{"ROS_DOMAIN_ID":', '{}'):
+        path.write_text(partial)
+        assert read_environment_snapshot(tmp_path) is None
+    scope = dict(UAV_USV_RESEARCH_DIRECTORY=str(tmp_path), ROS_DOMAIN_ID='43',
+                 GZ_PARTITION='p4_test')
+    path.write_text(json.dumps(scope))
+    assert read_environment_snapshot(tmp_path) == scope
+    path.write_text(json.dumps(scope | {'UAV_USV_RESEARCH_DIRECTORY': '/another/task'}))
+    with pytest.raises(ValueError, match='SCOPE_MISMATCH'):
+        read_environment_snapshot(tmp_path)
+
+
+def test_incomplete_cleanup_scope_cannot_report_clean(tmp_path):
+    from p5_minco_sitl import scoped_processes
+    (tmp_path/'environment.json').write_text('{')
+    with pytest.raises(ValueError, match='SCOPE_UNAVAILABLE'):
+        scoped_processes(tmp_path)
+
+
+def test_follow_warmup_uses_common_epoch_and_rejects_the_observed_catchup():
+    from p5_live_health import follow_settling
+    navigation = [dict(stamp=99.99, p=[4.98, 0., -5.], v=[2., 0., 0.], valid=True),
+                  dict(stamp=100.01, p=[5.02, 0., -5.], v=[2., 0., 0.], valid=True)]
+    target = dict(stamp=100., source=99.98, p=[10., 0., 0.], v=[2., 0., 0.], valid=True)
+    settled = follow_settling(navigation, [target], 100.02)
+    assert settled['settled']
+    assert settled['horizontal_error'] == pytest.approx(0.)
+    assert settled['relative_speed'] == pytest.approx(0.)
+    assert settled['epoch'] == target['stamp']
+    assert settled['navigation_bracket'] == [99.99, 100.01]
+    for row in navigation:
+        row.update(p=[-3.26, 0., -5.], v=[6.47, 0., 0.])
+    catchup = follow_settling(navigation, [target], 100.02)
+    assert not catchup['settled']
+    assert catchup['horizontal_error'] == pytest.approx(8.26)
+    assert catchup['relative_speed'] == pytest.approx(4.47)
+
+
+def test_follow_warmup_never_extrapolates_or_accepts_stale_tracking():
+    from p5_live_health import follow_settling
+    navigation = [dict(stamp=99.99, p=[5., 0., -5.], v=[2., 0., 0.], valid=True),
+                  dict(stamp=100.01, p=[5., 0., -5.], v=[2., 0., 0.], valid=True)]
+    target = dict(stamp=100., source=99.98, p=[10., 0., 0.], v=[2., 0., 0.], valid=True)
+    assert not follow_settling(navigation, [target | {'stamp': 100.011}], 100.02)['settled']
+    assert not follow_settling(navigation, [target | {'source': 99.8}], 100.02)['settled']
+    assert not follow_settling(navigation, [], 100.02)['settled']
+
+
+def test_original_follow_must_settle_continuously_before_starting_planner():
+    from p5_minco_sitl import settled_since
+    assert settled_since(None, {'settled': True}, 100.) == 100.
+    assert settled_since(100., {'settled': True}, 102.) == 100.
+    assert settled_since(100., {'settled': False}, 103.) is None
+    assert settled_since(100., {}, 103.) is None

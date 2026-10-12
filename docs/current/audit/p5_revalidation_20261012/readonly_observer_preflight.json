@@ -1,0 +1,8 @@
+{
+  "samples": 186,
+  "min_observer_age": 0.00040268898010253906,
+  "max_observer_age": 0.05010056495666504,
+  "monitor_returncode": 0,
+  "flight_launched": false,
+  "publishers_created": false
+}

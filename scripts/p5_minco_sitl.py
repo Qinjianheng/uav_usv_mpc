@@ -18,7 +18,9 @@ from p4_sitl_session import WORKSPACE, identity, matches, preflight
 from p5_release import CANDIDATE, qualify, sha, verify_manifest
 from uav_control.guidance.follow_sitl_gate import require_isolated_sitl
 
-ROOT = WORKSPACE/'data/experiments/20261012_p5_closed_loop'
+# The human continued after the first tooling abort; keep that consumed attempt intact.
+ROOT = WORKSPACE/'data/experiments/20261012_p5_revalidation_02'
+AUTHORIZATION = 'User continued and authorized F3 after healthy repaired F2; one each'
 
 
 def safety_reason(health, now):
@@ -69,6 +71,17 @@ def health_monitor_reason(returncode, written, now, started):
     if not 0 <= now-written <= .25:
         return 'HEALTH_MONITOR_STALLED'
     return None
+
+
+def read_health_snapshot(path):
+    """Observe time after the atomic file read; a concurrent writer can run during it."""
+    health = json.loads(path.read_text()) if path.exists() else {}
+    return health, time.time()
+
+
+def settled_since(previous, settling, now):
+    """Count five seconds only while the original FOLLOW is kinematically settled."""
+    return (previous if previous is not None else now) if settling.get('settled') else None
 
 
 def publication_stop_reason(events):
@@ -154,7 +167,8 @@ def claim(output, scene, qualification):
     with (ROOT/f'attempt_{scene}.json').open('x') as stream:
         json.dump(dict(scene=scene, output=str(output), qualification=str(qualification),
                        qualification_sha256=sha(qualification), preflight=check,
-                       maximum_attempts=1, stamp=time.time()), stream, indent=2)
+                       maximum_attempts=1, authorization=AUTHORIZATION,
+                       stamp=time.time()), stream, indent=2)
     return release
 
 
@@ -193,6 +207,65 @@ def stop_owned(processes, timeouts=(8., 5., 3.)):
     survivors = [entry for process, entry in processes
                  if process.poll() is None and matches(entry)]
     return dict(errors=errors, survivors=survivors)
+
+
+def read_environment_snapshot(output):
+    """The historical writer is non-atomic; do not use a partially published scope."""
+    environment = output/'environment.json'
+    if not environment.exists():
+        return None
+    try:
+        expected = json.loads(environment.read_text())
+    except json.JSONDecodeError:
+        return None
+    keys = ('UAV_USV_RESEARCH_DIRECTORY', 'ROS_DOMAIN_ID', 'GZ_PARTITION')
+    if not isinstance(expected, dict) or any(not expected.get(k) for k in keys):
+        return None
+    if expected[keys[0]] != str(output.resolve()) or not all(
+            isinstance(expected[k], str) for k in keys):
+        raise ValueError('EXPERIMENT_SCOPE_MISMATCH')
+    return expected
+
+
+def scoped_processes(output):
+    """Find late children by the exact experiment scope, then capture PID/start identity."""
+    expected = read_environment_snapshot(output)
+    if expected is None:
+        raise ValueError('LATE_CLEANUP_SCOPE_UNAVAILABLE')
+    keys = ('UAV_USV_RESEARCH_DIRECTORY', 'ROS_DOMAIN_ID', 'GZ_PARTITION')
+    entries = []
+    for path in Path('/proc').iterdir():
+        if not path.name.isdigit() or int(path.name) == os.getpid():
+            continue
+        try:
+            before = identity(int(path.name))
+            env = dict(v.decode(errors='replace').split('=', 1)
+                       for v in (path/'environ').read_bytes().split(b'\0') if b'=' in v)
+            if all(env.get(k) == expected[k] for k in keys) and identity(before['pid']) == before:
+                entries.append(before)
+        except (OSError, ValueError):
+            pass
+    return entries
+
+
+def stop_late_components(output, timeouts=(2., 2., 2.)):
+    """A component may start while the unchanged inner harness is already draining."""
+    events, errors = [], []
+    for sig, timeout in zip((signal.SIGINT, signal.SIGTERM, signal.SIGKILL), timeouts):
+        entries = scoped_processes(output)
+        for entry in entries:
+            try:
+                if identity(entry['pid']) == entry:
+                    os.kill(entry['pid'], sig)
+                    events.append(dict(identity=entry, signal=int(sig)))
+            except ProcessLookupError:
+                pass
+            except OSError as error:
+                errors.append(dict(identity=entry, signal=int(sig), error=str(error)))
+        deadline = time.monotonic()+timeout
+        while scoped_processes(output) and time.monotonic() < deadline:
+            time.sleep(.02)
+    return dict(events=events, errors=errors, survivors=scoped_processes(output))
 
 
 def execution_chain_proven(report):
@@ -245,8 +318,12 @@ def run(output, qualification, scene):
                                                     text=True).strip(),
                      qualification_sha256=sha(qualification), execution_lease_seconds=.45,
                      maximum_input_age=.125, minco_authorized=False,
-                     authorization='User P5 plan: one F2 and conditional one F3',
+                     authorization=AUTHORIZATION,
                      original_follow_warmup_seconds=5.,
+                     original_follow_settling=dict(horizontal_error_max=1.,
+                                                   relative_speed_max=.5,
+                                                   height_error_max=.1,
+                                                   timeout_seconds=60.),
                      observation_seconds=25. if scene == 'f2' else 60.,
                      research_config_sha256=sha(output/'config/research.yaml'),
                      qualified_holding=False)
@@ -262,6 +339,7 @@ def run(output, qualification, scene):
     overrun_since = None
     publication_offsets, publication_events = {}, []
     reason = 'SESSION_ENDED_BEFORE_OBSERVATION'
+    health, health_observed = {}, None
     try:
         with (output/'session_driver.txt').open('x') as log:
             session = subprocess.Popen(command, cwd=WORKSPACE, env=env, stdout=log,
@@ -276,16 +354,17 @@ def run(output, qualification, scene):
             if publication_stop_reason(publication_events):
                 reason = 'SUSTAINED_PLANNER_OVERRUN'
                 break
-            environment = output/'environment.json'
-            if health_process is None and environment.exists():
-                env.update(json.loads(environment.read_text()))
+            environment = read_environment_snapshot(output) if health_process is None else None
+            if health_process is None and environment is not None:
+                env.update(environment)
                 health_process, owned = shell_process(
                     [sys.executable, str(WORKSPACE/'scripts/p5_live_health.py'), str(output)],
                     env, output/'p5_health_monitor.txt')
                 processes.append((health_process, owned))
                 health_started = now
             health_path = output/'p5_health.json'
-            health = json.loads(health_path.read_text()) if health_path.exists() else {}
+            health, now = read_health_snapshot(health_path)
+            health_observed = now
             if health_process is not None:
                 problem = health_monitor_reason(health_process.poll(), health.get('written'),
                                                 now, health_started)
@@ -308,8 +387,13 @@ def run(output, qualification, scene):
                 if overrun_since is not None and now-overrun_since > .5:
                     reason = 'SUSTAINED_CONTROL_OVERRUN'
                     break
-                stable_start = stable_start or now
-                if planner is None and now-stable_start >= 5.:
+                if planner is None:
+                    stable_start = settled_since(stable_start, health.get('follow_settling', {}),
+                                                 now)
+                    if now-follow_start >= 60.:
+                        reason = 'ORIGINAL_FOLLOW_NOT_SETTLED_WITHIN_60S'
+                        break
+                if planner is None and stable_start is not None and now-stable_start >= 5.:
                     grant = require_isolated_sitl(env)
                     condition.update(minco_authorized=True, actual_execution_grant=grant,
                                      planner_started_wall=now)
@@ -340,7 +424,8 @@ def run(output, qualification, scene):
     finally:
         (output/'bounded_stop.json').write_text(json.dumps(dict(
             reason=reason, stamp=time.time(), follow_start=follow_start,
-            first_minco=first_minco), indent=2)+'\n')
+            first_minco=first_minco, health_observed_wall=health_observed,
+            health_snapshot=health), indent=2)+'\n')
         (output/'STOP').touch()
         # Let the existing harness drain evidence and stop its own exact groups first.
         if processes and processes[0][0].poll() is None:
@@ -349,6 +434,15 @@ def run(output, qualification, scene):
             except subprocess.TimeoutExpired:
                 pass
         cleanup = stop_owned(processes)
+        try:
+            late_cleanup = stop_late_components(output)
+            late_cleanup['scope_verified'] = True
+        except (OSError, ValueError) as error:
+            late_cleanup = dict(errors=[str(error)], survivors=[], scope_verified=False)
+            reason = 'LATE_CLEANUP_UNVERIFIED'
+        (output/'p5_late_cleanup.json').write_text(json.dumps(late_cleanup, indent=2)+'\n')
+        cleanup['late_components'] = late_cleanup
+        cleanup['survivors'].extend(late_cleanup['survivors'])
         (output/'p5_cleanup.json').write_text(json.dumps(cleanup, indent=2)+'\n')
         if cleanup['survivors']:
             reason = 'OWNED_PROCESSES_SURVIVED'
