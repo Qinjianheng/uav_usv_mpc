@@ -4,6 +4,9 @@
 
 | 文档 | 用途 |
 |---|---|
+| [P5.1 接管与恢复](p51_follow_minco_switching.md) | 接收器单一准入、5s稳态、2s冷却、影子探测与真实owner |
+| [P5.1 时效与lease](p51_online_timing_and_lease.md) | 旧131次回退、原请求profile、接替调度与134.6ms分解 |
+| [P5.1 验收与下一步](p51_closed_loop_validation.md) | 代码/离线验证、新有界实跑入口；F2/F3尚未执行 |
 | [架构](architecture.md) | 节点、消息、速度控制和真值边界 |
 | [前视 RGB-D、ToF 与升沉](camera_simulation.md) | 当前 RGB-D 输入、保留的 ToF、0.15 m 场景及切换 |
 | [RGB-D 末端重新验收](terminal_replan_rgbd_20261007.md) | 间歇减速归因、新鲜轨迹接替与实际验证 |

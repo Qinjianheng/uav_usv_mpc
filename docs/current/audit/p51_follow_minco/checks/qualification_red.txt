@@ -1,0 +1,20 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_ test_new_protocol_release_distinguishes_historical_math_from_current_source_checks _
+
+    def test_new_protocol_release_distinguishes_historical_math_from_current_source_checks():
+        import json
+        import p51_minco_sitl as task
+        historical = task.WORKSPACE/'docs/current/audit/p5_20261012/release.json'
+        old = json.loads(historical.read_text())
+        release = dict(candidate=old['candidate'], formal_directory=old['formal_directory'],
+                       historical_h16_release=str(historical),
+                       historical_h16_sha256=task.harness.sha(historical),
+                       a_e_offline_pass=True, kind='P51_TESTED_PROTOCOL_CANDIDATE')
+>       assert task.validate_release(release)
+E       AttributeError: module 'p51_minco_sitl' has no attribute 'validate_release'
+
+test/test_p51_sitl.py:96: AttributeError
+=========================== short test summary info ============================
+FAILED test/test_p51_sitl.py::test_new_protocol_release_distinguishes_historical_math_from_current_source_checks
+1 failed, 9 deselected in 0.20s

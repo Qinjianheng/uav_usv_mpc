@@ -47,3 +47,9 @@ P5新增独立 H1.6 候选配置和仅P47/P44两个选择的研究入口，旧�
 
 续做已实际加载P47 Planner，但原始输入失效保护触发、ACTIVE仍为0；F3未准入。
 最后新增实验启动收敛门禁，尚未再次SITL；见 [修复后复验](p5_revalidation_20261012.md)。
+
+P5.1 将名义 MINCO 初始准入与恢复资格放入唯一 Tracker Receiver。Planner 消费实际
+心跳并用真实 ACTIVE 的曲线构造 parent；旧 ACK/心跳不能回滚状态。任一接收器回调
+观察到资格失效立即撤销，恢复需冷却后重新稳定及连续合法影子候选。新配置保留原
+P47/C H1.6、P44/D、125ms/450ms/50ms 和完整验收。当前只完成测试与离线分析，
+新 F2/F3 尚未执行；详见 [切换策略](p51_follow_minco_switching.md) 和 [验收](p51_closed_loop_validation.md)。

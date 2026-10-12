@@ -19,7 +19,8 @@ class P47FollowGuidedMinco(P44FollowSolver):
     """Separate engine; never grants execution authority, changes limits or renews a lease."""
 
     def __init__(self, model, terminal_mode='qva', refinement=True, scheduling='adaptive',
-                 rollout_config=FollowRolloutConfig(), fallback_enabled=True, **kwargs):
+                 rollout_config=FollowRolloutConfig(), fallback_enabled=True,
+                 online_budget_guard=False, **kwargs):
         super().__init__(model, refinement='none', **kwargs)
         if terminal_mode not in ('a', 'va', 'qva') or scheduling not in ('legacy', 'adaptive'):
             raise ValueError('INVALID_P47_CONFIG')
@@ -37,6 +38,12 @@ class P47FollowGuidedMinco(P44FollowSolver):
         self.fallback_estimate = .010
         self.follow_estimate = .010
         self.validation_estimate = .004
+        self.online_budget_guard = online_budget_guard
+        if online_budget_guard:
+            from uav_control.guidance.follow_terminal_correction import linear_geometry
+            # Pure coefficient map; no target, attitude, input epoch or accepted curve cached.
+            linear_geometry((self.duration/3,)*3, terminal_mode)
+            self.follow_estimate, self.fallback_estimate = .045, .012
 
     def clear_warm_start(self):
         super().clear_warm_start()
@@ -60,6 +67,8 @@ class P47FollowGuidedMinco(P44FollowSolver):
                                   publication_reserve=self.fast.publication_reserve,
                                   fresh_until=until, effective_seconds=end-started,
                                   fallback_estimate=self.fallback_estimate,
+                                  follow_estimate=self.follow_estimate,
+                                  online_budget_guard=self.online_budget_guard,
                                   estimate_is_guarantee=False))
         best = MpcSeedResult(request.context, solver_status='NO_FRESHNESS_BUDGET')
 
@@ -181,7 +190,8 @@ class P47FollowGuidedMinco(P44FollowSolver):
             if not best.valid:
                 best = MpcSeedResult(request.context, solver_status=str(error), reason=str(error))
 
-        fallback_gate = .025 if self.scheduling == 'legacy' else .003
+        fallback_gate = (.025 if self.scheduling == 'legacy' else
+                         self.fallback_estimate if self.online_budget_guard else .003)
         if (not best.valid and self.fallback_enabled and remaining() > fallback_gate
                 and not (self.scheduling == 'legacy' and end-started < .025)):
             detail['fallback_used'] = True
@@ -192,6 +202,13 @@ class P47FollowGuidedMinco(P44FollowSolver):
                 best = self.fallback._solve(request)
             timing['fallback'] += self.clock()-stamp
             detail['fallback_valid'], detail['fallback_status'] = best.valid, best.solver_status
+        if self.online_budget_guard:
+            follow_cost = sum(timing[k] for k in
+                              ('initialization', 'coefficient_construction', 'validation'))
+            if follow_cost:
+                self.follow_estimate = max(self.follow_estimate*.98, follow_cost*1.2)
+            if timing['fallback']:
+                self.fallback_estimate = max(self.fallback_estimate*.98, timing['fallback']*1.2)
         snapshot = constraint_snapshot(self.model)
         detail['budget']['remaining_seconds_at_finish'] = remaining()
         if remaining() <= 0:

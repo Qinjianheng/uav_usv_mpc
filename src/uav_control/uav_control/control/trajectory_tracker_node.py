@@ -3,6 +3,7 @@
 import math
 import json
 import time
+from collections import deque
 from dataclasses import dataclass, replace
 
 import rclpy
@@ -338,6 +339,17 @@ class TrajectoryTrackerNode(Node):
             from uav_control.guidance.follow_sitl_gate import require_isolated_sitl
             self.follow_sitl_grant = require_isolated_sitl()
         self.follow_stable_ticks = 0
+        from uav_control.guidance.follow_admission import AdmissionConfig, FollowAdmission
+        self.declare_parameter('follow_admission_enabled', True)
+        admission_values = {}
+        for name, value in vars(AdmissionConfig()).items():
+            self.declare_parameter('follow_admission_'+name, value)
+            admission_values[name] = self.get_parameter('follow_admission_'+name).value
+        self.follow_admission = (FollowAdmission(AdmissionConfig(**admission_values))
+                                 if self.get_parameter('follow_admission_enabled').value else None)
+        self.follow_admission_identity = None
+        self.follow_navigation_history = deque(maxlen=128)
+        self.follow_target_history = deque(maxlen=64)
         self.follow_debug_pub = self.create_publisher(
             String, '/control/follow_execution_debug', 10)
         # Nominal feedback execution does not claim independently qualified holding.
@@ -365,7 +377,7 @@ class TrajectoryTrackerNode(Node):
                 from uav_control.guidance.follow_minco_execution import NominalFollowReceiver
                 self.follow_model = FollowMpcSeed(research)
                 self.follow_receiver = NominalFollowReceiver(
-                    limits=constraint_snapshot(self.follow_model))
+                    limits=constraint_snapshot(self.follow_model), admission=self.follow_admission)
             epoch_qos = QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL,
                                    reliability=ReliabilityPolicy.RELIABLE)
             self.follow_epoch_pub = self.create_publisher(
@@ -780,6 +792,10 @@ class TrajectoryTrackerNode(Node):
         except (ValueError, TypeError):
             self.latest_state = None
             return
+        if hasattr(self, 'follow_navigation_history'):
+            self.follow_navigation_history.append(dict(
+                valid=True, stamp=self.latest_state.stamp,
+                p=self.latest_state.position, v=self.latest_state.velocity))
         heading = float(getattr(message, 'heading', math.nan))
         if math.isfinite(heading):
             self.current_heading = heading
@@ -797,12 +813,52 @@ class TrajectoryTrackerNode(Node):
         from uav_usv_interfaces.msg import FollowReceiverState
         from uav_control.controllers.follow_transport import stamp
         context = self._follow_context()
+        self._update_follow_admission(context)
         message = FollowReceiverState()
         message.stamp, message.receiver = stamp(context.now), 'trajectory_tracker_node'
         message.receiver_boot_id = self.follow_clock.boot_id
         message.clock_generation, message.mission_id = context.generation, context.mission_id
         message.prediction_sequence_id = context.prediction_id
+        receiver = self.follow_receiver
+        message.active_plan_id = receiver.active.plan_id if receiver.active else 0
+        message.pending_plan_id = receiver.pending.plan_id if receiver.pending else 0
+        gate = getattr(receiver, 'admission', None)
+        if gate:
+            message.research_state = gate.state
+            message.entry_allowed = gate.allowed(context.now)
+            message.follow_converged = gate.converged(context.now)
+            message.active_lease_deadline = receiver.deadline if receiver.active else 0.
+            message.recovery_until = max(0., gate.recover_until)
+            message.entry_attempts, message.valid_probe_count = gate.entries, len(gate.probes)
+            message.last_fallback_reason = (gate.loss or {}).get('reason', '')
         self.follow_epoch_pub.publish(message)
+
+    def _update_follow_admission(self, context):
+        """Only this receiver compares native navigation and KF at their common epoch."""
+        from uav_control.guidance.follow_admission import FollowAdmission, follow_settling
+        receiver = self.follow_receiver
+        gate = getattr(receiver, 'admission', None)
+        if gate is None:
+            return ''
+        identity = (context.receiver_boot_id, context.generation, context.mission_id)
+        if self.follow_admission_identity != identity:
+            receiver.admission = gate = FollowAdmission(gate.config)
+            self.follow_admission_identity = identity
+        self.follow_metrics = follow_settling(
+            self.follow_navigation_history, self.follow_target_history, context.now,
+            self.flight_guidance.follow_distance, self.flight_guidance.flight_altitude)
+        status_stamp = getattr(self, 'vehicle_status_stamp', None)
+        legal = (context.following and context.visible and context.offboard and context.armed
+                 and status_stamp is not None
+                 and 0 <= context.now-status_stamp <= self.vehicle_status_timeout)
+        reason = gate.update(context.now, self.follow_metrics, legal, active=bool(receiver.active))
+        if receiver.pending and not legal:
+            reason = reason or 'EXECUTION_CONTEXT_INVALID'
+        # Heartbeat and proposal callbacks are also observations of execution legality.
+        # Consume loss here so a healthy sample before the next control tick cannot erase it.
+        if reason and (receiver.active or receiver.pending):
+            self._revoke_nominal_follow(reason)
+        return reason
 
     def _follow_context(self):
         """Build local receiver context; never accept a planner-supplied clock or boundary."""
@@ -827,6 +883,8 @@ class TrajectoryTrackerNode(Node):
         from numpy.linalg import LinAlgError
         received_monotonic = time.perf_counter()
         context = self._follow_context()
+        if getattr(self, 'follow_minco_requested', False):
+            self._update_follow_admission(context)
         try:
             candidate = curve_from_message(message)
             validated_prediction_id = None
@@ -847,13 +905,18 @@ class TrajectoryTrackerNode(Node):
                                              candidate.start, candidate.end)):
                     raise ValueError('RECEIVER_NOMINAL_REVALIDATION_FAILED')
                 context = self._follow_context()
+                self._update_follow_admission(context)
             if getattr(self, 'follow_minco_requested', False):
                 ack = self.follow_receiver.propose(
-                    candidate, context, validated_prediction_id=validated_prediction_id)
+                    candidate, context, validated_prediction_id=validated_prediction_id,
+                    probe=message.reason == 'SHADOW_PROBE')
             else:
                 ack = self.follow_receiver.propose(candidate, context)
         except (ValueError, TypeError, AttributeError, OverflowError, FloatingPointError,
                 LinAlgError) as error:
+            gate = getattr(self.follow_receiver, 'admission', None)
+            if gate is not None and message.reason == 'SHADOW_PROBE':
+                gate.probe(context.now, int(message.plan_id), False)
             ack = FollowAck(int(message.plan_id), int(message.mission_id),
                             int(message.clock_generation), context.now, 'REJECTED',
                             (str(error) or 'INVALID_COEFFICIENTS',),
@@ -863,6 +926,12 @@ class TrajectoryTrackerNode(Node):
         if getattr(self, 'follow_minco_requested', False) and self.follow_receiver.active:
             response.control_owner = 'MINCO_FOLLOW'
         response.receiver_compute_seconds = time.perf_counter()-received_monotonic
+        if getattr(self, 'follow_minco_requested', False):
+            self.follow_debug_pub.publish(String(data=json.dumps(dict(
+                event='proposal_received', stamp=context.now, plan=int(message.plan_id),
+                parent=int(message.parent_plan_id), state=ack.state, reasons=list(ack.reasons),
+                receiver_compute_seconds=response.receiver_compute_seconds,
+                receive_monotonic=received_monotonic, ack_monotonic=time.perf_counter()))))
         self.follow_ack_pub.publish(response)
 
     def _revoke_nominal_follow(self, reason):
@@ -872,12 +941,15 @@ class TrajectoryTrackerNode(Node):
         from uav_control.controllers.follow_transport import ack_message
         context = self._follow_context()
         receiver = self.follow_receiver
-        for slot in ('pending', 'active'):
-            curve = getattr(receiver, slot)
+        lost = receiver.active or receiver.pending
+        curves = (receiver.pending, receiver.active)
+        receiver.pending = receiver.active = None
+        for curve in curves:
             if curve is not None:
-                setattr(receiver, slot, None)
                 ack = receiver._ack(curve, context, 'REVOKED', (reason,))
                 self.follow_ack_pub.publish(ack_message(ack))
+        if lost is not None and getattr(receiver, 'admission', None):
+            receiver.admission.lost(context.now, reason, lost)
         self.follow_stable_ticks = 0
 
     def _nominal_follow_command(self, current, now, dt):
@@ -888,6 +960,7 @@ class TrajectoryTrackerNode(Node):
         receiver = self.follow_receiver
         started = time.perf_counter()
         context = self._follow_context()
+        self._update_follow_admission(context)
         self.follow_stable_ticks = self.follow_stable_ticks+1 if context.visible else 0
         nominal, prefix_details = {}, {}
         try:
@@ -920,11 +993,19 @@ class TrajectoryTrackerNode(Node):
                 sample[i]-current.position[i] for i in range(3)),
                 reference_velocity_error=list(sample[i+3]-current.velocity[i] for i in range(3)),
                 previous_command=self.tracker.previous_command_velocity)
-        self.follow_debug_pub.publish(String(data=json.dumps(debug)))
-        if ack:
-            response = ack_message(ack)
+        debug['follow_metrics'] = getattr(self, 'follow_metrics', {})
+        gate = getattr(receiver, 'admission', None)
+        debug['research_state'] = gate.state if gate else 'LEGACY_NOMINAL'
+        debug['recovery'] = gate.loss if gate else None
+        debug['entry_evidence'] = receiver.entry_evidence
+        debug['execution_context'] = dict(following=context.following, visible=context.visible,
+                                          offboard=context.offboard, armed=context.armed)
+        self.follow_cycle_debug = debug
+        events = receiver.drain_events()
+        for event in events:
+            response = ack_message(event)
             response.control_owner = 'MINCO_FOLLOW' if receiver.active else 'ORIGINAL_FOLLOW'
-            response.replaced = ack.state == 'ACTIVE'
+            response.replaced = event.state == 'ACTIVE'
             self.follow_ack_pub.publish(response)
         curve = receiver.active
         if curve is None:
@@ -950,6 +1031,12 @@ class TrajectoryTrackerNode(Node):
         self.pre_flight_checks_pass = bool(message.pre_flight_checks_pass)
 
     def target_state_callback(self, message):
+        if hasattr(self, 'follow_target_history'):
+            self.follow_target_history.append(dict(
+                valid=bool(message.valid and message.frame_id == self.expected_frame_id),
+                stamp=_stamp_seconds(message.stamp), source=_stamp_seconds(message.source_stamp),
+                p=tuple(float(getattr(message.position, a)) for a in 'xyz'),
+                v=tuple(float(getattr(message.velocity, a)) for a in 'xyz')))
         if message.valid and message.frame_id == self.expected_frame_id:
             previous = self.latest_kf_message
             stamp = _stamp_seconds(message.stamp)
@@ -2045,6 +2132,16 @@ class TrajectoryTrackerNode(Node):
             command = None
         self._final_yaw(setpoint, current, dt)
         self.setpoint_pub.publish(setpoint)
+        if (getattr(self, 'follow_minco_requested', False)
+                and self.mission_state == MissionState.FOLLOW):
+            debug = getattr(self, 'follow_cycle_debug', {})
+            debug.update(final_velocity=[float(v) for v in setpoint.velocity],
+                         final_acceleration=[float(v) if math.isfinite(v) else None
+                                             for v in setpoint.acceleration],
+                         yaw=float(setpoint.yaw), yaw_rate=float(setpoint.yawspeed),
+                         command_stamp=now, navigation_stamp=current.stamp,
+                         shaping_previous=self.tracker.previous_command_velocity)
+            self.follow_debug_pub.publish(String(data=json.dumps(debug)))
         self._remember_emitted_velocity(setpoint, now)
         self.reference_pub.publish(setpoint)
         self._publish_diagnostic(

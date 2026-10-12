@@ -37,3 +37,7 @@ ros2 pkg prefix uav_control
 P4.7 H1.6 离线候选封版与有条件 P5 名义执行：见 [封版决定](docs/current/p47_release_decision.md)、[P5 验证](docs/current/p5_minco_closed_loop_validation.md) 和 [入口/Git 审计](docs/current/p5_code_cleanup_report.md)。新研究入口保留 P47/C 与 P44/D 两种选择；生产资格仍未通过。
 
 最新 [P5 修复后复验](docs/current/p5_revalidation_20261012.md) 已实际加载 Planner，但触发原始输入时效停止，MINCO ACTIVE 为0、F3未准入。实验工具和稳态启动门禁已修复；持续闭环仍待验证。
+
+P5.1 已实现接收器稳态准入、恢复冷却、连续候选探测与有界接替调度，见
+[切换策略](docs/current/p51_follow_minco_switching.md)、[时序归因](docs/current/p51_online_timing_and_lease.md)
+和 [验收记录](docs/current/p51_closed_loop_validation.md)。当前仅有测试与离线证据；本轮尚未执行新的 F2/F3。

@@ -104,12 +104,19 @@ class NominalFollowReceiver(FollowReceiver):
     lease_seconds = .45
     activation_window = .05
 
-    def __init__(self, limits=None):
+    def __init__(self, limits=None, admission=None):
         """Start without an executable curve or an independently qualified holding window."""
         super().__init__(limits=limits)
         self.deadline = 0.
+        self.admission, self.events = admission, []
+        self.entry_evidence = {}
 
-    def propose(self, curve, ctx, validated_prediction_id=None):
+    def drain_events(self):
+        """Return every tick ACK, including simultaneous pending and active failures."""
+        result, self.events = self.events, []
+        return result
+
+    def propose(self, curve, ctx, validated_prediction_id=None, probe=False):
         """Admit a locally revalidated nominal curve; retain the old lease on rejection."""
         errors = [e for e in curve_errors(curve, self.limits) if e != 'HOLDING_DOES_NOT_COVER']
         errors += [e for e in self.context_errors(curve, ctx)
@@ -147,8 +154,24 @@ class NominalFollowReceiver(FollowReceiver):
             errors.append('PARENT_REFERENCE_INVALID')
         if self.pending and curve.start < self.pending.start:
             errors.append('PENDING_ORDER_CONFLICT')
+        if probe:
+            if self.admission is not None:
+                self.admission.probe(ctx.now, key, not errors)
+            return self._ack(curve, ctx, 'REJECTED', errors or ('SHADOW_PROBE_VALID',))
+        if self.active is None and self.admission is not None:
+            if not self.admission.allowed(ctx.now):
+                errors.append('FOLLOW_ENTRY_INHIBITED')
+            if self.pending:
+                errors.append('INITIAL_PENDING_EXISTS')
         if errors:
             return self._ack(curve, ctx, 'REJECTED', errors)
+        if self.active is None and self.admission is not None:
+            gate = self.admission
+            self.entry_evidence = dict(
+                plan_id=curve.plan_id, stamp=ctx.now, stable_since=gate.stable_since,
+                recovery_until=max(0., gate.recover_until), valid_probe_count=len(gate.probes),
+                last_probe=gate.last_probe, entry_attempt=gate.entries+1, loss=gate.loss)
+            self.admission.consume()
         self.pending = curve
         return self._ack(curve, ctx, 'ACCEPTED', ('NOMINAL_EXECUTION',))
 
@@ -157,6 +180,14 @@ class NominalFollowReceiver(FollowReceiver):
         reversed_clock = self.last_now is not None and ctx.now < self.last_now
         self.last_now = ctx.now
         result = None
+        self.events = []
+        previous_active, previous_pending = self.active, self.pending
+
+        def emit(curve, state, reasons=()):
+            ack = self._ack(curve, ctx, state, reasons)
+            self.events.append(ack)
+            return ack
+
         for slot in ('pending', 'active'):
             curve = getattr(self, slot)
             if curve is None:
@@ -171,15 +202,31 @@ class NominalFollowReceiver(FollowReceiver):
                 errors.append('LATEST_PREFIX_INVALID')
             if errors or ctx.now >= until:
                 setattr(self, slot, None)
-                result = self._ack(curve, ctx, 'REVOKED' if errors else 'EXPIRED', errors)
+                result = emit(curve, 'REVOKED' if errors else 'EXPIRED', errors)
         if self.pending and ctx.now >= self.pending.start:
             curve = self.pending
-            if ctx.now-curve.start > self.activation_window+1e-7:
+            reason = ''
+            if curve.parent_id and (self.active is None
+                                    or curve.parent_id != self.active.plan_id):
+                reason = 'PARENT_EXPIRED_AT_ACTIVATION'
+            elif ctx.now-curve.start > self.activation_window+1e-7:
+                reason = 'START_MISSED'
+            elif (self.active is None and self.admission is not None
+                  and not self.admission.converged(ctx.now)):
+                reason = 'FOLLOW_ENTRY_INHIBITED'
+            if reason:
                 self.pending = None
-                return self._ack(curve, ctx, 'REJECTED', ('START_MISSED',))
-            self.active, self.pending = curve, None
-            self.deadline = min(curve.end, curve.start+self.lease_seconds)
-            result = self._ack(curve, ctx, 'ACTIVE', ('NOMINAL_EXECUTION',))
+                result = emit(curve, 'REJECTED', (reason,))
+            else:
+                self.active, self.pending = curve, None
+                self.deadline = min(curve.end, curve.start+self.lease_seconds)
+                result = emit(curve, 'ACTIVE', ('NOMINAL_EXECUTION',))
+        lost = previous_active or previous_pending
+        if lost is not None and self.active is None and self.pending is None and self.admission:
+            event = next((a for a in self.events if a.plan_id == lost.plan_id), result)
+            reason = ('LEASE_EXPIRED_NO_SUCCESSOR' if event.state == 'EXPIRED'
+                      else ','.join(event.reasons))
+            self.admission.lost(ctx.now, reason, lost)
         return result
 
 

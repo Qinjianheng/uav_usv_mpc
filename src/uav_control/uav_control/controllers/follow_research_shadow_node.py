@@ -32,7 +32,7 @@ class FollowResearchShadowNode(FollowMpcShadowNode):
                               ('follow_guided_response_time', .5),
                               ('follow_guided_optimization_budget', .025),
                               ('p47_terminal_mode', 'qva'), ('p47_refinement', True),
-                              ('p47_scheduling', 'adaptive')):
+                              ('p47_scheduling', 'adaptive'), ('p51_online_budget_guard', False)):
             self.declare_parameter(name, default)
         mode = self.get_parameter('research_mode').value
         optimizer = MincoConfig(mode=self.get_parameter('minco_mode').value,
@@ -100,6 +100,7 @@ class FollowResearchShadowNode(FollowMpcShadowNode):
                         terminal_mode=self.get_parameter('p47_terminal_mode').value,
                         refinement=self.get_parameter('p47_refinement').value,
                         scheduling=self.get_parameter('p47_scheduling').value,
+                        online_budget_guard=self.get_parameter('p51_online_budget_guard').value,
                         rollout_config=FollowRolloutConfig(response_time=float(
                             self.get_parameter('follow_guided_response_time').value)))
                 elif engine == 'follow_guided_minco':

@@ -375,7 +375,10 @@ class ShadowResearchRunner:
                         'prediction': self.prediction,
                         'mission_revision': self.mission_revision,
                         'prediction_revision': self.prediction_revision}
-        self.pending['future'] = self.executor.submit(self.solver.solve, request)
+        self.pending['future'] = self.executor.submit(self._solve_request, request)
+
+    def _solve_request(self, request):
+        return self.solver.solve(request)
 
 
 def _json_safe(value):

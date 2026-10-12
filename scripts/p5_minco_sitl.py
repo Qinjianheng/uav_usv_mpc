@@ -23,7 +23,7 @@ ROOT = WORKSPACE/'data/experiments/20261012_p5_revalidation_02'
 AUTHORIZATION = 'User continued and authorized F3 after healthy repaired F2; one each'
 
 
-def safety_reason(health, now):
+def safety_reason(health, now, planning_required=True):
     """Experiment bounds only; controller TTL, lease and whole-sphere admission stay intact."""
     if not 0 <= now-health.get('written', 0.) <= .25:
         return 'HEALTH_MONITOR_STALE'
@@ -35,7 +35,8 @@ def safety_reason(health, now):
         return 'OFFBOARD_OR_ARMING_LOST'
     if not c.get('locked') or c.get('status') not in ('FOLLOW', 'MINCO_FOLLOW'):
         return 'NO_LAWFUL_FOLLOW_PATH'
-    if any(not 0 <= now-x.get('receipt', 0.) <= .25 for x in (c, n, p, a)):
+    inputs = (c, n, p, a) if planning_required else (c, n, a)
+    if any(not 0 <= now-x.get('receipt', 0.) <= .25 for x in inputs):
         return 'HEALTH_INPUT_LOST'
     # PX4 Commander publishes vehicle_status at a 500ms steady-state cadence.
     if not 0 <= now-v.get('receipt', 0.) <= .75:
@@ -43,9 +44,6 @@ def safety_reason(health, now):
     stamp = health.get('ros_now', float('inf'))
     if not 0 <= stamp-n.get('stamp', 0.) <= .125:
         return 'NAVIGATION_INPUT_STALE'
-    prediction_ages = [stamp-p.get(k, 0.) for k in ('stamp', 'observation')]
-    if not p.get('valid') or not all(0 <= age <= .125 for age in prediction_ages):
-        return 'PREDICTION_INPUT_STALE'
     position, velocity, q = n.get('p', ()), n.get('v', ()), a.get('q', ())
     if len(position) != 3 or len(velocity) != 3 or len(q) != 4 or not all(
             math.isfinite(x) for x in (*position, *velocity, *q)):
@@ -59,6 +57,10 @@ def safety_reason(health, now):
     pitch = math.asin(max(-1., min(1., 2*(w*y-z*x))))
     if max(abs(roll), abs(pitch)) > .7:
         return 'ATTITUDE_DIVERGENCE'
+    prediction_ages = [stamp-p.get(k, 0.) for k in ('stamp', 'observation')]
+    if planning_required and (not p.get('valid')
+                              or not all(0 <= age <= .125 for age in prediction_ages)):
+        return 'PREDICTION_INPUT_STALE'
     return None
 
 
@@ -146,28 +148,32 @@ def validate_release_sources(release):
         raise ValueError('AUDITED_SOURCE_CHANGED')
 
 
-def claim(output, scene, qualification):
+def claim(output, scene, qualification, task_root=None, authorization=None,
+          f3_gate=None, release_gate=None):
     """Verify backing artifacts and consume one persistent attempt before creating a flight."""
     verify_manifest(qualification.parent)
     release = json.loads(qualification.read_text())
-    if release['candidate'] != CANDIDATE or not qualify(release['evidence'])[
-            'h16_scoped_gate_pass']:
+    qualified = (release_gate(release) if release_gate else qualify(release['evidence'])[
+        'h16_scoped_gate_pass'])
+    if release['candidate'] != CANDIDATE or not qualified:
         raise ValueError('H16_SCOPED_EVIDENCE_REQUIRED')
     validate_release_sources(release)
     verify_manifest(Path(release['formal_directory']))
+    task_root = ROOT if task_root is None else task_root
+    authorization = AUTHORIZATION if authorization is None else authorization
     output = output.resolve()
-    if ROOT.resolve() not in output.parents or output.exists():
+    if task_root.resolve() not in output.parents or output.exists():
         raise ValueError('NEW_P5_OUTPUT_REQUIRED')
-    ROOT.mkdir(exist_ok=True)
+    task_root.mkdir(exist_ok=True)
     if scene == 'f3':
-        previous = json.loads((ROOT/'f2_summary.json').read_text())
-        if not allow_f3(previous):
+        previous = json.loads((task_root/'f2_summary.json').read_text())
+        if not (f3_gate or allow_f3)(previous):
             raise ValueError('F2_SUSTAINED_HEALTHY_EXECUTION_REQUIRED')
     check = preflight()
-    with (ROOT/f'attempt_{scene}.json').open('x') as stream:
+    with (task_root/f'attempt_{scene}.json').open('x') as stream:
         json.dump(dict(scene=scene, output=str(output), qualification=str(qualification),
                        qualification_sha256=sha(qualification), preflight=check,
-                       maximum_attempts=1, authorization=AUTHORIZATION,
+                       maximum_attempts=1, authorization=authorization,
                        stamp=time.time()), stream, indent=2)
     return release
 
@@ -276,7 +282,8 @@ def execution_chain_proven(report):
                 and lifecycle.get('active_unique', 0) > 0 and commands.get('count', 0) > 0)
 
 
-def assess(output, scene, reason, first_minco, ended):
+def assess(output, scene, reason, first_minco, ended, task_root=None,
+           extra_audit=None, f3_gate=None):
     """Actual diagnostics determine control ownership; planned curves cannot imply ACTIVE."""
     from p4_follow_analysis import read
     from p45_execution_analysis import analyze
@@ -294,21 +301,36 @@ def assess(output, scene, reason, first_minco, ended):
                    **metrics, harness_end=ended,
                    analysis='execution_analysis.json; FOLLOW windows include original warmup',
                    f3_eligible=False)
-    summary['f3_eligible'] = scene == 'f2' and allow_f3(summary)
+    if extra_audit is not None:
+        summary['p51_audit'] = extra_audit(output, rows, first_minco, scene)
+        summary['healthy'] = summary['healthy'] and summary['p51_audit']['passed']
+    summary['f3_eligible'] = scene == 'f2' and (f3_gate or allow_f3)(summary)
     (output/'p5_run_summary.json').write_text(json.dumps(summary, indent=2)+'\n')
-    (ROOT/f'{scene}_summary.json').write_text(json.dumps(summary, indent=2)+'\n')
+    task_root = ROOT if task_root is None else task_root
+    (task_root/f'{scene}_summary.json').write_text(json.dumps(summary, indent=2)+'\n')
     return summary
 
 
-def run(output, qualification, scene):
+def run(output, qualification, scene, task_root=None, authorization=None,
+        health_check=None, research_config=None, flight_parameters=None,
+        extra_audit=None, f3_gate=None, release_gate=None):
+    task_root = ROOT if task_root is None else task_root
+    authorization = AUTHORIZATION if authorization is None else authorization
+    health_check = safety_reason if health_check is None else health_check
     release = json.loads(qualification.read_text())
     formal = Path(release['formal_directory'])
     raw = json.loads(next((formal/f'{scene}_h1.6_main_C_single.jsonl').open()))
-    research = yaml.safe_load((WORKSPACE/'src/uav_usv_bringup/config/p5_follow_research.yaml')
-                              .read_text())
+    research_config = (WORKSPACE/'src/uav_usv_bringup/config/p5_follow_research.yaml'
+                       if research_config is None else research_config)
+    research = yaml.safe_load(research_config.read_text())
     validate_candidate_config(research, raw['model_config']['mpc'])
-    claim(output, scene, qualification)
+    claim(output, scene, qualification, task_root, authorization, f3_gate, release_gate)
     prepare(output, (output.name, scene, False, 'p47_follow_guided', 3., 1., 1.6, 'none'))
+    if flight_parameters:
+        flight_path = output/'config/flight.yaml'
+        flight = yaml.safe_load(flight_path.read_text())
+        flight['trajectory_tracker_node']['ros__parameters'].update(flight_parameters)
+        flight_path.write_text(yaml.safe_dump(flight, sort_keys=False))
     research['p4_follow_planner_node']['ros__parameters']['follow_execution_enabled'] = True
     (output/'config/research.yaml').write_text(yaml.safe_dump(research, sort_keys=False))
     condition_path = output/'condition.json'
@@ -318,7 +340,7 @@ def run(output, qualification, scene):
                                                     text=True).strip(),
                      qualification_sha256=sha(qualification), execution_lease_seconds=.45,
                      maximum_input_age=.125, minco_authorized=False,
-                     authorization=AUTHORIZATION,
+                     authorization=authorization,
                      original_follow_warmup_seconds=5.,
                      original_follow_settling=dict(horizontal_error_max=1.,
                                                    relative_speed_max=.5,
@@ -378,7 +400,7 @@ def run(output, qualification, scene):
             if follow_start is None and status in ('FOLLOW', 'MINCO_FOLLOW'):
                 follow_start = now
             if follow_start is not None:
-                problem = safety_reason(health, now)
+                problem = health_check(health, now)
                 if problem:
                     reason = problem
                     break
@@ -452,11 +474,12 @@ def run(output, qualification, scene):
         summary = dict(completed=False, healthy=False, reason=reason, harness_end=ended,
                        first_minco_receipt=first_minco, f3_eligible=False)
         (output/'p5_run_summary.json').write_text(json.dumps(summary, indent=2)+'\n')
-        (ROOT/f'{scene}_summary.json').write_text(json.dumps(summary, indent=2)+'\n')
+        (task_root/f'{scene}_summary.json').write_text(json.dumps(summary, indent=2)+'\n')
     else:
-        summary = assess(output, scene, reason, first_minco, ended)
+        summary = assess(output, scene, reason, first_minco, ended, task_root,
+                         extra_audit, f3_gate)
     print(json.dumps(summary, indent=2))
-    return 0 if summary['completed'] else 1
+    return 0 if summary['completed'] and (extra_audit is None or summary['healthy']) else 1
 
 
 if __name__ == '__main__':

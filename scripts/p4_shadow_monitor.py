@@ -12,6 +12,11 @@ import numpy as np
 from p32_shadow_monitor import encode_record
 
 
+def execution_debug_kind(record):
+    """Reception timing must not masquerade as the one control-cycle reference record."""
+    return 'follow_receive' if record.get('event') == 'proposal_received' else 'execution_debug'
+
+
 def run(output):
     """Read only; truth is never published or passed to the planner/control receiver."""
     import rclpy
@@ -140,7 +145,8 @@ def run(output):
     sensor = qos_profile_sensor_data
     subscriptions = [
         node.create_subscription(String, '/control/follow_execution_debug',
-                                 lambda m: write('execution_debug', **json.loads(m.data)), 10),
+                                 lambda m: write(execution_debug_kind(json.loads(m.data)),
+                                                 **json.loads(m.data)), 10),
         node.create_subscription(UavState, '/navigation/uav_state', uav, sensor),
         node.create_subscription(TargetObservation, '/perception/front/target_observation',
                                  observation, sensor),
@@ -156,6 +162,15 @@ def run(output):
                                      'receiver_epoch', stamp=seconds(m.stamp),
                                      boot=m.receiver_boot_id, generation=m.clock_generation,
                                      mission=m.mission_id, prediction=m.prediction_sequence_id,
+                                     active=m.active_plan_id, pending=m.pending_plan_id,
+                                     research_state=m.research_state,
+                                     entry_allowed=m.entry_allowed,
+                                     converged=m.follow_converged,
+                                     lease_deadline=m.active_lease_deadline,
+                                     recovery_until=m.recovery_until,
+                                     entry_attempts=m.entry_attempts,
+                                     valid_probe_count=m.valid_probe_count,
+                                     last_fallback_reason=m.last_fallback_reason,
                                      holding=m.holding_qualified, bridge=m.bridge_qualified),
                                  QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL,
                                             reliability=ReliabilityPolicy.RELIABLE)),
@@ -166,6 +181,9 @@ def run(output):
                                      parent=m.parent_plan_id, durations=list(m.durations),
                                      xyz=list(m.xyz_coefficients), yaw=list(m.yaw_coefficients),
                                      source=seconds(m.source_stamp),
+                                     observation=seconds(m.observation_stamp),
+                                     navigation=seconds(m.navigation_stamp),
+                                     attitude=seconds(m.attitude_stamp),
                                      receiver_boot=m.receiver_boot_id,
                                      planner_boot=m.planner_boot_id,
                                      generation=m.clock_generation,

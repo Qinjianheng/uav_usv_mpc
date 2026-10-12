@@ -1,0 +1,83 @@
+{
+  "base_head": "51007415a87d839f8b18ebe6e78c5b4418856ee6",
+  "branch": "master",
+  "a_e_offline_test_pass": true,
+  "actual_sitl_performed": false,
+  "actual_f2_pass": null,
+  "actual_f3_pass": null,
+  "pytest": {
+    "passed": 1673,
+    "skipped": 1,
+    "warnings": 3,
+    "seconds": 19.13,
+    "command": "cd src/uav_control && OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 python3 -m pytest -q"
+  },
+  "targeted_regressions_passed": 124,
+  "build_packages": [
+    "px4_msgs",
+    "uav_usv_interfaces",
+    "uav_control",
+    "uav_usv_bringup"
+  ],
+  "static_checks": {
+    "flake8": true,
+    "shell_syntax": true,
+    "launch_show_args": true,
+    "installed_message": true,
+    "git_diff_check": true,
+    "cached_diff_check": true
+  },
+  "package_prefix": "/home/qin/data/uav_usv_mpc/install/uav_control",
+  "source_check_count": 370,
+  "immutable_evidence": {
+    "before_files": 991,
+    "protected_files": 888,
+    "protected_unchanged": true,
+    "unchanged_files": 985,
+    "authorized_source_changes": [
+      {
+        "path": "src/uav_control/uav_control/control/trajectory_tracker_node.py",
+        "before_sha256": "4f3b1a87e5ff2db3d28b843e5ce0844e13e23c56d51a9bc431f409ebf86c82b9",
+        "after_sha256": "46dd397d88eac665ad38bb2c279d5e52cd65c81349dbe74eb0c0830cd59243cb",
+        "protected": false
+      },
+      {
+        "path": "src/uav_control/uav_control/controllers/follow_guided_feasible.py",
+        "before_sha256": "15640ed599904983b6c7454e48977a51d4352a8244307cf8f23769b2c05d2a1e",
+        "after_sha256": "4fe18a482d98ce71c43cc4dff816d79fbc02d1bfbe71bdb099ed855d23c0a141",
+        "protected": false
+      },
+      {
+        "path": "src/uav_control/uav_control/controllers/follow_mpc_shadow_node.py",
+        "before_sha256": "b76e1a85cfb3fb7c3131b1decdca36cf97c70db62c7a2b48eb50792d84553b85",
+        "after_sha256": "47115e368e90f37af06a9a538e8f7d0ae4be966590c83ad47cf7dd9054ae5e58",
+        "protected": false
+      },
+      {
+        "path": "src/uav_control/uav_control/controllers/follow_research_shadow_node.py",
+        "before_sha256": "2e6c2b73697680ec86c6cb4e67bde6f9a981be4b498e69ab84567f1aa77274c7",
+        "after_sha256": "fb0674b416679fd60486e832b9c62c76bfc0ef8db477fabe2c0cf8a9deffe6ca",
+        "protected": false
+      },
+      {
+        "path": "src/uav_control/uav_control/controllers/p4_follow_planner_node.py",
+        "before_sha256": "7d55810d273c8d77b0764a5db2eb0b5c0abc0ab160c8fd03b728900344bb45bd",
+        "after_sha256": "e95c3e2d2e9311ceab6f70ab339d80cee1f1ebe9beeacab4e3010be3c9577604",
+        "protected": false
+      },
+      {
+        "path": "src/uav_control/uav_control/guidance/follow_minco_execution.py",
+        "before_sha256": "d5823e451f1a20242cd813dc02bbb4d0f1d137b1981cd0ea09b73aa9114de752",
+        "after_sha256": "8d22b8df4464e1e5f821a411c840845ce447fb1f3666e01da6a642f8ba6e2cb0",
+        "protected": false
+      }
+    ],
+    "old_checkout_writes": false,
+    "note": "Old checkout was never targeted by a write; no before hash for it is claimed."
+  },
+  "raw_directory": "/home/qin/data/uav_usv_mpc/data/experiments/20261012_p51_offline_01",
+  "faults": "8 hypothetical production solver/wire/receiver cases; no ROS ACK",
+  "new_sitl_root": "/home/qin/data/uav_usv_mpc/data/experiments/20261012_p51_closed_loop_01",
+  "attempts_consumed": 0,
+  "note": "Offline/test readiness only. Actual sustained MINCO, height tracking and F2/F3 remain unverified."
+}

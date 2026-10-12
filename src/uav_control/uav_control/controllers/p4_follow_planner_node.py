@@ -1,5 +1,5 @@
 """P4 nominal FOLLOW proposals and actual rejection ACK recording; no control publisher."""
-from dataclasses import asdict
+from dataclasses import asdict, replace
 import time
 import secrets
 from types import SimpleNamespace
@@ -29,6 +29,15 @@ class P4ResearchRunner(ShadowResearchRunner):
             return
         super()._invalidate_warm()
 
+    def _solve_request(self, request):
+        started = time.monotonic()
+        wall = getattr(self.solver, 'wall_clock', None)
+        ros_start = wall() if wall else None
+        result = self.solver.solve(request)
+        timeline = dict(solve_start_monotonic=started, solve_end_monotonic=time.monotonic(),
+                        solve_start_ros=ros_start, solve_end_ros=wall() if wall else None)
+        return replace(result, metrics=dict(result.metrics, worker_timeline=timeline))
+
     def event(self, *args, **kwargs):
         """Bind each completed solve to the receiver identity observed at dispatch."""
         result = super().event(*args, **kwargs)
@@ -36,6 +45,9 @@ class P4ResearchRunner(ShadowResearchRunner):
                                          if self.pending else None)
         result['receiver_epoch_at_dispatch'] = (self.pending.get('receiver_epoch')
                                                 if self.pending else None)
+        if result['event'] == 'completion':
+            self.last_completed_valid = result['output']['valid']
+        result['deadline_retry'] = getattr(self, 'deadline_retry', None)
         return result
 
     def _prepare(self, now, monotonic_now):
@@ -49,7 +61,19 @@ class P4ResearchRunner(ShadowResearchRunner):
         if self.pending is not None and not self.pending['future'].done():
             return
         previous = self.pending
+        finishing = previous is not None and previous['future'].done()
         super().tick(now, monotonic_now)
+        status = getattr(self, 'execution_status', None)
+        if (finishing and getattr(self, 'deadline_scheduling', False)
+                and not getattr(self, 'last_completed_valid', False) and status
+                and 0 <= now-status['stamp'] <= .2 and status['active']
+                and 0 < status['deadline']-now <= self.period+.15+.05
+                and getattr(self, 'retried_parent', None) != status['active']):
+            self.retried_parent = status['active']
+            self.next_solve = min(self.next_solve, monotonic_now+.01)
+            self.deadline_retry = dict(parent=status['active'], stamp=now,
+                                       scheduled_monotonic=self.next_solve,
+                                       original_deadline=status['deadline'])
         if self.pending is not None and self.pending is not previous:
             self.pending['preparation_profile'] = self.preparation_profile
             self.pending['receiver_epoch'] = getattr(self, 'current_receiver_epoch', None)
@@ -75,6 +99,7 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
         if self.prediction_policy not in ('latest_only', 'full'):
             raise ValueError('INVALID_PREDICTION_POLICY')
         self.planner_boot_id, self.receiver_epoch = secrets.token_hex(16), None
+        self.receiver_status = None
         epoch_qos = QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL,
                                reliability=ReliabilityPolicy.RELIABLE)
         self.receiver_epoch_sub = self.create_subscription(
@@ -91,6 +116,7 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
                  and 0 <= now-stamp <= .2)
         if not valid:
             self.receiver_epoch = None
+            self.receiver_status = None
             self.runner.current_receiver_epoch = None
             return
         identity = (message.receiver_boot_id, int(message.clock_generation),
@@ -98,14 +124,31 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
         if (self.receiver_epoch and identity[0] == self.receiver_epoch[0][0]
                 and identity[1] < self.receiver_epoch[0][1]):
             return
+        previous = getattr(self, 'last_receiver_heartbeat', self.receiver_epoch)
+        if previous is not None and identity == previous[0] and stamp <= previous[1]:
+            return
+        if previous is not None and identity != previous[0]:
+            self.accepted_curve = None
+            self.ack_order, self.last_control_ack = {}, None
+        self.last_receiver_heartbeat = (identity, stamp)
         self.receiver_epoch = (identity, stamp)
         self.runner.current_receiver_epoch = identity
+        self.receiver_status = dict(stamp=stamp, state=message.research_state,
+                                    allowed=message.entry_allowed,
+                                    converged=message.follow_converged,
+                                    active=int(message.active_plan_id),
+                                    pending=int(message.pending_plan_id),
+                                    deadline=message.active_lease_deadline)
+        self.runner.execution_status = self.receiver_status
 
     def make_runner(self, config):
         """Retain the original synchronization factory, with explicitly separate cache policy."""
         old = super().make_runner(config)
         self.declare_parameter('follow_execution_enabled', False)
         self.follow_execution_enabled = bool(self.get_parameter('follow_execution_enabled').value)
+        self.declare_parameter('follow_admission_required', True)
+        self.follow_admission_required = bool(
+            self.get_parameter('follow_admission_required').value)
         self.execution_curves, self.accepted_curve = {}, None
         original_factory = old.request_factory
 
@@ -113,6 +156,16 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
             request = original_factory(*args, **kwargs)
             curve = self.accepted_curve
             start = request.context.execution_start_stamp
+            status = getattr(self, 'receiver_status', None)
+            if self.follow_execution_enabled and self.follow_admission_required:
+                if status is None or not 0 <= request.now_stamp-status['stamp'] <= .2:
+                    raise ValueError('RECEIVER_ADMISSION_UNAVAILABLE')
+                if status['pending']:
+                    raise ValueError('AWAITING_PENDING_ACTIVE')
+                if status['active'] and (curve is None or status['active'] != curve.plan_id):
+                    raise ValueError('AWAITING_REAL_ACTIVE_ACK')
+                if status['active'] and start >= status['deadline']-.05:
+                    raise ValueError('NO_SUCCESSOR_ACTIVATION_MARGIN')
             if (self.follow_execution_enabled and curve is not None
                     and self.receiver_epoch is not None
                     and (curve.receiver_boot_id, curve.generation) == self.receiver_epoch[0][:2]
@@ -123,8 +176,11 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
             return request
 
         old.solver.profile_enabled = True
-        return P4ResearchRunner(old.config, old.adapter, old.executor, self._publish_event,
-                                1/old.period, old.solver, factory)
+        runner = P4ResearchRunner(old.config, old.adapter, old.executor, self._publish_event,
+                                  1/old.period, old.solver, factory)
+        runner.deadline_scheduling = (self.follow_execution_enabled
+                                      and self.follow_admission_required)
+        return runner
 
     def ack_callback(self, message):
         """Log wrong receiver/identity as invalid ACK; REJECTED never grants execution."""
@@ -144,16 +200,42 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
                      and key[3] == self.receiver_epoch[0][1]
                      and key[1] == self.planner_boot_id)
         executing = getattr(self, 'follow_execution_enabled', False)
+        curve = self.execution_curves.get(key) if executing else None
+        if executing and message.state == 'ACTIVE':
+            valid = bool(valid and curve is not None
+                         and message.active_plan_id == message.plan_id
+                         and message.control_owner == 'MINCO_FOLLOW'
+                         and curve.start <= ack_stamp < min(curve.end, curve.start+.45)
+                         and ack_stamp-curve.start <= .05+1e-7)
+        order = getattr(self, 'ack_order', {})
+        previous = order.get(key)
+        terminal = ('REJECTED', 'REVOKED', 'EXPIRED')
+        last = getattr(self, 'last_control_ack', None)
+        if valid and (message.state not in ('ACCEPTED', 'ACTIVE', *terminal)
+                      or (previous is not None and (
+                          ack_stamp < previous[0] or previous[1] in terminal
+                          or (previous[1] == 'ACTIVE' and message.state == 'ACCEPTED')))
+                      or (message.state == 'ACTIVE' and last is not None and (
+                          ack_stamp < last[0] or (ack_stamp == last[0]
+                                                  and message.plan_id != last[1])))):
+            valid = False
+        if valid:
+            order[key] = (ack_stamp, message.state)
+            self.ack_order = order
+            if len(order) > 1024:
+                order.pop(next(iter(order)))
         unexpected_accept = not executing and message.state in ('ACCEPTED', 'ACTIVE')
         if executing and valid:
-            curve = self.execution_curves.get(key)
             if message.state == 'ACTIVE' and curve is not None:
                 self.accepted_curve = curve
+                self.last_control_ack = (ack_stamp, message.plan_id)
             elif (message.state in ('REVOKED', 'EXPIRED') and self.accepted_curve is not None
                   and self.accepted_curve.plan_id == message.plan_id):
                 self.accepted_curve = None
+                self.last_control_ack = (ack_stamp, message.plan_id)
         self.ack_file.write(_serialize(dict(
             receipt=self._ros_seconds(), stamp=seconds(message.stamp),
+            receipt_monotonic=time.monotonic(),
             identity=key, state=message.state, reasons=list(message.reasons),
             active_plan_id=message.active_plan_id, pending_plan_id=message.pending_plan_id,
             control_owner=message.control_owner, replaced=message.replaced,
@@ -205,6 +287,9 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
         reason = self._proposal_rejection(event, self._ros_seconds())
         if reason:
             return dict(published=False, reason=reason)
+        policy = self._execution_publication_policy(self._ros_seconds())
+        if policy not in ('', 'SHADOW_PROBE'):
+            return dict(published=False, reason=policy)
         proposal_event = self._prediction_event(event)
         if proposal_event is None:
             return dict(published=False, reason='PREDICTION_CHANGED_OR_REVALIDATION_FAILED')
@@ -233,6 +318,8 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
             prior = proposal_event['request'].get('prior_curve')
             message.parent_plan_id = int(prior['plan_id']) if prior else 0
             message.planner_type, message.reason = 'rolling_minco', 'NOMINAL_EXECUTION'
+            if policy == 'SHADOW_PROBE':
+                message.reason = 'SHADOW_PROBE'
         key = (message.receiver_boot_id, message.planner_boot_id, message.mission_id,
                message.clock_generation, message.plan_id)
         self.expected_plans[key] = now
@@ -246,10 +333,40 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
         crossed = self._proposal_rejection(proposal_event, self._ros_seconds())
         self.log_file.write(_serialize(dict(event='follow_proposal', identity=key,
                                             stamp=now, holding_valid_until=0., authority=False,
+                                            parent=message.parent_plan_id,
+                                            planned_start=seconds(message.execution_start_stamp),
+                                            raw_input_until=seconds(message.input_valid_until),
+                                            source_age=now-seconds(message.source_stamp),
+                                            observation_age=now-seconds(message.observation_stamp),
+                                            publication_monotonic=time.monotonic(),
+                                            current_lease_deadline=(
+                                                getattr(self, 'receiver_status', None) or {})
+                                            .get('deadline'),
+                                            proposal_kind=message.reason,
+                                            worker_timeline=event['output'].get('metrics', {})
+                                            .get('worker_timeline'),
+                                            prediction_receipt=self.runner.prediction_provenance,
                                             conversion_publish_seconds=time.perf_counter()-before))
                             + '\n')
         self.log_file.flush()
         return dict(published=True, reason=crossed, publication_crossed_deadline=bool(crossed))
+
+    def _execution_publication_policy(self, now):
+        """Consume the unique actual receiver gate; probes never request execution."""
+        if not (getattr(self, 'follow_execution_enabled', False)
+                and getattr(self, 'follow_admission_required', False)):
+            return ''
+        status = getattr(self, 'receiver_status', None)
+        if status is None or not 0 <= now-status['stamp'] <= .2:
+            return 'RECEIVER_ADMISSION_UNAVAILABLE'
+        if status['pending']:
+            return 'AWAITING_PENDING_ACTIVE'
+        if status['active'] or status['allowed']:
+            return ''
+        if (status['state'] == 'FOLLOW_STABLE'
+                or (status['state'] == 'FOLLOW_RECOVERY' and status.get('converged'))):
+            return 'SHADOW_PROBE'
+        return 'FOLLOW_ENTRY_INHIBITED'
 
     @profiled('ros_publication')
     def _publish_wire_proposal(self, message):
