@@ -53,7 +53,8 @@ def test_box_quadratic_correction_is_bounded_and_retains_height_reference(mode):
     candidate = objective.seed_from(x)
     assert candidate.start == seed.start
     assert candidate.end[2] == seed.end[2]
-    assert objective.quadratic(x)[0] <= objective.quadratic(np.zeros(len(x)))[0]+1e-10
+    assert objective.initializer_quadratic(x)[0] <= objective.initializer_quadratic(
+        np.zeros(len(x)))[0]+1e-10
     bad = x.copy()
     bad[0] = bounds[0, 1]+.01
     with pytest.raises(ValueError, match='TERMINAL_BOUNDS'):
@@ -82,3 +83,22 @@ def test_exact_jerk_envelope_gradient_matches_independent_extrema():
 def test_unknown_terminal_mode_rejected(mode):
     with pytest.raises(ValueError, match='TERMINAL_MODE'):
         setup_objective(mode)
+
+
+def test_jerk_initializer_does_not_trade_a_large_position_gap_for_a_jerk_spike():
+    # A legal start with a large following error must not turn initialization
+    # into an aggressive pursuit.
+    from uav_control.guidance.follow_terminal_correction import TerminalCorrectionObjective
+    req, seed, old = setup_objective('qva')
+    shifted = tuple((x+12., y, z) for x, y, z in req.target_positions)
+    far = replace(req, target_positions=shifted)
+    problem = FollowProblem(far, model(), 1.2)
+    objective = TerminalCorrectionObjective(problem, seed, old.reference, mode='qva')
+    initial_jerk = objective.base_fields[3]
+    initial_energy = float(np.einsum('n,nc,nc->', objective.weights, initial_jerk, initial_jerk))
+    x = objective.fixed()
+    values = objective.base_fields+np.einsum('dnck,k->dnc', objective.jacobian, x)
+    energy = float(np.einsum('n,nc,nc->', objective.weights, values[3], values[3]))
+    assert energy <= initial_energy+1e-8
+    # The full objective must still retain its independent USV P/V terms.
+    assert not np.allclose(objective.desired[0], old.desired[0])

@@ -1,0 +1,72 @@
+{
+  "f2_h1.2_single": {
+    "attempted": 94,
+    "returned": 0,
+    "retained": 0,
+    "strict_valid": 0,
+    "BOUNDED_STOP_RETAIN_VALID": 94,
+    "NOT_ATTEMPTED": 24
+  },
+  "f2_h1.2_rolling": {
+    "attempted": 85,
+    "returned": 0,
+    "retained": 0,
+    "strict_valid": 0,
+    "BOUNDED_STOP_RETAIN_VALID": 85,
+    "NOT_ATTEMPTED": 21
+  },
+  "f2_h1.6_single": {
+    "attempted": 94,
+    "returned": 12,
+    "retained": 12,
+    "strict_valid": 12,
+    "BOUNDED_STOP_RETAIN_VALID": 82,
+    "NOT_ATTEMPTED": 24,
+    "Optimization terminated successfully": 12
+  },
+  "f2_h1.6_rolling": {
+    "attempted": 83,
+    "returned": 7,
+    "retained": 7,
+    "strict_valid": 7,
+    "BOUNDED_STOP_RETAIN_VALID": 76,
+    "NOT_ATTEMPTED": 23,
+    "Optimization terminated successfully": 7
+  },
+  "f3_h1.2_single": {
+    "attempted": 334,
+    "returned": 1,
+    "retained": 1,
+    "strict_valid": 1,
+    "NOT_ATTEMPTED": 155,
+    "BOUNDED_STOP_RETAIN_VALID": 333,
+    "Optimization terminated successfully": 1
+  },
+  "f3_h1.2_rolling": {
+    "attempted": 442,
+    "returned": 1,
+    "retained": 1,
+    "strict_valid": 1,
+    "BOUNDED_STOP_RETAIN_VALID": 441,
+    "NOT_ATTEMPTED": 28,
+    "Optimization terminated successfully": 1
+  },
+  "f3_h1.6_single": {
+    "attempted": 356,
+    "returned": 2,
+    "retained": 2,
+    "strict_valid": 2,
+    "NOT_ATTEMPTED": 133,
+    "BOUNDED_STOP_RETAIN_VALID": 354,
+    "Optimization terminated successfully": 2
+  },
+  "f3_h1.6_rolling": {
+    "attempted": 437,
+    "returned": 23,
+    "retained": 23,
+    "strict_valid": 23,
+    "BOUNDED_STOP_RETAIN_VALID": 414,
+    "NOT_ATTEMPTED": 33,
+    "Optimization terminated successfully": 23
+  }
+}

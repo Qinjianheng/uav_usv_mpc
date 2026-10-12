@@ -35,6 +35,10 @@ flowchart LR
 
 tracker 和主 predictor 的目标输入均为 KF，不能再将 tracker 描述成使用真值。真值只进入评价、显式 shadow 诊断和离线对比；评价终态可结束任务/暂停仿真，但真值坐标或速度不用于在线预测、轨迹生成和几何反馈。可用现有 `test_strict_visual_control.py` 及相关测试核对隔离。
 
+P4.7 新增显式选择的 `p47_follow_guided` 研究 engine，复用原研究节点、独立完整验收和
+P4.4/D 后备，未切换运行配置或增加 PX4 发布者。本轮冻结对照改善 F3，但 F2/H1.2
+长期误差退化，未启动新的名义执行 SITL，见 [可行性研究](p47_follow_guided_feasibility.md)。
+
 图像采集戳、因果 pose history 等待、显式超时拒绝、原始导航 sample epoch 保持。125 ms 新鲜度限制、捕获球、KF Q/R 和安全约束本轮不变。红球仍只是仿真感知接口测试，不能作为无标记真实 USV 感知验证。
 
 三个旧单体控制入口及其测试、兼容 launch 保留供回归；两个未引用的退役 archive 版本和 planner `.bak` 已外置，来源与恢复见 [源码冗余清理](redundancy_cleanup.md)。当前运行以 modular 入口为准。MPC 的新增位置与验收见 [后续范围](mpc_scope.md)。

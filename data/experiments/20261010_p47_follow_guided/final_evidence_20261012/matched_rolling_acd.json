@@ -1,0 +1,238 @@
+{
+  "f2_h1.2_main": {
+    "count": 106,
+    "steady_count": 86,
+    "aligned_count": 106,
+    "coverage_fraction": 1.0,
+    "start": 1791515268.9016387,
+    "end": 1791515375.145954,
+    "selection": "source line SHA intersection, same epoch, continuous episode age >=20",
+    "groups": {
+      "A": {
+        "all": {
+          "fixed": 0.08525456396436143,
+          "selected": 0.08525465811617709,
+          "distance": 0.0834417257319555,
+          "relative_velocity": 0.0635514387437068,
+          "height": 0.00029658419281720385
+        },
+        "after20": {
+          "fixed": 0.08925959245241324,
+          "selected": 0.08925963173458733,
+          "distance": 0.08739956097822354,
+          "relative_velocity": 0.06712093686644498,
+          "height": 3.736476020931838e-08
+        }
+      },
+      "C": {
+        "all": {
+          "fixed": 0.1704444100126284,
+          "selected": 0.17044421962919426,
+          "distance": 0.16979013381613836,
+          "relative_velocity": 0.19902540495808502,
+          "height": 0.002021982508921268
+        },
+        "after20": {
+          "fixed": 0.1875943322795484,
+          "selected": 0.18759422375523638,
+          "distance": 0.18693966614533486,
+          "relative_velocity": 0.21865057305681174,
+          "height": 0.002219263330373683
+        }
+      },
+      "D": {
+        "all": {
+          "fixed": 0.1704444100126284,
+          "selected": 0.17044421962919426,
+          "distance": 0.16979013381613836,
+          "relative_velocity": 0.19902540495808502,
+          "height": 0.002021982508921268
+        },
+        "after20": {
+          "fixed": 0.1875943322795484,
+          "selected": 0.18759422375523638,
+          "distance": 0.18693966614533486,
+          "relative_velocity": 0.21865057305681174,
+          "height": 0.002219263330373683
+        }
+      }
+    }
+  },
+  "f2_h1.6_main": {
+    "count": 106,
+    "steady_count": 86,
+    "aligned_count": 106,
+    "coverage_fraction": 1.0,
+    "start": 1791515268.9016387,
+    "end": 1791515375.145954,
+    "selection": "source line SHA intersection, same epoch, continuous episode age >=20",
+    "groups": {
+      "A": {
+        "all": {
+          "fixed": 0.0840295204244856,
+          "selected": 0.08403043132296951,
+          "distance": 0.07639711169851386,
+          "relative_velocity": 0.06088800028870326,
+          "height": 0.0003065048660022753
+        },
+        "after20": {
+          "fixed": 0.08856685762980922,
+          "selected": 0.08856811670425466,
+          "distance": 0.08012627907782725,
+          "relative_velocity": 0.0639368469900643,
+          "height": 1.6505031277028585e-08
+        }
+      },
+      "C": {
+        "all": {
+          "fixed": 0.06405649079462872,
+          "selected": 0.06405658062869239,
+          "distance": 0.062169093403323154,
+          "relative_velocity": 0.08046339140159497,
+          "height": 0.0002715154869086233
+        },
+        "after20": {
+          "fixed": 0.06515691588129885,
+          "selected": 0.06515719979292463,
+          "distance": 0.06316183073458258,
+          "relative_velocity": 0.0851640878691966,
+          "height": 5.062720349330216e-12
+        }
+      },
+      "D": {
+        "all": {
+          "fixed": 0.06415305759711303,
+          "selected": 0.06415329462426725,
+          "distance": 0.06225522520162383,
+          "relative_velocity": 0.0804445146116604,
+          "height": 0.0002715334551774693
+        },
+        "after20": {
+          "fixed": 0.06527391305788711,
+          "selected": 0.06527437493258142,
+          "distance": 0.06326631056202671,
+          "relative_velocity": 0.08514210509498198,
+          "height": 3.467977822285017e-06
+        }
+      }
+    }
+  },
+  "f3_h1.2_main": {
+    "count": 470,
+    "steady_count": 376,
+    "aligned_count": 470,
+    "coverage_fraction": 1.0,
+    "start": 1791517716.6230757,
+    "end": 1791517817.5225258,
+    "selection": "source line SHA intersection, same epoch, continuous episode age >=20",
+    "groups": {
+      "A": {
+        "all": {
+          "fixed": 2.7308836244378982,
+          "selected": 2.730878167280262,
+          "distance": 2.357221338607022,
+          "relative_velocity": 0.7839733564331713,
+          "height": 0.007287977617616105
+        },
+        "after20": {
+          "fixed": 1.3514443999322945,
+          "selected": 1.351423003328637,
+          "distance": 0.8117641347355355,
+          "relative_velocity": 0.41747568689241693,
+          "height": 7.672738580497489e-06
+        }
+      },
+      "C": {
+        "all": {
+          "fixed": 2.4336763371269536,
+          "selected": 2.433676285177617,
+          "distance": 2.2385597445300127,
+          "relative_velocity": 0.7995147471680463,
+          "height": 0.006967899199231879
+        },
+        "after20": {
+          "fixed": 0.49228166216286817,
+          "selected": 0.49225618402027815,
+          "distance": 0.36803078737166445,
+          "relative_velocity": 0.4158438612518697,
+          "height": 2.1307974613798448e-08
+        }
+      },
+      "D": {
+        "all": {
+          "fixed": 2.4336745918132348,
+          "selected": 2.4336745403474307,
+          "distance": 2.2385597589943296,
+          "relative_velocity": 0.7995164769600639,
+          "height": 0.006967899214543301
+        },
+        "after20": {
+          "fixed": 0.4922708767374916,
+          "selected": 0.4922454010251363,
+          "distance": 0.36803089734627004,
+          "relative_velocity": 0.4158480184276145,
+          "height": 5.168898821127679e-07
+        }
+      }
+    }
+  },
+  "f3_h1.6_main": {
+    "count": 470,
+    "steady_count": 376,
+    "aligned_count": 470,
+    "coverage_fraction": 1.0,
+    "start": 1791517716.6230757,
+    "end": 1791517817.5225258,
+    "selection": "source line SHA intersection, same epoch, continuous episode age >=20",
+    "groups": {
+      "A": {
+        "all": {
+          "fixed": 2.5655049985837373,
+          "selected": 2.565506773227696,
+          "distance": 2.385610037279019,
+          "relative_velocity": 0.8181908450330917,
+          "height": 0.021731993538289456
+        },
+        "after20": {
+          "fixed": 0.5046514658539403,
+          "selected": 0.5046346549106056,
+          "distance": 0.3997428943408096,
+          "relative_velocity": 0.4381262971265932,
+          "height": 2.532180280185053e-05
+        }
+      },
+      "C": {
+        "all": {
+          "fixed": 2.5452308969358746,
+          "selected": 2.5452328738712593,
+          "distance": 2.370763709813013,
+          "relative_velocity": 0.8130331538320194,
+          "height": 0.016313299567431046
+        },
+        "after20": {
+          "fixed": 0.4318561677185781,
+          "selected": 0.43184034997198173,
+          "distance": 0.33779462817488703,
+          "relative_velocity": 0.39699952756167134,
+          "height": 1.6597813235503932e-07
+        }
+      },
+      "D": {
+        "all": {
+          "fixed": 2.5452140518924735,
+          "selected": 2.545216036081417,
+          "distance": 2.370759527224401,
+          "relative_velocity": 0.8130754970825395,
+          "height": 0.016313299914492825
+        },
+        "after20": {
+          "fixed": 0.4317320507432343,
+          "selected": 0.43171628180755317,
+          "distance": 0.3377579325825566,
+          "relative_velocity": 0.39710791139394774,
+          "height": 3.765880478893199e-06
+        }
+      }
+    }
+  }
+}

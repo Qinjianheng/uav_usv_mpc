@@ -1,4 +1,5 @@
-"""Fixed-time bounded terminal/Q corrections through the existing linear MINCO map.
+"""
+Fixed-time bounded terminal/Q corrections through the existing linear MINCO map.
 
 The quadratic initializer and exact jerk envelope are ranking/repair tools. Only
 the independent original validate_seed may admit a curve. No start, yaw or time
@@ -102,6 +103,13 @@ class TerminalCorrectionObjective:
             self.gradient += 2*np.einsum('n,nd,ndk->k', scale, delta, jac)
             self.hessian += 2*np.einsum('n,ndk,ndl->kl', scale, jac, jac)
         self.hessian += np.diag(.002/self.radii**2)
+        # Initialization minimizes exact jerk energy, not pursuit error. The full
+        # objective below is retained for constrained refinement and selection.
+        jerk, jac = self.base_fields[3], self.jacobian[3]
+        self.initial_constant = float(np.einsum('n,nd,nd->', self.weights, jerk, jerk))
+        self.initial_gradient = 2*np.einsum('n,nd,ndk->k', self.weights, jerk, jac)
+        self.initial_hessian = 2*np.einsum('n,ndk,ndl->kl', self.weights, jac, jac)
+        self.initial_hessian += np.diag(2e-6/self.radii**2)
         self.proxy = TrackingMincoObjective(problem, seed, MincoConfig(
             mode='q', jerk_weight=0., follow_weight=0., visibility_weight=20.,
             dynamic_weight=100., safety_weight=1000., yaw_weight=0.),
@@ -134,25 +142,32 @@ class TerminalCorrectionObjective:
         return (float(self.constant+self.gradient@x+x@self.hessian@x/2),
                 self.gradient+self.hessian@x)
 
+    def initializer_quadratic(self, x):
+        x = np.asarray(x)
+        return (float(self.initial_constant+self.initial_gradient@x
+                      + x@self.initial_hessian@x/2),
+                self.initial_gradient+self.initial_hessian@x)
+
     def fixed(self):
-        """Small box quadratic active-set solve; no candidate search or new yaw/time variables."""
-        x = np.clip(np.linalg.solve(self.hessian, -self.gradient), -self.radii, self.radii)
+        """Bounded minimum-jerk initialization; independent validation remains mandatory."""
+        hessian, linear = self.initial_hessian, self.initial_gradient
+        x = np.clip(np.linalg.solve(hessian, -linear), -self.radii, self.radii)
         for _ in range(12):
-            gradient = self.gradient+self.hessian@x
+            gradient = linear+hessian@x
             active = ((x <= -self.radii+1e-10) & (gradient >= 0)) | (
                 (x >= self.radii-1e-10) & (gradient <= 0))
             free = ~active
             if not free.any():
                 break
             candidate = x.copy()
-            candidate[free] = np.linalg.solve(self.hessian[np.ix_(free, free)],
-                                              -self.gradient[free]
-                                              - self.hessian[np.ix_(free, active)]@x[active])
+            candidate[free] = np.linalg.solve(hessian[np.ix_(free, free)],
+                                              -linear[free]
+                                              - hessian[np.ix_(free, active)]@x[active])
             candidate = np.clip(candidate, -self.radii, self.radii)
             if np.max(abs(candidate-x)) < 1e-10:
                 break
             x = candidate
-        return x if self.quadratic(x)[0] <= self.constant else np.zeros_like(x)
+        return x if self.initializer_quadratic(x)[0] <= self.initial_constant else np.zeros_like(x)
 
     def __call__(self, x):
         """Explicit FOLLOW/USV P,V, exact jerk, endpoint penalty and whole-sphere proxy."""

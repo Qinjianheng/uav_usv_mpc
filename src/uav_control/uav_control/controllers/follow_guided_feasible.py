@@ -117,6 +117,11 @@ class P47FollowGuidedMinco(P44FollowSolver):
                 detail['initial_status'] = detail['boundary_status'] = best.solver_status
                 correction['boundary_validation'] = dict(
                     valid=best.valid, status=best.solver_status)
+                correction['initializer'] = 'bounded_exact_jerk_energy'
+                correction['boundary_candidate'] = dict(
+                    delta=x.tolist(), end=selected.end, q=selected.q,
+                    durations=selected.durations, yaw=selected.yaw, start=selected.start,
+                    validation=dict(valid=best.valid, status=best.solver_status))
                 # A fixed yaw violation cannot be repaired through XYZ variables.
                 if (self.refinement and best.solver_status != 'YAW_RATE_LIMIT'
                         and remaining() > reserve+self.validation_estimate+.004):
@@ -127,14 +132,22 @@ class P47FollowGuidedMinco(P44FollowSolver):
                         improved_x, info = objective.repair(x, optimize_end, self.clock)
                         detail['refinement_status'] = info['status']
                         correction['optimization'] = info
+                        candidate = objective.seed_from(improved_x)
+                        repair_record = dict(
+                            delta=improved_x.tolist(), end=candidate.end, q=candidate.q,
+                            durations=candidate.durations, yaw=candidate.yaw,
+                            start=candidate.start, retained=False,
+                            validation=dict(valid=False, status='NO_VALIDATION_BUDGET'))
+                        correction['repair_candidate'] = repair_record
                         if remaining() > self.validation_estimate:
-                            candidate = objective.seed_from(improved_x)
                             tested = validate(candidate)
                             correction['repair_validation'] = dict(
                                 valid=tested.valid, status=tested.solver_status)
+                            repair_record['validation'] = dict(correction['repair_validation'])
                             if tested.valid and (not best.valid or info['objective_final']
                                                  <= info['objective_initial']):
                                 best, selected, x = tested, candidate, improved_x
+                                repair_record['retained'] = True
                     except TimeoutError:
                         detail['refinement_status'] = 'BOUNDED_STOP_RETAIN_VALID'
                     except (ValueError, FloatingPointError, np.linalg.LinAlgError) as error:

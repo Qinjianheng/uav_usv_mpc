@@ -1,0 +1,117 @@
+[
+  {
+    "command": [
+      "ros2",
+      "pkg",
+      "prefix",
+      "uav_control"
+    ],
+    "exit_code": 0,
+    "output": "/home/qin/data/uav_usv_mpc/install/uav_control\n"
+  },
+  {
+    "command": [
+      "ros2",
+      "interface",
+      "show",
+      "uav_usv_interfaces/msg/FollowTrajectory"
+    ],
+    "exit_code": 0,
+    "output": "# Dedicated FOLLOW proposal. This message never grants execution authority.\nuint64 plan_id\nuint64 mission_id\nuint32 clock_generation\nuint64 prediction_sequence_id\nuint64 parent_plan_id\nbuiltin_interfaces/Time navigation_stamp\n\tint32 sec\n\tuint32 nanosec\nbuiltin_interfaces/Time attitude_stamp\n\tint32 sec\n\tuint32 nanosec\nbuiltin_interfaces/Time observation_stamp\n\tint32 sec\n\tuint32 nanosec\nbuiltin_interfaces/Time source_stamp\n\tint32 sec\n\tuint32 nanosec\nbuiltin_interfaces/Time input_valid_until\n\tint32 sec\n\tuint32 nanosec\nbuiltin_interfaces/Time prediction_coverage_until\n\tint32 sec\n\tuint32 nanosec\nbuiltin_interfaces/Time execution_start_stamp\n\tint32 sec\n\tuint32 nanosec\nbuiltin_interfaces/Time execution_end_stamp\n\tint32 sec\n\tuint32 nanosec\n# Zero means no independent holding qualification.\nbuiltin_interfaces/Time holding_valid_until\n\tint32 sec\n\tuint32 nanosec\nbuiltin_interfaces/Time published_stamp\n\tint32 sec\n\tuint32 nanosec\nstring holding_model_id\nstring frame_id\nstring constraint_version\nstring camera_version\nstring planner_type\nstring validation_state\n# N positive SI seconds. XYZ: N*6*3 degree-major ascending per piece, xyz per degree.\nfloat64[] durations\nfloat64[] xyz_coefficients\n# N*4 ascending cubic coefficients, NOT scipy's descending coefficient layout.\nfloat64[] yaw_coefficients\n# Proposal diagnostics only; receiver must use local policy and independent validator.\nfloat64[6] dynamic_limits\nfloat64[2] fov_margins\nbool nominal_sampled_valid\nstring reason\n\n# Actual receiver boot identity and independent planner process identity.\nstring receiver_boot_id\nstring planner_boot_id\n\n# Full declared policy/calibration; receiver compares with its immutable LOCAL policy.\nstring constraint_snapshot\nstring constraint_fingerprint\n"
+  },
+  {
+    "command": [
+      "ros2",
+      "interface",
+      "show",
+      "uav_usv_interfaces/msg/FollowPlanAck"
+    ],
+    "exit_code": 0,
+    "output": "# Only the actual trajectory_tracker_node publishes this acknowledgement.\nbuiltin_interfaces/Time stamp\n\tint32 sec\n\tuint32 nanosec\nuint64 plan_id\nuint64 mission_id\nuint32 clock_generation\nuint64 active_plan_id\nuint64 pending_plan_id\nstring receiver\n# REJECTED / ACCEPTED / ACTIVE / REVOKED / EXPIRED. ACCEPTED is not a replacement.\nstring state\nstring[] reasons\n# Current implementation always ORIGINAL_FOLLOW: holding and initial bridge unqualified.\nstring control_owner\nbool replaced\n\n# Actual receiver boot identity and independent planner process identity.\nstring receiver_boot_id\nstring planner_boot_id\n\n# Receiver-local monotonic compute duration, not an epoch or holding proof.\nfloat64 receiver_compute_seconds\n"
+  },
+  {
+    "command": [
+      "ros2",
+      "interface",
+      "show",
+      "uav_usv_interfaces/msg/FollowReceiverState"
+    ],
+    "exit_code": 0,
+    "output": "# Read-only actual Tracker clock handshake; never a control or qualification grant.\nbuiltin_interfaces/Time stamp\n\tint32 sec\n\tuint32 nanosec\nstring receiver\nstring receiver_boot_id\nuint32 clock_generation\nuint64 mission_id\nuint64 prediction_sequence_id\nuint64 active_plan_id\nuint64 pending_plan_id\nbool holding_qualified\nbool bridge_qualified\n"
+  },
+  {
+    "command": [
+      "ros2",
+      "launch",
+      "uav_usv_bringup",
+      "p4_follow_research.launch.py",
+      "--show-args"
+    ],
+    "exit_code": 0,
+    "output": "Arguments (pass arguments as '<name>:=<value>'):\n\n    'config_file':\n        no description given\n        (default: '/home/qin/data/uav_usv_mpc/install/uav_usv_bringup/share/uav_usv_bringup/config/baseline.yaml')\n\n    'log_directory':\n        no description given\n        (default: '/home/qin/data/uav_usv_mpc/data/experiments/p4_shadow/evaluator')\n\n    'enable_evaluator':\n        no description given\n        (default: 'true')\n\n    'enable_shadow_perception':\n        no description given\n        (default: 'false')\n\n    'enable_down_camera':\n        no description given\n        (default: 'false')\n\n    'front_depth_model':\n        no description given\n        (default: 'ideal')\n\n    'enable_planner':\n        no description given\n        (default: 'false')\n\n    'research_config_file':\n        no description given\n        (default: '/home/qin/data/uav_usv_mpc/install/uav_usv_bringup/share/uav_usv_bringup/config/p4_follow_research.yaml')\n\n    'enable_follow_minco':\n        One of: ['true', 'false']\n        (default: 'true')\n\n    'enable_follow_planner':\n        One of: ['true', 'false']\n        (default: 'true')\n\n    'tof_config_file':\n        Explicit functional ToF range/noise test assumptions.\n        (default: '/home/qin/data/uav_usv_mpc/install/uav_usv_bringup/share/uav_usv_bringup/config/front_tof_simulation.yaml')\n"
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--cached",
+      "--check"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  {
+    "command": [
+      "bash",
+      "-n",
+      "scripts/sync_github.sh"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  {
+    "command": [
+      "bash",
+      "-n",
+      "scripts/start_px4_ros2.sh"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  {
+    "command": [
+      "bash",
+      "-n",
+      "scripts/build_workspace.sh"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  {
+    "command": [
+      "bash",
+      "-n",
+      "scripts/uav_lab.sh"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  {
+    "command": [
+      "bash",
+      "-n",
+      "scripts/test_research_planners.sh"
+    ],
+    "exit_code": 0,
+    "output": ""
+  }
+]

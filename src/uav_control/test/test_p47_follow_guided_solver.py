@@ -27,6 +27,29 @@ def test_new_engine_preserves_full_validation_and_fixed_endpoint_height():
     assert result.accelerations[0] == pytest.approx(req.state[6:9])
     assert result.metrics['end'][2] == pytest.approx(-5.)
     assert np.asarray(result.positions)[:, 2] == pytest.approx(-5.)
+    correction = detail['terminal_correction']
+    assert correction['boundary_candidate']['delta'] is not correction['delta']
+    assert correction['boundary_candidate']['start'] == correction['start']
+    assert correction['boundary_candidate']['validation']['status'] == detail['initial_status']
+
+
+def test_each_attempted_repair_is_recorded_even_when_final_candidate_is_retained(monkeypatch):
+    from uav_control.guidance.follow_terminal_correction import TerminalCorrectionObjective
+    req = future_request(request(2.), .15)
+
+    def worse(self, x, *args, **kwargs):
+        modified = np.asarray(x).copy()
+        modified[0] += .01
+        return modified, dict(status='test failed improvement', objective_initial=0.,
+                              objective_final=1., success=False)
+
+    monkeypatch.setattr(TerminalCorrectionObjective, 'repair', worse)
+    result = solver(req, refinement=True).solve(req)
+    correction = result.metrics['follow_guided']['terminal_correction']
+    assert result.valid
+    assert correction['repair_candidate']['delta'] != correction['delta']
+    assert correction['repair_candidate']['retained'] is False
+    assert correction['repair_candidate']['start'] == correction['start']
 
 
 @pytest.mark.parametrize('remaining', [.008, .012, .020, .024])
@@ -76,6 +99,25 @@ def test_optional_repair_timeout_keeps_independently_valid_boundary(monkeypatch)
     assert result.valid
     assert result.metrics['follow_guided']['independent_valid']
     assert result.metrics['follow_guided']['refinement_status'] == 'BOUNDED_STOP_RETAIN_VALID'
+
+
+def test_deadline_crossed_during_validation_invalidates_an_otherwise_valid_curve(monkeypatch):
+    from uav_control.controllers.follow_mpc_seed import MpcSeedResult
+    req = future_request(request(2.), .15)
+    elapsed = [0.]
+    instance = solver(req, clock=lambda: elapsed[0], refinement=False, fallback_enabled=False)
+    instance.wall_clock = lambda: req.now_stamp+elapsed[0]
+
+    def late_valid(*args, **kwargs):
+        elapsed[0] += .2
+        return MpcSeedResult(req.context, valid=True, solver_status='SAMPLED_FEASIBLE')
+
+    monkeypatch.setattr('uav_control.controllers.follow_guided_feasible.validate_seed', late_valid)
+    result = instance.solve(req)
+    assert not result.valid
+    assert result.solver_status == 'DEADLINE_EXCEEDED'
+    assert not result.metrics['follow_guided']['independent_valid']
+    assert not result.metrics['follow_guided']['fallback_used']
 
 
 @pytest.mark.parametrize('change', ['truth', 'expired', 'sea', 'behind', 'acceleration'])

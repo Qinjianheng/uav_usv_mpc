@@ -153,6 +153,25 @@ def test_exact_jerk_integral_includes_all_cross_terms():
     assert quality['derivative_peaks']['horizontal_jerk']['value'] == pytest.approx(90.)
 
 
+def test_postprocess_keeps_boundary_and_rejected_repair_extrema_separate():
+    from p47_follow_study import postprocess
+    from test_p47_terminal_correction import setup_objective
+    _, seed, objective = setup_objective('qva')
+    boundary = objective.seed_from(objective.fixed())
+    delta = objective.fixed()
+    delta[0] += .001
+    repair = objective.seed_from(delta)
+    correction = dict(boundary.__dict__)
+    correction['boundary_candidate'] = dict(seed.__dict__)
+    correction['repair_candidate'] = dict(repair.__dict__)
+    row = dict(source_sha256='fixture', line=1, epoch=100., request=None,
+               model_config={'mpc': model().config.__dict__}, result={
+                   'metrics': {'follow_guided': {'terminal_correction': correction}}})
+    report = postprocess(row)
+    assert report['boundary_candidate'] != report['independent_candidate']
+    assert report['repair_candidate'] != report['independent_candidate']
+
+
 def test_runner_persists_suites_and_hashes_without_touching_sources(tmp_path, monkeypatch):
     import p47_follow_study as study
     root, historical = tmp_path/'comparison', tmp_path/'old_summary.json'

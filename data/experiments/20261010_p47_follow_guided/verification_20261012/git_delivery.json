@@ -1,0 +1,48 @@
+[
+  {
+    "command": [
+      "git",
+      "status",
+      "--short"
+    ],
+    "exit_code": 0,
+    "output": " M docs/current/README.md\n M docs/current/architecture.md\n M docs/superpowers/plans/2026-10-12-p47-follow-feasibility.md\n M scripts/p47_follow_study.py\n M src/uav_control/test/test_p47_follow_guided_solver.py\n M src/uav_control/test/test_p47_follow_study.py\n M src/uav_control/test/test_p47_terminal_correction.py\n M src/uav_control/uav_control/controllers/follow_guided_feasible.py\n M src/uav_control/uav_control/guidance/follow_rollout.py\n M src/uav_control/uav_control/guidance/follow_terminal_correction.py\n?? data/experiments/20261010_p47_follow_guided/README.md\n?? data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/SHA256SUMS\n?? data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/f3_h1.6_budget_adaptive_rolling.jsonl\n?? data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/f3_h1.6_budget_adaptive_rolling_analysis.jsonl\n?? data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/f3_h1.6_budget_adaptive_single.jsonl\n?? data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/f3_h1.6_budget_adaptive_single_analysis.jsonl\n?? data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/f3_h1.6_budget_legacy_rolling.jsonl\n?? data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/f3_h1.6_budget_legacy_rolling_analysis.jsonl\n?? data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/f3_h1.6_budget_legacy_single.jsonl\n?? data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/f3_h1.6_budget_legacy_single_analysis.jsonl\n?? data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/f3_h1.6_budget_stress_adaptive_12ms_single.jsonl\n?? data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/f3_h1.6_budget_stress_adaptive_12ms_single_analysis.jsonl\n?? data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/f3_h1.6_budget_stress_adaptive_20ms_single.jsonl\n?? data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/f3_h1.6_budget_stress_adaptive_20ms_single_analysis.jsonl\n?? data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/f3_h1.6_budget_stress_adaptive_24ms_single.jsonl\n?? data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/f3_h1.6_budget_stress_adaptive_24ms_single_analysis.jsonl\n?? data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/f3_h1.6_budget_stress_adaptive_8ms_single.jsonl\n?? data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/f3_h1.6_budget_stress_adaptive_8ms_single_analysis.jsonl\n?? data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/f3_h1.6_budget_stress_legacy_12ms_single.jsonl\n?? data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/f3_h1.6_budget_stress_legacy_12ms_single_analysis.jsonl\n?? data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/f3_h1.6_budget_stress_legacy_20ms_single.jsonl\n?? data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/f3_h1.6_budget_stress_legacy_20ms_single_analysis.jsonl\n?? data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/f3_h1.6_budget_stress_legacy_24ms_single.jsonl\n?? data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/f3_h1.6_budget_stress_legacy_24ms_single_analysis.jsonl\n?? data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/f3_h1.6_budget_stress_legacy_8ms_single.jsonl\n?? data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/f3_h1.6_budget_stress_legacy_8ms_single_analysis.jsonl\n?? data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/f3_h1.6_terminal_a_rolling.jsonl\n?? data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/f3_h1.6_terminal_a_rolling_analysis.jsonl\n?? data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/f3_h1.6_terminal_a_single_analysis.jsonl\n?? data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/f3_h1.6_terminal_qva_rolling.jsonl\n?? data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/f3_h1.6_terminal_qva_rolling_analysis.jsonl\n?? data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/f3_h1.6_terminal_qva_single.jsonl\n?? data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/f3_h1.6_terminal_qva_single_analysis.jsonl\n?? data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/f3_h1.6_terminal_va_rolling.jsonl\n?? data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/f3_h1.6_terminal_va_rolling_analysis.jsonl\n?? data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/f3_h1.6_terminal_va_single.jsonl\n?? data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/f3_h1.6_terminal_va_single_analysis.jsonl\n?? data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/summary.json\n?? data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_2/\n?? data/experiments/20261010_p47_follow_guided/final_evidence_20261012/\n?? data/experiments/20261010_p47_follow_guided/verification_20261012/\n?? docs/current/p47_follow_guided_feasibility.md\n?? scripts/p47_minco_sitl.py\n?? src/uav_control/test/test_p47_sitl_plan.py\n"
+  },
+  {
+    "command": [
+      "git",
+      "remote",
+      "-v"
+    ],
+    "exit_code": 0,
+    "output": "github\thttps://github.com/Qinjianheng/uav_usv_mpc.git (fetch)\ngithub\thttps://github.com/Qinjianheng/uav_usv_mpc.git (push)\norigin\thttps://github.com/Qinjianheng/uav_usv_mpc.git (fetch)\norigin\thttps://github.com/Qinjianheng/uav_usv_mpc.git (push)\n"
+  },
+  {
+    "command": [
+      "git",
+      "rev-parse",
+      "HEAD"
+    ],
+    "exit_code": 0,
+    "output": "741000cd8e1faa22ba85292827f59c2fc0a21f99\n"
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--cached",
+      "--check"
+    ],
+    "exit_code": 0,
+    "output": ""
+  }
+]

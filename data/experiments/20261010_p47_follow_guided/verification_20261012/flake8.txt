@@ -1,0 +1,4 @@
+src/uav_control/test/test_p47_terminal_correction.py:94:46: E128 continuation line under-indented for visual indent
+src/uav_control/test/test_p47_terminal_correction.py:98:37: E128 continuation line under-indented for visual indent
+scripts/p47_follow_study.py:191:5: E306 expected 1 blank line before a nested definition, found 0
+scripts/p47_follow_study.py:192:100: E501 line too long (100 > 99 characters)

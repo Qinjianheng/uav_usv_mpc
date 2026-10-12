@@ -1,0 +1,26 @@
+{
+  "eligible": false,
+  "gates": {
+    "1": true,
+    "2": false,
+    "3": true,
+    "4": true,
+    "5": true
+  },
+  "gate_scope": {
+    "3": "Bounded C offline solver margin only, not measured receiver whole cycle",
+    "4": "Credible attribution and concrete bounded plan, no measured P47 plant fix",
+    "5": "Static regressions and read-only preflight; no runtime grant issued"
+  },
+  "reason": "F2/H1.2 matched after20 XY 0.089260 -> 0.187594 m and relative V 0.067121 -> 0.218651 m/s",
+  "decision": "SKIP_SITL",
+  "actual_sitl_attempts": 0,
+  "actual_sitl_runs": 0,
+  "readonly_preflight": {
+    "processes": [],
+    "hardware_serial": [],
+    "udp8888_free": true,
+    "domain": 43
+  },
+  "report": "docs/current/p47_follow_guided_feasibility.md"
+}

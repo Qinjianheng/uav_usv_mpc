@@ -145,7 +145,8 @@ def _bound_xyz(x, y, z, horizontal, vertical):
 
 def rollout_follow_fast(problem, config=FollowRolloutConfig(), initial_command=None,
                         deadline=None, clock=time.perf_counter):
-    """Opt-in equivalent scalar integrator; original rollout_follow stays unchanged.
+    """
+    Opt-in equivalent scalar integrator; original rollout_follow stays unchanged.
 
     FlightGuidanceCore still produces every 20 Hz command, including its measured
     state feedback, shaping and sea guard. Only the private constant-jerk response

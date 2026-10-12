@@ -34,6 +34,9 @@
 | [P4.4 自适应候选验证](p44_adaptive_candidate_validation.md) | A–F消融、逐请求反例、共同初始化与时域质量 |
 | [P4.4 在线影子验证](p44_online_follow_validation.md) | 本轮SITL、真实Tracker到达年龄及未获接管资格 |
 | [P4.6 原 FOLLOW 引导 MINCO](p46_follow_guided_minco.md) | 完整FOLLOW滚动、Q/T/yaw消融、离线退化及未通过替代验收的原因 |
+| [P4.7 实际执行归因](p47_execution_root_cause.md) | 同 epoch 误差分解、参考高度漂移机制及 lease 到期时间线 |
+| [P4.7 闭环与导数归因](p47_minco_closed_loop_diagnosis.md) | 历史 jerk 人口、终端/Q 反事实及旧能量报告问题 |
+| [P4.7 FOLLOW 可行性研究](p47_follow_guided_feasibility.md) | 独立 engine、冻结消融、预算和同窗长期质量验收 |
 | [整理交付](repository_cleanup.md) | 清点、规模、归档和实际检查结果 |
 | [源码冗余清理](redundancy_cleanup.md) | 确认移出项、保留理由、恢复与回归 |
 

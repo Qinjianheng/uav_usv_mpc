@@ -77,23 +77,24 @@ performance path; dedicated tests. Exact names may change with recorded evidence
 
 Files: extend/reuse P4.6 study helpers in new P4.7 script/tests, immutable new outputs.
 
-- [ ] Four arms: P44/D, frozen P46 fixed, improved fixed boundary, low-dimensional
+- [x] Four arms: P44/D, frozen P46 fixed, improved fixed boundary, low-dimensional
   correction; separate endpoint-variable and pre/post scheduling ablations.
-- [ ] Full F2/F3, H1.2/H1.6, same inputs/model/horizon/expiry/common initialization;
+- [x] Full F2/F3, H1.2/H1.6, same inputs/model/horizon/expiry/common initialization;
   independent and single-episode rolling, no invented F2 5Hz samples.
-- [ ] Report independent/overall/fallback and rejection classes, timing quantiles,
+- [x] Report independent/overall/fallback and rejection classes, timing quantiles,
   matched horizontal/height/relative-velocity errors, extrema/FOV and boundary offsets.
-- [ ] Decide default from evidence. Failed targets remain explicit; if offline or
+- [x] Decide default from evidence. Failed targets remain explicit; if offline or
   Stage A gates fail, skip SITL and deliver independent research mode.
 
 ## Task 5: Stage F/G, review and delivery
 
-- [ ] Fresh code review; important fixes get RED/GREEN and appropriate regression.
-- [ ] Actual full pytest count, four packages, scoped flake8, all shell syntax,
+- [x] Requested one independent review, fixed Important metadata loss with RED/GREEN;
+  reviewer quota ended before complete final read-through (reported limitation).
+- [x] Actual full pytest count, four packages, scoped flake8, all shell syntax,
   messages/launch/config, source/baseline hashes, diff and ROS prefix checks.
-- [ ] Reports `p47_minco_closed_loop_diagnosis.md` and
+- [x] Reports `p47_minco_closed_loop_diagnosis.md` and
   `p47_follow_guided_feasibility.md`; tables, source index and standalone figures.
-- [ ] No automatic integration or expanded experiments.
+- [x] No automatic integration or expanded experiments.
 
 ## Ledger / rulings
 
@@ -119,5 +120,26 @@ Files: extend/reuse P4.6 study helpers in new P4.7 script/tests, immutable new o
   its three cross coefficients are wrong. New objective/analysis uses independent
   exact integral and retains legacy-reported field. Cost if wrong: legacy users
   still see incorrect effort reports until a separately validated correction.
-- Final review pending: initial boundary correction metadata is overwritten after
-  successful repair; preserve each candidate before calling the evidence complete.
+- Final review finding resolved: preserve boundary, returned repair and final selected
+  candidates independently, with validation and retained flag. RED/GREEN verified.
+
+## Final experiment decision, 2026-10-12
+
+- First full matrix `formal_20261012_1` retained as failed design: pursuit-weighted
+  initialization raised frozen line436 hJ from 7.07 to 54.09; independent BVLS/KKT
+  confirmed the quadratic solver was solving its intended (unsuitable) objective.
+- Second full matrix `formal_20261012_2`: bounded exact jerk-energy initialization,
+  104 configurations, both H, no input changes. F3 single final 450/489, historical
+  hJ fixed 155/162; matched after20 H1.2 XY .492m vs P44 1.351m, H1.6 .432 vs .505m.
+- Do not replace default: F2/H1.2 matched after20 XY .089→.188m and relative velocity
+  .067→.219m/s; full-target minimum FOV margin also decreases. Optional refinement
+  adds cost with little additional quality. Gate 2 fails, therefore SITL skipped.
+- A concrete bounded F2 preparation wrapper has five-gate check, exclusive single
+  attempt claim, 25 observed FOLLOW seconds and 1m height-error stop. Unit tested;
+  not invoked and no actual attempt claim or runtime grant created.
+- Fresh regression: 1568 passed, 1 skipped; four-package build, scoped flake8 and
+  12 static/message/launch/shell/diff checks passed. Original 63 source input files,
+  frozen baseline 46 hashes and all six formal analysis package manifests verified.
+- Current HEAD changed externally to 741000c during execution. Preserve that commit;
+  no automatic staging/commit/push. Formal2 source before/after 173 hashes match,
+  later docstring/format changes have identical executable AST and saved snapshots.

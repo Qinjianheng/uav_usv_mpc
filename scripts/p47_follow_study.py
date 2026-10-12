@@ -188,18 +188,26 @@ def postprocess(row):
         limits = row['model_config']['mpc']
         initial['violations'] = {name: max(0., peak['value']-limits['maximum_'+name])
                                  for name, peak in initial['derivative_peaks'].items()}
-    independent = None
-    if all(key in correction for key in ('start', 'end', 'q', 'durations')):
-        curve = _trajectory(SimpleNamespace(**correction),
-                            correction['q'], correction['durations'])
-        independent = coefficient_quality(dict(xyz_coefficients=curve.coefficients,
-                                               durations=correction['durations']))
+
+    def candidate_quality(candidate):
+        if not candidate or not all(key in candidate for key in (
+                'start', 'end', 'q', 'durations')):
+            return None
+        curve = _trajectory(SimpleNamespace(**candidate),
+                            candidate['q'], candidate['durations'])
+        quality = coefficient_quality(dict(xyz_coefficients=curve.coefficients,
+                                           durations=candidate['durations']))
         limits = row['model_config']['mpc']
-        independent['violations'] = {name: max(0., peak['value']-limits['maximum_'+name])
-                                     for name, peak in independent['derivative_peaks'].items()}
+        quality['violations'] = {name: max(0., peak['value']-limits['maximum_'+name])
+                                 for name, peak in quality['derivative_peaks'].items()}
+        return quality
+
+    independent = candidate_quality(correction)
     return dict(source_key=source_key(row), epoch=row['epoch'], boundary=boundary_offset(row),
                 final_coefficients=final, original_follow_seed=initial,
                 independent_candidate=independent,
+                boundary_candidate=candidate_quality(correction.get('boundary_candidate')),
+                repair_candidate=candidate_quality(correction.get('repair_candidate')),
                 seed_note='unmodified FOLLOW reference seed; not necessarily selected P47 seed',
                 solver_timer_excludes_this_analysis=True)
 
@@ -240,9 +248,9 @@ def summarize(rows, group, origin, end):
                     if original:
                         violations = original['violations']
                 if (not violations and 'DYNAMIC' in str(status) and row.get('_analysis')
-                        and (phase == 'independent' or (
-                            phase == 'initial' and status == detail.get('independent_status')))):
-                    independent = row['_analysis'].get('independent_candidate')
+                        and phase in ('independent', 'initial')):
+                    field = 'boundary_candidate' if phase == 'initial' else 'independent_candidate'
+                    independent = row['_analysis'].get(field)
                     if independent:
                         violations = independent['violations']
                 rejections[phase].update(rejection_categories(status, violations))
@@ -421,6 +429,7 @@ def run(output, limit=None, horizons=(1.2, 1.6), suites=SUITES, plots=True):
         write_json(output/'historical_p46_summary.json', json.loads(HISTORICAL.read_text()))
     summary = dict(groups=GROUPS, arms=arm_sets, horizons=horizons, quick_run=limit is not None,
                    configurations={}, matched_rolling={}, same_input_checks={},
+                   matched_rolling_acd={},
                    source_manifest='manifest.json', historical_p46=historical,
                    metric_scope='ideal prediction-only rolling; no real UAV tracking claim')
     for scene, subsets in scenes.items():
@@ -455,6 +464,9 @@ def run(output, limit=None, horizons=(1.2, 1.6), suites=SUITES, plots=True):
                     per_mode[mode] = groups
                     if mode == 'rolling':
                         summary['matched_rolling'][key] = matched(groups)
+                        if suite == 'main':
+                            summary['matched_rolling_acd'][key] = matched(
+                                {g: groups[g] for g in ('A', 'C', 'D')})
                     else:
                         summary['same_input_checks'][key] = same_inputs(groups)
                 if plots and suite == 'main':
