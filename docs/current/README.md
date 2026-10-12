@@ -1,6 +1,6 @@
 # 当前文档入口
 
-本目录描述 `85e13461` 保留的成功控制基线及后续开发状态。当前默认前视 RGB-D、0.15 m 升沉与末端修复另见相机文档和 RGB-D 验证报告。原飞行链仍采用 BCTRA/MINCO/Tracker；P2 MPC 和 P3 FOLLOW MINCO 仅作研究输出，尚未在线接入。历史报告与代码细节必须结合当前源码核实。
+本目录描述 `85e13461` 保留的成功控制基线及后续开发状态。当前默认前视 RGB-D、0.15 m 升沉与末端修复另见相机文档和 RGB-D 验证报告。原飞行链仍采用 BCTRA/MINCO/Tracker；P2 MPC 仍作研究输出；P4.5已有隔离名义MINCO接口，P5 H1.6实际接管尚未验证（本轮工具中止见P5报告）。历史报告与代码细节必须结合当前源码核实。
 
 | 文档 | 用途 |
 |---|---|
@@ -37,6 +37,10 @@
 | [P4.7 实际执行归因](p47_execution_root_cause.md) | 同 epoch 误差分解、参考高度漂移机制及 lease 到期时间线 |
 | [P4.7 闭环与导数归因](p47_minco_closed_loop_diagnosis.md) | 历史 jerk 人口、终端/Q 反事实及旧能量报告问题 |
 | [P4.7 FOLLOW 可行性研究](p47_follow_guided_feasibility.md) | 独立 engine、冻结消融、预算和同窗长期质量验收 |
+| [P4.7 H1.6 封版](p47_release_decision.md) | 限定离线候选、旧 H1.2 反例及轻量来源索引 |
+| [P5 架构与基线](p5_architecture_and_baseline.md) | 独立研究配置、P44 切回及真实执行链 |
+| [P5 实际闭环验证](p5_minco_closed_loop_validation.md) | 单次 F2、条件 F3、停止判据与实际结果 |
+| [P5 入口与 Git 清理](p5_code_cleanup_report.md) | 引用图、保留依据、标签和历史体积 |
 | [整理交付](repository_cleanup.md) | 清点、规模、归档和实际检查结果 |
 | [源码冗余清理](redundancy_cleanup.md) | 确认移出项、保留理由、恢复与回归 |
 

@@ -1,0 +1,163 @@
+{
+  "head": "a35e4051402907cde321b7667361dabefed297dc",
+  "branch": "codex/p5-h16-closed-loop",
+  "worktrees": "worktree /home/qin/data/uav_usv_mpc\nHEAD a35e4051402907cde321b7667361dabefed297dc\nbranch refs/heads/codex/p5-h16-closed-loop",
+  "remotes": "github\thttps://github.com/Qinjianheng/uav_usv_mpc.git (fetch)\ngithub\thttps://github.com/Qinjianheng/uav_usv_mpc.git (push)\norigin\thttps://github.com/Qinjianheng/uav_usv_mpc.git (fetch)\norigin\thttps://github.com/Qinjianheng/uav_usv_mpc.git (push)",
+  "main_unique_commits": 0,
+  "default_branch": "main",
+  "open_prs": [
+    {
+      "number": 1,
+      "base": "main",
+      "head": "master"
+    }
+  ],
+  "remote_changes_authorized": false,
+  "remote_branches_retained": [
+    "main",
+    "master"
+  ],
+  "master_reachable_blob_bytes": 7339744740,
+  "master_reachable_blob_count": 5580,
+  "largest_blobs": [
+    {
+      "sha": "e20ace256460319cad24f189a4ea9e674e33e8c2",
+      "bytes": 98008713,
+      "path": "data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_2/summary.json"
+    },
+    {
+      "sha": "570014d2fa1e043968c99e90be164ede3b4079f8",
+      "bytes": 62073867,
+      "path": "data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/summary.json"
+    },
+    {
+      "sha": "1346a4ab0f18eb5962008bcc778badb66b4139e9",
+      "bytes": 41034302,
+      "path": "data/experiments/current/y_intercept_20261006_complete_pause_1.jsonl"
+    },
+    {
+      "sha": "bb62cd5d923129acfaea4787357681cc36ff1213",
+      "bytes": 39225106,
+      "path": "data/experiments/20261009_p31_fast_minco/px4_ulog/2026-10-09/01_57_42.ulg"
+    },
+    {
+      "sha": "aa3fa0049fb5de1eaece8ea09db0b3462e22986d",
+      "bytes": 39214087,
+      "path": "data/experiments/20261009_p31_fast_minco/px4_ulog/2026-10-09/02_01_38.ulg"
+    },
+    {
+      "sha": "19285d3edd6b2184097da62241b36d3805db7342",
+      "bytes": 39155863,
+      "path": "data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_2/f3_h1.6_budget_adaptive_rolling.jsonl"
+    },
+    {
+      "sha": "68c7c8d033bbeec413ed62680b158018398edd67",
+      "bytes": 39153410,
+      "path": "data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_2/f3_h1.6_main_D_rolling.jsonl"
+    },
+    {
+      "sha": "7ff7bd04377685a4d4a109c95a572d4288b53dd2",
+      "bytes": 39151869,
+      "path": "data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_2/f3_h1.6_terminal_qva_rolling.jsonl"
+    },
+    {
+      "sha": "41eb469ce9d8fcffaa8e2ce537c5586d1454bbe4",
+      "bytes": 39070173,
+      "path": "data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_2/f3_h1.6_main_C_rolling.jsonl"
+    },
+    {
+      "sha": "f058d73da06d4e596bf5583b0da2bf7d843ab6fb",
+      "bytes": 39020194,
+      "path": "data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_2/f3_h1.6_terminal_va_single.jsonl"
+    },
+    {
+      "sha": "e35c4b1a74793bf974f6e680aaa99cb8b7c0cf8c",
+      "bytes": 38919265,
+      "path": "data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_2/f3_h1.6_terminal_a_single.jsonl"
+    },
+    {
+      "sha": "87cb10db6d8c05894980648a500a81a585a4a0d5",
+      "bytes": 38893872,
+      "path": "data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_2/f3_h1.6_budget_stress_adaptive_24ms_single.jsonl"
+    },
+    {
+      "sha": "7eaf9862d7df7aa45761fc87b9da9699b9ede024",
+      "bytes": 38793976,
+      "path": "data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_2/f3_h1.6_budget_adaptive_single.jsonl"
+    },
+    {
+      "sha": "cdece8c79297591455e835ce6244dc4b7560d09b",
+      "bytes": 38789516,
+      "path": "data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_2/f3_h1.6_terminal_qva_single.jsonl"
+    },
+    {
+      "sha": "d8a3383ed38091f4bc99f5c9bf2f8c66e918de56",
+      "bytes": 38787208,
+      "path": "data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_2/f3_h1.6_main_D_single.jsonl"
+    },
+    {
+      "sha": "9932a529848533e8ff8bb7f46c1699a2893fa045",
+      "bytes": 38741450,
+      "path": "data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_2/f3_h1.6_main_C_single.jsonl"
+    },
+    {
+      "sha": "6ddd14754d54009f0c6942c66fedbec838048c98",
+      "bytes": 38695433,
+      "path": "data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/f3_h1.6_budget_adaptive_rolling.jsonl"
+    },
+    {
+      "sha": "15a2e85fc8b84e6d7b9adf4aab32917856aed4d1",
+      "bytes": 38692917,
+      "path": "data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/f3_h1.6_terminal_qva_rolling.jsonl"
+    },
+    {
+      "sha": "af0f4ac69f637084c3054920d2cf7e4650220d65",
+      "bytes": 38692819,
+      "path": "data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/f3_h1.6_main_D_rolling.jsonl"
+    },
+    {
+      "sha": "d7775811616a196694734c8f30b96838b4179bd0",
+      "bytes": 38562048,
+      "path": "data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/f3_h1.6_main_C_rolling.jsonl"
+    },
+    {
+      "sha": "642e3dde9c7f6bd83381c343079ad4bd65d311b6",
+      "bytes": 38506387,
+      "path": "data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/f3_h1.6_terminal_va_rolling.jsonl"
+    },
+    {
+      "sha": "b0ae5a6d14c9b1d7f916a91c5e8f1b5d4b323fe0",
+      "bytes": 38443279,
+      "path": "data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/f3_h1.6_budget_stress_adaptive_24ms_single.jsonl"
+    },
+    {
+      "sha": "5a531add027066f2238f74a3c4b9e0fb5d4acd5c",
+      "bytes": 38433605,
+      "path": "data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/f3_h1.6_terminal_a_rolling.jsonl"
+    },
+    {
+      "sha": "03e41118cb1b4cae512bf7b6b8e2d0262d0350d7",
+      "bytes": 38433067,
+      "path": "data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_2/f3_h1.6_budget_legacy_rolling.jsonl"
+    },
+    {
+      "sha": "8f2abc39022600944b3a0aaee41b91834ff2ac24",
+      "bytes": 38428251,
+      "path": "data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/f3_h1.6_budget_adaptive_single.jsonl"
+    }
+  ],
+  "current_tracked_bytes": 3021913898,
+  "local_experiments_bytes": 14166454599,
+  "tracked_experiment_files": 3095,
+  "source_files": 319,
+  "import_edges": 3288,
+  "engine_references": 98,
+  "tags": {
+    "baseline-20261006-pre-mpc": "85e13461df62b65d34aa55c9d92576c58085d0b3",
+    "baseline-p47-before-p5": "a35e4051402907cde321b7667361dabefed297dc",
+    "baseline-main-before-p5": "c2ef5ae58a9219b54e9719a2d4f31e869d0bc888",
+    "baseline-p5-research-start": "a35e4051402907cde321b7667361dabefed297dc"
+  },
+  "recovery_bundle": "/home/qin/data/uav_usv_mpc_archive/20261012_submission_cleanup_4319834/repository_before.bundle",
+  "history_rewritten": false
+}

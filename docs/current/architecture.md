@@ -42,3 +42,5 @@ P4.4/D 后备，未切换运行配置或增加 PX4 发布者。本轮冻结对�
 图像采集戳、因果 pose history 等待、显式超时拒绝、原始导航 sample epoch 保持。125 ms 新鲜度限制、捕获球、KF Q/R 和安全约束本轮不变。红球仍只是仿真感知接口测试，不能作为无标记真实 USV 感知验证。
 
 三个旧单体控制入口及其测试、兼容 launch 保留供回归；两个未引用的退役 archive 版本和 planner `.bak` 已外置，来源与恢复见 [源码冗余清理](redundancy_cleanup.md)。当前运行以 modular 入口为准。MPC 的新增位置与验收见 [后续范围](mpc_scope.md)。
+
+P5新增独立 H1.6 候选配置和仅P47/P44两个选择的研究入口，旧控制链不改。本轮一次F2因健康记录工具错误在研究Planner启动前中止，MINCO proposal/ACTIVE为0。范围和恢复见 [P5架构](p5_architecture_and_baseline.md)、[实际验证](p5_minco_closed_loop_validation.md)。

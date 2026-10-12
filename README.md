@@ -33,3 +33,5 @@ ros2 pkg prefix uav_control
 新实验写入 `data/experiments/`，参数备份和视频默认忽略；审计后选择必要证据放入 `data/baselines/`，附来源与 SHA256 再明确暂存。`.gitignore` 不会取消旧文件跟踪，本轮已经按 [逐文件清单](docs/current/audit/retention_manifest.tsv) 处理旧副本。
 
 只暂存明确审核的路径，不使用 `git add -A`。现有 `sync_github.sh` 会全量暂存并推送，不作为精选基线的默认提交入口。`origin` 和 `github` 的 fetch/push 均指向 [新仓库](https://github.com/Qinjianheng/uav_usv_mpc)。本轮检查与规模见 [整理交付记录](docs/current/repository_cleanup.md)。
+
+P4.7 H1.6 离线候选封版与有条件 P5 名义执行：见 [封版决定](docs/current/p47_release_decision.md)、[P5 验证](docs/current/p5_minco_closed_loop_validation.md) 和 [入口/Git 审计](docs/current/p5_code_cleanup_report.md)。新研究入口保留 P47/C 与 P44/D 两种选择；生产资格仍未通过。
