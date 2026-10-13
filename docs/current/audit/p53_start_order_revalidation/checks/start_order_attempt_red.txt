@@ -1,0 +1,130 @@
+.................FFF                                                     [100%]
+=================================== FAILURES ===================================
+___________ test_only_a_verified_pre_x_stall_allows_one_ground_retry ___________
+
+tmp_path = PosixPath('/tmp/pytest-of-qin/pytest-239/test_only_a_verified_pre_x_sta0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x761c4dcbfd90>
+
+    def test_only_a_verified_pre_x_stall_allows_one_ground_retry(tmp_path, monkeypatch):
+        monkeypatch.setattr(entry, 'ROOT', tmp_path/'20261013_p53_closed_loop_01')
+        base = entry.round_root(3)
+        base.mkdir()
+        (base/'attempt_f3.json').write_text('{}')
+        # Preserve the real F2 gate; use the same helper-tested complete audit shape.
+        checks = dict(reference_height=True, entry_recovery=True, execution_gates=True,
+                      evidence_coverage=True, switching=True, handovers=True)
+        good = dict(completed=True, healthy=True, minco_fraction=1., longest_minco_seconds=25.,
+                    observation_seconds=25., diagnostic_coverage=1.,
+                    p51_audit=dict(passed=True, checks=checks))
+        (base/'f2_summary.json').write_text(json.dumps(good))
+        retry2 = entry.f3_retry_root(3)
+        (retry2/'attempt_f3.json').write_text('{}')
+        source = retry2/'f3_h16_01'
+        source.mkdir()
+        (source/'bounded_stop.json').write_text(json.dumps(dict(reason='HEALTH_MONITOR_STALLED')))
+        (source/'watchdog_end.json').write_text(json.dumps(dict(x_time=10.)))
+        with pytest.raises(ValueError, match='PRE_X_RECORDER_STALL_REQUIRED'):
+            entry.f3_retry_root(3, 3)
+        (source/'watchdog_end.json').write_text('{}')
+        with pytest.raises(ValueError, match='PRE_X_RECORDER_STALL_REQUIRED'):
+            entry.f3_retry_root(3, 3)
+        (source/'watchdog_end.json').write_text(json.dumps(dict(x_time=None)))
+        (source/'X_command.txt').touch()
+        with pytest.raises(ValueError, match='PRE_X_RECORDER_STALL_REQUIRED'):
+            entry.f3_retry_root(3, 3)
+        (source/'X_command.txt').unlink()
+        retry3 = entry.f3_retry_root(3, 3)
+        assert retry3.name == 'f3_retry_03'
+        (retry3/'attempt_f3.json').write_text('{}')
+        source3 = retry3/'f3_h16_01'
+        source3.mkdir()
+        (source3/'bounded_stop.json').write_text(json.dumps(dict(reason='HEALTH_MONITOR_STALLED')))
+        (source3/'watchdog_end.json').write_text(json.dumps(dict(x_time=None)))
+        (source3/'X_command.txt').touch()
+        with pytest.raises(ValueError, match='PRE_X_RECORDER_STALL_REQUIRED'):
+>           entry.f3_retry_root(3, 4)
+
+test/test_p53_sitl.py:229: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+number = 3, attempt = 4
+
+    def f3_retry_root(number, attempt=2):
+        """One additional observer-diagnosis F3; retain the actual passed F2 gate."""
+        base = round_root(number)
+        if type(attempt) is not int or attempt not in (2, 3):
+>           raise ValueError('BOUNDED_F3_ATTEMPT_REQUIRED')
+E           ValueError: BOUNDED_F3_ATTEMPT_REQUIRED
+
+../../scripts/p53_minco_sitl.py:28: ValueError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = PosixPath('/tmp/pytest-of-qin/pytest-239/test_only_a_verified_pre_x_sta0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x761c4dcbfd90>
+
+    def test_only_a_verified_pre_x_stall_allows_one_ground_retry(tmp_path, monkeypatch):
+        monkeypatch.setattr(entry, 'ROOT', tmp_path/'20261013_p53_closed_loop_01')
+        base = entry.round_root(3)
+        base.mkdir()
+        (base/'attempt_f3.json').write_text('{}')
+        # Preserve the real F2 gate; use the same helper-tested complete audit shape.
+        checks = dict(reference_height=True, entry_recovery=True, execution_gates=True,
+                      evidence_coverage=True, switching=True, handovers=True)
+        good = dict(completed=True, healthy=True, minco_fraction=1., longest_minco_seconds=25.,
+                    observation_seconds=25., diagnostic_coverage=1.,
+                    p51_audit=dict(passed=True, checks=checks))
+        (base/'f2_summary.json').write_text(json.dumps(good))
+        retry2 = entry.f3_retry_root(3)
+        (retry2/'attempt_f3.json').write_text('{}')
+        source = retry2/'f3_h16_01'
+        source.mkdir()
+        (source/'bounded_stop.json').write_text(json.dumps(dict(reason='HEALTH_MONITOR_STALLED')))
+        (source/'watchdog_end.json').write_text(json.dumps(dict(x_time=10.)))
+        with pytest.raises(ValueError, match='PRE_X_RECORDER_STALL_REQUIRED'):
+            entry.f3_retry_root(3, 3)
+        (source/'watchdog_end.json').write_text('{}')
+        with pytest.raises(ValueError, match='PRE_X_RECORDER_STALL_REQUIRED'):
+            entry.f3_retry_root(3, 3)
+        (source/'watchdog_end.json').write_text(json.dumps(dict(x_time=None)))
+        (source/'X_command.txt').touch()
+        with pytest.raises(ValueError, match='PRE_X_RECORDER_STALL_REQUIRED'):
+            entry.f3_retry_root(3, 3)
+        (source/'X_command.txt').unlink()
+        retry3 = entry.f3_retry_root(3, 3)
+        assert retry3.name == 'f3_retry_03'
+        (retry3/'attempt_f3.json').write_text('{}')
+        source3 = retry3/'f3_h16_01'
+        source3.mkdir()
+        (source3/'bounded_stop.json').write_text(json.dumps(dict(reason='HEALTH_MONITOR_STALLED')))
+        (source3/'watchdog_end.json').write_text(json.dumps(dict(x_time=None)))
+        (source3/'X_command.txt').touch()
+>       with pytest.raises(ValueError, match='PRE_X_RECORDER_STALL_REQUIRED'):
+E       AssertionError: Regex pattern 'PRE_X_RECORDER_STALL_REQUIRED' does not match 'BOUNDED_F3_ATTEMPT_REQUIRED'.
+
+test/test_p53_sitl.py:228: AssertionError
+________ test_health_recorder_waits_for_actual_experiment_start_marker _________
+
+tmp_path = PosixPath('/tmp/pytest-of-qin/pytest-239/test_health_recorder_waits_for0')
+
+    def test_health_recorder_waits_for_actual_experiment_start_marker(tmp_path):
+        log = tmp_path/'launcher.txt'
+        marker = 'Starting UAV-USV experiment...'
+>       assert not entry.harness.health_start_allowed(tmp_path, marker)
+E       AttributeError: module 'p5_minco_sitl' has no attribute 'health_start_allowed'
+
+test/test_p53_sitl.py:239: AttributeError
+__________ test_legacy_health_recorder_start_policy_remains_immediate __________
+
+tmp_path = PosixPath('/tmp/pytest-of-qin/pytest-239/test_legacy_health_recorder_st0')
+
+    def test_legacy_health_recorder_start_policy_remains_immediate(tmp_path):
+>       assert entry.harness.health_start_allowed(tmp_path, None)
+E       AttributeError: module 'p5_minco_sitl' has no attribute 'health_start_allowed'
+
+test/test_p53_sitl.py:247: AttributeError
+=========================== short test summary info ============================
+FAILED test/test_p53_sitl.py::test_only_a_verified_pre_x_stall_allows_one_ground_retry
+FAILED test/test_p53_sitl.py::test_health_recorder_waits_for_actual_experiment_start_marker
+FAILED test/test_p53_sitl.py::test_legacy_health_recorder_start_policy_remains_immediate
+3 failed, 17 passed in 0.20s

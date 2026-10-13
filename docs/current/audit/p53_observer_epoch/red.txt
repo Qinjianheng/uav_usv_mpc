@@ -1,0 +1,35 @@
+F.F...                                                                   [100%]
+=================================== FAILURES ===================================
+_______ test_snapshot_delivery_delay_is_not_recounted_as_each_input_age ________
+
+    def test_snapshot_delivery_delay_is_not_recounted_as_each_input_age():
+        snapshot = health()
+        for key in ('control', 'navigation', 'prediction', 'attitude'):
+            snapshot[key]['receipt'] = 99.95
+>       assert safety_reason(snapshot, 100.214) is None
+E       AssertionError: assert 'HEALTH_INPUT_LOST' is None
+E        +  where 'HEALTH_INPUT_LOST' = safety_reason({'attitude': {'q': [1.0, 0.0, 0.0, 0.0], 'receipt': 99.95}, 'control': {'compute': 0.001, 'locked': True, 'receipt': 9...'v': [4.0, 0.0, 0.0], ...}, 'prediction': {'observation': 99.98, 'receipt': 99.95, 'stamp': 99.98, 'valid': True}, ...}, 100.214)
+
+test/test_p53_observer_epoch.py:11: AssertionError
+_ test_delayed_snapshot_keeps_input_and_physical_faults[control-patch1-HEALTH_INPUT_LOST] _
+
+section = 'control', patch = {'receipt': 100.01}, reason = 'HEALTH_INPUT_LOST'
+
+    @pytest.mark.parametrize('section,patch,reason', [
+        ('control', {'receipt': 99.7}, 'HEALTH_INPUT_LOST'),
+        ('control', {'receipt': 100.01}, 'HEALTH_INPUT_LOST'),
+        ('navigation', {'stamp': 99.8}, 'NAVIGATION_INPUT_STALE'),
+        ('navigation', {'p': [0., 0., -7.]}, 'HEIGHT_ERROR_OVER_1M'),
+    ])
+    def test_delayed_snapshot_keeps_input_and_physical_faults(section, patch, reason):
+        snapshot = health()
+        snapshot[section].update(patch)
+>       assert safety_reason(snapshot, 100.214) == reason
+E       AssertionError: assert None == 'HEALTH_INPUT_LOST'
+E        +  where None = safety_reason({'attitude': {'q': [1.0, 0.0, 0.0, 0.0], 'receipt': 100.0}, 'control': {'compute': 0.001, 'locked': True, 'receipt': 1...'v': [4.0, 0.0, 0.0], ...}, 'prediction': {'observation': 99.98, 'receipt': 100.0, 'stamp': 99.98, 'valid': True}, ...}, 100.214)
+
+test/test_p53_observer_epoch.py:23: AssertionError
+=========================== short test summary info ============================
+FAILED test/test_p53_observer_epoch.py::test_snapshot_delivery_delay_is_not_recounted_as_each_input_age
+FAILED test/test_p53_observer_epoch.py::test_delayed_snapshot_keeps_input_and_physical_faults[control-patch1-HEALTH_INPUT_LOST]
+2 failed, 4 passed in 0.20s

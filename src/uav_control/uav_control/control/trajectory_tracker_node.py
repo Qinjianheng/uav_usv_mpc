@@ -254,7 +254,8 @@ def hold_setpoint(state, timestamp_us, yaw=math.nan):
     return message
 
 
-def flight_command_to_setpoint(command, timestamp_us, yaw=math.nan):
+def flight_command_to_setpoint(
+        command, timestamp_us, yaw=math.nan, acceleration_feedforward=False):
     """Map non-MINCO flight guidance without mixing PX4 control modes."""
     message = TrajectorySetpoint()
     message.timestamp = int(timestamp_us)
@@ -267,6 +268,10 @@ def flight_command_to_setpoint(command, timestamp_us, yaw=math.nan):
     else:
         raise ValueError(f'unsupported flight command mode: {command.mode}')
     message.acceleration = [math.nan, math.nan, math.nan]
+    if acceleration_feedforward:
+        if command.mode != 'VELOCITY' or len(command.acceleration) != 3:
+            raise ValueError('INVALID_ACCELERATION_FEEDFORWARD_COMMAND')
+        message.acceleration = [float(v) for v in command.acceleration]
     message.jerk = [math.nan, math.nan, math.nan]
     message.yaw = math.nan if yaw is None else float(yaw)
     message.yawspeed = math.nan
@@ -335,6 +340,9 @@ class TrajectoryTrackerNode(Node):
         self.declare_parameter('follow_minco_enabled', True)
         self.declare_parameter('follow_minco_shadow_check', False)
         self.follow_minco_requested = bool(self.get_parameter('follow_minco_enabled').value)
+        self.declare_parameter('follow_minco_acceleration_feedforward', False)
+        self.follow_minco_acceleration_feedforward = bool(
+            self.get_parameter('follow_minco_acceleration_feedforward').value)
         if self.follow_minco_requested:
             from uav_control.guidance.follow_sitl_gate import require_isolated_sitl
             self.follow_sitl_grant = require_isolated_sitl()
@@ -1055,8 +1063,24 @@ class TrajectoryTrackerNode(Node):
             desired = reference_velocity(curve, context.now, self.latest_state.stamp,
                                          current.position,
                                          self.flight_guidance.follow_position_gain)
-            return self.flight_guidance._velocity_command(
+            previous_velocity = self.flight_guidance.previous_velocity
+            command = self.flight_guidance._velocity_command(
                 FlightKinematicState(current.position, current.velocity), desired, dt, False, True)
+            if getattr(self, 'follow_minco_acceleration_feedforward', False):
+                from uav_control.guidance.follow_minco_execution import (
+                    reference_acceleration, shaped_acceleration,
+                )
+                acceleration = reference_acceleration(
+                    curve, context.now, self.latest_state.stamp, current.velocity,
+                    self.flight_guidance.follow_position_gain,
+                    self.follow_model.config.maximum_horizontal_acceleration)
+                acceleration = shaped_acceleration(
+                    acceleration, desired, command.velocity, previous_velocity, dt,
+                    min(self.follow_model.config.maximum_horizontal_acceleration,
+                        self.flight_guidance.maximum_horizontal_acceleration),
+                    self.flight_guidance.maximum_horizontal_speed)
+                command = replace(command, acceleration=acceleration)
+            return command
         except (ValueError, TypeError, OverflowError):
             self._revoke_nominal_follow('REFERENCE_COMMAND_INVALID')
             return None
@@ -2001,7 +2025,9 @@ class TrajectoryTrackerNode(Node):
             self._publish_offboard_mode(
                 timestamp_us, velocity_control=velocity_control,
             )
-            setpoint = (flight_command_to_setpoint(command, timestamp_us)
+            setpoint = (flight_command_to_setpoint(
+                command, timestamp_us, acceleration_feedforward=(minco_active and getattr(
+                    self, 'follow_minco_acceleration_feedforward', False)))
                         if hasattr(command, 'mode')
                         else command_to_setpoint(command, timestamp_us))
             self._publish_bool(self.far_guidance_pub, False)

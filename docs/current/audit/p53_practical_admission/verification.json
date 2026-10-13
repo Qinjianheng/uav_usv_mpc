@@ -1,0 +1,43 @@
+{
+  "passed": true,
+  "independent_review_pass": true,
+  "base_head": "5a783ca87c240fe06ae457230a24b666a0f4bcdb",
+  "pytest": {
+    "passed": 1787,
+    "skipped": 1,
+    "warnings": 3
+  },
+  "source_count": 690,
+  "protected_files": 984,
+  "production_source_unchanged": 441,
+  "build_scope": "Prior four-package build reused; all production src SHA verified unchanged. Research driver/audit/tests and runtime admission parameters only changed.",
+  "admission": {
+    "horizontal_enter": 1.0,
+    "relative_enter": 1.8,
+    "height_enter": 0.1,
+    "stable_seconds": 5.0,
+    "cooldown_seconds": 2.0,
+    "horizontal_exit": 1.5,
+    "relative_exit": 2.5,
+    "performance_seconds": 0.5,
+    "maximum_sample_gap": 0.2,
+    "probe_maximum_gap": 0.45,
+    "required_probes": 3,
+    "maximum_entries": 3
+  },
+  "environment": {
+    "processes": [],
+    "hardware_serial": [],
+    "udp8888_free": true,
+    "domain": 43
+  },
+  "actual_old_f2_pass": true,
+  "actual_practical_f2_pass": false,
+  "actual_practical_f3_pass": false,
+  "source_f3_manifest_sha256": "d30a392944265b568c99573b30bfe2d460170eb2b89a2490d93f2ee42f908dab",
+  "scope": "User explicitly authorized flight-focused moderate metrics; center-relative velocity admission calibrated for 5m rotating viewpoint. Full mathematical/physical validators unchanged.",
+  "unresolved": [
+    "New practical F2 and actual F3 flight effect"
+  ],
+  "raw_directory": "/home/qin/data/uav_usv_mpc/data/experiments/20261013_p53_practical_admission_01"
+}

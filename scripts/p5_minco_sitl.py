@@ -23,7 +23,7 @@ ROOT = WORKSPACE/'data/experiments/20261012_p5_revalidation_02'
 AUTHORIZATION = 'User continued and authorized F3 after healthy repaired F2; one each'
 
 
-def safety_reason(health, now, planning_required=True):
+def safety_reason(health, now, planning_required=True, maximum_observer_input_age=.125):
     """Experiment bounds only; controller TTL, lease and whole-sphere admission stay intact."""
     if not 0 <= now-health.get('written', 0.) <= .25:
         return 'HEALTH_MONITOR_STALE'
@@ -36,13 +36,16 @@ def safety_reason(health, now, planning_required=True):
     if not c.get('locked') or c.get('status') not in ('FOLLOW', 'MINCO_FOLLOW'):
         return 'NO_LAWFUL_FOLLOW_PATH'
     inputs = (c, n, p, a) if planning_required else (c, n, a)
-    if any(not 0 <= now-x.get('receipt', 0.) <= .25 for x in inputs):
+    # Separate <=250ms acquisition age and <=250ms snapshot delivery budgets.
+    # Read-time receipt age can reach 500ms (vehicle_status: 1s); controller TTL is separate.
+    receipt_epoch = health['written']
+    if any(not 0 <= receipt_epoch-x.get('receipt', 0.) <= .25 for x in inputs):
         return 'HEALTH_INPUT_LOST'
     # PX4 Commander publishes vehicle_status at a 500ms steady-state cadence.
-    if not 0 <= now-v.get('receipt', 0.) <= .75:
+    if not 0 <= receipt_epoch-v.get('receipt', 0.) <= .75:
         return 'VEHICLE_STATUS_LOST'
     stamp = health.get('ros_now', float('inf'))
-    if not 0 <= stamp-n.get('stamp', 0.) <= .125:
+    if not 0 <= stamp-n.get('stamp', 0.) <= maximum_observer_input_age:
         return 'NAVIGATION_INPUT_STALE'
     position, velocity, q = n.get('p', ()), n.get('v', ()), a.get('q', ())
     if len(position) != 3 or len(velocity) != 3 or len(q) != 4 or not all(
@@ -59,7 +62,8 @@ def safety_reason(health, now, planning_required=True):
         return 'ATTITUDE_DIVERGENCE'
     prediction_ages = [stamp-p.get(k, 0.) for k in ('stamp', 'observation')]
     if planning_required and (not p.get('valid')
-                              or not all(0 <= age <= .125 for age in prediction_ages)):
+                              or not all(0 <= age <= maximum_observer_input_age
+                                         for age in prediction_ages)):
         return 'PREDICTION_INPUT_STALE'
     return None
 
@@ -349,6 +353,8 @@ def run(output, qualification, scene, task_root=None, authorization=None,
                                                     text=True).strip(),
                      qualification_sha256=sha(qualification), execution_lease_seconds=.45,
                      maximum_input_age=.125, minco_authorized=False,
+                     experiment_observer_input_age_seconds=getattr(
+                         health_check, 'maximum_observer_input_age', .125),
                      authorization=authorization,
                      original_follow_warmup_seconds=5.,
                      original_follow_settling=dict(horizontal_error_max=1.,
@@ -360,8 +366,13 @@ def run(output, qualification, scene, task_root=None, authorization=None,
                      qualified_holding=False)
     # Constraint fingerprint copied from audited raw source, distinct from the config hash.
     condition['constraint_fingerprint'] = raw['constraint_fingerprint']
+    if flight_parameters:
+        condition['original_follow_settling']['relative_speed_max'] = flight_parameters.get(
+            'follow_admission_relative_enter', .5)
     condition_path.write_text(json.dumps(condition, indent=2)+'\n')
     env = dict(os.environ, UAV_USV_HEADLESS_GCS='true', UAV_USV_MINCO_EXECUTE='true')
+    if health_start_marker is not None:
+        env['UAV_USV_REQUIRE_PRE_X_HEALTH'] = 'true'
     command = [sys.executable, str(WORKSPACE/'scripts/p4_sitl_session.py'), str(output),
                '--follow-seconds', '180', '--watchdog', '280']
     processes = []

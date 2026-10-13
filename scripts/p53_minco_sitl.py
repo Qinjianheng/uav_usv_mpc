@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Bounded P5.3 diagnostic rounds and conditional actual-F2-qualified F3."""
 import argparse
+from dataclasses import replace
 import json
 from pathlib import Path
 
@@ -16,9 +17,14 @@ allow_f3 = previous.allow_f3
 
 def round_root(number):
     """Every diagnostic round keeps its original exclusive attempt claims."""
-    if type(number) is not int or not 1 <= number <= 3:
+    if type(number) is not int or not 1 <= number <= 9:
         raise ValueError('BOUNDED_P53_ROUND_REQUIRED')
     return ROOT.with_name(f'20261013_p53_closed_loop_{number:02d}')
+
+
+def flight_admission():
+    """Allow the legitimate 5m-offset turn velocity in the practical research round."""
+    return replace(AdmissionConfig(), relative_enter=1.8, relative_exit=2.5)
 
 
 def f3_retry_root(number, attempt=2):
@@ -71,6 +77,8 @@ class GroundStartupHealth:
 class FollowHealthGuard:
     """Observe brief original-FOLLOW reacquisition; never grant MINCO authority."""
 
+    maximum_observer_input_age = .3
+
     def __init__(self, initial_acquisition=False):
         self.unlocked_since = None
         self.initial_acquisition = initial_acquisition
@@ -78,7 +86,8 @@ class FollowHealthGuard:
         self.follow_lock_seen = False
 
     def __call__(self, health, now):
-        decision = previous.previous.health_decision(health, now)
+        decision = previous.previous.health_decision(
+            health, now, maximum_observer_input_age=self.maximum_observer_input_age)
         control = health.get('control', {})
         if (self.initial_acquisition and not self.follow_lock_seen
                 and control.get('status') == 'FOLLOW'):
@@ -86,7 +95,8 @@ class FollowHealthGuard:
                 self.acquisition_since = now
             elapsed = now-self.acquisition_since
             observed = dict(health, control=dict(control, locked=True))
-            decision = previous.previous.health_decision(observed, now)
+            decision = previous.previous.health_decision(
+                observed, now, maximum_observer_input_age=self.maximum_observer_input_age)
             if decision['fatal'] is None:
                 if elapsed < 0:
                     decision['fatal'] = 'INITIAL_FOLLOW_ACQUISITION_CLOCK_REVERSED'
@@ -110,7 +120,8 @@ class FollowHealthGuard:
             # the lock bit. The sole Tracker still brakes/reacquires and its
             # strict admission cannot accept a trajectory while unlocked.
             observed = dict(health, control=dict(control, locked=True))
-            decision = previous.previous.health_decision(observed, now)
+            decision = previous.previous.health_decision(
+                observed, now, maximum_observer_input_age=self.maximum_observer_input_age)
             if self.unlocked_since is None:
                 self.unlocked_since = now
             elapsed = now-self.unlocked_since
@@ -168,7 +179,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('output', type=Path)
     parser.add_argument('--scene', choices=('f2', 'f3'), default='f2')
-    parser.add_argument('--round', type=int, choices=(1, 2, 3), default=1)
+    parser.add_argument('--round', type=int, choices=(1, 2, 3, 4, 5, 6, 7, 8, 9), default=1)
     parser.add_argument('--f3-attempt', type=int, choices=(1, 2, 3, 4), default=1)
     parser.add_argument('--qualification', type=Path, required=True)
     parser.add_argument('--readiness', type=Path, required=True)
@@ -181,6 +192,7 @@ if __name__ == '__main__':
         parser.error('--f3-attempt is only valid for scene f3')
     task_root = (f3_retry_root(args.round, args.f3_attempt) if args.f3_attempt > 1
                  else round_root(args.round))
+    admission = flight_admission() if args.round >= 4 else AdmissionConfig()
     from p51_execution_audit import audit
     raise SystemExit(harness.run(
         args.output.resolve(), args.qualification.resolve(), args.scene,
@@ -191,5 +203,6 @@ if __name__ == '__main__':
         health_start_marker='Starting UAV-USV experiment...',
         research_config=WORKSPACE/'src/uav_usv_bringup/config/p51_follow_research.yaml',
         extra_audit=audit, f3_gate=allow_f3, release_gate=validate_release,
-        flight_parameters=dict(follow_admission_enabled=True, **{
-            'follow_admission_'+key: value for key, value in vars(AdmissionConfig()).items()})))
+        flight_parameters=dict(
+            follow_admission_enabled=True, follow_minco_acceleration_feedforward=args.round >= 5,
+            **{'follow_admission_'+key: value for key, value in vars(admission).items()})))

@@ -1,0 +1,12 @@
+{
+  "independent_review_pass": true,
+  "reviewer": "p53_startup_final_review",
+  "critical": 0,
+  "important": 0,
+  "minor": 0,
+  "scope": "Incremental startup order/default path/watchdog/bounded pre-X retry; read only, no repeated test claim",
+  "source_sha256": {
+    "scripts/p5_minco_sitl.py": "e7afdc9a031e9b70db3e69e5ca5ad153654399e45c57947e3a59e34ead95b699",
+    "scripts/p53_minco_sitl.py": "c153da254e08a1ad585bd0d459027579cf4818321b046aa8b06b15cd768b20c6"
+  }
+}

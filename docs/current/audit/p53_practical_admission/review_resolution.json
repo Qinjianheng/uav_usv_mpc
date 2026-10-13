@@ -1,0 +1,13 @@
+{
+  "independent_review_pass": true,
+  "critical": 0,
+  "important_unresolved": 0,
+  "minor": 0,
+  "reviewer": "p53_startup_final_review",
+  "scope": "Research-only geometric velocity admission and actual config audit. No actual flight performance claim.",
+  "sha256": {
+    "scripts/p53_minco_sitl.py": "5bd925a6cc8bb0f2a199a7dceab5633312b9c2536cffd81329950e7361c02d47",
+    "scripts/p51_execution_audit.py": "906dcd2814e9d22cabf7b6ae678b29266330325f53c7b653c46bf62c0598a5a1",
+    "scripts/p5_minco_sitl.py": "d44922a08712d15cb42647590eb3c372ba1a78aaeed63efbb7c5b690907e2cb2"
+  }
+}

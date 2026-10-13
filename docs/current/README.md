@@ -4,6 +4,7 @@
 
 | 文档 | 用途 |
 |---|---|
+| [P5.3 飞行效果优先续做](p53_practical_follow_validation.md) | 适度放宽转弯准入、真实F2/F3和水平前馈修复；最新实跑结论 |
 | [P5.3 最新飞行效果修复](p53_flight_effect_repair.md) | 自主实测、Gazebo源故障与后继调度修复；最终验收以此入口为准 |
 | [P5.3 实际回退归因](p53_f2_root_cause.md) | 第二轮两次lease根因、第三轮失败反证与实测时间线 |
 | [P5.3 闭环根因](p53_closed_loop_root_cause.md) | 记录回放、真实/模拟证据边界和未解决项 |

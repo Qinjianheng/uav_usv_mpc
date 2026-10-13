@@ -1,0 +1,102 @@
+{
+  "passed": true,
+  "a_d_offline_pass": true,
+  "independent_review_pass": true,
+  "independent_review_meaning": "Prior production/ground reviews plus fresh startup-order optional hook and bounded pre-X retry source review; 69targeted tests",
+  "base_head": "dfb0daa83ffc1d0c7e65486307f6c50f1a57db73",
+  "branch": "master",
+  "pytest": {
+    "passed": 1783,
+    "skipped": 1,
+    "warnings": 3
+  },
+  "build_packages": [
+    "px4_msgs",
+    "uav_usv_interfaces",
+    "uav_control",
+    "uav_usv_bringup"
+  ],
+  "static_checks": {
+    "flake8": true,
+    "shell": true,
+    "launch": true,
+    "messages": true,
+    "prefix": true,
+    "git_diff": true
+  },
+  "source_count": 689,
+  "only_existing_functional_source_changed": [
+    "src/uav_control/uav_control/controllers/p4_follow_planner_node.py",
+    "src/uav_control/uav_control/gazebo_target_visualizer.py"
+  ],
+  "protected_files": 984,
+  "historical_manifests": {
+    "docs/current/audit/p52_follow_minco": 30,
+    "docs/current/audit/p52_revalidation_02": 21,
+    "docs/current/audit/p52_revalidation_03": 19,
+    "data/experiments/20261013_p52_offline_01": 87,
+    "data/experiments/20261013_p52_diagnosis_01": 29,
+    "data/experiments/20261013_p52_diagnosis_02": 26,
+    "data/experiments/20261013_p52_closed_loop_01/f2_h16_01": 887,
+    "data/experiments/20261013_p52_closed_loop_02/f2_h16_01": 909,
+    "data/experiments/20261013_p52_closed_loop_03/f2_h16_01": 930
+  },
+  "environment": {
+    "processes": [],
+    "hardware_serial": [],
+    "udp8888_free": true,
+    "domain": 43
+  },
+  "actual_p53_sitl": true,
+  "prior_f2_attempts": 3,
+  "prior_f2_pass": false,
+  "actual_f3": false,
+  "next_f2_authorization_required": false,
+  "next_f2_maximum_attempts": 1,
+  "recorded_replay": {
+    "lifecycle_events": 42,
+    "maximum_stamp_difference": 0.0,
+    "successor_activations": 36,
+    "expired_active": 0,
+    "illegal_parent": 0,
+    "prefix_scope": "Recorded observations; not new physical geometry proof",
+    "entry_scope": "Separate actual entry audit and production policy tests",
+    "ack_payloads": 91,
+    "explicit_reordered_duplicates": 42
+  },
+  "math_scope": "Historical named H1.6 candidate/strict validators unchanged; no new whole-matrix or flight equivalence claim",
+  "timing_scope": "Recorded worker/arrival/validation/ACK times preserved; serial four-request current wall replay, not online performance improvement",
+  "unresolved": [
+    "Actual F3 complete60s and20to60steady performance"
+  ],
+  "raw_directory": "/home/qin/data/uav_usv_mpc/data/experiments/20261013_p53_start_order_diagnosis",
+  "next_attempt_root": "/home/qin/data/uav_usv_mpc/data/experiments/20261013_p53_closed_loop_03",
+  "old_checkout_writes": false,
+  "actual_p53_round1": "pre-planner single-frame lock stop; no MINCO result",
+  "explicit_autonomous_sitl_authorization": true,
+  "adjustments": {
+    "observer_original_follow_lock_recovery_max_seconds": 0.2,
+    "marker_recreation_after_consecutive_pose_failures": 3,
+    "successor_dispatch_headroom_seconds": 0.02,
+    "cost_hint_recovery": "once per distinct newer acquired image only"
+  },
+  "previous_qualification_sha256": "992db689dc1100689e951e82bec5a3b1127e61e54d28558b42a73fef93e2879d",
+  "changed_since_passed_f2": [
+    "scripts/p53_minco_sitl.py",
+    "scripts/p5_minco_sitl.py",
+    "src/uav_control/test/test_p53_sitl.py"
+  ],
+  "build_scope": "Reuse completed four-package build: every production src hash unchanged; only offline driver/test changed",
+  "actual_f2_pass": true,
+  "actual_f2_summary_sha256": "97bf48a9cff6571c6300ece2d9b62e45f3ede6987bac5d32b4e02ffe3f01418b",
+  "actual_f2_manifest_sha256": "ce3e0d8010a73931bae0d8de6b4ca4f55eb4bc74e4dbcd3a5b40bc100126ea08",
+  "actual_f3_pass": false,
+  "f3_attempt1": "Before Planner: initial RGB acquisition, DEPTH_RATIO_LOW, 200ms incorrectly applied",
+  "next_f3_maximum_attempts": 1,
+  "next_f3_authorization_required": false,
+  "f3_attempt2": "Before X: ground DDS recorder paused300ms; no actual flight, no Planner",
+  "f3_attempt3": "Before DDS/ROS experiment startup: recorder initialized too early; no X and no flight",
+  "controller_parameters_identical_to_passed_f2": true,
+  "scene_parameters_identical_to_passed_f2": false,
+  "scene_difference": "Predeclared F2 linear2m/s vs F3 figure_eight4m/s; all research/Tracker/KF/UAV parameters identical. Prior field name controller_and_scene was inaccurate."
+}

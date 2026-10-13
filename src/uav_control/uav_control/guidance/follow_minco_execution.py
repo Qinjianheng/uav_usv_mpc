@@ -55,6 +55,48 @@ def reference_velocity(curve, now, navigation_stamp, position, gain):
     return tuple(np.asarray(current[3:6])+gain*(np.asarray(reference[:3])-position))
 
 
+def reference_acceleration(curve, now, navigation_stamp, velocity, gain, horizontal_limit):
+    """Differentiate nominal velocity feedback; vertical sea-guard authority stays separate."""
+    epoch = max(navigation_stamp, curve.start)
+    measured = np.asarray(velocity, dtype=float)
+    if (not curve.start <= epoch <= now <= curve.end or measured.shape != (3,)
+            or not np.all(np.isfinite(measured)) or not math.isfinite(gain) or gain < 0
+            or not math.isfinite(horizontal_limit) or horizontal_limit <= 0):
+        raise ValueError('INVALID_ACCELERATION_FEEDFORWARD_INPUT')
+    reference, current = curve.sample(epoch), curve.sample(now)
+    horizontal = np.asarray(current[6:8])+gain*(np.asarray(reference[3:5])-measured[:2])
+    if not np.all(np.isfinite(horizontal)):
+        raise ValueError('INVALID_ACCELERATION_FEEDFORWARD')
+    norm = float(np.linalg.norm(horizontal))
+    if norm > horizontal_limit:
+        horizontal *= horizontal_limit/norm
+    return float(horizontal[0]), float(horizontal[1]), math.nan
+
+
+def shaped_acceleration(raw, desired, emitted, previous, dt, horizontal_limit, speed_limit):
+    """Differentiate the emitted velocity when limited; suppress outward FF at the speed cap."""
+    acceleration = np.asarray(raw[:2], dtype=float)
+    desired_xy, emitted_xy = np.asarray(desired[:2]), np.asarray(emitted[:2])
+    if (not all(np.all(np.isfinite(v)) for v in (acceleration, desired_xy, emitted_xy))
+            or not math.isfinite(dt) or dt <= 0
+            or not math.isfinite(horizontal_limit) or horizontal_limit <= 0
+            or not math.isfinite(speed_limit) or speed_limit <= 0):
+        raise ValueError('INVALID_SHAPED_ACCELERATION')
+    if not np.allclose(desired_xy, emitted_xy, rtol=0., atol=1e-9):
+        acceleration = (np.zeros(2) if previous is None else
+                        (emitted_xy-np.asarray(previous[:2]))/dt)
+    if not np.all(np.isfinite(acceleration)):
+        raise ValueError('INVALID_SHAPED_ACCELERATION')
+    speed = float(np.linalg.norm(emitted_xy))
+    if speed >= speed_limit-1e-9:
+        direction = emitted_xy/speed
+        acceleration -= max(0., float(acceleration@direction))*direction
+    norm = float(np.linalg.norm(acceleration))
+    if norm > horizontal_limit:
+        acceleration *= horizontal_limit/norm
+    return float(acceleration[0]), float(acceleration[1]), math.nan
+
+
 def nominal_curve(curve, prediction, model, start, end, diagnostics=None):
     """Receiver-local full sphere/range, ideal attitude and sea checks, never a robust proof."""
     detail = diagnostics if diagnostics is not None else {}

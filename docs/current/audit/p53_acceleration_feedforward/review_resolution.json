@@ -1,0 +1,11 @@
+{
+  "independent_review_pass": true,
+  "important_unresolved": 0,
+  "reviewer": "/root/p53_startup_final_review",
+  "original_important": "Analytic FF could bypass velocity shaping",
+  "resolution": "Use emitted velocity derivative while limited; remove outward FF at cap; four physical counterexamples RED then GREEN.",
+  "verified_source": {
+    "src/uav_control/uav_control/guidance/follow_minco_execution.py": "f42711b293e475e9a6b4eeca6f7c111cdd26b6168bf35d520d37b6f0c865c44b",
+    "src/uav_control/uav_control/control/trajectory_tracker_node.py": "f27ac91aac928a48008503a290deb91e6afe56d6eeb228ed9f4b92b26ed9dd75"
+  }
+}

@@ -11,6 +11,7 @@ from uav_control.guidance.follow_fast_validation import validate_seed
 from uav_control.guidance.follow_limits import constraint_snapshot
 from uav_control.guidance.follow_problem import FollowProblem
 from uav_control.guidance.follow_profile import stage
+from uav_control.guidance.follow_cost_evidence import evidence_for, protect_costs
 from uav_control.guidance.follow_rollout import FollowRolloutConfig, rollout_follow_fast
 from uav_control.guidance.follow_terminal_correction import TerminalCorrectionObjective
 
@@ -54,6 +55,8 @@ class P47FollowGuidedMinco(P44FollowSolver):
 
     def _solve(self, request):
         started, now = self.clock(), self.wall_clock()
+        if self.online_budget_guard:
+            protect_costs(self, request.context.observation_stamp)
         until, _ = freshness(request, now)
         end = started+min(self.config.solve_budget, until-now-self.fast.publication_reserve)
         timing = dict(initialization=0., coefficient_construction=0., optimization=0.,
@@ -72,6 +75,9 @@ class P47FollowGuidedMinco(P44FollowSolver):
                                   fallback_estimate=self.fallback_estimate,
                                   follow_estimate=self.follow_estimate,
                                   fallback_failed_cost=self.fallback_failed_cost,
+                                  successful_cost_evidence=(evidence_for(self).report(
+                                      request.context.observation_stamp)
+                                      if self.online_budget_guard else None),
                                   online_budget_guard=self.online_budget_guard,
                                   estimate_is_guarantee=False))
         best = MpcSeedResult(request.context, solver_status='NO_FRESHNESS_BUDGET')
@@ -220,7 +226,7 @@ class P47FollowGuidedMinco(P44FollowSolver):
             elif detail['initial_status'] == 'SHORT_BUDGET_P44_PRIORITY':
                 # A skipped path cannot refresh its cost. Age an isolated overestimate
                 # toward the warm scheduling prior, with no extra requests or TTL renewal.
-                self.follow_estimate = max(.015, self.follow_estimate*.8)
+                protect_costs(self, request.context.observation_stamp, age_paths=('follow',))
             if timing['fallback']:
                 if detail['fallback_valid']:
                     self.fallback_estimate = max(self.fallback_estimate*.98,
@@ -230,13 +236,16 @@ class P47FollowGuidedMinco(P44FollowSolver):
                     # a valid candidate; retain that cost without permanently gating it out.
                     self.fallback_failed_cost = timing['fallback']
             elif not detail['fallback_used'] and not best.valid:
-                self.fallback_estimate = max(.012, self.fallback_estimate*.8)
+                protect_costs(self, request.context.observation_stamp, age_paths=('fallback',))
         snapshot = constraint_snapshot(self.model)
         detail['budget']['remaining_seconds_at_finish'] = remaining()
         if remaining() <= 0:
             best = replace(best, valid=False, solver_status='DEADLINE_EXCEEDED')
             detail['independent_valid'] = detail['fallback_valid'] = False
         elapsed = self.clock()-started
+        if self.online_budget_guard and best.valid and elapsed > 0:
+            path = 'fallback' if detail['fallback_used'] else 'follow'
+            evidence_for(self).observe(path, elapsed, request.context.observation_stamp)
         return replace(best, solve_time=elapsed,
                        candidate_kind='p44_fallback' if detail['fallback_used'] else self.mode,
                        timing=dict(timing, total=elapsed), metrics=dict(

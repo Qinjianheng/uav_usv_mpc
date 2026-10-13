@@ -62,7 +62,10 @@ class P4ResearchRunner(ShadowResearchRunner):
             if ((waiting or successor) and self.pending is None
                     and getattr(self.solver, 'online_budget_guard', False)):
                 from uav_control.guidance.fast_follow_minco import freshness
+                from uav_control.guidance.follow_cost_evidence import protect_costs
                 until, _ = freshness(result[0], now)
+                observation = result[0].context.observation_stamp
+                protect_costs(self.solver, observation)
                 costs = [self.solver.follow_estimate]
                 if self.solver.fallback_enabled:
                     costs.append(self.solver.fallback_estimate)
@@ -83,10 +86,9 @@ class P4ResearchRunner(ShadowResearchRunner):
                         # same non-guaranteed hints as the solver, once per new
                         # acquired image; repeated timer ticks cannot age them.
                         self.budget_wait_epoch = epoch
-                        self.solver.follow_estimate = max(.015, self.solver.follow_estimate*.8)
-                        if self.solver.fallback_enabled:
-                            self.solver.fallback_estimate = max(
-                                .012, self.solver.fallback_estimate*.8)
+                        paths = (('follow', 'fallback') if self.solver.fallback_enabled
+                                 else ('follow',))
+                        protect_costs(self.solver, observation, age_paths=paths)
                         costs = [self.solver.follow_estimate]
                         if self.solver.fallback_enabled:
                             costs.append(self.solver.fallback_estimate)

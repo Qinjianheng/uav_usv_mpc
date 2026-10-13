@@ -1,0 +1,132 @@
+FFFF.F                                                                   [100%]
+=================================== FAILURES ===================================
+_ test_recorded_successor_phases_wait_for_budget_before_worker_dispatch[100.0688317-0.0203261-0.0278958-False] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7695f4f86e30>
+now = 100.0688317, follow_cost = 0.0203261, fallback_cost = 0.0278958
+waiting = False
+
+    @pytest.mark.parametrize('now,follow_cost,fallback_cost,waiting', [
+        (100.0688317, .0203261, .0278958, False),  # regular request63
+        (100.0799561, .0162609, .0278958, True),   # sole retry64, no work attempted
+        (100.0714524, .0359154, .0328215, True),   # sole retry108, no work attempted
+    ])
+    def test_recorded_successor_phases_wait_for_budget_before_worker_dispatch(
+            monkeypatch, now, follow_cost, fallback_cost, waiting):
+        r, _ = runner(monkeypatch)
+        r.test_request = replace(r.test_request, context=replace(r.test_request.context,
+            observation_stamp=100., prediction_valid_until=100.25))
+        r.deadline_scheduling = True
+        r.retry_waiting_parent = 83 if waiting else None
+        r.solver.follow_estimate, r.solver.fallback_estimate = follow_cost, fallback_cost
+>       with pytest.raises(ValueError, match='SUCCESSOR_AWAITING_FRESH_INPUT'):
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+test/test_p53_dispatch_budget.py:23: Failed
+_ test_recorded_successor_phases_wait_for_budget_before_worker_dispatch[100.0799561-0.0162609-0.0278958-True] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7695f4f1f9d0>
+now = 100.0799561, follow_cost = 0.0162609, fallback_cost = 0.0278958
+waiting = True
+
+    @pytest.mark.parametrize('now,follow_cost,fallback_cost,waiting', [
+        (100.0688317, .0203261, .0278958, False),  # regular request63
+        (100.0799561, .0162609, .0278958, True),   # sole retry64, no work attempted
+        (100.0714524, .0359154, .0328215, True),   # sole retry108, no work attempted
+    ])
+    def test_recorded_successor_phases_wait_for_budget_before_worker_dispatch(
+            monkeypatch, now, follow_cost, fallback_cost, waiting):
+        r, _ = runner(monkeypatch)
+        r.test_request = replace(r.test_request, context=replace(r.test_request.context,
+            observation_stamp=100., prediction_valid_until=100.25))
+        r.deadline_scheduling = True
+        r.retry_waiting_parent = 83 if waiting else None
+        r.solver.follow_estimate, r.solver.fallback_estimate = follow_cost, fallback_cost
+>       with pytest.raises(ValueError, match='SUCCESSOR_AWAITING_FRESH_INPUT'):
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+test/test_p53_dispatch_budget.py:23: Failed
+_ test_recorded_successor_phases_wait_for_budget_before_worker_dispatch[100.0714524-0.0359154-0.0328215-True] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7695f4f85b70>
+now = 100.0714524, follow_cost = 0.0359154, fallback_cost = 0.0328215
+waiting = True
+
+    @pytest.mark.parametrize('now,follow_cost,fallback_cost,waiting', [
+        (100.0688317, .0203261, .0278958, False),  # regular request63
+        (100.0799561, .0162609, .0278958, True),   # sole retry64, no work attempted
+        (100.0714524, .0359154, .0328215, True),   # sole retry108, no work attempted
+    ])
+    def test_recorded_successor_phases_wait_for_budget_before_worker_dispatch(
+            monkeypatch, now, follow_cost, fallback_cost, waiting):
+        r, _ = runner(monkeypatch)
+        r.test_request = replace(r.test_request, context=replace(r.test_request.context,
+            observation_stamp=100., prediction_valid_until=100.25))
+        r.deadline_scheduling = True
+        r.retry_waiting_parent = 83 if waiting else None
+        r.solver.follow_estimate, r.solver.fallback_estimate = follow_cost, fallback_cost
+>       with pytest.raises(ValueError, match='SUCCESSOR_AWAITING_FRESH_INPUT'):
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+test/test_p53_dispatch_budget.py:23: Failed
+__________ test_latest_image_after_wait_keeps_original_parent_and_ttl __________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7695f4f93fa0>
+
+    def test_latest_image_after_wait_keeps_original_parent_and_ttl(monkeypatch):
+        r, req = runner(monkeypatch)
+        r.test_request = replace(req, context=replace(req.context, observation_stamp=100.,
+                                                    prediction_valid_until=100.25))
+        r.deadline_scheduling = True
+        r.solver.follow_estimate, r.solver.fallback_estimate = .0359154, .0328215
+>       with pytest.raises(ValueError, match='SUCCESSOR_AWAITING_FRESH_INPUT'):
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+test/test_p53_dispatch_budget.py:35: Failed
+________ test_real_runner_does_not_consume_one_retry_until_fresh_image _________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7695f4dbe380>
+
+    def test_real_runner_does_not_consume_one_retry_until_fresh_image(monkeypatch):
+        from concurrent.futures import Future
+        from test_follow_mpc_shadow_node import _Adapter, _Pool, _mission, _prediction
+        from test_follow_research_algorithms import request
+        from uav_control.controllers.follow_mpc_shadow_node import ShadowResearchRunner
+        from uav_control.controllers.p4_follow_planner_node import P4ResearchRunner
+        from uav_control.controllers.follow_mpc_seed import MpcConfig, MpcSeedResult
+        from uav_control.guidance.follow_problem import future_request
+        req = future_request(request(2.), .15)
+        req = replace(req, context=replace(req.context, observation_stamp=100.,
+                                          prediction_valid_until=100.25))
+        pool, events = _Pool(), []
+        adapter = _Adapter()
+        adapter.clock_generation = 0
+        r = P4ResearchRunner(MpcConfig(), adapter, pool, events.append, rate_hz=5.)
+        r.deadline_scheduling = True
+        r.execution_status = dict(stamp=100.06, active=83, deadline=100.44)
+        r.solver.online_budget_guard = True
+        r.solver.follow_estimate, r.solver.fallback_estimate = .0162609, .0278958
+        r.solver.fallback_enabled, r.solver.fast = True, SimpleNamespace(publication_reserve=.02)
+        r.test_request = req
+        monkeypatch.setattr(ShadowResearchRunner, '_prepare', lambda self, *args:
+                            (self.test_request, None))
+        r.update_mission(_mission(mission_id=1), 100.01, 1.01)
+        r.update_prediction(_prediction(mission_id=1), 100.01, 1.01)
+        r.tick(100.02, 1.02)
+        pool.future.set_result(MpcSeedResult(req.context, valid=False))
+        r.tick(100.06, 1.06)
+        pool.future = Future()
+        r.tick(100.0799561, 1.0799561)
+>       assert len(pool.requests) == 1 and r.retry_waiting_parent == 83
+E       AssertionError: assert (2 == 1)
+E        +  where 2 = len([FutureRequest(context=PlanningContext(mission_id=1, cycle_id=1, execution_start_stamp=100.15, navigation_stamp=100.0,...rement_state=(-5.0, 0.0, -5.0, 2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0), boundary_policy='constant_acceleration_projection')])
+E        +    where [FutureRequest(context=PlanningContext(mission_id=1, cycle_id=1, execution_start_stamp=100.15, navigation_stamp=100.0,...rement_state=(-5.0, 0.0, -5.0, 2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0), boundary_policy='constant_acceleration_projection')] = <test_follow_mpc_shadow_node._Pool object at 0x7695f4dbd4e0>.requests
+
+test/test_p53_dispatch_budget.py:86: AssertionError
+=========================== short test summary info ============================
+FAILED test/test_p53_dispatch_budget.py::test_recorded_successor_phases_wait_for_budget_before_worker_dispatch[100.0688317-0.0203261-0.0278958-False]
+FAILED test/test_p53_dispatch_budget.py::test_recorded_successor_phases_wait_for_budget_before_worker_dispatch[100.0799561-0.0162609-0.0278958-True]
+FAILED test/test_p53_dispatch_budget.py::test_recorded_successor_phases_wait_for_budget_before_worker_dispatch[100.0714524-0.0359154-0.0328215-True]
+FAILED test/test_p53_dispatch_budget.py::test_latest_image_after_wait_keeps_original_parent_and_ttl
+FAILED test/test_p53_dispatch_budget.py::test_real_runner_does_not_consume_one_retry_until_fresh_image
+5 failed, 1 passed in 0.36s

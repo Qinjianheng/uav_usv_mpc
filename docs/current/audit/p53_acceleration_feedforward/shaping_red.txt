@@ -1,0 +1,79 @@
+.......FFFF                                                              [100%]
+=================================== FAILURES ===================================
+_ test_feedforward_follows_actual_speed_and_acceleration_shaping[previous0-desired0-raw0-expected0] _
+
+previous = (6.5, 0.0, 0.0), desired = (6.8, 0.0, 0.0), raw = (1.6, 0.0, nan)
+expected = (0.0, 0.0)
+
+    @pytest.mark.parametrize('previous,desired,raw,expected', [
+        ((6.5, 0., 0.), (6.8, 0., 0.), (1.6, 0., math.nan), (0., 0.)),
+        ((0., 0., 0.), (4., 0., 0.), (0., 2., math.nan), (3., 0.)),
+        ((6.5, 0., 0.), (6.5, 0., 0.), (1., 2., math.nan), (0., 2.)),
+    ])
+    def test_feedforward_follows_actual_speed_and_acceleration_shaping(
+            previous, desired, raw, expected):
+        core = FlightGuidanceCore(maximum_horizontal_speed=6.5)
+        core.previous_velocity = previous
+        emitted = core._velocity_command(
+            FlightKinematicState((0., 0., -5.), previous), desired, .05, False, True)
+>       acceleration = execution.shaped_acceleration(
+            raw, desired, emitted.velocity, previous, .05, 3., 6.5)
+E       AttributeError: module 'uav_control.guidance.follow_minco_execution' has no attribute 'shaped_acceleration'
+
+test/test_p53_acceleration_feedforward.py:69: AttributeError
+_ test_feedforward_follows_actual_speed_and_acceleration_shaping[previous1-desired1-raw1-expected1] _
+
+previous = (0.0, 0.0, 0.0), desired = (4.0, 0.0, 0.0), raw = (0.0, 2.0, nan)
+expected = (3.0, 0.0)
+
+    @pytest.mark.parametrize('previous,desired,raw,expected', [
+        ((6.5, 0., 0.), (6.8, 0., 0.), (1.6, 0., math.nan), (0., 0.)),
+        ((0., 0., 0.), (4., 0., 0.), (0., 2., math.nan), (3., 0.)),
+        ((6.5, 0., 0.), (6.5, 0., 0.), (1., 2., math.nan), (0., 2.)),
+    ])
+    def test_feedforward_follows_actual_speed_and_acceleration_shaping(
+            previous, desired, raw, expected):
+        core = FlightGuidanceCore(maximum_horizontal_speed=6.5)
+        core.previous_velocity = previous
+        emitted = core._velocity_command(
+            FlightKinematicState((0., 0., -5.), previous), desired, .05, False, True)
+>       acceleration = execution.shaped_acceleration(
+            raw, desired, emitted.velocity, previous, .05, 3., 6.5)
+E       AttributeError: module 'uav_control.guidance.follow_minco_execution' has no attribute 'shaped_acceleration'
+
+test/test_p53_acceleration_feedforward.py:69: AttributeError
+_ test_feedforward_follows_actual_speed_and_acceleration_shaping[previous2-desired2-raw2-expected2] _
+
+previous = (6.5, 0.0, 0.0), desired = (6.5, 0.0, 0.0), raw = (1.0, 2.0, nan)
+expected = (0.0, 2.0)
+
+    @pytest.mark.parametrize('previous,desired,raw,expected', [
+        ((6.5, 0., 0.), (6.8, 0., 0.), (1.6, 0., math.nan), (0., 0.)),
+        ((0., 0., 0.), (4., 0., 0.), (0., 2., math.nan), (3., 0.)),
+        ((6.5, 0., 0.), (6.5, 0., 0.), (1., 2., math.nan), (0., 2.)),
+    ])
+    def test_feedforward_follows_actual_speed_and_acceleration_shaping(
+            previous, desired, raw, expected):
+        core = FlightGuidanceCore(maximum_horizontal_speed=6.5)
+        core.previous_velocity = previous
+        emitted = core._velocity_command(
+            FlightKinematicState((0., 0., -5.), previous), desired, .05, False, True)
+>       acceleration = execution.shaped_acceleration(
+            raw, desired, emitted.velocity, previous, .05, 3., 6.5)
+E       AttributeError: module 'uav_control.guidance.follow_minco_execution' has no attribute 'shaped_acceleration'
+
+test/test_p53_acceleration_feedforward.py:69: AttributeError
+__________ test_unlimited_velocity_keeps_analytic_turning_feedforward __________
+
+    def test_unlimited_velocity_keeps_analytic_turning_feedforward():
+>       value = execution.shaped_acceleration(
+            (0., 2.8, math.nan), (4., 0., 0.), (4., 0., 0.), (4., -.1, 0.), .05, 3., 6.5)
+E       AttributeError: module 'uav_control.guidance.follow_minco_execution' has no attribute 'shaped_acceleration'
+
+test/test_p53_acceleration_feedforward.py:76: AttributeError
+=========================== short test summary info ============================
+FAILED test/test_p53_acceleration_feedforward.py::test_feedforward_follows_actual_speed_and_acceleration_shaping[previous0-desired0-raw0-expected0]
+FAILED test/test_p53_acceleration_feedforward.py::test_feedforward_follows_actual_speed_and_acceleration_shaping[previous1-desired1-raw1-expected1]
+FAILED test/test_p53_acceleration_feedforward.py::test_feedforward_follows_actual_speed_and_acceleration_shaping[previous2-desired2-raw2-expected2]
+FAILED test/test_p53_acceleration_feedforward.py::test_unlimited_velocity_keeps_analytic_turning_feedforward
+4 failed, 7 passed in 0.32s

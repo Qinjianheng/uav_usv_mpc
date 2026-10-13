@@ -14,6 +14,12 @@ WS_ROOT="${UAV_USV_WS:-${DEFAULT_WS_ROOT}}"
 PX4_ROOT="${PX4_ROOT:-/home/qin/Projects/PX4-Autopilot}"
 OCEAN_WORLD="${WS_ROOT}/src/uav_usv_bringup/worlds/ocean.sdf"
 PX4_GZ_ENV="${PX4_ROOT}/build/px4_sitl_default/rootfs/gz_env.sh"
+LAB_GZ_SERVER_FLAG=""
+case "${UAV_USV_GZ_SERVER_ONLY:-0}" in
+    0) ;;
+    1) LAB_GZ_SERVER_FLAG="-s" ;;
+    *) echo "UAV_USV_GZ_SERVER_ONLY must be 0 or 1." >&2; exit 2 ;;
+esac
 CUSTOM_GZ_MODELS="${WS_ROOT}/src/uav_usv_bringup/models"
 QGC_APPIMAGE="${QGC_APPIMAGE:-/home/qin/桌面/QGroundControl-x86_64.AppImage}"
 BUILD_WORKSPACE=true
@@ -343,12 +349,13 @@ restart_lab()
 }
 
 echo "Starting Gazebo ocean world..."
+echo "Gazebo server-only mode: ${UAV_USV_GZ_SERVER_ONLY:-0}"
 gnome-terminal --title="Gazebo Ocean" -- bash -lc "
 printf '%s\n' \"\${BASHPID}\" > '${LAB_SESSION_DIR}/gazebo.pid' &&
 source '${PX4_GZ_ENV}' &&
 export GZ_SIM_SERVER_CONFIG_PATH='${LAB_GZ_SERVER_CONFIG}' &&
 export GZ_SIM_RESOURCE_PATH='${LAB_CAMERA_MODELS}':'${CUSTOM_GZ_MODELS}':\${GZ_SIM_RESOURCE_PATH:-} &&
-gz sim -r '${OCEAN_WORLD}';
+gz sim ${LAB_GZ_SERVER_FLAG} -r '${OCEAN_WORLD}';
 component_status=\$?;
 if [[ ! -f '${LAB_RESTART_MARKER}' ]]; then exec bash; fi;
 exit \${component_status}"

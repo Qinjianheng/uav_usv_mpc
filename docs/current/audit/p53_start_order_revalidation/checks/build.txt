@@ -1,0 +1,13 @@
+Starting >>> px4_msgs
+Starting >>> uav_usv_interfaces
+Finished <<< uav_usv_interfaces [0.78s]
+Finished <<< px4_msgs [2.22s]
+Starting >>> uav_control
+[Processing: uav_control]
+[Processing: uav_control]
+[Processing: uav_control]
+Finished <<< uav_control [1min 30s]
+Starting >>> uav_usv_bringup
+Finished <<< uav_usv_bringup [0.07s]
+
+Summary: 4 packages finished [1min 33s]

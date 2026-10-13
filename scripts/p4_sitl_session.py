@@ -85,6 +85,20 @@ def session_exit_code(ended):
                  and ended['monitor_returncode'] == 0 and not ended['still_alive']) else 1
 
 
+def pre_x_health_ready(health, now):
+    """Require the independent recorder to catch up before issuing any takeoff command."""
+    written = health.get('written', 0.)
+    control, navigation, vehicle, attitude = (health.get(k, {}) for k in (
+        'control', 'navigation', 'vehicle', 'attitude'))
+    return bool(0 <= now-written <= .25
+                and control.get('status') == 'GROUND_HOLD' and navigation.get('valid')
+                and vehicle.get('nav_state') == 14 and vehicle.get('armed') == 1
+                and 0 <= health.get('ros_now', 0.)-navigation.get('stamp', 0.) <= .125
+                and all(0 <= written-v.get('receipt', 0.) <= .25
+                        for v in (control, navigation, attitude))
+                and 0 <= written-vehicle.get('receipt', 0.) <= .75)
+
+
 def run(root, shadow, follow_seconds, watchdog, kill_planner_after=None, fault_suite=False):
     """Reuse repository launcher only after exclusion gates; preserve every failure/run log."""
     root = root.resolve()
@@ -145,6 +159,7 @@ def run(root, shadow, follow_seconds, watchdog, kill_planner_after=None, fault_s
     injector = FaultInjector(root) if fault_suite else None
     planner_killed = False
     follow_seen = False
+    pre_x_stable_since = None
     unlocked_since = None
     previous_load, load_time, loads = {}, time.monotonic(), []
     monitor_log = (root/'monitor.txt').open('x')
@@ -213,7 +228,19 @@ def run(root, shadow, follow_seconds, watchdog, kill_planner_after=None, fault_s
                 reason = 'CONTROL_AUTHORITY_CONFLICT'
                 break
             ready = 'Two-stage control is ready' in (root/'launcher.txt').read_text()
-            if ready and x_time is None and safe_graph:
+            extra_ready = True
+            if env.get('UAV_USV_REQUIRE_PRE_X_HEALTH') == 'true' and x_time is None:
+                health_path = root/'p5_health.json'
+                snapshot = json.loads(health_path.read_text()) if health_path.exists() else {}
+                sampled = time.time()
+                if ready and safe_graph and pre_x_health_ready(snapshot, sampled):
+                    if pre_x_stable_since is None:
+                        pre_x_stable_since = sampled
+                else:
+                    pre_x_stable_since = None
+                extra_ready = (pre_x_stable_since is not None
+                               and sampled-pre_x_stable_since >= .5)
+            if ready and x_time is None and safe_graph and extra_ready:
                 with (root/'X_command.txt').open('x') as log:
                     x_shell = ('set -eo pipefail; source /opt/ros/humble/setup.bash; source '
                                + overlay+'; timeout 8s ros2 topic pub '

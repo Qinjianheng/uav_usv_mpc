@@ -1,0 +1,7 @@
+{
+  "critical": 0,
+  "important_unresolved": 0,
+  "important_closed": "Cost spike recovery on distinct fresh acquired images only; repeated timer/old images cannot age hints; RED→GREEN actual runner request-count test",
+  "independent_review": "p52_final_review independent source review; 17 targeted tests passed",
+  "scope": "Source safety and scheduling behavior, not actual closed-loop performance"
+}

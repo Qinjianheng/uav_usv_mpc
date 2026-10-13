@@ -12,11 +12,11 @@ CHECKS = ('reference_height', 'entry_recovery', 'execution_gates',
           'evidence_coverage', 'switching', 'handovers')
 
 
-def audit_rows(rows, first_minco, scene):
+def audit_rows(rows, first_minco, scene, config=None):
     """Correlate actual diagnostics, receiver debug, wire curves and ACKs by plan/time."""
     checks = dict.fromkeys(CHECKS, True)
     errors, fallbacks, heights, vertical_speeds, steps = [], [], [], [], []
-    config = AdmissionConfig()
+    config = AdmissionConfig() if config is None else config
 
     def finite(value):
         return isinstance(value, (int, float)) and math.isfinite(value)
@@ -92,7 +92,8 @@ def audit_rows(rows, first_minco, scene):
                        'valid_probe_count', 'entry_attempt')
             if not (all(finite(q.get(k)) for k in numbers)
                     and q.get('plan_id') == plan and math.isfinite(qt)
-                    and qt <= c['start'] and qt-q.get('stable_since', math.inf) >= 5.-1e-7
+                    and qt <= c['start']
+                    and qt-q.get('stable_since', math.inf) >= config.stable_seconds-1e-7
                     and qt >= q.get('recovery_until', math.inf)
                     and q.get('valid_probe_count', 0) >= config.required_probes
                     and 0 <= qt-q.get('last_probe', -math.inf) <= config.probe_maximum_gap
@@ -100,7 +101,7 @@ def audit_rows(rows, first_minco, scene):
                 fail('entry_recovery', 'MISSING_OR_INVALID_ENTRY_QUALIFICATION', r)
             if loss and (not finite(loss.get('stamp')) or not finite(q.get('stable_since'))
                          or qt < loss['stamp']+config.cooldown_seconds+config.stable_seconds-1e-7
-                         or q['stable_since'] < loss['stamp']+2.-1e-7):
+                         or q['stable_since'] < loss['stamp']+config.cooldown_seconds-1e-7):
                 fail('entry_recovery', 'RECOVERY_COOLDOWN_OR_STABILITY_BYPASSED', r)
     for a, b in zip(diag, diag[1:]):
         if a['status'] != 'MINCO_FOLLOW' or b['status'] == 'MINCO_FOLLOW':
@@ -146,6 +147,8 @@ def audit_rows(rows, first_minco, scene):
 def audit(output, rows, first_minco, scene):
     """Write only into the new actual run; preserve every recorded event."""
     import json
-    report = audit_rows(rows, first_minco, scene)
+    from p5_live_health import geometry_config
+    _, _, config = geometry_config(output)
+    report = audit_rows(rows, first_minco, scene, config)
     (output/'p51_execution_audit.json').write_text(json.dumps(report, indent=2)+'\n')
     return report

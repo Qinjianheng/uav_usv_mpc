@@ -1,0 +1,26 @@
+..................FF                                                     [100%]
+=================================== FAILURES ===================================
+________ test_health_recorder_waits_for_actual_experiment_start_marker _________
+
+tmp_path = PosixPath('/tmp/pytest-of-qin/pytest-238/test_health_recorder_waits_for0')
+
+    def test_health_recorder_waits_for_actual_experiment_start_marker(tmp_path):
+        log = tmp_path/'launcher.txt'
+        marker = 'Starting UAV-USV experiment...'
+>       assert not entry.harness.health_start_allowed(tmp_path, marker)
+E       AttributeError: module 'p5_minco_sitl' has no attribute 'health_start_allowed'
+
+test/test_p53_sitl.py:228: AttributeError
+__________ test_legacy_health_recorder_start_policy_remains_immediate __________
+
+tmp_path = PosixPath('/tmp/pytest-of-qin/pytest-238/test_legacy_health_recorder_st0')
+
+    def test_legacy_health_recorder_start_policy_remains_immediate(tmp_path):
+>       assert entry.harness.health_start_allowed(tmp_path, None)
+E       AttributeError: module 'p5_minco_sitl' has no attribute 'health_start_allowed'
+
+test/test_p53_sitl.py:236: AttributeError
+=========================== short test summary info ============================
+FAILED test/test_p53_sitl.py::test_health_recorder_waits_for_actual_experiment_start_marker
+FAILED test/test_p53_sitl.py::test_legacy_health_recorder_start_policy_remains_immediate
+2 failed, 18 passed in 1.00s

@@ -1,0 +1,212 @@
+FFFF..                                                                   [100%]
+=================================== FAILURES ===================================
+_ test_recorded_successor_phases_wait_for_budget_before_worker_dispatch[100.0688317-0.0203261-0.0278958-False] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7678263937c0>
+now = 100.0688317, follow_cost = 0.0203261, fallback_cost = 0.0278958
+waiting = False
+
+    @pytest.mark.parametrize('now,follow_cost,fallback_cost,waiting', [
+        (100.0688317, .0203261, .0278958, False),  # regular request63
+        (100.0799561, .0162609, .0278958, True),   # sole retry64, no work attempted
+        (100.0714524, .0359154, .0328215, True),   # sole retry108, no work attempted
+    ])
+    def test_recorded_successor_phases_wait_for_budget_before_worker_dispatch(
+            monkeypatch, now, follow_cost, fallback_cost, waiting):
+        r, _ = runner(monkeypatch)
+        r.deadline_scheduling = True
+        r.retry_waiting_parent = 83 if waiting else None
+        r.solver.follow_estimate, r.solver.fallback_estimate = follow_cost, fallback_cost
+>       with pytest.raises(ValueError, match='SUCCESSOR_AWAITING_FRESH_INPUT'):
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+test/test_p53_dispatch_budget.py:21: Failed
+_ test_recorded_successor_phases_wait_for_budget_before_worker_dispatch[100.0799561-0.0162609-0.0278958-True] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x767826459d20>
+now = 100.0799561, follow_cost = 0.0162609, fallback_cost = 0.0278958
+waiting = True
+
+    @pytest.mark.parametrize('now,follow_cost,fallback_cost,waiting', [
+        (100.0688317, .0203261, .0278958, False),  # regular request63
+        (100.0799561, .0162609, .0278958, True),   # sole retry64, no work attempted
+        (100.0714524, .0359154, .0328215, True),   # sole retry108, no work attempted
+    ])
+    def test_recorded_successor_phases_wait_for_budget_before_worker_dispatch(
+            monkeypatch, now, follow_cost, fallback_cost, waiting):
+        r, _ = runner(monkeypatch)
+        r.deadline_scheduling = True
+        r.retry_waiting_parent = 83 if waiting else None
+        r.solver.follow_estimate, r.solver.fallback_estimate = follow_cost, fallback_cost
+        with pytest.raises(ValueError, match='SUCCESSOR_AWAITING_FRESH_INPUT'):
+>           r._prepare(now, 10.)
+
+test/test_p53_dispatch_budget.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <uav_control.controllers.p4_follow_planner_node.P4ResearchRunner object at 0x767826458b20>
+now = 100.0799561, monotonic_now = 10.0
+
+    def _prepare(self, now, monotonic_now):
+        with CycleProfile(self.cycle_id+1) as profile:
+            result = super()._prepare(now, monotonic_now)
+            waiting = getattr(self, 'retry_waiting_parent', None)
+            status = getattr(self, 'execution_status', None) or {}
+            if waiting and status.get('active') != waiting:
+                self.retry_waiting_parent = None
+            elif (waiting and self.pending is None
+                  and getattr(self.solver, 'online_budget_guard', False)):
+                from uav_control.guidance.fast_follow_minco import freshness
+                until, _ = freshness(result[0], now)
+                costs = [self.solver.follow_estimate]
+                if self.solver.fallback_enabled:
+                    costs.append(self.solver.fallback_estimate)
+                if until-now-self.solver.fast.publication_reserve <= min(costs):
+>                   raise ValueError('RETRY_AWAITING_FRESH_INPUT')
+E                   ValueError: RETRY_AWAITING_FRESH_INPUT
+
+uav_control/controllers/p4_follow_planner_node.py:68: ValueError
+
+During handling of the above exception, another exception occurred:
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x767826459d20>
+now = 100.0799561, follow_cost = 0.0162609, fallback_cost = 0.0278958
+waiting = True
+
+    @pytest.mark.parametrize('now,follow_cost,fallback_cost,waiting', [
+        (100.0688317, .0203261, .0278958, False),  # regular request63
+        (100.0799561, .0162609, .0278958, True),   # sole retry64, no work attempted
+        (100.0714524, .0359154, .0328215, True),   # sole retry108, no work attempted
+    ])
+    def test_recorded_successor_phases_wait_for_budget_before_worker_dispatch(
+            monkeypatch, now, follow_cost, fallback_cost, waiting):
+        r, _ = runner(monkeypatch)
+        r.deadline_scheduling = True
+        r.retry_waiting_parent = 83 if waiting else None
+        r.solver.follow_estimate, r.solver.fallback_estimate = follow_cost, fallback_cost
+>       with pytest.raises(ValueError, match='SUCCESSOR_AWAITING_FRESH_INPUT'):
+E       AssertionError: Regex pattern 'SUCCESSOR_AWAITING_FRESH_INPUT' does not match 'RETRY_AWAITING_FRESH_INPUT'.
+
+test/test_p53_dispatch_budget.py:21: AssertionError
+_ test_recorded_successor_phases_wait_for_budget_before_worker_dispatch[100.0714524-0.0359154-0.0328215-True] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x767826458e20>
+now = 100.0714524, follow_cost = 0.0359154, fallback_cost = 0.0328215
+waiting = True
+
+    @pytest.mark.parametrize('now,follow_cost,fallback_cost,waiting', [
+        (100.0688317, .0203261, .0278958, False),  # regular request63
+        (100.0799561, .0162609, .0278958, True),   # sole retry64, no work attempted
+        (100.0714524, .0359154, .0328215, True),   # sole retry108, no work attempted
+    ])
+    def test_recorded_successor_phases_wait_for_budget_before_worker_dispatch(
+            monkeypatch, now, follow_cost, fallback_cost, waiting):
+        r, _ = runner(monkeypatch)
+        r.deadline_scheduling = True
+        r.retry_waiting_parent = 83 if waiting else None
+        r.solver.follow_estimate, r.solver.fallback_estimate = follow_cost, fallback_cost
+        with pytest.raises(ValueError, match='SUCCESSOR_AWAITING_FRESH_INPUT'):
+>           r._prepare(now, 10.)
+
+test/test_p53_dispatch_budget.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <uav_control.controllers.p4_follow_planner_node.P4ResearchRunner object at 0x76782645afe0>
+now = 100.0714524, monotonic_now = 10.0
+
+    def _prepare(self, now, monotonic_now):
+        with CycleProfile(self.cycle_id+1) as profile:
+            result = super()._prepare(now, monotonic_now)
+            waiting = getattr(self, 'retry_waiting_parent', None)
+            status = getattr(self, 'execution_status', None) or {}
+            if waiting and status.get('active') != waiting:
+                self.retry_waiting_parent = None
+            elif (waiting and self.pending is None
+                  and getattr(self.solver, 'online_budget_guard', False)):
+                from uav_control.guidance.fast_follow_minco import freshness
+                until, _ = freshness(result[0], now)
+                costs = [self.solver.follow_estimate]
+                if self.solver.fallback_enabled:
+                    costs.append(self.solver.fallback_estimate)
+                if until-now-self.solver.fast.publication_reserve <= min(costs):
+>                   raise ValueError('RETRY_AWAITING_FRESH_INPUT')
+E                   ValueError: RETRY_AWAITING_FRESH_INPUT
+
+uav_control/controllers/p4_follow_planner_node.py:68: ValueError
+
+During handling of the above exception, another exception occurred:
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x767826458e20>
+now = 100.0714524, follow_cost = 0.0359154, fallback_cost = 0.0328215
+waiting = True
+
+    @pytest.mark.parametrize('now,follow_cost,fallback_cost,waiting', [
+        (100.0688317, .0203261, .0278958, False),  # regular request63
+        (100.0799561, .0162609, .0278958, True),   # sole retry64, no work attempted
+        (100.0714524, .0359154, .0328215, True),   # sole retry108, no work attempted
+    ])
+    def test_recorded_successor_phases_wait_for_budget_before_worker_dispatch(
+            monkeypatch, now, follow_cost, fallback_cost, waiting):
+        r, _ = runner(monkeypatch)
+        r.deadline_scheduling = True
+        r.retry_waiting_parent = 83 if waiting else None
+        r.solver.follow_estimate, r.solver.fallback_estimate = follow_cost, fallback_cost
+>       with pytest.raises(ValueError, match='SUCCESSOR_AWAITING_FRESH_INPUT'):
+E       AssertionError: Regex pattern 'SUCCESSOR_AWAITING_FRESH_INPUT' does not match 'RETRY_AWAITING_FRESH_INPUT'.
+
+test/test_p53_dispatch_budget.py:21: AssertionError
+__________ test_latest_image_after_wait_keeps_original_parent_and_ttl __________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7678264415d0>
+
+    def test_latest_image_after_wait_keeps_original_parent_and_ttl(monkeypatch):
+        r, req = runner(monkeypatch)
+        r.deadline_scheduling = True
+        r.solver.follow_estimate, r.solver.fallback_estimate = .0359154, .0328215
+        with pytest.raises(ValueError, match='SUCCESSOR_AWAITING_FRESH_INPUT'):
+>           r._prepare(100.0714524, 10.)
+
+test/test_p53_dispatch_budget.py:32: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <uav_control.controllers.p4_follow_planner_node.P4ResearchRunner object at 0x767826440400>
+now = 100.0714524, monotonic_now = 10.0
+
+    def _prepare(self, now, monotonic_now):
+        with CycleProfile(self.cycle_id+1) as profile:
+            result = super()._prepare(now, monotonic_now)
+            waiting = getattr(self, 'retry_waiting_parent', None)
+            status = getattr(self, 'execution_status', None) or {}
+            if waiting and status.get('active') != waiting:
+                self.retry_waiting_parent = None
+            elif (waiting and self.pending is None
+                  and getattr(self.solver, 'online_budget_guard', False)):
+                from uav_control.guidance.fast_follow_minco import freshness
+                until, _ = freshness(result[0], now)
+                costs = [self.solver.follow_estimate]
+                if self.solver.fallback_enabled:
+                    costs.append(self.solver.fallback_estimate)
+                if until-now-self.solver.fast.publication_reserve <= min(costs):
+>                   raise ValueError('RETRY_AWAITING_FRESH_INPUT')
+E                   ValueError: RETRY_AWAITING_FRESH_INPUT
+
+uav_control/controllers/p4_follow_planner_node.py:68: ValueError
+
+During handling of the above exception, another exception occurred:
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7678264415d0>
+
+    def test_latest_image_after_wait_keeps_original_parent_and_ttl(monkeypatch):
+        r, req = runner(monkeypatch)
+        r.deadline_scheduling = True
+        r.solver.follow_estimate, r.solver.fallback_estimate = .0359154, .0328215
+>       with pytest.raises(ValueError, match='SUCCESSOR_AWAITING_FRESH_INPUT'):
+E       AssertionError: Regex pattern 'SUCCESSOR_AWAITING_FRESH_INPUT' does not match 'RETRY_AWAITING_FRESH_INPUT'.
+
+test/test_p53_dispatch_budget.py:31: AssertionError
+=========================== short test summary info ============================
+FAILED test/test_p53_dispatch_budget.py::test_recorded_successor_phases_wait_for_budget_before_worker_dispatch[100.0688317-0.0203261-0.0278958-False]
+FAILED test/test_p53_dispatch_budget.py::test_recorded_successor_phases_wait_for_budget_before_worker_dispatch[100.0799561-0.0162609-0.0278958-True]
+FAILED test/test_p53_dispatch_budget.py::test_recorded_successor_phases_wait_for_budget_before_worker_dispatch[100.0714524-0.0359154-0.0328215-True]
+FAILED test/test_p53_dispatch_budget.py::test_latest_image_after_wait_keeps_original_parent_and_ttl
+4 failed, 2 passed in 0.38s

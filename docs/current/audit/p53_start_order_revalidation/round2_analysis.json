@@ -1,0 +1,1128 @@
+{
+  "source": "/home/qin/data/uav_usv_mpc/data/experiments/20261013_p52_closed_loop_02/f2_h16_01",
+  "evidence_sha256": "94308ad9d4d45edb92b36aa270e3722801e267a7099d7cd9f5d40273c7842ae9",
+  "source_manifest_sha256": "d766062bf89c4d7034f9f2d98a2172ac15aaad9eb82e63b39a0c49c60bff9afa",
+  "predefined_observation": {
+    "start": 1791851491.2910855,
+    "end": 1791851516.2910855,
+    "seconds": 24.948709726333618,
+    "minco_fraction": 0.3546694180287578,
+    "longest_minco_seconds": 5.349958658218384,
+    "diagnostic_coverage": 1.0,
+    "recovery_time_included": true,
+    "passed": false
+  },
+  "follow_to_five_second_gate": 14.172208786010742,
+  "planner_to_first_active": 2.829230546951294,
+  "actual_active_plans_all": 39,
+  "actual_active_plans_observation": 38,
+  "published_successor_cohort": {
+    "matured": 36,
+    "activated": 35,
+    "meaning": "Published successor cohort only; not all requests or lease opportunities"
+  },
+  "timing": {
+    "observed_request_intervals": {
+      "count": 128,
+      "min": 0.019937992095947266,
+      "p50": 0.20929646492004395,
+      "p95": 0.24006210565567015,
+      "p99": 0.35643717765808164,
+      "max": 0.3978397846221924
+    },
+    "prediction_generation_intervals": {
+      "count": 1150,
+      "min": 0.012730836868286133,
+      "p50": 0.04971742630004883,
+      "p95": 0.061378169059753414,
+      "p99": 0.06773098468780517,
+      "max": 0.10397696495056152
+    },
+    "prediction_observation_intervals": {
+      "count": 1150,
+      "min": 0.04788494110107422,
+      "p50": 0.05195271968841553,
+      "p95": 0.052010190486907956,
+      "p99": 0.05203998327255249,
+      "max": 0.10000276565551758
+    },
+    "wire_publication_intervals": {
+      "count": 48,
+      "min": 0.17507553100585938,
+      "p50": 0.21833348274230957,
+      "p95": 0.37913142442703235,
+      "p99": 7.742959191799164,
+      "max": 7.873483657836914
+    },
+    "whole_cycle_final": {
+      "count": 129,
+      "min": 0.01342297502560541,
+      "p50": 0.0392312069889158,
+      "p95": 0.05834982140222564,
+      "p99": 0.07142664432176388,
+      "max": 0.07332988700363785
+    },
+    "solver": {
+      "count": 129,
+      "min": 0.0007786759815644473,
+      "p50": 0.018934708001324907,
+      "p95": 0.034077515796525404,
+      "p99": 0.04299838727689348,
+      "max": 0.04895574299735017
+    },
+    "validation": {
+      "count": 129,
+      "min": 0.0,
+      "p50": 0.005388029996538535,
+      "p95": 0.016193269198993214,
+      "p99": 0.021276886718114837,
+      "max": 0.026268593996064737
+    },
+    "receiver_validation": {
+      "count": 50,
+      "min": 0.0,
+      "p50": 0.007779435996781103,
+      "p95": 0.016189505442162043,
+      "p99": 0.019481066921434826,
+      "max": 0.020434505015145987
+    },
+    "publish_to_accepted": {
+      "count": 40,
+      "min": 0.004484891891479492,
+      "p50": 0.006613731384277344,
+      "p95": 0.01296045780181884,
+      "p99": 0.01614455461502075,
+      "max": 0.016757965087890625
+    },
+    "publish_to_active": {
+      "count": 39,
+      "min": 0.08641695976257324,
+      "p50": 0.12154221534729004,
+      "p95": 0.16291391849517822,
+      "p99": 0.16651338577270508,
+      "max": 0.1666264533996582
+    },
+    "activation_delay": {
+      "count": 39,
+      "min": 0.0008907318115234375,
+      "p50": 0.021632909774780273,
+      "p95": 0.04624888896942139,
+      "p99": 0.04830949783325195,
+      "max": 0.04839158058166504
+    },
+    "receiver_finish_raw_margin": {
+      "count": 49,
+      "min": 0.019585132598876953,
+      "p50": 0.04401254653930664,
+      "p95": 0.0559730052947998,
+      "p99": 0.059400205612182594,
+      "max": 0.06238150596618652
+    },
+    "successor_start_before_parent_expiry": {
+      "count": 36,
+      "min": 0.1575334072113037,
+      "p50": 0.23021423816680908,
+      "p95": 0.2496563196182251,
+      "p99": 0.2499449610710144,
+      "max": 0.2499542236328125
+    }
+  },
+  "publication_reasons": {
+    "PUBLISHED": 49,
+    "NO_FRESHNESS_BUDGET": 11,
+    "DEADLINE_EXCEEDED": 4,
+    "FOLLOW_ENTRY_INHIBITED": 65
+  },
+  "start_missed": 1,
+  "losses": [
+    {
+      "plan": 17,
+      "stamp": 1791851494.172349,
+      "reason": "LEASE_EXPIRED_NO_SUCCESSOR",
+      "terminal_ack": {
+        "kind": "follow_ack",
+        "receipt": 1791851494.1732202,
+        "stamp": 1791851494.1728342,
+        "plan": 17,
+        "mission": 1,
+        "generation": 0,
+        "state": "EXPIRED",
+        "reasons": [],
+        "receiver": "trajectory_tracker_node",
+        "active": 0,
+        "pending": 0,
+        "owner": "ORIGINAL_FOLLOW",
+        "replaced": false,
+        "receiver_compute_seconds": 0.0,
+        "receiver_boot": "92a2e6ca3155a783c19f20b54549bd0d",
+        "planner_boot": "815bbf98f636138914a6adb44178ce8e"
+      },
+      "successor_plans": [
+        19
+      ],
+      "original_lease_deadline": 1791851494.132808,
+      "active_ack": {
+        "kind": "follow_ack",
+        "receipt": 1791851493.7282195,
+        "stamp": 1791851493.7276976,
+        "plan": 17,
+        "mission": 1,
+        "generation": 0,
+        "state": "ACTIVE",
+        "reasons": [
+          "NOMINAL_EXECUTION"
+        ],
+        "receiver": "trajectory_tracker_node",
+        "active": 17,
+        "pending": 0,
+        "owner": "MINCO_FOLLOW",
+        "replaced": true,
+        "receiver_compute_seconds": 0.0,
+        "receiver_boot": "92a2e6ca3155a783c19f20b54549bd0d",
+        "planner_boot": "815bbf98f636138914a6adb44178ce8e"
+      },
+      "attempts": [
+        {
+          "cycle": 18,
+          "dispatch": 1791851493.7728088,
+          "raw_input_observation": 1791851493.6973014,
+          "worker": {
+            "solve_start_monotonic": 206261.907542246,
+            "solve_end_monotonic": 206261.938712017,
+            "solve_start_ros": 1791851493.774788,
+            "solve_end_ros": 1791851493.8059554
+          },
+          "result": "DEADLINE_EXCEEDED",
+          "candidate_result": "DEADLINE_EXCEEDED",
+          "first_blocker": "DEADLINE_EXCEEDED",
+          "final": {
+            "event": "follow_publication_final",
+            "cycle_id": 18,
+            "stamp": 1791851493.8241258,
+            "whole_cycle_time": 0.0512994040036574,
+            "remaining_raw_ttl": -0.0018343925476074219,
+            "preparation_profile": {
+              "cycle_id": 18,
+              "total_seconds": 0.0011275660071987659,
+              "stages": {
+                "navigation_sync": {
+                  "seconds": 0.0005615620175376534,
+                  "calls": 1
+                },
+                "input_prepare": {
+                  "seconds": 0.000186114979442209,
+                  "calls": 1
+                }
+              },
+              "counts": {},
+              "unattributed_seconds": 0.0003798890102189034
+            },
+            "worker_profile": {
+              "cycle_id": 18,
+              "total_seconds": 0.031100007996428758,
+              "stages": {
+                "target_interpolation": {
+                  "seconds": 0.0015578389866277575,
+                  "calls": 6
+                },
+                "future_reference": {
+                  "seconds": 0.001411587989423424,
+                  "calls": 1
+                },
+                "candidate_reference": {
+                  "seconds": 0.00029344201902858913,
+                  "calls": 1
+                },
+                "candidate_jerk": {
+                  "seconds": 0.00018680901848711073,
+                  "calls": 1
+                },
+                "candidate_yaw": {
+                  "seconds": 0.00011730499682016671,
+                  "calls": 1
+                },
+                "candidate_seed_construction": {
+                  "seconds": 0.00023981902631931007,
+                  "calls": 2
+                },
+                "candidate_proxy_geometry": {
+                  "seconds": 0.006523602001834661,
+                  "calls": 1
+                },
+                "candidate_proxy_score": {
+                  "seconds": 0.00020351499551907182,
+                  "calls": 1
+                },
+                "candidate_sort": {
+                  "seconds": 5.570997018367052e-06,
+                  "calls": 1
+                },
+                "minco_coefficients": {
+                  "seconds": 0.0002940010163001716,
+                  "calls": 1
+                },
+                "derivative_bounds": {
+                  "seconds": 0.0008029100426938385,
+                  "calls": 6
+                },
+                "attitude_extrema": {
+                  "seconds": 0.005119815992657095,
+                  "calls": 1
+                },
+                "trajectory_samples": {
+                  "seconds": 0.0004129180160816759,
+                  "calls": 1
+                },
+                "planned_attitude": {
+                  "seconds": 0.0005081330018583685,
+                  "calls": 1
+                },
+                "full_fov": {
+                  "seconds": 0.002697275980608538,
+                  "calls": 1
+                },
+                "other_constraints": {
+                  "seconds": 0.00038518704241141677,
+                  "calls": 1
+                },
+                "full_validation": {
+                  "seconds": 0.002730024920310825,
+                  "calls": 1
+                },
+                "candidate_strict_validation": {
+                  "seconds": 0.003842426958726719,
+                  "calls": 1
+                },
+                "candidate_result_packaging": {
+                  "seconds": 0.00034600598155520856,
+                  "calls": 1
+                },
+                "candidate_selection": {
+                  "seconds": 0.0019140930089633912,
+                  "calls": 1
+                },
+                "p47_p44_fallback": {
+                  "seconds": 1.1822994565591216e-05,
+                  "calls": 1
+                }
+              },
+              "counts": {
+                "coarse_candidates": 5,
+                "coarse_geometry_calls": 1,
+                "candidate_generated": 5,
+                "candidate_strict_attempts": 1,
+                "minco_builds": 1,
+                "root_searches": 9,
+                "projection_samples": 35,
+                "full_validation_samples": 35
+              },
+              "unattributed_seconds": 0.0014959030086174607
+            },
+            "publication_profile": {
+              "cycle_id": 18,
+              "total_seconds": 0.00632309599313885,
+              "stages": {
+                "json_serialization": {
+                  "seconds": 0.005619325995212421,
+                  "calls": 2
+                },
+                "ros_publication": {
+                  "seconds": 8.887200965546072e-05,
+                  "calls": 2
+                }
+              },
+              "counts": {},
+              "unattributed_seconds": 0.0006148979882709682
+            },
+            "published": false,
+            "reason": "DEADLINE_EXCEEDED"
+          },
+          "acknowledgements": [],
+          "retry": {
+            "parent": 7,
+            "stamp": 1791851491.7328007,
+            "scheduled_monotonic": 206259.875571767,
+            "original_deadline": 1791851492.0828085
+          }
+        },
+        {
+          "cycle": 19,
+          "dispatch": 1791851493.8252745,
+          "raw_input_observation": 1791851493.7453196,
+          "worker": {
+            "solve_start_monotonic": 206261.960539171,
+            "solve_end_monotonic": 206261.982609511,
+            "solve_start_ros": 1791851493.8277884,
+            "solve_end_ros": 1791851493.849852
+          },
+          "result": "SAMPLED_FEASIBLE",
+          "candidate_result": "SAMPLED_FEASIBLE",
+          "first_blocker": "START_MISSED",
+          "final": {
+            "event": "follow_publication_final",
+            "cycle_id": 19,
+            "stamp": 1791851493.8827727,
+            "whole_cycle_time": 0.057472199987387285,
+            "remaining_raw_ttl": -0.01248311996459961,
+            "preparation_profile": {
+              "cycle_id": 19,
+              "total_seconds": 0.001963802002137527,
+              "stages": {
+                "navigation_sync": {
+                  "seconds": 0.000720587995601818,
+                  "calls": 1
+                },
+                "input_prepare": {
+                  "seconds": 0.0001856170129030943,
+                  "calls": 1
+                }
+              },
+              "counts": {},
+              "unattributed_seconds": 0.0010575969936326146
+            },
+            "worker_profile": {
+              "cycle_id": 19,
+              "total_seconds": 0.021990487002767622,
+              "stages": {
+                "target_interpolation": {
+                  "seconds": 0.0006059579609427601,
+                  "calls": 8
+                },
+                "future_reference": {
+                  "seconds": 0.0009909209911711514,
+                  "calls": 3
+                },
+                "p47_follow_initialization": {
+                  "seconds": 0.0030612860282417387,
+                  "calls": 1
+                },
+                "minco_coefficients": {
+                  "seconds": 0.00023636699188500643,
+                  "calls": 2
+                },
+                "trajectory_samples": {
+                  "seconds": 0.001126985007431358,
+                  "calls": 2
+                },
+                "p47_terminal_quadratic": {
+                  "seconds": 0.0010365810012444854,
+                  "calls": 1
+                },
+                "derivative_bounds": {
+                  "seconds": 0.0003040960000362247,
+                  "calls": 6
+                },
+                "attitude_extrema": {
+                  "seconds": 0.0025412509858142585,
+                  "calls": 1
+                },
+                "planned_attitude": {
+                  "seconds": 0.00047072599409148097,
+                  "calls": 1
+                },
+                "full_fov": {
+                  "seconds": 0.002466861013090238,
+                  "calls": 1
+                },
+                "other_constraints": {
+                  "seconds": 0.00031505999504588544,
+                  "calls": 1
+                },
+                "full_validation": {
+                  "seconds": 0.0021578470477834344,
+                  "calls": 1
+                },
+                "p47_strict_validation": {
+                  "seconds": 0.0032082830148283392,
+                  "calls": 1
+                }
+              },
+              "counts": {
+                "minco_builds": 2,
+                "root_searches": 9,
+                "projection_samples": 35,
+                "full_validation_samples": 35
+              },
+              "unattributed_seconds": 0.003468264971161261
+            },
+            "publication_profile": {
+              "cycle_id": 19,
+              "total_seconds": 0.025483340985374525,
+              "stages": {
+                "json_serialization": {
+                  "seconds": 0.007989632023964077,
+                  "calls": 4
+                },
+                "ros_publication": {
+                  "seconds": 0.000277398998150602,
+                  "calls": 3
+                },
+                "target_interpolation": {
+                  "seconds": 0.0023969409812707454,
+                  "calls": 2
+                },
+                "trajectory_samples": {
+                  "seconds": 0.0005874980124644935,
+                  "calls": 1
+                },
+                "planned_attitude": {
+                  "seconds": 0.0007497530023101717,
+                  "calls": 1
+                },
+                "full_fov": {
+                  "seconds": 0.002339305996429175,
+                  "calls": 1
+                },
+                "other_constraints": {
+                  "seconds": 0.0003975100116804242,
+                  "calls": 1
+                },
+                "full_validation": {
+                  "seconds": 0.003797674988163635,
+                  "calls": 1
+                },
+                "prediction_revalidation": {
+                  "seconds": 0.0032653480011504143,
+                  "calls": 2
+                },
+                "message_conversion": {
+                  "seconds": 0.0003051329986192286,
+                  "calls": 1
+                }
+              },
+              "counts": {
+                "invariant_hits": 1,
+                "projection_samples": 35,
+                "full_validation_samples": 35
+              },
+              "unattributed_seconds": 0.003377145971171558
+            },
+            "published": true,
+            "reason": "",
+            "publication_crossed_deadline": false
+          },
+          "acknowledgements": [
+            {
+              "kind": "follow_ack",
+              "receipt": 1791851493.8943021,
+              "stamp": 1791851493.8890681,
+              "plan": 19,
+              "mission": 1,
+              "generation": 0,
+              "state": "ACCEPTED",
+              "reasons": [
+                "NOMINAL_EXECUTION"
+              ],
+              "receiver": "trajectory_tracker_node",
+              "active": 17,
+              "pending": 19,
+              "owner": "MINCO_FOLLOW",
+              "replaced": false,
+              "receiver_compute_seconds": 0.013039129989920184,
+              "receiver_boot": "92a2e6ca3155a783c19f20b54549bd0d",
+              "planner_boot": "815bbf98f636138914a6adb44178ce8e"
+            },
+            {
+              "kind": "follow_ack",
+              "receipt": 1791851494.0287426,
+              "stamp": 1791851494.0258272,
+              "plan": 19,
+              "mission": 1,
+              "generation": 0,
+              "state": "REJECTED",
+              "reasons": [
+                "START_MISSED"
+              ],
+              "receiver": "trajectory_tracker_node",
+              "active": 17,
+              "pending": 0,
+              "owner": "MINCO_FOLLOW",
+              "replaced": false,
+              "receiver_compute_seconds": 0.0,
+              "receiver_boot": "92a2e6ca3155a783c19f20b54549bd0d",
+              "planner_boot": "815bbf98f636138914a6adb44178ce8e"
+            }
+          ],
+          "retry": {
+            "parent": 17,
+            "stamp": 1791851493.8129494,
+            "scheduled_monotonic": 206261.955720845,
+            "original_deadline": 1791851494.132808
+          }
+        }
+      ],
+      "next_initial_active": {
+        "kind": "follow_ack",
+        "receipt": 1791851502.2249591,
+        "stamp": 1791851502.2244627,
+        "plan": 58,
+        "mission": 1,
+        "generation": 0,
+        "state": "ACTIVE",
+        "reasons": [
+          "NOMINAL_EXECUTION"
+        ],
+        "receiver": "trajectory_tracker_node",
+        "active": 58,
+        "pending": 0,
+        "owner": "MINCO_FOLLOW",
+        "replaced": true,
+        "receiver_compute_seconds": 0.0,
+        "receiver_boot": "92a2e6ca3155a783c19f20b54549bd0d",
+        "planner_boot": "815bbf98f636138914a6adb44178ce8e"
+      },
+      "recovery_seconds": 8.052113771438599,
+      "no_request_causality": "Missing dispatch events remain unknown"
+    },
+    {
+      "plan": 83,
+      "stamp": 1791851507.572347,
+      "reason": "LEASE_EXPIRED_NO_SUCCESSOR",
+      "terminal_ack": {
+        "kind": "follow_ack",
+        "receipt": 1791851507.5732577,
+        "stamp": 1791851507.5728426,
+        "plan": 83,
+        "mission": 1,
+        "generation": 0,
+        "state": "EXPIRED",
+        "reasons": [],
+        "receiver": "trajectory_tracker_node",
+        "active": 0,
+        "pending": 0,
+        "owner": "ORIGINAL_FOLLOW",
+        "replaced": false,
+        "receiver_compute_seconds": 0.0,
+        "receiver_boot": "92a2e6ca3155a783c19f20b54549bd0d",
+        "planner_boot": "815bbf98f636138914a6adb44178ce8e"
+      },
+      "successor_plans": [],
+      "original_lease_deadline": 1791851507.54289,
+      "active_ack": {
+        "kind": "follow_ack",
+        "receipt": 1791851507.1320112,
+        "stamp": 1791851507.1270845,
+        "plan": 83,
+        "mission": 1,
+        "generation": 0,
+        "state": "ACTIVE",
+        "reasons": [
+          "NOMINAL_EXECUTION"
+        ],
+        "receiver": "trajectory_tracker_node",
+        "active": 83,
+        "pending": 0,
+        "owner": "MINCO_FOLLOW",
+        "replaced": true,
+        "receiver_compute_seconds": 0.0,
+        "receiver_boot": "92a2e6ca3155a783c19f20b54549bd0d",
+        "planner_boot": "815bbf98f636138914a6adb44178ce8e"
+      },
+      "attempts": [
+        {
+          "cycle": 84,
+          "dispatch": 1791851507.1728313,
+          "raw_input_observation": 1791851507.0973017,
+          "worker": {
+            "solve_start_monotonic": 206275.307990335,
+            "solve_end_monotonic": 206275.338625431,
+            "solve_start_ros": 1791851507.1752367,
+            "solve_end_ros": 1791851507.2058675
+          },
+          "result": "DEADLINE_EXCEEDED",
+          "candidate_result": "DEADLINE_EXCEEDED",
+          "first_blocker": "DEADLINE_EXCEEDED",
+          "final": {
+            "event": "follow_publication_final",
+            "cycle_id": 84,
+            "stamp": 1791851507.2287672,
+            "whole_cycle_time": 0.05591808201279491,
+            "remaining_raw_ttl": -0.0064754486083984375,
+            "preparation_profile": {
+              "cycle_id": 84,
+              "total_seconds": 0.0020664370094891638,
+              "stages": {
+                "navigation_sync": {
+                  "seconds": 0.000582153006689623,
+                  "calls": 1
+                },
+                "input_prepare": {
+                  "seconds": 0.00017641900922171772,
+                  "calls": 1
+                }
+              },
+              "counts": {},
+              "unattributed_seconds": 0.001307864993577823
+            },
+            "worker_profile": {
+              "cycle_id": 84,
+              "total_seconds": 0.030571907991543412,
+              "stages": {
+                "target_interpolation": {
+                  "seconds": 0.0034723329881671816,
+                  "calls": 6
+                },
+                "future_reference": {
+                  "seconds": 0.0014377179904840887,
+                  "calls": 1
+                },
+                "candidate_reference": {
+                  "seconds": 0.0008947240421548486,
+                  "calls": 1
+                },
+                "candidate_jerk": {
+                  "seconds": 0.0001928349956870079,
+                  "calls": 1
+                },
+                "candidate_yaw": {
+                  "seconds": 0.00011556499521248043,
+                  "calls": 1
+                },
+                "candidate_seed_construction": {
+                  "seconds": 0.00025724503211677074,
+                  "calls": 2
+                },
+                "candidate_proxy_geometry": {
+                  "seconds": 0.0019014219869859517,
+                  "calls": 1
+                },
+                "candidate_proxy_score": {
+                  "seconds": 0.00020008499268442392,
+                  "calls": 1
+                },
+                "candidate_sort": {
+                  "seconds": 5.175999831408262e-06,
+                  "calls": 1
+                },
+                "minco_coefficients": {
+                  "seconds": 0.00026305197388865054,
+                  "calls": 1
+                },
+                "derivative_bounds": {
+                  "seconds": 0.0007343170000240207,
+                  "calls": 6
+                },
+                "attitude_extrema": {
+                  "seconds": 0.004837604006752372,
+                  "calls": 1
+                },
+                "trajectory_samples": {
+                  "seconds": 0.0005139319982845336,
+                  "calls": 1
+                },
+                "planned_attitude": {
+                  "seconds": 0.00047840201295912266,
+                  "calls": 1
+                },
+                "full_fov": {
+                  "seconds": 0.0027267529803793877,
+                  "calls": 1
+                },
+                "other_constraints": {
+                  "seconds": 0.000358710007276386,
+                  "calls": 1
+                },
+                "full_validation": {
+                  "seconds": 0.0025576669722795486,
+                  "calls": 1
+                },
+                "candidate_strict_validation": {
+                  "seconds": 0.005116282060043886,
+                  "calls": 1
+                },
+                "candidate_result_packaging": {
+                  "seconds": 0.00033336199703626335,
+                  "calls": 1
+                },
+                "candidate_selection": {
+                  "seconds": 0.0029386099486146122,
+                  "calls": 1
+                },
+                "p47_p44_fallback": {
+                  "seconds": 1.3747019693255424e-05,
+                  "calls": 1
+                }
+              },
+              "counts": {
+                "coarse_candidates": 5,
+                "coarse_geometry_calls": 1,
+                "candidate_generated": 5,
+                "candidate_strict_attempts": 1,
+                "minco_builds": 1,
+                "root_searches": 9,
+                "projection_samples": 35,
+                "full_validation_samples": 35
+              },
+              "unattributed_seconds": 0.0012223669909872115
+            },
+            "publication_profile": {
+              "cycle_id": 84,
+              "total_seconds": 0.007864216982852668,
+              "stages": {
+                "json_serialization": {
+                  "seconds": 0.007568622997496277,
+                  "calls": 2
+                },
+                "ros_publication": {
+                  "seconds": 0.00011732001439668238,
+                  "calls": 2
+                }
+              },
+              "counts": {},
+              "unattributed_seconds": 0.0001782739709597081
+            },
+            "published": false,
+            "reason": "DEADLINE_EXCEEDED"
+          },
+          "acknowledgements": [],
+          "retry": {
+            "parent": 71,
+            "stamp": 1791851504.7330694,
+            "scheduled_monotonic": 206272.87584101802,
+            "original_deadline": 1791851505.0828724
+          }
+        },
+        {
+          "cycle": 85,
+          "dispatch": 1791851507.2291658,
+          "raw_input_observation": 1791851507.1452982,
+          "worker": {
+            "solve_start_monotonic": 206275.366238665,
+            "solve_end_monotonic": 206275.369074062,
+            "solve_start_ros": 1791851507.2334836,
+            "solve_end_ros": 1791851507.2363157
+          },
+          "result": "NO_FRESHNESS_BUDGET",
+          "candidate_result": "NO_FRESHNESS_BUDGET",
+          "first_blocker": "NO_FRESHNESS_BUDGET",
+          "final": {
+            "event": "follow_publication_final",
+            "cycle_id": 85,
+            "stamp": 1791851507.2467897,
+            "whole_cycle_time": 0.01760975201614201,
+            "remaining_raw_ttl": 0.0234982967376709,
+            "preparation_profile": {
+              "cycle_id": 85,
+              "total_seconds": 0.001567397004691884,
+              "stages": {
+                "navigation_sync": {
+                  "seconds": 0.0009386099991388619,
+                  "calls": 1
+                },
+                "input_prepare": {
+                  "seconds": 0.00019928099936805665,
+                  "calls": 1
+                }
+              },
+              "counts": {},
+              "unattributed_seconds": 0.00042950600618496537
+            },
+            "worker_profile": {
+              "cycle_id": 85,
+              "total_seconds": 0.002789659018162638,
+              "stages": {
+                "target_interpolation": {
+                  "seconds": 0.0009907129860948771,
+                  "calls": 1
+                }
+              },
+              "counts": {},
+              "unattributed_seconds": 0.0017989460320677608
+            },
+            "publication_profile": {
+              "cycle_id": 85,
+              "total_seconds": 0.002426758990623057,
+              "stages": {
+                "json_serialization": {
+                  "seconds": 0.0016338240238837898,
+                  "calls": 2
+                },
+                "ros_publication": {
+                  "seconds": 6.117200246080756e-05,
+                  "calls": 2
+                }
+              },
+              "counts": {},
+              "unattributed_seconds": 0.0007317629642784595
+            },
+            "published": false,
+            "reason": "NO_FRESHNESS_BUDGET"
+          },
+          "acknowledgements": [],
+          "retry": {
+            "parent": 83,
+            "stamp": 1791851507.2135098,
+            "scheduled_monotonic": 206275.356283099,
+            "original_deadline": 1791851507.54289
+          }
+        }
+      ],
+      "next_initial_active": {
+        "kind": "follow_ack",
+        "receipt": 1791851515.62706,
+        "stamp": 1791851515.6259842,
+        "plan": 124,
+        "mission": 1,
+        "generation": 0,
+        "state": "ACTIVE",
+        "reasons": [
+          "NOMINAL_EXECUTION"
+        ],
+        "receiver": "trajectory_tracker_node",
+        "active": 124,
+        "pending": 0,
+        "owner": "MINCO_FOLLOW",
+        "replaced": true,
+        "receiver_compute_seconds": 0.0,
+        "receiver_boot": "92a2e6ca3155a783c19f20b54549bd0d",
+        "planner_boot": "815bbf98f636138914a6adb44178ce8e"
+      },
+      "recovery_seconds": 8.053637266159058,
+      "no_request_causality": "Missing dispatch events remain unknown"
+    }
+  ],
+  "reference_height": {
+    "maximum_error_m": 0.008890886760521965,
+    "rmse_m": 0.004341474935012868
+  },
+  "tracking": {
+    "samples": 109,
+    "actual_viewpoint_rmse": 0.026805592237999002,
+    "planned_viewpoint_rmse": 0.032921285140158164,
+    "tracking_rmse": 0.018229946060567354,
+    "convention": "same navigation epoch; offline TargetState interpolation, no extrapolation"
+  },
+  "actual_window_scope": "Existing FOLLOW+20 to FOLLOW+60 clipped by stop; mixed actual owners",
+  "actual_window": {
+    "samples": 445,
+    "evaluation": "evaluator native UAV snapshot vs ideal scene TargetState; not KF error",
+    "position_horizontal_rmse": 0.02306577030700938,
+    "distance_rmse": 0.01078322902939335,
+    "relative_velocity_rmse": 0.025968127680418448,
+    "altitude_rmse": 0.008938192793540342,
+    "visible_fraction": 1.0,
+    "locked_fraction": 1.0,
+    "actual_whole_marker_safe_fraction": 1.0,
+    "actual_horizontal_margin": {
+      "count": 558,
+      "min": 0.7478191435315609,
+      "p50": 0.7578242502089453,
+      "p95": 0.7610442509652421,
+      "p99": 0.7617974831388254,
+      "max": 0.762530999686909
+    },
+    "actual_vertical_margin": {
+      "count": 558,
+      "min": 0.3060578188538645,
+      "p50": 0.3273503334283401,
+      "p95": 0.34462064420070115,
+      "p99": 0.34834666785919544,
+      "max": 0.3524431505589109
+    },
+    "actual_horizontal_speed": {
+      "count": 1111,
+      "min": 1.9865004142673057,
+      "p50": 2.0041108998613115,
+      "p95": 2.0409048191490493,
+      "p99": 2.0557504722758133,
+      "max": 2.056443122364978
+    },
+    "actual_horizontal_acceleration": {
+      "count": 1111,
+      "min": 0.0008609920756101268,
+      "p50": 0.029887088303082572,
+      "p95": 0.06194810766996396,
+      "p99": 0.07311253272136413,
+      "max": 0.08216401489951698
+    },
+    "estimated_horizontal_jerk": {
+      "count": 1110,
+      "min": 0.0033941389948556936,
+      "p50": 0.3394766030060039,
+      "p95": 0.7867835715094496,
+      "p99": 0.9509542198359563,
+      "max": 1.6459715620316007
+    },
+    "reference_velocity_delta_over_receipt_dt": {
+      "count": 444,
+      "min": 0.0037574497403905045,
+      "p50": 0.33116032132002826,
+      "p95": 0.6589142146153538,
+      "p99": 0.8881377077938334,
+      "max": 1.675618105080083
+    },
+    "reference_gaps_seconds": {
+      "count": 444,
+      "min": 0.034705162048339844,
+      "p50": 0.05005931854248047,
+      "p95": 0.05440499782562255,
+      "p99": 0.057391524314880364,
+      "max": 0.0679788589477539
+    },
+    "position_3d_rmse": 0.024737038025402558,
+    "horizontal_peak_error": 0.055977244656964395
+  },
+  "full_25s_metrics": {
+    "start": 1791851491.2910855,
+    "end": 1791851516.2910855,
+    "samples": 1250,
+    "horizontal_rmse": 0.02902991404877163,
+    "height_rmse": 0.00847105366296991,
+    "relative_velocity_rmse": 0.025769853484937665,
+    "actual_reference_tracking_3d_rmse": 0.021994589401237788,
+    "reference_samples": 160,
+    "fov_samples": 626,
+    "full_marker_safe_fraction": 1.0,
+    "horizontal_margin": {
+      "count": 626,
+      "min": 0.7478191435315609,
+      "p50": 0.7583690177287696,
+      "p95": 0.7613610611330526,
+      "p99": 0.7619222152555079,
+      "max": 0.7628553326513889
+    },
+    "vertical_margin": {
+      "count": 626,
+      "min": 0.3060578188538645,
+      "p50": 0.327647110416586,
+      "p95": 0.3445566286476957,
+      "p99": 0.34814966416868875,
+      "max": 0.3524431505589109
+    },
+    "evaluation_only": true,
+    "no_extrapolation": true,
+    "scope": "All owners over full fixed window. Truth interpolated only offline. FOV uses same-message rendered UAV/marker poses and recorded camera calibration."
+  },
+  "native_px4_commands": {
+    "period_seconds": {
+      "count": 444,
+      "min": 0.038455963134765625,
+      "p50": 0.050004005432128906,
+      "p95": 0.05156164169311523,
+      "p99": 0.05359256267547607,
+      "max": 0.0619969367980957
+    },
+    "horizontal_step_mps": {
+      "count": 444,
+      "min": 0.00019429731412984736,
+      "p50": 0.01665092009366877,
+      "p95": 0.032138454692178416,
+      "p99": 0.04240494499383761,
+      "max": 0.061703706060006656
+    },
+    "acceleration_mps2": {
+      "count": 444,
+      "min": 0.003879826332537041,
+      "p50": 0.3306476377770675,
+      "p95": 0.6509530746403709,
+      "p99": 0.8469799120437671,
+      "max": 1.2203596002410038
+    },
+    "switch_step_mps": {
+      "count": 29,
+      "min": 0.0010500332231804363,
+      "p50": 0.014762944975861638,
+      "p95": 0.049938635139189474,
+      "p99": 0.05897176559065914,
+      "max": 0.061703706060006656
+    },
+    "note": "PX4 setpoint timestamp deltas"
+  },
+  "physical_ulog": {
+    "attitude_rad": {
+      "roll": {
+        "count": 1111,
+        "min": -0.0075094629531495555,
+        "p50": 0.00015977710037977724,
+        "p95": 0.005519139610973871,
+        "p99": 0.007336720737110003,
+        "max": 0.007458484682293169
+      },
+      "pitch": {
+        "count": 1111,
+        "min": -0.028492444649159895,
+        "p50": -0.02263389396831926,
+        "p95": -0.019248173409525806,
+        "p99": -0.018796051316286755,
+        "max": -0.018419617601544497
+      },
+      "yaw": {
+        "count": 1111,
+        "min": 0.0006546054250086038,
+        "p50": 0.0010493502035453161,
+        "p95": 0.0015107757497955555,
+        "p99": 0.0015763182911547708,
+        "max": 0.0016144748543446975
+      }
+    },
+    "px4_logged_setpoints": {
+      "count": 111,
+      "acceleration_ff_finite": 0,
+      "horizontal_speed": {
+        "count": 111,
+        "min": 1.95958411693573,
+        "p50": 1.9929646253585815,
+        "p95": 2.0385520458221436,
+        "p99": 2.0525250911712645,
+        "max": 2.0541720390319824
+      }
+    },
+    "body_rate_radps": {
+      "x": {
+        "count": 2221,
+        "min": -0.0216597281396389,
+        "p50": 0.00044155612704344094,
+        "p95": 0.010033342987298965,
+        "p99": 0.01773355342447765,
+        "max": 0.0307707991451025
+      },
+      "y": {
+        "count": 2221,
+        "min": -0.02468724548816681,
+        "p50": 0.0005430658347904682,
+        "p95": 0.012131672352552414,
+        "p99": 0.019978693500161307,
+        "max": 0.030906999483704567
+      },
+      "z": {
+        "count": 2221,
+        "min": -0.0017835866892710328,
+        "p50": 2.2505228116642684e-06,
+        "p95": 0.0009100390016101301,
+        "p99": 0.001230779499746862,
+        "max": 0.0017455538036301732
+      }
+    },
+    "normalized_thrust_command": {
+      "count": 1110,
+      "min": 0.747340738773346,
+      "p50": 0.7497521340847015,
+      "p95": 0.7509358495473861,
+      "p99": 0.7518535393476486,
+      "max": 0.7520750164985657
+    },
+    "epoch_mapping": "ULog native sample to original navigation sample epoch pairs"
+  },
+  "gate_violations": [],
+  "authority": {
+    "graph_samples": 75,
+    "discovered_samples": 58,
+    "all_discovered_single_tracker": true,
+    "conflicts": []
+  },
+  "cleanup": {
+    "errors": [],
+    "survivors": [],
+    "late_components": {
+      "events": [],
+      "errors": [],
+      "survivors": [],
+      "scope_verified": true
+    }
+  },
+  "missing_fields": [
+    "Tracker subscription dequeue order",
+    "every request dispatch event",
+    "first settled health epoch; only completed five-second gate recorded"
+  ]
+}

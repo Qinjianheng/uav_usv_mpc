@@ -1,0 +1,105 @@
+{
+  "source": "data/experiments/20261013_p53_closed_loop_08/f2_h16_01",
+  "observer_native_age": 0.1734294891357422,
+  "stop": {
+    "reason": "NAVIGATION_INPUT_STALE",
+    "stamp": 1791890197.582182,
+    "follow_start": 1791890186.9720483,
+    "first_minco": null,
+    "health_observed_wall": 1791890197.5820875,
+    "health_snapshot": {
+      "vehicle": {
+        "receipt": 1791890197.0162916,
+        "nav_state": 14,
+        "armed": 2
+      },
+      "attitude": {
+        "receipt": 1791890197.3883662,
+        "q": [
+          0.999938428401947,
+          -0.0020047000143676996,
+          -0.0108609888702631,
+          0.0011394175235182047
+        ]
+      },
+      "prediction": {
+        "receipt": 1791890197.3381667,
+        "stamp": 1791890197.3304682,
+        "observation": 1791890197.2954423,
+        "valid": true
+      },
+      "control": {
+        "receipt": 1791890197.3563333,
+        "status": "FOLLOW",
+        "locked": true,
+        "compute": 0.0018531010136939585
+      },
+      "navigation": {
+        "receipt": 1791890197.3958473,
+        "stamp": 1791890197.3794646,
+        "valid": true,
+        "p": [
+          40.50841522216797,
+          0.02048921398818493,
+          -4.990087985992432
+        ],
+        "v": [
+          2.0776097774505615,
+          -0.019348712638020515,
+          -0.006513443309813738
+        ]
+      },
+      "tracking": {
+        "receipt": 1791890197.3969367,
+        "stamp": 1791890197.3952374,
+        "source": 1791890197.3474517,
+        "valid": true,
+        "p": [
+          45.69017481555695,
+          0.012479541904725961,
+          -0.06336446371845647
+        ],
+        "v": [
+          1.9688110839759367,
+          0.02062244414474534,
+          0.12477604118745336
+        ]
+      },
+      "written": 1791890197.553849,
+      "ros_now": 1791890197.552894,
+      "follow_settling": {
+        "settled": false,
+        "reason": "NO_FRESH_COMMON_EPOCH"
+      },
+      "p53_decision": {
+        "fatal": "NAVIGATION_INPUT_STALE",
+        "inhibit": null
+      }
+    }
+  },
+  "independently_recorded_latest_nav": {
+    "kind": "uav",
+    "receipt": 1791890197.6025548,
+    "stamp": 1791890197.5794482,
+    "native": 41384000,
+    "valid": true,
+    "p": [
+      40.92434310913086,
+      0.013867034576833248,
+      -4.994827747344971
+    ],
+    "v": [
+      2.068430185317993,
+      -0.028475485742092133,
+      -0.005784434266388416
+    ],
+    "a": [
+      -0.07873938977718353,
+      -0.025553546845912933,
+      0.019916797056794167
+    ],
+    "yaw": 0.0023015965707600117
+  },
+  "independent_native_age_at_stop": 0.0027337074279785156,
+  "change": "P53 experiment observation native/prediction cap300ms; online Planner/Receiver125ms unchanged; no epoch rewrite; recorded as separate condition field."
+}

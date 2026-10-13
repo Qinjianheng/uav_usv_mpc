@@ -1,0 +1,7 @@
+{
+  "independent_review_pass": true,
+  "important_unresolved": 0,
+  "reviewer": "/root/p53_startup_final_review",
+  "minor": "Experiment snapshot acquisition age and delivery age are separate budgets: read-time receipt total may reach500ms, vehicle1000ms; physical controller TTL/lease unchanged.",
+  "resolution": "Boundary explicitly recorded; user authorized moderate experimental checks. Native/physical/future/dead-observer cases retain rejection."
+}

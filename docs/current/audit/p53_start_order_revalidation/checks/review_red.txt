@@ -1,0 +1,52 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+____ test_cost_spike_recovers_with_new_images_but_not_repeated_timer_ticks _____
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7687c00138e0>
+
+    def test_cost_spike_recovers_with_new_images_but_not_repeated_timer_ticks(monkeypatch):
+        from concurrent.futures import Future
+        from test_follow_mpc_shadow_node import _Adapter, _Pool, _mission, _prediction
+        from test_follow_research_algorithms import request
+        from uav_control.controllers.follow_mpc_shadow_node import ShadowResearchRunner
+        from uav_control.controllers.p4_follow_planner_node import P4ResearchRunner
+        from uav_control.controllers.follow_mpc_seed import MpcConfig, MpcSeedResult
+        from uav_control.guidance.follow_problem import future_request
+        req = future_request(request(2.), .15)
+        req = replace(req, context=replace(req.context, observation_stamp=100.,
+                                          prediction_valid_until=100.25))
+        pool, adapter = _Pool(), _Adapter()
+        adapter.clock_generation = 0
+        r = P4ResearchRunner(MpcConfig(), adapter, pool, lambda _: None, rate_hz=5.)
+        r.deadline_scheduling = True
+        r.execution_status = dict(stamp=100.04, active=83, deadline=100.44)
+        r.solver.online_budget_guard = True
+        r.solver.follow_estimate, r.solver.fallback_estimate = .015, .012
+        r.solver.fallback_enabled, r.solver.fast = True, SimpleNamespace(publication_reserve=.02)
+        r.test_request = req
+        monkeypatch.setattr(ShadowResearchRunner, '_prepare', lambda self, *args:
+                            (self.test_request, None))
+        r.update_mission(_mission(mission_id=1), 100.01, 1.01)
+        r.update_prediction(_prediction(mission_id=1), 100.01, 1.01)
+        r.tick(100.02, 1.02)
+        pool.future.set_result(MpcSeedResult(req.context, valid=False))
+        r.solver.follow_estimate, r.solver.fallback_estimate = .060, .055
+        r.tick(100.04, 1.04)
+        pool.future = Future()
+        for offset in (.05, .051, .052, .053, .054, .055):
+            r.tick(100.+offset, 1.+offset)
+            assert len(pool.requests) == 1 and r.retry_waiting_parent == 83
+        r.test_request = replace(
+            req, context=replace(req.context, navigation_stamp=100.1, attitude_stamp=100.1,
+                                 prediction_source_stamp=100.1, observation_stamp=100.1,
+                                 prediction_valid_until=100.225))
+        r.tick(100.135, 1.135)
+>       assert len(pool.requests) == 2 and r.retry_waiting_parent is None
+E       AssertionError: assert (1 == 2)
+E        +  where 1 = len([FutureRequest(context=PlanningContext(mission_id=1, cycle_id=1, execution_start_stamp=100.15, navigation_stamp=100.0,...rement_state=(-5.0, 0.0, -5.0, 2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0), boundary_policy='constant_acceleration_projection')])
+E        +    where [FutureRequest(context=PlanningContext(mission_id=1, cycle_id=1, execution_start_stamp=100.15, navigation_stamp=100.0,...rement_state=(-5.0, 0.0, -5.0, 2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0), boundary_policy='constant_acceleration_projection')] = <test_follow_mpc_shadow_node._Pool object at 0x7687c0013f70>.requests
+
+test/test_p53_dispatch_budget.py:134: AssertionError
+=========================== short test summary info ============================
+FAILED test/test_p53_dispatch_budget.py::test_cost_spike_recovers_with_new_images_but_not_repeated_timer_ticks
+1 failed in 0.36s

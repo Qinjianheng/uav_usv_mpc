@@ -34,10 +34,12 @@ def validate_release(release):
                 and harness.qualify(historical['evidence'])['h16_scoped_gate_pass'])
 
 
-def health_decision(health, now):
+def health_decision(health, now, maximum_observer_input_age=.125):
     """Planning shortage inhibits entry only while original FOLLOW is independently lawful."""
-    fatal = harness.safety_reason(health, now, planning_required=False)
-    planning = harness.safety_reason(health, now)
+    fatal = harness.safety_reason(health, now, planning_required=False,
+                                  maximum_observer_input_age=maximum_observer_input_age)
+    planning = harness.safety_reason(health, now,
+                                     maximum_observer_input_age=maximum_observer_input_age)
     owner = health.get('control', {}).get('status')
     if fatal is None and owner == 'MINCO_FOLLOW':
         fatal = planning
