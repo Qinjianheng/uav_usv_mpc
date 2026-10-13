@@ -1,0 +1,88 @@
+FFFFFF                                                                   [100%]
+=================================== FAILURES ===================================
+___________________ test_extended_replay_and_recovery[none] ____________________
+
+tmp_path = PosixPath('/tmp/pytest-of-qin/pytest-185/test_extended_replay_and_recov0')
+fault = 'none'
+
+    @pytest.mark.parametrize('fault', [
+        'none', 'two_solve_failures', 'input_interruption', 'performance_deviation',
+        'prefix_loss_reentry', 'prediction_change'])
+    def test_extended_replay_and_recovery(tmp_path, fault):
+>       from p52_receiver_replay import replay
+E       ModuleNotFoundError: No module named 'p52_receiver_replay'
+
+test/test_p52_receiver_replay.py:14: ModuleNotFoundError
+____________ test_extended_replay_and_recovery[two_solve_failures] _____________
+
+tmp_path = PosixPath('/tmp/pytest-of-qin/pytest-185/test_extended_replay_and_recov1')
+fault = 'two_solve_failures'
+
+    @pytest.mark.parametrize('fault', [
+        'none', 'two_solve_failures', 'input_interruption', 'performance_deviation',
+        'prefix_loss_reentry', 'prediction_change'])
+    def test_extended_replay_and_recovery(tmp_path, fault):
+>       from p52_receiver_replay import replay
+E       ModuleNotFoundError: No module named 'p52_receiver_replay'
+
+test/test_p52_receiver_replay.py:14: ModuleNotFoundError
+____________ test_extended_replay_and_recovery[input_interruption] _____________
+
+tmp_path = PosixPath('/tmp/pytest-of-qin/pytest-185/test_extended_replay_and_recov2')
+fault = 'input_interruption'
+
+    @pytest.mark.parametrize('fault', [
+        'none', 'two_solve_failures', 'input_interruption', 'performance_deviation',
+        'prefix_loss_reentry', 'prediction_change'])
+    def test_extended_replay_and_recovery(tmp_path, fault):
+>       from p52_receiver_replay import replay
+E       ModuleNotFoundError: No module named 'p52_receiver_replay'
+
+test/test_p52_receiver_replay.py:14: ModuleNotFoundError
+___________ test_extended_replay_and_recovery[performance_deviation] ___________
+
+tmp_path = PosixPath('/tmp/pytest-of-qin/pytest-185/test_extended_replay_and_recov3')
+fault = 'performance_deviation'
+
+    @pytest.mark.parametrize('fault', [
+        'none', 'two_solve_failures', 'input_interruption', 'performance_deviation',
+        'prefix_loss_reentry', 'prediction_change'])
+    def test_extended_replay_and_recovery(tmp_path, fault):
+>       from p52_receiver_replay import replay
+E       ModuleNotFoundError: No module named 'p52_receiver_replay'
+
+test/test_p52_receiver_replay.py:14: ModuleNotFoundError
+____________ test_extended_replay_and_recovery[prefix_loss_reentry] ____________
+
+tmp_path = PosixPath('/tmp/pytest-of-qin/pytest-185/test_extended_replay_and_recov4')
+fault = 'prefix_loss_reentry'
+
+    @pytest.mark.parametrize('fault', [
+        'none', 'two_solve_failures', 'input_interruption', 'performance_deviation',
+        'prefix_loss_reentry', 'prediction_change'])
+    def test_extended_replay_and_recovery(tmp_path, fault):
+>       from p52_receiver_replay import replay
+E       ModuleNotFoundError: No module named 'p52_receiver_replay'
+
+test/test_p52_receiver_replay.py:14: ModuleNotFoundError
+_____________ test_extended_replay_and_recovery[prediction_change] _____________
+
+tmp_path = PosixPath('/tmp/pytest-of-qin/pytest-185/test_extended_replay_and_recov5')
+fault = 'prediction_change'
+
+    @pytest.mark.parametrize('fault', [
+        'none', 'two_solve_failures', 'input_interruption', 'performance_deviation',
+        'prefix_loss_reentry', 'prediction_change'])
+    def test_extended_replay_and_recovery(tmp_path, fault):
+>       from p52_receiver_replay import replay
+E       ModuleNotFoundError: No module named 'p52_receiver_replay'
+
+test/test_p52_receiver_replay.py:14: ModuleNotFoundError
+=========================== short test summary info ============================
+FAILED test/test_p52_receiver_replay.py::test_extended_replay_and_recovery[none]
+FAILED test/test_p52_receiver_replay.py::test_extended_replay_and_recovery[two_solve_failures]
+FAILED test/test_p52_receiver_replay.py::test_extended_replay_and_recovery[input_interruption]
+FAILED test/test_p52_receiver_replay.py::test_extended_replay_and_recovery[performance_deviation]
+FAILED test/test_p52_receiver_replay.py::test_extended_replay_and_recovery[prefix_loss_reentry]
+FAILED test/test_p52_receiver_replay.py::test_extended_replay_and_recovery[prediction_change]
+6 failed in 0.03s

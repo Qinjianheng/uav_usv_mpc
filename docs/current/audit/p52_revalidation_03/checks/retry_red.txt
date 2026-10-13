@@ -1,0 +1,30 @@
+F..F                                                                     [100%]
+=================================== FAILURES ===================================
+_______ test_insufficient_freshness_defers_without_spending_parent_retry _______
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x793f0745b3a0>
+
+    def test_insufficient_freshness_defers_without_spending_parent_retry(monkeypatch):
+        r, _ = runner(monkeypatch)
+        # Same available budget as actual cycle85: 16.79ms after the 20ms reserve.
+        for now in [100.07821, 100.08, 100.085]:
+>           with pytest.raises(ValueError, match='RETRY_AWAITING_FRESH_INPUT'):
+E           Failed: DID NOT RAISE <class 'ValueError'>
+
+test/test_p52_retry_freshness.py:32: Failed
+_________ test_disabled_fallback_cannot_make_unusable_retry_look_ready _________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x793f07442e00>
+
+    def test_disabled_fallback_cannot_make_unusable_retry_look_ready(monkeypatch):
+        r, _ = runner(monkeypatch)
+        r.solver.fallback_enabled = False
+        r.solver.fallback_estimate = .001
+>       with pytest.raises(ValueError, match='RETRY_AWAITING_FRESH_INPUT'):
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+test/test_p52_retry_freshness.py:58: Failed
+=========================== short test summary info ============================
+FAILED test/test_p52_retry_freshness.py::test_insufficient_freshness_defers_without_spending_parent_retry
+FAILED test/test_p52_retry_freshness.py::test_disabled_fallback_cannot_make_unusable_retry_look_ready
+2 failed, 2 passed in 0.35s

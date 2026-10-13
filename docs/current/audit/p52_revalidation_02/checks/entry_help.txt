@@ -1,0 +1,18 @@
+usage: p52_minco_sitl.py [-h] [--scene {f2,f3}] [--round {1,2,3}]
+                         --qualification QUALIFICATION --readiness READINESS
+                         [--authorize-f2] [--authorize-f3]
+                         output
+
+P5.2 one-shot F2 and separately authorized, actual-F2-qualified F3.
+
+positional arguments:
+  output
+
+options:
+  -h, --help            show this help message and exit
+  --scene {f2,f3}
+  --round {1,2,3}
+  --qualification QUALIFICATION
+  --readiness READINESS
+  --authorize-f2
+  --authorize-f3

@@ -171,6 +171,7 @@ def run(output):
                                      entry_attempts=m.entry_attempts,
                                      valid_probe_count=m.valid_probe_count,
                                      last_fallback_reason=m.last_fallback_reason,
+                                     entry_inhibition_reason=m.entry_inhibition_reason,
                                      holding=m.holding_qualified, bridge=m.bridge_qualified),
                                  QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL,
                                             reliability=ReliabilityPolicy.RELIABLE)),

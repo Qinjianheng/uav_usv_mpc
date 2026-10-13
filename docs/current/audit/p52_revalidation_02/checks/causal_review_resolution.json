@@ -1,0 +1,14 @@
+{
+  "reviewer": "/root/p52_final_review",
+  "scope": "Causal admission only",
+  "critical_unresolved": 0,
+  "important_unresolved": 0,
+  "findings": [
+    "rolling wait origin lacked cumulative timeout",
+    "late successful bracket skipped timeout"
+  ],
+  "resolution": "Fixed nonrenewable 50ms origin, timeout before successful geometry, inactive full requalification, active revoke",
+  "review_conclusion": "Source scope passed, remaining tests/build/hash/environment by executor",
+  "record_correction": "Prior causal_late_green was 1 failed/59 passed; original stale-input reason priority restored; final evidence stored separately",
+  "no_review_claim_for_rounds_or_full_checks": true
+}

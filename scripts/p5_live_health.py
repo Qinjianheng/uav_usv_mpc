@@ -6,7 +6,18 @@ import json
 from pathlib import Path
 import time
 
-from uav_control.guidance.follow_admission import follow_settling
+from uav_control.guidance.follow_admission import AdmissionConfig, follow_settling
+
+
+def geometry_config(root):
+    """Read the actual per-run Tracker snapshot; never infer its policy from a report."""
+    import yaml
+    path = root/'config/flight.yaml'
+    params = (yaml.safe_load(path.read_text()) or {}).get(
+        'trajectory_tracker_node', {}).get('ros__parameters', {}) if path.exists() else {}
+    config = AdmissionConfig(**{
+        k: params.get('follow_admission_'+k, v) for k, v in vars(AdmissionConfig()).items()})
+    return params.get('follow_distance', 5.), params.get('flight_altitude', -5.), config
 
 
 def attitude_record(message, receipt):
@@ -23,6 +34,7 @@ def run(root):
         ControllerDiagnostic, TargetPrediction, TargetState, UavState)
     rclpy.init()
     node = Node('p5_readonly_health')
+    distance, altitude, admission_config = geometry_config(root)
     latest = {}
     navigation_history, tracking_history = deque(maxlen=128), deque(maxlen=64)
 
@@ -70,7 +82,8 @@ def run(root):
 
     def write():
         ros_now = node.get_clock().now().nanoseconds/1e9
-        settling = follow_settling(navigation_history, tracking_history, ros_now)
+        settling = follow_settling(
+            navigation_history, tracking_history, ros_now, distance, altitude, admission_config)
         snapshot = dict(latest, written=time.time(), ros_now=ros_now, follow_settling=settling)
         temporary = root/'p5_health.tmp'
         temporary.write_text(json.dumps(snapshot, allow_nan=False))

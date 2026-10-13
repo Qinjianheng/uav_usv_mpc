@@ -1,0 +1,27 @@
+[
+  {
+    "path": "scripts/build_workspace.sh",
+    "returncode": 0,
+    "output": ""
+  },
+  {
+    "path": "scripts/start_px4_ros2.sh",
+    "returncode": 0,
+    "output": ""
+  },
+  {
+    "path": "scripts/sync_github.sh",
+    "returncode": 0,
+    "output": ""
+  },
+  {
+    "path": "scripts/test_research_planners.sh",
+    "returncode": 0,
+    "output": ""
+  },
+  {
+    "path": "scripts/uav_lab.sh",
+    "returncode": 0,
+    "output": ""
+  }
+]

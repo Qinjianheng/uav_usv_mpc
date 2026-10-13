@@ -1,0 +1,30 @@
+.....F                                                                   [100%]
+=================================== FAILURES ===================================
+_ test_regular_callback_immediately_after_wakeup_does_not_use_default_fifty_ms_dt _
+
+    def test_regular_callback_immediately_after_wakeup_does_not_use_default_fifty_ms_dt():
+        node, _ = fixture()
+        # Returning before state processing proves no command can receive the fallback dt.
+        node.last_timer_stamp, node.epoch = 100.15, 100.1502
+        node._process_pending_trajectory = lambda: (_ for _ in ()).throw(
+            AssertionError('SUB_MILLISECOND_CONTROL_SHOULD_BE_SKIPPED'))
+>       TrajectoryTrackerNode.timer_callback(node)
+
+test/test_p52_activation_wakeup.py:97: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+uav_control/control/trajectory_tracker_node.py:1870: in timer_callback
+    self._process_pending_trajectory()
+test/test_p52_activation_wakeup.py:95: in <lambda>
+    node._process_pending_trajectory = lambda: (_ for _ in ()).throw(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+.0 = <tuple_iterator object at 0x73b0914d0df0>
+
+>   node._process_pending_trajectory = lambda: (_ for _ in ()).throw(
+        AssertionError('SUB_MILLISECOND_CONTROL_SHOULD_BE_SKIPPED'))
+E   AssertionError: SUB_MILLISECOND_CONTROL_SHOULD_BE_SKIPPED
+
+test/test_p52_activation_wakeup.py:95: AssertionError
+=========================== short test summary info ============================
+FAILED test/test_p52_activation_wakeup.py::test_regular_callback_immediately_after_wakeup_does_not_use_default_fifty_ms_dt
+1 failed, 5 passed in 0.35s

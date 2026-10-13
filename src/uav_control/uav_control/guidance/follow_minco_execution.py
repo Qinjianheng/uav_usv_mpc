@@ -160,7 +160,7 @@ class NominalFollowReceiver(FollowReceiver):
             return self._ack(curve, ctx, 'REJECTED', errors or ('SHADOW_PROBE_VALID',))
         if self.active is None and self.admission is not None:
             if not self.admission.allowed(ctx.now):
-                errors.append('FOLLOW_ENTRY_INHIBITED')
+                errors.append(self.admission.inhibition_reason(ctx.now))
             if self.pending:
                 errors.append('INITIAL_PENDING_EXISTS')
         if errors:
@@ -203,6 +203,11 @@ class NominalFollowReceiver(FollowReceiver):
             if errors or ctx.now >= until:
                 setattr(self, slot, None)
                 result = emit(curve, 'REVOKED' if errors else 'EXPIRED', errors)
+        if previous_active and self.active is None and self.pending and self.pending.parent_id:
+            child, self.pending = self.pending, None
+            reason = ('PARENT_EXPIRED_AT_ACTIVATION' if ctx.now >= child.start
+                      else 'PARENT_REFERENCE_LOST')
+            result = emit(child, 'REJECTED', (reason,))
         if self.pending and ctx.now >= self.pending.start:
             curve = self.pending
             reason = ''

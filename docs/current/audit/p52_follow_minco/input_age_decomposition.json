@@ -1,0 +1,55 @@
+{
+  "snapshot_ros": 1791802864.394235,
+  "original_observation": {
+    "kind": "observation",
+    "receipt": 1791802864.2866383,
+    "stamp": 1791802864.259631,
+    "received": 1791802864.2807815,
+    "processed": 1791802864.2859232,
+    "published": 1791802864.2859633,
+    "valid": true,
+    "reason": ""
+  },
+  "original_prediction": {
+    "kind": "prediction",
+    "receipt": 1791802864.2903538,
+    "stamp": 1791802864.2867956,
+    "observation": 1791802864.259631,
+    "generated": 1791802864.2873995,
+    "compute": 0.0018962309986818582,
+    "sequence": 415,
+    "valid": true,
+    "reason": ""
+  },
+  "original_monitor_prediction": {
+    "receipt": 1791802864.290449,
+    "stamp": 1791802864.2867956,
+    "observation": 1791802864.259631,
+    "valid": true
+  },
+  "next_frame": {
+    "kind": "observation",
+    "receipt": 1791802864.409335,
+    "stamp": 1791802864.3116634,
+    "received": 1791802864.3997636,
+    "processed": 1791802864.4084177,
+    "published": 1791802864.4084442,
+    "valid": true,
+    "reason": ""
+  },
+  "components_ms": {
+    "acquisition_to_localizer_receive": 21.150588989257812,
+    "localizer_processing": 5.141735076904297,
+    "processed_to_kf_state": 0.8723735809326172,
+    "kf_to_prediction_generated": 0.6039142608642578,
+    "prediction_generated_to_monitor_receive": 3.0493736267089844,
+    "monitor_receive_to_snapshot": 103.78599166870117,
+    "total_observation_age": 134.60397720336914
+  },
+  "next_frame_acquisition_to_receive_ms": 88.10019493103027,
+  "causality": "Producer epochs and receipt records, not a CPU-contention proof. Observer snapshot is earlier than outer stop. No online stamp was rewritten.",
+  "sources": {
+    "data/experiments/20261012_p5_revalidation_02/f2_h16_01/bounded_stop.json": "c3da57b742ec4371eeed9f4189ab2dfcd4963b088fe0a8469c17b0072c770f2f",
+    "data/experiments/20261012_p5_revalidation_02/f2_h16_01/offline_evidence.jsonl": "9ef021f4d94af22c8ef7e122c354599bea6adf66267f9cfb9566157d1255c9df"
+  }
+}

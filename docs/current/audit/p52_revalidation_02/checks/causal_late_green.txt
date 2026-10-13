@@ -1,0 +1,21 @@
+.F..........................................................             [100%]
+=================================== FAILURES ===================================
+________ test_causal_wait_does_not_revoke_active_but_actual_expiry_does ________
+
+    def test_causal_wait_does_not_revoke_active_but_actual_expiry_does():
+        nav, kf = histories()
+        gate = FollowAdmission()
+        gate.update(100.1, healthy(), True, active=True)
+        pending = follow_settling(nav, kf, 100.126)
+        assert gate.update(100.126, pending, True, active=True) == ''
+        expired = follow_settling(nav, kf, 100.18)
+        assert not expired.get('awaiting_native_bracket')
+>       assert gate.update(100.18, expired, True, active=True) == 'EXECUTION_CONTEXT_INVALID'
+E       AssertionError: assert 'NATIVE_BRACKET_TIMEOUT' == 'EXECUTION_CONTEXT_INVALID'
+E         - EXECUTION_CONTEXT_INVALID
+E         + NATIVE_BRACKET_TIMEOUT
+
+test/test_p52_causal_admission.py:42: AssertionError
+=========================== short test summary info ============================
+FAILED test/test_p52_causal_admission.py::test_causal_wait_does_not_revoke_active_but_actual_expiry_does
+1 failed, 59 passed in 7.98s

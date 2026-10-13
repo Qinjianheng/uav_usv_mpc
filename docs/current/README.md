@@ -4,6 +4,9 @@
 
 | 文档 | 用途 |
 |---|---|
+| [P5.2 闭环准备与验证](p52_minco_closed_loop_report.md) | 本轮修复与十五项结论；新F2/F3尚未授权执行 |
+| [P5.2 切换和lease](p52_switching_and_lease_analysis.md) | 同输入供应修复、长序列故障回放与实测边界 |
+| [P5.2 故障解决](p52_failure_resolution.md) | RED→GREEN、独立审查修复及当前资格入口 |
 | [P5.1 接管与恢复](p51_follow_minco_switching.md) | 接收器单一准入、5s稳态、2s冷却、影子探测与真实owner |
 | [P5.1 时效与lease](p51_online_timing_and_lease.md) | 旧131次回退、原请求profile、接替调度与134.6ms分解 |
 | [P5.1 验收与下一步](p51_closed_loop_validation.md) | 代码/离线验证、新有界实跑入口；F2/F3尚未执行 |

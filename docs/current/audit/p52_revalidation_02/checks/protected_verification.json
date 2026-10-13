@@ -1,0 +1,9 @@
+{
+  "count": 984,
+  "unchanged": true,
+  "manifests": {
+    "docs/current/audit/p52_follow_minco": 30,
+    "data/experiments/20261013_p52_offline_01": 87,
+    "data/experiments/20261013_p52_closed_loop_01/f2_h16_01": 887
+  }
+}

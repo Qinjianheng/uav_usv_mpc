@@ -178,7 +178,7 @@ def test_online_budget_guard_primes_only_target_independent_geometry():
     assert linear_geometry.cache_info().currsize == 1
 
 
-@pytest.mark.parametrize('remaining,expected_fallback', [(.032, True), (.008, False)])
+@pytest.mark.parametrize('remaining,expected_fallback', [(.020, True), (.008, False)])
 def test_budget_guard_does_not_start_follow_or_fallback_without_stage_budget(
         remaining, expected_fallback, monkeypatch):
     from test_p47_follow_guided_solver import solver

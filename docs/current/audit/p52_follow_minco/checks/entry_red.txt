@@ -1,0 +1,40 @@
+FFFF                                                                     [100%]
+=================================== FAILURES ===================================
+__________ test_p52_has_its_own_attempt_root_and_explicit_permission ___________
+
+    def test_p52_has_its_own_attempt_root_and_explicit_permission():
+>       import p52_minco_sitl as task
+E       ModuleNotFoundError: No module named 'p52_minco_sitl'
+
+test/test_p52_sitl.py:13: ModuleNotFoundError
+_______ test_p52_ready_binds_verification_independent_review_and_sources _______
+
+tmp_path = PosixPath('/tmp/pytest-of-qin/pytest-188/test_p52_ready_binds_verificat0')
+
+    def test_p52_ready_binds_verification_independent_review_and_sources(tmp_path):
+>       import p52_minco_sitl as task
+E       ModuleNotFoundError: No module named 'p52_minco_sitl'
+
+test/test_p52_sitl.py:39: ModuleNotFoundError
+_________________ test_old_p51_readiness_cannot_authorize_p52 __________________
+
+tmp_path = PosixPath('/tmp/pytest-of-qin/pytest-188/test_old_p51_readiness_cannot_0')
+
+    def test_old_p51_readiness_cannot_authorize_p52(tmp_path):
+>       import p52_minco_sitl as task
+E       ModuleNotFoundError: No module named 'p52_minco_sitl'
+
+test/test_p52_sitl.py:55: ModuleNotFoundError
+_____ test_p52_release_reuses_only_named_math_and_f3_still_needs_actual_f2 _____
+
+    def test_p52_release_reuses_only_named_math_and_f3_still_needs_actual_f2():
+>       import p52_minco_sitl as task
+E       ModuleNotFoundError: No module named 'p52_minco_sitl'
+
+test/test_p52_sitl.py:65: ModuleNotFoundError
+=========================== short test summary info ============================
+FAILED test/test_p52_sitl.py::test_p52_has_its_own_attempt_root_and_explicit_permission
+FAILED test/test_p52_sitl.py::test_p52_ready_binds_verification_independent_review_and_sources
+FAILED test/test_p52_sitl.py::test_old_p51_readiness_cannot_authorize_p52 - M...
+FAILED test/test_p52_sitl.py::test_p52_release_reuses_only_named_math_and_f3_still_needs_actual_f2
+4 failed in 0.03s

@@ -39,11 +39,14 @@ class P47FollowGuidedMinco(P44FollowSolver):
         self.follow_estimate = .010
         self.validation_estimate = .004
         self.online_budget_guard = online_budget_guard
+        self.fallback_failed_cost = 0.
         if online_budget_guard:
             from uav_control.guidance.follow_terminal_correction import linear_geometry
             # Pure coefficient map; no target, attitude, input epoch or accepted curve cached.
             linear_geometry((self.duration/3,)*3, terminal_mode)
-            self.follow_estimate, self.fallback_estimate = .045, .012
+            # Saved-request warm stages measured ~12ms; 15ms is a scheduling estimate,
+            # not a deadline guarantee. The cold coefficient map has already been built.
+            self.follow_estimate, self.fallback_estimate = .015, .012
 
     def clear_warm_start(self):
         super().clear_warm_start()
@@ -68,6 +71,7 @@ class P47FollowGuidedMinco(P44FollowSolver):
                                   fresh_until=until, effective_seconds=end-started,
                                   fallback_estimate=self.fallback_estimate,
                                   follow_estimate=self.follow_estimate,
+                                  fallback_failed_cost=self.fallback_failed_cost,
                                   online_budget_guard=self.online_budget_guard,
                                   estimate_is_guarantee=False))
         best = MpcSeedResult(request.context, solver_status='NO_FRESHNESS_BUDGET')
@@ -97,6 +101,12 @@ class P47FollowGuidedMinco(P44FollowSolver):
             reserve = self.fallback_estimate if self.fallback_enabled else 0.
             try_follow = (self.scheduling == 'legacy'
                           or remaining() > self.follow_estimate+reserve)
+            if self.online_budget_guard and self.scheduling == 'adaptive':
+                available = remaining()
+                fallback_fits = self.fallback_enabled and available > self.fallback_estimate
+                if not fallback_fits and available > self.follow_estimate:
+                    # An impossible fallback reservation cannot consume a feasible P47 window.
+                    try_follow, reserve = True, 0.
             if try_follow:
                 stamp = self.clock()
                 try:
@@ -207,8 +217,20 @@ class P47FollowGuidedMinco(P44FollowSolver):
                               ('initialization', 'coefficient_construction', 'validation'))
             if follow_cost:
                 self.follow_estimate = max(self.follow_estimate*.98, follow_cost*1.2)
+            elif detail['initial_status'] == 'SHORT_BUDGET_P44_PRIORITY':
+                # A skipped path cannot refresh its cost. Age an isolated overestimate
+                # toward the warm scheduling prior, with no extra requests or TTL renewal.
+                self.follow_estimate = max(.015, self.follow_estimate*.8)
             if timing['fallback']:
-                self.fallback_estimate = max(self.fallback_estimate*.98, timing['fallback']*1.2)
+                if detail['fallback_valid']:
+                    self.fallback_estimate = max(self.fallback_estimate*.98,
+                                                 timing['fallback']*1.2)
+                else:
+                    # Exhausting all infeasible candidates is a different path from finding
+                    # a valid candidate; retain that cost without permanently gating it out.
+                    self.fallback_failed_cost = timing['fallback']
+            elif not detail['fallback_used'] and not best.valid:
+                self.fallback_estimate = max(.012, self.fallback_estimate*.8)
         snapshot = constraint_snapshot(self.model)
         detail['budget']['remaining_seconds_at_finish'] = remaining()
         if remaining() <= 0:

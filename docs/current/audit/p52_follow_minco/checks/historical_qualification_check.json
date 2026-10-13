@@ -1,0 +1,7 @@
+{
+  "named_historical_math_verified": true,
+  "formal_manifest_verified": true,
+  "actual_candidate_config_verified": true,
+  "current_new_protocol_tests_separate": true,
+  "actual_flight_qualification": false
+}

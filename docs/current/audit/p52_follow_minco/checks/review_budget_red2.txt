@@ -1,0 +1,47 @@
+...FF                                                                    [100%]
+=================================== FAILURES ===================================
+___ test_a_follow_timeout_cannot_permanently_inhibit_later_normal_cost_work ____
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x74fb0d4f1de0>
+
+    def test_a_follow_timeout_cannot_permanently_inhibit_later_normal_cost_work(monkeypatch):
+        import uav_control.controllers.follow_guided_feasible as module
+        req, s = guarded(.04)
+        clock = [0.]
+        s.clock = lambda: clock[0]
+        original = module.rollout_follow_fast
+    
+        def delayed(*args, **kwargs):
+            clock[0] += .08  # deterministic pause past the actual original request cutoff
+            return original(*args, **kwargs)
+    
+        monkeypatch.setattr(module, 'rollout_follow_fast', delayed)
+        first = s.solve(req)
+        assert not first.valid and first.solver_status == 'DEADLINE_EXCEEDED'
+        assert s.follow_estimate >= .08
+        monkeypatch.setattr(module, 'rollout_follow_fast', original)
+        results = []
+        for _ in range(12):
+            clock[0] = 0.  # subsequent independent, fresh-budget calls have normal work cost
+            results.append(s.solve(req))
+>       assert any(v.metrics['follow_guided']['independent_valid'] for v in results)
+E       assert False
+E        +  where False = any(<generator object test_a_follow_timeout_cannot_permanently_inhibit_later_normal_cost_work.<locals>.<genexpr> at 0x74fb0d4e7bc0>)
+
+test/test_p52_budget_scheduling.py:68: AssertionError
+_ test_skipped_fallback_estimate_recovers_after_an_isolated_success_cost_outlier _
+
+    def test_skipped_fallback_estimate_recovers_after_an_isolated_success_cost_outlier():
+        req, s = guarded(.01)
+        s.fallback_estimate = .08
+        for _ in range(12):
+            s.solve(req)
+>       assert s.fallback_estimate <= .012
+E       assert 0.08 <= 0.012
+E        +  where 0.08 = <uav_control.controllers.follow_guided_feasible.P47FollowGuidedMinco object at 0x74fb0b126fb0>.fallback_estimate
+
+test/test_p52_budget_scheduling.py:76: AssertionError
+=========================== short test summary info ============================
+FAILED test/test_p52_budget_scheduling.py::test_a_follow_timeout_cannot_permanently_inhibit_later_normal_cost_work
+FAILED test/test_p52_budget_scheduling.py::test_skipped_fallback_estimate_recovers_after_an_isolated_success_cost_outlier
+2 failed, 3 passed in 0.28s

@@ -53,6 +53,19 @@ class P4ResearchRunner(ShadowResearchRunner):
     def _prepare(self, now, monotonic_now):
         with CycleProfile(self.cycle_id+1) as profile:
             result = super()._prepare(now, monotonic_now)
+            waiting = getattr(self, 'retry_waiting_parent', None)
+            status = getattr(self, 'execution_status', None) or {}
+            if waiting and status.get('active') != waiting:
+                self.retry_waiting_parent = None
+            elif (waiting and self.pending is None
+                  and getattr(self.solver, 'online_budget_guard', False)):
+                from uav_control.guidance.fast_follow_minco import freshness
+                until, _ = freshness(result[0], now)
+                costs = [self.solver.follow_estimate]
+                if self.solver.fallback_enabled:
+                    costs.append(self.solver.fallback_estimate)
+                if until-now-self.solver.fast.publication_reserve <= min(costs):
+                    raise ValueError('RETRY_AWAITING_FRESH_INPUT')
         self.preparation_profile = profile.report()
         return result
 
@@ -70,11 +83,13 @@ class P4ResearchRunner(ShadowResearchRunner):
                 and 0 < status['deadline']-now <= self.period+.15+.05
                 and getattr(self, 'retried_parent', None) != status['active']):
             self.retried_parent = status['active']
+            self.retry_waiting_parent = status['active']
             self.next_solve = min(self.next_solve, monotonic_now+.01)
             self.deadline_retry = dict(parent=status['active'], stamp=now,
                                        scheduled_monotonic=self.next_solve,
                                        original_deadline=status['deadline'])
         if self.pending is not None and self.pending is not previous:
+            self.retry_waiting_parent = None
             self.pending['preparation_profile'] = self.preparation_profile
             self.pending['receiver_epoch'] = getattr(self, 'current_receiver_epoch', None)
 
@@ -118,16 +133,23 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
             self.receiver_epoch = None
             self.receiver_status = None
             self.runner.current_receiver_epoch = None
+            self.runner.execution_status = None
             return
         identity = (message.receiver_boot_id, int(message.clock_generation),
                     int(message.mission_id), self.adapter.clock_generation)
-        if (self.receiver_epoch and identity[0] == self.receiver_epoch[0][0]
-                and identity[1] < self.receiver_epoch[0][1]):
-            return
         previous = getattr(self, 'last_receiver_heartbeat', self.receiver_epoch)
+        retired = getattr(self, 'retired_receiver_boots', set())
+        if identity[0] in retired:
+            return
+        if (previous is not None and identity[0] == previous[0][0]
+                and identity[1:3] < previous[0][1:3]):
+            return
         if previous is not None and identity == previous[0] and stamp <= previous[1]:
             return
         if previous is not None and identity != previous[0]:
+            if identity[0] != previous[0][0]:
+                retired.add(previous[0][0])
+                self.retired_receiver_boots = retired
             self.accepted_curve = None
             self.ack_order, self.last_control_ack = {}, None
         self.last_receiver_heartbeat = (identity, stamp)
@@ -136,6 +158,7 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
         self.receiver_status = dict(stamp=stamp, state=message.research_state,
                                     allowed=message.entry_allowed,
                                     converged=message.follow_converged,
+                                    inhibition=getattr(message, 'entry_inhibition_reason', ''),
                                     active=int(message.active_plan_id),
                                     pending=int(message.pending_plan_id),
                                     deadline=message.active_lease_deadline)
@@ -363,6 +386,8 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
             return 'AWAITING_PENDING_ACTIVE'
         if status['active'] or status['allowed']:
             return ''
+        if status.get('inhibition') == 'FOLLOW_ENTRY_LIMIT_REACHED':
+            return status['inhibition']
         if (status['state'] == 'FOLLOW_STABLE'
                 or (status['state'] == 'FOLLOW_RECOVERY' and status.get('converged'))):
             return 'SHADOW_PROBE'

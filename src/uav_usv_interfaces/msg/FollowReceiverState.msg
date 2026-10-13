@@ -19,3 +19,4 @@ float64 recovery_until
 uint32 entry_attempts
 uint32 valid_probe_count
 string last_fallback_reason
+string entry_inhibition_reason

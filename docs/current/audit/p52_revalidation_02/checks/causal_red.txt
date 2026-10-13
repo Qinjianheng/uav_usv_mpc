@@ -1,0 +1,32 @@
+FF.                                                                      [100%]
+=================================== FAILURES ===================================
+__ test_missing_right_bracket_defers_without_grant_or_false_loss_then_resumes __
+
+    def test_missing_right_bracket_defers_without_grant_or_false_loss_then_resumes():
+        nav, kf = histories()
+        gate = FollowAdmission()
+        gate.stable_since, gate.last_now = 95., 100.1
+        gate.probes, gate.last_probe = [1, 2, 3], 100.1
+        pending = follow_settling(nav, kf, 100.126)
+>       assert pending.get('awaiting_native_bracket') and not pending['settled']
+E       AssertionError: assert (None)
+E        +  where None = <built-in method get of dict object at 0x7a2dbd65a6c0>('awaiting_native_bracket')
+E        +    where <built-in method get of dict object at 0x7a2dbd65a6c0> = {'reason': 'NO_FRESH_COMMON_EPOCH', 'settled': False}.get
+
+test/test_p52_causal_admission.py:23: AssertionError
+________ test_causal_wait_does_not_revoke_active_but_actual_expiry_does ________
+
+    def test_causal_wait_does_not_revoke_active_but_actual_expiry_does():
+        nav, kf = histories()
+        gate = FollowAdmission()
+        gate.update(100.1, healthy(), True, active=True)
+        pending = follow_settling(nav, kf, 100.126)
+>       assert gate.update(100.126, pending, True, active=True) == ''
+E       AssertionError: assert 'EXECUTION_CONTEXT_INVALID' == ''
+E         + EXECUTION_CONTEXT_INVALID
+
+test/test_p52_causal_admission.py:39: AssertionError
+=========================== short test summary info ============================
+FAILED test/test_p52_causal_admission.py::test_missing_right_bracket_defers_without_grant_or_false_loss_then_resumes
+FAILED test/test_p52_causal_admission.py::test_causal_wait_does_not_revoke_active_but_actual_expiry_does
+2 failed, 1 passed in 0.03s

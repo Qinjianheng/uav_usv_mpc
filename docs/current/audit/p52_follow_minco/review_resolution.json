@@ -1,0 +1,29 @@
+{
+  "reviewer": "/root/p52_final_review",
+  "model": "gpt-6-astra",
+  "readonly": true,
+  "critical": 0,
+  "important_found": 1,
+  "important_unresolved": 0,
+  "minor": 0,
+  "original_verdict": "Offline readiness conditional on bounded budget-estimate recovery and final evidence",
+  "resolved": [
+    {
+      "finding": "A FOLLOW cost outlier permanently inhibits the unexecuted path",
+      "fix": "Skipped FOLLOW/P44 work estimates age by 0.8 toward warm15ms/12ms priors; no extra requests, unchanged actual cutoff",
+      "tests": [
+        "test_a_follow_timeout_cannot_permanently_inhibit_later_normal_cost_work",
+        "test_skipped_fallback_estimate_recovers_after_an_isolated_success_cost_outlier"
+      ],
+      "red": "review_budget_red2.txt:2 failed,3 passed",
+      "green": "review_budget_green.txt:52 passed"
+    }
+  ],
+  "declined_to_judge": [
+    "Final hashes/builds delegated to executor verification",
+    "Online tail latency, real successor rate and PX4 tracking require separately authorized SITL",
+    "116 missing proposals cannot uniquely identify upstream producers from incomplete logs",
+    "Entry tests do not establish actual FOLLOW approach or reversal continuity"
+  ],
+  "resolution_scope": "One author fix pass with RED\u2192GREEN plus final suite; no second reviewer verdict claimed"
+}

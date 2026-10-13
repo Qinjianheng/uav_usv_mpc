@@ -831,6 +831,7 @@ class TrajectoryTrackerNode(Node):
             message.recovery_until = max(0., gate.recover_until)
             message.entry_attempts, message.valid_probe_count = gate.entries, len(gate.probes)
             message.last_fallback_reason = (gate.loss or {}).get('reason', '')
+            message.entry_inhibition_reason = gate.inhibition_reason(context.now)
         self.follow_epoch_pub.publish(message)
 
     def _update_follow_admission(self, context):
@@ -842,11 +843,14 @@ class TrajectoryTrackerNode(Node):
             return ''
         identity = (context.receiver_boot_id, context.generation, context.mission_id)
         if self.follow_admission_identity != identity:
+            if receiver.active or receiver.pending:
+                self._revoke_nominal_follow('RECEIVER_IDENTITY_CHANGED')
             receiver.admission = gate = FollowAdmission(gate.config)
             self.follow_admission_identity = identity
         self.follow_metrics = follow_settling(
             self.follow_navigation_history, self.follow_target_history, context.now,
-            self.flight_guidance.follow_distance, self.flight_guidance.flight_altitude)
+            self.flight_guidance.follow_distance, self.flight_guidance.flight_altitude,
+            admission_config=gate.config)
         status_stamp = getattr(self, 'vehicle_status_stamp', None)
         legal = (context.following and context.visible and context.offboard and context.armed
                  and status_stamp is not None
@@ -933,6 +937,43 @@ class TrajectoryTrackerNode(Node):
                 receiver_compute_seconds=response.receiver_compute_seconds,
                 receive_monotonic=received_monotonic, ack_monotonic=time.perf_counter()))))
         self.follow_ack_pub.publish(response)
+        if ack.state == 'ACCEPTED' and getattr(self, 'follow_minco_requested', False):
+            self._schedule_follow_activation()
+
+    def _schedule_follow_activation(self):
+        """Wake the sole control path at an accepted start; never extend its window."""
+        previous = getattr(self, 'follow_activation_timer', None)
+        if previous is not None:
+            previous.cancel()
+            self.destroy_timer(previous)
+            self.follow_activation_timer = None
+        curve = self.follow_receiver.pending
+        if curve is None:
+            return
+        now = self._ros_seconds()
+        last = getattr(self, 'last_timer_stamp', None)
+        minimum_dt = max(0., .001-(now-last)) if last is not None and now >= last else 0.
+
+        def activate():
+            if getattr(self, 'follow_activation_timer', None) is not timer:
+                return
+            timer.cancel()
+            self.destroy_timer(timer)
+            self.follow_activation_timer = None
+            if self.follow_receiver.pending is not curve:
+                return
+            stamp = self._ros_seconds()
+            last_control = getattr(self, 'last_timer_stamp', None)
+            if (stamp < curve.start
+                    or (last_control is not None and 0 <= stamp-last_control < .001)):
+                self._schedule_follow_activation()
+                return
+            # The normal callback independently rechecks context, full prefix,
+            # actual completion clock and command shaping before any ACTIVE.
+            self.timer_callback()
+
+        timer = self.create_timer(max(1e-9, curve.start-now, minimum_dt), activate)
+        self.follow_activation_timer = timer
 
     def _revoke_nominal_follow(self, reason):
         """Every loss of the execution context emits a real revocation ACK, including nav loss."""
@@ -1031,12 +1072,6 @@ class TrajectoryTrackerNode(Node):
         self.pre_flight_checks_pass = bool(message.pre_flight_checks_pass)
 
     def target_state_callback(self, message):
-        if hasattr(self, 'follow_target_history'):
-            self.follow_target_history.append(dict(
-                valid=bool(message.valid and message.frame_id == self.expected_frame_id),
-                stamp=_stamp_seconds(message.stamp), source=_stamp_seconds(message.source_stamp),
-                p=tuple(float(getattr(message.position, a)) for a in 'xyz'),
-                v=tuple(float(getattr(message.velocity, a)) for a in 'xyz')))
         if message.valid and message.frame_id == self.expected_frame_id:
             previous = self.latest_kf_message
             stamp = _stamp_seconds(message.stamp)
@@ -1050,9 +1085,17 @@ class TrajectoryTrackerNode(Node):
             message, self._ros_seconds(), self.maximum_state_age,
             self.expected_frame_id,
         )
+        if hasattr(self, 'follow_target_history'):
+            self.follow_target_history.append(dict(
+                valid=converted is not None,
+                stamp=_stamp_seconds(message.stamp), source=_stamp_seconds(message.source_stamp),
+                p=tuple(float(getattr(message.position, a)) for a in 'xyz'),
+                v=tuple(float(getattr(message.velocity, a)) for a in 'xyz')))
         if converted is None:
             self.latest_kf_message = None
             self.latest_target_state = None
+            if getattr(self, 'follow_minco_requested', False):
+                self._update_follow_admission(self._follow_context())
             return
         previous = self.latest_kf_message
         if (previous is not None and _stamp_seconds(message.stamp)
@@ -1824,6 +1867,12 @@ class TrajectoryTrackerNode(Node):
     def timer_callback(self):
         started = time.perf_counter()
         now = self._ros_seconds()
+        last_control = getattr(self, 'last_timer_stamp', None)
+        if (getattr(self, 'follow_minco_requested', False) and last_control is not None
+                and 0 <= now-last_control < .001):
+            # A start wakeup may precede the regular timer. Never shape a command
+            # using the default 50ms dt for a sub-millisecond actual interval.
+            return
         self._process_pending_trajectory()
         if self.mission_state != MissionState.FOLLOW:
             self._revoke_nominal_follow('FOLLOW_EXITED')
