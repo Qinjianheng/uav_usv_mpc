@@ -41,3 +41,7 @@ P4.7 H1.6 离线候选封版与有条件 P5 名义执行：见 [封版决定](do
 P5.1 已实现接收器稳态准入、恢复冷却、连续候选探测与有界接替调度，见
 [切换策略](docs/current/p51_follow_minco_switching.md)、[时序归因](docs/current/p51_online_timing_and_lease.md)
 和 [验收记录](docs/current/p51_closed_loop_validation.md)。当前仅有测试与离线证据；本轮尚未执行新的 F2/F3。
+
+P5.3最新自主续做入口：[飞行效果修复与实测](docs/current/p53_flight_effect_repair.md)。
+该报告统一列出发布时序、Gazebo目标更新、实验监视器和预算调度修复，以及实际F2/F3验收状态；
+以上P5/P5.1段落保留各阶段交付时点，不能替代最新实跑结论。

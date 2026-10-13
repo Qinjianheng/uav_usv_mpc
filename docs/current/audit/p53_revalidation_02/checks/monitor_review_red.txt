@@ -1,0 +1,40 @@
+........FF                                                               [100%]
+=================================== FAILURES ===================================
+_ test_late_or_backwards_locked_sample_cannot_erase_prior_wait[10.201-FOLLOW_LOCK_RECOVERY_TIMEOUT] _
+
+recovered_at = 10.201, reason = 'FOLLOW_LOCK_RECOVERY_TIMEOUT'
+
+    @pytest.mark.parametrize('recovered_at,reason', [
+        (10.201, 'FOLLOW_LOCK_RECOVERY_TIMEOUT'),
+        (9.9, 'FOLLOW_LOCK_RECOVERY_CLOCK_REVERSED'),
+    ])
+    def test_late_or_backwards_locked_sample_cannot_erase_prior_wait(recovered_at, reason):
+        guard = entry.FollowHealthGuard()
+        assert guard(healthy(10., locked=False), 10.) is None
+>       assert guard(healthy(recovered_at), recovered_at) == reason
+E       AssertionError: assert None == 'FOLLOW_LOCK_RECOVERY_TIMEOUT'
+E        +  where None = <p53_minco_sitl.FollowHealthGuard object at 0x7d753ff1e4a0>({'attitude': {'q': [1.0, 0.0, 0.0, 0.0], 'receipt': 10.201}, 'control': {'compute': 0.001, 'locked': True, 'receipt': ... 'receipt': 10.201, 'stamp': 10.191, 'v': [2.0, 0.0, 0.0], ...}, 'p53_decision': {'fatal': None, 'inhibit': None}, ...}, 10.201)
+E        +    where {'attitude': {'q': [1.0, 0.0, 0.0, 0.0], 'receipt': 10.201}, 'control': {'compute': 0.001, 'locked': True, 'receipt': ... 'receipt': 10.201, 'stamp': 10.191, 'v': [2.0, 0.0, 0.0], ...}, 'p53_decision': {'fatal': None, 'inhibit': None}, ...} = healthy(10.201)
+
+test/test_p53_sitl.py:107: AssertionError
+_ test_late_or_backwards_locked_sample_cannot_erase_prior_wait[9.9-FOLLOW_LOCK_RECOVERY_CLOCK_REVERSED] _
+
+recovered_at = 9.9, reason = 'FOLLOW_LOCK_RECOVERY_CLOCK_REVERSED'
+
+    @pytest.mark.parametrize('recovered_at,reason', [
+        (10.201, 'FOLLOW_LOCK_RECOVERY_TIMEOUT'),
+        (9.9, 'FOLLOW_LOCK_RECOVERY_CLOCK_REVERSED'),
+    ])
+    def test_late_or_backwards_locked_sample_cannot_erase_prior_wait(recovered_at, reason):
+        guard = entry.FollowHealthGuard()
+        assert guard(healthy(10., locked=False), 10.) is None
+>       assert guard(healthy(recovered_at), recovered_at) == reason
+E       AssertionError: assert None == 'FOLLOW_LOCK_RECOVERY_CLOCK_REVERSED'
+E        +  where None = <p53_minco_sitl.FollowHealthGuard object at 0x7d753feeebf0>({'attitude': {'q': [1.0, 0.0, 0.0, 0.0], 'receipt': 9.9}, 'control': {'compute': 0.001, 'locked': True, 'receipt': 9.9...5.0], 'receipt': 9.9, 'stamp': 9.89, 'v': [2.0, 0.0, 0.0], ...}, 'p53_decision': {'fatal': None, 'inhibit': None}, ...}, 9.9)
+E        +    where {'attitude': {'q': [1.0, 0.0, 0.0, 0.0], 'receipt': 9.9}, 'control': {'compute': 0.001, 'locked': True, 'receipt': 9.9...5.0], 'receipt': 9.9, 'stamp': 9.89, 'v': [2.0, 0.0, 0.0], ...}, 'p53_decision': {'fatal': None, 'inhibit': None}, ...} = healthy(9.9)
+
+test/test_p53_sitl.py:107: AssertionError
+=========================== short test summary info ============================
+FAILED test/test_p53_sitl.py::test_late_or_backwards_locked_sample_cannot_erase_prior_wait[10.201-FOLLOW_LOCK_RECOVERY_TIMEOUT]
+FAILED test/test_p53_sitl.py::test_late_or_backwards_locked_sample_cannot_erase_prior_wait[9.9-FOLLOW_LOCK_RECOVERY_CLOCK_REVERSED]
+2 failed, 8 passed in 0.18s

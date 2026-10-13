@@ -1,0 +1,77 @@
+{
+  "passed": true,
+  "a_d_offline_pass": true,
+  "independent_review_pass": true,
+  "independent_review_meaning": "Independent source review; one Important closed by author RED-to-GREEN and final suite, no repeated-review assertion",
+  "base_head": "dfb0daa83ffc1d0c7e65486307f6c50f1a57db73",
+  "branch": "master",
+  "pytest": {
+    "passed": 1756,
+    "skipped": 1,
+    "warnings": 3,
+    "seconds": 26.62
+  },
+  "build_packages": [
+    "px4_msgs",
+    "uav_usv_interfaces",
+    "uav_control",
+    "uav_usv_bringup"
+  ],
+  "static_checks": {
+    "flake8": true,
+    "shell": true,
+    "launch": true,
+    "messages": true,
+    "prefix": true,
+    "git_diff": true
+  },
+  "source_count": 688,
+  "only_existing_functional_source_changed": [
+    "src/uav_control/uav_control/controllers/p4_follow_planner_node.py"
+  ],
+  "protected_files": 984,
+  "historical_manifests": {
+    "docs/current/audit/p52_follow_minco": 30,
+    "docs/current/audit/p52_revalidation_02": 21,
+    "docs/current/audit/p52_revalidation_03": 19,
+    "data/experiments/20261013_p52_offline_01": 87,
+    "data/experiments/20261013_p52_diagnosis_01": 29,
+    "data/experiments/20261013_p52_diagnosis_02": 26,
+    "data/experiments/20261013_p52_closed_loop_01/f2_h16_01": 887,
+    "data/experiments/20261013_p52_closed_loop_02/f2_h16_01": 909,
+    "data/experiments/20261013_p52_closed_loop_03/f2_h16_01": 930
+  },
+  "environment": {
+    "processes": [],
+    "hardware_serial": [],
+    "udp8888_free": true,
+    "domain": 43
+  },
+  "actual_p53_sitl": false,
+  "prior_f2_attempts": 3,
+  "prior_f2_pass": false,
+  "actual_f3": false,
+  "next_f2_authorization_required": true,
+  "next_f2_maximum_attempts": 1,
+  "recorded_replay": {
+    "lifecycle_events": 42,
+    "maximum_stamp_difference": 0.0,
+    "successor_activations": 36,
+    "expired_active": 0,
+    "illegal_parent": 0,
+    "prefix_scope": "Recorded observations; not new physical geometry proof",
+    "entry_scope": "Separate actual entry audit and production policy tests",
+    "ack_payloads": 91,
+    "explicit_reordered_duplicates": 42
+  },
+  "math_scope": "Historical named H1.6 candidate/strict validators unchanged; no new whole-matrix or flight equivalence claim",
+  "timing_scope": "Recorded worker/arrival/validation/ACK times preserved; serial four-request current wall replay, not online performance improvement",
+  "unresolved": [
+    "Loaded worker consecutive deadlines",
+    "Third-run late original-FOLLOW tracking/FOV degradation",
+    "P53 actual80pct ownership not validated"
+  ],
+  "raw_directory": "/home/qin/data/uav_usv_mpc/data/experiments/20261013_p53_offline_01",
+  "next_attempt_root": "/home/qin/data/uav_usv_mpc/data/experiments/20261013_p53_closed_loop_01",
+  "old_checkout_writes": false
+}

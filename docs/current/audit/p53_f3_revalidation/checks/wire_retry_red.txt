@@ -1,0 +1,15 @@
+...F.                                                                    [100%]
+=================================== FAILURES ===================================
+_ test_valid_solver_but_failed_wire_keeps_existing_single_early_retry_eligible _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x790d8f9ace50>
+
+    def test_valid_solver_but_failed_wire_keeps_existing_single_early_retry_eligible(monkeypatch):
+        _, _, row = run(monkeypatch, now=100.116)
+>       assert not row['test_runner_success']
+E       assert not True
+
+test/test_p53_supply.py:71: AssertionError
+=========================== short test summary info ============================
+FAILED test/test_p53_supply.py::test_valid_solver_but_failed_wire_keeps_existing_single_early_retry_eligible
+1 failed, 4 passed in 0.35s

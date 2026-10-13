@@ -1,0 +1,63 @@
+..........FFFFF                                                          [100%]
+=================================== FAILURES ===================================
+___ test_initial_unlocked_follow_can_approach_until_original_settling_bound ____
+
+    def test_initial_unlocked_follow_can_approach_until_original_settling_bound():
+>       guard = entry.FollowHealthGuard(initial_acquisition=True)
+E       TypeError: FollowHealthGuard.__init__() got an unexpected keyword argument 'initial_acquisition'
+
+test/test_p53_sitl.py:111: TypeError
+_ test_initial_wait_checks_deadline_before_accepting_late_lock[70.001-INITIAL_FOLLOW_ACQUISITION_TIMEOUT] _
+
+now = 70.001, reason = 'INITIAL_FOLLOW_ACQUISITION_TIMEOUT'
+
+    @pytest.mark.parametrize('now,reason', [
+        (70.001, 'INITIAL_FOLLOW_ACQUISITION_TIMEOUT'),
+        (9.9, 'INITIAL_FOLLOW_ACQUISITION_CLOCK_REVERSED'),
+    ])
+    def test_initial_wait_checks_deadline_before_accepting_late_lock(now, reason):
+>       guard = entry.FollowHealthGuard(initial_acquisition=True)
+E       TypeError: FollowHealthGuard.__init__() got an unexpected keyword argument 'initial_acquisition'
+
+test/test_p53_sitl.py:128: TypeError
+_ test_initial_wait_checks_deadline_before_accepting_late_lock[9.9-INITIAL_FOLLOW_ACQUISITION_CLOCK_REVERSED] _
+
+now = 9.9, reason = 'INITIAL_FOLLOW_ACQUISITION_CLOCK_REVERSED'
+
+    @pytest.mark.parametrize('now,reason', [
+        (70.001, 'INITIAL_FOLLOW_ACQUISITION_TIMEOUT'),
+        (9.9, 'INITIAL_FOLLOW_ACQUISITION_CLOCK_REVERSED'),
+    ])
+    def test_initial_wait_checks_deadline_before_accepting_late_lock(now, reason):
+>       guard = entry.FollowHealthGuard(initial_acquisition=True)
+E       TypeError: FollowHealthGuard.__init__() got an unexpected keyword argument 'initial_acquisition'
+
+test/test_p53_sitl.py:128: TypeError
+___ test_initial_acquisition_keeps_all_other_safety_checks_and_minco_strict ____
+
+    def test_initial_acquisition_keeps_all_other_safety_checks_and_minco_strict():
+>       guard = entry.FollowHealthGuard(initial_acquisition=True)
+E       TypeError: FollowHealthGuard.__init__() got an unexpected keyword argument 'initial_acquisition'
+
+test/test_p53_sitl.py:134: TypeError
+___ test_bounded_f3_retry_requires_original_actual_f2_pass_and_prior_attempt ___
+
+tmp_path = PosixPath('/tmp/pytest-of-qin/pytest-224/test_bounded_f3_retry_requires0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x743bac5dfcd0>
+
+    def test_bounded_f3_retry_requires_original_actual_f2_pass_and_prior_attempt(tmp_path, monkeypatch):
+        monkeypatch.setattr(entry, 'ROOT', tmp_path/'20261013_p53_closed_loop_01')
+        base = entry.round_root(3)
+        base.mkdir()
+        with pytest.raises(ValueError, match='PRIOR_F3_ATTEMPT_REQUIRED'):
+>           entry.f3_retry_root(3)
+E           AttributeError: module 'p53_minco_sitl' has no attribute 'f3_retry_root'
+
+test/test_p53_sitl.py:147: AttributeError
+=========================== short test summary info ============================
+FAILED test/test_p53_sitl.py::test_initial_unlocked_follow_can_approach_until_original_settling_bound
+FAILED test/test_p53_sitl.py::test_initial_wait_checks_deadline_before_accepting_late_lock[70.001-INITIAL_FOLLOW_ACQUISITION_TIMEOUT]
+FAILED test/test_p53_sitl.py::test_initial_wait_checks_deadline_before_accepting_late_lock[9.9-INITIAL_FOLLOW_ACQUISITION_CLOCK_REVERSED]
+FAILED test/test_p53_sitl.py::test_initial_acquisition_keeps_all_other_safety_checks_and_minco_strict
+FAILED test/test_p53_sitl.py::test_bounded_f3_retry_requires_original_actual_f2_pass_and_prior_attempt
+5 failed, 10 passed in 0.19s

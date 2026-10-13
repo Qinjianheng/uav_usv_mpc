@@ -1,0 +1,58 @@
+...............FFF                                                       [100%]
+=================================== FAILURES ===================================
+_________ test_ground_recorder_startup_grace_expires_and_ends_before_x _________
+
+tmp_path = PosixPath('/tmp/pytest-of-qin/pytest-229/test_ground_recorder_startup_g0')
+
+    def test_ground_recorder_startup_grace_expires_and_ends_before_x(tmp_path):
+>       guard = entry.GroundStartupHealth(tmp_path)
+E       AttributeError: module 'p53_minco_sitl' has no attribute 'GroundStartupHealth'
+
+test/test_p53_sitl.py:169: AttributeError
+______ test_startup_grace_never_masks_exit_armed_flight_or_future_record _______
+
+tmp_path = PosixPath('/tmp/pytest-of-qin/pytest-229/test_startup_grace_never_masks0')
+
+    def test_startup_grace_never_masks_exit_armed_flight_or_future_record(tmp_path):
+        for patch in (dict(vehicle=dict(armed=2)), dict(control=dict(status='TAKEOFF')),
+                      dict(control=dict(status='FOLLOW')), dict(written=100.4)):
+            h = dict(written=100., control=dict(status='INIT'), vehicle=dict(armed=1))
+            h.update(patch)
+>           assert entry.GroundStartupHealth(tmp_path)(None, h, 100.3, 99.) == (
+                'HEALTH_MONITOR_STALLED')
+E           AttributeError: module 'p53_minco_sitl' has no attribute 'GroundStartupHealth'
+
+test/test_p53_sitl.py:184: AttributeError
+___________ test_only_a_verified_pre_x_stall_allows_one_ground_retry ___________
+
+tmp_path = PosixPath('/tmp/pytest-of-qin/pytest-229/test_only_a_verified_pre_x_sta0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x74d63d23af80>
+
+    def test_only_a_verified_pre_x_stall_allows_one_ground_retry(tmp_path, monkeypatch):
+        monkeypatch.setattr(entry, 'ROOT', tmp_path/'20261013_p53_closed_loop_01')
+        base = entry.round_root(3)
+        base.mkdir()
+        (base/'attempt_f3.json').write_text('{}')
+        # Preserve the real F2 gate; use the same helper-tested complete audit shape.
+        checks = dict(reference_height=True, entry_recovery=True, execution_gates=True,
+                      evidence_coverage=True, switching=True, handovers=True)
+        good = dict(completed=True, healthy=True, minco_fraction=1., longest_minco_seconds=25.,
+                    observation_seconds=25., diagnostic_coverage=1.,
+                    p51_audit=dict(passed=True, checks=checks))
+        (base/'f2_summary.json').write_text(json.dumps(good))
+        retry2 = entry.f3_retry_root(3)
+        (retry2/'attempt_f3.json').write_text('{}')
+        source = retry2/'f3_h16_01'
+        source.mkdir()
+        (source/'bounded_stop.json').write_text(json.dumps(dict(reason='HEALTH_MONITOR_STALLED')))
+        (source/'watchdog_end.json').write_text(json.dumps(dict(x_time=10.)))
+        with pytest.raises(ValueError, match='PRE_X_RECORDER_STALL_REQUIRED'):
+>           entry.f3_retry_root(3, 3)
+E           TypeError: f3_retry_root() takes 1 positional argument but 2 were given
+
+test/test_p53_sitl.py:211: TypeError
+=========================== short test summary info ============================
+FAILED test/test_p53_sitl.py::test_ground_recorder_startup_grace_expires_and_ends_before_x
+FAILED test/test_p53_sitl.py::test_startup_grace_never_masks_exit_armed_flight_or_future_record
+FAILED test/test_p53_sitl.py::test_only_a_verified_pre_x_stall_allows_one_ground_retry
+3 failed, 15 passed in 0.19s

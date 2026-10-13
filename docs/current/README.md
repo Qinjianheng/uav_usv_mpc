@@ -1,10 +1,16 @@
 # 当前文档入口
 
-本目录描述 `85e13461` 保留的成功控制基线及后续开发状态。当前默认前视 RGB-D、0.15 m 升沉与末端修复另见相机文档和 RGB-D 验证报告。原飞行链仍采用 BCTRA/MINCO/Tracker；P2 MPC 仍作研究输出；P4.5已有隔离名义MINCO接口，P5 H1.6实际接管尚未验证（最新复验已加载Planner但触发输入失效，见P5复验报告）。历史报告与代码细节必须结合当前源码核实。
+本目录描述 `85e13461` 保留的成功控制基线及后续开发状态。当前默认前视 RGB-D、0.15 m 升沉与末端修复另见相机文档和 RGB-D 验证报告。原飞行链仍采用 BCTRA/MINCO/Tracker；P2 MPC 仍作研究输出；P5.3 H1.6已通过实际F2持续接管验收；最新F3状态及完整证据见飞行效果修复入口。历史报告与代码细节必须结合当前源码核实。
 
 | 文档 | 用途 |
 |---|---|
-| [P5.2 闭环准备与验证](p52_minco_closed_loop_report.md) | 本轮修复与十五项结论；新F2/F3尚未授权执行 |
+| [P5.3 最新飞行效果修复](p53_flight_effect_repair.md) | 自主实测、Gazebo源故障与后继调度修复；最终验收以此入口为准 |
+| [P5.3 实际回退归因](p53_f2_root_cause.md) | 第二轮两次lease根因、第三轮失败反证与实测时间线 |
+| [P5.3 闭环根因](p53_closed_loop_root_cause.md) | 记录回放、真实/模拟证据边界和未解决项 |
+| [P5.3 供应修复](p53_switching_fix.md) | 关键wire发布优先级、原有单次重试衔接 |
+| [P5.3 F3八字验证](p53_f3_validation.md) | 同一控制配置、初始接近/地面工具失败保留与最新实际F3 |
+| [P5.3 F2验收](p53_f2_validation.md) | 保留历史失败与新F2完整25s实际通过结论 |
+| [P5.2 闭环准备与验证](p52_minco_closed_loop_report.md) | 本轮修复与十五项结论；历史离线交付；授权后已有三轮F2，持续接管均未通过 |
 | [P5.2 切换和lease](p52_switching_and_lease_analysis.md) | 同输入供应修复、长序列故障回放与实测边界 |
 | [P5.2 故障解决](p52_failure_resolution.md) | RED→GREEN、独立审查修复及当前资格入口 |
 | [P5.1 接管与恢复](p51_follow_minco_switching.md) | 接收器单一准入、5s稳态、2s冷却、影子探测与真实owner |

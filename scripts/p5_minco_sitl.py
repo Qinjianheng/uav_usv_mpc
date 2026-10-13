@@ -81,6 +81,14 @@ def read_health_snapshot(path):
     return health, time.time()
 
 
+def health_start_allowed(output, marker):
+    """Start a scoped recorder after ROS launch begins, when explicitly requested."""
+    if marker is None:
+        return True
+    log = output/'launcher.txt'
+    return log.exists() and marker in log.read_text()
+
+
 def settled_since(previous, settling, now):
     """Count five seconds only while the original FOLLOW is kinematically settled."""
     return (previous if previous is not None else now) if settling.get('settled') else None
@@ -313,7 +321,8 @@ def assess(output, scene, reason, first_minco, ended, task_root=None,
 
 def run(output, qualification, scene, task_root=None, authorization=None,
         health_check=None, research_config=None, flight_parameters=None,
-        extra_audit=None, f3_gate=None, release_gate=None):
+        extra_audit=None, f3_gate=None, release_gate=None, health_monitor_check=None,
+        health_start_marker=None):
     task_root = ROOT if task_root is None else task_root
     authorization = AUTHORIZATION if authorization is None else authorization
     health_check = safety_reason if health_check is None else health_check
@@ -377,7 +386,8 @@ def run(output, qualification, scene, task_root=None, authorization=None,
                 reason = 'SUSTAINED_PLANNER_OVERRUN'
                 break
             environment = read_environment_snapshot(output) if health_process is None else None
-            if health_process is None and environment is not None:
+            if (health_process is None and environment is not None
+                    and health_start_allowed(output, health_start_marker)):
                 env.update(environment)
                 health_process, owned = shell_process(
                     [sys.executable, str(WORKSPACE/'scripts/p5_live_health.py'), str(output)],
@@ -388,8 +398,9 @@ def run(output, qualification, scene, task_root=None, authorization=None,
             health, now = read_health_snapshot(health_path)
             health_observed = now
             if health_process is not None:
-                problem = health_monitor_reason(health_process.poll(), health.get('written'),
-                                                now, health_started)
+                problem = (health_monitor_check(health_process.poll(), health, now, health_started)
+                           if health_monitor_check else health_monitor_reason(
+                               health_process.poll(), health.get('written'), now, health_started))
                 if problem:
                     reason = problem
                     break

@@ -57,14 +57,42 @@ class P4ResearchRunner(ShadowResearchRunner):
             status = getattr(self, 'execution_status', None) or {}
             if waiting and status.get('active') != waiting:
                 self.retry_waiting_parent = None
-            elif (waiting and self.pending is None
-                  and getattr(self.solver, 'online_budget_guard', False)):
+                waiting = None
+            successor = (getattr(self, 'deadline_scheduling', False) and status.get('active'))
+            if ((waiting or successor) and self.pending is None
+                    and getattr(self.solver, 'online_budget_guard', False)):
                 from uav_control.guidance.fast_follow_minco import freshness
                 until, _ = freshness(result[0], now)
                 costs = [self.solver.follow_estimate]
                 if self.solver.fallback_enabled:
                     costs.append(self.solver.fallback_estimate)
-                if until-now-self.solver.fast.publication_reserve <= min(costs):
+                available = until-now-self.solver.fast.publication_reserve
+                # Cost hints exclude preparation, worker dispatch and common
+                # model setup. Actual F2 retries lost 4.5ms before the worker
+                # and up to 6.2ms before selecting a path. Keep 20ms headroom
+                # for those costs/variation and wait for a fresher snapshot;
+                # this changes dispatch only, never raw TTL or the parent lease.
+                if successor and available <= min(costs)+.020:
+                    context = result[0].context
+                    epoch = (context.mission_id, context.clock_generation,
+                             context.observation_stamp)
+                    previous = getattr(self, 'budget_wait_epoch', None)
+                    if (previous is None or epoch[:2] != previous[:2]
+                            or epoch[2] > previous[2]):
+                        # Waiting must not freeze a cost spike forever. Age the
+                        # same non-guaranteed hints as the solver, once per new
+                        # acquired image; repeated timer ticks cannot age them.
+                        self.budget_wait_epoch = epoch
+                        self.solver.follow_estimate = max(.015, self.solver.follow_estimate*.8)
+                        if self.solver.fallback_enabled:
+                            self.solver.fallback_estimate = max(
+                                .012, self.solver.fallback_estimate*.8)
+                        costs = [self.solver.follow_estimate]
+                        if self.solver.fallback_enabled:
+                            costs.append(self.solver.fallback_estimate)
+                    if available <= min(costs)+.020:
+                        raise ValueError('SUCCESSOR_AWAITING_FRESH_INPUT')
+                if waiting and available <= min(costs):
                     raise ValueError('RETRY_AWAITING_FRESH_INPUT')
         self.preparation_profile = profile.report()
         return result
@@ -285,12 +313,25 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
     def _publish_event(self, event):
         """Include prediction revalidation and wire publication in the final cycle audit."""
         cycle_id = event['request']['context']['cycle_id'] if event.get('request') else 0
+        critical_first = (getattr(self, 'follow_execution_enabled', False)
+                          and getattr(self, 'follow_admission_required', False))
         with CycleProfile(cycle_id) as profile:
+            if critical_first:
+                outcome = (self._publish_proposal(event)
+                           if event['output'].get('valid') and event.get('request') else
+                           dict(published=False, reason=event['output'].get('solver_status')))
+            # Large research markers and audit serialization cannot consume the
+            # critical wire's raw-input budget. Wire/Receiver checks remain complete.
             super()._publish_event(event)
-            if event['output'].get('valid') and event.get('request'):
-                outcome = self._publish_proposal(event)
-            else:
-                outcome = dict(published=False, reason=event['output'].get('solver_status'))
+            if not critical_first:
+                outcome = (self._publish_proposal(event)
+                           if event['output'].get('valid') and event.get('request') else
+                           dict(published=False, reason=event['output'].get('solver_status')))
+            elif event.get('event') == 'completion':
+                # The original one-parent retry follows actual critical delivery,
+                # not solver feasibility or a later research-marker deadline.
+                self.runner.last_completed_valid = bool(
+                    outcome['published'] and not outcome.get('reason'))
         if event.get('cycle_started_monotonic') is None or not event.get('request'):
             return
         finished = time.monotonic()
@@ -301,6 +342,8 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
             preparation_profile=event.get('preparation_profile'),
             worker_profile=(event.get('candidate_output') or event['output'])
             .get('metrics', {}).get('cycle_profile'),
+            research_marker_reason=('' if event['output'].get('valid') else
+                                    event['output'].get('solver_status')),
             publication_profile=profile.report(), **outcome))+'\n')
         self.log_file.flush()
 
@@ -353,6 +396,7 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
         if len(self.expected_plans) > 1024:
             self.expected_plans.pop(next(iter(self.expected_plans)))
         self._publish_wire_proposal(message)
+        wire_finish_ros, wire_finish_monotonic = self._ros_seconds(), time.monotonic()
         crossed = self._proposal_rejection(proposal_event, self._ros_seconds())
         self.log_file.write(_serialize(dict(event='follow_proposal', identity=key,
                                             stamp=now, holding_valid_until=0., authority=False,
@@ -372,7 +416,10 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
                                             conversion_publish_seconds=time.perf_counter()-before))
                             + '\n')
         self.log_file.flush()
-        return dict(published=True, reason=crossed, publication_crossed_deadline=bool(crossed))
+        return dict(published=True, reason=crossed, publication_crossed_deadline=bool(crossed),
+                    wire_finish_ros=wire_finish_ros,
+                    wire_finish_input_margin=seconds(message.input_valid_until)-wire_finish_ros,
+                    wire_cycle_seconds=wire_finish_monotonic-event['cycle_started_monotonic'])
 
     def _execution_publication_policy(self, now):
         """Consume the unique actual receiver gate; probes never request execution."""

@@ -1,5 +1,7 @@
 # 当前架构与控制边界
 
+P5.3最新实际状态见 [飞行效果修复与实测](p53_flight_effect_repair.md)：连续MINCO的F2验收已通过；后文P4/P5/P5.1段落保留各阶段时点。控制链仍为BCTRA/MINCO/唯一Tracker速度控制，MPC尚未实现。
+
 当前默认只有前视 RGB-D 输入，下视关闭；升沉幅值 0.15 m。ToF 实现保留并由显式开关启用；模型假设、真机边界和切换步骤见 [相机文档](camera_simulation.md)。
 
 当前统一入口为 [modular_intercept.launch.py](../../src/uav_usv_bringup/launch/modular_intercept.launch.py)，参数为 [baseline.yaml](../../src/uav_usv_bringup/config/baseline.yaml)。它使用多个进程隔离感知、预测、规划、跟踪、任务和评价，tracker 是 PX4 指令的唯一在线发布者。

@@ -1,0 +1,56 @@
+...FFFFF                                                                 [100%]
+=================================== FAILURES ===================================
+______ test_original_follow_one_frame_unlock_can_recover_without_stopping ______
+
+    def test_original_follow_one_frame_unlock_can_recover_without_stopping():
+>       guard = entry.FollowHealthGuard()
+E       AttributeError: module 'p53_minco_sitl' has no attribute 'FollowHealthGuard'
+
+test/test_p53_sitl.py:58: AttributeError
+_____ test_unlocked_follow_wait_is_bounded_and_clock_reversal_fails_closed _____
+
+    def test_unlocked_follow_wait_is_bounded_and_clock_reversal_fails_closed():
+>       guard = entry.FollowHealthGuard()
+E       AttributeError: module 'p53_minco_sitl' has no attribute 'FollowHealthGuard'
+
+test/test_p53_sitl.py:65: AttributeError
+_____________ test_wait_does_not_mask_physical_or_offboard_faults ______________
+
+    def test_wait_does_not_mask_physical_or_offboard_faults():
+        for mutate, reason in (
+                (lambda h: h['vehicle'].update(nav_state=3), 'OFFBOARD_OR_ARMING_LOST'),
+                (lambda h: h['navigation'].update(valid=False), 'NAVIGATION_INVALID'),
+                (lambda h: h['navigation'].update(p=[0., 0., -7.]), 'HEIGHT_ERROR_OVER_1M'),
+                (lambda h: h['control'].update(receipt=9.), 'HEALTH_INPUT_LOST')):
+            h = healthy(10., locked=False)
+            mutate(h)
+>           assert entry.FollowHealthGuard()(h, 10.) == reason
+E           AttributeError: module 'p53_minco_sitl' has no attribute 'FollowHealthGuard'
+
+test/test_p53_sitl.py:81: AttributeError
+___________ test_minco_unlock_and_wrong_owner_have_no_observer_grace ___________
+
+    def test_minco_unlock_and_wrong_owner_have_no_observer_grace():
+>       assert entry.FollowHealthGuard()(healthy(10., False, 'MINCO_FOLLOW'), 10.) == (
+            'NO_LAWFUL_FOLLOW_PATH')
+E       AttributeError: module 'p53_minco_sitl' has no attribute 'FollowHealthGuard'
+
+test/test_p53_sitl.py:85: AttributeError
+_______ test_diagnostic_rounds_preserve_claims_and_reject_unbounded_runs _______
+
+tmp_path = PosixPath('/tmp/pytest-of-qin/pytest-215/test_diagnostic_rounds_preserv0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7b088461ba30>
+
+    def test_diagnostic_rounds_preserve_claims_and_reject_unbounded_runs(tmp_path, monkeypatch):
+        monkeypatch.setattr(entry, 'ROOT', tmp_path/'20261013_p53_closed_loop_01')
+>       assert entry.round_root(1).name == '20261013_p53_closed_loop_01'
+E       AttributeError: module 'p53_minco_sitl' has no attribute 'round_root'
+
+test/test_p53_sitl.py:93: AttributeError
+=========================== short test summary info ============================
+FAILED test/test_p53_sitl.py::test_original_follow_one_frame_unlock_can_recover_without_stopping
+FAILED test/test_p53_sitl.py::test_unlocked_follow_wait_is_bounded_and_clock_reversal_fails_closed
+FAILED test/test_p53_sitl.py::test_wait_does_not_mask_physical_or_offboard_faults
+FAILED test/test_p53_sitl.py::test_minco_unlock_and_wrong_owner_have_no_observer_grace
+FAILED test/test_p53_sitl.py::test_diagnostic_rounds_preserve_claims_and_reject_unbounded_runs
+5 failed, 3 passed in 0.18s

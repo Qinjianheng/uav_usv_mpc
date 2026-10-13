@@ -1,0 +1,995 @@
+{
+  "source": "/home/qin/data/uav_usv_mpc/data/experiments/20261013_p52_closed_loop_03/f2_h16_01",
+  "evidence_sha256": "923fc5a907c918cee8d8274d0db37760daebb51227bed4f5cb9f48aa93d3453b",
+  "source_manifest_sha256": "f23f16bbb74aa6be617c3188fcfd2511daaf9d037e2cf6d23a561b98310f003f",
+  "predefined_observation": {
+    "start": 1791852391.09441,
+    "end": 1791852416.09441,
+    "seconds": 24.95027470588684,
+    "minco_fraction": 0.27410875266821616,
+    "longest_minco_seconds": 6.3500611782073975,
+    "diagnostic_coverage": 1.0,
+    "recovery_time_included": true,
+    "passed": false
+  },
+  "follow_to_five_second_gate": 14.419883728027344,
+  "planner_to_first_active": 2.926637887954712,
+  "actual_active_plans_all": 30,
+  "actual_active_plans_observation": 30,
+  "published_successor_cohort": {
+    "matured": 28,
+    "activated": 28,
+    "meaning": "Published successor cohort only; not all requests or lease opportunities"
+  },
+  "timing": {
+    "observed_request_intervals": {
+      "count": 130,
+      "min": 0.020219802856445312,
+      "p50": 0.2083972692489624,
+      "p95": 0.21191083192825316,
+      "p99": 0.35002984046935914,
+      "max": 0.43950605392456055
+    },
+    "prediction_generation_intervals": {
+      "count": 1160,
+      "min": 0.007695198059082031,
+      "p50": 0.05035293102264404,
+      "p95": 0.06257065534591674,
+      "p99": 0.06697132110595709,
+      "max": 0.0908501148223877
+    },
+    "prediction_observation_intervals": {
+      "count": 1160,
+      "min": 0.046900033950805664,
+      "p50": 0.05197739601135254,
+      "p95": 0.052020561695098874,
+      "p99": 0.059299430847167996,
+      "max": 0.10000777244567871
+    },
+    "wire_publication_intervals": {
+      "count": 35,
+      "min": 0.16086888313293457,
+      "p50": 0.21201729774475098,
+      "p95": 0.31636409759521456,
+      "p99": 5.202046146392798,
+      "max": 7.685265064239502
+    },
+    "whole_cycle_final": {
+      "count": 131,
+      "min": 0.012325142015470192,
+      "p50": 0.041498748993035406,
+      "p95": 0.06806908649741672,
+      "p99": 0.07866178069671138,
+      "max": 0.08315378299448639
+    },
+    "solver": {
+      "count": 131,
+      "min": 0.000865606009028852,
+      "p50": 0.021821226022439077,
+      "p95": 0.04059948198846541,
+      "p99": 0.04825292710447682,
+      "max": 0.05210154800442979
+    },
+    "validation": {
+      "count": 131,
+      "min": 0.0,
+      "p50": 0.0,
+      "p95": 0.021378266988904215,
+      "p99": 0.02412488810077775,
+      "max": 0.027101892017526552
+    },
+    "receiver_validation": {
+      "count": 36,
+      "min": 0.006036806007614359,
+      "p50": 0.00873515299463179,
+      "p95": 0.016896654495212715,
+      "p99": 0.021637116705824147,
+      "max": 0.02387544300290756
+    },
+    "publish_to_accepted": {
+      "count": 30,
+      "min": 0.004315614700317383,
+      "p50": 0.006734013557434082,
+      "p95": 0.01628545522689818,
+      "p99": 0.018749308586120606,
+      "max": 0.018924236297607422
+    },
+    "publish_to_active": {
+      "count": 30,
+      "min": 0.0708775520324707,
+      "p50": 0.10944628715515137,
+      "p95": 0.1254245638847351,
+      "p99": 0.12752522706985475,
+      "max": 0.1283111572265625
+    },
+    "activation_delay": {
+      "count": 30,
+      "min": 0.002429485321044922,
+      "p50": 0.004683494567871094,
+      "p95": 0.008391213417053222,
+      "p99": 0.0099151086807251,
+      "max": 0.010484695434570312
+    },
+    "receiver_finish_raw_margin": {
+      "count": 36,
+      "min": 0.016846418380737305,
+      "p50": 0.037320613861083984,
+      "p95": 0.059232890605926514,
+      "p99": 0.06336973905563353,
+      "max": 0.06455826759338379
+    },
+    "successor_start_before_parent_expiry": {
+      "count": 28,
+      "min": 0.18857836723327637,
+      "p50": 0.24047422409057617,
+      "p95": 0.24998259544372559,
+      "p99": 0.24999244451522828,
+      "max": 0.24999547004699707
+    }
+  },
+  "publication_reasons": {
+    "PUBLISHED": 36,
+    "NO_FRESHNESS_BUDGET": 14,
+    "DEADLINE_EXCEEDED": 13,
+    "FOLLOW_ENTRY_INHIBITED": 62,
+    "STALE_INPUT": 3,
+    "VISIBILITY_INFEASIBLE": 3
+  },
+  "start_missed": 0,
+  "losses": [
+    {
+      "plan": 37,
+      "stamp": 1791852397.4446852,
+      "reason": "LEASE_EXPIRED_NO_SUCCESSOR",
+      "terminal_ack": {
+        "kind": "follow_ack",
+        "receipt": 1791852397.4458416,
+        "stamp": 1791852397.4453738,
+        "plan": 37,
+        "mission": 1,
+        "generation": 0,
+        "state": "EXPIRED",
+        "reasons": [],
+        "receiver": "trajectory_tracker_node",
+        "active": 0,
+        "pending": 0,
+        "owner": "ORIGINAL_FOLLOW",
+        "replaced": false,
+        "receiver_compute_seconds": 0.0,
+        "receiver_boot": "cbb17f362db41e7ecf35aba61f02daa3",
+        "planner_boot": "e890286d1133e2bfea62fea797de4c21"
+      },
+      "successor_plans": [],
+      "original_lease_deadline": 1791852397.432377,
+      "active_ack": {
+        "kind": "follow_ack",
+        "receipt": 1791852396.9858522,
+        "stamp": 1791852396.985343,
+        "plan": 37,
+        "mission": 1,
+        "generation": 0,
+        "state": "ACTIVE",
+        "reasons": [
+          "NOMINAL_EXECUTION"
+        ],
+        "receiver": "trajectory_tracker_node",
+        "active": 37,
+        "pending": 0,
+        "owner": "MINCO_FOLLOW",
+        "replaced": true,
+        "receiver_compute_seconds": 0.0,
+        "receiver_boot": "cbb17f362db41e7ecf35aba61f02daa3",
+        "planner_boot": "e890286d1133e2bfea62fea797de4c21"
+      },
+      "attempts": [
+        {
+          "cycle": 38,
+          "dispatch": 1791852397.032927,
+          "raw_input_observation": 1791852396.9640455,
+          "worker": {
+            "solve_start_monotonic": 207165.167200684,
+            "solve_end_monotonic": 207165.203605166,
+            "solve_start_ros": 1791852397.0344477,
+            "solve_end_ros": 1791852397.0708451
+          },
+          "result": "DEADLINE_EXCEEDED",
+          "candidate_result": "DEADLINE_EXCEEDED",
+          "first_blocker": "DEADLINE_EXCEEDED",
+          "final": {
+            "event": "follow_publication_final",
+            "cycle_id": 38,
+            "stamp": 1791852397.0859196,
+            "whole_cycle_time": 0.05297011899529025,
+            "remaining_raw_ttl": 0.003116130828857422,
+            "preparation_profile": {
+              "cycle_id": 38,
+              "total_seconds": 0.0011863720137625933,
+              "stages": {
+                "navigation_sync": {
+                  "seconds": 0.0006577909807674587,
+                  "calls": 1
+                },
+                "input_prepare": {
+                  "seconds": 0.00017821500659920275,
+                  "calls": 1
+                }
+              },
+              "counts": {},
+              "unattributed_seconds": 0.00035036602639593184
+            },
+            "worker_profile": {
+              "cycle_id": 38,
+              "total_seconds": 0.036344983003800735,
+              "stages": {
+                "target_interpolation": {
+                  "seconds": 0.014279263006756082,
+                  "calls": 6
+                },
+                "future_reference": {
+                  "seconds": 0.0007841929618734866,
+                  "calls": 1
+                },
+                "candidate_reference": {
+                  "seconds": 0.0003122420166619122,
+                  "calls": 1
+                },
+                "candidate_jerk": {
+                  "seconds": 0.00020762000349350274,
+                  "calls": 1
+                },
+                "candidate_yaw": {
+                  "seconds": 0.00011902599362656474,
+                  "calls": 1
+                },
+                "candidate_seed_construction": {
+                  "seconds": 0.00022805697517469525,
+                  "calls": 2
+                },
+                "candidate_proxy_geometry": {
+                  "seconds": 0.0016909839760046452,
+                  "calls": 1
+                },
+                "candidate_proxy_score": {
+                  "seconds": 0.0001726580085232854,
+                  "calls": 1
+                },
+                "candidate_sort": {
+                  "seconds": 4.914996679872274e-06,
+                  "calls": 1
+                },
+                "minco_coefficients": {
+                  "seconds": 0.0003607909893617034,
+                  "calls": 1
+                },
+                "derivative_bounds": {
+                  "seconds": 0.0007193650235421956,
+                  "calls": 6
+                },
+                "attitude_extrema": {
+                  "seconds": 0.0016037239984143525,
+                  "calls": 1
+                },
+                "trajectory_samples": {
+                  "seconds": 0.0009978449961636215,
+                  "calls": 1
+                },
+                "planned_attitude": {
+                  "seconds": 0.0005521530110854656,
+                  "calls": 1
+                },
+                "full_fov": {
+                  "seconds": 0.003013591020135209,
+                  "calls": 1
+                },
+                "other_constraints": {
+                  "seconds": 0.0002511309867259115,
+                  "calls": 1
+                },
+                "full_validation": {
+                  "seconds": 0.0020029659499414265,
+                  "calls": 1
+                },
+                "candidate_strict_validation": {
+                  "seconds": 0.0025261920236516744,
+                  "calls": 1
+                },
+                "candidate_result_packaging": {
+                  "seconds": 0.00023574501392431557,
+                  "calls": 1
+                },
+                "candidate_selection": {
+                  "seconds": 0.0020174880628474057,
+                  "calls": 1
+                },
+                "p47_p44_fallback": {
+                  "seconds": 8.421979146078229e-06,
+                  "calls": 1
+                }
+              },
+              "counts": {
+                "coarse_candidates": 5,
+                "coarse_geometry_calls": 1,
+                "candidate_generated": 5,
+                "candidate_strict_attempts": 1,
+                "minco_builds": 1,
+                "root_searches": 9,
+                "projection_samples": 35,
+                "full_validation_samples": 35
+              },
+              "unattributed_seconds": 0.004256612010067329
+            },
+            "publication_profile": {
+              "cycle_id": 38,
+              "total_seconds": 0.007467473013093695,
+              "stages": {
+                "json_serialization": {
+                  "seconds": 0.006291787984082475,
+                  "calls": 2
+                },
+                "ros_publication": {
+                  "seconds": 0.0001254119852092117,
+                  "calls": 2
+                }
+              },
+              "counts": {},
+              "unattributed_seconds": 0.001050273043802008
+            },
+            "published": false,
+            "reason": "DEADLINE_EXCEEDED"
+          },
+          "acknowledgements": [],
+          "retry": {
+            "parent": 33,
+            "stamp": 1791852396.4034612,
+            "scheduled_monotonic": 207164.54622951802,
+            "original_deadline": 1791852396.7922723
+          }
+        },
+        {
+          "cycle": 39,
+          "dispatch": 1791852397.086765,
+          "raw_input_observation": 1791852397.0120354,
+          "worker": {
+            "solve_start_monotonic": 207165.222890202,
+            "solve_end_monotonic": 207165.251539687,
+            "solve_start_ros": 1791852397.090135,
+            "solve_end_ros": 1791852397.118786
+          },
+          "result": "DEADLINE_EXCEEDED",
+          "candidate_result": "DEADLINE_EXCEEDED",
+          "first_blocker": "DEADLINE_EXCEEDED",
+          "final": {
+            "event": "follow_publication_final",
+            "cycle_id": 39,
+            "stamp": 1791852397.132617,
+            "whole_cycle_time": 0.04583778997766785,
+            "remaining_raw_ttl": 0.004408359527587891,
+            "preparation_profile": {
+              "cycle_id": 39,
+              "total_seconds": 0.0008279280154965818,
+              "stages": {
+                "navigation_sync": {
+                  "seconds": 0.0005110919883009046,
+                  "calls": 1
+                },
+                "input_prepare": {
+                  "seconds": 0.00013685401063412428,
+                  "calls": 1
+                }
+              },
+              "counts": {},
+              "unattributed_seconds": 0.00017998201656155288
+            },
+            "worker_profile": {
+              "cycle_id": 39,
+              "total_seconds": 0.028583139006514102,
+              "stages": {
+                "target_interpolation": {
+                  "seconds": 0.0035174379299860448,
+                  "calls": 8
+                },
+                "future_reference": {
+                  "seconds": 0.0012810870539397001,
+                  "calls": 3
+                },
+                "p47_follow_initialization": {
+                  "seconds": 0.002889683993998915,
+                  "calls": 1
+                },
+                "minco_coefficients": {
+                  "seconds": 0.0005511379858944565,
+                  "calls": 2
+                },
+                "trajectory_samples": {
+                  "seconds": 0.002900933992350474,
+                  "calls": 2
+                },
+                "p47_terminal_quadratic": {
+                  "seconds": 0.006290469027590007,
+                  "calls": 1
+                },
+                "derivative_bounds": {
+                  "seconds": 0.0007242090068757534,
+                  "calls": 6
+                },
+                "attitude_extrema": {
+                  "seconds": 0.002439598989440128,
+                  "calls": 1
+                },
+                "planned_attitude": {
+                  "seconds": 0.0005600949807558209,
+                  "calls": 1
+                },
+                "full_fov": {
+                  "seconds": 0.0021581689943559468,
+                  "calls": 1
+                },
+                "other_constraints": {
+                  "seconds": 0.0005944530421402305,
+                  "calls": 1
+                },
+                "full_validation": {
+                  "seconds": 0.002512978040613234,
+                  "calls": 1
+                },
+                "p47_strict_validation": {
+                  "seconds": 0.0005431059980764985,
+                  "calls": 1
+                }
+              },
+              "counts": {
+                "minco_builds": 2,
+                "root_searches": 9,
+                "projection_samples": 35,
+                "full_validation_samples": 35
+              },
+              "unattributed_seconds": 0.001619779970496893
+            },
+            "publication_profile": {
+              "cycle_id": 39,
+              "total_seconds": 0.006329929019557312,
+              "stages": {
+                "json_serialization": {
+                  "seconds": 0.00578559999121353,
+                  "calls": 2
+                },
+                "ros_publication": {
+                  "seconds": 0.0001213040086440742,
+                  "calls": 2
+                }
+              },
+              "counts": {},
+              "unattributed_seconds": 0.00042302501969970763
+            },
+            "published": false,
+            "reason": "DEADLINE_EXCEEDED"
+          },
+          "acknowledgements": [],
+          "retry": {
+            "parent": 37,
+            "stamp": 1791852397.0724516,
+            "scheduled_monotonic": 207165.21522983402,
+            "original_deadline": 1791852397.432377
+          }
+        }
+      ],
+      "next_initial_active": {
+        "kind": "follow_ack",
+        "receipt": 1791852405.3085027,
+        "stamp": 1791852405.307961,
+        "plan": 77,
+        "mission": 1,
+        "generation": 0,
+        "state": "ACTIVE",
+        "reasons": [
+          "NOMINAL_EXECUTION"
+        ],
+        "receiver": "trajectory_tracker_node",
+        "active": 77,
+        "pending": 0,
+        "owner": "MINCO_FOLLOW",
+        "replaced": true,
+        "receiver_compute_seconds": 0.0,
+        "receiver_boot": "cbb17f362db41e7ecf35aba61f02daa3",
+        "planner_boot": "e890286d1133e2bfea62fea797de4c21"
+      },
+      "recovery_seconds": 7.863275766372681,
+      "no_request_causality": "Missing dispatch events remain unknown"
+    },
+    {
+      "plan": 77,
+      "stamp": 1791852405.7948887,
+      "reason": "LEASE_EXPIRED_NO_SUCCESSOR",
+      "terminal_ack": {
+        "kind": "follow_ack",
+        "receipt": 1791852405.796533,
+        "stamp": 1791852405.7957876,
+        "plan": 77,
+        "mission": 1,
+        "generation": 0,
+        "state": "EXPIRED",
+        "reasons": [],
+        "receiver": "trajectory_tracker_node",
+        "active": 0,
+        "pending": 0,
+        "owner": "ORIGINAL_FOLLOW",
+        "replaced": false,
+        "receiver_compute_seconds": 0.0,
+        "receiver_boot": "cbb17f362db41e7ecf35aba61f02daa3",
+        "planner_boot": "e890286d1133e2bfea62fea797de4c21"
+      },
+      "successor_plans": [],
+      "original_lease_deadline": 1791852405.7555315,
+      "active_ack": {
+        "kind": "follow_ack",
+        "receipt": 1791852405.3085027,
+        "stamp": 1791852405.307961,
+        "plan": 77,
+        "mission": 1,
+        "generation": 0,
+        "state": "ACTIVE",
+        "reasons": [
+          "NOMINAL_EXECUTION"
+        ],
+        "receiver": "trajectory_tracker_node",
+        "active": 77,
+        "pending": 0,
+        "owner": "MINCO_FOLLOW",
+        "replaced": true,
+        "receiver_compute_seconds": 0.0,
+        "receiver_boot": "cbb17f362db41e7ecf35aba61f02daa3",
+        "planner_boot": "e890286d1133e2bfea62fea797de4c21"
+      },
+      "attempts": [
+        {
+          "cycle": 78,
+          "dispatch": 1791852405.3625474,
+          "raw_input_observation": 1791852405.288529,
+          "worker": {
+            "solve_start_monotonic": 207173.497636518,
+            "solve_end_monotonic": 207173.508209202,
+            "solve_start_ros": 1791852405.3648853,
+            "solve_end_ros": 1791852405.3754506
+          },
+          "result": "NO_FRESHNESS_BUDGET",
+          "candidate_result": "NO_FRESHNESS_BUDGET",
+          "first_blocker": "NO_FRESHNESS_BUDGET",
+          "final": {
+            "event": "follow_publication_final",
+            "cycle_id": 78,
+            "stamp": 1791852405.388305,
+            "whole_cycle_time": 0.02572556200902909,
+            "remaining_raw_ttl": 0.025211334228515625,
+            "preparation_profile": {
+              "cycle_id": 78,
+              "total_seconds": 0.00192812699242495,
+              "stages": {
+                "navigation_sync": {
+                  "seconds": 0.001334355998551473,
+                  "calls": 1
+                },
+                "input_prepare": {
+                  "seconds": 0.00018530699890106916,
+                  "calls": 1
+                }
+              },
+              "counts": {},
+              "unattributed_seconds": 0.0004084639949724078
+            },
+            "worker_profile": {
+              "cycle_id": 78,
+              "total_seconds": 0.010517426999285817,
+              "stages": {
+                "target_interpolation": {
+                  "seconds": 0.0003813130024354905,
+                  "calls": 1
+                }
+              },
+              "counts": {},
+              "unattributed_seconds": 0.010136113996850327
+            },
+            "publication_profile": {
+              "cycle_id": 78,
+              "total_seconds": 0.004498068010434508,
+              "stages": {
+                "json_serialization": {
+                  "seconds": 0.0036579710140358657,
+                  "calls": 2
+                },
+                "ros_publication": {
+                  "seconds": 9.074000990949571e-05,
+                  "calls": 2
+                }
+              },
+              "counts": {},
+              "unattributed_seconds": 0.000749356986489147
+            },
+            "published": false,
+            "reason": "NO_FRESHNESS_BUDGET"
+          },
+          "acknowledgements": [],
+          "retry": {
+            "parent": 37,
+            "stamp": 1791852397.0724516,
+            "scheduled_monotonic": 207165.21522983402,
+            "original_deadline": 1791852397.432377
+          }
+        },
+        {
+          "cycle": 79,
+          "dispatch": 1791852405.4029012,
+          "raw_input_observation": 1791852405.3365335,
+          "worker": {
+            "solve_start_monotonic": 207173.537501776,
+            "solve_end_monotonic": 207173.570166349,
+            "solve_start_ros": 1791852405.4047482,
+            "solve_end_ros": 1791852405.4374084
+          },
+          "result": "SAMPLED_FEASIBLE",
+          "candidate_result": "SAMPLED_FEASIBLE",
+          "first_blocker": "STALE_INPUT",
+          "final": {
+            "event": "follow_publication_final",
+            "cycle_id": 79,
+            "stamp": 1791852405.4625878,
+            "whole_cycle_time": 0.05964941400452517,
+            "remaining_raw_ttl": -0.0010631084442138672,
+            "preparation_profile": {
+              "cycle_id": 79,
+              "total_seconds": 0.00141865701880306,
+              "stages": {
+                "navigation_sync": {
+                  "seconds": 0.0007997799839358777,
+                  "calls": 1
+                },
+                "input_prepare": {
+                  "seconds": 0.00021024400484748185,
+                  "calls": 1
+                }
+              },
+              "counts": {},
+              "unattributed_seconds": 0.00040863303001970053
+            },
+            "worker_profile": {
+              "cycle_id": 79,
+              "total_seconds": 0.03260246699210256,
+              "stages": {
+                "target_interpolation": {
+                  "seconds": 0.000910373026272282,
+                  "calls": 8
+                },
+                "future_reference": {
+                  "seconds": 0.006979239988140762,
+                  "calls": 3
+                },
+                "p47_follow_initialization": {
+                  "seconds": 0.0037882490432821214,
+                  "calls": 1
+                },
+                "minco_coefficients": {
+                  "seconds": 0.000853801000630483,
+                  "calls": 2
+                },
+                "trajectory_samples": {
+                  "seconds": 0.0007983499672263861,
+                  "calls": 2
+                },
+                "p47_terminal_quadratic": {
+                  "seconds": 0.005770624004071578,
+                  "calls": 1
+                },
+                "derivative_bounds": {
+                  "seconds": 0.00031791103538125753,
+                  "calls": 6
+                },
+                "attitude_extrema": {
+                  "seconds": 0.0023936420038808137,
+                  "calls": 1
+                },
+                "planned_attitude": {
+                  "seconds": 0.00023782500647939742,
+                  "calls": 1
+                },
+                "full_fov": {
+                  "seconds": 0.0008893490012269467,
+                  "calls": 1
+                },
+                "other_constraints": {
+                  "seconds": 0.0001439559564460069,
+                  "calls": 1
+                },
+                "full_validation": {
+                  "seconds": 0.0008581739675719291,
+                  "calls": 1
+                },
+                "p47_strict_validation": {
+                  "seconds": 0.0015055749972816557,
+                  "calls": 1
+                }
+              },
+              "counts": {
+                "minco_builds": 2,
+                "root_searches": 9,
+                "projection_samples": 35,
+                "full_validation_samples": 35
+              },
+              "unattributed_seconds": 0.007155397994210944
+            },
+            "publication_profile": {
+              "cycle_id": 79,
+              "total_seconds": 0.014035031985258684,
+              "stages": {
+                "json_serialization": {
+                  "seconds": 0.013252956996439025,
+                  "calls": 2
+                },
+                "ros_publication": {
+                  "seconds": 0.00012811899068765342,
+                  "calls": 2
+                }
+              },
+              "counts": {},
+              "unattributed_seconds": 0.0006539559981320053
+            },
+            "published": false,
+            "reason": "STALE_INPUT"
+          },
+          "acknowledgements": [],
+          "retry": {
+            "parent": 77,
+            "stamp": 1791852405.382347,
+            "scheduled_monotonic": 207173.52511455302,
+            "original_deadline": 1791852405.7555315
+          }
+        }
+      ],
+      "next_initial_active": null,
+      "recovery_seconds": null,
+      "no_request_causality": "Missing dispatch events remain unknown"
+    }
+  ],
+  "reference_height": {
+    "maximum_error_m": 0.011979333548960192,
+    "rmse_m": 0.004420285137128757
+  },
+  "tracking": {
+    "samples": 79,
+    "actual_viewpoint_rmse": 0.07723900537012446,
+    "planned_viewpoint_rmse": 0.08004531998468375,
+    "tracking_rmse": 0.02473686704173393,
+    "convention": "same navigation epoch; offline TargetState interpolation, no extrapolation"
+  },
+  "actual_window_scope": "Existing FOLLOW+20 to FOLLOW+60 clipped by stop; mixed actual owners",
+  "actual_window": {
+    "samples": 454,
+    "evaluation": "evaluator native UAV snapshot vs ideal scene TargetState; not KF error",
+    "position_horizontal_rmse": 0.5436875645008479,
+    "distance_rmse": 0.5414445675373325,
+    "relative_velocity_rmse": 0.48203141124607146,
+    "altitude_rmse": 0.010832642174610285,
+    "visible_fraction": 1.0,
+    "locked_fraction": 1.0,
+    "actual_whole_marker_safe_fraction": 0.9929824561403509,
+    "actual_horizontal_margin": {
+      "count": 570,
+      "min": 0.742050435457764,
+      "p50": 0.7591203373022597,
+      "p95": 0.7678919807832515,
+      "p99": 0.769120358503073,
+      "max": 0.7692493903338635
+    },
+    "actual_vertical_margin": {
+      "count": 570,
+      "min": -0.0809731357389924,
+      "p50": 0.32974448154319264,
+      "p95": 0.49544233464527276,
+      "p99": 0.5940501112292748,
+      "max": 0.6209540628431929
+    },
+    "actual_horizontal_speed": {
+      "count": 1130,
+      "min": 0.26750577824076205,
+      "p50": 2.002148621152812,
+      "p95": 3.0202690977853632,
+      "p99": 3.5039713466898257,
+      "max": 3.5301762386185307
+    },
+    "actual_horizontal_acceleration": {
+      "count": 1130,
+      "min": 0.0019525808697679272,
+      "p50": 0.05255383695728311,
+      "p95": 2.078405365563003,
+      "p99": 2.8096299214964993,
+      "max": 2.908010588652817
+    },
+    "estimated_horizontal_jerk": {
+      "count": 1129,
+      "min": 0.01558372143140485,
+      "p50": 0.444441503494183,
+      "p95": 3.9589701609950207,
+      "p99": 6.163287575347262,
+      "max": 7.049034302557434
+    },
+    "reference_velocity_delta_over_receipt_dt": {
+      "count": 471,
+      "min": 0.007924852192655587,
+      "p50": 0.4333821200337817,
+      "p95": 2.9932266941005006,
+      "p99": 3.1531244367888536,
+      "max": 10.44331071374199
+    },
+    "reference_gaps_seconds": {
+      "count": 471,
+      "min": 0.003521442413330078,
+      "p50": 0.04992341995239258,
+      "p95": 0.05385398864746094,
+      "p99": 0.05605568885803223,
+      "max": 0.06255054473876953
+    },
+    "position_3d_rmse": 0.5437954706774843,
+    "horizontal_peak_error": 2.1168625756619988
+  },
+  "full_25s_metrics": {
+    "start": 1791852391.09441,
+    "end": 1791852416.09441,
+    "samples": 1246,
+    "horizontal_rmse": 0.5112438401483062,
+    "height_rmse": 0.010629349970293208,
+    "relative_velocity_rmse": 0.45900107922309186,
+    "actual_reference_tracking_3d_rmse": 0.021967572377477877,
+    "reference_samples": 121,
+    "fov_samples": 625,
+    "full_marker_safe_fraction": 0.9936,
+    "horizontal_margin": {
+      "count": 625,
+      "min": 0.742050435457764,
+      "p50": 0.7593657100033036,
+      "p95": 0.7676771585446545,
+      "p99": 0.7691009992231176,
+      "max": 0.7692493903338635
+    },
+    "vertical_margin": {
+      "count": 625,
+      "min": -0.0809731357389924,
+      "p50": 0.3301843030449008,
+      "p95": 0.48848760158300203,
+      "p99": 0.5897545482140985,
+      "max": 0.6209540628431929
+    },
+    "evaluation_only": true,
+    "no_extrapolation": true,
+    "scope": "All owners over full fixed window. Truth interpolated only offline. FOV uses same-message rendered UAV/marker poses and recorded camera calibration."
+  },
+  "native_px4_commands": {
+    "period_seconds": {
+      "count": 471,
+      "min": 0.0038819313049316406,
+      "p50": 0.049978017807006836,
+      "p95": 0.05075204372406006,
+      "p99": 0.05236384868621826,
+      "max": 0.061826229095458984
+    },
+    "horizontal_step_mps": {
+      "count": 471,
+      "min": 5.234158328751982e-05,
+      "p50": 0.02068535005949107,
+      "p95": 0.1500000314199388,
+      "p99": 0.1502946309643928,
+      "max": 0.1518646177007763
+    },
+    "acceleration_mps2": {
+      "count": 471,
+      "min": 0.007703304510058615,
+      "p50": 0.42765152733733874,
+      "p95": 2.9999998668940466,
+      "p99": 3.0087964518885273,
+      "max": 5.848967242117204
+    },
+    "switch_step_mps": {
+      "count": 19,
+      "min": 0.005987527714300217,
+      "p50": 0.030951510350566515,
+      "p95": 0.04122984781097499,
+      "p99": 0.044945358241049026,
+      "max": 0.04587423584856753
+    },
+    "note": "PX4 setpoint timestamp deltas"
+  },
+  "physical_ulog": {
+    "attitude_rad": {
+      "roll": {
+        "count": 1130,
+        "min": -0.005673036805563582,
+        "p50": 0.0001942043202916999,
+        "p95": 0.004384592449088443,
+        "p99": 0.004870774350487793,
+        "max": 0.004982062777702774
+      },
+      "pitch": {
+        "count": 1130,
+        "min": -0.32001366009253046,
+        "p50": -0.023199975328795724,
+        "p95": 0.07570568934898014,
+        "p99": 0.20802425936136767,
+        "max": 0.2276697332364303
+      },
+      "yaw": {
+        "count": 1130,
+        "min": 0.0026532054489169813,
+        "p50": 0.0031077464625379773,
+        "p95": 0.004760727195429149,
+        "p99": 0.004861638024587487,
+        "max": 0.004876218164841707
+      }
+    },
+    "px4_logged_setpoints": {
+      "count": 113,
+      "acceleration_ff_finite": 0,
+      "horizontal_speed": {
+        "count": 113,
+        "min": 0.09464562684297562,
+        "p50": 2.004995107650757,
+        "p95": 3.013127231597898,
+        "p99": 3.779574613571167,
+        "max": 3.9173760414123535
+      }
+    },
+    "body_rate_radps": {
+      "x": {
+        "count": 2259,
+        "min": -0.06106084585189819,
+        "p50": -0.0007998718065209687,
+        "p95": 0.010300656687468289,
+        "p99": 0.01467782447114587,
+        "max": 0.017225021496415138
+      },
+      "y": {
+        "count": 2259,
+        "min": -0.6847612857818604,
+        "p50": -0.0006025236798450351,
+        "p95": 0.2962289541959762,
+        "p99": 0.45950656414032015,
+        "max": 0.4835765063762665
+      },
+      "z": {
+        "count": 2259,
+        "min": -0.00273745134472847,
+        "p50": -3.377524626557715e-05,
+        "p95": 0.0008576067397370933,
+        "p99": 0.0012890148372389377,
+        "max": 0.0019156243652105331
+      }
+    },
+    "normalized_thrust_command": {
+      "count": 1129,
+      "min": 0.7440023422241211,
+      "p50": 0.7502440810203552,
+      "p95": 0.7581798195838928,
+      "p99": 0.7628047823905945,
+      "max": 0.7679525017738342
+    },
+    "epoch_mapping": "ULog native sample to original navigation sample epoch pairs"
+  },
+  "gate_violations": [],
+  "authority": {
+    "graph_samples": 75,
+    "discovered_samples": 59,
+    "all_discovered_single_tracker": true,
+    "conflicts": []
+  },
+  "cleanup": {
+    "errors": [],
+    "survivors": [],
+    "late_components": {
+      "events": [],
+      "errors": [],
+      "survivors": [],
+      "scope_verified": true
+    }
+  },
+  "missing_fields": [
+    "Tracker subscription dequeue order",
+    "every request dispatch event",
+    "first settled health epoch; only completed five-second gate recorded"
+  ]
+}

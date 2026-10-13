@@ -94,6 +94,7 @@ class GazeboTargetVisualizer:
             f'/world/{self._world_name}/control'
         )
         self._created = False
+        self._pose_failures = 0
         self._last_create_attempt = -math.inf
         self.last_error = ''
         self._world_paused = None
@@ -174,9 +175,18 @@ class GazeboTargetVisualizer:
             self.last_error = (
                 f'Gazebo pose update failed: {self._set_pose_service}'
             )
-            self._created = False
+            # A single RPC timeout does not mean the entity disappeared. Keep
+            # sending the latest pose next tick instead of freezing the visible
+            # target behind the one-second creation throttle. Persistent
+            # failures still trigger recreation, including external deletion.
+            self._pose_failures += 1
+            if self._pose_failures >= 3:
+                self._created = False
+                self._last_create_attempt = -math.inf
+                self._pose_failures = 0
             return False
 
+        self._pose_failures = 0
         self.last_error = ''
         return True
 
