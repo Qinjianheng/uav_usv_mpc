@@ -1,0 +1,235 @@
+{
+  "policy": {
+    "reference": "data/experiments/20261013_p53_closed_loop_11",
+    "fixed_observation_seconds": {
+      "f2": 25.0,
+      "f3": 60.0
+    },
+    "same_flight_and_research_parameters": true,
+    "minimum_minco_fraction": 0.95,
+    "minimum_longest_seconds": {
+      "f2": 20.0,
+      "f3": 55.0
+    },
+    "maximum_horizontal_rmse_increase_m": {
+      "f2": 0.05,
+      "f3": 0.1
+    },
+    "maximum_height_rmse_m": {
+      "f2": 0.02,
+      "f3": 0.025
+    },
+    "maximum_reference_tracking_increase_m": {
+      "f2": 0.03,
+      "f3": 0.06
+    },
+    "minimum_full_marker_fov_fraction": 1.0,
+    "allowed_audit_violations": 0,
+    "expected_fallbacks": 0,
+    "scope": "Predetermined offline maintenance comparison, not changed online safety gates. Actual runs are nondeterministic; do not claim identical samples."
+  },
+  "policy_sha256": "1e5b3f06a2344b2f0b92ff95548d978304fece33780990dedabe4d85dbc34004",
+  "results": {
+    "first_f2": {
+      "scene": "f2",
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/20261014_cleanup_sitl_01/f2_h16_01",
+      "source_manifest_sha256": "ae474652c047efa0a359e2f22d76e998feb85178600ff98a98359c9565eef684",
+      "passed": false,
+      "checks": {
+        "completed": true,
+        "healthy": true,
+        "same_configuration": true,
+        "minco_fraction": false,
+        "longest": false,
+        "horizontal_rmse": true,
+        "height_rmse": true,
+        "reference_tracking": true,
+        "fov": true,
+        "audit_violations": true,
+        "fallbacks": false
+      },
+      "config_equivalence": {
+        "flight.yaml": true,
+        "research.yaml": true
+      },
+      "metrics": {
+        "minco_fraction": 0.6718549778918491,
+        "longest_minco_seconds": 11.212780952453613,
+        "horizontal_rmse": 0.0464269498398723,
+        "height_rmse": 0.008132198392478827,
+        "actual_reference_tracking_3d_rmse": 0.024851568962578285,
+        "fov": 1.0,
+        "fallbacks": 1,
+        "audit_violations": 0
+      },
+      "baseline_physical": {
+        "start": 1791906494.486695,
+        "end": 1791906519.486695,
+        "samples": 1250,
+        "horizontal_rmse": 0.054602849038059495,
+        "height_rmse": 0.00898481130486065,
+        "relative_velocity_rmse": 0.028212470134255204,
+        "actual_reference_tracking_3d_rmse": 0.028281938205678762,
+        "reference_samples": 436,
+        "fov_samples": 626,
+        "full_marker_safe_fraction": 1.0,
+        "horizontal_margin": {
+          "count": 626,
+          "min": 0.7473102385085708,
+          "p50": 0.7577028276307327,
+          "p95": 0.7619838687312049,
+          "p99": 0.7624037796010322,
+          "max": 0.7625728126512179
+        },
+        "vertical_margin": {
+          "count": 626,
+          "min": 0.29983643091802553,
+          "p50": 0.3315030187595015,
+          "p95": 0.3556766491424217,
+          "p99": 0.36056178683452017,
+          "max": 0.36254730484952413
+        },
+        "evaluation_only": true,
+        "no_extrapolation": true,
+        "scope": "All owners over full fixed window. Truth interpolated only offline. FOV uses same-message rendered UAV/marker poses and recorded camera calibration."
+      },
+      "fallback_reasons": {
+        "PREDICTION_STALE": 1
+      },
+      "full_window_all_owners": true
+    },
+    "repeat_f2": {
+      "scene": "f2",
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/20261014_cleanup_sitl_02/f2_h16_01",
+      "source_manifest_sha256": "c934cead4b30844e83f97bef5b7a3d4a0f79a0a68113f2f76566980a11018c4c",
+      "passed": true,
+      "checks": {
+        "completed": true,
+        "healthy": true,
+        "same_configuration": true,
+        "minco_fraction": true,
+        "longest": true,
+        "horizontal_rmse": true,
+        "height_rmse": true,
+        "reference_tracking": true,
+        "fov": true,
+        "audit_violations": true,
+        "fallbacks": true
+      },
+      "config_equivalence": {
+        "flight.yaml": true,
+        "research.yaml": true
+      },
+      "metrics": {
+        "minco_fraction": 1.0,
+        "longest_minco_seconds": 24.950186252593994,
+        "horizontal_rmse": 0.052009225656530746,
+        "height_rmse": 0.009621728726779624,
+        "actual_reference_tracking_3d_rmse": 0.024218845832322318,
+        "fov": 1.0,
+        "fallbacks": 0,
+        "audit_violations": 0
+      },
+      "baseline_physical": {
+        "start": 1791906494.486695,
+        "end": 1791906519.486695,
+        "samples": 1250,
+        "horizontal_rmse": 0.054602849038059495,
+        "height_rmse": 0.00898481130486065,
+        "relative_velocity_rmse": 0.028212470134255204,
+        "actual_reference_tracking_3d_rmse": 0.028281938205678762,
+        "reference_samples": 436,
+        "fov_samples": 626,
+        "full_marker_safe_fraction": 1.0,
+        "horizontal_margin": {
+          "count": 626,
+          "min": 0.7473102385085708,
+          "p50": 0.7577028276307327,
+          "p95": 0.7619838687312049,
+          "p99": 0.7624037796010322,
+          "max": 0.7625728126512179
+        },
+        "vertical_margin": {
+          "count": 626,
+          "min": 0.29983643091802553,
+          "p50": 0.3315030187595015,
+          "p95": 0.3556766491424217,
+          "p99": 0.36056178683452017,
+          "max": 0.36254730484952413
+        },
+        "evaluation_only": true,
+        "no_extrapolation": true,
+        "scope": "All owners over full fixed window. Truth interpolated only offline. FOV uses same-message rendered UAV/marker poses and recorded camera calibration."
+      },
+      "fallback_reasons": {},
+      "full_window_all_owners": true
+    },
+    "conditional_f3": {
+      "scene": "f3",
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/20261014_cleanup_sitl_02/f3_h16_01",
+      "source_manifest_sha256": "57d0023d348f749d388470ef65ec6d63f7203e97e585c56e975fa24cb6eae338",
+      "passed": true,
+      "checks": {
+        "completed": true,
+        "healthy": true,
+        "same_configuration": true,
+        "minco_fraction": true,
+        "longest": true,
+        "horizontal_rmse": true,
+        "height_rmse": true,
+        "reference_tracking": true,
+        "fov": true,
+        "audit_violations": true,
+        "fallbacks": true
+      },
+      "config_equivalence": {
+        "flight.yaml": true,
+        "research.yaml": true
+      },
+      "metrics": {
+        "minco_fraction": 1.0,
+        "longest_minco_seconds": 59.95153522491455,
+        "horizontal_rmse": 0.7734956006045262,
+        "height_rmse": 0.012099143322263322,
+        "actual_reference_tracking_3d_rmse": 0.23631239005392266,
+        "fov": 1.0,
+        "fallbacks": 0,
+        "audit_violations": 0
+      },
+      "baseline_physical": {
+        "start": 1791906620.1642811,
+        "end": 1791906680.1642811,
+        "samples": 3000,
+        "horizontal_rmse": 0.6976656272928138,
+        "height_rmse": 0.01155958056176475,
+        "relative_velocity_rmse": 1.1744214941541613,
+        "actual_reference_tracking_3d_rmse": 0.23097345454646562,
+        "reference_samples": 999,
+        "fov_samples": 1502,
+        "full_marker_safe_fraction": 1.0,
+        "horizontal_margin": {
+          "count": 1502,
+          "min": 0.22135303350899987,
+          "p50": 0.6543325626637052,
+          "p95": 0.754611873033519,
+          "p99": 0.7602630060706619,
+          "max": 0.762177373087044
+        },
+        "vertical_margin": {
+          "count": 1502,
+          "min": 0.3106410572490541,
+          "p50": 0.365068949576155,
+          "p95": 0.494114754326095,
+          "p99": 0.5206791519208845,
+          "max": 0.5360349698203308
+        },
+        "evaluation_only": true,
+        "no_extrapolation": true,
+        "scope": "All owners over full fixed window. Truth interpolated only offline. FOV uses same-message rendered UAV/marker poses and recorded camera calibration."
+      },
+      "fallback_reasons": {},
+      "full_window_all_owners": true
+    }
+  },
+  "scope": "Independent actual launches, not bitwise trajectory equality or proof that timing stability is fixed."
+}

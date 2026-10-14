@@ -1,0 +1,60 @@
+......FFF...........                                                     [100%]
+=================================== FAILURES ===================================
+____ test_non_follow_early_return_clears_previous_follow_acquisition[False] ____
+
+invalid_dt = False
+
+    @pytest.mark.parametrize('invalid_dt', [False, True])
+    def test_non_follow_early_return_clears_previous_follow_acquisition(invalid_dt):
+        core = TargetVisibilityState()
+        follow_lock(core)
+        lose(core)
+        core.update(1.5, 0., 5., 0. if invalid_dt else .05, False, terminal=True)
+        for stamp in (1.51, 1.53, 1.55):
+            core.observe(stamp, .05, True, stamp)
+        decision = core.update(1.55, 0., 5., .05, False, separate_input_wait=True)
+>       assert decision.state != 'INPUT_WAIT' and core.bearing_approach_ready(1.55, .125)
+E       AssertionError: assert ('INPUT_WAIT' != 'INPUT_WAIT')
+E        +  where 'INPUT_WAIT' = VisibilityDecision(state='INPUT_WAIT', locked=False, visible=True, yaw_rate=0.05, search_direction=0, visual_locked=True).state
+
+test/test_p53_input_roles.py:91: AssertionError
+____ test_non_follow_early_return_clears_previous_follow_acquisition[True] _____
+
+invalid_dt = True
+
+    @pytest.mark.parametrize('invalid_dt', [False, True])
+    def test_non_follow_early_return_clears_previous_follow_acquisition(invalid_dt):
+        core = TargetVisibilityState()
+        follow_lock(core)
+        lose(core)
+        core.update(1.5, 0., 5., 0. if invalid_dt else .05, False, terminal=True)
+        for stamp in (1.51, 1.53, 1.55):
+            core.observe(stamp, .05, True, stamp)
+        decision = core.update(1.55, 0., 5., .05, False, separate_input_wait=True)
+>       assert decision.state != 'INPUT_WAIT' and core.bearing_approach_ready(1.55, .125)
+E       AssertionError: assert ('INPUT_WAIT' != 'INPUT_WAIT')
+E        +  where 'INPUT_WAIT' = VisibilityDecision(state='INPUT_WAIT', locked=False, visible=True, yaw_rate=0.05, search_direction=0, visual_locked=True).state
+
+test/test_p53_input_roles.py:91: AssertionError
+_____ test_input_wait_is_bounded_before_rgb_only_reacquisition_can_resume ______
+
+    def test_input_wait_is_bounded_before_rgb_only_reacquisition_can_resume():
+        core = TargetVisibilityState()
+        follow_lock(core)
+        for stamp in (1.25, 1.27, 1.29):
+            core.observe(stamp, .05, True, stamp)
+        assert core.update(1.29, 0., 5., .05, False, separate_input_wait=True).state == 'INPUT_WAIT'
+        for stamp in (1.6, 1.62, 1.64):
+            core.observe(stamp, .05, True, stamp)
+        decision = core.update(1.64, 0., 5., .05, False, separate_input_wait=True)
+>       assert decision.state == 'REACQUIRE' and not decision.locked
+E       AssertionError: assert ('INPUT_WAIT' == 'REACQUIRE'
+E         - REACQUIRE
+E         + INPUT_WAIT)
+
+test/test_p53_input_roles.py:103: AssertionError
+=========================== short test summary info ============================
+FAILED test/test_p53_input_roles.py::test_non_follow_early_return_clears_previous_follow_acquisition[False]
+FAILED test/test_p53_input_roles.py::test_non_follow_early_return_clears_previous_follow_acquisition[True]
+FAILED test/test_p53_input_roles.py::test_input_wait_is_bounded_before_rgb_only_reacquisition_can_resume
+3 failed, 17 passed in 0.39s

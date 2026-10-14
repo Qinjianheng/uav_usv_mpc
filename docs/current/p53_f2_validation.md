@@ -1,6 +1,6 @@
 # P5.3 F2实际闭环验收
 
-最新飞行效果优先续做见[P53准入与前馈实测](p53_practical_follow_validation.md)。以下保留各历史轮次的原结论；round4已完成F2/F3，round5止于实验快照监视，round6正在验证水平前馈。
+最新[全面修复与最终验收](p53_comprehensive_validation.md)：R11同配置F2/F3实际MINCO均100%、零回退。以下保留历史轮次结论。
 
 2026-10-13自主续做后，**P53第3轮F2已通过原全部门槛**。原始证据：
 `data/experiments/20261013_p53_closed_loop_03/f2_h16_01/`；完整同刻分析：

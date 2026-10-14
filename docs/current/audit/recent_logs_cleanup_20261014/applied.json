@@ -1,0 +1,10 @@
+{
+  "removed_files": 56301,
+  "removed_directories": 3839,
+  "removed_bytes": 12036033710,
+  "protected_unchanged": true,
+  "claims_unchanged": true,
+  "direct_delete": true,
+  "new_archive_created": false,
+  "formal_dependency_retained": "data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_2"
+}

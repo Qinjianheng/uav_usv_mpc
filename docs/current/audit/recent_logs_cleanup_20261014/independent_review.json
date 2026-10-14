@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "critical": 0,
+  "important": 0,
+  "reviewer": "/root/p53_startup_final_review",
+  "report_sha256": "11a57e061b34f19aaa43e1d8f3450cd2ddec0bcea5dc0b5b1af58229f9f91a0a",
+  "deleted_files_absent": 56301,
+  "protected_unchanged": 8469,
+  "claims_preserved": 62,
+  "readiness_source_checks": 688,
+  "formal_manifest_checks": 227,
+  "new_archive_created": false,
+  "limits": "No new simulation or rebuild; old offline inputs deleted by explicit user instruction. No claim to fix flight timing reliability."
+}

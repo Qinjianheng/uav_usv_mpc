@@ -1,0 +1,127 @@
+..F..................................................................... [  3%]
+..........................................................s............. [  7%]
+........................................................................ [ 11%]
+........................................................................ [ 15%]
+........................................................................ [ 19%]
+.......................................................................F [ 23%]
+........................................................................ [ 27%]
+........................................................................ [ 31%]
+........................................................................ [ 35%]
+........................................................................ [ 39%]
+........................................................................ [ 43%]
+........................................................................ [ 46%]
+........................................................................ [ 50%]
+........................................................................ [ 54%]
+........................................................................ [ 58%]
+........................................................................ [ 62%]
+........................................................................ [ 66%]
+........................................................................ [ 70%]
+........................................................................ [ 74%]
+........................................................................ [ 78%]
+........................................................................ [ 82%]
+........................................................................ [ 86%]
+........................................................................ [ 89%]
+........................................................................ [ 93%]
+........................................................................ [ 97%]
+.....................................F...                                [100%]
+=================================== FAILURES ===================================
+___ test_expired_kf_in_follow_uses_independently_fresh_rgb_without_fake_lock ___
+
+    def test_expired_kf_in_follow_uses_independently_fresh_rgb_without_fake_lock():
+        node, state = approach_node()
+        node.mission_state = MissionState.FOLLOW
+        node.mission_state_name = 'FOLLOW'
+        node.latest_kf_message = target(now=10.2, source=10.2)
+        node.visibility.mark_observation(10.2, True, 10.2)
+        node.flight_guidance.previous_velocity = (6., 0., 0.)
+        node.timer_callback()
+        previous = node.diagnostics[-1][0].velocity
+        node._ros_seconds = lambda: 10.33
+        node.latest_state = replace(state, stamp=10.33, velocity=(5.8, 0., 0.))
+        node.visibility.observe(10.32, .05, True, 10.33)
+        node.timer_callback()
+        command, status = node.diagnostics[-1]
+        assert status == 'FOLLOW'
+>       assert node.bearing_approach_active
+E       assert False
+E        +  where False = <uav_control.control.trajectory_tracker_node.TrajectoryTrackerNode object at 0x7f07ea19d540>.bearing_approach_active
+
+test/test_approach_continuity.py:49: AssertionError
+_____ test_follow_timer_expired_image_preempts_translation_and_anchors_xyz _____
+
+    def test_follow_timer_expired_image_preempts_translation_and_anchors_xyz():
+        node, state = runnable_follow_node()
+        node.latest_kf_message = target(now=10.2, source=9.9)
+        node.visibility.observe(10.2, 0., False, 10.2)
+        node.timer_callback()
+        command, status = node.diagnostics[-1]
+        assert status == 'FOLLOW'
+>       assert node.visibility_decision.state == 'REACQUIRE'
+E       AssertionError: assert 'INPUT_WAIT' == 'REACQUIRE'
+E         - REACQUIRE
+E         + INPUT_WAIT
+
+test/test_follow_wait.py:201: AssertionError
+_____ test_delivery_reaches_follow_and_translation_with_original_age_gate ______
+
+    def test_delivery_reaches_follow_and_translation_with_original_age_gate():
+        now = [10.]
+        kf, states = filter_node(now)
+        visibility = TargetVisibilityState()
+        mission = MissionManagerCore()
+        mission.set_flight_ready(True)
+        mission.handle_command('X', 9.)
+        mission.mark_takeoff_complete(9.9)
+        for stamp in (10., 10.1, 10.2):
+            now[0] = stamp + .025
+            kf.measurement_callback(observation(stamp))
+            assert states, 'new KF measurement must be published before its timer'
+            visibility.observe(stamp, .05, True, now[0], position_valid=True)
+            control_time = stamp + .05
+            decision = visibility.update(control_time, 0., 5., .05,
+                                         fresh_flight_target(states[-1], control_time, .125)
+                                         is not None)
+            mission.observe_visibility(mission.mission_id, decision.state,
+                                       decision.locked, control_time)
+        assert mission.phase == MissionPhase.FOLLOW
+        assert mission.target_locked
+        now[0] = 10.30
+        decision = visibility.update(now[0], 0., 5., .05,
+                                     fresh_flight_target(states[-1], now[0], .125) is not None)
+        mission.observe_visibility(mission.mission_id, decision.state, decision.locked, now[0])
+        assert mission.tick(now[0]) == MissionPhase.FOLLOW
+        controller, state = runnable_follow_node()
+        controller.visibility = visibility
+        controller.latest_kf_message = states[-1]
+        controller.latest_state = replace(state, stamp=now[0])
+        controller._ros_seconds = lambda: now[0]
+        controller.timer_callback()
+        assert controller.diagnostics[-1][1] == 'FOLLOW'
+        assert controller.diagnostics[-1][0].velocity[0] > 0.
+        assert controller.yaw_owner == 'VISION'
+        now[0] = 10.326  # No new acquisition: publishing a projection cannot rescue it.
+        kf.timer_callback()
+        controller.latest_kf_message = states[-1]
+        controller.latest_state = replace(state, stamp=now[0])
+        controller.timer_callback()
+        assert controller.diagnostics[-1][1] == 'FOLLOW'
+>       assert controller.visibility_decision.state == 'REACQUIRE'
+E       AssertionError: assert 'INPUT_WAIT' == 'REACQUIRE'
+E         - REACQUIRE
+E         + INPUT_WAIT
+
+test/test_visual_delivery_latency.py:171: AssertionError
+=============================== warnings summary ===============================
+src/uav_control/test/test_flake8.py::test_flake8
+src/uav_control/test/test_flake8.py::test_flake8
+  Warning: SelectableGroups dict interface is deprecated. Use select.
+
+src/uav_control/test/test_p45_isolation.py::test_default_launch_resolves_log_directory_before_planner
+  Warning: Loggers have been already configured to output to log files below /tmp/pytest-of-qin/pytest-7/camera_launch_logs0/2026-10-13-23-25-30-588076-qin-GLO-FX6-19. Proceed at your own risk.
+
+-- Docs: https://docs.pytest.org/en/stable/warnings.html
+=========================== short test summary info ============================
+FAILED test/test_approach_continuity.py::test_expired_kf_in_follow_uses_independently_fresh_rgb_without_fake_lock
+FAILED test/test_follow_wait.py::test_follow_timer_expired_image_preempts_translation_and_anchors_xyz
+FAILED test/test_visual_delivery_latency.py::test_delivery_reaches_follow_and_translation_with_original_age_gate
+3 failed, 1837 passed, 1 skipped, 3 warnings in 28.42s

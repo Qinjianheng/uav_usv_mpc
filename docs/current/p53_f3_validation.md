@@ -1,6 +1,6 @@
 # P5.3 F3八字实际验证
 
-最新飞行效果优先续做见[P53准入与前馈实测](p53_practical_follow_validation.md)。以下保留各历史轮次的原结论；round4已完成F2/F3，round5止于实验快照监视，round6正在验证水平前馈。
+最新[全面修复与最终验收](p53_comprehensive_validation.md)：R11 F3已完成60s、MINCO100%、最长59.950s、零回退，完整目标FOV100%。以下保留历史轮次结论。
 
 F2第3轮真实通过后才进入F3。首次F3在Planner启动前停止，未发生MINCO接管：
 原FOLLOW初次接近时RGB可见、深度为DEPTH_RATIO_LOW，监视器误用锁定后200ms失锁规则。

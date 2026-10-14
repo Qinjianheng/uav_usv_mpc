@@ -1,0 +1,21 @@
+{
+  "protected_files_unchanged": 8469,
+  "claims_preserved": 62,
+  "all_deleted_manifest_paths_absent": true,
+  "archive_created": false,
+  "head": "2467c8a044d13f7877eff3cdc4c9969736f1e20f",
+  "git_status_counts": {
+    " M": 20,
+    " D": 3109,
+    "??": 13
+  },
+  "deletion_manifest": {
+    "path": "/home/qin/data/uav_usv_mpc/data/experiments/20261014_recent_logs_cleanup_01/members.json",
+    "sha256": "f2eb104ef48e2964c9f6ccfd35f935798bd16df5408b19e0b91f4f8c69d67aa3"
+  },
+  "source_guard_manifest": {
+    "path": "/home/qin/data/uav_usv_mpc/data/experiments/20261014_recent_logs_cleanup_01/protected.json",
+    "sha256": "1ffeeddaf2bb3862be4e32d1949e145825ff638fd8009375db7b998b4e0f602f"
+  },
+  "workspace_disk_bytes": 5817741312
+}

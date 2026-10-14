@@ -1,0 +1,109 @@
+........F..FF..                                                          [100%]
+=================================== FAILURES ===================================
+_ test_ready_rgb_never_keeps_expired_execution_or_pending_successor[observation_fresh-OBSERVATION_STALE] _
+
+field = 'observation_fresh', reason = 'OBSERVATION_STALE'
+
+    @pytest.mark.parametrize('field,reason', [
+        ('navigation_fresh', 'NAVIGATION_STALE'), ('target_fresh', 'TARGET_STATE_STALE'),
+        ('prediction_fresh', 'PREDICTION_STALE'), ('recovering', 'SAFETY_RECOVERY'),
+        ('observation_fresh', 'OBSERVATION_STALE'),
+    ])
+    def test_ready_rgb_never_keeps_expired_execution_or_pending_successor(field, reason):
+        r, curve = receiver(), candidate()
+        r.propose(curve, ctx())
+        r.tick(ctx(curve.start), nominal_valid=True)
+        deadline = r.deadline
+>       bad = replace(ctx(curve.start+.01), **{field: field == 'recovering'})
+
+test/test_p53_input_roles.py:64: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+obj = ReceiverContext(now=100.05000000000001, mission_id=1, generation=0, prediction_id=7, following=True, offboard=True, ar..., 0.0), receiver_boot_id='receiver', navigation_fresh=True, target_fresh=True, prediction_fresh=True, recovering=False)
+changes = {'armed': True, 'boundary': (0.0, 0.0, -5.0, 1.0, 0.0, 0.0, ...), 'following': True, 'generation': 0, ...}
+f = Field(name='recovering',type=<class 'bool'>,default=False,default_factory=<dataclasses._MISSING_TYPE object at 0x7c914c6feda0>,init=True,repr=True,hash=None,compare=True,metadata=mappingproxy({}),kw_only=False,_field_type=_FIELD)
+
+    def replace(obj, /, **changes):
+        """Return a new object replacing specified fields with new values.
+    
+        This is especially useful for frozen classes.  Example usage:
+    
+          @dataclass(frozen=True)
+          class C:
+              x: int
+              y: int
+    
+          c = C(1, 2)
+          c1 = replace(c, x=3)
+          assert c1.x == 3 and c1.y == 2
+          """
+    
+        # We're going to mutate 'changes', but that's okay because it's a
+        # new dict, even if called with 'replace(obj, **my_changes)'.
+    
+        if not _is_dataclass_instance(obj):
+            raise TypeError("replace() should be called on dataclass instances")
+    
+        # It's an error to have init=False fields in 'changes'.
+        # If a field is not in 'changes', read its value from the provided obj.
+    
+        for f in getattr(obj, _FIELDS).values():
+            # Only consider normal fields or InitVars.
+            if f._field_type is _FIELD_CLASSVAR:
+                continue
+    
+            if not f.init:
+                # Error if this field is specified in changes.
+                if f.name in changes:
+                    raise ValueError(f'field {f.name} is declared with '
+                                     'init=False, it cannot be specified with '
+                                     'replace()')
+                continue
+    
+            if f.name not in changes:
+                if f._field_type is _FIELD_INITVAR and f.default is MISSING:
+                    raise ValueError(f"InitVar {f.name!r} "
+                                     'must be specified with replace()')
+                changes[f.name] = getattr(obj, f.name)
+    
+        # Create the new object, which calls __init__() and
+        # __post_init__() (if defined), using all of the init fields we've
+        # added and/or left in 'changes'.  If there are values supplied in
+        # changes that aren't fields, this will correctly raise a
+        # TypeError.
+>       return obj.__class__(**changes)
+E       TypeError: ReceiverContext.__init__() got an unexpected keyword argument 'observation_fresh'
+
+/usr/lib/python3.10/dataclasses.py:1453: TypeError
+_____ test_late_direct_depth_never_grants_execution_from_fresh_kf_and_rgb ______
+
+    def test_late_direct_depth_never_grants_execution_from_fresh_kf_and_rgb():
+        n = node_context()
+        n.latest_prediction.observation_stamp = Time(sec=100)
+        n.visibility.last_valid_observation_stamp = 99.8
+        n.visibility_decision = SimpleNamespace(state='INPUT_WAIT', locked=False,
+                                                visual_locked=True, visible=True)
+        context = n._follow_context()
+        assert context.visible and context.target_fresh and context.prediction_fresh
+>       assert not context.observation_fresh
+E       AttributeError: 'ReceiverContext' object has no attribute 'observation_fresh'
+
+test/test_p53_input_roles.py:118: AttributeError
+_____________ test_new_context_audit_requires_explicit_input_flags _____________
+
+    def test_new_context_audit_requires_explicit_input_flags():
+        events = rows()
+        for row in events:
+            if row.get('kind') == 'execution_debug':
+                row['execution_context'].update(schema_version=2)
+        audit = audit_rows(events, 100., 'f2')
+>       assert any(v['gate'] == 'execution_gates' for v in audit['violations'])
+E       assert False
+E        +  where False = any(<generator object test_new_context_audit_requires_explicit_input_flags.<locals>.<genexpr> at 0x7c911e93a420>)
+
+test/test_p53_input_roles.py:129: AssertionError
+=========================== short test summary info ============================
+FAILED test/test_p53_input_roles.py::test_ready_rgb_never_keeps_expired_execution_or_pending_successor[observation_fresh-OBSERVATION_STALE]
+FAILED test/test_p53_input_roles.py::test_late_direct_depth_never_grants_execution_from_fresh_kf_and_rgb
+FAILED test/test_p53_input_roles.py::test_new_context_audit_requires_explicit_input_flags
+3 failed, 12 passed in 0.35s

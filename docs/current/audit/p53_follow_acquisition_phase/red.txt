@@ -1,0 +1,18 @@
+....F...........                                                         [100%]
+=================================== FAILURES ===================================
+_ test_takeoff_lock_does_not_block_initial_follow_rgb_approach_when_depth_is_late _
+
+    def test_takeoff_lock_does_not_block_initial_follow_rgb_approach_when_depth_is_late():
+        core = TargetVisibilityState()
+        lock(core)  # Legacy takeoff/acquisition lock, before FOLLOW has controlled the target.
+        for stamp in (1.25, 1.27, 1.29):
+            core.observe(stamp, .05, True, stamp)
+        decision = core.update(1.29, 0., 5., .05, False, separate_input_wait=True)
+>       assert decision.state != 'INPUT_WAIT' and not decision.locked
+E       AssertionError: assert ('INPUT_WAIT' != 'INPUT_WAIT')
+E        +  where 'INPUT_WAIT' = VisibilityDecision(state='INPUT_WAIT', locked=False, visible=True, yaw_rate=0.05, search_direction=0, visual_locked=True).state
+
+test/test_p53_input_roles.py:65: AssertionError
+=========================== short test summary info ============================
+FAILED test/test_p53_input_roles.py::test_takeoff_lock_does_not_block_initial_follow_rgb_approach_when_depth_is_late
+1 failed, 15 passed in 0.34s

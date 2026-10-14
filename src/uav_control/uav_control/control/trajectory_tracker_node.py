@@ -793,13 +793,16 @@ class TrajectoryTrackerNode(Node):
         return self.get_clock().now().nanoseconds // 1000
 
     def uav_callback(self, message):
+        received = self._ros_seconds()
         try:
             self.latest_state = tracker_state_from_navigation(
-                message, self._ros_seconds(),
+                message, received,
             )
         except (ValueError, TypeError):
             self.latest_state = None
             return
+        self.follow_input_receipts = dict(
+            getattr(self, 'follow_input_receipts', {}), navigation=received)
         if hasattr(self, 'follow_navigation_history'):
             self.follow_navigation_history.append(dict(
                 valid=True, stamp=self.latest_state.stamp,
@@ -845,6 +848,7 @@ class TrajectoryTrackerNode(Node):
     def _update_follow_admission(self, context):
         """Only this receiver compares native navigation and KF at their common epoch."""
         from uav_control.guidance.follow_admission import FollowAdmission, follow_settling
+        from uav_control.guidance.follow_contract import execution_context_errors
         receiver = self.follow_receiver
         gate = getattr(receiver, 'admission', None)
         if gate is None:
@@ -860,7 +864,8 @@ class TrajectoryTrackerNode(Node):
             self.flight_guidance.follow_distance, self.flight_guidance.flight_altitude,
             admission_config=gate.config)
         status_stamp = getattr(self, 'vehicle_status_stamp', None)
-        legal = (context.following and context.visible and context.offboard and context.armed
+        context_faults = execution_context_errors(context)
+        legal = (not context_faults
                  and status_stamp is not None
                  and 0 <= context.now-status_stamp <= self.vehicle_status_timeout)
         reason = gate.update(context.now, self.follow_metrics, legal, active=bool(receiver.active))
@@ -869,6 +874,7 @@ class TrajectoryTrackerNode(Node):
         # Heartbeat and proposal callbacks are also observations of execution legality.
         # Consume loss here so a healthy sample before the next control tick cannot erase it.
         if reason and (receiver.active or receiver.pending):
+            reason = context_faults[0] if context_faults else reason
             self._revoke_nominal_follow(reason)
         return reason
 
@@ -878,15 +884,42 @@ class TrajectoryTrackerNode(Node):
         now = self._ros_seconds()
         self.follow_generation = self.follow_clock.observe(now)
         prediction = self.latest_prediction
-        fresh = bool(self.latest_state and 0 <= now-self.latest_state.stamp <= .125
-                     and self._prediction_fresh(now))
+        navigation_fresh = bool(self.latest_state and 0 <= now-self.latest_state.stamp <= .125)
+        kf = getattr(self, 'latest_kf_message', None)
+        target_fresh = fresh_flight_target(
+            kf, now, min(.125, self.maximum_state_age), self.expected_frame_id) is not None
+        observation_stamp = self.visibility.last_valid_observation_stamp
+        observation_fresh = bool(observation_stamp is not None
+                                 and 0 <= now-observation_stamp
+                                 <= self.visibility.config.target_lock_max_age)
+        source = observation = generated = until = None
+        try:
+            source, observation, generated, until = (
+                _stamp_seconds(getattr(prediction, name)) for name in (
+                    'source_stamp', 'observation_stamp', 'generated_stamp', 'valid_until'))
+            prediction_fresh = bool(self._prediction_fresh(now)
+                                    and 0 < observation <= source <= generated <= now < until
+                                    and now-source <= .125)
+        except (AttributeError, ValueError, TypeError):
+            prediction_fresh = False
+        self.follow_input_status = dict(
+            now=now, navigation_stamp=self.latest_state.stamp if self.latest_state else None,
+            target_stamp=_stamp_seconds(kf.stamp) if kf else None,
+            target_source_stamp=_stamp_seconds(kf.source_stamp) if kf else None,
+            prediction_source=source, prediction_observation=observation,
+            prediction_generated=generated, prediction_valid_until=until,
+            observation_stamp=observation_stamp, observation_fresh=observation_fresh,
+            callback_receipts=dict(getattr(self, 'follow_input_receipts', {})))
         return ReceiverContext(
             now, self.mission_id, self.follow_generation,
             int(prediction.sequence_id) if prediction is not None else 0,
             self.mission_state == MissionState.FOLLOW,
             self.offboard_active, self.vehicle_armed,
-            bool(fresh and self.visibility_decision and self.visibility_decision.locked
-                 and not self.safe_recovery_latched), receiver_boot_id=self.follow_clock.boot_id)
+            bool(self.visibility_decision and (self.visibility_decision.locked
+                 or getattr(self.visibility_decision, 'visual_locked', False))),
+            receiver_boot_id=self.follow_clock.boot_id, navigation_fresh=navigation_fresh,
+            target_fresh=target_fresh, prediction_fresh=prediction_fresh,
+            recovering=self.safe_recovery_latched, observation_fresh=observation_fresh)
 
     def follow_trajectory_callback(self, message):
         """Real receiver rejection ACK. Qualification failure never mutates original control."""
@@ -1006,6 +1039,7 @@ class TrajectoryTrackerNode(Node):
         from uav_control.controllers.follow_transport import ack_message
         from uav_control.controllers.follow_mpc_shadow_node import prediction_from_message
         from uav_control.guidance.follow_minco_execution import nominal_curve, reference_velocity
+        from uav_control.guidance.follow_contract import execution_context_errors
         receiver = self.follow_receiver
         started = time.perf_counter()
         context = self._follow_context()
@@ -1016,10 +1050,11 @@ class TrajectoryTrackerNode(Node):
             prediction = prediction_from_message(self.latest_prediction)
             for curve in (receiver.active, receiver.pending):
                 if curve and now < min(curve.end, curve.start+receiver.lease_seconds):
-                    detail = dict(reason='CONTEXT_NOT_VISIBLE', visible=context.visible)
-                    nominal[curve.plan_id] = context.visible and nominal_curve(
-                        curve, prediction, self.follow_model, max(now, curve.start),
-                        min(curve.end, curve.start+receiver.lease_seconds), detail)
+                    detail = dict(reason='CONTEXT_NOT_READY', visible=context.visible)
+                    nominal[curve.plan_id] = (
+                        not execution_context_errors(context) and nominal_curve(
+                            curve, prediction, self.follow_model, max(now, curve.start),
+                            min(curve.end, curve.start+receiver.lease_seconds), detail))
                     prefix_details[curve.plan_id] = detail
         except (ValueError, TypeError, AttributeError):
             nominal = {}
@@ -1047,8 +1082,15 @@ class TrajectoryTrackerNode(Node):
         debug['research_state'] = gate.state if gate else 'LEGACY_NOMINAL'
         debug['recovery'] = gate.loss if gate else None
         debug['entry_evidence'] = receiver.entry_evidence
-        debug['execution_context'] = dict(following=context.following, visible=context.visible,
-                                          offboard=context.offboard, armed=context.armed)
+        debug['execution_context'] = dict(schema_version=2,
+                                          following=context.following, visible=context.visible,
+                                          offboard=context.offboard, armed=context.armed,
+                                          navigation_fresh=context.navigation_fresh,
+                                          target_fresh=context.target_fresh,
+                                          prediction_fresh=context.prediction_fresh,
+                                          observation_fresh=context.observation_fresh,
+                                          recovering=context.recovering)
+        debug['input_freshness'] = dict(getattr(self, 'follow_input_status', {}))
         self.follow_cycle_debug = debug
         events = receiver.drain_events()
         for event in events:
@@ -1127,6 +1169,8 @@ class TrajectoryTrackerNode(Node):
             return
         self.latest_kf_message = message
         self.latest_target_state = converted
+        self.follow_input_receipts = dict(
+            getattr(self, 'follow_input_receipts', {}), target=now)
 
     def bearing_callback(self, message):
         stamp = _stamp_seconds(message.stamp)
@@ -1183,6 +1227,8 @@ class TrajectoryTrackerNode(Node):
                 and message.sequence_id < previous.sequence_id):
             return
         self.latest_prediction = message
+        self.follow_input_receipts = dict(
+            getattr(self, 'follow_input_receipts', {}), prediction=self._ros_seconds())
 
     def planner_diagnostic_callback(self, message):
         self.latest_planner_diagnostic = message
@@ -1700,6 +1746,7 @@ class TrajectoryTrackerNode(Node):
             now, self.current_heading, height, dt,
             self.latest_target_state is not None,
             terminal=terminal,
+            separate_input_wait=self.mission_state == MissionState.FOLLOW,
         )
         self._arm_terminal_execution(current, now, decision)
         if self._terminal_execution_active(now):
@@ -1772,6 +1819,7 @@ class TrajectoryTrackerNode(Node):
             )
             and not (self.mission_state == MissionState.FOLLOW
                      and self.visibility_decision.locked)
+            and self.visibility_decision.state != 'INPUT_WAIT'
             and (self.mission_state == MissionState.FOLLOW
                  or not getattr(self, 'intercept_requested', False))
             and not self.safe_recovery_latched and not self.terminal_mode_latched
@@ -1794,6 +1842,8 @@ class TrajectoryTrackerNode(Node):
     def _continuous_follow_command(self, current, now, dt):
         """Refine RGB into KF following without leaving FOLLOW or resetting V."""
         state = FlightKinematicState(current.position, current.velocity)
+        if self.visibility_decision.state == 'INPUT_WAIT':
+            return self._search_or_recovery_command(current, dt)
         if (self.latest_target_state is not None
                 and (self.visibility_decision.visible
                      or self.visibility_decision.locked)
@@ -1840,6 +1890,7 @@ class TrajectoryTrackerNode(Node):
         self.yaw_owner = 'HOLD'
         if not inhibited and decision is not None:
             if decision.visible:
+                visual_lock = decision.locked or getattr(decision, 'visual_locked', False)
                 bearing = self.visibility.last_valid_image_bearing
                 center = getattr(self, 'latest_center_bearing', None)
                 if (visual_intercept and center is not None
@@ -1852,7 +1903,7 @@ class TrajectoryTrackerNode(Node):
                     bearing,
                     self.visibility.config.vision_yaw_gain,
                     self.visibility.config.target_center_deadband_rad,
-                    (self.max_observation_yaw_rate if decision.locked
+                    (self.max_observation_yaw_rate if visual_lock
                      else self.visibility.config.maximum_search_yaw_rate),
                 )
                 if visual_intercept:
@@ -1875,7 +1926,7 @@ class TrajectoryTrackerNode(Node):
                     rate = max(-self.max_observation_yaw_rate, min(
                         self.max_observation_yaw_rate, rate,
                     ))
-                self.yaw_owner = ('VISION' if decision.locked or getattr(
+                self.yaw_owner = ('VISION' if visual_lock or getattr(
                     self, 'bearing_approach_active', False) else 'SEARCH')
             elif decision.state != 'SAFE_WAIT':
                 rate = decision.yaw_rate

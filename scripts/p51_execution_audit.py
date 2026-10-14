@@ -56,11 +56,15 @@ def audit_rows(rows, first_minco, scene, config=None):
         context = r.get('execution_context', {})
         prefix = r.get('prefix_checks', {})
         prefix = prefix.get(str(plan), prefix.get(plan, {}))
+        legacy_context = context.get('schema_version', 1) == 1
         if not (c and ack and ack.get('owner') == 'MINCO_FOLLOW' and ack.get('active') == plan
                 and c['start'] <= ack['stamp'] <= c['start']+.05+1e-7
                 and ack['stamp'] <= t < min(c['end'], c['start']+.45)
                 and r.get('lease_deadline') == min(c['end'], c['start']+.45)
                 and all(context.get(k) for k in ('following', 'visible', 'offboard', 'armed'))
+                and all(context.get(k, legacy_context) is True for k in (
+                    'navigation_fresh', 'target_fresh', 'prediction_fresh', 'observation_fresh'))
+                and context.get('recovering', False if legacy_context else None) is False
                 and prefix.get('reason') == 'VALID' and prefix.get('visible')):
             fail('execution_gates', 'MISSING_OR_ILLEGAL_ACTIVE_CONTEXT_PREFIX_LEASE', r)
         if plan in seen:

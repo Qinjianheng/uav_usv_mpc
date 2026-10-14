@@ -17,7 +17,7 @@ allow_f3 = previous.allow_f3
 
 def round_root(number):
     """Every diagnostic round keeps its original exclusive attempt claims."""
-    if type(number) is not int or not 1 <= number <= 9:
+    if type(number) is not int or not 1 <= number <= 11:
         raise ValueError('BOUNDED_P53_ROUND_REQUIRED')
     return ROOT.with_name(f'20261013_p53_closed_loop_{number:02d}')
 
@@ -179,7 +179,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('output', type=Path)
     parser.add_argument('--scene', choices=('f2', 'f3'), default='f2')
-    parser.add_argument('--round', type=int, choices=(1, 2, 3, 4, 5, 6, 7, 8, 9), default=1)
+    parser.add_argument('--round', type=int, choices=tuple(range(1, 12)), default=1)
     parser.add_argument('--f3-attempt', type=int, choices=(1, 2, 3, 4), default=1)
     parser.add_argument('--qualification', type=Path, required=True)
     parser.add_argument('--readiness', type=Path, required=True)

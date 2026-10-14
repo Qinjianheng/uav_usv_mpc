@@ -75,6 +75,24 @@ class ReceiverContext:
     visible: bool
     boundary: tuple = ()
     receiver_boot_id: str = ''
+    navigation_fresh: bool = True
+    target_fresh: bool = True
+    prediction_fresh: bool = True
+    recovering: bool = False
+    observation_fresh: bool = True
+
+
+def execution_context_errors(ctx):
+    """Keep visual lock, input freshness and physical recovery as distinct local gates."""
+    return [reason for condition, reason in (
+        (not math.isfinite(ctx.now) or ctx.now <= 0, 'INVALID_CLOCK'),
+        (not ctx.following, 'NOT_FOLLOW'), (not ctx.offboard, 'OFFBOARD_UNAVAILABLE'),
+        (not ctx.armed, 'NOT_ARMED'), (not ctx.visible, 'TARGET_NOT_LOCKED'),
+        (not ctx.navigation_fresh, 'NAVIGATION_STALE'),
+        (not ctx.target_fresh, 'TARGET_STATE_STALE'),
+        (not ctx.prediction_fresh, 'PREDICTION_STALE'),
+        (not ctx.observation_fresh, 'OBSERVATION_STALE'),
+        (ctx.recovering, 'SAFETY_RECOVERY')) if condition]
 
 
 @dataclass(frozen=True)
@@ -208,10 +226,7 @@ class FollowReceiver:
     @staticmethod
     def context_errors(c, ctx):
         """Mission, mode, target and latest version revoke even previously checked curves."""
-        return [reason for condition, reason in (
-            (not math.isfinite(ctx.now) or ctx.now <= 0, 'INVALID_CLOCK'),
-            (not ctx.following, 'NOT_FOLLOW'), (not ctx.offboard, 'OFFBOARD_UNAVAILABLE'),
-            (not ctx.armed, 'NOT_ARMED'), (not ctx.visible, 'TARGET_NOT_LOCKED'),
+        return execution_context_errors(ctx)+[reason for condition, reason in (
             (c.mission_id != ctx.mission_id, 'MISSION_CHANGED'),
             (c.generation != ctx.generation, 'CLOCK_GENERATION_CHANGED'),
             (c.receiver_boot_id != ctx.receiver_boot_id, 'RECEIVER_RESTARTED'),

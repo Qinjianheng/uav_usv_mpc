@@ -1,3 +1,0 @@
-front_depth_model=ideal
-enable_down_camera=false
-X after flight ready 10s; Y after stable FOLLOW 3s

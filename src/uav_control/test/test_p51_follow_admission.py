@@ -322,7 +322,7 @@ def test_brief_context_loss_observed_between_ticks_cannot_disappear(callback):
     node._update_follow_admission(context)
     r.tick(context, nominal_valid=True)
     assert r.active is None and r.pending is None
-    assert g.loss['reason'] == 'EXECUTION_CONTEXT_INVALID'
+    assert g.loss['reason'] == 'OFFBOARD_UNAVAILABLE'
     assert g.state == 'FOLLOW_RECOVERY' and not g.allowed(100.08)
     assert any(getattr(m, 'state', '') == 'REVOKED' for m in messages)
 

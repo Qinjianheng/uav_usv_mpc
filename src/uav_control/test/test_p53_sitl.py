@@ -92,7 +92,9 @@ def test_diagnostic_rounds_preserve_claims_and_reject_unbounded_runs(tmp_path, m
     monkeypatch.setattr(entry, 'ROOT', tmp_path/'20261013_p53_closed_loop_01')
     assert entry.round_root(1).name == '20261013_p53_closed_loop_01'
     assert entry.round_root(2).name == '20261013_p53_closed_loop_02'
-    for bad in (0, 10, True, 1.5):
+    assert entry.round_root(10).name == '20261013_p53_closed_loop_10'
+    assert entry.round_root(11).name == '20261013_p53_closed_loop_11'
+    for bad in (0, 12, True, 1.5):
         with pytest.raises(ValueError, match='BOUNDED_P53_ROUND_REQUIRED'):
             entry.round_root(bad)
 

@@ -1,0 +1,22 @@
+{
+  "source": "data/experiments/20261013_p53_closed_loop_10/f3_h16_01",
+  "direct_stop": "HEALTH_INPUT_LOST",
+  "first_minco": null,
+  "planner_started": false,
+  "follow_seconds": 3.482844829559326,
+  "diagnostic_count": 64,
+  "input_wait": 64,
+  "visible": 64,
+  "valid_3d": 0,
+  "observation_count": 64,
+  "last_good_source": 1791905850.6902654,
+  "source_age_at_stop": 4.9387335777282715,
+  "receipt_age_at_snapshot": {
+    "control": 0.2640047073364258,
+    "navigation": 0.27063560485839844,
+    "attitude": 0.2542903423309326
+  },
+  "confirmed_algorithm_fault": "Takeoff/acquisition combined lock incorrectly inherited as prior FOLLOW lock; visible far target with unavailable depth kept INPUT_WAIT braking instead of initial RGB approach.",
+  "stop_causality": "Actual stop HEALTH_INPUT_LOST is observer receipt age over250ms; cannot attribute this observer stall solely to phase regression.",
+  "correction": "Only a complete lock during FOLLOW can establish the INPUT_WAIT phase; takeoff lock does not. No freshness or lease change."
+}

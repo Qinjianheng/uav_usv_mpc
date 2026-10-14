@@ -1,0 +1,85 @@
+{
+  "source": "/home/qin/data/uav_usv_mpc/data/experiments/20261014_cleanup_sitl_01/f2_h16_01",
+  "source_manifest_sha256": "ae474652c047efa0a359e2f22d76e998feb85178600ff98a98359c9565eef684",
+  "loss_reason": "PREDICTION_STALE",
+  "plan": 31,
+  "diagnostic_receipt": 1791938267.9720907,
+  "tracker_snapshot": {
+    "now": 1791938267.9700809,
+    "navigation_stamp": 1791938267.9551635,
+    "target_stamp": 1791938267.966873,
+    "target_source_stamp": 1791938267.9351768,
+    "prediction_source": 1791938267.855543,
+    "prediction_observation": 1791938267.835162,
+    "prediction_generated": 1791938267.8560762,
+    "prediction_valid_until": 1791938267.9601622,
+    "observation_stamp": 1791938267.9351768,
+    "observation_fresh": true,
+    "callback_receipts": {
+      "navigation": 1791938267.960641,
+      "target": 1791938267.9674706,
+      "prediction": 1791938267.860112
+    }
+  },
+  "expired_by_ms": 9.918689727783203,
+  "next_prediction": {
+    "kind": "prediction",
+    "receipt": 1791938267.970793,
+    "stamp": 1791938267.966873,
+    "observation": 1791938267.9351768,
+    "generated": 1791938267.9673946,
+    "compute": 0.002155483998649288,
+    "sequence": 739,
+    "valid": true,
+    "reason": ""
+  },
+  "valid_observation_events": [
+    {
+      "kind": "observation",
+      "receipt": 1791938267.8551953,
+      "stamp": 1791938267.835162,
+      "received": 1791938267.8491597,
+      "processed": 1791938267.854714,
+      "published": 1791938267.854752,
+      "valid": true,
+      "reason": ""
+    },
+    {
+      "kind": "observation",
+      "receipt": 1791938267.966646,
+      "stamp": 1791938267.9351768,
+      "received": 1791938267.9510734,
+      "processed": 1791938267.9661462,
+      "published": 1791938267.9661818,
+      "valid": true,
+      "reason": ""
+    }
+  ],
+  "valid_observation_interval_ms": 100.01492500305176,
+  "next_prediction_observation_to_generation_ms": 32.21774101257324,
+  "findings": [
+    "Tracker locally held prediction 738 at revocation; its 125 ms observation-validity deadline had elapsed.",
+    "Prediction 739 generation started before revocation. Its publication time and Tracker callback order are not recorded. Observer receipt and generation-start time cannot establish availability to Tracker before revocation.",
+    "The last two valid observation epochs were separated by about 100 ms, rather than the nominal 50 ms.",
+    "Navigation, target, observation, lock, visibility and flight-mode flags were healthy at this event. Lease expiry, geometry validation failure and start missed did not trigger it.",
+    "599 R11 source/patch files and both generated flight/research configurations equal this run. 3901 protected paths and 41 historical attempt/summary claims are unchanged.",
+    "No observed missing-file/import error or online dependency on archived files. This supports a timing boundary failure with unchanged code; it does not prove the exact DDS/executor/camera scheduling cause."
+  ],
+  "limits": [
+    "No full tracker subscription dequeue trace or sensor frame publication log; cannot attribute the missing observation to rendering, bridge, or detector.",
+    "Owned CPU load and near-unit RTF do not prove absence of transient process scheduling delays.",
+    "Revocation-time and debug-time validity overshoot differ by about 0.26 ms; use revocation epoch for causal expiry claim."
+  ],
+  "diagnostic_followup": {
+    "maximum_additional_f2": 1,
+    "maximum_additional_f3": 1,
+    "condition": "Strict same-source and same-config F2 repeat; F3 only if original gate and predetermined maintenance comparison all pass.",
+    "purpose": "Determine whether the input timing boundary recurs under an independent identical launch, without changing online code/config/thresholds.",
+    "preserve_failure": true,
+    "stable_flight_fix_claim_allowed": false
+  },
+  "revocation_stamp": 1791938267.9698212,
+  "expired_at_revocation_by_ms": 9.659051895141602,
+  "old_observation_age_at_revocation_ms": 134.6592903137207,
+  "prediction_generation_timestamp_semantics": "generated is the time captured at generation start; compute_time is measured before publisher call; it is not a publication/receiver availability timestamp."
+}

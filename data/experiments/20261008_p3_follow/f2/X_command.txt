@@ -1,3 +1,0 @@
-publisher: beginning loop
-publishing #3: std_msgs.msg.String(data='X')
-

@@ -1,0 +1,39 @@
+{
+  "graphs": {
+    "true": [
+      "<node_namespace_unspecified>/p4_follow_planner_node",
+      "<node_namespace_unspecified>/moving_target",
+      "<node_namespace_unspecified>/target_predictor_node",
+      "<node_namespace_unspecified>/shadow_target_predictor_node",
+      "<node_namespace_unspecified>/intercept_planner_node",
+      "<node_namespace_unspecified>/trajectory_tracker_node",
+      "<node_namespace_unspecified>/mission_manager_node",
+      "<node_namespace_unspecified>/intercept_evaluator_node",
+      "<node_namespace_unspecified>/target_kalman_filter",
+      "<node_namespace_unspecified>/dual_tof_image_bridge",
+      "<node_namespace_unspecified>/target_bearing_node",
+      "<node_namespace_unspecified>/front_tof_monitor",
+      "<node_namespace_unspecified>/rgbd_target_localizer",
+      "<node_namespace_unspecified>/dual_tof_selector"
+    ],
+    "false": [
+      "<node_namespace_unspecified>/p4_follow_planner_node",
+      "<node_namespace_unspecified>/moving_target",
+      "<node_namespace_unspecified>/target_predictor_node",
+      "<node_namespace_unspecified>/intercept_planner_node",
+      "<node_namespace_unspecified>/trajectory_tracker_node",
+      "<node_namespace_unspecified>/mission_manager_node",
+      "<node_namespace_unspecified>/intercept_evaluator_node",
+      "<node_namespace_unspecified>/target_kalman_filter",
+      "<node_namespace_unspecified>/dual_tof_image_bridge",
+      "<node_namespace_unspecified>/target_bearing_node",
+      "<node_namespace_unspecified>/rgbd_target_localizer"
+    ]
+  },
+  "removed": [
+    "<node_namespace_unspecified>/dual_tof_selector",
+    "<node_namespace_unspecified>/front_tof_monitor",
+    "<node_namespace_unspecified>/shadow_target_predictor_node"
+  ],
+  "scope": "Resolved source launch conditions without starting nodes; no SITL or new load/flight measurements."
+}
