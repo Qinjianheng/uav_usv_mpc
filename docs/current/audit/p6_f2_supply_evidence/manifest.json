@@ -1,0 +1,213 @@
+{
+  "purpose": "P6 F2 successor supply failure diagnosis",
+  "flight_config": "F2 linear / BCTRA primary / IMM shadow",
+  "fallbacks": [
+    {
+      "plan": 25,
+      "stamp": 1792048955.9057581,
+      "reason": "LEASE_EXPIRED_NO_SUCCESSOR",
+      "successor_plans": [
+        27
+      ]
+    },
+    {
+      "plan": 79,
+      "stamp": 1792048967.1579401,
+      "reason": "LEASE_EXPIRED_NO_SUCCESSOR",
+      "successor_plans": []
+    },
+    {
+      "plan": 139,
+      "stamp": 1792048979.7554846,
+      "reason": "LEASE_EXPIRED_NO_SUCCESSOR",
+      "successor_plans": []
+    }
+  ],
+  "windows": [
+    [
+      1792048954.4057581,
+      1792048956.4057581
+    ],
+    [
+      1792048965.6579401,
+      1792048967.6579401
+    ],
+    [
+      1792048978.2554846,
+      1792048980.2554846
+    ]
+  ],
+  "original_sources": [
+    {
+      "source": "flight/p5_run_summary.json",
+      "bytes": 12076,
+      "sha256": "aeecf2893d35daba7f041bbafbd642136bb22fceb110c00fa91aca3475543817"
+    },
+    {
+      "source": "flight/execution_analysis.json",
+      "bytes": 16628,
+      "sha256": "7436a6a063eafbeca3621fa1a963faae6e8ef9acfc07cc0313e469438bd243d6"
+    },
+    {
+      "source": "case.json",
+      "bytes": 1214,
+      "sha256": "7fc9cffe799db8478811d4a9b5ac0b52ed7656d8c1e8ffb4463f00c5a17adff5"
+    },
+    {
+      "source": "flight/shadow/mpc_seed_shadow_1792048949483908487_194991.jsonl",
+      "bytes": 31631172,
+      "sha256": "83d9706c6f074b3f78a6b7fe400a12e32360b0c2038e7a8dec2ef113cfe522b3",
+      "selected_rows": 140
+    },
+    {
+      "source": "flight/shadow/follow_ack_mpc_seed_shadow_1792048949483908487_194991.jsonl",
+      "bytes": 44656,
+      "sha256": "0e76a3263679ccb05f25de0d070e57dc521ce0b4bd5ea040f9b15e44946d7f74",
+      "selected_rows": 34
+    },
+    {
+      "source": "flight/offline_evidence.jsonl",
+      "bytes": 152363148,
+      "sha256": "5df2dbbeba6a01cfbfda758112f4fbc4147e7e8d7c439e547c276836dbb880d8",
+      "selected_rows": 3098
+    }
+  ],
+  "uploaded_files": [
+    {
+      "name": "p5_run_summary.json",
+      "bytes": 12076,
+      "sha256": "aeecf2893d35daba7f041bbafbd642136bb22fceb110c00fa91aca3475543817"
+    },
+    {
+      "name": "execution_analysis.json",
+      "bytes": 16628,
+      "sha256": "7436a6a063eafbeca3621fa1a963faae6e8ef9acfc07cc0313e469438bd243d6"
+    },
+    {
+      "name": "case.json",
+      "bytes": 1214,
+      "sha256": "7fc9cffe799db8478811d4a9b5ac0b52ed7656d8c1e8ffb4463f00c5a17adff5"
+    },
+    {
+      "name": "planner_001.jsonl",
+      "bytes": 672175,
+      "sha256": "d159ed3b550a62ab4bdfe8ca3574ea39be953cca232e12a06bf8cbc86423e818"
+    },
+    {
+      "name": "planner_002.jsonl",
+      "bytes": 673282,
+      "sha256": "22c49ec0b06e11d7cf878f2671a43391ffdd5c4d4e0f704c4987fa72e5813b98"
+    },
+    {
+      "name": "planner_003.jsonl",
+      "bytes": 673906,
+      "sha256": "fbbf577cc32db53d4f5289b6f566ed91383f8a2f6d9c124b87d8269ebf3bd191"
+    },
+    {
+      "name": "planner_004.jsonl",
+      "bytes": 687457,
+      "sha256": "2b2308433670dbc652decb75f134a116a5a57bccc5d8dd2adec078f16938249f"
+    },
+    {
+      "name": "planner_005.jsonl",
+      "bytes": 696714,
+      "sha256": "0c14b1a9d4eb01fd73f501d2a5b3183d9ec9ae48716c2d87417beeeabe75104a"
+    },
+    {
+      "name": "planner_006.jsonl",
+      "bytes": 693592,
+      "sha256": "fc76a7ee3071972330b8d0719986d54bc5ebb6b3b754710960c5d40cca182052"
+    },
+    {
+      "name": "planner_007.jsonl",
+      "bytes": 697468,
+      "sha256": "6f468c31a41289c7b8f32e7ff236508a2132adbd7b2fe93ab0e4d5f8eded7358"
+    },
+    {
+      "name": "planner_008.jsonl",
+      "bytes": 188218,
+      "sha256": "1db8eb0396c281a3cd8e8c8ec85492c873bf4afac592b4f698030cab399ed30f"
+    },
+    {
+      "name": "ack_001.jsonl",
+      "bytes": 16077,
+      "sha256": "066f2b7408232968d8f4341ebbb5179407a748f3282bb9d68e43a9775300fdcc"
+    },
+    {
+      "name": "observation_001.jsonl",
+      "bytes": 698136,
+      "sha256": "b7cc03b5d7d73c6847632ed3b1da28f3735396e39975386d9fd16efaba087861"
+    },
+    {
+      "name": "observation_002.jsonl",
+      "bytes": 690541,
+      "sha256": "2aabefd7af4d280a825be6edbe43c50d8833e2f6a88dbd8a835d6a61b6cf01bc"
+    },
+    {
+      "name": "observation_003.jsonl",
+      "bytes": 696459,
+      "sha256": "5036abe75ffa676a0250405da9c69dc292ed667cbdf344e519e04264203a6102"
+    },
+    {
+      "name": "observation_004.jsonl",
+      "bytes": 669906,
+      "sha256": "f1a24c0b3c8e767fe91ab128b8b1ebb26645c4ab4f9119b18c4f17f5bfa5efe3"
+    },
+    {
+      "name": "observation_005.jsonl",
+      "bytes": 664778,
+      "sha256": "f56884f3df9e053fe6f3f922df26be41cc8d64c7265f1addb0f3fcd3e7be54d6"
+    },
+    {
+      "name": "observation_006.jsonl",
+      "bytes": 685836,
+      "sha256": "7184a312d098f36eecbf1e9f125ec3d814fdba1ce4b44bae44ff5f7e08e228ab"
+    },
+    {
+      "name": "observation_007.jsonl",
+      "bytes": 687736,
+      "sha256": "956a64880a8ac78be6299eed053714becc59b8e90892946fe248af06f59352b4"
+    },
+    {
+      "name": "observation_008.jsonl",
+      "bytes": 684107,
+      "sha256": "8717d942a1e48d662be6685374bf21f1c2dd8d64e6ed777b35d1de52de62e498"
+    },
+    {
+      "name": "observation_009.jsonl",
+      "bytes": 675472,
+      "sha256": "0552cd33fc8522d0b30c3290096d4a2fa5a4f922d1fd8d65a6205c45e948c711"
+    },
+    {
+      "name": "observation_010.jsonl",
+      "bytes": 669820,
+      "sha256": "560756ffcd3884176d79bfc453ab89ed493e2578b5481fad3cb7ade16034e96d"
+    },
+    {
+      "name": "observation_011.jsonl",
+      "bytes": 685430,
+      "sha256": "777b4987970b9e0a2c9eddf1336fcbc8802d5d94eae1c9fd2518cbb79d4d442b"
+    },
+    {
+      "name": "observation_012.jsonl",
+      "bytes": 698967,
+      "sha256": "c05374e7159a4bceac31cf6f48734c8e2a14a193db116e25528ebb83609d9e1e"
+    },
+    {
+      "name": "observation_013.jsonl",
+      "bytes": 688931,
+      "sha256": "be88aafb2a57570e84f09c56aba959e6d6d6d0af75832aa5b8815797a718bf89"
+    },
+    {
+      "name": "observation_014.jsonl",
+      "bytes": 670886,
+      "sha256": "f2615755d29e041d2ef124179f021abd07e9394f33fb5b864d0354f962487a9c"
+    },
+    {
+      "name": "observation_015.jsonl",
+      "bytes": 640235,
+      "sha256": "41dcd02317e925649f88a2ed3e920c0057408981e5efd5118b1b47c67f6a7b48"
+    }
+  ],
+  "note": "Original files were not modified. JSONL lines are selected verbatim by receipt/event time."
+}

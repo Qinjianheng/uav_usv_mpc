@@ -1,0 +1,31 @@
+{
+  "kind": "P6_TESTED_PROTOCOL_CANDIDATE",
+  "case_id": "pilot_f2_m1_A_s0",
+  "role": "pilot",
+  "scene": "f2",
+  "motion_mode": "linear",
+  "mode_id": 1,
+  "group": "A",
+  "prediction_model": "bctra",
+  "visibility_mode": "nominal",
+  "adaptive_viewpoint": false,
+  "imm_shadow_requested": true,
+  "imm_shadow_effective": true,
+  "observation_seconds": 60.0,
+  "seed": 0,
+  "seed_scope": "metadata only; deterministic profiles; no noise injection by driver",
+  "launch_environment": {
+    "UAV_USV_P6_PREDICTOR": "bctra",
+    "UAV_USV_P6_IMM_SHADOW": "true",
+    "UAV_USV_P6_RECORD": "1"
+  },
+  "output": "/home/qin/data/uav_usv_mpc/data/experiments/20261015_p6_stabilization_01/pilot_A_linear/flight",
+  "config_sources": {
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261014_p6_sitl_01/pilot_A_linear/config/flight.yaml": "8b52831d3a6e23b8329c33585d6f1be533dffd1a65af7b024eda61d293c981e1",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261014_p6_sitl_01/pilot_A_linear/config/research.yaml": "25c12bac8d412e796bdb0d4e9cd3a434ae6491654ce0c1474a785b5ca4f975ba"
+  },
+  "calibration_source": null,
+  "calibration_source_sha256": null,
+  "status": "PREPARED_NOT_FLOWN",
+  "execution_authorized": false
+}
