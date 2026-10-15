@@ -103,6 +103,15 @@ class P4ResearchRunner(ShadowResearchRunner):
         """Busy work has no queued request; completion alone rebuilds from latest inputs."""
         if self.pending is not None and not self.pending['future'].done():
             return
+        # A completed worker must always be consumed, but during the normal
+        # dispatch cooldown there is no candidate to prepare or submit.
+        # Avoid re-pairing/allocating snapshots on every 10 ms timer tick:
+        # those preparations contend with the single active MINCO worker.
+        # Freshness, admission and receiver identity are checked again when
+        # the next request is actually eligible to dispatch. Explicit invalid
+        # prediction/mission messages are rejected in their own callbacks.
+        if self.pending is None and monotonic_now < self.next_solve:
+            return
         previous = self.pending
         finishing = previous is not None and previous['future'].done()
         super().tick(now, monotonic_now)
