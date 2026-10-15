@@ -40,6 +40,8 @@ setup(
             'uav_control.tracking.target_kalman_filter:main',
             'target_predictor_node = '
             'uav_control.tracking.target_predictor_node:main',
+            'imm_target_predictor_node = '
+            'uav_control.tracking.imm_target_predictor_node:main',
             'intercept_planner_node = '
             'uav_control.guidance.intercept_planner_node:main',
             'trajectory_tracker_node = '

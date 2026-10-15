@@ -2,6 +2,7 @@
 """Evaluation-only P4 recorder; retains native pose/clock and continuous ROS authority evidence."""
 import argparse
 import json
+import os
 from pathlib import Path
 import signal
 import threading
@@ -43,6 +44,7 @@ def run(output):
     node = Node('p4_offline_evidence_monitor')
     stream = output.open('x')
     lock, latest = threading.Lock(), {}
+    p6_record = os.environ.get('UAV_USV_P6_RECORD', '0') == '1'
 
     def write(kind, **data):
         with lock:
@@ -91,6 +93,19 @@ def run(output):
               processed=seconds(message.processed_stamp),
               published=seconds(message.published_stamp),
               valid=message.valid, reason=message.rejection_reason)
+        if p6_record:
+            write('p6_observation', stamp=seconds(message.stamp),
+                  source=message.source, frame=message.frame_id,
+                  valid=message.valid, reason=message.rejection_reason,
+                  p=xyz(message.position), covariance=list(message.covariance),
+                  received=seconds(message.received_stamp),
+                  processed=seconds(message.processed_stamp),
+                  published=seconds(message.published_stamp),
+                  image_measurement_stamp=message.image_measurement_stamp,
+                  image_clock_reset_count=message.image_clock_reset_count,
+                  px4_clock_reset_count=message.px4_clock_reset_count,
+                  image_clock_status=message.image_clock_status,
+                  px4_clock_status=message.px4_clock_status)
 
     def prediction(message):
         write('prediction', stamp=seconds(message.source_stamp),
@@ -98,6 +113,23 @@ def run(output):
               generated=seconds(message.generated_stamp),
               compute=message.compute_time, sequence=message.sequence_id, valid=message.valid,
               reason=message.invalid_reason)
+        if p6_record:
+            prediction_samples(message, '/planning/target_prediction')
+
+    def prediction_samples(message, topic):
+        write('p6_prediction', topic=topic, mission=message.mission_id,
+              sequence=message.sequence_id, source_stamp=seconds(message.source_stamp),
+              observation_stamp=seconds(message.observation_stamp),
+              generated_stamp=seconds(message.generated_stamp),
+              valid_until=seconds(message.valid_until), model=message.model,
+              source=message.source, frame=message.frame_id,
+              valid=message.valid, reason=message.invalid_reason,
+              compute=message.compute_time,
+              times=[seconds(s.relative_time) for s in message.samples],
+              p=[xyz(s.position) for s in message.samples],
+              v=[xyz(s.velocity) for s in message.samples],
+              a=[xyz(s.acceleration) for s in message.samples],
+              covariance=[list(s.position_covariance) for s in message.samples])
 
     def ack(message):
         write('follow_ack', stamp=seconds(message.stamp), plan=message.plan_id,
@@ -115,6 +147,9 @@ def run(output):
         topics = ('/fmu/in/trajectory_setpoint', '/fmu/in/offboard_control_mode',
                   '/fmu/in/vehicle_command', '/control/follow_ack', '/planning/follow_trajectory',
                   '/control/follow_receiver_state')
+        if p6_record:
+            topics += ('/planning/target_prediction', '/planning/imm_target_prediction',
+                       '/planning/imm_diagnostics')
         publishers = {t: [dict(node=e.node_name, namespace=e.node_namespace,
                                type=e.topic_type, gid=list(e.endpoint_gid))
                           for e in node.get_publishers_info_by_topic(t)] for t in topics}
@@ -202,6 +237,21 @@ def run(output):
                                        armed=m.arming_state)), write(
                 'vehicle_status', nav_state=m.nav_state, armed=m.arming_state)), sensor),
     ]
+    if p6_record:
+        subscriptions.extend([
+            node.create_subscription(TargetPrediction, '/planning/imm_target_prediction',
+                                     lambda m: prediction_samples(
+                                         m, '/planning/imm_target_prediction'), sensor),
+            node.create_subscription(String, '/planning/imm_diagnostics',
+                                     lambda m: write('p6_imm', **json.loads(m.data)), sensor),
+            node.create_subscription(String, '/simulation/impact/motion_truth',
+                                     lambda m: write('p6_motion_truth', **json.loads(m.data)), 10),
+            node.create_subscription(String, '/simulation/impact/motion_mode',
+                                     lambda m: write('p6_motion_mode', data=json.loads(m.data)),
+                                     QoSProfile(
+                                         depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL,
+                                         reliability=ReliabilityPolicy.RELIABLE)),
+        ])
     timer = node.create_timer(1., graph)
     transport = GzNode()
     write('start', evaluation_only=True, gazebo_subscriptions=[

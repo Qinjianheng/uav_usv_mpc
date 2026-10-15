@@ -1,0 +1,117 @@
+# Optional P6 reference options. Ordinary launch does not load this file.
+# predictor_model is selected through launch prediction_model:=bctra|imm.
+# risk_horizon_seconds: 0.45 checks the actual execution lease; 0 checks the full curve.
+# Robust results use empirical envelopes, never a whole-task 95% probability claim.
+p4_follow_planner_node:
+  ros__parameters:
+    p6_visibility_mode: nominal
+    p6_adaptive_viewpoint: false
+    p6_allow_nominal_fallback: true
+    p6_risk_budget: 0.05
+    p6_risk_horizon_seconds: 0.45
+    p6_calibration_file: ''
+    p6_yaw_error_bound_rad: 0.06
+    p6_attitude_error_bound_rad: 0.03
+    p6_extrinsic_rotation_bound_rad: 0.0
+    p6_extrinsic_translation_bound_m: 0.0
+    p6_minimum_distance: 4.5
+    p6_maximum_distance: 6.0
+    p6_maximum_beta: 0.3490658503988659
+    p6_maximum_distance_rate: 0.15
+    p6_maximum_beta_rate: 0.05
+trajectory_tracker_node:
+  ros__parameters:
+    p6_visibility_mode: nominal
+    p6_adaptive_viewpoint: false
+    p6_allow_nominal_fallback: true
+    p6_risk_budget: 0.05
+    p6_risk_horizon_seconds: 0.45
+    p6_calibration_file: ''
+    p6_yaw_error_bound_rad: 0.06
+    p6_attitude_error_bound_rad: 0.03
+    p6_extrinsic_rotation_bound_rad: 0.0
+    p6_extrinsic_translation_bound_m: 0.0
+    p6_minimum_distance: 4.5
+    p6_maximum_distance: 6.0
+    p6_maximum_beta: 0.3490658503988659
+    p6_maximum_distance_rate: 0.15
+    p6_maximum_beta_rate: 0.05
+imm_target_predictor_node:
+  ros__parameters:
+    observation_topic: /perception/front/target_observation
+    prediction_topic: /planning/imm_target_prediction
+    diagnostics_topic: /planning/imm_diagnostics
+    mission_topic: /mission/state
+    frame_id: local_ned
+    update_rate_hz: 20.0
+    prediction_horizon: 4.0
+    prediction_sample_period: 0.1
+    input_timeout: 0.125
+    imm_transition_matrix:
+    - 0.96
+    - 0.025
+    - 0.015
+    - 0.025
+    - 0.95
+    - 0.025
+    - 0.015
+    - 0.035
+    - 0.95
+    imm_initial_probabilities:
+    - 0.5
+    - 0.3
+    - 0.2
+    imm_acceleration_noise:
+    - 0.7
+    - 0.5
+    - 0.35
+    imm_turn_rate_noise:
+    - 0.0
+    - 0.18
+    - 0.08
+    imm_longitudinal_jerk_noise: 0.6
+    imm_turn_jerk_noise: 0.3
+    imm_initial_velocity_std: 3.0
+    imm_initial_turn_rate_std: 0.35
+    imm_initial_acceleration_std: 1.0
+    imm_initial_turn_acceleration_std: 0.5
+    imm_maximum_turn_rate: 0.7
+    imm_maximum_longitudinal_acceleration: 2.0
+    imm_maximum_turn_acceleration: 1.5
+    imm_maximum_horizontal_speed: 5.0
+    imm_covariance_floor: 1.0e-09
+    imm_max_update_gap: 0.5
+    imm_vertical_acceleration_noise: 0.5
+    imm_vertical_velocity_decay_time: 0.75
+    imm_maximum_vertical_displacement: 0.5
+    imm_maximum_vertical_speed: 1.0
+moving_target:
+  ros__parameters:
+    initial_x: 8.0
+    initial_y: 0.0
+    initial_z: 0.0
+    velocity_z: 0.0
+    horizontal_speed: 4.0
+    horizontal_acceleration_limit: 1.0
+    maximum_turn_rate: 0.65
+    maximum_lateral_acceleration: 3.2
+    maximum_horizontal_acceleration: 3.2
+    maximum_angular_acceleration: 0.35
+    figure_eight_x_amplitude: 40.0
+    figure_eight_y_amplitude: 20.0
+    vertical_oscillation_amplitude: 0.15
+    vertical_oscillation_frequency: 0.25
+    variable_speed_min: 2.0
+    variable_speed_max: 4.0
+    variable_speed_period: 24.0
+    variable_startup_duration: 8.0
+    s_heading_amplitude: 0.6
+    s_period: 24.0
+    z_heading_change: 0.8
+    z_straight_duration: 7.0
+    z_turn_duration: 5.0
+    z_diagonal_duration: 8.0
+    trajectory_type: figure_eight
+    velocity_x: 0.0
+    velocity_y: 4.0
+    update_rate_hz: 20.0

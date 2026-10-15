@@ -1,0 +1,948 @@
+{
+  "kind": "P6_TESTED_PROTOCOL_CANDIDATE",
+  "candidate": {
+    "engine": "p47_follow_guided",
+    "horizon": 1.6,
+    "terminal_mode": "qva",
+    "refinement": false,
+    "scheduling": "adaptive"
+  },
+  "offline_gate_pass": true,
+  "shadow_gate_pass": false,
+  "robust_gate_pass": false,
+  "qualified_cases": [
+    "pilot_f2_m1_A_s0"
+  ],
+  "qualified_case_manifests": {
+    "pilot_f2_m1_A_s0": "c45737b2004a6500efa35050f5d7a7f6c943ddb3bad9d34cc1c55fc68bc73d31"
+  },
+  "formal_directory": "/home/qin/data/uav_usv_mpc/data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_2",
+  "source_checks": [
+    {
+      "path": "scripts/experiment_source_snapshot.py",
+      "current_sha256": "541390258ee57dc995aca5c16720b313eb4f81ddf0439dc1b2c4ddf3abe46634"
+    },
+    {
+      "path": "scripts/follow_failure_audit.py",
+      "current_sha256": "5f0b540b35b87bafbb3dbd0623a9e6a176c1f04eefae475d8c91c8c631264c4c"
+    },
+    {
+      "path": "scripts/follow_minco_experiment.py",
+      "current_sha256": "5d302ff456b44517a371920bf96cc3c08098b75b5cbc109a8e60e497e5f2e21f"
+    },
+    {
+      "path": "scripts/kf_truth_capture.py",
+      "current_sha256": "a35a49e41d997c896682ebd7ee348cd0a4b6ae7248393d296ac313dc6f6182e5"
+    },
+    {
+      "path": "scripts/mpc_seed_experiment.py",
+      "current_sha256": "b1517c2eeac316bf901b2efa50879ed98e7c986de1c35485d6dd18833874a797"
+    },
+    {
+      "path": "scripts/mpc_seed_replay.py",
+      "current_sha256": "43f321eec38ba438f30fa0052cbeb123eeae441a6caa1419c20017c49c33d5bd"
+    },
+    {
+      "path": "scripts/p32_follow_experiment.py",
+      "current_sha256": "4b346a89d75b92489cd2548216cee19f3f3f871fffa0eb685b8ef526e3814185"
+    },
+    {
+      "path": "scripts/p32_latency_analysis.py",
+      "current_sha256": "d3ae9b8c4568db791d10d0dac46b8f42ae69bdf3262ce1c8547ba38e6c28f36c"
+    },
+    {
+      "path": "scripts/p32_shadow_monitor.py",
+      "current_sha256": "633f6042950fe5c719e44aa9751ccbf972131da0d633efa3b8d2d2fb040e6ffd"
+    },
+    {
+      "path": "scripts/p41_follow_replay.py",
+      "current_sha256": "c42ad23f41316e9a8db34e82d8aa592bdd05d19aa21c26dfc419df62b9762012"
+    },
+    {
+      "path": "scripts/p43_follow_analysis.py",
+      "current_sha256": "16dbe8203808dab0f13dd2b4df0f7118b8957fa9cf7b107d4750d7c5435ef65c"
+    },
+    {
+      "path": "scripts/p43_follow_study.py",
+      "current_sha256": "7ab8df944e7facd2ee85d730781b06014f8ef72fda8ba2a225bc971ecd9ec189"
+    },
+    {
+      "path": "scripts/p43_replay_analysis.py",
+      "current_sha256": "de188072aefadbf473a8f81deeefe00752d6e403e9193a1696599e229731f0b5"
+    },
+    {
+      "path": "scripts/p43_sitl_matrix.py",
+      "current_sha256": "3c346067c908499778d4776f954f538a5df52de75335f9cbe3ab2cd98c64f5d7"
+    },
+    {
+      "path": "scripts/p44_follow_analysis.py",
+      "current_sha256": "4529bb952ea11e51bd9aaa015dec5ff8419699e43bd6d6db26f91ee31136078e"
+    },
+    {
+      "path": "scripts/p45_execution_analysis.py",
+      "current_sha256": "be1abe7a76e65531349954147a8419271a96c6bbe7c092ece1f33606a662c983"
+    },
+    {
+      "path": "scripts/p45_fault_injection.py",
+      "current_sha256": "e3b3b868817a68f972ee5b8724ef7cbf834a6f567ecd20316a526e5e3e46a4c1"
+    },
+    {
+      "path": "scripts/p45_gcs_heartbeat.py",
+      "current_sha256": "3392a2f5dde9a1fc4e554d8698525b3b4089cace8a3fe671517c58e7786246c9"
+    },
+    {
+      "path": "scripts/p45_minco_sitl.py",
+      "current_sha256": "87ea23bbe1fe953a8a10a35b3ec085b07f7662428400c05fcd962781a587e80c"
+    },
+    {
+      "path": "scripts/p45_physical_analysis.py",
+      "current_sha256": "5cf8dca4e1f4258bd7f9dbd0bbda94316e0108853574093b0c1c5635eaaf3efe"
+    },
+    {
+      "path": "scripts/p46_follow_study.py",
+      "current_sha256": "0cd5bbfed8583d66cf14b685ad00ceeb8dbc7e0c455ecf9e4a2a8f8b7dc78631"
+    },
+    {
+      "path": "scripts/p47_derivative_diagnosis.py",
+      "current_sha256": "8d020f51635c39c3a2ff870e847f1c8c2800b2200007f98b7c344531fa72439f"
+    },
+    {
+      "path": "scripts/p47_execution_timeline.py",
+      "current_sha256": "ecb5e890fd7b149f6abfff5ed8b12350a60124dd76154b78f2f6c8b5208ba4c3"
+    },
+    {
+      "path": "scripts/p47_follow_study.py",
+      "current_sha256": "e9710c5e4a68ea5fc10700b639ff57dea03de338f56178638ecf2ca748e2dc41"
+    },
+    {
+      "path": "scripts/p47_minco_sitl.py",
+      "current_sha256": "4e84b29502f257b80a47229c2c8f06c0694c459cf8a5e12f6c62744b4861dc01"
+    },
+    {
+      "path": "scripts/p47_physical_diagnosis.py",
+      "current_sha256": "c88711175b57fa5b32bc86edb8e1988caab1ffcd81451641819a949815c7fe4a"
+    },
+    {
+      "path": "scripts/p47_rollout_performance.py",
+      "current_sha256": "844dc6362b9bfefe7096ae43a3b6359ac212461b6ecb3feb6b5cbd6f0e92b8c4"
+    },
+    {
+      "path": "scripts/p4_bounds_benchmark.py",
+      "current_sha256": "1de1eab79c0197dfb4fefc2bac8216de75c3ed39b2ce8987a763d4080d776f6f"
+    },
+    {
+      "path": "scripts/p4_follow_analysis.py",
+      "current_sha256": "ef96cb1399b7d83ad5a3c4347f5d997fdd0a0962c2c798c0a1875133e3dcdbb7"
+    },
+    {
+      "path": "scripts/p4_follow_replay.py",
+      "current_sha256": "428f2cfad7c5c47d1fa9f841f77f96006850ebf4fe88c3acadf4e00eaf880a34"
+    },
+    {
+      "path": "scripts/p4_shadow_monitor.py",
+      "current_sha256": "54a9baf06663aabe91efefb3a5d9c9e6f8f6c336b6baec68d7eece2ea9b6e11b"
+    },
+    {
+      "path": "scripts/p4_sitl_session.py",
+      "current_sha256": "dfcf4d6c7fb809041f2cf84ba78cbe151650190d49a8d512611e6e1bf6f9082c"
+    },
+    {
+      "path": "scripts/p4_terminal_wrapper.py",
+      "current_sha256": "71433a0e498c5455d873e9cf8aee46288e838ba504ddf387fa1e69167071ebe5"
+    },
+    {
+      "path": "scripts/p51_execution_audit.py",
+      "current_sha256": "a96746266cc4245c15296742dd07e00c975bdb5eea7f2837acb1e492216bb38b"
+    },
+    {
+      "path": "scripts/p51_minco_sitl.py",
+      "current_sha256": "40613f830b696bfb8771501293c6cc4e94d1ed2e9af954e868b8b88623c2d093"
+    },
+    {
+      "path": "scripts/p51_offline_analysis.py",
+      "current_sha256": "f6509bb8fce2b0f862a224b93623e8f55c96954ba7e4549b363dd4bed514d706"
+    },
+    {
+      "path": "scripts/p51_receiver_replay.py",
+      "current_sha256": "eba73ad4b3306da7cf0b58b6fe1b908dfdd229d96685cb9b25702afd1b3e8056"
+    },
+    {
+      "path": "scripts/p52_minco_sitl.py",
+      "current_sha256": "7e0c7f5a955b19e757ae717fecae26161256266eb968c47a7d762d58443af305"
+    },
+    {
+      "path": "scripts/p52_offline_analysis.py",
+      "current_sha256": "c7933191523e639d1db2b8cfbac8215b2372f0fd38bde4c370bf4005f57b6916"
+    },
+    {
+      "path": "scripts/p52_receiver_replay.py",
+      "current_sha256": "c9b990229e0612ee5a0b75ec555067dee9e3ab7a457ac2594c1f1e0a1d799117"
+    },
+    {
+      "path": "scripts/p53_event_replay.py",
+      "current_sha256": "07557bae5572a17f06719b4b2a32ea2b2cea8d451654200bdf32ae4805ce29f8"
+    },
+    {
+      "path": "scripts/p53_f2_analysis.py",
+      "current_sha256": "6678b7b90f90307eafd43f78f918e37f441b9d04ab101e9a0e4e971f2de0bd21"
+    },
+    {
+      "path": "scripts/p53_minco_sitl.py",
+      "current_sha256": "c0200775d2e0eaf018249904fb08375cbb0d823bd356ac91a11468a472f20fdc"
+    },
+    {
+      "path": "scripts/p53_saved_request_replay.py",
+      "current_sha256": "e53cd5bfce9894e32ccbc139b595da579786b25be482def1bdab84dc1e84a974"
+    },
+    {
+      "path": "scripts/p5_live_health.py",
+      "current_sha256": "8e6e4f2871d0807881f481cba063bd7a837d3decd2624de9f7dd97dde47d72a8"
+    },
+    {
+      "path": "scripts/p5_minco_sitl.py",
+      "current_sha256": "13c9140da0bb66fe2262098e8906ea6f4cdba3f868c2eaf6f329549a04d51bc4"
+    },
+    {
+      "path": "scripts/p5_release.py",
+      "current_sha256": "f4a8463cf21b8070c5071c81502f2cc95285a3483b28c4f4a1e3bafcc5c04f06"
+    },
+    {
+      "path": "scripts/p6_actual_analysis.py",
+      "current_sha256": "524e901a7a0cc6e388b44e244caa8011d193f9031eb9dcc09db93374ff647e3a"
+    },
+    {
+      "path": "scripts/p6_follow_ablation.py",
+      "current_sha256": "89a4e414094f2ff579ff8df4dc7065c16543a9a6f11a28edbc56711ac621ee5a"
+    },
+    {
+      "path": "scripts/p6_minco_sitl.py",
+      "current_sha256": "26f624d7d53702811b3a3ff2bea1347eaef4ea71e080a7e281d61a3c9e07b0a6"
+    },
+    {
+      "path": "scripts/p6_prediction_study.py",
+      "current_sha256": "6ebc5d98c61d03e42932079b5ab7e2431fa5a9466d1fbddbdbf6e88e0cd77b17"
+    },
+    {
+      "path": "scripts/p7_attitude_clock_analysis.py",
+      "current_sha256": "020543c2327cc43ed35a9e4b54af5ada3bba572edb6df93ad54c4ad8731b9f9e"
+    },
+    {
+      "path": "scripts/p7_kf_dynamic_analysis.py",
+      "current_sha256": "451521f26bcb514f9d9de2a2becb2310010b08d9da707075a43fd8055bf7d587"
+    },
+    {
+      "path": "scripts/p7_px4_local_axis_analysis.py",
+      "current_sha256": "e5d3754218b3abdac667ae9bae62f187cae4b728f94af694d1426bdaef9d3f95"
+    },
+    {
+      "path": "scripts/p7_px4_local_axis_capture.py",
+      "current_sha256": "410e161b52ce0079a7b61ac0d2e656a597c4d1a55954e10fe8d148bd7e3792c9"
+    },
+    {
+      "path": "scripts/p7_px4_local_axis_motion.py",
+      "current_sha256": "2c0e31c164cc1fc7b37c6499d8032b37214c03e9c77cda5256ff9692b1dbec25"
+    },
+    {
+      "path": "scripts/p8_pose_time_audit.py",
+      "current_sha256": "b250afb6d051baffe4ef0c261b7a1b6ee602c91b7215d54bb2d24193bda66d8e"
+    },
+    {
+      "path": "scripts/p8_visual_bias_analysis.py",
+      "current_sha256": "4bad96c36c9402870364ccafd9a1c1b657f42bc95be4891fc2c50af65a01eb7e"
+    },
+    {
+      "path": "scripts/prepare_gz_camera_model.py",
+      "current_sha256": "0515ece294232ae0e51dfa490edb2ef9f7bc7483ac1b19e3adc6470df92e85ec"
+    },
+    {
+      "path": "scripts/prepare_gz_magnetometer_config.py",
+      "current_sha256": "5553a05bf7e095df135204cd86142c70154f869aaeed0fac6ed992e7061defab"
+    },
+    {
+      "path": "scripts/px4_navigation_audit.py",
+      "current_sha256": "1a0461cda553a846be96e43437911c71415ab195a8747f76ddd1f31e900716e7"
+    },
+    {
+      "path": "scripts/sim_render_perf_capture.py",
+      "current_sha256": "0194411089d2344667c4a341376f95df30a152c090823b61d8881c543d4c09a4"
+    },
+    {
+      "path": "scripts/start_px4_ros2.sh",
+      "current_sha256": "cb24d804785da534284a9e844b67db5563b22d340e5df8a7a48178a04e3f202f"
+    },
+    {
+      "path": "scripts/uav_lab.sh",
+      "current_sha256": "50528781462eb43e8983b404954a888d0c577acd77500f43270e6d390c6d4913"
+    },
+    {
+      "path": "scripts/vision_p4_synthetic_sphere.py",
+      "current_sha256": "4c5b00c863975a3bc26f7c3899b9dcf3cf483f682f899788ced5d30a18f322c7"
+    },
+    {
+      "path": "scripts/vision_p5_roi_analysis.py",
+      "current_sha256": "5f60c25eb927c16dc936320d02afa2aa31262cb182f63a2318b8a3d50d260017"
+    },
+    {
+      "path": "scripts/vision_p5_roi_capture.py",
+      "current_sha256": "9cc5107ad396db478256eb8d067fb734e0e56b49e1bc41855457d90e31bf5455"
+    },
+    {
+      "path": "scripts/vision_p6_dynamic_acceptance.py",
+      "current_sha256": "9b0476d5f4987c29821bb3564de36532954a27e793323d7c8c21ac63c1f2697d"
+    },
+    {
+      "path": "scripts/vision_p6_dynamic_capture.py",
+      "current_sha256": "d438f9b7aef3ee556a02381c6e598a58818c525d72f17d38d51fca6b5b656084"
+    },
+    {
+      "path": "scripts/vision_p6_kf_paired_baseline.py",
+      "current_sha256": "0ffd9dbf3991bdbf6df502252fd3d76f1c932d0a4d68ee607844a1697dd60315"
+    },
+    {
+      "path": "scripts/vision_p6_pose_history_analysis.py",
+      "current_sha256": "46b14ace3b43ad635e5460b3ac0ff5c326be548bbdc53ae6c0db197830bea492"
+    },
+    {
+      "path": "scripts/vision_p6_representative_ray_analysis.py",
+      "current_sha256": "38d3a6ba67637a5d0f56a6c7d6cc97fbfa0d7d152a8b2ef9fbeb5df33544f862"
+    },
+    {
+      "path": "scripts/vision_p6_target_frame_analysis.py",
+      "current_sha256": "eef3e980499e5ea6cd57f305cf16f392f9cd003c0e8de572baceaff2938e9813"
+    },
+    {
+      "path": "scripts/vision_static_capture.py",
+      "current_sha256": "fd0a2c4c1ffcfff6e1c824008b41121be799b1a8aa38fb72e3f786bf4da64c03"
+    },
+    {
+      "path": "scripts/y_camera_angle_audit.py",
+      "current_sha256": "6b6e1705b0598f6dcc70da46e1e6279cce6f0978420599dcbd75b7247f752d7b"
+    },
+    {
+      "path": "scripts/y_position_estimation_audit.py",
+      "current_sha256": "7198f7853a4c0e4a2bdc4a13580939318d55b055fd87a69864a0cc0bc3169f97"
+    },
+    {
+      "path": "scripts/y_terminal_camera_record.py",
+      "current_sha256": "7de6762595849aebeacc957a05f66e68f4ac794e5b51165e615fabc8b84b4768"
+    },
+    {
+      "path": "src/uav_control/package.xml",
+      "current_sha256": "93905e90de1614be6538e614de5332c1f7b0436bddabd5791f029b1f68620d8b"
+    },
+    {
+      "path": "src/uav_control/setup.py",
+      "current_sha256": "11e54db646fe5ccdeeec0a323268171f47bbe44d62a37ea5edf97cd83535210f"
+    },
+    {
+      "path": "src/uav_control/test/test_p6_actual_analysis.py",
+      "current_sha256": "bc9dcac1953f682a2477011adc162ebc7532536d38c6f25b43870adb746a3e7a"
+    },
+    {
+      "path": "src/uav_control/test/test_p6_adaptive_integration.py",
+      "current_sha256": "14e4b2359f851fa4236e649715c6f74ac6ebc434fbbb7f42e2067ae25c2eb26f"
+    },
+    {
+      "path": "src/uav_control/test/test_p6_adaptive_viewpoint.py",
+      "current_sha256": "81fe475de1026d630c71aea3043af75654e1d644ffec1c047db4eec37468cc17"
+    },
+    {
+      "path": "src/uav_control/test/test_p6_console.py",
+      "current_sha256": "e9bd25bea20e53c6c9923ac9c42755a50d70773032d0de1ca7a229dfd72d3658"
+    },
+    {
+      "path": "src/uav_control/test/test_p6_contract.py",
+      "current_sha256": "e2c9bf81e0495f6c1695b7662bef1c153681b7866adadf281357184c5cf7590d"
+    },
+    {
+      "path": "src/uav_control/test/test_p6_follow_ablation.py",
+      "current_sha256": "ddca2e835789b425a809c7db28261e79f0ab7eccb912e067aba2f38bcc1d82de"
+    },
+    {
+      "path": "src/uav_control/test/test_p6_imm_node.py",
+      "current_sha256": "eaf2a1b0c294e6d50448364d61007bccdde06d2cf0b7eec0a073f998eb8c93f5"
+    },
+    {
+      "path": "src/uav_control/test/test_p6_imm_predictor.py",
+      "current_sha256": "8526ddaced286745e90ff7b969b6e313f4a5989a0a442ae5792e74d17247dea2"
+    },
+    {
+      "path": "src/uav_control/test/test_p6_imm_study.py",
+      "current_sha256": "cddc2fa12dd4162a349cd756f15f68964cf7bd589d1a04adfb0801eed0a575c9"
+    },
+    {
+      "path": "src/uav_control/test/test_p6_motion_node.py",
+      "current_sha256": "40a0198e79725998eeb7cc607811cadf22b7431655492242785038fe90b8baeb"
+    },
+    {
+      "path": "src/uav_control/test/test_p6_motion_profiles.py",
+      "current_sha256": "0a2b573c02a045ca3f6a6e019844355009efadb778bf666e7f409bd57f6f96fb"
+    },
+    {
+      "path": "src/uav_control/test/test_p6_risk_prefix_review.py",
+      "current_sha256": "de1bd1046da3a3bdbfab6555e5e1ab1e605be2627b484327ce0574da306e09ec"
+    },
+    {
+      "path": "src/uav_control/test/test_p6_robust_visibility.py",
+      "current_sha256": "549172a03a22eb8a857fe7648a8b494c904b069498e2b226c5f02fca240a5b2e"
+    },
+    {
+      "path": "src/uav_control/test/test_p6_sitl_driver.py",
+      "current_sha256": "f4ae6176ee4cb45b17f0fc3ecbc86a544f15a07fae1340471299f5d7ff9df4d0"
+    },
+    {
+      "path": "src/uav_control/uav_control/__init__.py",
+      "current_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "src/uav_control/uav_control/analysis/__init__.py",
+      "current_sha256": "00a3bd623eb16242fbad7efa0120c487d75a8e4c28661e06d3acb5bb03b070ac"
+    },
+    {
+      "path": "src/uav_control/uav_control/analysis/intercept_outcome_analysis.py",
+      "current_sha256": "77a34e400b409e8e490170d11e92b9722e3d02fd21e8b89c85603b8519b2f58f"
+    },
+    {
+      "path": "src/uav_control/uav_control/analysis/usv_estimation_analysis.py",
+      "current_sha256": "0127c67fa499e4cb2650ed91dc9fa78458b7d49fba3240228ed96c25ee3f83f7"
+    },
+    {
+      "path": "src/uav_control/uav_control/archive/__init__.py",
+      "current_sha256": "0f1425ac19bb866d6cc2d737388c7ca2635b2d3b58165ea01139fc8ea80b166a"
+    },
+    {
+      "path": "src/uav_control/uav_control/common/__init__.py",
+      "current_sha256": "cc3591e86f1ce08b4994e4597abe1d1db5322e4965b7eff60b5119de97381832"
+    },
+    {
+      "path": "src/uav_control/uav_control/common/navigation_state.py",
+      "current_sha256": "893369841676c9e5042ef78e8ff5fbf171019b1d9a3d3f7d66af9951c5e03962"
+    },
+    {
+      "path": "src/uav_control/uav_control/common/runtime_performance.py",
+      "current_sha256": "4c374e71f5a5aef4beb6444d8cf4490eb59734347d4ae870787068e778b146b2"
+    },
+    {
+      "path": "src/uav_control/uav_control/common/sea_safety.py",
+      "current_sha256": "522dbcc5afe28f0a03a6acca28dda5d74bcb411a2626d2df2f2cec95117e235c"
+    },
+    {
+      "path": "src/uav_control/uav_control/control/__init__.py",
+      "current_sha256": "21d6fc359c7d807e22010dc7dbcc7f2e24ba412e5871c4c22c00c6f8a3479034"
+    },
+    {
+      "path": "src/uav_control/uav_control/control/flight_guidance.py",
+      "current_sha256": "0f96a489166b3085ea34eff88c73bd4e5ac0f8c02ca744fff5bc0cf624b18824"
+    },
+    {
+      "path": "src/uav_control/uav_control/control/trajectory_tracker_node.py",
+      "current_sha256": "c9f53150179219d090a5611ba8348cd95bb2af0707dc50e2bcfc3d83ddd3a9ba"
+    },
+    {
+      "path": "src/uav_control/uav_control/control/trajectory_tracking.py",
+      "current_sha256": "5085ea12032b4fae179d21e14f6c47cc1550df1ec77bb16be91d3e0d21c5a221"
+    },
+    {
+      "path": "src/uav_control/uav_control/controllers/__init__.py",
+      "current_sha256": "4991e11f0c2f07ccdbe8be25d0ad215c33fcb732b065b5303cb4ec9f550557bd"
+    },
+    {
+      "path": "src/uav_control/uav_control/controllers/direct_reference_minco.py",
+      "current_sha256": "1ee31f2db1489a65bf8f9601cf8504771760d7097183e2ef06890cc53d37c513"
+    },
+    {
+      "path": "src/uav_control/uav_control/controllers/follow_guided_feasible.py",
+      "current_sha256": "b9117eb46c7457b5f877a493e0342048b96f9634fa12aaa18384a8146ddf86b2"
+    },
+    {
+      "path": "src/uav_control/uav_control/controllers/follow_mpc_seed.py",
+      "current_sha256": "db09f847af722268ff9a236a7a2135bd191fbfe019a8f9e11193f80fc3f8175b"
+    },
+    {
+      "path": "src/uav_control/uav_control/controllers/follow_mpc_shadow_node.py",
+      "current_sha256": "8bff73e24de52c363b3963e9c106d7b9a81592dcfb1625136323c7f6d96fef5b"
+    },
+    {
+      "path": "src/uav_control/uav_control/controllers/follow_research_shadow_node.py",
+      "current_sha256": "fb0674b416679fd60486e832b9c62c76bfc0ef8db477fabe2c0cf8a9deffe6ca"
+    },
+    {
+      "path": "src/uav_control/uav_control/controllers/follow_research_solver.py",
+      "current_sha256": "b02f9e1b395758f6630704e99e132565e3ecd476a8c6edca525b63c911b198fb"
+    },
+    {
+      "path": "src/uav_control/uav_control/controllers/follow_transport.py",
+      "current_sha256": "c6bd96ca42220a9d82a781318eb00b18937cc464101576281066aa15ee1ffa80"
+    },
+    {
+      "path": "src/uav_control/uav_control/controllers/mpc_shadow_inputs.py",
+      "current_sha256": "8403dfee11d0f6df32229df2b5922bb7cde167792ce17bba04ad7621aa57c7c2"
+    },
+    {
+      "path": "src/uav_control/uav_control/controllers/p43_follow_solver.py",
+      "current_sha256": "9198fb98985542d4d9b1a0696eb8690073d90617fe25d2541810cb935a44bf68"
+    },
+    {
+      "path": "src/uav_control/uav_control/controllers/p44_follow_solver.py",
+      "current_sha256": "937b24188c075bad53c8208f55936db76f28aa74959d72b1b3f5a575080813f3"
+    },
+    {
+      "path": "src/uav_control/uav_control/controllers/p4_follow_planner_node.py",
+      "current_sha256": "dc1da91dbbfedaa8ed65eb45662ab4d4c249a555e3de5a9967e12bbe9f694d17"
+    },
+    {
+      "path": "src/uav_control/uav_control/controllers/pid.py",
+      "current_sha256": "f9962cf21a4a6a0f66095d1ebb70f989e6ebac2a4d8d071a4d995214b6d84692"
+    },
+    {
+      "path": "src/uav_control/uav_control/controllers/progress_follow_solver.py",
+      "current_sha256": "0c6e6a73568c196f5480a89c0f897df525aaf326066caca93dbb5d489ebb1c72"
+    },
+    {
+      "path": "src/uav_control/uav_control/controllers/realtime_follow_solver.py",
+      "current_sha256": "3e236ccd29f2a1e5deaae1b144c63d99720c134182dd61f5f065a815ac141667"
+    },
+    {
+      "path": "src/uav_control/uav_control/controllers/short_follow_solver.py",
+      "current_sha256": "c43604e879b5265b34cded41315574aabc520211aa5ca4c269fa0d4052b62695"
+    },
+    {
+      "path": "src/uav_control/uav_control/evaluation/__init__.py",
+      "current_sha256": "705fa3a6bc51e2f3db0f1be956c06d42880c1efed0ec79bb88866276e2c320e0"
+    },
+    {
+      "path": "src/uav_control/uav_control/evaluation/gazebo_entity_pose.py",
+      "current_sha256": "fd4387946691bc4c3d516c8a6f38e9e0dd7c1a6685ec9e0124f88ddb8153dca9"
+    },
+    {
+      "path": "src/uav_control/uav_control/evaluation/gazebo_terminal.py",
+      "current_sha256": "d43f94f7d228cd89e608cd4e6711cd63f32035e4e8bf8438317927d6642f4ac4"
+    },
+    {
+      "path": "src/uav_control/uav_control/evaluation/intercept_evaluator.py",
+      "current_sha256": "854bff9b5b4233a03b0a20edf95b0ce983611d5cf0e3863717c2fcd1d5d78490"
+    },
+    {
+      "path": "src/uav_control/uav_control/evaluation/intercept_evaluator_node.py",
+      "current_sha256": "1574b8342b2d5472d1ac47fd91808f451390b940bab647007b85507e6dde8f65"
+    },
+    {
+      "path": "src/uav_control/uav_control/evaluation/pose_frame_diagnostics.py",
+      "current_sha256": "c8181678fe5be1cc4f6032d98223d93155947475f127ca516ba7acd5b72aed3e"
+    },
+    {
+      "path": "src/uav_control/uav_control/evaluation/run_metrics.py",
+      "current_sha256": "ad3a274730f9556a39c5d2820189dbc8d6c3152bfb52e4074e175fe149b11994"
+    },
+    {
+      "path": "src/uav_control/uav_control/evaluation/uav_heading_diagnostics.py",
+      "current_sha256": "fea1348d471c761c415b0cff43a89acba204d53283c3e41f3e85b2abfe9ac93d"
+    },
+    {
+      "path": "src/uav_control/uav_control/evaluation/vision_error_analysis.py",
+      "current_sha256": "a6c7f57e83552c7c4301e02c38f4c399718a304c11ded9cdf0e59c1411a686a8"
+    },
+    {
+      "path": "src/uav_control/uav_control/figure_eight_trajectory.py",
+      "current_sha256": "84f1dd6104962a30224efdc3d4ef8b624d2dec8a1d064f7415be43b4cfe909cc"
+    },
+    {
+      "path": "src/uav_control/uav_control/gazebo_target_visualizer.py",
+      "current_sha256": "3d4e41720ceb1ee2719ed66e015f4321d9bfcca897d68b9ed0bf33873d00b050"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/__init__.py",
+      "current_sha256": "f742c3486b1692684af31c46bdbf0c746cec507ea083748e0fecef8a04e58232"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/adaptive_follow_initializer.py",
+      "current_sha256": "754157c1fd3d0d1306fd2f549dfa620d4cd6b21fb3b91d3fc89ba5fd58607d01"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/adaptive_viewpoint.py",
+      "current_sha256": "dc9679940c4b84bb01dab3860306ca84cff1d5625536cc91109be641a0d280d8"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/camera_visibility.py",
+      "current_sha256": "db3bf2b5e80db1b47474b751b1b4d6008f87993ec10500088c12b88e0880cc57"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/camera_visibility_batch.py",
+      "current_sha256": "9e7afffacdb531c20a49e8473394925d99adb2377e1a2ff95dc327df8c693de2"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/fast_follow_minco.py",
+      "current_sha256": "57c88d9faf6c9104d347c6fea17cd5d77a38c8d83e8d4df7517425ba68c31734"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/fast_minco_objective.py",
+      "current_sha256": "e0f6c21a74430ad9c7fcbde50e00f4d64afff7a6a511908dabe2231a26cf70d2"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/fast_minco_planner.py",
+      "current_sha256": "1807089219c0d0aeb974f737854b2e6f2a5a87f17b57ab9c678d9b845911fa60"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/finite_horizon_intercept_planner.py",
+      "current_sha256": "d658f8496b062990de9e090fdb6033102f7452bd6e9c501b32fa1098d4c8d8e2"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/follow_admission.py",
+      "current_sha256": "0ee2583060236a43f2f25aa2d5a063d1e7f088786d0219499bac17c6316b761c"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/follow_attitude_bounds.py",
+      "current_sha256": "4a4f88f340d319b5f9689e309ab6976bf91b9624b5e6641cb61ebdf9c3b7efaf"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/follow_contract.py",
+      "current_sha256": "c9ce2b7e16288686752183942ae14c9cf9e5364e8e2ceeb04f1d479e3d81bd15"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/follow_cost_evidence.py",
+      "current_sha256": "10e437f96942f95c25eb8963f4827f403db27c40cbc1778b8c8545d2811f8af2"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/follow_epoch.py",
+      "current_sha256": "e14e9c4495143d5f4e2085388b92be8e912d65b775137ed2ade7590dd64fb409"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/follow_fast_validation.py",
+      "current_sha256": "b6daa9a622ac76cb62504bac0a9a33d7789deedac56bcbf392445c9579e5f5b5"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/follow_handover.py",
+      "current_sha256": "eb3223894d92208bdbb5fad5deed3248845f79f70c6a02b7a69049c7a84300bb"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/follow_limits.py",
+      "current_sha256": "af529d515c8e4573338768ef6292b277d36a7ca0d5a0657ff5c4e65389d1eba6"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/follow_minco_execution.py",
+      "current_sha256": "f06b2c9757cd6fa137f8151531f2e423d2a23421965e538f0892f1f8c046a43f"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/follow_minco_optimizer.py",
+      "current_sha256": "676d1e8b407c05376a226b3779a48f3abc0684c96a6fbe6b3c1bf9e9fd7bc709"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/follow_problem.py",
+      "current_sha256": "65a21d8816fa9effaca83ff420c73187bdab3bccd1bc05364d99c3cb82be35fe"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/follow_profile.py",
+      "current_sha256": "4cbe26014982aff00c7a325aa6d7438c942d8104715782d6b3f75b1a71dd5ce3"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/follow_reference.py",
+      "current_sha256": "e1b74e070db1dfa82a306abc77f0b62da85c46a654a7b838f225cab87b2a3da9"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/follow_revalidation.py",
+      "current_sha256": "4028e8701504f75d4c672cfa36afe71a892edfe65a7b1f3739306f49c220994e"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/follow_rollout.py",
+      "current_sha256": "658c90f95c19089f4400097d035d0db176ad81089bc459af96cf8a3d45431425"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/follow_safety_bounds.py",
+      "current_sha256": "b28612e974008634a0dd4bd0a71f85fb70e2f9d41178f112eb8a191b697c7a16"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/follow_sitl_gate.py",
+      "current_sha256": "1502cefccc3a0a7e0b008276777c9389eb110a7cc009bb5fccb0979deadcf983"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/follow_terminal_correction.py",
+      "current_sha256": "46a40d33065d059a42d789f0e23dc137c071dcb8bb53bdf89b9975d646921228"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/greedy_follow_initializer.py",
+      "current_sha256": "a079a593b7cea4ebcf5ec0694065ada0802017db9f912ee03761b73f1550a298"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/intercept_planner_node.py",
+      "current_sha256": "9cc3deba58bc078d02c0b6217a12319a354989daabac314e5332eb4a3291696a"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/intercept_reachability.py",
+      "current_sha256": "486bfa047d3ddc392d0ec74e982397e09cda2b868fcd72aeca613ace56fe225e"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/intercept_solver.py",
+      "current_sha256": "61a91605854908942ca9a4636aefca7ebba46c8ed70e5e42c3de5dc8c5dae6c4"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/minco_trajectory.py",
+      "current_sha256": "392fb6c561072e49c9358f5ba2d577ae097f94f17863463d95a240cfa6d7ae8c"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/p43_minco_objective.py",
+      "current_sha256": "cea9a2a74479e9a5b4a697410d1b6936dd2cec57fc0c31cc4bbd0168ce5c28d1"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/p44_invariant_cache.py",
+      "current_sha256": "bf9205d162e9d46bb6e9f3f5085a5dfdb52fad21eec978200b51741c1a68d306"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/p6_follow.py",
+      "current_sha256": "92c9220108b15a40ba651dace7b41d3639714c66e11e9befb487971d1e372fb3"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/planned_attitude.py",
+      "current_sha256": "3562fd15d18e210a680de43f82cb807b2fdc42af4db1a940ce6a8b5c060acace"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/planner_pipeline.py",
+      "current_sha256": "e13561301ba8fcd30ca6fcdea92dc2eb85c323dd92dc5e8c173c5f769ac8c14b"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/polynomial_bounds.py",
+      "current_sha256": "350727b9bb7f20c504d6802405fc56623428d4bfb990a013ffb17268c80a0353"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/polynomial_extrema.py",
+      "current_sha256": "51167e5175d65db5f4b7c74b06d55c3bd6db0b1e4bfafcb6d137c8be85d55d8f"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/robust_visibility.py",
+      "current_sha256": "3e6b4a758f0e42d5073f1193feae63a701908292a25fec95948af5d939b0e8e9"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/rolling_intercept_guidance.py",
+      "current_sha256": "9d29f563b4f523079b29a53c14996091627ce55b16a5105b947ffc85461572a1"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/start_jerk.py",
+      "current_sha256": "58e9bef6b93051deb60ad8b828274589cab9daae3155d21b0fa6560ba8221121"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/yaw_trajectory.py",
+      "current_sha256": "98060707d47fafdb820b5b7e58da426f710b85946ae27c1dac42a5dea474b268"
+    },
+    {
+      "path": "src/uav_control/uav_control/mission/__init__.py",
+      "current_sha256": "4f21132a97250ee870d2cad3473ed0524f995f547a6e080f5fec8a310ed7e86e"
+    },
+    {
+      "path": "src/uav_control/uav_control/mission/mission_manager.py",
+      "current_sha256": "c7fea2759d347c475e9b4f32439638121c86ffe541f1a4b100142e59a5aea5f1"
+    },
+    {
+      "path": "src/uav_control/uav_control/mission/mission_manager_node.py",
+      "current_sha256": "0ebadf55a252c0711692352563a21206f73882804acf420fbcb42945ecceb0a8"
+    },
+    {
+      "path": "src/uav_control/uav_control/mission/target_visibility.py",
+      "current_sha256": "02f69b3c021d0f759dd51f1d90635350e2697a8ffebfb61bc6b7d1c2bca596a9"
+    },
+    {
+      "path": "src/uav_control/uav_control/motion_mode_client.py",
+      "current_sha256": "1931cc7abb0aa6da0241832d6bca154bc8d12c81edd289a86bb61d72565113be"
+    },
+    {
+      "path": "src/uav_control/uav_control/moving_target.py",
+      "current_sha256": "55c0ffbcf509437878582fa7975b5f5ae1cd431c25b729d2aff976e40f47322e"
+    },
+    {
+      "path": "src/uav_control/uav_control/offboard_takeoff.py",
+      "current_sha256": "aa7c1aa9395f3d431c99c3d121a7d26b835d56468037755074a6241d8e7c0c37"
+    },
+    {
+      "path": "src/uav_control/uav_control/perception/__init__.py",
+      "current_sha256": "851ccbb5e387a8ca0cea17eec9015c2e04f31ccf79485ce84fee4775b02d778e"
+    },
+    {
+      "path": "src/uav_control/uav_control/perception/dual_tof_selector.py",
+      "current_sha256": "3ac5e6b7a8a48d9a0bce80c251365cabbba86d3cdcd9d5ff9d06c2c71f73a87f"
+    },
+    {
+      "path": "src/uav_control/uav_control/perception/front_tof_monitor.py",
+      "current_sha256": "560e9b6164e30cd5a4bae7582dafbb0b8716edf72b13d8d932bc6e7a861e0c27"
+    },
+    {
+      "path": "src/uav_control/uav_control/perception/rgbd_target_localizer.py",
+      "current_sha256": "6e7261fb11b67b4d88ed3bcfbe21bcb7f30927c105b302358309be3edff89a48"
+    },
+    {
+      "path": "src/uav_control/uav_control/perception/target_bearing_node.py",
+      "current_sha256": "13eea6e1b9ffdf001702ae94a9c66b866617c2199b9319a7b469e5f7b6d7d819"
+    },
+    {
+      "path": "src/uav_control/uav_control/perception/tof_depth_model.py",
+      "current_sha256": "9d2fe95fc1ba07773c2ec010a8b6ae4810c5f6c845ba4a6dfbfd080ce7d9268c"
+    },
+    {
+      "path": "src/uav_control/uav_control/perception/tof_depth_node.py",
+      "current_sha256": "ce7777d55c5ca3174305af9691958c6f8e933c15fec97d61918d8bd089eb1864"
+    },
+    {
+      "path": "src/uav_control/uav_control/perception/tof_sphere_localization.py",
+      "current_sha256": "6a994f9b06c1b3cd1d14cb36f57c9522397721ee2e9ab82ddb96da17f93a45f2"
+    },
+    {
+      "path": "src/uav_control/uav_control/position_listener.py",
+      "current_sha256": "b09c51d9ebe8a8806bdcbbe446c01fa57b7d5487edfc692592115cd77f13a0f8"
+    },
+    {
+      "path": "src/uav_control/uav_control/predictive_intercept.py",
+      "current_sha256": "8c21c7c233ccf009f94b4bbbb7463354b87081e69177fb90092bcd84d1745ed6"
+    },
+    {
+      "path": "src/uav_control/uav_control/pure_pursuit.py",
+      "current_sha256": "6e471a570fdcd084edf33e16371b9167d97e0e428c3c585a91b4ede4f9e94a02"
+    },
+    {
+      "path": "src/uav_control/uav_control/tracking/__init__.py",
+      "current_sha256": "d324964031e3dc86b9afa348383309ec8794e01ef286724972545d68c5247dde"
+    },
+    {
+      "path": "src/uav_control/uav_control/tracking/constant_velocity_kalman.py",
+      "current_sha256": "36cf136350e35ca1e503a307131d2b003b36c17d30f6db05871875b6d6b6dac4"
+    },
+    {
+      "path": "src/uav_control/uav_control/tracking/imm_predictor.py",
+      "current_sha256": "2bd650c7f160de1250bacc0f5294df68b38b5fca91da5e799590cfdad9af3eb3"
+    },
+    {
+      "path": "src/uav_control/uav_control/tracking/imm_target_predictor_node.py",
+      "current_sha256": "c1419eba3daa763ad6ac1532b1a049bc7b60a912b6acccddc10b64dca2b8bab4"
+    },
+    {
+      "path": "src/uav_control/uav_control/tracking/maneuvering_target_predictor.py",
+      "current_sha256": "33abd90600d85bda1c1622a49d6c777da42f32f5c540df90aba0f56ffc5a4328"
+    },
+    {
+      "path": "src/uav_control/uav_control/tracking/prediction_error_tracker.py",
+      "current_sha256": "dcd5608860f150b58ab39951ebd79b5d0469ea0c80a13833f587f2bc7d6726dd"
+    },
+    {
+      "path": "src/uav_control/uav_control/tracking/target_kalman_filter.py",
+      "current_sha256": "69ac802f18ef7d73dc9f71b40d5b0724bf02213d6cf7b155fa4938e3042559bf"
+    },
+    {
+      "path": "src/uav_control/uav_control/tracking/target_prediction.py",
+      "current_sha256": "ca420bad2c3d2d76e5b9a6234b375bb7586d06c00639370c0e5240fd1c81c4a9"
+    },
+    {
+      "path": "src/uav_control/uav_control/tracking/target_predictor_node.py",
+      "current_sha256": "a438cca55803630a66801385e596fd9de85dc8116c6de78a76669f5ebd51af59"
+    },
+    {
+      "path": "src/uav_control/uav_control/trajectory_impact_sim.py",
+      "current_sha256": "b92f99c62af37482f3f82e4c85068c31ff4e3798b3850a11233bdfe28409780d"
+    },
+    {
+      "path": "src/uav_control/uav_control/usv_motion_profiles.py",
+      "current_sha256": "5e80f769734caaf11cd2ba0d6bcb3a5bc1ce55dff90cd5f5d5edcf521fb1751e"
+    },
+    {
+      "path": "src/uav_usv_bringup/config/p6_options.yaml",
+      "current_sha256": "7ea446911db718161941affd6a483d9f6881e468c51727640cf30f673380ab12"
+    },
+    {
+      "path": "src/uav_usv_bringup/launch/baseline_intercept.launch.py",
+      "current_sha256": "0073134c9b24109a36b6fd4a5fc1dec0dcad0b9ce338dce7c346f41292f6b4a2"
+    },
+    {
+      "path": "src/uav_usv_bringup/launch/follow_research.launch.py",
+      "current_sha256": "a7c7339fce74f402ad619de376c44422869b9f9bda637326bb4ed6c6c90bb81c"
+    },
+    {
+      "path": "src/uav_usv_bringup/launch/modular_intercept.launch.py",
+      "current_sha256": "f96d858eadb4b3afa13293f98fd0ccb26c7bc5ee2d3d99442779cf8529da2b8d"
+    },
+    {
+      "path": "src/uav_usv_bringup/launch/mpc_seed_shadow.launch.py",
+      "current_sha256": "de6802486b818d2f5d525eb72d4bc30f1781e384bac60971478508ec1d442640"
+    },
+    {
+      "path": "src/uav_usv_bringup/launch/mpc_seed_validation.launch.py",
+      "current_sha256": "223df054eae52e4733cb8a21701d24f41f28c0b49594d1c43db846e7bd2dc4b4"
+    },
+    {
+      "path": "src/uav_usv_bringup/launch/p4_follow_research.launch.py",
+      "current_sha256": "d5e83bb536a2633ab920392aca36ce6ceeced0b9ba407de68b9ff4ea018695ec"
+    },
+    {
+      "path": "src/uav_usv_bringup/launch/p5_follow_research.launch.py",
+      "current_sha256": "a92a1c63d7659b4f2b24bcf070ecc0261e007bf40db3115bfccea59c704ff042"
+    },
+    {
+      "path": "src/uav_usv_bringup/launch/p7_axis_experiment.launch.py",
+      "current_sha256": "ca40ea0a87b5516fbb1abeaca50dfe92907a0565fb268883e4e4a8c078f093a5"
+    },
+    {
+      "path": "src/uav_usv_bringup/launch/p7_kf_baseline.launch.py",
+      "current_sha256": "fa471c4ceab38cd7d714262ddf1349a13a207811d5e80c30d7262b63d2968569"
+    },
+    {
+      "path": "src/uav_usv_interfaces/msg/ControllerDiagnostic.msg",
+      "current_sha256": "d3daa1e83807206e4825d699e454e04d83c4ef9e9b9c7b945bc6fed231c87474"
+    },
+    {
+      "path": "src/uav_usv_interfaces/msg/FollowPlanAck.msg",
+      "current_sha256": "a42d3cd15b55414d937c8b572248097b06b7ecb0d6ac108954a7e97a9e5f6547"
+    },
+    {
+      "path": "src/uav_usv_interfaces/msg/FollowReceiverState.msg",
+      "current_sha256": "e50cbc34c786e7e82e6abea682d351d3028fe0e58e2c13bc1cd0b237d5b8b021"
+    },
+    {
+      "path": "src/uav_usv_interfaces/msg/FollowTrajectory.msg",
+      "current_sha256": "2476bcd99910146ed2249e280604d4cdfbbb0a42916b06f43705d3a292de702e"
+    },
+    {
+      "path": "src/uav_usv_interfaces/msg/InterceptResult.msg",
+      "current_sha256": "6c57a1f2b0151ec130dfd9c20595ccd85de8ca2972c41084e5952953022c3405"
+    },
+    {
+      "path": "src/uav_usv_interfaces/msg/InterceptTrajectory.msg",
+      "current_sha256": "ed649b691806bc7356ec8b7f233778c6ad6d49d20502d06607a8f802e21a68bc"
+    },
+    {
+      "path": "src/uav_usv_interfaces/msg/MissionState.msg",
+      "current_sha256": "108c5ca701db4b705a9d76bcbc1d41234028a5449c3dfb071257386c57dc18dd"
+    },
+    {
+      "path": "src/uav_usv_interfaces/msg/PlannerDiagnostic.msg",
+      "current_sha256": "eb6c84a6153809e7e1a58c215c36510048c14c0c17215eb81607885c58a27019"
+    },
+    {
+      "path": "src/uav_usv_interfaces/msg/PolynomialSegment.msg",
+      "current_sha256": "1c342f38516672b4d059b2aa351ef52922448295767e810e14bf16e7c7deab61"
+    },
+    {
+      "path": "src/uav_usv_interfaces/msg/PredictedTargetPoint.msg",
+      "current_sha256": "471bae85653172b09eef42fe03a40bfc436d6947515a892a9d4dcf773fa0beb5"
+    },
+    {
+      "path": "src/uav_usv_interfaces/msg/TargetBearing.msg",
+      "current_sha256": "4640dd078de9748c92995253d4b4b0de96118531945d10796974f32b769b4ecf"
+    },
+    {
+      "path": "src/uav_usv_interfaces/msg/TargetObservation.msg",
+      "current_sha256": "a98f672db13204fbaa0905ebefda0d8de6c1f1bed5d6f243b75019765fa066c5"
+    },
+    {
+      "path": "src/uav_usv_interfaces/msg/TargetPrediction.msg",
+      "current_sha256": "c9c13685cebf847a5fa61f2d76cb37dfef0b2eb04022e74d4558ba9be878375c"
+    },
+    {
+      "path": "src/uav_usv_interfaces/msg/TargetState.msg",
+      "current_sha256": "60eeca8be18ee3a5b8984eadf0728412941c4ad731add4140ec1874f4faa3cf3"
+    },
+    {
+      "path": "src/uav_usv_interfaces/msg/TrajectoryPoint.msg",
+      "current_sha256": "4f4319f6e03cf4e2fba983410fe1837dc853871571465c1792f91332cd54372a"
+    },
+    {
+      "path": "src/uav_usv_interfaces/msg/UavState.msg",
+      "current_sha256": "a52869caffc53ce9db4e9d5eefb5a7bd2ef2ab1cd39db51f71a5bb9725dd15ed"
+    }
+  ],
+  "verification_sha256": "107f7314f96e870f9204e5c8a4d9d7908656e26a2acd3728a58f65b69054ccee",
+  "scope": "One isolated 60s linear pilot with original R11 F2 BCTRA nominal primary and readonly IMM shadow; no IMM primary or robust flight authorization"
+}

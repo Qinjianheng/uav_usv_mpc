@@ -118,6 +118,9 @@ def assess_curve(request, metrics, model, cache=None, budget=.05, clock=time.per
     problem = FollowProblem(request, model, float(sum(ts)))
     knots = np.r_[0., np.cumsum(ts)]
     query = np.unique(np.r_[knots, np.linspace(0., sum(ts), int(np.ceil(sum(ts)/.05))+1)])
+    policy = getattr(model, 'p6_policy', None)
+    if policy is not None and policy.visibility_mode == 'robust' and policy.risk_horizon_seconds:
+        query = np.unique(np.r_[query, min(sum(ts), policy.risk_horizon_seconds)])
     for iteration in range(3):
         if clock()-started >= budget:
             raise ValueError('REVALIDATION_DEADLINE')
@@ -144,6 +147,8 @@ def assess_curve(request, metrics, model, cache=None, budget=.05, clock=time.per
                   minimum_horizontal_margin=float(geometry[:, 0].min()),
                   minimum_vertical_margin=float(geometry[:, 1].min()),
                   elapsed=clock()-started)
+    if hasattr(problem, 'last_p6_report'):
+        report['p6'] = problem.last_p6_report
     return report, (query, samples, margins, views, geometry, tilts, violations, invariant)
 
 
@@ -184,6 +189,8 @@ def validate_seed(request, seed, model, cache=None, budget=.05, clock=time.perf_
                        maximum_specific_thrust=float(np.max(np.linalg.norm(
                            np.array((0., 0., model.attitude_config.gravity))-a, axis=1))),
                        visible_fraction=float(np.mean([x.whole_target_safe for x in views])))
+        if 'p6' in report:
+            metrics['p6'] = report['p6']
         status = 'SAMPLED_FEASIBLE' if valid else (
             'DYNAMIC_INFEASIBLE' if any(
                 v > 1e-6 for k, v in violations.items() if k != 'visibility')

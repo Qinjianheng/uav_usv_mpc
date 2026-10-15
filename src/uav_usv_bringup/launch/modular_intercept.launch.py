@@ -49,6 +49,10 @@ def generate_launch_description():
                               choices=['true', 'false']),
         DeclareLaunchArgument('enable_follow_planner', default_value='true',
                               choices=['true', 'false']),
+        DeclareLaunchArgument('prediction_model', default_value='bctra',
+                              choices=['bctra', 'imm']),
+        DeclareLaunchArgument('enable_imm_shadow', default_value='false',
+                              choices=['true', 'false']),
         DeclareLaunchArgument(
             'log_directory',
             default_value=default_log_directory,
@@ -100,7 +104,23 @@ def generate_launch_description():
             name='target_predictor_node',
             output='screen',
             parameters=[config_file],
+            condition=IfCondition(PythonExpression([
+                "'", LaunchConfiguration('prediction_model'), "' == 'bctra'",
+            ])),
         ),
+        Node(package='uav_control', executable='imm_target_predictor_node',
+             name='imm_target_predictor_node', output='screen',
+             parameters=[config_file, {'prediction_topic': '/planning/target_prediction'}],
+             condition=IfCondition(PythonExpression([
+                 "'", LaunchConfiguration('prediction_model'), "' == 'imm'",
+             ]))),
+        Node(package='uav_control', executable='imm_target_predictor_node',
+             name='imm_target_predictor_node', output='screen',
+             parameters=[config_file, {'prediction_topic': '/planning/imm_target_prediction'}],
+             condition=IfCondition(PythonExpression([
+                 "'", LaunchConfiguration('prediction_model'), "' == 'bctra' and '",
+                 LaunchConfiguration('enable_imm_shadow'), "' == 'true'",
+             ]))),
         Node(
             package='uav_control',
             executable='target_predictor_node',

@@ -1,11 +1,17 @@
+from dataclasses import fields
+import json
 import math
 
 import rclpy
 from rclpy.node import Node
+from rclpy.qos import DurabilityPolicy, QoSProfile, ReliabilityPolicy
 
 from geometry_msgs.msg import Point, Vector3
+from rcl_interfaces.msg import SetParametersResult
 from std_msgs.msg import Bool, String
-from uav_control.figure_eight_trajectory import FigureEightTrajectory
+from uav_control.usv_motion_profiles import (
+    elapsed_motion_step, MotionModeSelector, MotionParameters, UsvMotionProfile,
+)
 from uav_usv_interfaces.msg import MissionState, TargetState
 
 
@@ -20,7 +26,7 @@ def measured_motion_step(previous_time_ns, current_time_ns, nominal_step):
     return elapsed
 
 
-def target_state_message(stamp_seconds, position, velocity):
+def target_state_message(stamp_seconds, position, velocity, acceleration=(0., 0., 0.)):
     """Build a timestamped truth state without exposing future motion."""
     nanoseconds = round(float(stamp_seconds) * 1e9)
     message = TargetState()
@@ -33,9 +39,9 @@ def target_state_message(stamp_seconds, position, velocity):
     message.velocity.x = float(velocity[0])
     message.velocity.y = float(velocity[1])
     message.velocity.z = float(velocity[2])
-    message.acceleration.x = 0.0
-    message.acceleration.y = 0.0
-    message.acceleration.z = 0.0
+    message.acceleration.x = float(acceleration[0])
+    message.acceleration.y = float(acceleration[1])
+    message.acceleration.z = float(acceleration[2])
     message.covariance = [0.0] * 36
     message.valid = True
     return message
@@ -43,8 +49,8 @@ def target_state_message(stamp_seconds, position, velocity):
 
 class MovingTarget(Node):
 
-    def __init__(self):
-        super().__init__('moving_target')
+    def __init__(self, **kwargs):
+        super().__init__('moving_target', **kwargs)
 
         self.declare_parameter('initial_x', 8.0)
         self.declare_parameter('initial_y', 0.0)
@@ -69,6 +75,15 @@ class MovingTarget(Node):
         self.declare_parameter('gazebo_sphere_diameter', 0.5)
         self.declare_parameter('gazebo_visual_height_offset', 0.42)
         self.declare_parameter('pause_gazebo_on_hit', True)
+        # Old parameter names and defaults above remain compatible. The new
+        # profile bounds/shape parameters are startup configuration only.
+        profile_defaults = MotionParameters()
+        for field in fields(profile_defaults):
+            if field.name in ('linear_vx', 'linear_vy', 'integration_step'):
+                continue
+            if not self.has_parameter(field.name):
+                self.declare_parameter(
+                    field.name, getattr(profile_defaults, field.name))
 
         self.position_pub = self.create_publisher(
             Point,
@@ -86,6 +101,12 @@ class MovingTarget(Node):
             '/target/state',
             10,
         )
+        self.motion_mode_pub = self.create_publisher(
+            String, '/simulation/impact/motion_mode', QoSProfile(
+                depth=1, reliability=ReliabilityPolicy.RELIABLE,
+                durability=DurabilityPolicy.TRANSIENT_LOCAL))
+        self.motion_truth_pub = self.create_publisher(
+            String, '/simulation/impact/motion_truth', 10)
 
         self.command_sub = self.create_subscription(
             String,
@@ -143,49 +164,6 @@ class MovingTarget(Node):
         self.trajectory_type = str(
             self.get_parameter('trajectory_type').value
         ).strip().lower()
-        self.figure_eight_trajectory = None
-        if self.trajectory_type == 'figure_eight':
-            self.figure_eight_trajectory = FigureEightTrajectory(
-                initial_x=self.x,
-                initial_y=self.y,
-                x_amplitude=self.get_parameter(
-                    'figure_eight_x_amplitude'
-                ).value,
-                y_amplitude=self.get_parameter(
-                    'figure_eight_y_amplitude'
-                ).value,
-                speed=self.cruise_horizontal_speed,
-            )
-            (
-                self.peak_turn_rate,
-                self.peak_lateral_acceleration,
-            ) = self.figure_eight_trajectory.kinematic_envelope(
-                self.cruise_horizontal_speed
-            )
-            if self.peak_turn_rate > self.maximum_turn_rate:
-                raise ValueError(
-                    'USV figure-eight exceeds maximum_turn_rate: '
-                    f'{self.peak_turn_rate:.3f} > '
-                    f'{self.maximum_turn_rate:.3f} rad/s'
-                )
-            if (
-                self.peak_lateral_acceleration
-                > self.maximum_lateral_acceleration
-            ):
-                raise ValueError(
-                    'USV figure-eight exceeds '
-                    'maximum_lateral_acceleration: '
-                    f'{self.peak_lateral_acceleration:.3f} > '
-                    f'{self.maximum_lateral_acceleration:.3f} m/s^2'
-                )
-            self.figure_eight_trajectory.set_speed(0.0)
-            self.x, self.y, self.vx, self.vy = (
-                self.figure_eight_trajectory.state()
-            )
-        elif self.trajectory_type != 'linear':
-            raise ValueError(
-                'trajectory_type must be "linear" or "figure_eight".'
-            )
         self.vertical_oscillation_amplitude = float(
             self.get_parameter('vertical_oscillation_amplitude').value
         )
@@ -208,6 +186,22 @@ class MovingTarget(Node):
             1.0,
         )
         self.dt = 1.0 / update_rate_hz
+        values = {
+            field.name: self.get_parameter(field.name).value
+            for field in fields(profile_defaults)
+            if field.name not in ('linear_vx', 'linear_vy', 'integration_step')
+        }
+        values.update(linear_vx=self.linear_vx, linear_vy=self.linear_vy,
+                      integration_step=self.dt)
+        self.motion_parameters = MotionParameters(**values)
+        self.motion_selector = MotionModeSelector(self.trajectory_type)
+        self.motion_profile = UsvMotionProfile(
+            self.motion_selector.mode, self.motion_parameters)
+        self.trajectory_type = self.motion_selector.mode
+        self._sync_motion_sample(self.motion_profile.state())
+        if self.started:
+            self.motion_selector.start()
+        self.add_on_set_parameters_callback(self.mode_parameters_callback)
         self.last_motion_update_time_ns = (
             self.get_clock().now().nanoseconds if self.started else None
         )
@@ -262,24 +256,93 @@ class MovingTarget(Node):
             if not self.started
             else 'Moving target node started in immediate-motion mode.'
         )
-        if self.figure_eight_trajectory is not None:
-            x_min, x_max = self.figure_eight_trajectory.x_limits
-            y_min, y_max = self.figure_eight_trajectory.y_limits
-            self.get_logger().info(
-                'USV figure-eight trajectory enabled | '
-                f'speed=0.00->{self.cruise_horizontal_speed:.2f} m/s | '
-                f'acceleration<={self.horizontal_acceleration_limit:.2f} '
-                f'm/s^2 | turn rate<={self.peak_turn_rate:.2f} rad/s | '
-                f'lateral acceleration<='
-                f'{self.peak_lateral_acceleration:.2f} m/s^2 | '
-                f'X=[{x_min:.1f}, {x_max:.1f}] m | '
-                f'Y=[{y_min:.1f}, {y_max:.1f}] m'
-            )
+        self.publish_motion_mode()
+
+    def _sync_motion_sample(self, sample):
+        self.current_motion_sample = sample
+        self.x, self.y, self.z = sample.position
+        self.vx, self.vy = sample.velocity[:2]
+        self.commanded_horizontal_speed = self.motion_profile.speed
+        self.elapsed_time = self.motion_profile.elapsed_time
+        self.figure_eight_trajectory = self.motion_profile.figure_eight
+
+    def publish_motion_mode(self, acknowledgement=None):
+        acknowledgement = acknowledgement or self.motion_selector.status()
+        message = String()
+        message.data = json.dumps(acknowledgement.as_dict(), sort_keys=True)
+        self.motion_mode_pub.publish(message)
+
+    def mode_parameters_callback(self, parameters):
+        """Use the standard SetParameters service as independent selection ACK."""
+        motion_names = {field.name for field in fields(MotionParameters())}
+        motion_names.update(('velocity_x', 'velocity_y', 'update_rate_hz'))
+        selections = [p for p in parameters if p.name == 'trajectory_type']
+        changes = [p for p in parameters if p.name in motion_names]
+        self._pending_motion_profile = None
+        if changes or len(selections) > 1 or (selections and len(parameters) != 1):
+            ack = self.motion_selector.status(
+                False, 'motion configuration requires restart; select mode separately')
+        elif not selections:
+            return SetParametersResult(successful=True)
+        else:
+            selector = MotionModeSelector(self.trajectory_type)
+            selector.started = self.started
+            ack = selector.select(selections[0].value)
+            if ack.successful and selector.mode != self.trajectory_type:
+                try:
+                    profile = UsvMotionProfile(selector.mode, self.motion_parameters)
+                except ValueError as exc:
+                    ack = self.motion_selector.status(False, str(exc))
+                else:
+                    self._pending_motion_profile = profile
+        return SetParametersResult(
+            successful=ack.successful,
+            reason=json.dumps(ack.as_dict(), sort_keys=True))
+
+    def set_parameters(self, parameters):
+        # Keep the public non-atomic API consistent with ParameterService,
+        # which invokes set_parameters_atomically once for each parameter.
+        return [self.set_parameters_atomically([parameter])
+                for parameter in parameters]
+
+    def set_parameters_atomically(self, parameters):
+        """
+        Commit profile only after ROS validation, and preserve success ACK.
+
+        Humble discards successful callback ``reason`` values. The standard
+        ParameterService delegates here, so attach the applied state after
+        the framework commits instead of replacing or duplicating a service.
+        """
+        result = super().set_parameters_atomically(parameters)
+        selections = [p for p in parameters if p.name == 'trajectory_type']
+        if not selections or not hasattr(self, 'motion_selector'):
+            return result
+        if result.successful:
+            selector = MotionModeSelector(self.trajectory_type)
+            selector.started = self.started
+            ack = selector.select(selections[0].value)
+            if selector.mode != self.trajectory_type:
+                self.motion_profile = self._pending_motion_profile
+                self.motion_selector = selector
+                self.trajectory_type = selector.mode
+                self._sync_motion_sample(self.motion_profile.state())
+        else:
+            try:
+                reason = json.loads(result.reason)['reason']
+            except (ValueError, KeyError, TypeError):
+                reason = result.reason
+            ack = self.motion_selector.status(False, reason)
+        self.publish_motion_mode(ack)
+        result.reason = json.dumps(ack.as_dict(), sort_keys=True)
+        return result
 
     def _start_motion(self, message):
         if self.started:
             return
         self.started = True
+        selector = getattr(self, 'motion_selector', None)
+        if selector is not None:
+            MovingTarget.publish_motion_mode(self, selector.start())
         get_clock = getattr(self, 'get_clock', None)
         self.last_motion_update_time_ns = (
             get_clock().now().nanoseconds
@@ -311,6 +374,8 @@ class MovingTarget(Node):
         self.flight_ready = bool(msg.data)
 
     def timer_callback(self):
+        now_ns = self.get_clock().now().nanoseconds
+        clock_stalled = False
         # The renderer can accept set_pose requests even while physics is
         # paused. Follow the native world pause flag so wall-clock ROS timers
         # cannot keep moving the target after the UAV simulation has stopped.
@@ -318,99 +383,111 @@ class MovingTarget(Node):
         if native_paused is not None:
             self.gazebo_world_paused = bool(native_paused)
         if self.gazebo_world_paused:
-            # Resume from a nominal step, never integrate the paused interval.
-            self.last_motion_update_time_ns = None
+            # Keep an actual clock anchor, never invent a nominal resume step.
+            self.last_motion_update_time_ns = now_ns
         # 更新目标位置
         if self.started and not self.hit and not self.gazebo_world_paused:
-            now_ns = self.get_clock().now().nanoseconds
-            motion_step = measured_motion_step(
+            motion_step = elapsed_motion_step(
                 self.last_motion_update_time_ns,
                 now_ns,
-                self.dt,
             )
             self.last_motion_update_time_ns = now_ns
+            clock_stalled = motion_step == 0.
 
-            # Integrate delayed callbacks in nominal-sized substeps.  The
-            # elapsed trajectory time still follows the ROS clock, while the
-            # acceleration ramp and curved path retain numerical fidelity.
-            remaining = motion_step
-            while remaining > 1e-12:
-                integration_step = min(remaining, self.dt)
-                self.commanded_horizontal_speed = min(
-                    self.commanded_horizontal_speed
-                    + self.horizontal_acceleration_limit * integration_step,
-                    self.cruise_horizontal_speed,
-                )
-                if self.figure_eight_trajectory is None:
-                    requested_speed = math.hypot(
-                        self.linear_vx,
-                        self.linear_vy,
-                    )
-                    velocity_scale = (
-                        self.commanded_horizontal_speed / requested_speed
-                        if requested_speed > 1e-9
-                        else 0.0
-                    )
-                    self.vx = self.linear_vx * velocity_scale
-                    self.vy = self.linear_vy * velocity_scale
-                    self.x += self.vx * integration_step
-                    self.y += self.vy * integration_step
-                else:
-                    self.figure_eight_trajectory.set_speed(
-                        self.commanded_horizontal_speed
-                    )
-                    self.x, self.y, self.vx, self.vy = (
-                        self.figure_eight_trajectory.advance(integration_step)
-                    )
-                remaining -= integration_step
-
-            self.elapsed_time += motion_step
-            self.z = (
-                self.initial_z
-                + self.vz * self.elapsed_time
-                + self.vertical_oscillation_amplitude * math.sin(
-                    self.vertical_angular_frequency * self.elapsed_time
-                )
-            )
+            profile = getattr(self, 'motion_profile', None)
+            if profile is not None:
+                self._sync_motion_sample(profile.advance(motion_step))
+            else:
+                # Retain the original legacy integration for existing callers
+                # that supply the historical explicit state interface.
+                MovingTarget._advance_legacy_state(self, motion_step)
 
         # 发布位置
         position_msg = Point()
-
         position_msg.x = self.x
         position_msg.y = self.y
         position_msg.z = self.z
-
         self.position_pub.publish(position_msg)
 
-        # 发布速度
+        stationary = (self.hit or not self.started or self.gazebo_world_paused
+                      or clock_stalled)
         velocity_msg = Vector3()
-
-        if self.hit or not self.started or self.gazebo_world_paused:
-            velocity_msg.x = 0.0
-            velocity_msg.y = 0.0
-            velocity_msg.z = 0.0
-        else:
+        acceleration = (0., 0., 0.)
+        if not stationary:
             velocity_msg.x = self.vx
             velocity_msg.y = self.vy
             velocity_msg.z = (
                 self.vz
                 + self.vertical_oscillation_amplitude
                 * self.vertical_angular_frequency
-                * math.cos(
-                    self.vertical_angular_frequency * self.elapsed_time
-                )
-            )
-
+                * math.cos(self.vertical_angular_frequency * self.elapsed_time))
+            sample = getattr(self, 'current_motion_sample', None)
+            if sample is not None:
+                acceleration = sample.acceleration
         self.velocity_pub.publish(velocity_msg)
-        state_stamp = self.get_clock().now().nanoseconds * 1e-9
         self.state_pub.publish(target_state_message(
-            stamp_seconds=state_stamp,
+            stamp_seconds=now_ns * 1e-9,
             position=(position_msg.x, position_msg.y, position_msg.z),
             velocity=(velocity_msg.x, velocity_msg.y, velocity_msg.z),
-        ))
-
+            acceleration=acceleration))
+        truth_pub = getattr(self, 'motion_truth_pub', None)
+        if truth_pub is not None:
+            sample = self.current_motion_sample
+            diagnostic = String()
+            diagnostic.data = json.dumps({
+                'stamp_ns': now_ns, 'mode': self.trajectory_type,
+                'elapsed_time': self.elapsed_time,
+                'position': sample.position,
+                'velocity': (velocity_msg.x, velocity_msg.y, velocity_msg.z),
+                'acceleration': acceleration,
+                'yaw': sample.yaw,
+                'turn_rate': 0. if stationary else sample.turn_rate,
+                'curvature': sample.curvature, 'phase': sample.phase,
+                'stage': 'stationary' if stationary else sample.stage,
+                'longitudinal_acceleration': (
+                    0. if stationary else sample.longitudinal_acceleration),
+                'lateral_acceleration': (
+                    0. if stationary else sample.lateral_acceleration),
+                'angular_acceleration': (
+                    0. if stationary else sample.angular_acceleration),
+                'evaluation_only': True,
+            }, sort_keys=True)
+            truth_pub.publish(diagnostic)
         if not self.gazebo_world_paused:
             self.update_gazebo_visualization()
+
+    def _advance_legacy_state(self, motion_step):
+        # Original explicit-state interface, including its numerical order.
+        remaining = motion_step
+        while remaining > 1e-12:
+            integration_step = min(remaining, self.dt)
+            self.commanded_horizontal_speed = min(
+                self.commanded_horizontal_speed
+                + self.horizontal_acceleration_limit * integration_step,
+                self.cruise_horizontal_speed,
+            )
+            if self.figure_eight_trajectory is None:
+                requested_speed = math.hypot(self.linear_vx, self.linear_vy)
+                velocity_scale = (
+                    self.commanded_horizontal_speed / requested_speed
+                    if requested_speed > 1e-9 else 0.0)
+                self.vx = self.linear_vx * velocity_scale
+                self.vy = self.linear_vy * velocity_scale
+                self.x += self.vx * integration_step
+                self.y += self.vy * integration_step
+            else:
+                self.figure_eight_trajectory.set_speed(self.commanded_horizontal_speed)
+                self.x, self.y, self.vx, self.vy = (
+                    self.figure_eight_trajectory.advance(integration_step))
+            remaining -= integration_step
+
+        self.elapsed_time += motion_step
+        self.z = (
+            self.initial_z
+            + self.vz * self.elapsed_time
+            + self.vertical_oscillation_amplitude * math.sin(
+                self.vertical_angular_frequency * self.elapsed_time)
+        )
 
     def pause_gazebo_world(self):
         if self.gazebo_visualizer is None:

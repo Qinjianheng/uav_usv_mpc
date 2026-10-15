@@ -13,7 +13,7 @@ import time
 
 import yaml
 
-from p43_sitl_matrix import prepare
+from p43_sitl_matrix import prepare as legacy_prepare
 from p4_sitl_session import WORKSPACE, identity, matches, preflight
 from p5_release import CANDIDATE, qualify, sha, verify_manifest
 from uav_control.guidance.follow_sitl_gate import require_isolated_sitl
@@ -21,6 +21,60 @@ from uav_control.guidance.follow_sitl_gate import require_isolated_sitl
 # The human continued after the first tooling abort; keep that consumed attempt intact.
 ROOT = WORKSPACE/'data/experiments/20261012_p5_revalidation_02'
 AUTHORIZATION = 'User continued and authorized F3 after healthy repaired F2; one each'
+
+
+def prepare(root, condition, overlay_config=None):
+    """Keep historical preparation, or copy a complete independent flight config."""
+    if overlay_config is None:
+        return legacy_prepare(root, condition)
+    source = Path(overlay_config).resolve()
+    flight = yaml.safe_load(source.read_text())
+    name, scene, shadow, engine, acceleration, yaw, horizon, refinement = condition
+    tracker = flight['trajectory_tracker_node']['ros__parameters']
+    tracker.update(follow_minco_enabled=False, follow_minco_shadow_check=shadow,
+                   follow_research_horizontal_acceleration=acceleration,
+                   follow_research_yaw_rate=yaw)
+    research = yaml.safe_load((WORKSPACE/'src/uav_usv_bringup/config/p41_follow_research.yaml')
+                              .read_text())
+    research['p4_follow_planner_node']['ros__parameters'].update(
+        minco_engine=engine, maximum_horizontal_acceleration=acceleration,
+        maximum_yaw_rate=yaw, short_horizon=horizon, p43_refinement=refinement)
+    root.mkdir(exist_ok=False)
+    (root/'.gitignore').write_text('*\n')
+    (root/'COLCON_IGNORE').touch()
+    (root/'config').mkdir()
+    (root/'config/flight.yaml').write_text(yaml.safe_dump(flight, sort_keys=False))
+    (root/'config/research.yaml').write_text(yaml.safe_dump(research, sort_keys=False))
+    (root/'condition.json').write_text(json.dumps(dict(
+        name=name, scene=scene, shadow=shadow, engine=engine,
+        acceleration=acceleration, yaw=yaw, horizon=horizon, refinement=refinement,
+        actual_controller='ORIGINAL_FOLLOW', minco_authorized=False,
+        config_source=str(source), config_source_sha256=sha(source)), indent=2)+'\n')
+
+
+def observation_window(scene, observation_seconds=None):
+    """Default P5 windows stay 25/60s; explicit P6 observation is bounded to 60s."""
+    duration = (25. if scene == 'f2' else 60.) if observation_seconds is None else float(
+        observation_seconds)
+    if not math.isfinite(duration) or not 0. < duration <= 60.:
+        raise ValueError('BOUNDED_OBSERVATION_WINDOW_REQUIRED')
+    return duration
+
+
+def constraint_metadata(baseline_fingerprint, research, p6_enabled=False):
+    """Bind actual P6 limits; preserve the historical field only for legacy runs."""
+    params = research.get('p4_follow_planner_node', {}).get('ros__parameters', {})
+    if not p6_enabled or 'p6_visibility_mode' not in params:
+        return dict(constraint_fingerprint=baseline_fingerprint)
+    from uav_control.guidance.follow_limits import constraint_snapshot
+    from uav_control.guidance.p6_follow import model_from_parameters
+    model = model_from_parameters(params)
+    snapshot = constraint_snapshot(model)
+    if not model.p6_policy.enabled and snapshot.fingerprint != baseline_fingerprint:
+        raise ValueError('P6_NOMINAL_BASELINE_CONSTRAINT_MISMATCH')
+    return dict(baseline_reference_constraint_fingerprint=baseline_fingerprint,
+                constraint_fingerprint=snapshot.fingerprint,
+                actual_constraint_snapshot=snapshot.values)
 
 
 def safety_reason(health, now, planning_required=True, maximum_observer_input_age=.125):
@@ -295,14 +349,15 @@ def execution_chain_proven(report):
 
 
 def assess(output, scene, reason, first_minco, ended, task_root=None,
-           extra_audit=None, f3_gate=None):
+           extra_audit=None, f3_gate=None, observation_seconds=None):
     """Actual diagnostics determine control ownership; planned curves cannot imply ACTIVE."""
     from p4_follow_analysis import read
     from p45_execution_analysis import analyze
     report = analyze(output)
     rows, malformed = read(output/'offline_evidence.jsonl')
+    duration = observation_window(scene, observation_seconds)
     diag = [r for r in rows if r['kind'] == 'diagnostic' and first_minco is not None
-            and first_minco <= r['receipt'] <= first_minco+(25. if scene == 'f2' else 60.)]
+            and first_minco <= r['receipt'] <= first_minco+duration]
     metrics = ownership_metrics(diag)
     complete = execution_completed(reason, ended, report['authority'],
                                    (output/'safety_stop.json').exists())
@@ -326,10 +381,11 @@ def assess(output, scene, reason, first_minco, ended, task_root=None,
 def run(output, qualification, scene, task_root=None, authorization=None,
         health_check=None, research_config=None, flight_parameters=None,
         extra_audit=None, f3_gate=None, release_gate=None, health_monitor_check=None,
-        health_start_marker=None):
+        health_start_marker=None, overlay_config=None, observation_seconds=None):
     task_root = ROOT if task_root is None else task_root
     authorization = AUTHORIZATION if authorization is None else authorization
     health_check = safety_reason if health_check is None else health_check
+    duration = observation_window(scene, observation_seconds)
     release = json.loads(qualification.read_text())
     formal = Path(release['formal_directory'])
     raw = json.loads(next((formal/f'{scene}_h1.6_main_C_single.jsonl').open()))
@@ -337,8 +393,14 @@ def run(output, qualification, scene, task_root=None, authorization=None,
                        if research_config is None else research_config)
     research = yaml.safe_load(research_config.read_text())
     validate_candidate_config(research, raw['model_config']['mpc'])
+    constraints = constraint_metadata(raw['constraint_fingerprint'], research,
+                                      p6_enabled=overlay_config is not None)
     claim(output, scene, qualification, task_root, authorization, f3_gate, release_gate)
-    prepare(output, (output.name, scene, False, 'p47_follow_guided', 3., 1., 1.6, 'none'))
+    condition_spec = (output.name, scene, False, 'p47_follow_guided', 3., 1., 1.6, 'none')
+    if overlay_config is None:
+        prepare(output, condition_spec)
+    else:
+        prepare(output, condition_spec, overlay_config=overlay_config)
     if flight_parameters:
         flight_path = output/'config/flight.yaml'
         flight = yaml.safe_load(flight_path.read_text())
@@ -361,14 +423,22 @@ def run(output, qualification, scene, task_root=None, authorization=None,
                                                    relative_speed_max=.5,
                                                    height_error_max=.1,
                                                    timeout_seconds=60.),
-                     observation_seconds=25. if scene == 'f2' else 60.,
+                     observation_seconds=duration,
                      research_config_sha256=sha(output/'config/research.yaml'),
                      qualified_holding=False)
-    # Constraint fingerprint copied from audited raw source, distinct from the config hash.
-    condition['constraint_fingerprint'] = raw['constraint_fingerprint']
+    # Legacy reference is explicit for P6; current limits/calibration bind the
+    # actual local model, independently of the research YAML byte hash.
+    condition.update(constraints)
     if flight_parameters:
         condition['original_follow_settling']['relative_speed_max'] = flight_parameters.get(
             'follow_admission_relative_enter', .5)
+    if overlay_config is not None:
+        loaded = yaml.safe_load((output/'config/flight.yaml').read_text())
+        tracker = loaded['trajectory_tracker_node']['ros__parameters']
+        condition['original_follow_settling'].update(
+            horizontal_error_max=tracker.get('follow_admission_horizontal_enter', 1.),
+            relative_speed_max=tracker.get('follow_admission_relative_enter', .5),
+            height_error_max=tracker.get('follow_admission_height_enter', .1))
     condition_path.write_text(json.dumps(condition, indent=2)+'\n')
     env = dict(os.environ, UAV_USV_HEADLESS_GCS='true', UAV_USV_MINCO_EXECUTE='true')
     if health_start_marker is not None:
@@ -499,7 +569,7 @@ def run(output, qualification, scene, task_root=None, authorization=None,
         (task_root/f'{scene}_summary.json').write_text(json.dumps(summary, indent=2)+'\n')
     else:
         summary = assess(output, scene, reason, first_minco, ended, task_root,
-                         extra_audit, f3_gate)
+                         extra_audit, f3_gate, observation_seconds)
     print(json.dumps(summary, indent=2))
     return 0 if summary['completed'] and (extra_audit is None or summary['healthy']) else 1
 

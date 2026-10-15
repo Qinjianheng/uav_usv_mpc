@@ -151,6 +151,11 @@ class FollowProblem:
 
     def reference(self, relative_times, direction=0.):
         """Return rear/side-rear viewpoints without copying target heave into UAV altitude."""
+        if getattr(self.request, 'viewpoint_profile', ()):
+            from uav_control.guidance.follow_reference import forecast_viewpoint
+            samples = [forecast_viewpoint(self, float(t), direction) for t in relative_times]
+            return (np.array([s[0] for s in samples]), np.array([s[1] for s in samples]),
+                    np.array([s[3] for s in samples]))
         p, v = self.target_state(relative_times)
         heading = np.arctan2(v[:, 1], v[:, 0])
         heading[np.linalg.norm(v[:, :2], axis=1) < .2] = self.state[9]
@@ -164,7 +169,7 @@ class FollowProblem:
     def assess(self, times, p, v, a, j, yaw, rate, batch=False):
         """Evaluate physical margins and original whole-target geometry at common times."""
         targets, _ = self.target_state(times)
-        views, tilts, thrusts = [], [], []
+        views, tilts, thrusts, rotations = [], [], [], []
         if batch:
             from uav_control.guidance.camera_visibility_batch import (
                 attitude_batch, visibility_batch,
@@ -188,6 +193,7 @@ class FollowProblem:
                 rotation = attitude.rotation_frd_to_ned
                 if times[i] == 0. and not isinstance(self.request, FutureRequest):
                     rotation = self.request.actual_rotation
+                rotations.append(rotation)
                 views.append(evaluate_visibility(
                     p[i], rotation, targets[i], self.model.intrinsics,
                     self.model.extrinsics, self.model.target, self.model.visibility))
@@ -219,4 +225,21 @@ class FollowProblem:
                          - self.model.visibility.minimum_distance for w in views])
         far = np.array([self.model.visibility.maximum_distance
                        - (w.distance_interval_m or (-1e3, 1e3))[1] for w in views])
-        return margin, views, np.c_[h, vertical, near, far], np.asarray(tilts)
+        geometry = np.c_[h, vertical, near, far]
+        policy = getattr(self.model, 'p6_policy', None)
+        if policy is not None and policy.visibility_mode == 'robust':
+            from uav_control.guidance.p6_follow import assess_risk
+            report, self.last_p6_report = assess_risk(
+                self.model, self.request, np.asarray(times)
+                + self.request.context.execution_start_stamp
+                - self.request.context.prediction_source_stamp, p, rotations, targets)
+            if not policy.allow_nominal_fallback:
+                if report is None or not report.valid_input:
+                    geometry[:, :2] = -math.pi
+                else:
+                    indices = self.last_p6_report['checked_indices']
+                    geometry[list(indices), :2] = [
+                        (s.horizontal_margin_rad, s.vertical_margin_rad) for s in report.samples]
+                    if not report.robust_ok:
+                        geometry[list(indices), 0] = np.minimum(geometry[list(indices), 0], -1e-3)
+        return margin, views, geometry, np.asarray(tilts)

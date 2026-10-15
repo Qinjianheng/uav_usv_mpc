@@ -85,12 +85,16 @@ def test_optional_evaluator_and_shadow_nodes_cannot_disable_online_inputs():
             keywords = {item.arg: item.value for item in call.keywords}
             nodes[keywords['name'].value] = keywords
     for name in (
-        'target_predictor_node', 'intercept_planner_node',
+        'intercept_planner_node',
         'trajectory_tracker_node', 'mission_manager_node',
         'target_kalman_filter', 'dual_tof_image_bridge',
         'target_bearing_node', 'rgbd_target_localizer',
     ):
         assert 'condition' not in nodes[name]
+    predictor_condition = ast.unparse(nodes['target_predictor_node']['condition'])
+    assert 'prediction_model' in predictor_condition
+    assert 'enable_shadow_perception' not in predictor_condition
+    assert 'enable_evaluator' not in predictor_condition
     condition = nodes['intercept_evaluator_node']['condition']
     assert condition.func.id == 'IfCondition'
     assert condition.args[0].id == 'enable_evaluator'

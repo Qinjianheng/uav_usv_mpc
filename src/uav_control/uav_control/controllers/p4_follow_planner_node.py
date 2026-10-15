@@ -5,7 +5,7 @@ import secrets
 from types import SimpleNamespace
 
 import rclpy
-from rclpy.qos import QoSProfile, DurabilityPolicy, ReliabilityPolicy
+from rclpy.qos import QoSProfile, DurabilityPolicy, ReliabilityPolicy, qos_profile_sensor_data
 from uav_usv_interfaces.msg import FollowTrajectory, FollowPlanAck, FollowReceiverState
 
 from uav_control.controllers.follow_research_shadow_node import FollowResearchShadowNode
@@ -133,6 +133,19 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
     def __init__(self):
         """Publish a distinct proposal topic; ACK is subscribed only, never synthesized."""
         super().__init__()
+        from std_msgs.msg import String
+        from uav_control.guidance.p6_follow import configure_p6
+        self.p6_runtime = configure_p6(self, self.runner.solver.model)
+        factory = self.runner.request_factory
+
+        def p6_request(pose, prediction, *args, **kwargs):
+            return self.p6_runtime.prepare(factory(
+                pose, self.p6_runtime.prediction(prediction), *args, **kwargs))
+
+        self.runner.request_factory = p6_request
+        self.p6_diagnostic_sub = self.create_subscription(
+            String, '/planning/imm_diagnostics', self.p6_diagnostic_callback,
+            qos_profile_sensor_data)
         self.follow_proposal_pub = self.create_publisher(
             FollowTrajectory, '/planning/follow_trajectory', 1)
         self.follow_ack_sub = self.create_subscription(
@@ -151,6 +164,12 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
             FollowReceiverState, '/control/follow_receiver_state', self.epoch_callback, epoch_qos)
         self.destroy_timer(self.timer)
         self.timer = self.create_timer(.01, self.tick)
+
+    def p6_diagnostic_callback(self, message):
+        """Cache immutable model evidence; match epochs before attaching it."""
+        self.p6_runtime.diagnostic(message)
+        if self.runner.prediction is not None:
+            self.runner.prediction = self.p6_runtime.prediction(self.runner.prediction)
 
     def epoch_callback(self, message):
         """Trust the unique actual receiver graph endpoint, never a proposal counter."""

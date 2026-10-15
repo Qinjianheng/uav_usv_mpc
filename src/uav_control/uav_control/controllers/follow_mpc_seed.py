@@ -98,6 +98,13 @@ class MpcRequest:
     target_velocities: tuple
     actual_rotation: tuple
     now_stamp: float
+    target_covariances: tuple = ()
+    model_positions: tuple = ()
+    model_covariances: tuple = ()
+    model_probabilities: tuple = ()
+    uncertainty_identity: tuple = ()
+    model: str = ''
+    viewpoint_profile: tuple = ()
 
 
 @dataclass(frozen=True)

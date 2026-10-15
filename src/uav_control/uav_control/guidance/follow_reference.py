@@ -94,6 +94,33 @@ def forecast_target_kinematics(problem, time):
 def forecast_viewpoint(problem, time, beta=0., distance=None):
     """Original scalar reference; P44 shares only target-dependent forecast fitting."""
     p, v, acceleration, heading, omega, alpha, details = forecast_target_kinematics(problem, time)
+    profile = getattr(problem.request, 'viewpoint_profile', ())
+    if profile:
+        from uav_control.guidance.adaptive_viewpoint import (
+            AdaptiveViewpointConfig, profile_state,
+        )
+        offset = problem.request.context.execution_start_stamp - problem.request.now_stamp + time
+        parameters = profile_state(profile, offset)
+        values = parameters.reference_kwargs()
+        values['beta'] += beta
+        if distance is not None:
+            values['distance'] += distance - problem.limits.follow_distance
+        policy = getattr(problem.model, 'p6_policy', None)
+        bounds = (AdaptiveViewpointConfig() if policy is None else AdaptiveViewpointConfig(
+            minimum_distance=policy.minimum_distance, maximum_distance=policy.maximum_distance,
+            maximum_beta=policy.maximum_beta, maximum_distance_rate=policy.maximum_distance_rate,
+            maximum_beta_rate=policy.maximum_beta_rate))
+        if (not bounds.minimum_distance-1e-12 <= values['distance']
+                <= bounds.maximum_distance+1e-12
+                or abs(values['beta']) > bounds.maximum_beta+1e-12):
+            raise ValueError('ADAPTIVE_VIEWPOINT_CANDIDATE_OUT_OF_BOUNDS')
+        state = viewpoint_state(p, v, acceleration, heading, omega, alpha,
+                                **values, altitude=problem.limits.flight_altitude)
+        details = dict(details, adaptive_viewpoint=True, viewpoint_profile_time=offset,
+                       distance=values['distance'], beta=values['beta'],
+                       distance_rate_assumption=values['distance_rate'],
+                       beta_rate_assumption=values['beta_rate'])
+        return (*state, heading + values['beta'], details)
     distance = problem.limits.follow_distance if distance is None else distance
     state = viewpoint_state(p, v, acceleration, heading, omega, alpha,
                             distance=distance, beta=beta, altitude=problem.limits.flight_altitude)

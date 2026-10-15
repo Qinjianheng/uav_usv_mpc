@@ -51,5 +51,9 @@ def constraint_snapshot(model):
                 intrinsics=asdict(model.intrinsics), extrinsics=asdict(model.extrinsics),
                 target=asdict(model.target), visibility=asdict(model.visibility),
                 attitude=asdict(model.attitude_config))
+    policy = getattr(model, 'p6_policy', None)
+    if policy is not None and policy.enabled:
+        policy.validate()
+        data['p6'] = asdict(policy)
     return ConstraintSnapshot(json.dumps(data, sort_keys=True, separators=(',', ':'),
                                          allow_nan=False))

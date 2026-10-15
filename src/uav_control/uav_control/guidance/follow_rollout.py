@@ -33,6 +33,21 @@ def _bound(vector, horizontal, vertical):
     return value
 
 
+def _profile_follow_command(core, state, problem, relative_time, dt):
+    """
+    Explicit reference feedback through the original shaping and sea guard.
+
+    The real predicted target remains unchanged for visibility and evaluation.
+    Only this research rollout's reference P/V enters the desired velocity.
+    """
+    from uav_control.guidance.follow_reference import forecast_viewpoint
+    reference_p, reference_v, _, _, _ = forecast_viewpoint(problem, relative_time)
+    desired = (reference_v[0] + core.follow_position_gain*(reference_p[0]-state.position[0]),
+               reference_v[1] + core.follow_position_gain*(reference_p[1]-state.position[1]),
+               reference_v[2] + core.altitude_velocity_gain*(reference_p[2]-state.position[2]))
+    return core._velocity_command(state, desired, dt, True, True)
+
+
 @dataclass(frozen=True)
 class FollowReference:
     """Piecewise constant-jerk virtual P/V/A; commands are separate from velocity."""
@@ -103,8 +118,13 @@ def rollout_follow(problem, config=FollowRolloutConfig(), initial_command=None,
     for i, start in enumerate(control_times):
         check_deadline()
         target = FlightKinematicState(tuple(target_p[i]), tuple(target_v[i]))
-        output = core.command('FOLLOW', FlightKinematicState(tuple(p), tuple(v)), target,
-                              config.control_dt)
+        if getattr(req, 'viewpoint_profile', ()):
+            output = _profile_follow_command(
+                core, FlightKinematicState(tuple(p), tuple(v)), problem, float(start),
+                config.control_dt)
+        else:
+            output = core.command('FOLLOW', FlightKinematicState(tuple(p), tuple(v)), target,
+                                  config.control_dt)
         command = np.asarray(output.velocity)
         commands.append(tuple(command))
         safety_states.append(output.safety_state)
@@ -125,16 +145,19 @@ def rollout_follow(problem, config=FollowRolloutConfig(), initial_command=None,
             positions.append(tuple(p))
             velocities.append(tuple(v))
             accelerations.append(tuple(a))
+    metrics = dict(
+        command_source=source, response_model='jerk_limited_velocity_lag',
+        command_initialization_clipped=bool(clipped),
+        response_time=config.response_time, control_dt=config.control_dt,
+        integration_dt=config.integration_dt,
+        future_target_source=req.context.prediction_source,
+        prediction_sequence_id=req.context.prediction_sequence_id,
+        flight_altitude=limits.flight_altitude,
+        safety_states=tuple(sorted(set(safety_states))))
+    if getattr(req, 'viewpoint_profile', ()):
+        metrics['adaptive_viewpoint'] = True
     return FollowReference(tuple(times), tuple(positions), tuple(velocities),
-                           tuple(accelerations), tuple(commands), dict(
-                               command_source=source, response_model='jerk_limited_velocity_lag',
-                               command_initialization_clipped=bool(clipped),
-                               response_time=config.response_time, control_dt=config.control_dt,
-                               integration_dt=config.integration_dt,
-                               future_target_source=req.context.prediction_source,
-                               prediction_sequence_id=req.context.prediction_sequence_id,
-                               flight_altitude=limits.flight_altitude,
-                               safety_states=tuple(sorted(set(safety_states)))))
+                           tuple(accelerations), tuple(commands), metrics)
 
 
 def _bound_xyz(x, y, z, horizontal, vertical):
@@ -197,8 +220,13 @@ def rollout_follow_fast(problem, config=FollowRolloutConfig(), initial_command=N
     for i, start in enumerate(control_times):
         check_deadline()
         target = FlightKinematicState(tuple(target_p[i]), tuple(target_v[i]))
-        output = core.command('FOLLOW', FlightKinematicState((px, py, pz), (vx, vy, vz)),
-                              target, config.control_dt)
+        if getattr(req, 'viewpoint_profile', ()):
+            output = _profile_follow_command(
+                core, FlightKinematicState((px, py, pz), (vx, vy, vz)), problem, float(start),
+                config.control_dt)
+        else:
+            output = core.command('FOLLOW', FlightKinematicState((px, py, pz), (vx, vy, vz)),
+                                  target, config.control_dt)
         cx, cy, cz = map(float, output.velocity)
         commands.append(tuple(output.velocity))
         safety_states.append(output.safety_state)
@@ -224,13 +252,16 @@ def rollout_follow_fast(problem, config=FollowRolloutConfig(), initial_command=N
             positions.append((px, py, pz))
             velocities.append((vx, vy, vz))
             accelerations.append((ax, ay, az))
+    metrics = dict(
+        command_source=source, response_model='jerk_limited_velocity_lag',
+        command_initialization_clipped=bool(clipped),
+        response_time=config.response_time, control_dt=config.control_dt,
+        integration_dt=config.integration_dt,
+        future_target_source=req.context.prediction_source,
+        prediction_sequence_id=req.context.prediction_sequence_id,
+        flight_altitude=limits.flight_altitude,
+        safety_states=tuple(sorted(set(safety_states))))
+    if getattr(req, 'viewpoint_profile', ()):
+        metrics['adaptive_viewpoint'] = True
     return FollowReference(tuple(times), tuple(positions), tuple(velocities),
-                           tuple(accelerations), tuple(commands), dict(
-                               command_source=source, response_model='jerk_limited_velocity_lag',
-                               command_initialization_clipped=bool(clipped),
-                               response_time=config.response_time, control_dt=config.control_dt,
-                               integration_dt=config.integration_dt,
-                               future_target_source=req.context.prediction_source,
-                               prediction_sequence_id=req.context.prediction_sequence_id,
-                               flight_altitude=limits.flight_altitude,
-                               safety_states=tuple(sorted(set(safety_states)))))
+                           tuple(accelerations), tuple(commands), metrics)

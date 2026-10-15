@@ -1,0 +1,258 @@
+{
+  "schema": "p6-imm-independent-readonly-review-v3",
+  "reviewed_at_utc": "2026-10-14T15:31:10.465539+00:00",
+  "reviewer": "p6_motion; independent of IMM implementation; own driver/analyzer not reviewed here",
+  "sources": [
+    {
+      "path": "src/uav_control/uav_control/tracking/imm_predictor.py",
+      "sha256": "2bd650c7f160de1250bacc0f5294df68b38b5fca91da5e799590cfdad9af3eb3",
+      "snapshot_sha256": "2bd650c7f160de1250bacc0f5294df68b38b5fca91da5e799590cfdad9af3eb3",
+      "matches_frozen_prediction_04": true
+    },
+    {
+      "path": "src/uav_control/uav_control/tracking/imm_target_predictor_node.py",
+      "sha256": "c1419eba3daa763ad6ac1532b1a049bc7b60a912b6acccddc10b64dca2b8bab4",
+      "snapshot_sha256": "c1419eba3daa763ad6ac1532b1a049bc7b60a912b6acccddc10b64dca2b8bab4",
+      "matches_frozen_prediction_04": true
+    }
+  ],
+  "prediction_04_manifest_sha256": "977f1adcd0222a47fa6b735602db7f6b4d181e28e8a98a377e910e5039fd49d8",
+  "prediction_04_provenance_sha256": "dfcd44c552345b3358fd5712f2a90876ba7372c753cada930600ae44396a0ff3",
+  "review_script_sha256": "597f2a54cdf8216cdcfb88f1ee271a6c6554b28e3c11f09884532805dda73df8",
+  "results": {
+    "stopping_deterministic_ode": {
+      "mean_max_abs_error": 8.881784197001252e-16,
+      "jacobian_max_abs_error": 2.7681945624635773e-10
+    },
+    "stopped_cartesian_q": {
+      "samples": 40000,
+      "steps": 150,
+      "dt": 0.02,
+      "empirical_p_v_covariance": [
+        [
+          1.098944292115844,
+          0.5488527113929187
+        ],
+        [
+          0.5488527113929187,
+          0.36546402482956214
+        ]
+      ],
+      "implemented_p_v_covariance": [
+        [
+          1.1024999999999998,
+          0.5512499999999999
+        ],
+        [
+          0.5512499999999999,
+          0.36749999999999994
+        ]
+      ],
+      "max_element_relative_error": 0.005540068490987207,
+      "minimum_eigenvalue": 0.0
+    },
+    "posterior_mean_projection": [
+      {
+        "model": "CV",
+        "sign": -1.0,
+        "posterior_speed": 5.0,
+        "latent_mean": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "mean_shift": [
+          0.0,
+          0.0,
+          -2.9999999999999996,
+          -4.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "covariance_outer_shift_max_abs_error": 1.7763568394002505e-15,
+        "covariance_increment_min_eigenvalue": 0.0,
+        "likelihood_and_probability_unchanged": true,
+        "forecast_and_duplicate_do_not_reproject": true
+      },
+      {
+        "model": "CV",
+        "sign": 1.0,
+        "posterior_speed": 5.0,
+        "latent_mean": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "mean_shift": [
+          0.0,
+          0.0,
+          2.9999999999999996,
+          4.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "covariance_outer_shift_max_abs_error": 1.7763568394002505e-15,
+        "covariance_increment_min_eigenvalue": 0.0,
+        "likelihood_and_probability_unchanged": true,
+        "forecast_and_duplicate_do_not_reproject": true
+      },
+      {
+        "model": "CTRV",
+        "sign": -1.0,
+        "posterior_speed": 5.0,
+        "latent_mean": [
+          -0.7,
+          0.0,
+          0.0
+        ],
+        "mean_shift": [
+          0.0,
+          0.0,
+          -3.5476735518454023,
+          -3.49808556537266,
+          -2.2857508063547636,
+          0.0,
+          0.0
+        ],
+        "covariance_outer_shift_max_abs_error": 0.0,
+        "covariance_increment_min_eigenvalue": 0.0,
+        "likelihood_and_probability_unchanged": true,
+        "forecast_and_duplicate_do_not_reproject": true
+      },
+      {
+        "model": "CTRV",
+        "sign": 1.0,
+        "posterior_speed": 5.0,
+        "latent_mean": [
+          0.7,
+          0.0,
+          0.0
+        ],
+        "mean_shift": [
+          0.0,
+          0.0,
+          2.374529369955256,
+          4.418307813986574,
+          2.3136376925633355,
+          0.0,
+          0.0
+        ],
+        "covariance_outer_shift_max_abs_error": 0.0,
+        "covariance_increment_min_eigenvalue": 0.0,
+        "likelihood_and_probability_unchanged": true,
+        "forecast_and_duplicate_do_not_reproject": true
+      },
+      {
+        "model": "CTRA",
+        "sign": -1.0,
+        "posterior_speed": 5.0,
+        "latent_mean": [
+          -0.7,
+          -2.0,
+          -1.5
+        ],
+        "mean_shift": [
+          0.0,
+          0.0,
+          -3.4266478980091843,
+          -3.3476493126894775,
+          -2.4500782523291322,
+          -1.997297066687576,
+          -1.5060003919362717
+        ],
+        "covariance_outer_shift_max_abs_error": 4.440892098500626e-16,
+        "covariance_increment_min_eigenvalue": -4.691281142832544e-15,
+        "likelihood_and_probability_unchanged": true,
+        "forecast_and_duplicate_do_not_reproject": true
+      },
+      {
+        "model": "CTRA",
+        "sign": 1.0,
+        "posterior_speed": 5.0,
+        "latent_mean": [
+          0.7,
+          2.0,
+          1.5
+        ],
+        "mean_shift": [
+          0.0,
+          0.0,
+          2.45151677937629,
+          4.597158660773393,
+          2.4494504082092714,
+          2.0029069541700304,
+          1.493457515574319
+        ],
+        "covariance_outer_shift_max_abs_error": 0.0,
+        "covariance_increment_min_eigenvalue": -1.1084992015624178e-15,
+        "likelihood_and_probability_unchanged": true,
+        "forecast_and_duplicate_do_not_reproject": true
+      }
+    ],
+    "legal_four_metre_input": {
+      "posterior_and_forecast_bitwise_unchanged": true,
+      "all_three_models_checked": true
+    },
+    "position_only_recovery": {
+      "position_x": 39.999999992365396,
+      "velocity_x": 3.999999956324942,
+      "updates": 201,
+      "only_raw_position_used": true
+    },
+    "wrapper_identity_and_prior": {
+      "default_speed_prior": 5.0,
+      "latent_priors": [
+        0.7,
+        2.0,
+        1.5
+      ],
+      "observation_stamp": 10.05,
+      "source_stamp": 10.07,
+      "valid_until": 10.175,
+      "posterior_projection_count": 3,
+      "full_conditionals": 3,
+      "full_samples": 41,
+      "same_125ms_acquisition_lease": true
+    }
+  },
+  "blocking_findings_for_bctra_main_imm_readonly_shadow_pilot": [],
+  "important_unresolved": [
+    {
+      "issue": "Stopped additive Q is an explicit engineering replacement and has a boundary discontinuity; it is PSD but does not dominate the preceding frozen-CTRA Q in every state direction.",
+      "state": [
+        0.0,
+        0.0,
+        2.0,
+        0.0,
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "times": [
+        1.9999999,
+        2.0
+      ],
+      "minimum_eigenvalue_of_Q_boundary_jump": -0.004807825385889711,
+      "scope": "Requires independent coverage calibration near stop; no exact nonlinear stochastic law or universal conservative-bound claim."
+    },
+    {
+      "issue": "P+delta*delta.T preserves the original second moment about the shifted declared mean, not the posterior covariance of a rigorously truncated or constrained Gaussian. Repeated projections may inflate uncertainty and change subsequent EKF gain.",
+      "scope": "Declared engineering prior needs genuine RGB-D shadow coverage, probability and downstream feasibility evidence."
+    },
+    {
+      "issue": "The 5m/s bound applies only to acquisition posterior current-state means. It is not a hard future speed bound; CTRA v0=5m/s,a=2m/s2 at4s remains13m/s.",
+      "demonstrated_future_speed_mps": 13.0,
+      "scope": "Expected specified implementation behavior; do not claim all future samples satisfy target max4m/s."
+    },
+    {
+      "issue": "Frozen prediction_04 uses fresh noise seed but shares deterministic trajectory paths across calibration/heldout and synthetic iid sensing. It does not establish actual perception coverage, native-owner health, timing budget or primary IMM authorization.",
+      "scope": "Actual healthy60s BCTRA-main/shadow pilot remains required."
+    }
+  ],
+  "conclusion": "No blocking algebraic/PSD/covariance-projection issue found for the explicitly readonly IMM shadow pilot. This review neither qualifies IMM primary nor certifies stochastic coverage.",
+  "production_code_modified": false,
+  "sitl_started": false,
+  "qualification_generated": false
+}

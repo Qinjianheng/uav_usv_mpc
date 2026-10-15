@@ -61,6 +61,11 @@ class ShadowPrediction:
     prediction_times: tuple
     target_positions: tuple
     target_velocities: tuple
+    target_covariances: tuple = ()
+    model_positions: tuple = ()
+    model_covariances: tuple = ()
+    model_probabilities: tuple = ()
+    uncertainty_identity: tuple = ()
 
 
 def prediction_from_message(message):
@@ -80,6 +85,7 @@ def prediction_from_message(message):
             tuple(_seconds(sample.relative_time) for sample in message.samples),
             tuple(_xyz(sample.position) for sample in message.samples),
             tuple(_xyz(sample.velocity) for sample in message.samples),
+            tuple(tuple(getattr(sample, 'position_covariance', ())) for sample in message.samples),
         )
         stamps = (result.source_stamp, result.observation_stamp, result.generated_stamp,
                   result.valid_until, result.prediction_horizon)
@@ -131,7 +137,13 @@ def make_shadow_request(pose, prediction, mission_id, cycle_id, now, config,
     )
     request = MpcRequest(context, (*pose.position, *pose.velocity, *pose.acceleration, yaw),
                          prediction.prediction_times, prediction.target_positions,
-                         prediction.target_velocities, tuple(map(tuple, rotation)), float(now))
+                         prediction.target_velocities, tuple(map(tuple, rotation)), float(now),
+                         target_covariances=prediction.target_covariances,
+                         model_positions=prediction.model_positions,
+                         model_covariances=prediction.model_covariances,
+                         model_probabilities=prediction.model_probabilities,
+                         uncertainty_identity=prediction.uncertainty_identity,
+                         model=prediction.model)
     if execution_lead is not None:
         from uav_control.guidance.follow_problem import future_request
         request = future_request(request, execution_lead)

@@ -135,6 +135,14 @@ def nominal_curve(curve, prediction, model, start, end, diagnostics=None):
                       sea_margin=float(clearance.min()),
                       reason=('VALID' if all(v.whole_target_safe for v in views)
                               and clearance.min() >= 0 else 'FOV_OR_SEA'))
+        policy = getattr(model, 'p6_policy', None)
+        if policy is not None and policy.visibility_mode == 'robust':
+            from uav_control.guidance.p6_follow import assess_risk
+            _, risk = assess_risk(model, prediction, target_times, p, rotations, target)
+            detail['p6'] = risk
+            if (detail['reason'] == 'VALID' and not risk['robust_ok']
+                    and not policy.allow_nominal_fallback):
+                detail['reason'] = 'P6_ROBUST_VISIBILITY_FAILED'
         return detail['reason'] == 'VALID'
     except (ValueError, TypeError, IndexError, OverflowError, FloatingPointError):
         return False

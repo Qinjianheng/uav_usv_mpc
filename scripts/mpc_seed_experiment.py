@@ -48,7 +48,16 @@ def percentiles(values):
 def json_safe(value):
     """Serialize complete dataclasses, preserving nonfinite diagnostics explicitly."""
     if is_dataclass(value):
-        return json_safe(asdict(value))
+        data = asdict(value)
+        from uav_control.controllers.follow_mpc_seed import MpcRequest
+        if isinstance(value, MpcRequest):
+            for name in ('target_covariances', 'model_positions', 'model_covariances',
+                         'model_probabilities', 'uncertainty_identity', 'model',
+                         'viewpoint_profile'):
+                field = data.get(name)
+                if isinstance(field, (str, tuple)) and not field:
+                    data.pop(name)
+        return json_safe(data)
     if isinstance(value, np.ndarray):
         return json_safe(value.tolist())
     if isinstance(value, np.generic):

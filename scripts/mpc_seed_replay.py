@@ -85,7 +85,10 @@ def restore_case(record):
                                attitude_config=AttitudeConfig(**model['attitude']))
     except (KeyError, TypeError) as error:
         raise ValueError('missing or invalid recorded request/configuration') from error
-    if experiment.json_safe(request) != record['request']:
+    restored = experiment.json_safe(request)
+    # Older immutable logs predate optional P6 fields. Validate every recorded
+    # value without fabricating uncertainty or reference metadata for those logs.
+    if {key: restored[key] for key in record['request']} != record['request']:
         raise ValueError('request restoration changed recorded values')
     return request, solver
 

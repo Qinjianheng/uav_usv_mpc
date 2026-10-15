@@ -47,10 +47,20 @@ def revalidate_prediction(request, output, prediction, now, model, budget=.03,
                           observation_stamp=prediction.observation_stamp,
                           prediction_valid_until=prediction.valid_until,
                           prediction_source=prediction.source, frame_id=prediction.frame_id)
+        profile = request.viewpoint_profile
+        if profile:
+            profile = (profile[0], min(profile[0], profile[1]+now-request.now_stamp),
+                       *profile[2:])
         updated = replace(request, context=context, now_stamp=now,
                           prediction_times=prediction.prediction_times,
                           target_positions=prediction.target_positions,
-                          target_velocities=prediction.target_velocities)
+                          target_velocities=prediction.target_velocities,
+                          target_covariances=getattr(prediction, 'target_covariances', ()),
+                          model_positions=getattr(prediction, 'model_positions', ()),
+                          model_covariances=getattr(prediction, 'model_covariances', ()),
+                          model_probabilities=getattr(prediction, 'model_probabilities', ()),
+                          uncertainty_identity=getattr(prediction, 'uncertainty_identity', ()),
+                          model=getattr(prediction, 'model', ''), viewpoint_profile=profile)
         metrics = output.metrics
         if cache is not None:
             from uav_control.guidance.follow_fast_validation import assess_curve
@@ -98,6 +108,10 @@ def revalidate_prediction(request, output, prediction, now, model, budget=.03,
                 raise ValueError('DYNAMIC_INFEASIBLE')
         knots = np.r_[0., np.cumsum(ts)]
         query = np.unique(np.r_[knots, np.linspace(0., sum(ts), int(sum(ts)/.05)+2)])
+        policy = getattr(model, 'p6_policy', None)
+        if (policy is not None and policy.visibility_mode == 'robust'
+                and policy.risk_horizon_seconds):
+            query = np.unique(np.r_[query, min(sum(ts), policy.risk_horizon_seconds)])
 
         def assess(times):
             if clock()-started >= budget:
@@ -126,8 +140,9 @@ def revalidate_prediction(request, output, prediction, now, model, budget=.03,
             if not intervals.any():
                 break
             query = np.unique(np.r_[query, ((query[:-1]+query[1:])/2)[intervals]])
-        valid = (all(v.whole_target_safe for v in views)
-                 and all(np.min(value) >= -1e-6 for value in margins.values()))
+        valid = bool(all(v.whole_target_safe for v in views)
+                     and all(np.min(value) >= -1e-6 for value in margins.values())
+                     and geometry.min() >= -1e-6)
         if clock()-started >= budget:
             raise ValueError('REVALIDATION_DEADLINE')
         report.update(valid=valid, reason='' if valid else 'PREDICTION_REVALIDATION_FAILED',

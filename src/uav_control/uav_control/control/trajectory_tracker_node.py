@@ -384,6 +384,11 @@ class TrajectoryTrackerNode(Node):
             if self.follow_minco_requested:
                 from uav_control.guidance.follow_minco_execution import NominalFollowReceiver
                 self.follow_model = FollowMpcSeed(research)
+                from uav_control.guidance.p6_follow import configure_p6
+                self.p6_runtime = configure_p6(self, self.follow_model)
+                self.p6_diagnostic_sub = self.create_subscription(
+                    String, '/planning/imm_diagnostics', self.p6_runtime.diagnostic,
+                    qos_profile_sensor_data)
                 self.follow_receiver = NominalFollowReceiver(
                     limits=constraint_snapshot(self.follow_model), admission=self.follow_admission)
             epoch_qos = QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL,
@@ -648,11 +653,21 @@ class TrajectoryTrackerNode(Node):
             depth=1,
         )
         from uav_usv_interfaces.msg import UavState
+        # Native bracket interpolation needs intermediate samples even when a
+        # validation callback briefly occupies the sole executor. KEEP_LAST(1)
+        # discards that physical history before uav_callback can record it.
+        # Retention does not alter stamps or the 125 ms/50 ms validity checks.
+        navigation_qos = QoSProfile(
+            reliability=ReliabilityPolicy.BEST_EFFORT,
+            durability=DurabilityPolicy.VOLATILE,
+            history=HistoryPolicy.KEEP_LAST,
+            depth=16,
+        )
         self.uav_sub = self.create_subscription(
             UavState,
             '/navigation/uav_state',
             self.uav_callback,
-            state_qos,
+            navigation_qos,
         )
         self.vehicle_status_sub = self.create_subscription(
             VehicleStatus,
@@ -943,7 +958,8 @@ class TrajectoryTrackerNode(Node):
                     raise ValueError('PLANNER_AUTHORITY_CONFLICT')
                 if self.follow_stable_ticks < 10:
                     raise ValueError('FOLLOW_NOT_STABLE')
-                prediction = prediction_from_message(self.latest_prediction)
+                prediction = self.p6_runtime.prediction(
+                    prediction_from_message(self.latest_prediction))
                 validated_prediction_id = int(self.latest_prediction.sequence_id)
                 if (not nominal_attitude(candidate, self.follow_model)
                         or not nominal_curve(candidate, prediction, self.follow_model,
@@ -1047,7 +1063,8 @@ class TrajectoryTrackerNode(Node):
         self.follow_stable_ticks = self.follow_stable_ticks+1 if context.visible else 0
         nominal, prefix_details = {}, {}
         try:
-            prediction = prediction_from_message(self.latest_prediction)
+            prediction = self.p6_runtime.prediction(
+                prediction_from_message(self.latest_prediction))
             for curve in (receiver.active, receiver.pending):
                 if curve and now < min(curve.end, curve.start+receiver.lease_seconds):
                     detail = dict(reason='CONTEXT_NOT_READY', visible=context.visible)

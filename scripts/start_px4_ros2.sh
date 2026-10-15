@@ -345,6 +345,7 @@ restart_lab()
     rm -rf -- "${LAB_CAMERA_MODELS}"
     rmdir "${LAB_SESSION_DIR}" 2>/dev/null || true
     echo "Previous simulation stopped. Starting a clean session..."
+    export UAV_USV_RESET_MOTION_MODE=1
     exec "${BASH_SOURCE[0]}" --no-build
 }
 
@@ -538,14 +539,41 @@ echo "  X: start UAV takeoff and USV motion simultaneously"
 echo "  Y: start interception from visually locked FOLLOW"
 echo "  R: stop this simulation and restart a clean session"
 echo "  Q: leave this command console"
+echo "  1/2/3/4/5: straight/eight/variable-eight/S/Z (before X)"
+
+motion_reset_pending=0
+if [[ "${UAV_USV_RESET_MOTION_MODE:-0}" == 1 ]]; then
+    motion_reset_pending=1
+    if ! timeout 8s python3 -m uav_control.motion_mode_client 2; then
+        echo "Motion reset was not acknowledged; X remains gated." >&2
+    else
+        motion_reset_pending=0
+    fi
+    unset UAV_USV_RESET_MOTION_MODE
+fi
 
 while true; do
-    read -r -p "Command [X/Y/R/Q]: " command
+    read -r -p "Command [1-5/X/Y/R/Q]: " command
     command=${command^^}
 
     case "${command}" in
         X)
-            publish_command X
+            if [[ "${motion_reset_pending}" == 1 ]] \
+                && ! timeout 8s python3 -m uav_control.motion_mode_client 2; then
+                echo "X blocked: R requires an acknowledged default figure eight." >&2
+            elif timeout 8s python3 -m uav_control.motion_mode_client; then
+                motion_reset_pending=0
+                publish_command X
+            else
+                echo "X blocked: USV motion mode not acknowledged." >&2
+            fi
+            ;;
+        [1-5])
+            if timeout 8s python3 -m uav_control.motion_mode_client "${command}"; then
+                motion_reset_pending=0
+            else
+                echo "Motion selection rejected; current mode unchanged." >&2
+            fi
             ;;
         Y)
             publish_command Y
@@ -558,7 +586,7 @@ while true; do
             break
             ;;
         *)
-            echo "Please enter X, Y, R, or Q."
+            echo "Please enter 1-5, X, Y, R, or Q."
             ;;
     esac
 done
