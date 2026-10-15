@@ -49,7 +49,7 @@ def generate_launch_description():
                               choices=['true', 'false']),
         DeclareLaunchArgument('enable_follow_planner', default_value='true',
                               choices=['true', 'false']),
-        DeclareLaunchArgument('prediction_model', default_value='bctra',
+        DeclareLaunchArgument('prediction_model', default_value='imm',
                               choices=['bctra', 'imm']),
         DeclareLaunchArgument('enable_imm_shadow', default_value='false',
                               choices=['true', 'false']),
@@ -60,7 +60,7 @@ def generate_launch_description():
         ),
         DeclareLaunchArgument(
             'enable_shadow_perception',
-            default_value='true',
+            default_value='false',
             description=(
                 'Run optional shadow prediction and image diagnostics.'
             ),
@@ -126,7 +126,10 @@ def generate_launch_description():
             executable='target_predictor_node',
             name='shadow_target_predictor_node',
             output='screen',
-            parameters=[config_file],
+            parameters=[
+                config_file,
+                {'prediction_topic': '/planning/shadow_target_prediction'},
+            ],
             condition=IfCondition(enable_shadow_perception),
         ),
         Node(
