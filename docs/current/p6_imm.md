@@ -131,6 +131,17 @@ image/PX4 clock reset count 变化清除 posterior；reset count 变化的触发
 - 每个 `position_covariance[9]` 由实际模型传播产生，不使用 BCTRA 经验标准差。
 - invalid 时 samples 为空；不会延长旧轨迹、伪造新鲜观测或发布控制命令。
 
+IMM 包装器独立使用 `floor(seconds)` 加 fractional-second 纳秒舍入，正确处理进位
+与负值；避免先将整个大历元乘 1e9 后产生额外浮点舍入。原 BCTRA 的转换 helper
+没有修改，IMM 数学源码也没有修改。该转换在已有 float 精度内保持原 acquisition
+epoch 往返一致，不以 receipt 代替、不写回输入 header，也不声称恢复 float 已丢失的
+原始纳秒位。合法消息与诊断仍按 ROS 1 ns 量化严格比较，不扩大身份匹配容差。
+
+首轮真实 sequence780 的 acquisition `1791992166.966803` 曾在旧转换往返后成为
+`1791992166.9668033`，导致合法条件诊断被严格身份校验拒绝。独立真实历元
+Engine→ROS→parser→attach 测试先 RED 后 GREEN，覆盖 source/observation/generated/
+valid_until 和完整 41 点时间数组；人为改变任一时间身份 239 ns 仍明确拒绝。
+
 默认 topic 参数：
 
 | 参数 | 默认值 |
@@ -198,4 +209,18 @@ TDD RED/GREEN 与复跑 CPU 脚本位于忽略目录
 保存七份实际源码/配置字节与完整 SHA 清单。root 集成曾发生的 source drift
 已在当前文件重读与测试后复审，证据为 `imm/root_integration_review_04.json`；
 该审查支持 BCTRA 主链、IMM shadow 的首轮 pilot，未授予 IMM 主链飞行资格。
-真实 shadow 负载、真实误差校准与联合闭环仍需实际证据，不得据此声称概率安全保证。
+上述审查及 `prediction_04` 保存的是当时精确源版本；后续时间序列化修复需要新的
+source 指纹与独立复审，不回填旧资格或改写研究快照。
+
+首轮实际 `pilot_A_linear` 的原飞行与旧分析均保留。离线 analyzer 的大历元单桶
+关联漏掉 22/1200 条 raw acquisition，曾同时误报身份及 covariance 不合格；
+bounded join 修复后的新报告 `pilot_A_linear_analysis_02/analysis.json` 中，1200 个
+完整 shadow 均唯一匹配，九项诊断检查通过。独立状态、三模型条件和消息协方差均
+对称 PSD；真实 update+forecast+消息耗时 P95 15.07 ms，P99 18.36 ms，最大 25.32 ms，
+不包含 JSON/DDS。它超过离线 CPU p95<10 ms 目标，符合首轮预定义的实际 20 ms
+工程诊断预算，不能将两种计时负载混报。
+
+这份实际 shadow 诊断不授予 IMM 主链资格。修复后包装器 39 项测试通过，
+证据在 `pilot_A_linear_imm_diagnosis_01/03_sequence_780_wire_red.log` 与
+`05_sequence_780_wire_green.log`。后续实际复测、真实误差校准及联合闭环仍须独立
+证据，不得据此声称概率安全保证。

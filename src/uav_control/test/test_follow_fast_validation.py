@@ -25,16 +25,36 @@ def test_vectorized_polynomial_fields_have_independent_known_values():
 def test_same_curve_reuses_dynamics_but_rechecks_new_prediction_full_fov():
     req, output, pred = inputs()
     cache = fast.InvariantCache()
+    # This checks geometry/cache semantics; deadline rejection is tested below.
     with CycleProfile(1) as first:
-        _, report = revalidate_prediction(req, output, pred, req.now_stamp, model(), cache=cache)
+        _, report = revalidate_prediction(req, output, pred, req.now_stamp, model(),
+                                          cache=cache, clock=lambda: 0.)
     assert report['valid'] and not report['invariants_reused']
     pred.target_positions = tuple((x-100, y, z) for x, y, z in pred.target_positions)
     with CycleProfile(2) as second:
-        _, report = revalidate_prediction(req, output, pred, req.now_stamp, model(), cache=cache)
+        _, report = revalidate_prediction(req, output, pred, req.now_stamp, model(),
+                                          cache=cache, clock=lambda: 0.)
     assert not report['valid'] and report['invariants_reused']
     assert second.report()['counts']['projection_samples'] > 0
     assert second.report()['counts'].get('root_searches', 0) == 0
     assert first.report()['stages']['derivative_bounds']['calls'] == 6
+
+
+def test_cached_dynamics_still_rejects_the_original_thirty_ms_validation_deadline():
+    req, output, pred = inputs()
+    cache = fast.InvariantCache()
+    _, report = revalidate_prediction(req, output, pred, req.now_stamp, model(),
+                                      cache=cache, clock=lambda: 0.)
+    assert report['valid']
+    ticks = iter((0., 0., 0., .03))
+    with CycleProfile(3) as cycle:
+        updated, report = revalidate_prediction(
+            req, output, pred, req.now_stamp, model(), cache=cache,
+            clock=lambda: next(ticks, .03))
+    assert cycle.report()['counts']['invariant_hits'] == 1
+    assert updated is req and not report['valid']
+    assert report['reason'] == 'REVALIDATION_DEADLINE'
+    assert report['elapsed'] >= .03
 
 
 def test_changed_coefficients_camera_envelope_or_epoch_cannot_hit_invariant_cache():

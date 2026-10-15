@@ -5,6 +5,7 @@ import json
 import math
 import time
 
+from builtin_interfaces.msg import Duration, Time
 import numpy as np
 import rclpy
 from rclpy.node import Node
@@ -15,7 +16,6 @@ from uav_usv_interfaces.msg import TargetObservation, TargetPrediction
 
 from .imm_predictor import ImmConfig, ImmPredictor, MODEL_NAMES, UpdateStatus
 from .target_prediction import PredictionResult
-from .target_predictor_node import seconds_to_duration, seconds_to_time
 
 
 @dataclass(frozen=True)
@@ -49,6 +49,26 @@ class ImmPredictionResult(PredictionResult):
 
 def _stamp_seconds(stamp):
     return int(stamp.sec) + int(stamp.nanosec) * 1e-9
+
+
+def _fractional_nanoseconds(seconds):
+    """Round the fractional second without multiplying a large absolute epoch."""
+    value = float(seconds)
+    if not math.isfinite(value):
+        raise ValueError('INVALID_IMM_TIME')
+    second = math.floor(value)
+    carry, nanosecond = divmod(round((value - second) * 1e9), 1_000_000_000)
+    return second + carry, nanosecond
+
+
+def _seconds_to_time(seconds):
+    second, nanosecond = _fractional_nanoseconds(seconds)
+    return Time(sec=second, nanosec=nanosecond)
+
+
+def _seconds_to_duration(seconds):
+    second, nanosecond = _fractional_nanoseconds(seconds)
+    return Duration(sec=second, nanosec=nanosecond)
 
 
 def observation_from_message(message):
@@ -276,13 +296,13 @@ def prediction_to_message(result, compute_time, frame_id='local_ned'):
                  'turn_acceleration', 'longitudinal_acceleration', 'valid', 'invalid_reason'):
         setattr(message, name, getattr(result, name))
     for name in ('source_stamp', 'observation_stamp', 'generated_stamp', 'valid_until'):
-        setattr(message, name, seconds_to_time(getattr(result, name)))
+        setattr(message, name, _seconds_to_time(getattr(result, name)))
     message.frame_id = str(frame_id)
     message.prediction_horizon = result.horizon
     message.compute_time = float(compute_time)
     for sample in result.samples:
         output = PredictedTargetPoint()
-        output.relative_time = seconds_to_duration(sample.relative_time)
+        output.relative_time = _seconds_to_duration(sample.relative_time)
         for name in ('position', 'velocity', 'acceleration'):
             target = getattr(output, name)
             target.x, target.y, target.z = map(float, getattr(sample, name))

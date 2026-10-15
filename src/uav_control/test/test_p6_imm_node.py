@@ -184,6 +184,70 @@ def test_real_engine_ros_follow_parser_accepts_same_prediction_diagnostics(now, 
     assert parsed.prediction_times[3] == pytest.approx(.3)
 
 
+def real_sequence_780():
+    engine = ImmPredictionEngine()
+    acquired = observation(1791992166.966803)
+    original_stamp = (acquired.stamp.sec, acquired.stamp.nanosec)
+    now = 1791992166.9974535
+    assert engine.update(observation_from_message(acquired), now=now).accepted
+    result = engine.generate(now, 1, 780)
+    return engine, acquired, original_stamp, result
+
+
+def test_real_sequence_780_preserves_all_float_epochs_and_full_grid_on_ros_roundtrip():
+    from uav_control.controllers.follow_mpc_shadow_node import prediction_from_message
+    from uav_control.guidance.p6_follow import attach_model_diagnostics
+    engine, acquired, original_stamp, result = real_sequence_780()
+    parsed = prediction_from_message(prediction_to_message(result, .001))
+    attached = attach_model_diagnostics(parsed, engine.diagnostics(result))
+    for name in ('source_stamp', 'observation_stamp', 'generated_stamp', 'valid_until'):
+        assert getattr(parsed, name) == getattr(result, name)
+    assert len(parsed.prediction_times) == 41
+    assert np.allclose(parsed.prediction_times, engine.horizons, atol=.5e-9, rtol=0.)
+    assert np.asarray(attached.model_positions).shape == (3, 41, 3)
+    assert (acquired.stamp.sec, acquired.stamp.nanosec) == original_stamp
+    assert result.observation_stamp == acquired.image_measurement_stamp
+    assert result.valid_until == result.observation_stamp + .125
+
+
+@pytest.mark.parametrize('field', (
+    'source_stamp', 'observation_stamp', 'generated_stamp', 'valid_until', 'relative_time'))
+def test_real_sequence_780_rejects_a_239_nanosecond_wire_identity_change(field):
+    from uav_control.controllers.follow_mpc_shadow_node import prediction_from_message
+    from uav_control.guidance.p6_follow import attach_model_diagnostics
+    engine, _, _, result = real_sequence_780()
+    message = prediction_to_message(result, .001)
+    stamp = (message.samples[3].relative_time if field == 'relative_time'
+             else getattr(message, field))
+    # Keep source <= generated so this specifically exercises identity checking.
+    shift = -239 if field == 'source_stamp' else 239
+    carry, nanosecond = divmod(stamp.nanosec + shift, 1_000_000_000)
+    stamp.sec += carry
+    stamp.nanosec = nanosecond
+    with pytest.raises(ValueError, match='P6_MODEL_IDENTITY_MISMATCH'):
+        attach_model_diagnostics(prediction_from_message(message), engine.diagnostics(result))
+
+
+@pytest.mark.parametrize('value,expected', (
+    (0., (0, 0)), (10.9999999996, (11, 0)), (-.1, (-1, 900_000_000)),
+    (-1.0000000006, (-2, 999_999_999)), (-.0000000004, (0, 0)),
+    (1791992166.966803, (1791992166, 966_803_074))))
+def test_imm_fractional_seconds_normalizes_carry_and_negative_time(value, expected):
+    from uav_control.tracking.imm_target_predictor_node import _seconds_to_duration
+    from uav_control.tracking.imm_target_predictor_node import _seconds_to_time
+    for convert in (_seconds_to_time, _seconds_to_duration):
+        stamp = convert(value)
+        assert (stamp.sec, stamp.nanosec) == expected
+        assert 0 <= stamp.nanosec < 1_000_000_000
+
+
+@pytest.mark.parametrize('value', (np.nan, np.inf, -np.inf))
+def test_imm_time_conversion_rejects_nonfinite_epoch(value):
+    from uav_control.tracking.imm_target_predictor_node import _seconds_to_time
+    with pytest.raises(ValueError, match='INVALID_IMM_TIME'):
+        _seconds_to_time(value)
+
+
 class Publisher:
     def __init__(self):
         self.messages = []
