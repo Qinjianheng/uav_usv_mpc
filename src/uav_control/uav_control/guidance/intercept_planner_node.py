@@ -16,8 +16,7 @@ from uav_usv_interfaces.msg import MissionState
 from uav_usv_interfaces.msg import PlannerDiagnostic, PolynomialSegment
 from uav_usv_interfaces.msg import TargetPrediction
 
-from uav_control.tracking.target_predictor_node import seconds_to_duration
-from uav_control.tracking.target_predictor_node import seconds_to_time
+from uav_control.tracking.ros_time import seconds_to_duration, seconds_to_time
 
 from .fast_minco_planner import FastMincoPlanner, FastPlanningFailure
 from .fast_minco_planner import FastPlanningOutcome

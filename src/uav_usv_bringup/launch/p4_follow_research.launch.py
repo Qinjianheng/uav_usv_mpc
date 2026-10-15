@@ -20,13 +20,12 @@ def generate_launch_description():
                     log_directory=os.path.join(experiment, 'evaluator'),
                     enable_evaluator='true', enable_shadow_perception='false',
                     enable_down_camera='false', front_depth_model='ideal',
-                    prediction_model=os.environ.get('UAV_USV_P6_PREDICTOR', 'bctra'),
-                    enable_imm_shadow=os.environ.get('UAV_USV_P6_IMM_SHADOW', 'false'),
+                    prediction_model=os.environ.get('UAV_USV_P6_PREDICTOR', 'imm'),
                     enable_planner=os.environ.get('UAV_USV_P4_SHADOW', 'false'),
                     research_config_file=os.environ.get('UAV_USV_RESEARCH_CONFIG_FILE',
                         os.path.join(share, 'config/p4_follow_research.yaml')))
     original = ('config_file', 'log_directory', 'enable_evaluator', 'enable_shadow_perception',
-                'enable_down_camera', 'front_depth_model', 'prediction_model', 'enable_imm_shadow')
+                'enable_down_camera', 'front_depth_model', 'prediction_model')
     return LaunchDescription([
         *(DeclareLaunchArgument(name, default_value=value) for name, value in defaults.items()),
         IncludeLaunchDescription(PythonLaunchDescriptionSource(os.path.join(

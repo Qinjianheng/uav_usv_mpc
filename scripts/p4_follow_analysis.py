@@ -12,7 +12,7 @@ import numpy as np
 from uav_control.controllers.follow_mpc_seed import FollowMpcSeed
 from uav_control.guidance.camera_visibility import evaluate_visibility
 from uav_control.guidance.camera_visibility import body_frd_to_ned_from_quaternion
-from p32_latency_analysis import arrival
+from p6_prediction_latency import arrival
 
 
 def distribution(values):

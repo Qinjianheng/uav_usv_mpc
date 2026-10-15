@@ -1,10 +1,5 @@
-#!/usr/bin/env python3
-"""Causal epoch latency and scalar/batch BCTRA benchmarks, without fitted time shifts."""
-import argparse
+"""Prediction epoch latency analysis; no legacy predictor runtime."""
 import json
-from pathlib import Path
-import time
-
 import numpy as np
 
 
@@ -87,46 +82,3 @@ def arrival(root):
                           for h, v in errors.items()})
     (root/'prediction_latency.json').write_text(json.dumps(result, indent=2))
     return result
-
-
-def benchmark(root):
-    """Compare unchanged scalar predictions, shared prefixes and actual ROS construction."""
-    from uav_control.tracking.maneuvering_target_predictor import ManeuveringTargetPredictor
-    from uav_control.tracking.target_prediction import PredictionEngine, TargetKinematicState
-    from uav_control.tracking.target_predictor_node import prediction_to_message
-    p = ManeuveringTargetPredictor(max_turn_rate=.7)
-    p.valid_turn_updates = 10
-    p.turn_rate, p.turn_acceleration, p.speed_acceleration = .6, -.8, .5
-    p.update_vertical(.1, .2, 100.)
-    engine = PredictionEngine(p)
-    engine.latest_state = TargetKinematicState(100., (3., 2., .1), (4., -2., .2))
-    times, state = engine._sample_times(), (3., 2., .1, 4., -2., .2)
-    old, new, conversion = [], [], []
-    error = float(np.max(np.abs(np.asarray([p.predict(*state, t) for t in times]) -
-                                np.asarray(p.predict_many(*state, times)))))
-    result = engine.generate(100.05, 1, 1)
-    for _ in range(400):
-        start = time.perf_counter()
-        [p.predict(*state, t) for t in times]
-        old.append(time.perf_counter()-start)
-        start = time.perf_counter()
-        p.predict_many(*state, times)
-        new.append(time.perf_counter()-start)
-        start = time.perf_counter()
-        prediction_to_message(result, 0.)
-        conversion.append(time.perf_counter()-start)
-    results = dict(count=400, horizon=4., samples=len(times),
-                   maximum_position_velocity_error=error,
-                   scalar_series=percentiles(old), batch_series=percentiles(new),
-                   ros_message_construction=percentiles(conversion),
-                   model_changes=False, compute_includes_dds=False)
-    (root/'prediction_compute_benchmark.json').write_text(json.dumps(results, indent=2))
-    return results
-
-
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('root', type=Path)
-    parser.add_argument('--benchmark', action='store_true')
-    args = parser.parse_args()
-    print(json.dumps(benchmark(args.root) if args.benchmark else arrival(args.root)))

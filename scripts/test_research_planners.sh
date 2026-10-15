@@ -10,16 +10,16 @@ START_NS="$(date +%s%N)"
 case "${MODE}" in
     algorithm)
         python3 -m pytest -q test/test_camera_visibility.py test/test_planned_attitude.py \
-            test/test_minco_trajectory.py test/test_maneuvering_target_predictor.py \
+            test/test_minco_trajectory.py  \
             test/test_follow_research_algorithms.py test/test_fast_follow_minco.py \
-            test/test_realtime_follow.py test/test_short_follow.py test/test_prediction_batch.py \
+             test/test_short_follow.py  \
             test/test_tracking_progress.py test/test_follow_epoch.py \
-            test/test_follow_revalidation.py test/test_follow_safety_bounds.py \
+            test/test_follow_revalidation.py  \
             test/test_follow_profile.py test/test_follow_limits.py \
             test/test_follow_fast_validation.py test/test_p43_objective.py \
             test/test_p43_follow_solver.py test/test_follow_attitude_bounds.py \
             test/test_p44_follow_solver.py test/test_p44_invariant_cache.py \
-            test/test_p44_analysis.py \
+             \
             test/test_progress_follow.py test/test_follow_contract.py \
             test/test_hypothetical_follow.py test/test_polynomial_bounds.py \
             test/test_p4_session_safety.py \
@@ -32,22 +32,22 @@ case "${MODE}" in
         if [[ "${MODE}" == related ]]; then
             python3 -m pytest -q test/test_camera_visibility.py test/test_planned_attitude.py \
                 test/test_minco_trajectory.py test/test_fast_minco_planner.py \
-                test/test_maneuvering_target_predictor.py test/test_target_predictor_node.py \
+                  \
                 test/test_follow_mpc_seed.py test/test_mpc_shadow_inputs.py \
                 test/test_follow_mpc_shadow_node.py test/test_follow_research_algorithms.py \
                 test/test_follow_research_runtime.py test/test_fast_follow_minco.py \
-                test/test_realtime_follow.py test/test_short_follow.py \
-                test/test_prediction_batch.py test/test_target_prediction_engine.py \
+                 test/test_short_follow.py \
+                  \
                 test/test_tracking_progress.py test/test_follow_epoch.py \
-            test/test_follow_revalidation.py test/test_follow_safety_bounds.py \
+            test/test_follow_revalidation.py  \
             test/test_follow_profile.py test/test_follow_limits.py \
             test/test_follow_fast_validation.py test/test_p43_objective.py \
             test/test_p43_follow_solver.py test/test_follow_attitude_bounds.py \
             test/test_p44_follow_solver.py test/test_p44_invariant_cache.py \
-            test/test_p44_analysis.py \
+             \
             test/test_progress_follow.py test/test_follow_contract.py \
                 test/test_hypothetical_follow.py test/test_polynomial_bounds.py \
-                test/test_p4_receiver_node.py test/test_p4_session_safety.py test/test_p43_analysis.py \
+                test/test_p4_receiver_node.py test/test_p4_session_safety.py  \
                 test/test_p45_isolation.py \
                 test/test_follow_minco_experiment.py test/test_follow_sitl_execution.py
         else

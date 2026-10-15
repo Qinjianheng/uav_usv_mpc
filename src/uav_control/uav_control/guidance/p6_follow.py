@@ -82,7 +82,7 @@ def load_calibration(policy):
     raw = Path(policy.calibration_file).read_bytes()
     data = json.loads(raw)
     if (data.get('schema') != 'p6-calibration-v1' or not data.get('id')
-            or data.get('family') not in ('bctra', 'imm')
+            or data.get('family') != 'imm'
             or not data.get('source_provenance') or not data.get('heldout_provenance')):
         raise ValueError('INVALID_P6_CALIBRATION')
     return replace(policy, calibration_id=data['id'],
@@ -179,7 +179,9 @@ def interpolate_uncertainty(prediction, query, policy):
     if (not np.all(np.isfinite(query)) or query.min() < times[0]-1e-8
             or query.max() > times[-1]+1e-8):
         raise ValueError('P6_UNCERTAINTY_HORIZON')
-    family = 'imm' if 'IMM' in str(getattr(prediction, 'model', '')).upper() else 'bctra'
+    if 'IMM' not in str(getattr(prediction, 'model', '')).upper():
+        raise ValueError('P6_IMM_ONLY')
+    family = 'imm'
     if family != policy.calibration_family:
         raise ValueError('P6_CALIBRATION_FAMILY_MISMATCH')
 

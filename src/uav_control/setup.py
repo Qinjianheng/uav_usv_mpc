@@ -25,21 +25,9 @@ setup(
     entry_points={
         'console_scripts': [
             'p4_follow_planner_node = uav_control.controllers.p4_follow_planner_node:main',
-            'follow_research_shadow_node = '
-            'uav_control.controllers.follow_research_shadow_node:main',
-            'follow_mpc_shadow_node = '
-            'uav_control.controllers.follow_mpc_shadow_node:main',
-            'position_listener = uav_control.position_listener:main',
-            'offboard_takeoff = uav_control.offboard_takeoff:main',
             'moving_target = uav_control.moving_target:main',
-            'usv_estimation_analysis = '
-            'uav_control.analysis.usv_estimation_analysis:main',
-            'intercept_outcome_analysis = '
-            'uav_control.analysis.intercept_outcome_analysis:main',
             'target_kalman_filter = '
             'uav_control.tracking.target_kalman_filter:main',
-            'target_predictor_node = '
-            'uav_control.tracking.target_predictor_node:main',
             'imm_target_predictor_node = '
             'uav_control.tracking.imm_target_predictor_node:main',
             'intercept_planner_node = '

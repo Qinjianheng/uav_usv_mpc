@@ -21,10 +21,9 @@ R11 = EXPERIMENT_ROOT / '20261013_p53_closed_loop_11/f3_h16_01/config'
 DEFAULT_FLIGHT = R11 / 'flight.yaml'
 DEFAULT_RESEARCH = R11 / 'research.yaml'
 KIND = 'P6_TESTED_PROTOCOL_CANDIDATE'
+# Forward-only protocol: historical A/C cases remain frozen, not rerunnable.
 GROUPS = {
-    'A': ('bctra', 'nominal', False),
     'B': ('imm', 'nominal', False),
-    'C': ('bctra', 'robust', True),
     'D': ('imm', 'robust', True),
 }
 
@@ -63,8 +62,8 @@ def prepare_case(output, motion_mode, group, flight_config=DEFAULT_FLIGHT,
     if group not in GROUPS or role not in ('pilot', 'baseline', 'experiment'):
         raise ValueError('P6_ROLE_MISMATCH')
     predictor, visibility, adaptive = GROUPS[group]
-    if ((role == 'pilot' and (mode != 'linear' or group != 'A' or not imm_shadow))
-            or (role == 'baseline' and (mode != 'figure_eight' or group != 'A'))):
+    if ((role == 'pilot' and (mode != 'linear' or group != 'B'))
+            or (role == 'baseline' and (mode != 'figure_eight' or group != 'B'))):
         raise ValueError('P6_ROLE_MISMATCH')
     if type(seed) is not int or not 0 <= seed < 2 ** 32:
         raise ValueError('P6_SEED_REQUIRED')
@@ -91,8 +90,7 @@ def prepare_case(output, motion_mode, group, flight_config=DEFAULT_FLIGHT,
     imm = flight.setdefault('imm_target_predictor_node', {}).setdefault('ros__parameters', {})
     for name, value in defaults.items():
         imm.setdefault(name, value)
-    imm['prediction_topic'] = ('/planning/target_prediction' if predictor == 'imm'
-                               else '/planning/imm_target_prediction')
+    imm['prediction_topic'] = '/planning/target_prediction'
     # Validate/copy only; calibrated evidence and tuning are supplied by the
     # independently qualified root task, never manufactured by this driver.
     from uav_control.guidance.p6_follow import P6Policy
@@ -116,7 +114,7 @@ def prepare_case(output, motion_mode, group, flight_config=DEFAULT_FLIGHT,
     motion['trajectory_type'] = mode
     mode_id = next(index for index, value in MOTION_MODES.items() if value == mode)
     scene = 'f3' if role == 'baseline' else 'f2'
-    effective_shadow = bool(imm_shadow and predictor == 'bctra')
+    effective_shadow = False
     case_id = f'{role}_{scene}_m{mode_id}_{group}_s{seed}'
     environment = dict(UAV_USV_P6_PREDICTOR=predictor,
                        UAV_USV_P6_IMM_SHADOW='true' if imm_shadow else 'false',
@@ -331,7 +329,7 @@ def main(argv=None):
     prepare_parser = commands.add_parser('prepare', help='save an exclusive full-config case')
     prepare_parser.add_argument('output', type=Path)
     prepare_parser.add_argument('--motion', required=True)
-    prepare_parser.add_argument('--group', choices=tuple(GROUPS), default='A')
+    prepare_parser.add_argument('--group', choices=tuple(GROUPS), default='B')
     prepare_parser.add_argument('--role', choices=('pilot', 'baseline', 'experiment'),
                                 default='experiment')
     prepare_parser.add_argument('--flight-config', type=Path, default=DEFAULT_FLIGHT)

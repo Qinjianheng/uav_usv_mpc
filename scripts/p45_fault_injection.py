@@ -12,7 +12,7 @@ from p4_sitl_session import identity
 class FaultInjector:
     """No forged prediction, ACK or expiry: suspend real producers and record causal epochs."""
 
-    schedule = ((15., .6, ('target_predictor_node',)),
+    schedule = ((15., .6, ('imm_target_predictor_node',)),
                 (25., .8, ('p4_follow_planner_node',)),
                 (35., .6, ('rgbd_target_localizer', 'target_bearing_node')),
                 (45., .18, ('p4_follow_planner_node',)))
