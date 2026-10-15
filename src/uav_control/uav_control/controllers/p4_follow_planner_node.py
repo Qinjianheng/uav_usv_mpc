@@ -103,6 +103,15 @@ class P4ResearchRunner(ShadowResearchRunner):
         """Busy work has no queued request; completion alone rebuilds from latest inputs."""
         if self.pending is not None and not self.pending['future'].done():
             return
+        # A completed worker must always be consumed, but during the normal
+        # dispatch cooldown there is no candidate to prepare or submit.
+        # Avoid re-pairing/allocating snapshots on every 10 ms timer tick:
+        # those preparations contend with the single active MINCO worker.
+        # Freshness, admission and receiver identity are checked again when
+        # the next request is actually eligible to dispatch. Explicit invalid
+        # prediction/mission messages are rejected in their own callbacks.
+        if self.pending is None and monotonic_now < self.next_solve:
+            return
         previous = self.pending
         finishing = previous is not None and previous['future'].done()
         super().tick(now, monotonic_now)
@@ -333,21 +342,31 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
 
     def _publish_event(self, event):
         """Include prediction revalidation and wire publication in the final cycle audit."""
+        # Per-event audit buffer. A fresh buffer prevents cross-cycle leakage.
+        self._pending_revalidation_audit = None
         cycle_id = event['request']['context']['cycle_id'] if event.get('request') else 0
         critical_first = (getattr(self, 'follow_execution_enabled', False)
                           and getattr(self, 'follow_admission_required', False))
         with CycleProfile(cycle_id) as profile:
             if critical_first:
-                outcome = (self._publish_proposal(event)
-                           if event['output'].get('valid') and event.get('request') else
-                           dict(published=False, reason=event['output'].get('solver_status')))
+                try:
+                    outcome = (self._publish_proposal(event)
+                               if event['output'].get('valid') and event.get('request') else
+                               dict(published=False, reason=event['output'].get('solver_status')))
+                finally:
+                    # Revalidation and deadline checks ran before the wire;
+                    # only full diagnostic serialization is deferred.
+                    self._flush_revalidation_audit()
             # Large research markers and audit serialization cannot consume the
             # critical wire's raw-input budget. Wire/Receiver checks remain complete.
             super()._publish_event(event)
             if not critical_first:
-                outcome = (self._publish_proposal(event)
-                           if event['output'].get('valid') and event.get('request') else
-                           dict(published=False, reason=event['output'].get('solver_status')))
+                try:
+                    outcome = (self._publish_proposal(event)
+                               if event['output'].get('valid') and event.get('request') else
+                               dict(published=False, reason=event['output'].get('solver_status')))
+                finally:
+                    self._flush_revalidation_audit()
             elif event.get('event') == 'completion':
                 # The original one-parent retry follows actual critical delivery,
                 # not solver feasibility or a later research-marker deadline.
@@ -505,12 +524,23 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
                         minimum_horizontal_margin=report['minimum_horizontal_margin'],
                         minimum_vertical_margin=report['minimum_vertical_margin'],
                         prediction_revalidation=report))
-        self.log_file.write(_serialize(dict(event='prediction_revalidation',
-                                            cycle_id=request_data['context']['cycle_id'],
-                                            stamp=self._ros_seconds(), report=report,
-                                            new_prediction=asdict(prediction)))+'\n')
-        self.log_file.flush()
+        # Keep the entire research audit, but never serialize a large future
+        # prediction before the critical wire has been attempted. This record
+        # is flushed even when complete revalidation rejects the candidate.
+        self._pending_revalidation_audit = (
+            request_data['context']['cycle_id'], self._ros_seconds(), report, prediction)
         return proposed
+
+    def _flush_revalidation_audit(self):
+        record = getattr(self, '_pending_revalidation_audit', None)
+        self._pending_revalidation_audit = None
+        if record is None:
+            return
+        cycle_id, stamp, report, prediction = record
+        self.log_file.write(_serialize(dict(
+            event='prediction_revalidation', cycle_id=cycle_id, stamp=stamp,
+            report=report, new_prediction=asdict(prediction)))+'\n')
+        self.log_file.flush()
 
     def destroy_node(self):
         """Close the independent receiver log before the existing worker shutdown."""
