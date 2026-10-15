@@ -1,5 +1,5 @@
 """Opt-in P6 uncertainty contract, local verification and reference selection."""
-from collections import OrderedDict
+from collections import OrderedDict, deque
 from dataclasses import asdict, dataclass, replace
 import hashlib
 import json
@@ -272,6 +272,7 @@ class P6Runtime:
         )
         self.model, self.policy = model, model.p6_policy
         self.cache = OrderedDict()
+        self.pending_diagnostics = deque(maxlen=16)
         self.last_stamp, self.last_mission = None, None
         self.selector = AdaptiveViewpointSelector(AdaptiveViewpointConfig(
             minimum_distance=self.policy.minimum_distance,
@@ -284,17 +285,25 @@ class P6Runtime:
             maximum_beta_rate=self.policy.maximum_beta_rate))
 
     def diagnostic(self, message):
-        try:
-            data = json.loads(message.data)
-            key = (data['mission_id'], data['sequence_id'])
-            self.cache[key] = data
-            self.cache.move_to_end(key)
-            while len(self.cache) > 16:
-                self.cache.popitem(last=False)
-        except (ValueError, KeyError, TypeError):
-            return
+        """Retain bounded immutable payloads; BCTRA never consumes IMM model evidence."""
+        payload = getattr(message, 'data', None)
+        if isinstance(payload, str):
+            self.pending_diagnostics.append(payload)
 
     def prediction(self, prediction):
+        """Decode on IMM demand, then apply the unchanged strict model identity checks."""
+        if 'IMM' not in str(getattr(prediction, 'model', '')).upper():
+            return prediction
+        while self.pending_diagnostics:
+            try:
+                data = json.loads(self.pending_diagnostics.popleft())
+                key = (data['mission_id'], data['sequence_id'])
+                self.cache[key] = data
+                self.cache.move_to_end(key)
+                while len(self.cache) > 16:
+                    self.cache.popitem(last=False)
+            except (ValueError, KeyError, TypeError):
+                continue
         data = self.cache.get((prediction.mission_id, prediction.sequence_id))
         if data is None:
             return prediction

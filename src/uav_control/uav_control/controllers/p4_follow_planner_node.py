@@ -31,11 +31,15 @@ class P4ResearchRunner(ShadowResearchRunner):
 
     def _solve_request(self, request):
         started = time.monotonic()
+        cpu_started = time.thread_time()
         wall = getattr(self.solver, 'wall_clock', None)
         ros_start = wall() if wall else None
         result = self.solver.solve(request)
-        timeline = dict(solve_start_monotonic=started, solve_end_monotonic=time.monotonic(),
-                        solve_start_ros=ros_start, solve_end_ros=wall() if wall else None)
+        cpu_ended, ended = time.thread_time(), time.monotonic()
+        timeline = dict(solve_start_monotonic=started, solve_end_monotonic=ended,
+                        solve_start_ros=ros_start, solve_end_ros=wall() if wall else None,
+                        solve_start_thread_cpu=cpu_started, solve_end_thread_cpu=cpu_ended,
+                        worker_thread_cpu_seconds=cpu_ended-cpu_started)
         return replace(result, metrics=dict(result.metrics, worker_timeline=timeline))
 
     def event(self, *args, **kwargs):

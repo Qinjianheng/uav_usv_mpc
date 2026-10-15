@@ -5,10 +5,99 @@ import numpy as np
 
 from uav_control.guidance.camera_visibility import (
     _validated_inputs, _evaluate_geometry, evaluate_visibility,
+    CameraVisibilityResult, _FLU_TO_FRD, _OPTICAL_TO_CAMERA_FLU, _BOUNDARY_TOLERANCE,
 )
 from uav_control.guidance.planned_attitude import (
     PlannedAttitudeResult, _valid_config, planned_attitude,
 )
+
+
+def _geometry_batch(p, r, t, translation, mount, offset, intrinsics, target, constraints):
+    """Batch the original sphere projection; scalar authority resolves numeric boundaries."""
+    with np.errstate(over='ignore', invalid='ignore', divide='ignore'):
+        origin = p + (r @ _FLU_TO_FRD @ translation[..., None])[..., 0]
+        optical_rotation = r @ _FLU_TO_FRD @ mount @ _OPTICAL_TO_CAMERA_FLU
+        optical = (np.swapaxes(optical_rotation, 1, 2)
+                   @ (t+offset-origin)[..., None])[..., 0]
+        x, y, z = optical.T
+        radius, tol = float(target.radius), _BOUNDARY_TOLERANCE
+        front, whole_front = z > constraints.depth_epsilon, z-radius > constraints.depth_epsilon
+        distance = z if constraints.distance_mode == 'axial' else np.hypot(np.hypot(x, y), z)
+        near, far = distance-radius, distance+radius
+        if constraints.distance_mode == 'radial':
+            near = np.maximum(0., near)
+        center_range = ((distance >= constraints.minimum_distance-tol)
+                        & (distance <= constraints.maximum_distance+tol))
+        whole_range = ((near >= constraints.minimum_distance-tol)
+                       & (far <= constraints.maximum_distance+tol))
+        uv = np.c_[intrinsics.fx*(x/z)+intrinsics.cx, intrinsics.fy*(y/z)+intrinsics.cy]
+        center_image = ((uv[:, 0] >= -tol) & (uv[:, 0] <= intrinsics.width+tol)
+                        & (uv[:, 1] >= -tol) & (uv[:, 1] <= intrinsics.height+tol))
+        h, v = np.arctan2(x, z), np.arctan2(y, z)
+        he = np.arcsin(np.minimum(1., radius/np.hypot(x, z)))
+        ve = np.arcsin(np.minimum(1., radius/np.hypot(y, z)))
+        h0, h1, v0, v1 = h-he, h+he, v-ve, v+ve
+        left, right, up, down = intrinsics.angle_bounds()
+        hm = np.minimum(h0-left, right-h1)-constraints.horizontal_margin_rad
+        vm = np.minimum(v0-up, down-v1)-constraints.vertical_margin_rad
+        bbox = np.c_[intrinsics.fx*np.tan(h0)+intrinsics.cx,
+                     intrinsics.fy*np.tan(v0)+intrinsics.cy,
+                     intrinsics.fx*np.tan(h1)+intrinsics.cx,
+                     intrinsics.fy*np.tan(v1)+intrinsics.cy]
+        flu = (np.broadcast_to(_OPTICAL_TO_CAMERA_FLU, r.shape) @ optical[..., None])[..., 0]
+        numeric = (np.all(np.isfinite(optical), axis=1) & np.isfinite(distance)
+                   & np.isfinite(near) & np.isfinite(far)
+                   & (~front | np.all(np.isfinite(uv), axis=1))
+                   & (~whole_front | np.all(np.isfinite(bbox), axis=1)))
+        # This is a computation fallback band, not a safety tolerance. The
+        # unchanged scalar kernel decides all near-boundary results exactly.
+        boundary = (np.minimum(abs(hm), abs(vm)) < 1e-10) & whole_front
+        for value in (z-constraints.depth_epsilon, z-radius-constraints.depth_epsilon,
+                      near-constraints.minimum_distance, far-constraints.maximum_distance,
+                      distance-constraints.minimum_distance, distance-constraints.maximum_distance,
+                      uv[:, 0], uv[:, 0]-intrinsics.width, uv[:, 1], uv[:, 1]-intrinsics.height):
+            boundary |= abs(value) < 1e-10
+    results = []
+    for i in range(len(p)):
+        if not numeric[i] or boundary[i]:
+            try:
+                with np.errstate(over='raise', invalid='raise', divide='raise'):
+                    result = _evaluate_geometry(p[i], r[i], t[i], translation, mount, offset,
+                                                intrinsics, target, constraints)
+            except (FloatingPointError, OverflowError):
+                result = CameraVisibilityResult(reasons=('NUMERICAL_ERROR',))
+            results.append(result)
+            continue
+        reasons = []
+        if not front[i]:
+            reasons.append('TARGET_BEHIND_CAMERA' if z[i] < -constraints.depth_epsilon
+                           else 'ZERO_DEPTH')
+        elif not whole_front[i]:
+            reasons.append('TARGET_CROSSES_CAMERA_PLANE')
+        else:
+            if hm[i] < -tol:
+                reasons.append('HORIZONTAL_FOV')
+            if vm[i] < -tol:
+                reasons.append('VERTICAL_FOV')
+        if near[i] < constraints.minimum_distance-tol:
+            reasons.append('BELOW_MINIMUM_DISTANCE')
+        if far[i] > constraints.maximum_distance+tol:
+            reasons.append('ABOVE_MAXIMUM_DISTANCE')
+        results.append(CameraVisibilityResult(
+            valid_input=True, target_camera_optical=tuple(map(float, optical[i])),
+            target_camera_flu=tuple(map(float, flu[i])),
+            image_center_uv=tuple(map(float, uv[i])) if front[i] else None,
+            image_bounds_uv=tuple(map(float, bbox[i])) if front[i] and whole_front[i] else None,
+            center_in_front=bool(front[i]), whole_in_front=bool(whole_front[i]),
+            center_in_image=bool(front[i] and center_image[i]),
+            center_in_range=bool(center_range[i]),
+            center_visible=bool(front[i] and center_image[i] and center_range[i]),
+            whole_in_range=bool(whole_range[i]),
+            distance_interval_m=(float(near[i]), float(far[i])),
+            horizontal_margin_rad=float(hm[i]) if front[i] and whole_front[i] else None,
+            vertical_margin_rad=float(vm[i]) if front[i] and whole_front[i] else None,
+            whole_target_safe=not reasons, reasons=tuple(reasons)))
+    return results
 
 
 @profiled('planned_attitude')
@@ -65,18 +154,14 @@ def visibility_batch(positions, rotations, targets, intrinsics, extrinsics, targ
     orthogonal = np.all(np.abs(products-np.eye(3)) <= 1e-7, axis=(1, 2))
     valid[indices] &= orthogonal & (np.abs(np.linalg.det(finite_rotations)-1.) <= 1e-7)
     translation, mount, offset = values[3:]
-    results = []
-    for i in range(len(p)):
-        if valid[i]:
-            try:
-                with np.errstate(over='raise', invalid='raise', divide='raise'):
-                    result = _evaluate_geometry(p[i], r[i], t[i], translation, mount, offset,
-                                                intrinsics, target, constraints)
-            except (FloatingPointError, OverflowError):
-                result = evaluate_visibility(p[i], r[i], t[i], intrinsics, extrinsics,
+    results = [None]*len(p)
+    indices = np.flatnonzero(valid)
+    if len(indices):
+        checked = _geometry_batch(p[indices], r[indices], t[indices], translation, mount, offset,
+                                  intrinsics, target, constraints)
+        for index, result in zip(indices, checked):
+            results[index] = result
+    for index in np.flatnonzero(~valid):
+        results[index] = evaluate_visibility(p[index], r[index], t[index], intrinsics, extrinsics,
                                              target, constraints)
-        else:
-            result = evaluate_visibility(p[i], r[i], t[i], intrinsics, extrinsics,
-                                         target, constraints)
-        results.append(result)
     return results

@@ -303,6 +303,8 @@ class ShadowResearchRunner:
             'admission_status': status,
             'whole_cycle_time': monotonic_now - started if started is not None else 0.0,
             'cycle_started_monotonic': started,
+            'submitted_monotonic': (self.pending.get('submitted_monotonic')
+                                    if self.pending else None),
             'expires_at_ros_stamp': (min(
                 request.context.navigation_stamp + self.config.maximum_input_age,
                 request.context.observation_stamp + self.config.maximum_input_age,
@@ -334,11 +336,14 @@ class ShadowResearchRunner:
         return request, pair.snapshot
 
     def _finish(self, now, monotonic_now):
+        finish_observed = time.monotonic()
+        candidate_done = None
         record = self.pending
         request = record['request']
         try:
             result = record['future'].result()
             candidate = asdict(result)
+            candidate_done = time.monotonic()
             reason = completion_rejection(request, self.config, now, self.mission['mission_id'],
                                           self.adapter.clock_generation,
                                           monotonic_now - record['started'], self._follow())
@@ -358,6 +363,10 @@ class ShadowResearchRunner:
             candidate = {'exception_type': type(error).__name__, 'exception': str(error)}
             output = _empty_output('SOLVER_EXCEPTION')
         event = self.event(output, now, monotonic_now, candidate, record['started'])
+        event['completion_timeline'] = dict(
+            future_observed_monotonic=finish_observed,
+            candidate_serialized_monotonic=candidate_done,
+            event_prepared_monotonic=time.monotonic())
         self.emit(event)
         self.pending = None
         self.last_rejection = None
@@ -387,6 +396,7 @@ class ShadowResearchRunner:
                         'prediction': self.prediction,
                         'mission_revision': self.mission_revision,
                         'prediction_revision': self.prediction_revision}
+        self.pending['submitted_monotonic'] = time.monotonic()
         self.pending['future'] = self.executor.submit(self._solve_request, request)
 
     def _solve_request(self, request):
