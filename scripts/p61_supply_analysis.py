@@ -89,7 +89,8 @@ def cycle_metrics(record, final, acknowledgements):
                                      'ROS' if key.endswith('_ros') else 'monotonic')
                                for key in durations},
                 margins=dict(
-                    original_request_ttl_at_wire_ros=difference(expiry, final.get('wire_finish_ros')),
+                    original_request_ttl_at_wire_ros=difference(
+                        expiry, final.get('wire_finish_ros')),
                     final_wire_input_margin_ros=final.get('wire_finish_input_margin')),
                 failure=failure, published=final.get('published', False),
                 accepted=bool(accepted), active=bool(active),
