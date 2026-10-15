@@ -1,5 +1,6 @@
 """Cached invariant math never caches target-dependent admission or extends freshness."""
 from dataclasses import replace
+import time
 import numpy as np
 
 from test_follow_revalidation import inputs
@@ -52,6 +53,28 @@ def test_cached_dynamics_still_rejects_the_original_thirty_ms_validation_deadlin
             req, output, pred, req.now_stamp, model(), cache=cache,
             clock=lambda: next(ticks, .03))
     assert cycle.report()['counts']['invariant_hits'] == 1
+    assert updated is req and not report['valid']
+    assert report['reason'] == 'REVALIDATION_DEADLINE'
+    assert report['elapsed'] >= .03
+
+
+def test_real_clock_rejects_validation_overrun_with_cached_dynamics(monkeypatch):
+    req, output, pred = inputs()
+    cache = fast.InvariantCache()
+    _, report = revalidate_prediction(req, output, pred, req.now_stamp, model(),
+                                      cache=cache, clock=lambda: 0.)
+    assert report['valid']
+    original = fast.FollowProblem.assess
+
+    def slow_assess(self, *args, **kwargs):
+        time.sleep(.04)
+        return original(self, *args, **kwargs)
+
+    monkeypatch.setattr(fast.FollowProblem, 'assess', slow_assess)
+    started = time.perf_counter()
+    updated, report = revalidate_prediction(
+        req, output, pred, req.now_stamp, model(), cache=cache)
+    assert time.perf_counter() - started >= .03
     assert updated is req and not report['valid']
     assert report['reason'] == 'REVALIDATION_DEADLINE'
     assert report['elapsed'] >= .03
