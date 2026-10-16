@@ -1,5 +1,7 @@
 """P4 nominal FOLLOW proposals and actual rejection ACK recording; no control publisher."""
 from dataclasses import replace
+from collections import deque
+from statistics import median
 import math
 import time
 import secrets
@@ -22,6 +24,22 @@ from uav_control.controllers.follow_mpc_shadow_node import (
 
 class P4ResearchRunner(ShadowResearchRunner):
     """Math hints may survive mere input waiting; never an accepted reference or permission."""
+
+    def _delivery_enabled(self):
+        return (getattr(self, 'successor_scheduling', 'periodic') == 'delivery'
+                and getattr(self, 'deadline_scheduling', False))
+
+    def _delivery_window(self, now):
+        from uav_control.guidance.successor_delivery import DeliveryWindow
+        status = getattr(self, 'execution_status', None) or {}
+        if not (self._delivery_enabled() and status.get('active')
+                and 0 <= now-status['stamp'] <= .2):
+            return None
+        identity = (getattr(self, 'current_receiver_epoch', None), status['active'])
+        window = getattr(self, 'delivery_window', None)
+        if window is None or window.identity != identity:
+            self.delivery_window = window = DeliveryWindow(identity)
+        return window
 
     def _invalidate_warm(self):
         hint = getattr(self.solver, 'hint', None)
@@ -53,12 +71,16 @@ class P4ResearchRunner(ShadowResearchRunner):
                                                 if self.pending else None)
         result['dispatch_timing'] = (self.pending.get('dispatch_timing')
                                      if self.pending else None)
+        result['delivery_budget'] = (self.pending.get('delivery_budget')
+                                     if self.pending else None)
         if result['event'] == 'completion':
             self.last_completed_valid = result['output']['valid']
         result['deadline_retry'] = getattr(self, 'deadline_retry', None)
         return result
 
     def _prepare(self, now, monotonic_now):
+        if self._delivery_enabled() and self.pending is not None:
+            return self._completion_inputs(now, monotonic_now)
         with CycleProfile(self.cycle_id+1) as profile:
             result = super()._prepare(now, monotonic_now)
             waiting = getattr(self, 'retry_waiting_parent', None)
@@ -78,12 +100,43 @@ class P4ResearchRunner(ShadowResearchRunner):
                 if self.solver.fallback_enabled:
                     costs.append(self.solver.fallback_estimate)
                 available = until-now-self.solver.fast.publication_reserve
-                # Cost hints exclude preparation, worker dispatch and common
-                # model setup. Actual F2 retries lost 4.5ms before the worker
-                # and up to 6.2ms before selecting a path. Keep 20ms headroom
-                # for those costs/variation and wait for a fresher snapshot;
-                # this changes dispatch only, never raw TTL or the parent lease.
-                if successor and available <= min(costs)+.020:
+                if successor and self._delivery_enabled():
+                    # Successful cost evidence already includes model setup and
+                    # the full worker. Measure preparation using the real clock;
+                    # queue history is a hint, not a relaxation of any deadline.
+                    current = self.solver.wall_clock()
+                    samples = getattr(self, 'queue_samples', ())
+                    # The loaded trace rejected the median-only reserve: its
+                    # small queue estimate admitted too many tail-cost workers.
+                    # Retain the existing 20ms dispatch/jitter floor, separately
+                    # from full worker cost, and account preparation explicitly.
+                    queue_hint = max(.020, 1.2*median(samples)) if samples else .020
+                    available = until-current-self.solver.fast.publication_reserve-queue_hint
+                    epoch = (result[0].context.mission_id,
+                             result[0].context.clock_generation, observation)
+                    if (available <= min(costs)
+                            and getattr(self, 'budget_wait_epoch', None) != epoch):
+                        self.budget_wait_epoch = epoch
+                        paths = (('follow', 'fallback') if self.solver.fallback_enabled
+                                 else ('follow',))
+                        protect_costs(self.solver, observation, age_paths=paths)
+                        costs = [self.solver.follow_estimate]
+                        if self.solver.fallback_enabled:
+                            costs.append(self.solver.fallback_estimate)
+                        current = self.solver.wall_clock()
+                        available = until-current-self.solver.fast.publication_reserve-queue_hint
+                    self.delivery_budget = dict(
+                        prepared_ros=current, freshness_deadline=until,
+                        preparation_seconds=current-now, queue_hint_seconds=queue_hint,
+                        full_worker_hint_seconds=min(costs),
+                        publication_reserve_seconds=self.solver.fast.publication_reserve,
+                        available_worker_seconds=available, estimate_is_guarantee=False)
+                    if available <= min(costs):
+                        raise ValueError('SUCCESSOR_AWAITING_FRESH_INPUT')
+                # Preserve the legacy fixed headroom for periodic cases. The
+                # delivery path above separates measured preparation/queue from
+                # full worker cost; neither path changes raw TTL or the lease.
+                if successor and not self._delivery_enabled() and available <= min(costs)+.020:
                     context = result[0].context
                     epoch = (context.mission_id, context.clock_generation,
                              context.observation_stamp)
@@ -107,6 +160,36 @@ class P4ResearchRunner(ShadowResearchRunner):
         self.preparation_profile = profile.report()
         return result
 
+    def _completion_inputs(self, now, monotonic_now):
+        """Recheck current inputs and the original handover, without a discarded new solve."""
+        if not self._follow():
+            raise ValueError('MISSION_NOT_FOLLOW')
+        p = self.prediction
+        if p is None:
+            raise ValueError('PREDICTION_UNAVAILABLE')
+        if p.mission_id != self.mission['mission_id']:
+            raise ValueError('MISSION_CHANGED')
+        if p.source != 'tracking' or p.frame_id != 'local_ned':
+            raise ValueError('PREDICTION_SOURCE_OR_FRAME')
+        if p.source_stamp > now or p.generated_stamp > now or p.observation_stamp > now:
+            raise ValueError('PREDICTION_FUTURE')
+        pair = self.adapter.pair_latest(now, monotonic_now, p.observation_stamp)
+        if pair.snapshot is None:
+            raise ValueError(pair.status)
+        if pair.snapshot.clock_generation != self.adapter.clock_generation:
+            raise ValueError('CLOCK_GENERATION_CHANGED')
+        if pair.snapshot.stamp > now:
+            raise ValueError('INPUT_FUTURE')
+        if (max(now-pair.snapshot.stamp, now-p.observation_stamp,
+                now-p.source_stamp) > self.config.maximum_input_age
+                or now >= p.valid_until):
+            raise ValueError('STALE_INPUT')
+        request = self.pending['request']
+        admission = getattr(self, 'completion_admission', None)
+        if admission is not None:
+            admission(request, now)
+        return request, pair.snapshot
+
     def tick(self, now, monotonic_now):
         """Busy work has no queued request; completion alone rebuilds from latest inputs."""
         if self.pending is not None and not self.pending['future'].done():
@@ -118,6 +201,14 @@ class P4ResearchRunner(ShadowResearchRunner):
         # Freshness, admission and receiver identity are checked again when
         # the next request is actually eligible to dispatch. Explicit invalid
         # prediction/mission messages are rejected in their own callbacks.
+        window = self._delivery_window(now)
+        status = getattr(self, 'execution_status', None) or {}
+        if self.pending is None and window is not None:
+            if (status.get('pending') or self.prediction is None
+                    or now+getattr(self, 'execution_lead', .15) >= status['deadline']-.05
+                    or not window.eligible(self.prediction.observation_stamp, now)):
+                return
+            self.next_solve = min(self.next_solve, monotonic_now)
         if self.pending is None and monotonic_now < self.next_solve:
             return
         previous = self.pending
@@ -140,10 +231,25 @@ class P4ResearchRunner(ShadowResearchRunner):
             # at 5Hz/20Hz. Wait for an input received in the eligible period,
             # then let the original raw TTL, pairing and admission checks run.
             # The sole bounded retry retains its existing freshness budget guard.
-            if not retry and receipt < self.next_solve:
+            if window is None and not retry and receipt < self.next_solve:
                 return
         eligible = self.next_solve
         super().tick(now, monotonic_now)
+        if finishing:
+            try:
+                timeline = previous['future'].result().metrics.get('worker_timeline', {})
+            except Exception:
+                timeline = {}  # Base completion already records SOLVER_EXCEPTION.
+            submitted = previous.get('submitted_monotonic')
+            started = timeline.get('solve_start_monotonic')
+            if submitted is not None and started is not None and started >= submitted:
+                if not hasattr(self, 'queue_samples'):
+                    self.queue_samples = deque(maxlen=8)
+                self.queue_samples.append(started-submitted)
+            if window is not None and previous.get('delivery_identity') == window.identity:
+                window.failed = not getattr(self, 'last_completed_valid', False)
+        if self._delivery_enabled() and finishing:
+            return
         status = getattr(self, 'execution_status', None)
         if (finishing and getattr(self, 'deadline_scheduling', False)
                 and not getattr(self, 'last_completed_valid', False) and status
@@ -157,10 +263,18 @@ class P4ResearchRunner(ShadowResearchRunner):
                                        scheduled_monotonic=self.next_solve,
                                        original_deadline=status['deadline'])
         if self.pending is not None and self.pending is not previous:
-            if aligned and not retry:
+            if window is not None:
+                window.dispatched(self.pending['request'].context.observation_stamp,
+                                  self.cycle_id,
+                                  self.pending['request'].context.execution_start_stamp)
+                self.pending['delivery_identity'] = window.identity
+            elif aligned and not retry:
                 self.next_solve = receipt+self.period
             self.pending['dispatch_timing'] = dict(
-                policy='bounded_retry' if retry else 'input_aligned' if aligned else 'timer',
+                policy=('successor_delivery' if window is not None else
+                        'bounded_retry' if retry else 'input_aligned' if aligned else 'timer'),
+                delivery_attempt=window.attempts if window is not None else None,
+                delivery_parent=status.get('active') if window is not None else None,
                 eligible_monotonic=eligible if math.isfinite(eligible) else None,
                 dispatch_monotonic=monotonic_now,
                 prediction_receipt_monotonic=receipt,
@@ -172,6 +286,7 @@ class P4ResearchRunner(ShadowResearchRunner):
                                                    if receipt is not None else None))
             self.retry_waiting_parent = None
             self.pending['preparation_profile'] = self.preparation_profile
+            self.pending['delivery_budget'] = getattr(self, 'delivery_budget', None)
             self.pending['receiver_epoch'] = getattr(self, 'current_receiver_epoch', None)
 
 
@@ -246,12 +361,17 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
             return
         if previous is not None and identity == previous[0] and stamp <= previous[1]:
             return
+        floor = getattr(self, 'receiver_ack_floor', None)
+        if floor is not None and identity == floor[0] and stamp <= floor[1]:
+            return
         if previous is not None and identity != previous[0]:
             if identity[0] != previous[0][0]:
                 retired.add(previous[0][0])
                 self.retired_receiver_boots = retired
             self.accepted_curve = None
             self.ack_order, self.last_control_ack = {}, None
+            self.receiver_ack_floor = None
+            self.runner.queue_samples = deque(maxlen=8)
         self.last_receiver_heartbeat = (identity, stamp)
         self.receiver_epoch = (identity, stamp)
         self.runner.current_receiver_epoch = identity
@@ -275,20 +395,32 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
         self.execution_curves, self.accepted_curve = {}, None
         original_factory = old.request_factory
 
+        def admission(request, now):
+            status = getattr(self, 'receiver_status', None)
+            if self.follow_execution_enabled and self.follow_admission_required:
+                if status is None or not 0 <= now-status['stamp'] <= .2:
+                    raise ValueError('RECEIVER_ADMISSION_UNAVAILABLE')
+                if status['pending']:
+                    raise ValueError('AWAITING_PENDING_ACTIVE')
+                curve = self.accepted_curve
+                if status['active'] and (curve is None or status['active'] != curve.plan_id):
+                    raise ValueError('AWAITING_REAL_ACTIVE_ACK')
+                if (status['active']
+                        and request.context.execution_start_stamp >= status['deadline']-.05):
+                    raise ValueError('NO_SUCCESSOR_ACTIVATION_MARGIN')
+
+        def completion_admission(request, now):
+            admission(request, now)
+            status = getattr(self, 'receiver_status', None) or {}
+            prior = getattr(request, 'prior_curve', None)
+            if (prior.plan_id if prior is not None else 0) != status.get('active', 0):
+                raise ValueError('ACTIVE_PARENT_CHANGED')
+
         def factory(*args, **kwargs):
             request = original_factory(*args, **kwargs)
             curve = self.accepted_curve
             start = request.context.execution_start_stamp
-            status = getattr(self, 'receiver_status', None)
-            if self.follow_execution_enabled and self.follow_admission_required:
-                if status is None or not 0 <= request.now_stamp-status['stamp'] <= .2:
-                    raise ValueError('RECEIVER_ADMISSION_UNAVAILABLE')
-                if status['pending']:
-                    raise ValueError('AWAITING_PENDING_ACTIVE')
-                if status['active'] and (curve is None or status['active'] != curve.plan_id):
-                    raise ValueError('AWAITING_REAL_ACTIVE_ACK')
-                if status['active'] and start >= status['deadline']-.05:
-                    raise ValueError('NO_SUCCESSOR_ACTIVATION_MARGIN')
+            admission(request, request.now_stamp)
             if (self.follow_execution_enabled and curve is not None
                     and self.receiver_epoch is not None
                     and (curve.receiver_boot_id, curve.generation) == self.receiver_epoch[0][:2]
@@ -303,6 +435,12 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
                                   1/old.period, old.solver, factory)
         runner.deadline_scheduling = (self.follow_execution_enabled
                                       and self.follow_admission_required)
+        runner.execution_lead = float(self.get_parameter('execution_lead').value)
+        runner.completion_admission = completion_admission
+        self.declare_parameter('successor_scheduling', 'periodic')
+        runner.successor_scheduling = self.get_parameter('successor_scheduling').value
+        if runner.successor_scheduling not in ('periodic', 'delivery'):
+            raise ValueError('INVALID_SUCCESSOR_SCHEDULING')
         return runner
 
     def ack_callback(self, message):
@@ -356,6 +494,32 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
                   and self.accepted_curve.plan_id == message.plan_id):
                 self.accepted_curve = None
                 self.last_control_ack = (ack_stamp, message.plan_id)
+            if getattr(self.runner, 'successor_scheduling', 'periodic') == 'delivery':
+                status = getattr(self, 'receiver_status', None)
+                if (message.state == 'ACTIVE' and curve is not None and status is not None
+                        and ack_stamp >= status['stamp']):
+                    self.receiver_status = dict(status, stamp=ack_stamp,
+                                                active=curve.plan_id,
+                                                pending=int(message.pending_plan_id),
+                                                deadline=min(curve.end, curve.start+.45))
+                    self.runner.execution_status = self.receiver_status
+                    self.receiver_ack_floor = (self.receiver_epoch[0], ack_stamp)
+                elif (message.state == 'ACCEPTED' and curve is not None and status is not None
+                      and ack_stamp >= status['stamp']
+                      and message.pending_plan_id == curve.plan_id
+                      and curve.parent_id == status['active']):
+                    self.receiver_status = dict(status, stamp=ack_stamp, pending=curve.plan_id)
+                    self.runner.execution_status = self.receiver_status
+                    self.receiver_ack_floor = (self.receiver_epoch[0], ack_stamp)
+                elif (message.state == 'REJECTED' and status is not None
+                      and ack_stamp >= status['stamp'] and status['pending'] == message.plan_id):
+                    self.receiver_status = dict(status, stamp=ack_stamp, pending=0)
+                    self.runner.execution_status = self.receiver_status
+                    self.receiver_ack_floor = (self.receiver_epoch[0], ack_stamp)
+                window = getattr(self.runner, 'delivery_window', None)
+                if message.state == 'REJECTED' and window is not None:
+                    if window.plan == message.plan_id:
+                        window.failed = True
         self.ack_file.write(_serialize(dict(
             receipt=self._ros_seconds(), stamp=seconds(message.stamp),
             receipt_monotonic=time.monotonic(),

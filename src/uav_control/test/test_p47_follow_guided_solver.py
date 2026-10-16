@@ -178,3 +178,29 @@ def test_explicit_engine_registration_keeps_old_engines_selectable():
         runner = FollowResearchShadowNode.make_runner(
             fake, replace(model().config, allow_synthetic_predictions=False))
         assert isinstance(runner.solver, cls)
+
+
+def test_fallback_invariants_reused_but_new_target_geometry_is_revalidated():
+    from types import SimpleNamespace
+    from uav_control.guidance.follow_revalidation import revalidate_prediction
+    req = future_request(request(2.), .15)
+    instance = solver(req)
+    result = instance.fallback.solve(req)
+    assert result.valid
+    assert instance.fallback.invariant_cache is instance.invariant_cache
+    c = req.context
+    pred = SimpleNamespace(mission_id=c.mission_id, sequence_id=c.prediction_sequence_id+1,
+                           source='tracking', frame_id='local_ned',
+                           source_stamp=c.prediction_source_stamp,
+                           observation_stamp=c.observation_stamp, generated_stamp=req.now_stamp,
+                           valid_until=c.prediction_valid_until,
+                           prediction_times=req.prediction_times,
+                           target_positions=req.target_positions,
+                           target_velocities=req.target_velocities)
+    _, report = revalidate_prediction(req, result, pred, req.now_stamp, model(),
+                                      clock=lambda: 0., cache=instance.invariant_cache)
+    assert report['valid']
+    pred.target_positions = tuple((x-100., y, z) for x, y, z in pred.target_positions)
+    _, report = revalidate_prediction(req, result, pred, req.now_stamp, model(),
+                                      clock=lambda: 0., cache=instance.invariant_cache)
+    assert not report['valid']

@@ -34,6 +34,9 @@ class P47FollowGuidedMinco(P44FollowSolver):
         self.fallback = P44FollowSolver(model, duration=self.duration, rolling=self.rolling,
                                         ablation='D', refinement='none', clock=self.clock,
                                         wall_clock=self.wall_clock)
+        # Both paths validate identical coefficient/constraint keys. Only pure
+        # invariants are reused; current target geometry is always rechecked.
+        self.fallback.invariant_cache = self.invariant_cache
         self.mode = 'p47_follow_guided'
         # P44 measured P99 is a scheduling estimate, never an execution guarantee.
         self.fallback_estimate = .010

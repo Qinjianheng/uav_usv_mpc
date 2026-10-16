@@ -77,6 +77,12 @@ readiness 绑定案例与配置清单、verification、qualification 和完整�
 
 定向行为回归在 `test_p6_input_aligned_dispatch.py`。阶段证据位于 `data/experiments/20261016_p61r3_input_aligned_03/`；其中 monitor 接收时间仅作为 planner callback 到达的代理，时序模型使用明确标注的中性导航和固定 worker 服务时间，没有验证 MINCO 可行性、所有权或飞行效果。源码变化使既有 Readiness 失效；该改动不授予新的 SITL、F3 或 D 组资格。
 
+`successor_scheduling: delivery` 显式启用后继交付调度；缺省 `periodic` 保持既有 case 的周期策略。仅在新鲜、真实 ACTIVE ACK 对应的父轨迹下提前派发一次后继；交付失败或丢失 ACK 时，仅对新采集输入允许一次有界重试。pending 后继阻止再提交，单 worker 不积压任务。ACTIVE ACK 可提前更新调度状态，较旧 heartbeat 不得覆盖；published/ACCEPTED 不代表实际控制接管。
+
+delivery 的预算使用完整 worker 成本提示、准备后实际时钟、排队/调度抖动提示及原有 20 ms 发布预留。排队/调度提示为近期排队中位数的 1.2 倍且保留既有 20 ms 下限；带载回放否决了仅使用排队中位数的较小预留。提示不保证完成，原 125 ms TTL、150 ms execution lead、450 ms 租约、50 ms 激活余量、预测复核及独立 Tracker 验收均保留。完成复核检查原始候选的接管时刻、最新输入和真实父轨迹，不再构造并丢弃一条更晚的新请求。P47 与 fallback 共享严格系数/约束/任务/时钟 key 的纯数学缓存，当前目标、视场和海面约束仍独立复核。
+
+`test_p6_successor_delivery.py` 覆盖提前派发、新观测有界重试、pending 阻塞、乱序 ACK/heartbeat、过期状态和成本证据老化。阶段证据位于 `data/experiments/20261016_p61r3_successor_delivery_05/`；真实已配对输入的多租约回放仅为 recorded-state 时序模型，不是 ROS/PX4 闭环或飞行资格。新策略必须建立新 case 配置/源码指纹、当前测试、独立审查、资格及 Readiness 后才能启动有界 F2。
+
 ## 单次真实执行入口
 
 下面是根任务完成资格后才使用的入口，本开发没有执行：
