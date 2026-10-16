@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Replay immutable raw observations and bind a scoped IMM pilot offline qualification."""
+"""Replay immutable observations and validate shared IMM bootstrap evidence for P6 cases."""
 import argparse
 from collections import Counter
 from copy import deepcopy
@@ -15,6 +15,7 @@ from uav_control.guidance.p6_follow import attach_model_diagnostics
 from uav_control.tracking.imm_target_predictor_node import (
     ImmPredictionEngine, RawObservation, prediction_to_message,
 )
+from uav_control.usv_motion_profiles import MOTION_MODES
 
 KIND = 'P61R_IMM_OFFLINE_BOOTSTRAP'
 WORKSPACE = Path(__file__).resolve().parents[1]
@@ -32,7 +33,8 @@ def sources():
         'src/uav_control/uav_control/tracking/target_prediction.py',
         'src/uav_control/uav_control/tracking/ros_time.py',
         'src/uav_control/uav_control/controllers/follow_mpc_shadow_node.py',
-        'src/uav_control/uav_control/guidance/p6_follow.py')]
+        'src/uav_control/uav_control/guidance/p6_follow.py',
+        'src/uav_control/uav_control/usv_motion_profiles.py')]
 
 
 def replay_rows(rows):
@@ -100,7 +102,7 @@ def replay_pass(report):
 
 
 def validate_primary_evidence(release, metadata, required_sources=None):
-    """A shadow boolean cannot grant IMM primary or any follow-on experiment."""
+    """Validate shared bootstrap evidence; per-case and actual-flight gates stay separate."""
     try:
         reference = release['imm_primary_evidence']
         path = Path(reference['path'])
@@ -109,10 +111,18 @@ def validate_primary_evidence(release, metadata, required_sources=None):
         report = json.loads(path.read_text())
         if report.get('kind') != KIND or report.get('passed') is not True:
             raise ValueError('IMM_PRIMARY_EVIDENCE_REQUIRED')
+        role, mode, group = (metadata.get(k) for k in ('role', 'motion_mode', 'group'))
+        settings = {'B': ('nominal', False), 'D': ('robust', True)}.get(group)
+        # The report retains its original pilot scope. Reusing it supplies only
+        # the IMM bootstrap prerequisite, never another case's qualification.
         if (report.get('scope') != 'linear_nominal_pilot'
-                or any(metadata.get(k) != v for k, v in dict(
-                    role='pilot', motion_mode='linear', group='B', prediction_model='imm',
-                    visibility_mode='nominal').items())):
+                or metadata.get('prediction_model') != 'imm'
+                or role not in ('pilot', 'baseline', 'experiment')
+                or mode not in MOTION_MODES.values() or settings is None
+                or metadata.get('visibility_mode') != settings[0]
+                or metadata.get('adaptive_viewpoint') is not settings[1]
+                or (role == 'pilot' and (mode, group) != ('linear', 'B'))
+                or (role == 'baseline' and (mode, group) != ('figure_eight', 'B'))):
             raise ValueError('IMM_PRIMARY_SCOPE_MISMATCH')
         for evidence in report['evidence']:
             if sha(evidence['path']) != evidence['sha256']:

@@ -245,15 +245,16 @@ def qualification_files(entry, directory, case, *, reviewed=True):
     replay, review, gate = [directory / name for name in (
         'replay.json', 'review.json', 'primary.json')]
     replay.write_text(json.dumps(dict(attempts=1200, accepted=1200, strict_identity_matches=1200,
-                                     expired_rejections=1200, unsafe_output_count=0,
-                                     sample_counts={'41': 1200}, compute_seconds={'p95': .01})))
+                                      expired_rejections=1200, unsafe_output_count=0,
+                                      sample_counts={'41': 1200}, compute_seconds={'p95': .01})))
     review.write_text(json.dumps(dict(review_pass=reviewed)))
     gate.write_text(json.dumps(dict(
         kind=primary.KIND, scope='linear_nominal_pilot', passed=reviewed,
         evidence=[dict(path=str(p), sha256=entry.harness.sha(p), role=role)
                   for p, role in ((replay, 'replay'), (review, 'review'),
                                   (verification, 'verification'))],
-        source_checks=[dict(path=str(p), sha256=entry.harness.sha(p)) for p in primary.sources()])))
+        source_checks=[dict(path=str(p), sha256=entry.harness.sha(p))
+                       for p in primary.sources()])))
     qualification = directory / 'qualification.json'
     metadata = json.loads((case / 'case.json').read_text())
     qualification.write_text(json.dumps(dict(
@@ -266,6 +267,98 @@ def qualification_files(entry, directory, case, *, reviewed=True):
                             current_sha256=entry.harness.sha(path))
                        for path in entry.critical_sources()])))
     return verification, qualification
+
+
+@pytest.fixture(params=[
+    ('baseline', 'figure_eight', 'B'), ('experiment', 'variable_speed_s', 'B'),
+    ('experiment', 'variable_speed_z', 'D'),
+])
+def follow_on_bundle(bundle_inputs, request):
+    entry, root, flight, research = bundle_inputs
+    pilot = entry.prepare_case(root / 'pilot', 'linear', 'B', flight, research, role='pilot')
+    _, pilot_qualification = qualification_files(entry, root.parent / 'pilot_q', pilot)
+    role, motion, group = request.param
+    calibration = root.parent / 'calibration.json'
+    # Only copying/binding is under test; this is not calibration evidence.
+    calibration.write_text('{}')
+    case = entry.prepare_case(root / 'follow_on', motion, group, flight, research,
+                              role=role, calibration_file=calibration if group == 'D' else None)
+    metadata = entry.verify_case(case)
+    release = json.loads(pilot_qualification.read_text())
+    release.update(qualified_cases=[metadata['case_id']],
+                   qualified_case_manifests={
+                       metadata['case_id']: metadata['case_manifest_sha256']},
+                   robust_gate_pass=group == 'D')
+    qualification = root.parent / 'follow_on_qualification.json'
+    qualification.write_text(json.dumps(release))
+    verification = root.parent / 'follow_on_verification.json'
+    verification.write_text(json.dumps(dict(passed=True, independent_review_pass=True)))
+    return entry, case, verification, qualification, pilot_qualification
+
+
+def test_follow_on_readiness_reuses_bootstrap_with_independent_case_binding(follow_on_bundle):
+    entry, case, verification, qualification, pilot_qualification = follow_on_bundle
+    readiness = case.parent / 'readiness.json'
+    entry.write_readiness(readiness, case, verification, qualification)
+    record = entry.require_readiness(readiness, case, qualification)
+    assert record['verification'] == str(verification)
+    assert record['case_id'] == entry.verify_case(case)['case_id']
+    assert json.loads(qualification.read_text())['imm_primary_evidence'] == (
+        json.loads(pilot_qualification.read_text())['imm_primary_evidence'])
+    # Readiness alone cannot skip the original pilot -> baseline -> experiment flight gate.
+    with pytest.raises(ValueError, match='P6_PRIOR_ACTUAL_RUN_REQUIRED'):
+        entry.require_prior_run(case, None)
+
+
+def test_follow_on_readiness_rechecks_shared_evidence_before_execution(follow_on_bundle):
+    entry, case, verification, qualification, _ = follow_on_bundle
+    readiness = case.parent / 'readiness.json'
+    entry.write_readiness(readiness, case, verification, qualification)
+    release = json.loads(qualification.read_text())
+    report = json.loads(Path(release['imm_primary_evidence']['path']).read_text())
+    review = next(row for row in report['evidence'] if row['role'] == 'review')
+    Path(review['path']).write_text(json.dumps(dict(review_pass=False)))
+    with pytest.raises(ValueError, match='IMM_PRIMARY_EVIDENCE_CHANGED'):
+        entry.require_readiness(readiness, case, qualification)
+
+
+@pytest.mark.parametrize('fault,reason', [
+    ('pilot_qualification', 'P6_CASE_NOT_QUALIFIED'),
+    ('config', 'P6_CASE_CONFIG_NOT_QUALIFIED'),
+    ('sources', 'P6_SOURCES_NOT_QUALIFIED'),
+    ('source_hash', 'AUDITED_SOURCE_CHANGED'),
+    ('review', 'P6_VERIFICATION_AND_REVIEW_REQUIRED'),
+])
+def test_shared_bootstrap_cannot_replace_follow_on_case_gates(follow_on_bundle, fault, reason):
+    entry, case, verification, qualification, pilot_qualification = follow_on_bundle
+    release = json.loads(qualification.read_text())
+    if fault == 'pilot_qualification':
+        qualification = pilot_qualification
+    elif fault == 'config':
+        release['qualified_case_manifests'][entry.verify_case(case)['case_id']] = '0' * 64
+    elif fault == 'sources':
+        release['source_checks'].pop()
+    elif fault == 'source_hash':
+        release['source_checks'][0]['current_sha256'] = '0' * 64
+    elif fault == 'review':
+        verification.write_text(json.dumps(dict(passed=True, independent_review_pass=False)))
+    if fault != 'pilot_qualification':
+        qualification.write_text(json.dumps(release))
+    readiness = case.parent / 'rejected_readiness.json'
+    with pytest.raises(ValueError, match=reason):
+        entry.write_readiness(readiness, case, verification, qualification)
+    assert not readiness.exists()
+
+
+def test_shared_nominal_bootstrap_cannot_replace_robust_qualification(bundle_inputs):
+    entry, root, flight, research = bundle_inputs
+    calibration = root.parent / 'calibration.json'
+    calibration.write_text('{}')
+    case = entry.prepare_case(root / 'robust', 'variable_speed_z', 'D', flight, research,
+                              calibration_file=calibration)
+    verification, qualification = qualification_files(entry, root.parent / 'q', case)
+    with pytest.raises(ValueError, match='P6_ROBUST_QUALIFICATION_REQUIRED'):
+        entry.write_readiness(root.parent / 'readiness.json', case, verification, qualification)
 
 
 def test_readiness_binds_case_config_source_review_and_qualification(bundle_inputs):

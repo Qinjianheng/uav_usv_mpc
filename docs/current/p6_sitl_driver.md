@@ -1,25 +1,23 @@
 # P6 独立 SITL 驱动与资格边界
 
-`scripts/p6_minco_sitl.py` 已实现案例准备、A/B/C/D 条件清单、资格绑定和单次执行入口。它没有自动批量启动或重试循环；本次开发未启动 PX4/Gazebo。案例准备、单元测试、已有影子资格和真实飞行完成分别记录，不互相代替。
+`scripts/p6_minco_sitl.py` 当前使用唯一 IMM 主预测器，提供 B/D 条件清单、案例准备、资格绑定和单次执行入口。它没有自动批量启动或重试循环。案例准备、离线资格和真实飞行完成分别记录，不互相代替；历史 A/C 案例保留为冻结证据。
 
 ## 执行顺序与配置
 
-每个案例是 `data/experiments/` 下从未使用的新目录，保存完整 `config/flight.yaml`、`config/research.yaml`、可选的校准原文件、`case.json` 和 `SHA256SUMS`；真实运行另写该目录的 `flight/`。输入文件保持原字节。完整 flight/research 可显式指定；默认只读复制 R11 F3 实际快照，不把普通 baseline 配置当作 R11。准备阶段以 MotionParameters 以及 IMM 节点同源 `node_parameter_defaults()` 补齐所有未显式给出的声明参数；已有用户值保留，数组按 ROS 兼容列表保存，主/影子预测 topic 与 launch 的实际最终覆盖一致。
+每个案例是 `data/experiments/` 下从未使用的新目录，保存完整 `config/flight.yaml`、`config/research.yaml`、可选的校准原文件、`case.json` 和 `SHA256SUMS`；真实运行另写该目录的 `flight/`。输入文件保持原字节。完整 flight/research 可显式指定；pilot 默认只读复制 R11 F2 flight（沿 +X、2 m/s），其余角色默认使用 R11 F3 flight，research 默认使用 R11 F3 快照。准备阶段以 MotionParameters 以及 IMM 节点同源 `node_parameter_defaults()` 补齐未显式给出的声明参数；已有用户值保留，数组按 ROS 兼容列表保存，主预测 topic 与 launch 的最终覆盖一致。
 
 角色有三种：
 
-1. `pilot`：F2、`linear`、A 组、显式 IMM shadow。保留 BCTRA 真正主预测，IMM 只观察，固定 60 秒实际接管观察窗口。
-2. `baseline`：F3、原 `figure_eight`、A 组。必须引用新的真实健康 pilot，固定 60 秒。
-3. `experiment`：五种运动与 A/B/C/D 的显式单个案例。必须引用新的真实健康 baseline。矩阵命令只打印 20 个比较条件。
+1. `pilot`：F2、`linear`、B 组、IMM 主预测，固定 60 秒实际接管观察窗口。
+2. `baseline`：F3、原 `figure_eight`、B 组。必须引用新的真实健康 pilot，固定 60 秒。
+3. `experiment`：五种运动与 B/D 的显式单个案例。必须引用新的真实健康 baseline。矩阵命令只打印 10 个比较条件。
 
 | 组别 | 主预测器 | 可见性 | 自适应观察点 |
 |---|---|---|---|
-| A | BCTRA | nominal | 关闭 |
 | B | IMM | nominal | 关闭 |
-| C | BCTRA | robust | 开启 |
 | D | IMM | robust | 开启 |
 
-新运动通过完整 flight 的 `moving_target.ros__parameters.trajectory_type` 设置。启动器选择通过 `UAV_USV_P6_PREDICTOR=bctra/imm` 与 `UAV_USV_P6_IMM_SHADOW=true/false` 传递，记录在案例与实际环境快照中。所有案例显式设置 `UAV_USV_P6_RECORD=1`，保留原始观测、shadow 预测/条件协方差及唯一主预测图证据；此项来自 `p6_imm` 代理对驱动的独立审查，已添加缺失开关 RED→GREEN 和实际环境传播测试。当前 launch 只在 BCTRA 为主时运行 IMM shadow，因此 IMM 主模式请求 shadow 时，案例也明确记录 `imm_shadow_effective=false`。
+新运动通过完整 flight 的 `moving_target.ros__parameters.trajectory_type` 设置。案例记录 `UAV_USV_P6_PREDICTOR=imm`、`UAV_USV_P6_IMM_SHADOW=false` 和 `UAV_USV_P6_RECORD=1`，保留原始观测、预测诊断及唯一主预测图证据。驱动拒绝旧 `--imm-shadow` 开关，不恢复独立 BCTRA。
 
 Planner/Receiver 的 `p6_visibility_mode`、`p6_adaptive_viewpoint`、`p6_calibration_file` 及其他共享 P6Policy 配置逐项一致。输入两侧已经配置却不一致时拒绝准备。robust 必须提供真实校准文件，复制并绑定 SHA256；驱动不会生成校准分布、伪造校准通过或修改风险阈值。该文件是否满足 P6 schema、对应正确预测器家族及独立数据资格，由资格阶段和运行时 P6Policy 再验证。
 
@@ -37,12 +35,12 @@ source /home/qin/data/uav_usv_mpc/install/setup.bash
 python3 scripts/p6_minco_sitl.py matrix
 python3 scripts/p6_minco_sitl.py prepare \
   /home/qin/data/uav_usv_mpc/data/experiments/20261014_p6_sitl_01/pilot \
-  --role pilot --motion linear --group A --imm-shadow \
+  --role pilot --motion linear --group B \
   --flight-config /absolute/path/full_flight.yaml \
   --research-config /absolute/path/full_research.yaml
 ```
 
-移除两个 `--*-config` 参数会使用上述 R11 完整快照。B/C/D 以及新运动应使用根任务生成并完成资格的新完整配置。C/D 另传 `--calibration /absolute/path/calibration.json`。
+移除两个 `--*-config` 参数会使用上述按角色选择的 R11 完整快照。每个 case 都须独立完成新完整配置资格；D 组另传 `--calibration /absolute/path/calibration.json`。
 
 ## 资格 JSON 与 readiness 生成
 
@@ -53,7 +51,9 @@ python3 scripts/p6_minco_sitl.py prepare \
 - `offline_gate_pass=true`，`qualified_cases` 明确列出该 `case.json` 的 `case_id`；`qualified_case_manifests` 为 `{case_id: SHA256(case/SHA256SUMS)}`，资格必须绑定真实已检查的完整配置清单。同名案例的不同配置不能沿用旧资格。
 - `source_checks` 为实际已审核源码的 `{path, current_sha256}` 列表，必须覆盖 `critical_sources()` 返回的完整运行源码清单；运行前重新检查。可从该公开 helper 得到清单，review/test 通过后再写入对应当前哈希。
 - `formal_directory` 指向带有效 `SHA256SUMS` 的原 H1.6 完整约束证据，包含原 `f2_h1.6_main_C_single.jsonl` / `f3_h1.6_main_C_single.jsonl`。这是原 MINCO 约束参考；不赋予新 IMM/robust 飞行成功结论。
-- IMM 主预测案例额外要求真实 `shadow_gate_pass=true`；robust 案例额外要求真实 `robust_gate_pass=true`。未通过时保持拒绝。
+- IMM 案例额外要求 `imm_primary_evidence: {path, sha256}`，引用通过的 `P61R_IMM_OFFLINE_BOOTSTRAP` 报告；`shadow_gate_pass=true` 不能替代该证据。报告必须保留 `scope=linear_nominal_pilot`、通过的 replay/review/verification 文件及其 SHA256，以及 `p61r_imm_qualification.sources()` 覆盖的当前源码指纹。
+- 合格的 linear/B/pilot bootstrap 可作为 baseline（figure_eight/B）及五模式 B/D experiment 的共同 IMM 基础证据。该复用不扩展原报告的实测范围，也不赋予后续 case 飞行成功结论。B 必须为 nominal 且关闭自适应观察点，D 必须为 robust 且开启自适应观察点。
+- 每个后续 case 仍须独立列入 `qualified_cases`，绑定自己的完整配置清单、当前运行源码及 verification/独立审查；D 组还须真实 `robust_gate_pass=true` 和独立校准。缺任一条件保持拒绝。
 
 qualification 所在目录还必须有覆盖实际资格文件的 `SHA256SUMS`，原 p5 claim 在消耗真实尝试之前核验该清单与 formal 清单。readiness 可放在独立文件，再由根任务完整归档。
 
@@ -66,6 +66,8 @@ python3 scripts/p6_minco_sitl.py readiness \
 ```
 
 readiness 绑定案例与配置清单、verification、qualification 和完整运行源码清单，覆盖 IMM、robust、adaptive、p6_follow、Planner/Tracker core、launch、脚本及消息。任何后续修改或源码清单增减都会使 readiness 失效，必须先补对应测试/审查，再生成新 readiness；不能仅重写哈希追认旧资格。
+
+运行前会重新验证共享 IMM 报告及其底层证据，readiness 创建后修改报告或审查文件仍会被拒绝。本轮资格校验源码及其依赖清单已变化，旧源码指纹的资格包需重新验证和审查，保存到新目录；历史证据不改写。bootstrap 只验证离线兼容性，实际执行仍遵守 pilot → baseline → experiment 的真实健康先行报告门禁。
 
 ## 单次真实执行入口
 
@@ -88,8 +90,10 @@ baseline / experiment 另传 `--prior-summary /absolute/path/prior_case/p6_run_s
 
 `p5_minco_sitl.prepare(..., overlay_config=None)` 默认仍委托原 prepare；显式 overlay 使用完整新 flight，不依赖历史 P41 flight。`run(..., overlay_config=None, observation_seconds=None)` / `assess(..., observation_seconds=None)` 保持默认 F2 25 秒、F3 60 秒，P6 显式传入 60 秒。
 
-P6 condition 中的历史合同明确记录为 `baseline_reference_constraint_fingerprint`；`constraint_fingerprint` 与 `actual_constraint_snapshot` 由保存的完整 research 参数、本地 ResearchConfig、原相机常量以及 P6Policy/校准构造，不能用历史 raw 的 fingerprint 冒充新 robust/adaptive 合同。P6 A/B 关闭增强时，实际 fingerprint 必须逐值等于原 raw；不相等则在消耗尝试之前拒绝。已对真实 R11 research/condition 做该一致性测试。无 P6 overlay 的旧路径继续保持原字段与行为。
+P6 condition 中的历史合同明确记录为 `baseline_reference_constraint_fingerprint`；`constraint_fingerprint` 与 `actual_constraint_snapshot` 由保存的完整 research 参数、本地 ResearchConfig、原相机常量以及 P6Policy/校准构造，不能用历史 raw 的 fingerprint 冒充新 robust/adaptive 合同。B 组关闭增强时，实际 fingerprint 必须逐值等于原 raw；不相等则在消耗尝试之前拒绝。已对真实 R11 research/condition 做该一致性测试。无 P6 overlay 的旧路径继续保持原字段与行为。
 
-开发证据在 `data/experiments/20261014_p6_development_01/sitl_driver/`：首轮 RED，以及部分窗口、record 开关、配置资格绑定、完整参数和实际合同的 RED→GREEN。`green_full_parameters.log` 为 83 passed（P6 driver、P5/P53 和 pep257）；最后再联合 IMM 数学/Node 复核，`green_final_binding_parameters.log` 为 147 passed。flake8 与 diff 检查通过。测试包括完整配置复制/默认物化、五模式、A/B/C/D、校准同源、独占目录、旧默认委托、60 秒后半段 owner 丢失、readiness 变更拒绝、先行真实报告门禁、显式执行和环境恢复。
+历史开发证据在 `data/experiments/20261014_p6_development_01/sitl_driver/`：首轮 RED，以及部分窗口、record 开关、配置资格绑定、完整参数和实际合同的 RED→GREEN。`green_full_parameters.log` 为 83 passed（P6 driver、P5/P53 和 pep257）；联合 IMM 数学/Node 的 `green_final_binding_parameters.log` 为 147 passed。这些历史结果包含当时的 A/B/C/D 条件，不能代替当前 IMM-only 版本验证。
+
+当前作用域回归位于 `test_p61r_imm_qualification.py` 与 `test_p6_sitl_driver.py`，覆盖三种角色、五模式 B/D、非法配置组合、证据完整性及审查失败、共享 bootstrap 与独立 case 绑定、源码变更、robust 门禁和真实先行报告拒绝。
 
 测试中的合成外部进程返回值仅用于验证驱动拒绝错误，不能用作任何真实 pilot、baseline、IMM shadow 或飞行资格。该驱动为本人实现，测试与代码核对属于自检；独立审查由根任务另行完成。
