@@ -108,7 +108,8 @@ def pair_callback(debug, diagnostics, commands):
 
 
 def native_correspondence(observed, commands):
-    """Value corroboration in a causal 150 ms interval, never a fitted epoch alignment.
+    """
+    Value corroboration in a causal 150 ms interval, never a fitted epoch alignment.
 
     Decimated ULog command publication time can follow its ROS control header.
     Count identical command vectors in the bounded prior interval and retain

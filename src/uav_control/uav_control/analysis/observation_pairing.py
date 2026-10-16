@@ -24,7 +24,8 @@ def vector_at(stamp, times, vectors, maximum_gap=.05):
 
 
 def attitude_surrogate(position, vision, reference, estimated, truth):
-    """Hold position fixed and change only attitude using a ULog surrogate.
+    """
+    Hold position fixed and change only attitude using a ULog surrogate.
 
     Valid production frames lack saved camera/body vectors and quaternions.
     Thus this is NOT exact reconstruction of the production pose or a new
