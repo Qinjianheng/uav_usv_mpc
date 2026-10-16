@@ -1,5 +1,6 @@
 """P4 nominal FOLLOW proposals and actual rejection ACK recording; no control publisher."""
 from dataclasses import replace
+import math
 import time
 import secrets
 from types import SimpleNamespace
@@ -50,6 +51,8 @@ class P4ResearchRunner(ShadowResearchRunner):
                                          if self.pending else None)
         result['receiver_epoch_at_dispatch'] = (self.pending.get('receiver_epoch')
                                                 if self.pending else None)
+        result['dispatch_timing'] = (self.pending.get('dispatch_timing')
+                                     if self.pending else None)
         if result['event'] == 'completion':
             self.last_completed_valid = result['output']['valid']
         result['deadline_retry'] = getattr(self, 'deadline_retry', None)
@@ -119,6 +122,27 @@ class P4ResearchRunner(ShadowResearchRunner):
             return
         previous = self.pending
         finishing = previous is not None and previous['future'].done()
+        status = getattr(self, 'execution_status', None) or {}
+        retry = (getattr(self, 'retry_waiting_parent', None) is not None
+                 and getattr(self, 'retry_waiting_parent', None) == status.get('active'))
+        provenance = getattr(self, 'prediction_provenance', None)
+        aligned = (getattr(self, 'deadline_scheduling', False)
+                   and getattr(self, 'prediction', None) is not None
+                   and provenance is not None and provenance.get('valid'))
+        receipt = provenance.get('receipt_monotonic') if aligned else None
+        if aligned and not finishing:
+            if (not isinstance(receipt, (float, int)) or not math.isfinite(receipt)
+                    or not 0 <= receipt <= monotonic_now):
+                self.reject('PREDICTION_RECEIPT_INVALID', now, monotonic_now)
+                return
+            # Select at most one regular input per configured receipt period.
+            # A timer cooldown alone can repeatedly select a 50ms-old callback
+            # at 5Hz/20Hz. Wait for an input received in the eligible period,
+            # then let the original raw TTL, pairing and admission checks run.
+            # The sole bounded retry retains its existing freshness budget guard.
+            if not retry and receipt < self.next_solve:
+                return
+        eligible = self.next_solve
         super().tick(now, monotonic_now)
         status = getattr(self, 'execution_status', None)
         if (finishing and getattr(self, 'deadline_scheduling', False)
@@ -133,6 +157,19 @@ class P4ResearchRunner(ShadowResearchRunner):
                                        scheduled_monotonic=self.next_solve,
                                        original_deadline=status['deadline'])
         if self.pending is not None and self.pending is not previous:
+            if aligned and not retry:
+                self.next_solve = receipt+self.period
+            self.pending['dispatch_timing'] = dict(
+                policy='bounded_retry' if retry else 'input_aligned' if aligned else 'timer',
+                eligible_monotonic=eligible if math.isfinite(eligible) else None,
+                dispatch_monotonic=monotonic_now,
+                prediction_receipt_monotonic=receipt,
+                prediction_receipt_ros_stamp=(provenance.get('receipt_ros_stamp')
+                                              if provenance else None),
+                prediction_sequence_id=self.pending['prediction'].sequence_id,
+                prediction_observation_stamp=self.pending['prediction'].observation_stamp,
+                input_receipt_to_dispatch_seconds=(monotonic_now-receipt
+                                                   if receipt is not None else None))
             self.retry_waiting_parent = None
             self.pending['preparation_profile'] = self.preparation_profile
             self.pending['receiver_epoch'] = getattr(self, 'current_receiver_epoch', None)

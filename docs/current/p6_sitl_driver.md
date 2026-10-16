@@ -69,6 +69,14 @@ readiness 绑定案例与配置清单、verification、qualification 和完整�
 
 运行前会重新验证共享 IMM 报告及其底层证据，readiness 创建后修改报告或审查文件仍会被拒绝。本轮资格校验源码及其依赖清单已变化，旧源码指纹的资格包需重新验证和审查，保存到新目录；历史证据不改写。bootstrap 只验证离线兼容性，实际执行仍遵守 pilot → baseline → experiment 的真实健康先行报告门禁。
 
+## 输入对齐的后继规划调度
+
+启用实际执行的 `deadline_scheduling` 时，P4ResearchRunner 的常规规划周期从所选预测回调的 `receipt_monotonic` 起算。周期到达后，只有收到该周期的新预测才准备请求；原始图像、导航及预测时间戳仍用于全部新鲜度、身份和接管检查。接收时刻只决定何时尝试求解，不能更新原始125ms有效期或450ms租约。单次有界 parent retry 保留原预算检查和重试冷却；已完成 worker 始终优先消费，不积压请求。未启用实际执行的 shadow 路径继续使用原定时冷却。
+
+输入抖动可能使常规实际派发低于配置的5Hz；两轮真实 monitor 到达记录的离线时序模型约为4.4Hz。`dispatch_timing` 固定保存本次实际所选预测的 sequence、采集时间、ROS/monotonic接收时间及派发时间，完成时的新预测不会覆盖这些字段。该记录用于归因，与现有完整 request/provenance 审计并存。
+
+定向行为回归在 `test_p6_input_aligned_dispatch.py`。阶段证据位于 `data/experiments/20261016_p61r3_input_aligned_03/`；其中 monitor 接收时间仅作为 planner callback 到达的代理，时序模型使用明确标注的中性导航和固定 worker 服务时间，没有验证 MINCO 可行性、所有权或飞行效果。源码变化使既有 Readiness 失效；该改动不授予新的 SITL、F3 或 D 组资格。
+
 ## 单次真实执行入口
 
 下面是根任务完成资格后才使用的入口，本开发没有执行：
