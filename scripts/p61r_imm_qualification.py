@@ -28,6 +28,7 @@ def sha(path):
 def sources():
     return [WORKSPACE / path for path in (
         'scripts/p61r_imm_qualification.py',
+        'src/uav_control/uav_control/common/record_snapshot.py',
         'src/uav_control/uav_control/tracking/imm_predictor.py',
         'src/uav_control/uav_control/tracking/imm_target_predictor_node.py',
         'src/uav_control/uav_control/tracking/target_prediction.py',
@@ -88,7 +89,8 @@ def replay_rows(rows):
                 if elapsed else {},
                 timing_scope='real engine update+forecast+diagnostics+wire+strict attach; '
                 'offline load, excluding extra negative/PSD tests and DDS',
-                clock_domains='recorded ROS receipt for causality; perf_counter for costs')
+                clock_domains='recorded monitor UNIX wall receipt for causality; '
+                'perf_counter for costs; not the IMM callback arrival')
 
 
 def replay_pass(report):

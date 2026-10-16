@@ -1,5 +1,5 @@
 """P4 nominal FOLLOW proposals and actual rejection ACK recording; no control publisher."""
-from dataclasses import asdict, replace
+from dataclasses import replace
 import time
 import secrets
 from types import SimpleNamespace
@@ -8,6 +8,7 @@ import rclpy
 from rclpy.qos import QoSProfile, DurabilityPolicy, ReliabilityPolicy, qos_profile_sensor_data
 from uav_usv_interfaces.msg import FollowTrajectory, FollowPlanAck, FollowReceiverState
 
+from uav_control.common.record_snapshot import record_snapshot
 from uav_control.controllers.follow_research_shadow_node import FollowResearchShadowNode
 from uav_control.guidance.follow_limits import ResearchConfig, constraint_snapshot
 from uav_control.guidance.follow_profile import CycleProfile, profiled
@@ -521,9 +522,9 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
                 self.runner.solver.model, budget=remaining,
                 cache=getattr(self.runner.solver, 'invariant_cache', None))
             if report['valid'] and self.runner.prediction is prediction:
-                proposed = dict(event, request=asdict(updated))
+                proposed = dict(event, request=record_snapshot(updated))
                 proposed['output'] = dict(
-                    event['output'], context=asdict(updated.context), metrics=dict(
+                    event['output'], context=record_snapshot(updated.context), metrics=dict(
                         event['output']['metrics'],
                         minimum_horizontal_margin=report['minimum_horizontal_margin'],
                         minimum_vertical_margin=report['minimum_vertical_margin'],
@@ -543,7 +544,7 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
         cycle_id, stamp, report, prediction = record
         self.log_file.write(_serialize(dict(
             event='prediction_revalidation', cycle_id=cycle_id, stamp=stamp,
-            report=report, new_prediction=asdict(prediction)))+'\n')
+            report=report, new_prediction=record_snapshot(prediction)))+'\n')
         self.log_file.flush()
 
     def destroy_node(self):

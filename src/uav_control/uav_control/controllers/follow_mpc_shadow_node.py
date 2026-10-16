@@ -10,7 +10,7 @@ and asynchronous results undergo live input and whole-cycle admission again.
 """
 
 from concurrent.futures import ThreadPoolExecutor
-from dataclasses import asdict, dataclass
+from dataclasses import dataclass
 import json
 import math
 import os
@@ -24,6 +24,7 @@ from rclpy.qos import DurabilityPolicy, QoSProfile, ReliabilityPolicy
 from std_msgs.msg import String
 from uav_usv_interfaces.msg import MissionState, TargetPrediction, UavState
 
+from uav_control.common.record_snapshot import record_snapshot
 from uav_control.controllers.follow_mpc_seed import (
     FollowMpcSeed, MpcConfig, MpcRequest, PlanningContext,
 )
@@ -262,7 +263,7 @@ class ShadowResearchRunner:
             ):
                 raise ValueError('PREDICTION_OUT_OF_ORDER')
             self.prediction = prediction
-            self.prediction_provenance['snapshot'] = asdict(prediction)
+            self.prediction_provenance['snapshot'] = record_snapshot(prediction)
         except ValueError as error:
             self.prediction = None
             self.prediction_revision += 1
@@ -281,21 +282,21 @@ class ShadowResearchRunner:
             'schema_version': 1, 'event': 'completion' if candidate is not None else 'reject',
             'research_mode': getattr(self.solver, 'mode', 'mpc_seed'),
             'event_stamp': now, 'accepted_by_tracker': False,
-            'request': asdict(request) if request else None,
-            'input_provenance': {'paired_navigation': asdict(paired) if paired else None,
+            'request': record_snapshot(request) if request else None,
+            'input_provenance': {'paired_navigation': record_snapshot(paired) if paired else None,
                                  'prediction': self.prediction_provenance,
-                                 'prepared_prediction': (asdict(prepared_prediction)
+                                 'prepared_prediction': (record_snapshot(prepared_prediction)
                                                          if prepared_prediction else None),
                                  'mission': dict(self.mission),
                                  'clock_generation': self.adapter.clock_generation,
                                  'model_config': {
-                                     'mpc': asdict(self.config),
-                                     'intrinsics': asdict(self.solver.intrinsics),
-                                     'extrinsics': asdict(self.solver.extrinsics),
-                                     'target': asdict(self.solver.target),
-                                     'visibility': asdict(self.solver.visibility),
-                                     'attitude': asdict(self.solver.attitude_config),
-                                     'minco': (asdict(self.solver.optimizer_config)
+                                     'mpc': record_snapshot(self.config),
+                                     'intrinsics': record_snapshot(self.solver.intrinsics),
+                                     'extrinsics': record_snapshot(self.solver.extrinsics),
+                                     'target': record_snapshot(self.solver.target),
+                                     'visibility': record_snapshot(self.solver.visibility),
+                                     'attitude': record_snapshot(self.solver.attitude_config),
+                                     'minco': (record_snapshot(self.solver.optimizer_config)
                                                if hasattr(self.solver, 'optimizer_config')
                                                else None),
                                  }},
@@ -342,7 +343,7 @@ class ShadowResearchRunner:
         request = record['request']
         try:
             result = record['future'].result()
-            candidate = asdict(result)
+            candidate = record_snapshot(result)
             candidate_done = time.monotonic()
             reason = completion_rejection(request, self.config, now, self.mission['mission_id'],
                                           self.adapter.clock_generation,
@@ -424,14 +425,14 @@ class FollowMpcShadowNode(Node):
         super().__init__(self.node_name)
         if self.get_parameter('use_sim_time').value:
             raise ValueError('shadow acquisition epochs require ROS/system clock')
-        for name, value in asdict(MpcConfig()).items():
+        for name, value in record_snapshot(MpcConfig()).items():
             self.declare_parameter(name, value)
         self.declare_parameter('shadow_rate_hz', 1.0)
         self.declare_parameter('gazebo_world_name', 'default')
         workspace = os.environ.get('UAV_USV_WS', '/home/qin/data/uav_usv_mpc')
         self.declare_parameter('log_directory', str(
             Path(workspace) / 'data/experiments/mpc_shadow'))
-        values = {name: self.get_parameter(name).value for name in asdict(MpcConfig())}
+        values = {name: self.get_parameter(name).value for name in record_snapshot(MpcConfig())}
         config = self.config_class(**values)
         self.adapter = ShadowInputAdapter()
         self.pool = ThreadPoolExecutor(max_workers=1, thread_name_prefix='mpc-shadow-research')
