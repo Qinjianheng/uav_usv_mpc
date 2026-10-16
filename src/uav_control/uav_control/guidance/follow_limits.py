@@ -15,7 +15,7 @@ class ResearchConfig(MpcConfig):
         """Widen only XY acceleration/yaw within the requested research range."""
         values = self.maximum_horizontal_acceleration, self.maximum_yaw_rate
         if (not all(math.isfinite(v) and v > 0 for v in values)
-                or values[0] > 4.5 or values[1] > 1.5
+                or values[0] > 4.5 or values[1] > 2.5
                 or self.maximum_horizontal_jerk > 6 or self.maximum_vertical_jerk > 4
                 or self.maximum_input_age > .125):
             raise ValueError('INVALID_RESEARCH_LIMITS')

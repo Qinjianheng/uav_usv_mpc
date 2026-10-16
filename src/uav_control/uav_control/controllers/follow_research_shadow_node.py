@@ -32,7 +32,8 @@ class FollowResearchShadowNode(FollowMpcShadowNode):
                               ('follow_guided_response_time', .5),
                               ('follow_guided_optimization_budget', .025),
                               ('p47_terminal_mode', 'qva'), ('p47_refinement', True),
-                              ('p47_scheduling', 'adaptive'), ('p51_online_budget_guard', False)):
+                              ('p47_scheduling', 'adaptive'), ('p51_online_budget_guard', False),
+                              ('follow_reference_mode', 'target')):
             self.declare_parameter(name, default)
         mode = self.get_parameter('research_mode').value
         optimizer = MincoConfig(mode=self.get_parameter('minco_mode').value,
@@ -102,7 +103,8 @@ class FollowResearchShadowNode(FollowMpcShadowNode):
                         scheduling=self.get_parameter('p47_scheduling').value,
                         online_budget_guard=self.get_parameter('p51_online_budget_guard').value,
                         rollout_config=FollowRolloutConfig(response_time=float(
-                            self.get_parameter('follow_guided_response_time').value)))
+                            self.get_parameter('follow_guided_response_time').value),
+                            reference_mode=self.get_parameter('follow_reference_mode').value))
                 elif engine == 'follow_guided_minco':
                     from uav_control.guidance.follow_rollout import FollowRolloutConfig
                     extra = dict(

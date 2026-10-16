@@ -17,8 +17,11 @@ class FollowRolloutConfig:
     control_dt: float = .05
     integration_dt: float = .01
     response_time: float = .5
+    reference_mode: str = 'target'
 
     def validate(self):
+        if self.reference_mode not in ('target', 'rear_point'):
+            raise ValueError('INVALID_FOLLOW_REFERENCE_MODE')
         if (not all(math.isfinite(v) and v > 0 for v in (
                 self.position_gain, self.altitude_gain, self.control_dt,
                 self.integration_dt, self.response_time))
@@ -42,6 +45,11 @@ def _profile_follow_command(core, state, problem, relative_time, dt):
     """
     from uav_control.guidance.follow_reference import forecast_viewpoint
     reference_p, reference_v, _, _, _ = forecast_viewpoint(problem, relative_time)
+    return _viewpoint_follow_command(core, state, reference_p, reference_v, dt)
+
+
+def _viewpoint_follow_command(core, state, reference_p, reference_v, dt):
+    """Keep the original speed, acceleration shaping and sea guard for reference P/V."""
     desired = (reference_v[0] + core.follow_position_gain*(reference_p[0]-state.position[0]),
                reference_v[1] + core.follow_position_gain*(reference_p[1]-state.position[1]),
                reference_v[2] + core.altitude_velocity_gain*(reference_p[2]-state.position[2]))
@@ -112,13 +120,21 @@ def rollout_follow(problem, config=FollowRolloutConfig(), initial_command=None,
     core.previous_velocity = tuple(command)
     control_times = np.arange(0., duration-1e-10, config.control_dt)
     target_p, target_v = problem.target_state(control_times)
+    rear = None
+    if config.reference_mode == 'rear_point' and not getattr(req, 'viewpoint_profile', ()):
+        from uav_control.guidance.follow_reference import forecast_rear_point_batch
+        rear = forecast_rear_point_batch(problem, control_times)
     times, positions, velocities, accelerations, commands = [0.], [tuple(p)], [tuple(v)], [
         tuple(a)], []
     safety_states = []
     for i, start in enumerate(control_times):
         check_deadline()
         target = FlightKinematicState(tuple(target_p[i]), tuple(target_v[i]))
-        if getattr(req, 'viewpoint_profile', ()):
+        if rear is not None:
+            output = _viewpoint_follow_command(
+                core, FlightKinematicState(tuple(p), tuple(v)), rear[0][i], rear[1][i],
+                config.control_dt)
+        elif getattr(req, 'viewpoint_profile', ()):
             output = _profile_follow_command(
                 core, FlightKinematicState(tuple(p), tuple(v)), problem, float(start),
                 config.control_dt)
@@ -149,6 +165,7 @@ def rollout_follow(problem, config=FollowRolloutConfig(), initial_command=None,
         command_source=source, response_model='jerk_limited_velocity_lag',
         command_initialization_clipped=bool(clipped),
         response_time=config.response_time, control_dt=config.control_dt,
+        reference_mode=config.reference_mode,
         integration_dt=config.integration_dt,
         future_target_source=req.context.prediction_source,
         prediction_sequence_id=req.context.prediction_sequence_id,
@@ -214,13 +231,21 @@ def rollout_follow_fast(problem, config=FollowRolloutConfig(), initial_command=N
     core.previous_velocity = command
     control_times = np.arange(0., duration-1e-10, config.control_dt)
     target_p, target_v = problem.target_state(control_times)
+    rear = None
+    if config.reference_mode == 'rear_point' and not getattr(req, 'viewpoint_profile', ()):
+        from uav_control.guidance.follow_reference import forecast_rear_point_batch
+        rear = forecast_rear_point_batch(problem, control_times)
     times = [0.]
     positions, velocities, accelerations = [(px, py, pz)], [(vx, vy, vz)], [(ax, ay, az)]
     commands, safety_states = [], []
     for i, start in enumerate(control_times):
         check_deadline()
         target = FlightKinematicState(tuple(target_p[i]), tuple(target_v[i]))
-        if getattr(req, 'viewpoint_profile', ()):
+        if rear is not None:
+            output = _viewpoint_follow_command(
+                core, FlightKinematicState((px, py, pz), (vx, vy, vz)), rear[0][i],
+                rear[1][i], config.control_dt)
+        elif getattr(req, 'viewpoint_profile', ()):
             output = _profile_follow_command(
                 core, FlightKinematicState((px, py, pz), (vx, vy, vz)), problem, float(start),
                 config.control_dt)
@@ -256,6 +281,7 @@ def rollout_follow_fast(problem, config=FollowRolloutConfig(), initial_command=N
         command_source=source, response_model='jerk_limited_velocity_lag',
         command_initialization_clipped=bool(clipped),
         response_time=config.response_time, control_dt=config.control_dt,
+        reference_mode=config.reference_mode,
         integration_dt=config.integration_dt,
         future_target_source=req.context.prediction_source,
         prediction_sequence_id=req.context.prediction_sequence_id,

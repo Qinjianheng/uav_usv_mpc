@@ -87,6 +87,12 @@ R4 的 `takeoff_visual_tracking: true` 为显式试验开关，缺省关闭。�
 
 该开关针对八字首轮起飞期间的视场/深度失锁，不能把单位测试或记录状态下的命令回放称为成功起飞。启用它必须建立新 case、新源码资格和独立审查；旧 Readiness 作废。R4 首轮失败原始证据保存在 `data/experiments/20261016_p61r3_successor_delivery_05/baseline_figure_eight_B_01/flight/`，阶段分析与复测材料在 `data/experiments/20261016_p61r4_figure_eight_01/`。
 
+弯道修复的 `follow_reference_mode` 缺省为 `target`，新 case 可在 planner/Tracker 两端显式设为 `rear_point`。P47 使用既有后方观察点 P/V 参考，其常量偏置批处理与标量拟合逐点等价；不改变控制速度/加速度/jerk 整形或海面保护。接收端使用最多五个不同图像采集戳、0.25 s 因果历史拟合速度方向转率；KF 发布戳抖动不能当转率。最新 KF/导航仍须在 125 ms 内且 native bracket ≤50 ms。后方点速度误差与原始 target-relative 速度分别记录，位置/速度误差阈值保持；历史不足失败关闭，不授予入场。真实 MINCO 期间才可使用同刻 KF/native LOS yaw-rate 前馈，过期或未配对的状态不提供前馈。
+
+显式研究 yaw 上限可到 2.5 rad/s，标准 MpcConfig 上限不变。该值需逐 case 绑定新约束指纹与当前真实输入离线结果、PX4 物理依据、独立审查和新 Readiness，不能复用原 1 rad/s formal 包。P6 准备拒绝 planner/receiver yaw 或 reference mode 不一致；实际 harness 从已审研究配置派生加载值，不再强制覆盖为 1 rad/s。当前离线证据在 `data/experiments/20261017_p61r4_turn_reference_03/`，其中新生成的 `f*_h1.6_main_C_single.jsonl` 仅保留旧 parser 文件名，内容明确标为当前真实 IMM/B 输入的离线计算，不能称为历史 C 组飞行或新闭环成功。
+
+本次仍保留 125 ms 原始观测租期。接收端新增 `validation_cpu_seconds` 和 `validation_stages`，与壁钟耗时分别记录，区分 admission、预测转换、prefix geometry、最终上下文/tick；不由 monitor receipt 推断 Tracker callback 到达时刻。修改 freshness 必须另建跨预测/规划/接收端一致的时间契约与资格，不能只改 YAML 或延长已有消息的 valid_until。
+
 ## 单次真实执行入口
 
 下面是根任务完成资格后才使用的入口，本开发没有执行：

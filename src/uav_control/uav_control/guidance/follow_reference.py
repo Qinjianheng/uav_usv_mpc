@@ -91,6 +91,48 @@ def forecast_target_kinematics(problem, time):
     return p[0], v[0], acceleration, heading, omega, alpha, details
 
 
+def forecast_rear_point_batch(problem, times):
+    """Batch the scalar constant-offset P/V fit; retain scalar fallback near singularity."""
+    query = np.asarray(times, dtype=float)
+    if query.ndim != 1 or not len(query) or not np.all(np.isfinite(query)):
+        raise ValueError('INVALID_REAR_REFERENCE_TIME')
+    p, v = problem.target_state(query)
+    ts = np.asarray(problem.request.prediction_times)
+    velocities = np.asarray(problem.request.target_velocities)
+    relative = problem.request.context.execution_start_stamp+query-(
+        problem.request.context.prediction_source_stamp)
+    x = ts[None, :]-relative[:, None]
+    mask = (abs(x) <= .400001) & (np.linalg.norm(velocities[:, :2], axis=1) >= .2)
+    usable = (mask.sum(axis=1) >= 3) & (np.linalg.norm(v[:, :2], axis=1) >= .2)
+    angles = np.zeros_like(x)
+    raw = np.arctan2(velocities[:, 1], velocities[:, 0])
+    for i in np.flatnonzero(usable):
+        angles[i, mask[i]] = np.unwrap(raw[mask[i]])
+    design = np.stack((np.ones_like(x), x, x*x), axis=2)
+    normal = np.einsum('nti,ntj,nt->nij', design, design, mask)
+    rhs = np.einsum('nti,nt,nt->ni', design, angles, mask)
+    normal[~usable] = np.eye(3)
+    fallback = usable & (np.linalg.cond(normal) > 1e8)
+    normal[fallback] = np.eye(3)
+    try:
+        coefficients = np.linalg.solve(normal, rhs)
+    except np.linalg.LinAlgError:
+        coefficients = np.zeros((len(query), 3))
+        fallback = usable.copy()
+    heading = np.where(usable, coefficients[:, 0], problem.request.state[9])
+    speed = np.maximum(np.linalg.norm(v[:, :2], axis=1), .2)
+    bound = problem.limits.maximum_horizontal_acceleration/speed
+    omega = np.where(usable, np.clip(coefficients[:, 1], -bound, bound), 0.)
+    unit = np.c_[np.cos(heading), np.sin(heading), np.zeros(len(query))]
+    tangent = np.c_[-unit[:, 1], unit[:, 0], np.zeros(len(query))]
+    position = p-problem.limits.follow_distance*unit
+    velocity = v-problem.limits.follow_distance*omega[:, None]*tangent
+    position[:, 2], velocity[:, 2] = problem.limits.flight_altitude, 0.
+    for i in np.flatnonzero(fallback):
+        position[i], velocity[i] = forecast_viewpoint(problem, float(query[i]))[:2]
+    return position, velocity
+
+
 def forecast_viewpoint(problem, time, beta=0., distance=None):
     """Original scalar reference; P44 shares only target-dependent forecast fitting."""
     p, v, acceleration, heading, omega, alpha, details = forecast_target_kinematics(problem, time)

@@ -378,6 +378,14 @@ def assess(output, scene, reason, first_minco, ended, task_root=None,
     return summary
 
 
+def execution_condition(output, scene, research):
+    """Preserve audited planner limits in the independent receiver's runtime config."""
+    params = research['p4_follow_planner_node']['ros__parameters']
+    return (output.name, scene, False, 'p47_follow_guided',
+            params['maximum_horizontal_acceleration'], params['maximum_yaw_rate'],
+            params['short_horizon'], 'none')
+
+
 def run(output, qualification, scene, task_root=None, authorization=None,
         health_check=None, research_config=None, flight_parameters=None,
         extra_audit=None, f3_gate=None, release_gate=None, health_monitor_check=None,
@@ -396,7 +404,7 @@ def run(output, qualification, scene, task_root=None, authorization=None,
     constraints = constraint_metadata(raw['constraint_fingerprint'], research,
                                       p6_enabled=overlay_config is not None)
     claim(output, scene, qualification, task_root, authorization, f3_gate, release_gate)
-    condition_spec = (output.name, scene, False, 'p47_follow_guided', 3., 1., 1.6, 'none')
+    condition_spec = execution_condition(output, scene, research)
     if overlay_config is None:
         prepare(output, condition_spec)
     else:

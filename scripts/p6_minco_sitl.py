@@ -5,6 +5,7 @@ import argparse
 from contextlib import contextmanager
 from dataclasses import asdict
 import json
+import math
 import os
 from pathlib import Path
 import shutil
@@ -116,8 +117,17 @@ def prepare_case(output, motion_mode, group, flight_config=None,
                 p6_calibration_file=str(output / 'config/calibration.json') if calibration else '')
     tracker.update(risk)
     planner.update(risk)
+    reference_mode = planner.get('follow_reference_mode', 'target')
+    if (reference_mode not in ('target', 'rear_point')
+            or tracker.get('follow_reference_mode', 'target') != reference_mode):
+        raise ValueError('P6_REFERENCE_MODE_MISMATCH')
+    yaw = float(planner['maximum_yaw_rate'])
+    if (not math.isfinite(yaw) or yaw <= 0
+            or float(tracker.get('follow_research_yaw_rate', 1.)) != yaw):
+        raise ValueError('P6_YAW_LIMIT_MISMATCH')
+    tracker['follow_reference_mode'] = planner['follow_reference_mode'] = reference_mode
     tracker.update(follow_minco_enabled=False, follow_minco_shadow_check=False,
-                   follow_research_horizontal_acceleration=3., follow_research_yaw_rate=1.)
+                   follow_research_horizontal_acceleration=3., follow_research_yaw_rate=yaw)
     planner['follow_execution_enabled'] = True
     motion['trajectory_type'] = mode
     mode_id = next(index for index, value in MOTION_MODES.items() if value == mode)

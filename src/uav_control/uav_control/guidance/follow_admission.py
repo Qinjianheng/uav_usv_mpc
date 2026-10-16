@@ -30,9 +30,43 @@ class AdmissionConfig:
             raise ValueError('INVALID_FOLLOW_ADMISSION_CONFIG')
 
 
+def _tracking_turn_rate(tracking, target):
+    """Fit causal velocity headings from distinct image updates, never future KF states."""
+    frames = {}
+    for row in sorted(tracking, key=lambda r: r['stamp']):
+        if (row.get('valid') and 0 < row.get('source', 0.) <= row['stamp']
+                and row['stamp'] <= target['stamp']
+                and 0 <= target['source']-row['source'] <= .25
+                and len(row.get('v', ())) == 3
+                and all(math.isfinite(v) for v in row['v'])
+                and math.hypot(*row['v'][:2]) >= .2):
+            frames[row['source']] = row
+    rows = sorted(frames.values(), key=lambda r: r['stamp'])[-5:]
+    if len(rows) < 3 or any(a['source'] >= b['source'] for a, b in zip(rows, rows[1:])):
+        return None
+    # CV KF propagation changes its state epoch without changing velocity.
+    # Different image acquisitions, not callback jitter, identify its updates.
+    times = [row['source']-target['source'] for row in rows]
+    angles = []
+    for row in rows:
+        angle = math.atan2(row['v'][1], row['v'][0])
+        if angles:
+            angle = angles[-1]+math.atan2(math.sin(angle-angles[-1]),
+                                          math.cos(angle-angles[-1]))
+        angles.append(angle)
+    mean_t, mean_a = sum(times)/len(times), sum(angles)/len(angles)
+    denominator = sum((t-mean_t)**2 for t in times)
+    if denominator <= 1e-12:
+        return None
+    return sum((t-mean_t)*(a-mean_a) for t, a in zip(times, angles))/denominator
+
+
 def follow_settling(navigation, tracking, now, distance=5., altitude=-5.,
-                    admission_config=AdmissionConfig()):
+                    admission_config=AdmissionConfig(), reference_mode='target'):
     """Compare KF P/V at its epoch with bracketed native nav; never extrapolate nav."""
+    if reference_mode not in ('target', 'rear_point'):
+        raise ValueError('INVALID_FOLLOW_REFERENCE_MODE')
+
     def valid(row):
         return row.get('valid') and all(len(row.get(k, ())) == 3 for k in ('p', 'v')) and all(
             math.isfinite(v) for k in ('p', 'v') for v in row[k])
@@ -67,14 +101,30 @@ def follow_settling(navigation, tracking, now, distance=5., altitude=-5.,
         direction = ([x/speed for x in target['v'][:2]] if speed > 1e-6 else [1., 0.])
         desired = [target['p'][i]-distance*direction[i] for i in range(2)]+[altitude]
         error = math.hypot(*(desired[i]-p[i] for i in range(2)))
-        relative = math.hypot(*(target['v'][i]-v[i] for i in range(2)))
+        target_relative = math.hypot(*(target['v'][i]-v[i] for i in range(2)))
+        reference_v = list(target['v'])
+        turn_rate = 0.
+        if reference_mode == 'rear_point' and speed >= .2:
+            turn_rate = _tracking_turn_rate(tracking, target)
+            if turn_rate is None:
+                return dict(settled=False, reason='TURN_RATE_UNAVAILABLE')
+            # d(target - distance*heading)/dt includes rotation of the rear offset.
+            reference_v[0] += distance*turn_rate*direction[1]
+            reference_v[1] -= distance*turn_rate*direction[0]
+        relative = math.hypot(*(reference_v[i]-v[i] for i in range(2)))
+        rx, ry = target['p'][0]-p[0], target['p'][1]-p[1]
+        los_rate = ((rx*(target['v'][1]-v[1])-ry*(target['v'][0]-v[0]))
+                    / (rx*rx+ry*ry)) if rx*rx+ry*ry > 1e-6 else 0.
         height = abs(p[2]-altitude)
         c = admission_config
         return dict(settled=(error <= c.horizontal_enter and relative <= c.relative_enter
                              and height <= c.height_enter),
                     epoch=target['stamp'], source_stamp=target['source'],
                     navigation_bracket=[a['stamp'], b['stamp']], horizontal_error=error,
-                    relative_speed=relative, height_error=height, desired_position=desired,
+                    relative_speed=relative, target_relative_speed=target_relative,
+                    reference_velocity=reference_v, reference_mode=reference_mode,
+                    turn_rate=turn_rate, los_yaw_rate=los_rate,
+                    height_error=height, desired_position=desired,
                     method='native bracket interpolation; no extrapolation')
     latest = tracking[-1]
     # A fresh KF epoch just ahead of delivered native navigation is a causal wait.

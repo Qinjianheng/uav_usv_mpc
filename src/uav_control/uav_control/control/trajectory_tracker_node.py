@@ -349,6 +349,10 @@ class TrajectoryTrackerNode(Node):
         self.follow_stable_ticks = 0
         from uav_control.guidance.follow_admission import AdmissionConfig, FollowAdmission
         self.declare_parameter('follow_admission_enabled', True)
+        self.declare_parameter('follow_reference_mode', 'target')
+        self.follow_reference_mode = self.get_parameter('follow_reference_mode').value
+        if self.follow_reference_mode not in ('target', 'rear_point'):
+            raise ValueError('INVALID_FOLLOW_REFERENCE_MODE')
         admission_values = {}
         for name, value in vars(AdmissionConfig()).items():
             self.declare_parameter('follow_admission_'+name, value)
@@ -880,7 +884,8 @@ class TrajectoryTrackerNode(Node):
         self.follow_metrics = follow_settling(
             self.follow_navigation_history, self.follow_target_history, context.now,
             self.flight_guidance.follow_distance, self.flight_guidance.flight_altitude,
-            admission_config=gate.config)
+            admission_config=gate.config,
+            reference_mode=getattr(self, 'follow_reference_mode', 'target'))
         status_stamp = getattr(self, 'vehicle_status_stamp', None)
         context_faults = execution_context_errors(context)
         legal = (not context_faults
@@ -1061,13 +1066,17 @@ class TrajectoryTrackerNode(Node):
         from uav_control.guidance.follow_contract import execution_context_errors
         receiver = self.follow_receiver
         started = time.perf_counter()
+        started_cpu = time.thread_time()
         context = self._follow_context()
         self._update_follow_admission(context)
+        admitted = time.perf_counter()
         self.follow_stable_ticks = self.follow_stable_ticks+1 if context.visible else 0
         nominal, prefix_details = {}, {}
+        converted = None
         try:
             prediction = self.p6_runtime.prediction(
                 prediction_from_message(self.latest_prediction))
+            converted = time.perf_counter()
             for curve in (receiver.active, receiver.pending):
                 if curve and now < min(curve.end, curve.start+receiver.lease_seconds):
                     detail = dict(reason='CONTEXT_NOT_READY', visible=context.visible)
@@ -1078,11 +1087,19 @@ class TrajectoryTrackerNode(Node):
                     prefix_details[curve.plan_id] = detail
         except (ValueError, TypeError, AttributeError):
             nominal = {}
+            if converted is None:
+                converted = time.perf_counter()
+        checked = time.perf_counter()
         # Recheck the actual clock/freshness after validation; computing cannot extend a lease.
         context = self._follow_context()
         ack = receiver.tick(context, nominal_valid=nominal)
         curve = receiver.active
         debug = dict(stamp=context.now, validation_seconds=time.perf_counter()-started,
+                     validation_cpu_seconds=time.thread_time()-started_cpu,
+                     validation_stages=dict(admission=admitted-started,
+                                            prediction_conversion=converted-admitted,
+                                            prefix_geometry=checked-converted,
+                                            final_context_and_tick=time.perf_counter()-checked),
                      prefix_checks=prefix_details, prediction=context.prediction_id,
                      plan=curve.plan_id if curve else 0, state_stamp=self.latest_state.stamp,
                      active_start=curve.start if curve else None,
@@ -1970,6 +1987,25 @@ class TrajectoryTrackerNode(Node):
                     rate = max(-self.max_observation_yaw_rate, min(
                         self.max_observation_yaw_rate, rate,
                     ))
+                if (getattr(self, 'follow_reference_mode', 'target') == 'rear_point'
+                        and self.mission_state == MissionState.FOLLOW
+                        and getattr(getattr(self, 'follow_receiver', None), 'active', None)
+                        is not None and decision.locked
+                        and measurement_age(current.stamp,
+                                            self.visibility.last_valid_bearing_stamp or 0.)
+                        <= min(.125, self.maximum_state_age)):
+                    # The common-epoch KF/native pair supplies LOS rate. An
+                    # expired or unresolved pair never grants feedforward.
+                    metrics = getattr(self, 'follow_metrics', {})
+                    limit = self.max_observation_yaw_rate
+                    if hasattr(self, 'follow_model'):
+                        limit = min(limit, self.follow_model.config.maximum_yaw_rate)
+                    los_rate = metrics.get('los_yaw_rate', math.nan)
+                    if (math.isfinite(los_rate)
+                            and all(measurement_age(current.stamp, metrics.get(k, 0.))
+                                    <= min(.125, self.maximum_state_age)
+                                    for k in ('epoch', 'source_stamp'))):
+                        rate = max(-limit, min(limit, rate+los_rate))
                 self.yaw_owner = ('VISION' if visual_lock or getattr(
                     self, 'bearing_approach_active', False) else 'SEARCH')
             elif decision.state != 'SAFE_WAIT':

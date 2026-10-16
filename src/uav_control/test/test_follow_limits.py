@@ -24,7 +24,7 @@ def test_twelve_research_envelopes_have_distinct_complete_fingerprints(accelerat
 
 
 @pytest.mark.parametrize('kwargs', [
-    dict(maximum_horizontal_acceleration=4.6), dict(maximum_yaw_rate=1.6),
+    dict(maximum_horizontal_acceleration=4.6), dict(maximum_yaw_rate=2.5001),
     dict(maximum_horizontal_jerk=6.1), dict(maximum_input_age=.126),
     dict(maximum_horizontal_acceleration=float('nan'))])
 def test_invalid_research_parameters_do_not_relax_other_gates(kwargs):
