@@ -3,7 +3,6 @@
 from dataclasses import dataclass
 
 
-
 @dataclass(frozen=True)
 class TargetKinematicState:
     """One timestamped target state in the local planning frame."""

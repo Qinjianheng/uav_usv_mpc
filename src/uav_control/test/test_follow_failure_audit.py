@@ -1,7 +1,5 @@
 """Offline attribution is bounded and cannot be mistaken for new measurements."""
 
-import importlib.util
-from pathlib import Path
 
 import numpy as np
 import pytest
@@ -9,14 +7,9 @@ from scipy.spatial.transform import Rotation
 
 
 @pytest.fixture
-def audit(monkeypatch):
-    directory = Path(__file__).resolve().parents[3] / 'scripts'
-    monkeypatch.syspath_prepend(str(directory))
-    spec = importlib.util.spec_from_file_location(
-        'follow_failure_audit', directory / 'follow_failure_audit.py')
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return module
+def audit():
+    from uav_control.analysis import observation_pairing
+    return observation_pairing
 
 
 def test_surrogate_holds_position_and_uses_independent_attitude(audit):

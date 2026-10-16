@@ -268,13 +268,16 @@ def test_shadow_yaml_and_standalone_launch_keep_synthetic_gate_closed():
     assert config['maximum_input_age'] == .125
     assert config['shadow_rate_hz'] == 1.0
     assert config['solve_budget'] == .5
-    launch_path = workspace / 'src/uav_usv_bringup/launch/mpc_seed_shadow.launch.py'
-    tree = ast.parse(launch_path.read_text())
-    nodes = [item for item in ast.walk(tree) if isinstance(item, ast.Call)
-             and isinstance(item.func, ast.Name) and item.func.id == 'Node']
-    assert len(nodes) == 1
-    assert next(kw.value.value for kw in nodes[0].keywords
-                if kw.arg == 'executable') == 'follow_mpc_shadow_node'
+    # The retired standalone launch is gone; the reusable runner cannot be
+    # registered as an online controller or enabled in the actual flight graph.
+    for name in ('modular_intercept.launch.py', 'p4_follow_research.launch.py'):
+        launch_path = workspace / 'src/uav_usv_bringup/launch' / name
+        tree = ast.parse(launch_path.read_text())
+        executables = [kw.value.value for item in ast.walk(tree)
+                       if isinstance(item, ast.Call) and isinstance(item.func, ast.Name)
+                       and item.func.id == 'Node' for kw in item.keywords
+                       if kw.arg == 'executable' and isinstance(kw.value, ast.Constant)]
+        assert 'follow_mpc_shadow_node' not in executables
 
 
 def test_log_separates_core_feasibility_from_final_admission_and_saves_replay_config():

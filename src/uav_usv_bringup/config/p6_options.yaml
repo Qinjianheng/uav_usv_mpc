@@ -1,5 +1,5 @@
 # Optional P6 reference options. Ordinary launch does not load this file.
-# predictor_model is selected through launch prediction_model:=bctra|imm.
+# Online prediction is IMM only; launch routes it to the primary prediction topic.
 # risk_horizon_seconds: 0.45 checks the actual execution lease; 0 checks the full curve.
 # Robust results use empirical envelopes, never a whole-task 95% probability claim.
 p4_follow_planner_node:
@@ -39,7 +39,7 @@ trajectory_tracker_node:
 imm_target_predictor_node:
   ros__parameters:
     observation_topic: /perception/front/target_observation
-    prediction_topic: /planning/imm_target_prediction
+    prediction_topic: /planning/target_prediction
     diagnostics_topic: /planning/imm_diagnostics
     mission_topic: /mission/state
     frame_id: local_ned

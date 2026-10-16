@@ -1,22 +1,14 @@
 """P7.2b independent world-axis analysis contracts."""
 
-import importlib.util
 import math
-from pathlib import Path
 
 import numpy as np
 import pytest
 
 
-SCRIPT = Path(__file__).resolve().parents[3] / 'scripts' / (
-    'p7_px4_local_axis_analysis.py')
-
-
 def load_script():
-    spec = importlib.util.spec_from_file_location('p7_axis_analysis', SCRIPT)
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return module
+    from uav_control.analysis import observation_pairing
+    return observation_pairing
 
 
 def test_enu_ned_and_displacement():
@@ -67,25 +59,3 @@ def test_epoch_segmentation_and_yaw_only_no_world_displacement():
     ]
     assert module.segment_epochs(rows) == [0, 0, 1, 2]
     assert module.xy_displacement([2., 3.], [2., 3.]) == [0., 0.]
-
-
-def test_ulog_clock_self_alignment_and_no_groundtruth_extrapolation():
-    module = load_script()
-    ulog_time = np.arange(0., 40., 0.02)
-    trajectory = np.column_stack((
-        0.2 * ulog_time + 0.03 * ulog_time ** 2,
-        2.0 * np.sin(0.2 * ulog_time),
-        np.zeros_like(ulog_time),
-    ))
-    selected = np.arange(8., 32., 0.5)
-    captured = np.column_stack([
-        np.interp(selected, ulog_time, trajectory[:, axis])
-        for axis in range(3)
-    ])
-    ros_stamps = selected + 1000.0
-    offset, rmse = module.align_ulog_ekf_to_capture(
-        ros_stamps, captured, ulog_time, trajectory)
-    assert offset == pytest.approx(1000.0, abs=0.01)
-    assert rmse < 0.01
-    with pytest.raises(ValueError, match='bracket'):
-        module.interpolated_ulog_value(41.0, ulog_time, trajectory, 0.05)

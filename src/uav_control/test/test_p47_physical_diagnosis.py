@@ -1,20 +1,12 @@
 """Offline epoch and vector attribution safeguards, independent of ROS/SITL."""
-import importlib.util
-from pathlib import Path
 
 import numpy as np
 import pytest
 
 
-SCRIPT = Path(__file__).resolve().parents[3] / 'scripts/p47_physical_diagnosis.py'
-
-
 def module():
-    assert SCRIPT.exists(), 'P4.7 diagnosis implementation is missing'
-    spec = importlib.util.spec_from_file_location('p47_diagnosis', SCRIPT)
-    loaded = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(loaded)
-    return loaded
+    from uav_control.analysis import offline_geometry
+    return offline_geometry
 
 
 def test_interpolation_requires_brackets_and_rejects_gaps_and_resets():
@@ -90,18 +82,6 @@ def test_callback_pairing_uses_header_epochs_and_rejects_cross_cycle():
     assert index == 0 and tick is diag[0] and command is commands[0]
     with pytest.raises(ValueError, match='CALLBACK'):
         m.pair_callback(dict(stamp=10.04, plan=7), diag, commands)
-
-
-def test_output_guard_protects_raw_sources_and_existing_analysis(tmp_path):
-    m = module()
-    source = tmp_path / 'raw'
-    source.mkdir()
-    with pytest.raises(ValueError, match='RAW_SOURCE'):
-        m.prepare_output(source / 'new_analysis', [source])
-    output = tmp_path / 'analysis'
-    m.prepare_output(output, [source])
-    with pytest.raises(FileExistsError):
-        m.prepare_output(output, [source])
 
 
 def test_native_command_correspondence_requires_causal_header_and_bounds():

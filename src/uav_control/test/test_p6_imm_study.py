@@ -1,17 +1,12 @@
 """Independent calibration provenance and metric checks for offline study."""
 
-import importlib.util
-from pathlib import Path
 
 import pytest
 
 
 def study_module():
-    path = Path(__file__).resolve().parents[3] / 'scripts' / 'p6_prediction_study.py'
-    spec = importlib.util.spec_from_file_location('p6_prediction_study', path)
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return module
+    from uav_control.analysis import imm_calibration
+    return imm_calibration
 
 
 def rows(seed, squared_mahalanobis):
@@ -66,3 +61,9 @@ def test_metric_summary_keeps_severe_failures_and_invalid_attempts():
     assert summary['valid_fraction'] == pytest.approx(2. / 3.)
     assert summary['horizontal_rmse'] == pytest.approx((101. / 2.) ** .5)
     assert summary['severe_over_5m'] == 1
+
+
+def test_retired_predictor_family_cannot_enter_current_calibration_helper():
+    with pytest.raises(ValueError, match='only current IMM'):
+        study_module().fit_calibration(rows(1, [1.]), rows(2, [1.]), 'bctra',
+                                       {'calibration_seed': 1, 'heldout_seed': 2})

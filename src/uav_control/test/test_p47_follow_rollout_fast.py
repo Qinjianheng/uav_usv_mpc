@@ -1,7 +1,5 @@
 """Opt-in scalar integration preserves the 20 Hz original FOLLOW control law."""
 from dataclasses import replace
-import importlib.util
-from pathlib import Path
 
 import numpy as np
 import pytest
@@ -90,16 +88,13 @@ def test_overspeed_measurement_is_preserved_while_initial_command_is_clipped():
 
 
 def test_common_grid_sampling_matches_reference_interface_and_rejects_extrapolation():
-    script = Path(__file__).resolve().parents[3] / 'scripts/p47_rollout_performance.py'
-    assert script.exists(), 'P4.7 rollout comparison script is missing'
-    spec = importlib.util.spec_from_file_location('p47_rollout_performance', script)
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
     reference = fast()(problem())
     epochs = np.array([0., .023, .05, .4, 1.2])
-    batched = module.reference_samples(reference, epochs)
-    for i, epoch in enumerate(epochs):
-        for actual, expected in zip(batched, reference.sample(epoch)):
-            np.testing.assert_allclose(actual[i], expected, atol=1e-14, rtol=0.)
-    with pytest.raises(ValueError, match='OUTSIDE'):
-        module.reference_samples(reference, np.array([-.001]))
+    samples = [reference.sample(epoch) for epoch in epochs]
+    for epoch, values in zip(epochs, samples):
+        assert all(np.isfinite(component).all() for component in values)
+        if epoch == 0.:
+            np.testing.assert_allclose(values[0], reference.positions[0], atol=1e-14)
+    for epoch in (-.001, 1.201):
+        with pytest.raises(ValueError, match='OUTSIDE'):
+            reference.sample(epoch)

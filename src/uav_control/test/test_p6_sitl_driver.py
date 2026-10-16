@@ -31,16 +31,34 @@ def bundle_inputs(tmp_path, monkeypatch):
     return entry, experiment_root, flight_path, research_path
 
 
-def test_all_twenty_conditions_are_explicit_and_keep_pilot_baseline_order():
+def test_ten_imm_only_conditions_keep_pilot_baseline_order():
     entry = driver()
     cases = entry.matrix_conditions()
-    assert len(cases) == 20
-    assert len({(case['motion_mode'], case['group']) for case in cases}) == 20
-    assert cases[0]['motion_mode'] == 'figure_eight' and cases[0]['group'] == 'A'
-    assert entry.GROUPS['A'] == ('bctra', 'nominal', False)
+    assert len(cases) == 10
+    assert len({(case['motion_mode'], case['group']) for case in cases}) == 10
+    assert cases[0]['motion_mode'] == 'figure_eight' and cases[0]['group'] == 'B'
+    assert set(entry.GROUPS) == {'B', 'D'}
     assert entry.GROUPS['B'] == ('imm', 'nominal', False)
-    assert entry.GROUPS['C'] == ('bctra', 'robust', True)
     assert entry.GROUPS['D'] == ('imm', 'robust', True)
+
+
+def test_default_linear_pilot_inherits_f2_motion_instead_of_figure_eight_velocity(
+        bundle_inputs):
+    entry, root, _, _ = bundle_inputs
+    case = entry.prepare_case(root / 'default_pilot', 'linear', 'B', role='pilot')
+    saved = yaml.safe_load((case / 'config/flight.yaml').read_text())
+    motion = saved['moving_target']['ros__parameters']
+    assert (motion['velocity_x'], motion['velocity_y'], motion['horizontal_speed']) == (2., 0., 2.)
+    assert motion['trajectory_type'] == 'linear'
+    sources = json.loads((case / 'case.json').read_text())['config_sources']
+    assert any('f2_h16_01/config/flight.yaml' in path for path in sources)
+
+
+def test_imm_only_preparation_refuses_obsolete_shadow_switch(bundle_inputs):
+    entry, root, flight, research = bundle_inputs
+    with pytest.raises(ValueError, match='IMM_SHADOW_REMOVED'):
+        entry.prepare_case(root / 'shadow', 'linear', 'B', flight, research, imm_shadow=True)
+    assert not (root / 'shadow').exists()
 
 
 @pytest.mark.parametrize('mode', [
@@ -50,7 +68,7 @@ def test_all_twenty_conditions_are_explicit_and_keep_pilot_baseline_order():
 def test_prepare_copies_full_inputs_and_changes_only_explicit_p6_choices(bundle_inputs, mode):
     entry, root, flight_path, research_path = bundle_inputs
     original = flight_path.read_bytes(), research_path.read_bytes()
-    case = entry.prepare_case(root / mode, mode, 'A', flight_path, research_path)
+    case = entry.prepare_case(root / mode, mode, 'B', flight_path, research_path)
     saved = yaml.safe_load((case / 'config/flight.yaml').read_text())
     research = yaml.safe_load((case / 'config/research.yaml').read_text())
     manifest = json.loads((case / 'case.json').read_text())
@@ -60,14 +78,14 @@ def test_prepare_copies_full_inputs_and_changes_only_explicit_p6_choices(bundle_
     assert research['p4_follow_planner_node']['ros__parameters']['p6_visibility_mode'] == 'nominal'
     assert saved['trajectory_tracker_node']['ros__parameters']['p6_adaptive_viewpoint'] is False
     assert manifest['observation_seconds'] == 60.
-    assert manifest['launch_environment']['UAV_USV_P6_PREDICTOR'] == 'bctra'
+    assert manifest['launch_environment']['UAV_USV_P6_PREDICTOR'] == 'imm'
     assert manifest['launch_environment']['UAV_USV_P6_IMM_SHADOW'] == 'false'
     assert manifest['launch_environment']['UAV_USV_P6_RECORD'] == '1'
     assert (flight_path.read_bytes(), research_path.read_bytes()) == original
     assert not (case / 'flight').exists()
     entry.verify_case(case)
     with pytest.raises(FileExistsError):
-        entry.prepare_case(case, mode, 'A', flight_path, research_path)
+        entry.prepare_case(case, mode, 'B', flight_path, research_path)
 
 
 def test_full_imm_and_motion_parameters_are_materialized_without_overwriting_user_values(
@@ -103,7 +121,7 @@ def test_robust_case_requires_calibration_and_embeds_identical_risk_for_both_sid
     calibration = root.parent / 'calibration.json'
     calibration.write_text('{"calibrated": true}\n')
     case = entry.prepare_case(root / 'd', '5', 'D', flight, research,
-                              calibration_file=calibration, imm_shadow=True)
+                              calibration_file=calibration, imm_shadow=False)
     saved_flight = yaml.safe_load((case / 'config/flight.yaml').read_text())
     saved_research = yaml.safe_load((case / 'config/research.yaml').read_text())
     receiver = saved_flight['trajectory_tracker_node']['ros__parameters']
@@ -118,21 +136,21 @@ def test_robust_case_requires_calibration_and_embeds_identical_risk_for_both_sid
 def test_prepare_rejects_wrong_role_and_frozen_or_existing_namespace(bundle_inputs):
     entry, root, flight, research = bundle_inputs
     for mode, group, role, shadow in (
-            ('figure_eight', 'A', 'pilot', True),
-            ('linear', 'C', 'pilot', True),
+            ('figure_eight', 'B', 'pilot', False),
+            ('linear', 'D', 'pilot', False),
             ('linear', 'A', 'pilot', False),
-            ('linear', 'A', 'baseline', True),
-            ('figure_eight', 'B', 'baseline', True)):
+            ('linear', 'B', 'baseline', False),
+            ('figure_eight', 'D', 'baseline', False)):
         with pytest.raises(ValueError, match='P6_ROLE_MISMATCH'):
             entry.prepare_case(root / 'bad', mode, group, flight, research,
                                role=role, imm_shadow=shadow)
     with pytest.raises(ValueError, match='NEW_P6_EXPERIMENT_DIRECTORY_REQUIRED'):
-        entry.prepare_case(root.parent / 'baselines/bad', 'linear', 'A', flight, research)
+        entry.prepare_case(root.parent / 'baselines/bad', 'linear', 'B', flight, research)
 
 
 def test_config_mutation_invalidates_prepared_case_before_run(bundle_inputs):
     entry, root, flight, research = bundle_inputs
-    case = entry.prepare_case(root / 'a', 'linear', 'A', flight, research)
+    case = entry.prepare_case(root / 'a', 'linear', 'B', flight, research)
     (case / 'config/flight.yaml').write_text('changed')
     with pytest.raises(ValueError, match='P6_CASE_ARTIFACT_CHANGED'):
         entry.verify_case(case)
@@ -223,11 +241,25 @@ def qualification_files(entry, directory, case, *, reviewed=True):
     directory.mkdir()
     verification = directory / 'verification.json'
     verification.write_text(json.dumps(dict(passed=True, independent_review_pass=reviewed)))
+    import p61r_imm_qualification as primary
+    replay, review, gate = [directory / name for name in (
+        'replay.json', 'review.json', 'primary.json')]
+    replay.write_text(json.dumps(dict(attempts=1200, accepted=1200, strict_identity_matches=1200,
+                                     expired_rejections=1200, unsafe_output_count=0,
+                                     sample_counts={'41': 1200}, compute_seconds={'p95': .01})))
+    review.write_text(json.dumps(dict(review_pass=reviewed)))
+    gate.write_text(json.dumps(dict(
+        kind=primary.KIND, scope='linear_nominal_pilot', passed=reviewed,
+        evidence=[dict(path=str(p), sha256=entry.harness.sha(p), role=role)
+                  for p, role in ((replay, 'replay'), (review, 'review'),
+                                  (verification, 'verification'))],
+        source_checks=[dict(path=str(p), sha256=entry.harness.sha(p)) for p in primary.sources()])))
     qualification = directory / 'qualification.json'
     metadata = json.loads((case / 'case.json').read_text())
     qualification.write_text(json.dumps(dict(
         kind=entry.KIND, candidate=entry.harness.CANDIDATE,
-        offline_gate_pass=True, shadow_gate_pass=True, robust_gate_pass=True,
+        offline_gate_pass=True, shadow_gate_pass=False, robust_gate_pass=False,
+        imm_primary_evidence=dict(path=str(gate), sha256=entry.harness.sha(gate)),
         qualified_cases=[metadata['case_id']],
         qualified_case_manifests={metadata['case_id']: entry.harness.sha(case / 'SHA256SUMS')},
         source_checks=[dict(path=str(path.relative_to(entry.WORKSPACE)),
@@ -238,8 +270,8 @@ def qualification_files(entry, directory, case, *, reviewed=True):
 
 def test_readiness_binds_case_config_source_review_and_qualification(bundle_inputs):
     entry, root, flight, research = bundle_inputs
-    case = entry.prepare_case(root / 'pilot', 'linear', 'A', flight, research,
-                              role='pilot', imm_shadow=True)
+    case = entry.prepare_case(root / 'pilot', 'linear', 'B', flight, research,
+                              role='pilot', imm_shadow=False)
     verification, qualification = qualification_files(entry, root.parent / 'q', case)
     readiness = root.parent / 'readiness.json'
     entry.write_readiness(readiness, case, verification, qualification)
@@ -260,8 +292,8 @@ def test_readiness_binds_case_config_source_review_and_qualification(bundle_inpu
 
 def test_readiness_cannot_be_created_from_missing_review_or_fake_flight_pass(bundle_inputs):
     entry, root, flight, research = bundle_inputs
-    case = entry.prepare_case(root / 'pilot', 'linear', 'A', flight, research,
-                              role='pilot', imm_shadow=True)
+    case = entry.prepare_case(root / 'pilot', 'linear', 'B', flight, research,
+                              role='pilot', imm_shadow=False)
     verification, qualification = qualification_files(
         entry, root.parent / 'q', case, reviewed=False)
     with pytest.raises(ValueError, match='P6_VERIFICATION_AND_REVIEW_REQUIRED'):
@@ -271,14 +303,14 @@ def test_readiness_cannot_be_created_from_missing_review_or_fake_flight_pass(bun
 
 def test_existing_case_name_cannot_qualify_a_different_full_config(bundle_inputs):
     entry, root, flight, research = bundle_inputs
-    case = entry.prepare_case(root / 'first', 'linear', 'A', flight, research,
-                              role='pilot', imm_shadow=True)
+    case = entry.prepare_case(root / 'first', 'linear', 'B', flight, research,
+                              role='pilot', imm_shadow=False)
     verification, qualification = qualification_files(entry, root.parent / 'q', case)
     changed = yaml.safe_load(flight.read_text())
     changed['moving_target']['ros__parameters']['horizontal_speed'] = 3.5
     flight.write_text(yaml.safe_dump(changed))
-    replacement = entry.prepare_case(root / 'second', 'linear', 'A', flight, research,
-                                     role='pilot', imm_shadow=True)
+    replacement = entry.prepare_case(root / 'second', 'linear', 'B', flight, research,
+                                     role='pilot', imm_shadow=False)
     with pytest.raises(ValueError, match='P6_CASE_CONFIG_NOT_QUALIFIED'):
         entry.write_readiness(root.parent / 'readiness.json', replacement,
                               verification, qualification)
@@ -286,8 +318,8 @@ def test_existing_case_name_cannot_qualify_a_different_full_config(bundle_inputs
 
 def test_qualification_must_cover_all_integrated_runtime_sources(bundle_inputs):
     entry, root, flight, research = bundle_inputs
-    case = entry.prepare_case(root / 'pilot', 'linear', 'A', flight, research,
-                              role='pilot', imm_shadow=True)
+    case = entry.prepare_case(root / 'pilot', 'linear', 'B', flight, research,
+                              role='pilot', imm_shadow=False)
     verification, qualification = qualification_files(entry, root.parent / 'q', case)
     record = json.loads(qualification.read_text())
     record['source_checks'].pop()
@@ -298,8 +330,8 @@ def test_qualification_must_cover_all_integrated_runtime_sources(bundle_inputs):
 
 def test_new_driver_requires_explicit_execute_without_touching_processes(bundle_inputs):
     entry, root, flight, research = bundle_inputs
-    case = entry.prepare_case(root / 'pilot', 'linear', 'A', flight, research,
-                              role='pilot', imm_shadow=True)
+    case = entry.prepare_case(root / 'pilot', 'linear', 'B', flight, research,
+                              role='pilot', imm_shadow=False)
     with pytest.raises(ValueError, match='P6_EXPLICIT_EXECUTION_REQUIRED'):
         entry.run_case(case, root.parent / 'missing-q', root.parent / 'missing-r')
     assert not (case / 'attempt_f2.json').exists()
@@ -307,7 +339,7 @@ def test_new_driver_requires_explicit_execute_without_touching_processes(bundle_
 
 def test_baseline_requires_real_healthy_60_second_linear_pilot(bundle_inputs):
     entry, root, flight, research = bundle_inputs
-    case = entry.prepare_case(root / 'baseline', 'figure_eight', 'A', flight, research,
+    case = entry.prepare_case(root / 'baseline', 'figure_eight', 'B', flight, research,
                               role='baseline')
     with pytest.raises(ValueError, match='P6_PRIOR_ACTUAL_RUN_REQUIRED'):
         entry.require_prior_run(case, None)
@@ -322,8 +354,8 @@ def test_baseline_requires_real_healthy_60_second_linear_pilot(bundle_inputs):
 def test_driver_does_not_call_a_partial_recording_a_complete_60s_window(
         bundle_inputs, monkeypatch):
     entry, root, flight, research = bundle_inputs
-    case = entry.prepare_case(root / 'pilot', 'linear', 'A', flight, research,
-                              role='pilot', imm_shadow=True)
+    case = entry.prepare_case(root / 'pilot', 'linear', 'B', flight, research,
+                              role='pilot', imm_shadow=False)
     verification, qualification = qualification_files(entry, root.parent / 'q', case)
     readiness = root.parent / 'readiness.json'
     entry.write_readiness(readiness, case, verification, qualification)
@@ -335,8 +367,8 @@ def test_driver_does_not_call_a_partial_recording_a_complete_60s_window(
         assert options['observation_seconds'] == 60.
         assert options['overlay_config'] == case / 'config/flight.yaml'
         assert options['extra_audit'] is entry._actual_execution_audit
-        assert entry.os.environ['UAV_USV_P6_PREDICTOR'] == 'bctra'
-        assert entry.os.environ['UAV_USV_P6_IMM_SHADOW'] == 'true'
+        assert entry.os.environ['UAV_USV_P6_PREDICTOR'] == 'imm'
+        assert entry.os.environ['UAV_USV_P6_IMM_SHADOW'] == 'false'
         assert entry.os.environ['UAV_USV_P6_RECORD'] == '1'
         output.mkdir()
         (output / 'p5_run_summary.json').write_text(json.dumps(dict(

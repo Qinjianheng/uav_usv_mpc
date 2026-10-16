@@ -1,4 +1,6 @@
-"""ROS Time/Duration conversion formerly shared with the old predictor.
+"""
+ROS Time/Duration conversion formerly shared with the old predictor.
+
 The original conversion semantics are intentionally retained.
 """
 from builtin_interfaces.msg import Duration, Time

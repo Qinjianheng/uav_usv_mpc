@@ -1,28 +1,15 @@
 """Offline visual-bias diagnostics never fit or inject online corrections."""
 
-import csv
-import importlib.util
 import json
 import math
-from pathlib import Path
-import subprocess
-import sys
 
 import pytest
 
 
-_SCRIPT = (Path(__file__).resolve().parents[3]
-           / 'scripts/p8_visual_bias_analysis.py')
-
-
 @pytest.fixture
 def analyzer():
-    assert _SCRIPT.is_file(), 'offline analyzer implementation is missing'
-    spec = importlib.util.spec_from_file_location(
-        'p8_visual_bias_analysis', _SCRIPT)
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return module
+    from uav_control.analysis import visual_bias
+    return visual_bias
 
 
 def vision_row(stamp=10.0, **changes):
@@ -192,23 +179,11 @@ def test_wrapped_yaw_delta_respects_angle_boundary(analyzer):
     )
 
 
-def test_cli_writes_strict_json_with_null_for_unavailable_statistics(
-    analyzer, tmp_path,
-):
-    del analyzer
-    source = tmp_path / 'vision.csv'
-    with source.open('w', newline='') as stream:
-        row = vision_row(error_x='nan', error_y='inf', camera_fx='nan')
-        writer = csv.DictWriter(stream, fieldnames=list(row))
-        writer.writeheader()
-        writer.writerow(row)
-    output = tmp_path / 'report.json'
-
-    subprocess.run([sys.executable, str(_SCRIPT), '--vision', str(source),
-                    '--output', str(output)], check=True, capture_output=True)
-    result = json.loads(output.read_text(), parse_constant=lambda value: (
-        pytest.fail(f'nonfinite JSON number {value}')))
-
+def test_pure_report_writes_strict_json_with_null_for_unavailable_statistics(analyzer):
+    result = analyzer.analyze_rows([
+        vision_row(error_x='nan', error_y='inf', camera_fx='nan')])
+    encoded = json.dumps(result, allow_nan=False)
+    result = json.loads(encoded)
     assert result['raw_error']['horizontal_rmse_m'] is None
     assert result['image_bearing']['mean_rad'] is None
     assert result['online_correction'] == 'none'

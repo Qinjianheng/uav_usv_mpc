@@ -2,7 +2,6 @@
 
 import importlib
 import importlib.util
-from pathlib import Path
 
 import numpy as np
 import pytest
@@ -17,11 +16,8 @@ def fitting():
 
 
 def sphere(center):
-    path = Path(__file__).resolve().parents[3] / 'scripts/vision_p4_synthetic_sphere.py'
-    spec = importlib.util.spec_from_file_location('synthetic_sphere', path)
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return module.render(center)
+    from synthetic_sphere_fixture import render
+    return render(center)
 
 
 def points(mask, depth, rays):

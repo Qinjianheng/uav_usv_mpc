@@ -162,61 +162,55 @@ moving_target:
     gazebo_visual_height_offset: 0.42
     pause_gazebo_on_hit: false
 
-target_predictor_node:
+imm_target_predictor_node:
   ros__parameters:
-    # Main BCTRA now consumes KF position/velocity (explicit user opt-in).
-    # Target truth is evaluation-only; tracker also consumes KF.
-    target_state_source: tracking
-    tracking_topic: /tracking/target_state
+    observation_topic: /perception/front/target_observation
     prediction_topic: /planning/target_prediction
+    diagnostics_topic: /planning/imm_diagnostics
+    mission_topic: /mission/state
     frame_id: local_ned
     update_rate_hz: 20.0
     prediction_horizon: 4.0
     prediction_sample_period: 0.1
     input_timeout: 0.125
-    # Horizontal BCTRA settings match the existing controller baseline.
-    turn_rate_filter_alpha: 0.25
-    max_target_turn_rate: 0.7
-    maneuver_prediction_horizon: 2.0
-    minimum_target_speed: 0.2
-    minimum_turn_updates: 3
-    turn_acceleration_filter_alpha: 0.2
-    max_target_turn_acceleration: 1.5
-    speed_acceleration_filter_alpha: 0.2
-    max_target_longitudinal_acceleration: 2.0
-    maneuver_acceleration_decay_time: 1.0
-    # Generic heave bounds; no simulated sine amplitude/frequency is read.
-    vertical_velocity_decay_time: 0.75
-    maximum_vertical_displacement: 0.5
-    vertical_observation_margin: 0.25
-    vertical_history_window: 1.0
-
-
-shadow_target_predictor_node:
-  ros__parameters:
-    # Diagnostic copy of KF BCTRA; its output never feeds the planner.
-    target_state_source: tracking
-    tracking_topic: /tracking/target_state
-    prediction_topic: /planning/shadow_target_prediction
-    frame_id: local_ned
-    update_rate_hz: 20.0
-    prediction_horizon: 4.0
-    prediction_sample_period: 0.1
-    input_timeout: 0.125
-    turn_rate_filter_alpha: 0.25
-    max_target_turn_rate: 0.7
-    maneuver_prediction_horizon: 2.0
-    minimum_target_speed: 0.2
-    minimum_turn_updates: 3
-    turn_acceleration_filter_alpha: 0.2
-    max_target_turn_acceleration: 1.5
-    speed_acceleration_filter_alpha: 0.2
-    max_target_longitudinal_acceleration: 2.0
-    maneuver_acceleration_decay_time: 1.0
-    vertical_velocity_decay_time: 0.75
-    maximum_vertical_displacement: 0.5
-    vertical_observation_margin: 0.25
-    vertical_history_window: 1.0
+    imm_transition_matrix:
+    - 0.96
+    - 0.025
+    - 0.015
+    - 0.025
+    - 0.95
+    - 0.025
+    - 0.015
+    - 0.035
+    - 0.95
+    imm_initial_probabilities:
+    - 0.5
+    - 0.3
+    - 0.2
+    imm_acceleration_noise:
+    - 0.7
+    - 0.5
+    - 0.35
+    imm_turn_rate_noise:
+    - 0.0
+    - 0.18
+    - 0.08
+    imm_longitudinal_jerk_noise: 0.6
+    imm_turn_jerk_noise: 0.3
+    imm_initial_velocity_std: 3.0
+    imm_initial_turn_rate_std: 0.35
+    imm_initial_acceleration_std: 1.0
+    imm_initial_turn_acceleration_std: 0.5
+    imm_maximum_turn_rate: 0.7
+    imm_maximum_longitudinal_acceleration: 2.0
+    imm_maximum_turn_acceleration: 1.5
+    imm_maximum_horizontal_speed: 5.0
+    imm_covariance_floor: 1.0e-09
+    imm_max_update_gap: 0.5
+    imm_vertical_acceleration_noise: 0.5
+    imm_vertical_velocity_decay_time: 0.75
+    imm_maximum_vertical_displacement: 0.5
+    imm_maximum_vertical_speed: 1.0
 
 intercept_planner_node:
   ros__parameters:

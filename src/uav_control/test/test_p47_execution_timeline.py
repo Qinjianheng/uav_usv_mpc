@@ -1,17 +1,11 @@
 """Guard causal attribution and clock joins in the offline P4.7 ownership audit."""
-import importlib.util
-from pathlib import Path
 
 import pytest
 
 
 def audit():
-    path = Path(__file__).resolve().parents[3]/'scripts/p47_execution_timeline.py'
-    assert path.exists(), 'P4.7 causal timeline auditor is not implemented'
-    spec = importlib.util.spec_from_file_location('p47_execution_timeline', path)
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return module
+    from uav_control.analysis import execution_timeline
+    return execution_timeline
 
 
 def evidence():

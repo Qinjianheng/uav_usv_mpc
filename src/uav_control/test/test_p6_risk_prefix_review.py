@@ -15,13 +15,16 @@ def setup(scope=.45):
     raw = request()
     covariance = np.array([np.eye(3)*(0. if t < .6 else 100.)
                            for t in raw.prediction_times])
-    raw = replace(raw, model='BCTRA_BOUNDED_Z',
-                  target_covariances=tuple(covariance.reshape(-1, 9).tolist()))
+    raw = replace(raw, model='IMM_CV_CTRV_CTRA',
+                  target_covariances=tuple(covariance.reshape(-1, 9).tolist()),
+                  model_positions=(raw.target_positions,) * 3,
+                  model_covariances=(tuple(covariance.tolist()),) * 3,
+                  model_probabilities=(.5, .3, .2))
     configured = model()
     configured.p6_policy = P6Policy(
         visibility_mode='robust', allow_nominal_fallback=False,
         risk_horizon_seconds=scope, calibration_id='exact-unit-envelopes',
-        calibration_sha256='a'*64, calibration_family='bctra')
+        calibration_sha256='a'*64, calibration_family='imm')
     configured.p6_policy.validate()
     return raw, configured
 

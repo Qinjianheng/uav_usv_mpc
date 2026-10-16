@@ -314,53 +314,61 @@ def test_plan_age_bound_matches_four_mps_endpoint_tolerance():
     assert tracker['maximum_plan_age'] <= derived_maximum_age
 
 
-def test_main_prediction_and_tracker_use_kf_truth_is_evaluation_only():
+def test_imm_uses_raw_observation_and_tracker_uses_kf_truth_is_evaluation_only():
     config = yaml.safe_load(CONFIG_FILE.read_text(encoding='utf-8'))
-    predictor = parameters(config, 'target_predictor_node')
+    predictor = parameters(config, 'imm_target_predictor_node')
     tracker = parameters(config, 'trajectory_tracker_node')
     evaluator = parameters(config, 'intercept_evaluator_node')
 
-    assert predictor['target_state_source'] == 'tracking'
-    assert predictor['tracking_topic'] == parameters(
-        config, 'target_kalman_filter')['state_topic']
+    assert predictor['observation_topic'] == parameters(
+        config, 'rgbd_target_localizer')['observation_topic']
     assert 'simulation_truth_topic' not in predictor
-    assert tracker['target_state_topic'] == predictor['tracking_topic']
+    assert 'target_state_source' not in predictor
+    assert 'tracking_topic' not in predictor
+    assert tracker['target_state_topic'] == parameters(
+        config, 'target_kalman_filter')['state_topic']
     assert evaluator['truth_topic'] == '/target/state'
     assert evaluator['truth_role'] == 'evaluation_only'
 
 
 def test_prediction_horizon_covers_vertical_intercept_duration():
     config = yaml.safe_load(CONFIG_FILE.read_text(encoding='utf-8'))
-    legacy = parameters(config, 'trajectory_impact_sim')
-    predictor = parameters(config, 'target_predictor_node')
+    predictor = parameters(config, 'imm_target_predictor_node')
     planner = parameters(config, 'intercept_planner_node')
 
     # Y preparation handles the long descent; terminal prediction stays short.
     assert planner['maximum_duration'] <= 1.5
     assert predictor['prediction_horizon'] >= planner['maximum_duration']
-    assert legacy['terminal_plan_absolute_max_duration'] >= planner['maximum_duration']
 
 
-def test_diagnostic_prediction_output_is_isolated_from_main_prediction():
+def test_imm_diagnostics_and_kf_state_are_separate_from_main_prediction():
     config = yaml.safe_load(CONFIG_FILE.read_text(encoding='utf-8'))
 
-    control = parameters(config, 'target_predictor_node')
-    shadow = parameters(config, 'shadow_target_predictor_node')
+    control = parameters(config, 'imm_target_predictor_node')
     kalman = parameters(config, 'target_kalman_filter')
     localizer = parameters(config, 'rgbd_target_localizer')
     evaluator = parameters(config, 'intercept_evaluator_node')
 
-    assert control['target_state_source'] == 'tracking'
-    assert control['tracking_topic'] == kalman['state_topic']
+    assert control['observation_topic'] == localizer['observation_topic']
     assert control['prediction_topic'] == '/planning/target_prediction'
-
-    assert shadow['target_state_source'] == 'tracking'
-    assert shadow['tracking_topic'] == kalman['state_topic']
-    assert shadow['prediction_topic'] != control['prediction_topic']
-
+    assert control['diagnostics_topic'] == '/planning/imm_diagnostics'
+    assert control['diagnostics_topic'] != control['prediction_topic']
+    assert kalman['state_topic'] != control['prediction_topic']
     assert kalman['input_topic'] == localizer['observation_topic']
+    assert evaluator['shadow_prediction_topic'] != control['prediction_topic']
+    assert 'target_predictor_node' not in config
+    assert 'shadow_target_predictor_node' not in config
 
-    assert (
-        evaluator['shadow_prediction_topic']
-        == shadow['prediction_topic']
-    )
+
+@pytest.mark.parametrize('name', (
+    'baseline.yaml', 'visual_geometry_diagnostics.yaml',
+    'follow_low_dynamic_diagnostics.yaml', 'p6_options.yaml',
+))
+def test_runtime_configs_materialize_unchanged_imm_defaults_and_primary_topic(name):
+    from uav_control.tracking.imm_target_predictor_node import node_parameter_defaults
+    config = yaml.safe_load((CONFIG_FILE.parent / name).read_text())
+    assert 'target_predictor_node' not in config
+    assert 'shadow_target_predictor_node' not in config
+    defaults = node_parameter_defaults()
+    defaults['prediction_topic'] = '/planning/target_prediction'
+    assert parameters(config, 'imm_target_predictor_node') == defaults

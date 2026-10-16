@@ -1,20 +1,12 @@
 """P7 truth must stay in one NED frame, time bracket and reset epoch."""
 
-import importlib.util
-from pathlib import Path
 
 import pytest
 
 
-SCRIPT = (Path(__file__).resolve().parents[3]
-          / 'scripts/kf_truth_capture.py')
-
-
 def load_script():
-    spec = importlib.util.spec_from_file_location('kf_truth_capture', SCRIPT)
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return module
+    from uav_control.analysis import frame_reference
+    return frame_reference
 
 
 def sample(stamp=10.0, target_enu=(2.0, 6.0, 0.0),

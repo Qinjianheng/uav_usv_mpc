@@ -20,6 +20,7 @@ EXPERIMENT_ROOT = WORKSPACE / 'data/experiments'
 R11 = EXPERIMENT_ROOT / '20261013_p53_closed_loop_11/f3_h16_01/config'
 DEFAULT_FLIGHT = R11 / 'flight.yaml'
 DEFAULT_RESEARCH = R11 / 'research.yaml'
+DEFAULT_PILOT_FLIGHT = R11.parent.parent / 'f2_h16_01/config/flight.yaml'
 KIND = 'P6_TESTED_PROTOCOL_CANDIDATE'
 # Forward-only protocol: historical A/C cases remain frozen, not rerunnable.
 GROUPS = {
@@ -48,7 +49,7 @@ def _manifest(directory, paths):
             stream.write(f'{harness.sha(path)}  {path.relative_to(directory)}\n')
 
 
-def prepare_case(output, motion_mode, group, flight_config=DEFAULT_FLIGHT,
+def prepare_case(output, motion_mode, group, flight_config=None,
                  research_config=DEFAULT_RESEARCH, calibration_file=None,
                  imm_shadow=False, role='experiment', seed=0):
     """Save full explicit input configs into an exclusive case, without flight."""
@@ -61,6 +62,8 @@ def prepare_case(output, motion_mode, group, flight_config=DEFAULT_FLIGHT,
     group = str(group).upper()
     if group not in GROUPS or role not in ('pilot', 'baseline', 'experiment'):
         raise ValueError('P6_ROLE_MISMATCH')
+    if imm_shadow:
+        raise ValueError('P6_IMM_SHADOW_REMOVED_USE_UNIQUE_PRIMARY')
     predictor, visibility, adaptive = GROUPS[group]
     if ((role == 'pilot' and (mode != 'linear' or group != 'B'))
             or (role == 'baseline' and (mode != 'figure_eight' or group != 'B'))):
@@ -70,7 +73,12 @@ def prepare_case(output, motion_mode, group, flight_config=DEFAULT_FLIGHT,
     calibration = Path(calibration_file).resolve() if calibration_file else None
     if visibility == 'robust' and (calibration is None or not calibration.is_file()):
         raise ValueError('P6_CALIBRATION_REQUIRED')
-    flight_source, research_source = Path(flight_config).resolve(), Path(research_config).resolve()
+    # Changing only trajectory_type on an F3 figure-eight config accidentally
+    # made the pilot move at 4 m/s sideways during takeoff. A default pilot
+    # inherits the complete original F2 flight snapshot (2 m/s along +X).
+    flight_source = Path(flight_config or (
+        DEFAULT_PILOT_FLIGHT if role == 'pilot' else DEFAULT_FLIGHT)).resolve()
+    research_source = Path(research_config).resolve()
     flight = yaml.safe_load(flight_source.read_text())
     research = yaml.safe_load(research_source.read_text())
     tracker = flight['trajectory_tracker_node']['ros__parameters']
@@ -186,8 +194,9 @@ def _qualification(qualification, metadata):
     if release.get('qualified_case_manifests', {}).get(metadata['case_id']) != (
             metadata['case_manifest_sha256']):
         raise ValueError('P6_CASE_CONFIG_NOT_QUALIFIED')
-    if metadata['prediction_model'] == 'imm' and release.get('shadow_gate_pass') is not True:
-        raise ValueError('P6_IMM_SHADOW_QUALIFICATION_REQUIRED')
+    if metadata['prediction_model'] == 'imm':
+        from p61r_imm_qualification import validate_primary_evidence
+        validate_primary_evidence(release, metadata)
     if metadata['visibility_mode'] == 'robust' and release.get('robust_gate_pass') is not True:
         raise ValueError('P6_ROBUST_QUALIFICATION_REQUIRED')
     approved = {(WORKSPACE / row['path']).resolve() for row in release.get('source_checks', [])}
@@ -325,14 +334,14 @@ def run_case(case, qualification, readiness, execute=False, prior_summary=None):
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest='command', required=True)
-    commands.add_parser('matrix', help='print planned A/B/C/D conditions; does not launch')
+    commands.add_parser('matrix', help='print planned IMM-only B/D conditions; does not launch')
     prepare_parser = commands.add_parser('prepare', help='save an exclusive full-config case')
     prepare_parser.add_argument('output', type=Path)
     prepare_parser.add_argument('--motion', required=True)
     prepare_parser.add_argument('--group', choices=tuple(GROUPS), default='B')
     prepare_parser.add_argument('--role', choices=('pilot', 'baseline', 'experiment'),
                                 default='experiment')
-    prepare_parser.add_argument('--flight-config', type=Path, default=DEFAULT_FLIGHT)
+    prepare_parser.add_argument('--flight-config', type=Path)
     prepare_parser.add_argument('--research-config', type=Path, default=DEFAULT_RESEARCH)
     prepare_parser.add_argument('--calibration', type=Path)
     prepare_parser.add_argument('--imm-shadow', action='store_true')
