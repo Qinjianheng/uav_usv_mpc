@@ -1074,7 +1074,7 @@ class TrajectoryTrackerNode(Node):
         nominal, prefix_details = {}, {}
         converted = None
         try:
-            prediction = self.p6_runtime.prediction(
+            prediction = self.p6_runtime.execution_prediction(
                 prediction_from_message(self.latest_prediction))
             converted = time.perf_counter()
             for curve in (receiver.active, receiver.pending):

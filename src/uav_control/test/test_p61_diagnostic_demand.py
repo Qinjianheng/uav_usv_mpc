@@ -50,3 +50,34 @@ def test_deferred_bad_or_mismatched_diagnostics_cannot_grant_a_model_identity():
     assert runtime.prediction(parsed) is parsed
     assert not parsed.uncertainty_identity
     assert not runtime.pending_diagnostics
+
+
+def test_nominal_execution_keeps_validated_wire_mean_without_decoding_unused_models(monkeypatch):
+    configured = model()
+    configured.p6_policy = p6_follow.P6Policy()
+    runtime = p6_follow.P6Runtime(configured)
+    engine, _, _, result = real_sequence_780()
+    parsed = prediction_from_message(prediction_to_message(result, .001))
+    for _ in range(100):
+        runtime.diagnostic(SimpleNamespace(data=p6_follow.json.dumps(engine.diagnostics(result))))
+
+    def forbidden_decode(_):
+        raise AssertionError('Nominal receiver does not consume IMM model diagnostics')
+
+    monkeypatch.setattr(p6_follow.json, 'loads', forbidden_decode)
+    assert runtime.execution_prediction(parsed) is parsed
+    assert len(runtime.pending_diagnostics) == 16
+    assert not parsed.uncertainty_identity
+
+
+def test_robust_execution_still_binds_full_model_identity_and_rejects_mismatch():
+    configured = model()
+    configured.p6_policy = p6_follow.P6Policy(visibility_mode='robust')
+    runtime = p6_follow.P6Runtime(configured)
+    engine, _, _, result = real_sequence_780()
+    parsed = prediction_from_message(prediction_to_message(result, .001))
+    runtime.diagnostic(SimpleNamespace(data=p6_follow.json.dumps(engine.diagnostics(result))))
+    attached = runtime.execution_prediction(parsed)
+    assert attached.uncertainty_identity == (1, 780, result.source_stamp, result.observation_stamp)
+    assert np.asarray(attached.model_positions).shape == (3, 41, 3)
+    assert not runtime.execution_prediction(replace(parsed, sequence_id=781)).uncertainty_identity

@@ -314,6 +314,18 @@ class P6Runtime:
         except (ValueError, KeyError, TypeError):
             return prediction
 
+    def execution_prediction(self, prediction):
+        """
+        Nominal receiver needs the validated wire mean; robust risk needs model identity.
+
+        Keep diagnostic payloads bounded and deferred when the execution policy does not
+        consume them. This does not change input validation, timestamps or the independent
+        geometry/freshness checks, and cannot grant robust evidence to a nominal mean.
+        """
+        if self.policy.visibility_mode == 'nominal':
+            return prediction
+        return self.prediction(prediction)
+
     def prepare(self, request):
         """Choose from forecast-only candidates; never consult evaluator truth."""
         if not self.policy.adaptive_viewpoint:
