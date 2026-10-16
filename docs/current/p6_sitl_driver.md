@@ -83,6 +83,10 @@ delivery 的预算使用完整 worker 成本提示、准备后实际时钟、排
 
 `test_p6_successor_delivery.py` 覆盖提前派发、新观测有界重试、pending 阻塞、乱序 ACK/heartbeat、过期状态和成本证据老化。阶段证据位于 `data/experiments/20261016_p61r3_successor_delivery_05/`；真实已配对输入的多租约回放仅为 recorded-state 时序模型，不是 ROS/PX4 闭环或飞行资格。新策略必须建立新 case 配置/源码指纹、当前测试、独立审查、资格及 Readiness 后才能启动有界 F2。
 
+R4 的 `takeoff_visual_tracking: true` 为显式试验开关，缺省关闭。它将新鲜且锁定的 `/tracking/target_state` 接入已有 FlightGuidance 起飞水平混合：相对起飞高度 0.5 m 以下保持零水平期望，0.5–1.5 m 渐进开启，沿用起飞速度/加速度与海面保护。首次速度命令从实测速度初始化，避免冷启动跳变。仅当真实可见 bearing 在 125 ms 内、PX4 状态新鲜且已 armed/OFFBOARD 时，可在 TAKEOFF 提前使用受限视觉 yaw。起飞前 PX4 会清空未进入 rampup 的 setpoint，进入 rampup 后保留其内部推力/倾角限制；本改动只解除新鲜视觉 yaw 的高度抑制，不改变 0.5 m 平移门限。失去可见性仍保留原 1.5 m 盲搜索高度。INIT/GROUND_HOLD、MINCO 所有权和原始时间戳门禁不变。
+
+该开关针对八字首轮起飞期间的视场/深度失锁，不能把单位测试或记录状态下的命令回放称为成功起飞。启用它必须建立新 case、新源码资格和独立审查；旧 Readiness 作废。R4 首轮失败原始证据保存在 `data/experiments/20261016_p61r3_successor_delivery_05/baseline_figure_eight_B_01/flight/`，阶段分析与复测材料在 `data/experiments/20261016_p61r4_figure_eight_01/`。
+
 ## 单次真实执行入口
 
 下面是根任务完成资格后才使用的入口，本开发没有执行：

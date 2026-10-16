@@ -451,6 +451,7 @@ class TrajectoryTrackerNode(Node):
         self.declare_parameter('takeoff_maximum_horizontal_acceleration', 1.5)
         self.declare_parameter('takeoff_horizontal_start_height', 0.5)
         self.declare_parameter('takeoff_horizontal_full_height', 1.5)
+        self.declare_parameter('takeoff_visual_tracking', False)
         self.declare_parameter('follow_distance', 5.0)
         self.declare_parameter('follow_position_gain', 0.8)
         self.declare_parameter('bearing_approach_enabled', True)
@@ -473,6 +474,8 @@ class TrajectoryTrackerNode(Node):
             self.get_parameter('maximum_state_age').value
         )
         self.expected_frame_id = str(self.get_parameter('frame_id').value)
+        self.takeoff_visual_tracking = bool(
+            self.get_parameter('takeoff_visual_tracking').value)
         # Drive MINCO tracking with the tracker's acceleration-limited velocity
         # command.  Position mode re-sends a reference that is rebuilt from the
         # measured state every replan, so the position error never grows past a
@@ -1878,6 +1881,21 @@ class TrajectoryTrackerNode(Node):
             )
         return self._search_or_recovery_command(current, dt)
 
+    def _flight_guidance_command(self, state, now, dt):
+        """Route only fresh locked tracking inputs into opt-in takeoff guidance."""
+        target = self.latest_target_state
+        if self.mission_state == MissionState.TAKEOFF:
+            target = None
+            decision = self.visibility_decision
+            if getattr(self, 'takeoff_visual_tracking', False):
+                if self.flight_guidance.previous_velocity is None:
+                    self.flight_guidance.previous_velocity = tuple(state.velocity)
+                if decision is not None and decision.locked and decision.visible:
+                    target = fresh_flight_target(
+                        self.latest_kf_message, now, min(.125, self.maximum_state_age),
+                        self.expected_frame_id)
+        return self.flight_guidance.command(self.mission_state_name, state, target, dt)
+
     def _final_yaw(self, setpoint, current, dt):
         """One arbiter owns yaw for every final PX4 setpoint."""
         decision = self.visibility_decision
@@ -1891,6 +1909,15 @@ class TrajectoryTrackerNode(Node):
             )
             and decision is not None and decision.locked and decision.visible
         )
+        visual_takeoff = (
+            getattr(self, 'takeoff_visual_tracking', False)
+            and self.mission_state == MissionState.TAKEOFF
+            and decision is not None and decision.visible
+            and measurement_age(current.stamp, self.visibility.last_valid_bearing_stamp or 0.)
+            <= min(.125, self.maximum_state_age)
+            and self.vehicle_armed and self.offboard_active
+            and measurement_age(current.stamp, self.vehicle_status_stamp or 0.)
+            <= self.vehicle_status_timeout)
         inhibited = (
             self.mission_state in (
                 MissionState.INIT, MissionState.GROUND_HOLD,
@@ -1901,7 +1928,7 @@ class TrajectoryTrackerNode(Node):
             # This is a launch/search gate. A fresh, locked terminal descent
             # still needs visual yaw below it to keep the target in the camera.
             or (height < self.visibility.config.target_search_enable_height
-                and not visual_intercept)
+                and not (visual_intercept or visual_takeoff))
         )
         rate = 0.0
         self.yaw_owner = 'HOLD'
@@ -2017,13 +2044,7 @@ class TrajectoryTrackerNode(Node):
         target_yaw = self.current_heading
 
         if self.mission_state in (MissionState.INIT, MissionState.GROUND_HOLD):
-            flight_command = self.flight_guidance.command(
-                self.mission_state_name,
-                flight_state,
-                (None if self.mission_state == MissionState.TAKEOFF
-                 else self.latest_target_state),
-                dt,
-            )
+            flight_command = self._flight_guidance_command(flight_state, now, dt)
             self._publish_offboard_mode(timestamp_us, velocity_control=False)
             setpoint = flight_command_to_setpoint(
                 flight_command,
@@ -2144,13 +2165,7 @@ class TrajectoryTrackerNode(Node):
             self.search_hold_position = None
             self._publish_bool(self.flight_ready_pub, False)
             self._request_flight_mode()
-            flight_command = self.flight_guidance.command(
-                self.mission_state_name,
-                flight_state,
-                (None if self.mission_state == MissionState.TAKEOFF
-                 else self.latest_target_state),
-                dt,
-            )
+            flight_command = self._flight_guidance_command(flight_state, now, dt)
             velocity_control = flight_command.mode == 'VELOCITY'
             self._publish_offboard_mode(
                 timestamp_us,
