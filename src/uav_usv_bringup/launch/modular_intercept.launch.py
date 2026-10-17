@@ -49,7 +49,7 @@ def generate_launch_description():
                               choices=['true', 'false']),
         DeclareLaunchArgument('enable_follow_planner', default_value='true',
                               choices=['true', 'false']),
-        DeclareLaunchArgument('prediction_model', default_value='imm', choices=['imm']),
+        DeclareLaunchArgument('prediction_model', default_value='imm', choices=['bctra', 'imm']),
         DeclareLaunchArgument(
             'log_directory',
             default_value=default_log_directory,
@@ -87,6 +87,7 @@ def generate_launch_description():
                  LaunchConfiguration('enable_follow_planner'), "' == 'true'",
              ])),
              parameters=[os.path.join(package_share, 'config/follow_minco.yaml'),
+                         config_file,
                          {'log_directory': log_directory}]),
         Node(
             package='uav_control',
@@ -95,9 +96,17 @@ def generate_launch_description():
             output='screen',
             parameters=[config_file],
         ),
-        # Only one online prediction publisher: raw-observation IMM.
+        # Mutually exclusive main publishers; P7 explicitly selects KF/BCTRA.
+        Node(package='uav_control', executable='target_predictor_node',
+             name='target_predictor_node', output='screen',
+             condition=IfCondition(PythonExpression([
+                 "'", LaunchConfiguration('prediction_model'), "' == 'bctra'"])),
+             parameters=[config_file,
+                         {'prediction_topic': '/planning/target_prediction'}]),
         Node(package='uav_control', executable='imm_target_predictor_node',
              name='imm_target_predictor_node', output='screen',
+             condition=IfCondition(PythonExpression([
+                 "'", LaunchConfiguration('prediction_model'), "' == 'imm'"])),
              parameters=[config_file,
                          {'prediction_topic': '/planning/target_prediction'}]),
         Node(

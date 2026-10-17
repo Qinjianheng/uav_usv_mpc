@@ -89,10 +89,10 @@ def test_optional_evaluator_and_shadow_nodes_cannot_disable_online_inputs():
         'trajectory_tracker_node', 'mission_manager_node',
         'target_kalman_filter', 'dual_tof_image_bridge',
         'target_bearing_node', 'rgbd_target_localizer',
-        'imm_target_predictor_node',
     ):
         assert 'condition' not in nodes[name]
-    assert 'target_predictor_node' not in nodes
+    for name in ('target_predictor_node', 'imm_target_predictor_node'):
+        assert 'prediction_model' in ast.unparse(nodes[name]['condition'])
     assert 'shadow_target_predictor_node' not in nodes
     assert '/planning/target_prediction' in ast.unparse(
         nodes['imm_target_predictor_node']['parameters'])
