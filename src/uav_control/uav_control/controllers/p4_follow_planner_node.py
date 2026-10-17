@@ -73,11 +73,14 @@ class P4ResearchRunner(ShadowResearchRunner):
                         involuntary_context_switches=usage_end.ru_nivcsw-usage.ru_nivcsw)
         plan = getattr(request, 'delivery_plan', None)
         if plan is not None:
+            actual_path = ('fallback' if result.metrics.get('follow_guided', {})
+                           .get('fallback_used') else 'follow')
             self.solver.delivery_costs.observe(
-                plan.path, ended-started,
+                actual_path, ended-started,
                 request.context.observation_stamp, result.valid, result.solver_status,
                 cpu=cpu_ended-cpu_started)
-            timeline['delivery_path'] = plan.path
+            timeline['delivery_path'] = actual_path
+            timeline['delivery_planned_path'] = plan.path
             timeline['math_runtime'] = getattr(self, 'math_runtime', None)
         return replace(result, metrics=dict(result.metrics, worker_timeline=timeline))
 
@@ -662,6 +665,21 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
     def _publish_typed_completion(self, request, result, record):
         """Use the original objects before copying large prediction/solver audit trees."""
         self._pending_revalidation_audit = None
+        plan = getattr(request, 'delivery_plan', None)
+        if plan is not None:
+            timeline = result.metrics.get('worker_timeline', {})
+            path, finish = timeline.get('delivery_path'), timeline.get('solve_end_ros')
+            handoff = self._ros_seconds()
+            reason = ''
+            if path != plan.path:
+                reason = 'DELIVERY_PATH_MISMATCH'
+            elif (finish is None or not math.isfinite(finish) or not math.isfinite(handoff)
+                  or not plan.accepts(path, finish) or not plan.accepts(path, handoff)):
+                reason = 'DELIVERY_WORKER_DEADLINE'
+            elif finish > handoff:
+                reason = 'DELIVERY_CLOCK_REVERSED'
+            if reason:
+                return dict(published=False, reason=reason, worker_handoff_ros=handoff)
         event = dict(
             request=self._request_view(request),
             output=dict(result.__dict__, context=dict(result.context.__dict__)),
