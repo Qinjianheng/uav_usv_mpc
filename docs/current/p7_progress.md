@@ -14,7 +14,9 @@ First F3 `20261017_p7_f3_01` failed after continuous 41.316 s: a 29 ms receiver 
 
 The P7 **read-only observer** now distinguishes visible `INPUT_WAIT` from actual visual loss, using that existing 0.45 s bound and retaining all physical/Offboard stops. Online control, 125 ms freshness and lease rules are unchanged. The 50 targeted observer/input-role regressions passed. A single F3 diagnostic retest is justified; F2 remains applicable only after comparing every online source/launch/config byte to its frozen snapshot.
 
-IBVS/PNG and unified P7 Y behavior remain gated on healthy P7.0 flights. This intermediate configuration is for X/FOLLOW validation only; it is not a completed P7 guidance release.
+Diagnostic F3 retest `20261017_p7_f3_02` passed: 100% MINCO, continuous 59.950 s, zero fallback, 3000 native samples. Full-window horizontal viewpoint RMSE 0.7524 m, height RMSE 0.0141 m, actual-to-reference 3D RMSE 0.2154 m; actual peak horizontal speed/acceleration 4.521 m/s and 2.415 m/s². Visibility and lock were 100%; execution audit and cleanup passed. The revised input-wait classification was not needed during this successful retest; the first run's receiver callback scheduling vulnerability remains a known source of lawful fallback. Curves/metrics: `data/experiments/20261017_p7_f3_analysis_01/`.
+
+**P7.0 is complete for these straight/eight simulation scenarios.** F3 turn error remains comparable to historical R11, rather than centimeter-level tracking. IBVS/PNG and unified P7 Y development can now proceed. This intermediate configuration is still for X/FOLLOW only until that integration is complete.
 
 Bounded FOLLOW entry (after build and ROS/workspace setup):
 

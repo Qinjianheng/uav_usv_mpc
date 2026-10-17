@@ -84,3 +84,4 @@ Files: bounded P7 runner, metrics/plots in new experiment directories, concise P
 
 - Initial HEAD `e1a7666`; clean `master`; both remotes correct.
 - R11 snapshot exists at `data/experiments/20261013_p53_closed_loop_11/f2_h16_01/source_snapshot/`; actual F2/F3 configs also exist. KF, direct-reference MINCO and MINCO trajectory math match R11; BCTRA engine/node were removed. Shared safety code will not be rolled back.
+- Tasks 1–2 completed: `ade1bf4` restoration, `e115f15` observer distinction; 145 initial affected tests and 50 observer tests passed. F2 100% / 24.948 s and diagnostic F3 100% / 59.950 s, zero fallbacks. First failed F3 preserved. See `docs/current/p7_progress.md` for exact evidence and limitations. Tasks 3–5 now active in sequence.
