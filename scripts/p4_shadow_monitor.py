@@ -29,6 +29,7 @@ def run(output):
     from uav_usv_interfaces.msg import (
         ControllerDiagnostic, UavState, TargetState, TargetObservation, TargetPrediction,
         FollowPlanAck, FollowTrajectory, FollowReceiverState, MissionState,
+        InterceptTrajectory,
     )
     from std_msgs.msg import String
     from px4_msgs.msg import TrajectorySetpoint, VehicleAttitude, VehicleStatus
@@ -146,7 +147,7 @@ def run(output):
         health.replace(output.parent/'live_health.json')
         topics = ('/fmu/in/trajectory_setpoint', '/fmu/in/offboard_control_mode',
                   '/fmu/in/vehicle_command', '/control/follow_ack', '/planning/follow_trajectory',
-                  '/control/follow_receiver_state')
+                  '/control/follow_receiver_state', '/planning/target_prediction')
         if p6_record:
             topics += ('/planning/target_prediction', '/planning/imm_target_prediction',
                        '/planning/imm_diagnostics')
@@ -179,6 +180,11 @@ def run(output):
 
     sensor = qos_profile_sensor_data
     subscriptions = [
+        node.create_subscription(InterceptTrajectory, '/planning/intercept_trajectory',
+                                 lambda m: write('intercept_proposal', plan=m.plan_id,
+                                                 stamp=seconds(m.published_stamp)), 10),
+        node.create_subscription(String, '/control/p7_guidance',
+                                 lambda m: write('p7_guidance', **json.loads(m.data)), 10),
         node.create_subscription(String, '/control/follow_execution_debug',
                                  lambda m: write(execution_debug_kind(json.loads(m.data)),
                                                  **json.loads(m.data)), 10),

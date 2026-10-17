@@ -536,7 +536,11 @@ publish_command()
 echo
 echo "Two-stage control is ready; PX4 is disarmed in OFFBOARD ground hold."
 echo "  X: start UAV takeoff and USV motion simultaneously"
-echo "  Y: start interception from visually locked FOLLOW"
+if [[ "${UAV_USV_P7_MODE:-false}" == true ]]; then
+    echo "  Y: switch locked FOLLOW to safe IBVS/PNG approach"
+else
+    echo "  Y: start interception from visually locked FOLLOW"
+fi
 echo "  R: stop this simulation and restart a clean session"
 echo "  Q: leave this command console"
 echo "  1/2/3/4/5: straight/eight/variable-eight/S/Z (before X)"
@@ -582,7 +586,12 @@ while true; do
             restart_lab
             ;;
         Q)
-            echo "Command console closed; experiment terminals remain open."
+            if [[ "${UAV_USV_P7_MODE:-false}" == true ]]; then
+                publish_command Q
+                echo "P7 task aborted; the P7 launcher will clean up this session."
+            else
+                echo "Command console closed; experiment terminals remain open."
+            fi
             break
             ;;
         *)

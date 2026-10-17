@@ -338,6 +338,8 @@ class TrajectoryTrackerNode(Node):
 
     def __init__(self):
         super().__init__('trajectory_tracker_node')
+        self.declare_parameter('p7_guidance_enabled', False)
+        self.p7_guidance_enabled = bool(self.get_parameter('p7_guidance_enabled').value)
         self.declare_parameter('follow_minco_enabled', True)
         self.declare_parameter('follow_minco_shadow_check', False)
         self.follow_minco_requested = bool(self.get_parameter('follow_minco_enabled').value)
@@ -811,6 +813,21 @@ class TrajectoryTrackerNode(Node):
         self.last_target_yaw = None
         self.terminal_hold_position = None
         self.terminal_mode_latched = False
+        self.p7_image = self.p7_result = None
+        if self.p7_guidance_enabled:
+            from .p7_visual_guidance import GuidanceConfig, P7VisualGuidance
+            parameters = vars(GuidanceConfig()).copy()
+            for key, value in parameters.items():
+                self.declare_parameter('p7_'+key, value)
+                parameters[key] = float(self.get_parameter('p7_'+key).value)
+            config = GuidanceConfig(**parameters)
+            if (config.maximum_speed > self.flight_guidance.maximum_horizontal_speed
+                    or config.maximum_acceleration
+                    > self.flight_guidance.maximum_horizontal_acceleration
+                    or config.maximum_yaw_rate > self.max_observation_yaw_rate):
+                raise ValueError('P7_LIMIT_EXCEEDS_EXISTING_PHYSICAL_LIMIT')
+            self.p7_controller = P7VisualGuidance(config)
+            self.p7_diagnostic_pub = self.create_publisher(String, '/control/p7_guidance', 10)
         self.get_logger().info(
             'Trajectory tracker ready | rate='
             f'{control_rate:.1f} Hz | plan age<='
@@ -1309,6 +1326,9 @@ class TrajectoryTrackerNode(Node):
             and all(math.isfinite(v) for v in ray) and ray[0] > 0.0
         )
         self.latest_center_bearing = (stamp, math.atan2(-ray[1], ray[0])) if trusted else None
+        if getattr(self, 'p7_guidance_enabled', False):
+            from .p7_visual_guidance import image_errors
+            self.p7_image = (stamp, *image_errors(ray)) if trusted else None
 
     def prediction_callback(self, message):
         if not (message.valid and message.frame_id == self.expected_frame_id
@@ -1329,6 +1349,9 @@ class TrajectoryTrackerNode(Node):
     def mission_callback(self, message):
         new_mission_id = int(message.mission_id)
         if new_mission_id != self.mission_id:
+            if getattr(self, 'p7_guidance_enabled', False):
+                self.p7_controller.reset()
+                self.p7_image = self.p7_result = None
             self.terminal_execution = None
             self.tracker.reset()
             self.flight_guidance.reset()
@@ -1349,10 +1372,24 @@ class TrajectoryTrackerNode(Node):
             self.search_hold_position = None
             self.safe_recovery_latched = False
             self.bearing_approach_active = False
+        previous_state = getattr(self, 'mission_state', MissionState.INIT)
         self.mission_id = new_mission_id
         self.intercept_requested = bool(getattr(message, 'intercept_requested', False))
         self.mission_state = int(message.state)
         self.mission_state_name = str(message.state_name) or 'INIT'
+        if (getattr(self, 'p7_guidance_enabled', False)
+                and self.mission_state == MissionState.FAR_GUIDANCE
+                and previous_state != MissionState.FAR_GUIDANCE):
+            previous_velocity = self.tracker.previous_command_velocity
+            if previous_velocity is None and self.latest_state is not None:
+                previous_velocity = self.latest_state.velocity
+            self._revoke_nominal_follow('P7_GUIDANCE_ENTERED')
+            self.pending_trajectory = self.tracker.active_trajectory = None
+            self.terminal_execution = None
+            self.terminal_mode_latched = False
+            self.p7_controller.reset(previous_velocity,
+                                     getattr(self, 'search_yaw_rate_command', 0.))
+            self.p7_result = None
         if self.mission_state == MissionState.TERMINAL_MINCO:
             self.terminal_mode_latched = True
         if self.mission_state in self.TERMINAL_STATES:
@@ -1502,6 +1539,8 @@ class TrajectoryTrackerNode(Node):
         )
 
     def trajectory_callback(self, message):
+        if getattr(self, 'p7_guidance_enabled', False):
+            return
         started = time.perf_counter()
         self.tracker.last_replacement_performed = False
         receipt_stamp = self._ros_seconds()
@@ -1971,6 +2010,16 @@ class TrajectoryTrackerNode(Node):
 
     def _final_yaw(self, setpoint, current, dt):
         """One arbiter owns yaw for every final PX4 setpoint."""
+        if (getattr(self, 'p7_guidance_enabled', False)
+                and self.mission_state == MissionState.FAR_GUIDANCE):
+            # P7 has no LOS-rate yaw feedforward: PNG owns horizontal motion only.
+            result = getattr(self, 'p7_result', None)
+            rate = result.yaw_rate if result is not None and result.valid else 0.
+            self.yaw_owner = 'IBVS' if result is not None and result.valid else 'P7_WAIT'
+            self.search_yaw_rate_command = rate
+            self.last_target_yaw = _wrap_angle(self.current_heading+rate*dt)
+            setpoint.yaw, setpoint.yawspeed = self.last_target_yaw, rate
+            return
         decision = self.visibility_decision
         height = self.tracker.sea_surface_z - current.position[2]
         visual_intercept = (
@@ -2075,10 +2124,47 @@ class TrajectoryTrackerNode(Node):
         setpoint.yaw = self.last_target_yaw
         setpoint.yawspeed = rate
 
+    def _p7_guidance_command(self, current, now, dt):
+        """Only the existing Tracker publishes; vertical shaping/sea safety remain local."""
+        self.p7_result = None
+        image = self.p7_image
+        target = fresh_flight_target(self.latest_kf_message, now,
+                                     min(.125, self.maximum_state_age), self.expected_frame_id)
+        legal = (target is not None and image is not None and self.visibility_decision.locked
+                 and not self.safe_recovery_latched and self.offboard_active and self.vehicle_armed
+                 and self.vehicle_status_stamp is not None
+                 and 0 <= now-self.vehicle_status_stamp <= self.vehicle_status_timeout)
+        if not legal:
+            self.p7_controller.reset()
+            return self._search_or_recovery_command(current, dt)
+        previous = self.tracker.previous_command_velocity
+        if previous is None:
+            previous = current.velocity
+        if self.p7_controller.previous is None:
+            self.p7_controller.reset(previous, getattr(self, 'search_yaw_rate_command', 0.))
+        result = self.p7_controller.step(
+            now, self.p7_actual_dt, current.position[:2], current.velocity[:2],
+            target.position[:2], target.velocity[:2], *image)
+        if not result.valid:
+            return self._search_or_recovery_command(current, dt)
+        self.flight_guidance.previous_velocity = previous
+        desired_z = self.flight_guidance.altitude_velocity_gain*(
+            self.flight_guidance.flight_altitude-current.position[2])
+        command = self.flight_guidance._velocity_command(
+            FlightKinematicState(current.position, current.velocity),
+            (*result.velocity, desired_z), dt, True, True)
+        self.p7_result = result
+        self.p7_diagnostic_pub.publish(String(data=json.dumps(dict(
+            vars(result), stamp=now, image_stamp=image[0], dt=self.p7_actual_dt,
+            velocity=list(command.velocity)))))
+        return command
+
     def timer_callback(self):
         started = time.perf_counter()
         now = self._ros_seconds()
         last_control = getattr(self, 'last_timer_stamp', None)
+        self.p7_actual_dt = (now-last_control if last_control is not None
+                             else self.tracker.control_dt)
         if (getattr(self, 'follow_minco_requested', False) and last_control is not None
                 and 0 <= now-last_control < .001):
             # A start wakeup may precede the regular timer. Never shape a command
@@ -2213,6 +2299,16 @@ class TrajectoryTrackerNode(Node):
                         else command_to_setpoint(command, timestamp_us))
             self._publish_bool(self.far_guidance_pub, False)
             status = 'MINCO_FOLLOW' if minco_active else 'FOLLOW'
+        elif (getattr(self, 'p7_guidance_enabled', False)
+              and self.mission_state == MissionState.FAR_GUIDANCE):
+            self._publish_bool(self.flight_ready_pub, False)
+            self._request_flight_mode()
+            self.pending_trajectory = self.tracker.active_trajectory = None
+            command = self._p7_guidance_command(current, now, dt)
+            self._publish_offboard_mode(timestamp_us, velocity_control=True)
+            setpoint = flight_command_to_setpoint(command, timestamp_us)
+            self._publish_bool(self.far_guidance_pub, self.p7_result is not None)
+            status = 'P7_GUIDANCE' if self.p7_result is not None else 'P7_BRAKING'
         elif self._bearing_approach_available(current, now):
             self._publish_bool(self.flight_ready_pub, False)
             self._request_flight_mode()

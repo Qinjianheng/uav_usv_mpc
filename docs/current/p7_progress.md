@@ -27,3 +27,17 @@ python3 scripts/p7_follow_sitl.py data/experiments/20261017_p7_f3_01 --scene f3 
 ```
 
 Each entry performs one run into an exclusive directory, preserves full source/config snapshots and hashes, and cleans only its owned processes. F3 rejects failed or different-source F2 evidence. The existing Tracker is the sole Offboard publisher; truth remains evaluation-only.
+
+## P7 guidance integration
+
+The opt-in P7 controller now uses the validated camera FLU ray: `e_u=-y/x`, `e_v=-z/x`, equivalent to calibrated pinhole normalized image coordinates. IBVS owns yaw with a continuous 0.03 deadband, 0.6 rad/s limit and 1.2 rad/s² command slew. PNG uses N=3; horizontal velocity is integrated using actual dt, bounded by 6.2 m/s and 2 m/s². Longitudinal closure is at most 0.75 m/s, ending at 4.5 m horizontal standoff. Height remains -5 m NED through existing vertical shaping and sea protection; no descent/contact path is enabled.
+
+Y requires fresh navigation and currently locked FOLLOW. It revokes active/pending FOLLOW immediately, clears legacy trajectories, and starts guidance from the last emitted command. The legacy intercept planner neither solves nor publishes in P7, and mission transitions cannot activate its plans. Loss returns to existing braking/search/recovery. Seven image/math tests plus a crossing-target kinematic convergence check and actual timer/state tests are included; **258 affected regressions passed**, with integration build and project static checks passed. Real C/D guidance flights are pending.
+
+Manual isolated SITL (after build and sourcing ROS/workspace):
+
+```bash
+python3 scripts/p7_follow_sitl.py data/experiments/20261017_p7_manual_01 --manual
+```
+
+Use a fresh directory each time. This creates a task-owned SITL grant and runs the existing native console: 1–5 choose the USV mode before X; X takes off and follows; Y switches to safe guidance; Q sends mission abort and cleans up; R retains the existing clean-session restart. Each manual session is bounded to 280 s. A direct ROS launch still requires the existing isolated-SITL grant; do not disable that guard.

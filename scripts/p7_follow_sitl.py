@@ -5,6 +5,8 @@ import argparse
 import hashlib
 import json
 import os
+import signal
+import socket
 from pathlib import Path
 import subprocess
 import sys
@@ -13,7 +15,7 @@ import time
 import yaml
 
 import p5_minco_sitl as harness
-from p4_sitl_session import WORKSPACE, preflight
+from p4_sitl_session import WORKSPACE, identity, preflight
 from p51_execution_audit import audit
 from p53_minco_sitl import FollowHealthGuard, GroundStartupHealth
 from uav_control.guidance.follow_sitl_gate import require_isolated_sitl
@@ -109,7 +111,73 @@ def prepare(output, scene):
         observation_seconds=25. if scene == 'f2' else 60.), indent=2)+'\n')
 
 
-def run(output, scene, prior_f2=None):
+def guidance_health(health, now):
+    """Keep physical stops; P7 guidance has no MINCO prediction/owner requirement."""
+    observed = dict(health, control=dict(health.get('control', {}), status='FOLLOW', locked=True))
+    return harness.safety_reason(observed, now, planning_required=False,
+                                 maximum_observer_input_age=.3)
+
+
+def manual(output):
+    """A bounded, isolated native X/Y console using the same P7 configs and sole Tracker."""
+    if not output.is_relative_to(WORKSPACE/'data/experiments'):
+        raise ValueError('OUTPUT_MUST_BE_EXPERIMENT_DIRECTORY')
+    check = preflight()
+    with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as port:
+        port.bind(('127.0.0.1', 14550))
+    prepare(output, 'f2')
+    started = time.time()
+    env = dict(os.environ, UAV_USV_WS=str(WORKSPACE),
+               UAV_USV_RESEARCH_DIRECTORY=str(output),
+               UAV_USV_EXPERIMENT_LAUNCH='p4_follow_research.launch.py',
+               UAV_USV_EXPERIMENT_CONFIG_FILE=str(output/'config/flight.yaml'),
+               UAV_USV_RESEARCH_CONFIG_FILE=str(output/'config/research.yaml'),
+               UAV_USV_MINCO_EXECUTE='true', UAV_USV_P4_SHADOW='true',
+               UAV_USV_P6_PREDICTOR='bctra', UAV_USV_P7_MODE='true',
+               UAV_USV_HEADLESS_GCS='true', UAV_USV_ENABLE_SHADOW_PERCEPTION='false',
+               ROS_DOMAIN_ID=str(check['domain']), GZ_PARTITION='p7_'+str(int(started)),
+               ROS_LOG_DIR=str(output/'ros_logs'),
+               UAV_USV_TERMINAL_LOG_ROOT=str(output),
+               OPENBLAS_NUM_THREADS='1', OMP_NUM_THREADS='1')
+    grant = output/'sitl_execution_grant.json'
+    grant.write_text(json.dumps(dict(
+        pid=os.getpid(), process_start=identity(os.getpid())['start'], issued=started,
+        domain=check['domain'], partition=env['GZ_PARTITION'], preflight_clear=True,
+        authorization='User explicitly authorized P7 isolated SITL X/Y control'), indent=2)+'\n')
+    grant.chmod(0o600)
+    env['UAV_USV_SITL_GRANT'] = str(grant)
+    (output/'environment.json').write_text(json.dumps(
+        {k: v for k, v in env.items() if k.startswith(('UAV_USV_', 'ROS_', 'GZ_'))},
+        indent=2))
+    from experiment_source_snapshot import freeze_sources
+    freeze_sources(output, WORKSPACE)
+    processes, launcher = [], None
+    try:
+        for arguments, name in (([sys.executable, str(WORKSPACE/'scripts/p45_gcs_heartbeat.py')],
+                                 'gcs_heartbeat.txt'),
+                                ([sys.executable, str(WORKSPACE/'scripts/p4_shadow_monitor.py'),
+                                  str(output/'offline_evidence.jsonl')], 'monitor.txt')):
+            processes.append(harness.shell_process(arguments, env, output/name))
+        print('P7 SITL: 1-5 select motion before X; X FOLLOW; Y safe guidance; Q abort. '
+              'Session bound: 280 seconds.', flush=True)
+        launcher = subprocess.Popen([str(WORKSPACE/'scripts/uav_lab.sh'), '--no-build'],
+                                    cwd=WORKSPACE, env=env)
+        launcher.wait(timeout=280.)
+    finally:
+        if launcher is not None and launcher.poll() is None:
+            launcher.send_signal(signal.SIGINT)
+            try:
+                launcher.wait(timeout=15.)
+            except subprocess.TimeoutExpired:
+                launcher.terminate()
+                launcher.wait(timeout=5.)
+        cleanup = harness.stop_owned(processes)
+        cleanup['late_components'] = harness.stop_late_components(output)
+        (output/'manual_cleanup.json').write_text(json.dumps(cleanup, indent=2)+'\n')
+    return 0
+
+
+def run(output, scene, prior_f2=None, guidance=None):
     """Retain original admission warmup and strict health/lease checks, without P6 gates."""
     if not output.is_relative_to(WORKSPACE/'data/experiments'):
         raise ValueError('OUTPUT_MUST_BE_EXPERIMENT_DIRECTORY')
@@ -120,6 +188,10 @@ def run(output, scene, prior_f2=None):
     preflight()
     prepare(output, scene)
     condition = json.loads((output/'condition.json').read_text())
+    if guidance:
+        condition.update(guidance_experiment=guidance,
+                         guidance_observation_seconds=25. if guidance == 'c' else 20.)
+        (output/'condition.json').write_text(json.dumps(condition, indent=2)+'\n')
     env = dict(os.environ, UAV_USV_HEADLESS_GCS='true', UAV_USV_MINCO_EXECUTE='true',
                UAV_USV_REQUIRE_PRE_X_HEALTH='true', UAV_USV_P6_PREDICTOR='bctra')
     processes, health = [], {}
@@ -127,6 +199,7 @@ def run(output, scene, prior_f2=None):
     first_minco = follow_start = stable_start = planner_started = None
     health_process = planner = None
     health_started = None
+    y_sent = guidance_started = target_lost_since = None
     check = P7FollowHealthGuard(initial_acquisition=True)
     monitor_check = GroundStartupHealth(output)
     reason = 'SESSION_ENDED_BEFORE_OBSERVATION'
@@ -156,6 +229,27 @@ def run(output, scene, prior_f2=None):
                 time.sleep(.05)
                 continue
             status = health.get('control', {}).get('status')
+            if y_sent is not None:
+                problem = guidance_health(health, now)
+                if problem:
+                    reason = problem
+                    break
+                if status == 'P7_GUIDANCE' and guidance_started is None:
+                    guidance_started = now
+                if guidance_started is None and now-y_sent > 5.:
+                    reason = 'Y_NOT_ACCEPTED_WITHIN_5S'
+                    break
+                visible = health.get('control', {}).get('visible', False)
+                target_lost_since = None if visible else (target_lost_since or now)
+                if target_lost_since is not None and now-target_lost_since > 2.:
+                    reason = 'P7_TARGET_LOST_FOR_2S'
+                    break
+                if guidance_started is not None and now-guidance_started >= condition[
+                        'guidance_observation_seconds']:
+                    reason = 'P7_GUIDANCE_OBSERVATION_COMPLETE'
+                    break
+                time.sleep(.05)
+                continue
             if follow_start is None and status in ('FOLLOW', 'MINCO_FOLLOW'):
                 follow_start = now
             if follow_start is not None:
@@ -163,13 +257,33 @@ def run(output, scene, prior_f2=None):
                 if problem:
                     reason = problem
                     break
+                navigation, tracking = health.get('navigation', {}), health.get('tracking', {})
+                p, q = navigation.get('p', ()), tracking.get('p', ())
+                distance = (sum((p[i]-q[i])**2 for i in (0, 1))**.5
+                            if len(p) == len(q) == 3 else 0.)
+                ready_for_y = (guidance == 'c' and health['control'].get('locked')
+                               and 8. <= distance <= 20.)
+                ready_for_y |= (guidance == 'd' and first_minco is not None
+                                and now-first_minco >= 5. and health['control'].get('locked'))
+                if ready_for_y:
+                    y, owned = harness.shell_process([
+                        'timeout', '8s', 'ros2', 'topic', 'pub', '--times', '1',
+                        '--wait-matching-subscriptions', '2', '--keep-alive', '.5',
+                        '/simulation/impact/command', 'std_msgs/msg/String', '{data: Y}'],
+                        env, output/'Y_command.txt')
+                    processes.append((y, owned))
+                    y_sent = now
+                    (output/'Y_event.json').write_text(json.dumps(dict(
+                        sent=now, horizontal_distance=distance,
+                        first_minco=first_minco, experiment=guidance), indent=2)+'\n')
+                    continue
                 if planner is None:
                     stable_start = harness.settled_since(
                         stable_start, health.get('follow_settling', {}), now)
                     if now-follow_start >= 60.:
                         reason = 'ORIGINAL_FOLLOW_NOT_SETTLED_WITHIN_60S'
                         break
-                    if stable_start is not None and now-stable_start >= 5.:
+                    if guidance != 'c' and stable_start is not None and now-stable_start >= 5.:
                         require_isolated_sitl(env)
                         planner, owned = harness.shell_process([
                             'ros2', 'run', 'uav_control', 'p4_follow_planner_node', '--ros-args',
@@ -186,7 +300,8 @@ def run(output, scene, prior_f2=None):
                 if planner_started and first_minco is None and now-planner_started >= 10.:
                     reason = 'NO_REAL_MINCO_TAKEOVER_WITHIN_10S'
                     break
-                if first_minco is not None and now-first_minco >= condition['observation_seconds']:
+                if (not guidance and first_minco is not None
+                        and now-first_minco >= condition['observation_seconds']):
                     reason = 'MINCO_OBSERVATION_COMPLETE'
                     break
             time.sleep(.05)
@@ -209,7 +324,10 @@ def run(output, scene, prior_f2=None):
         (output/'p5_cleanup.json').write_text(json.dumps(cleanup, indent=2)+'\n')
     ended_path = output/'watchdog_end.json'
     ended = json.loads(ended_path.read_text()) if ended_path.exists() else {}
-    if (output/'offline_evidence.jsonl').exists():
+    if guidance and (output/'offline_evidence.jsonl').exists():
+        from p7_follow_analysis import guidance_metrics
+        summary = guidance_metrics(output, reason)
+    elif (output/'offline_evidence.jsonl').exists():
         summary = harness.assess(output, scene, reason, first_minco, ended,
                                  task_root=output, extra_audit=audit)
     else:
@@ -230,7 +348,10 @@ def run(output, scene, prior_f2=None):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('output', type=Path)
-    parser.add_argument('--scene', choices=('f2', 'f3'), required=True)
+    parser.add_argument('--scene', choices=('f2', 'f3'), default='f2')
     parser.add_argument('--prior-f2', type=Path)
+    parser.add_argument('--guidance', choices=('c', 'd'))
+    parser.add_argument('--manual', action='store_true')
     args = parser.parse_args()
-    raise SystemExit(run(args.output.resolve(), args.scene, args.prior_f2))
+    raise SystemExit(manual(args.output.resolve()) if args.manual else run(
+        args.output.resolve(), args.scene, args.prior_f2, args.guidance))

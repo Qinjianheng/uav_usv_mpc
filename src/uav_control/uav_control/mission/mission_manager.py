@@ -37,8 +37,10 @@ class MissionManagerCore:
         terminal_time_threshold=1.0,
         terminal_distance_threshold=2.0,
         lock_confirmation_duration=0.05,
+        p7_guidance_enabled=False,
     ):
         self.maximum_tracker_age = float(maximum_tracker_age)
+        self.p7_guidance_enabled = bool(p7_guidance_enabled)
         self.minimum_plan_remaining_time = float(
             minimum_plan_remaining_time
         )
@@ -84,7 +86,7 @@ class MissionManagerCore:
             return True
         return False
 
-    def handle_command(self, command, now):
+    def handle_command(self, command, now, navigation_ready=False):
         """Apply one X/Y/R/Q command and report whether it was accepted."""
         command = str(command).strip().upper()
         now = float(now)
@@ -115,6 +117,8 @@ class MissionManagerCore:
             self._transition(MissionPhase.TAKEOFF, now)
             return True
         if command == 'Y':
+            if self.p7_guidance_enabled and not (self.target_locked and navigation_ready):
+                return False
             if self.phase not in (
                 MissionPhase.FOLLOW, MissionPhase.TARGET_LOCK,
             ) or (self.phase == MissionPhase.TARGET_LOCK
@@ -196,6 +200,8 @@ class MissionManagerCore:
         target_distance=math.inf,
     ):
         """Accept only a fresh, currently executable tracker decision."""
+        if self.p7_guidance_enabled:
+            return False
         now = float(now)
         current_mission = int(mission_id) == self.mission_id
         fresh = (
