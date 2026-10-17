@@ -106,9 +106,10 @@ class FollowProblem:
                 or c.observation_stamp > c.prediction_source_stamp + 1e-7
                 or c.prediction_source_stamp > request.now_stamp + 1e-7):
             raise ValueError('INVALID_INPUT')
-        if (max(request.now_stamp - c.navigation_stamp,
-                request.now_stamp - c.observation_stamp) > self.limits.maximum_input_age
-                or request.now_stamp >= c.prediction_valid_until):
+        from uav_control.guidance.follow_time_contract import context_deadline
+        if (getattr(c, 'target_time_profile', 'baseline_125') != self.limits.target_time_profile
+                or request.now_stamp-c.navigation_stamp > self.limits.maximum_input_age
+                or request.now_stamp >= context_deadline(c)):
             raise ValueError('STALE_INPUT')
         from uav_control.guidance.follow_minco_execution import AcceptedFollowRequest
         if isinstance(request, (HypotheticalRequest, AcceptedFollowRequest)):

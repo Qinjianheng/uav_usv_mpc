@@ -51,6 +51,10 @@ def constraint_snapshot(model):
                 intrinsics=asdict(model.intrinsics), extrinsics=asdict(model.extrinsics),
                 target=asdict(model.target), visibility=asdict(model.visibility),
                 attitude=asdict(model.attitude_config))
+    if model.config.target_time_profile != 'baseline_125':
+        from uav_control.guidance.follow_time_contract import input_time_contract
+        data['target_time_contract'] = asdict(input_time_contract(
+            model.config.target_time_profile))
     policy = getattr(model, 'p6_policy', None)
     if policy is not None and policy.enabled:
         policy.validate()

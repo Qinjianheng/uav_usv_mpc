@@ -155,13 +155,14 @@ def measurement_age(now, stamp):
     return age if math.isfinite(age) and value > 0.0 and age >= 0.0 else math.inf
 
 
-def fresh_flight_target(message, now, maximum_age, frame_id='local_ned'):
+def fresh_flight_target(message, now, maximum_age, frame_id='local_ned', source_max_age=None):
     """Convert KF state only when its originating image remains fresh."""
     if message is None or str(message.frame_id) != frame_id:
         return None
     source_age = measurement_age(now, _stamp_seconds(message.source_stamp))
     state_age = measurement_age(now, _stamp_seconds(message.stamp))
-    if (source_age > maximum_age or state_age > maximum_age
+    if (source_age > (maximum_age if source_max_age is None else source_max_age)
+            or state_age > maximum_age
             or source_age < state_age):
         return None
     try:
@@ -378,11 +379,19 @@ class TrajectoryTrackerNode(Node):
             from uav_control.controllers.follow_mpc_seed import FollowMpcSeed
             from uav_control.guidance.follow_limits import ResearchConfig, constraint_snapshot
             for name, value in (('follow_research_horizontal_acceleration', 3.),
-                                ('follow_research_yaw_rate', 1.)):
+                                ('follow_research_yaw_rate', 1.),
+                                ('follow_target_time_profile', 'baseline_125')):
                 self.declare_parameter(name, value, ParameterDescriptor(read_only=True))
             research = ResearchConfig(maximum_horizontal_acceleration=float(self.get_parameter(
                 'follow_research_horizontal_acceleration').value), maximum_yaw_rate=float(
-                self.get_parameter('follow_research_yaw_rate').value))
+                self.get_parameter('follow_research_yaw_rate').value), target_time_profile=str(
+                self.get_parameter('follow_target_time_profile').value))
+            from uav_control.guidance.follow_time_contract import input_time_contract
+            self.follow_time_contract = input_time_contract(research.target_time_profile)
+            if (self.follow_admission is not None
+                    and self.follow_admission.config.target_observation_age
+                    != self.follow_time_contract.observation_age):
+                raise ValueError('FOLLOW_ADMISSION_TARGET_TIME_MISMATCH')
             self.follow_receiver = FollowReceiver(
                 limits=constraint_snapshot(FollowMpcSeed(research)))
             if self.follow_minco_requested:
@@ -909,10 +918,13 @@ class TrajectoryTrackerNode(Node):
         now = self._ros_seconds()
         self.follow_generation = self.follow_clock.observe(now)
         prediction = self.latest_prediction
+        from uav_control.guidance.follow_time_contract import input_time_contract
+        contract = getattr(self, 'follow_time_contract', input_time_contract())
         navigation_fresh = bool(self.latest_state and 0 <= now-self.latest_state.stamp <= .125)
         kf = getattr(self, 'latest_kf_message', None)
         target_fresh = fresh_flight_target(
-            kf, now, min(.125, self.maximum_state_age), self.expected_frame_id) is not None
+            kf, now, min(.125, self.maximum_state_age), self.expected_frame_id,
+            source_max_age=contract.observation_age) is not None
         observation_stamp = self.visibility.last_valid_observation_stamp
         observation_fresh = bool(observation_stamp is not None
                                  and 0 <= now-observation_stamp
@@ -922,9 +934,12 @@ class TrajectoryTrackerNode(Node):
             source, observation, generated, until = (
                 _stamp_seconds(getattr(prediction, name)) for name in (
                     'source_stamp', 'observation_stamp', 'generated_stamp', 'valid_until'))
-            prediction_fresh = bool(self._prediction_fresh(now)
+            prediction_fresh = bool(prediction is not None and prediction.valid
+                                    and int(prediction.mission_id) == self.mission_id
                                     and 0 < observation <= source <= generated <= now < until
-                                    and now-source <= .125)
+                                    and now-source <= contract.prediction_age
+                                    and now-observation <= contract.observation_age
+                                    and until <= observation+contract.observation_age+1e-7)
         except (AttributeError, ValueError, TypeError):
             prediction_fresh = False
         self.follow_input_status = dict(

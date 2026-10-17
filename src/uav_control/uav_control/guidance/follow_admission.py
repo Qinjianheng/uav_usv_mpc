@@ -21,11 +21,13 @@ class AdmissionConfig:
     probe_maximum_gap: float = .45
     required_probes: int = 3
     maximum_entries: int = 3
+    target_observation_age: float = .125
 
     def __post_init__(self):
         if (any(not math.isfinite(v) or v <= 0 for v in vars(self).values())
                 or self.horizontal_exit <= self.horizontal_enter
                 or self.relative_exit <= self.relative_enter
+                or self.target_observation_age > .2
                 or any(type(v) is not int for v in (self.required_probes, self.maximum_entries))):
             raise ValueError('INVALID_FOLLOW_ADMISSION_CONFIG')
 
@@ -80,8 +82,9 @@ def follow_settling(navigation, tracking, now, distance=5., altitude=-5.,
                  key=lambda row: row['stamp'])
     stamps = [row['stamp'] for row in nav]
     for target in sorted(tracking, key=lambda row: row['stamp'], reverse=True):
-        if not valid(target) or not all(
-                0 <= now-target.get(k, 0.) <= .125 for k in ('stamp', 'source')):
+        if (not valid(target) or not 0 <= now-target.get('stamp', 0.) <= .125
+                or not 0 <= now-target.get('source', 0.)
+                <= admission_config.target_observation_age):
             continue
         i = bisect.bisect_left(stamps, target['stamp'])
         if i < len(nav) and stamps[i] == target['stamp']:
@@ -130,7 +133,8 @@ def follow_settling(navigation, tracking, now, distance=5., altitude=-5.,
     # A fresh KF epoch just ahead of delivered native navigation is a causal wait.
     # No extrapolation or entry grant: the right bracket must actually arrive.
     if (nav and 0 < latest['stamp']-nav[-1]['stamp'] <= NATIVE_BRACKET_SECONDS
-            and all(0 <= now-latest[k] <= .125 for k in ('stamp', 'source'))
+            and 0 <= now-latest['stamp'] <= .125
+            and 0 <= now-latest['source'] <= admission_config.target_observation_age
             and 0 <= now-nav[-1]['stamp'] <= .125):
         return dict(settled=False, reason='AWAITING_NATIVE_BRACKET',
                     awaiting_native_bracket=True, epoch=latest['stamp'],

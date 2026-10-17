@@ -10,6 +10,7 @@ import numpy as np
 from uav_control.guidance.follow_problem import FollowProblem
 from uav_control.guidance.polynomial_bounds import derivative_upper_bound
 from uav_control.guidance.polynomial_extrema import derivative_peak
+from uav_control.guidance.follow_time_contract import context_deadline
 
 
 @profiled('prediction_revalidation')
@@ -64,9 +65,7 @@ def revalidate_prediction(request, output, prediction, now, model, budget=.03,
         metrics = output.metrics
         if cache is not None:
             from uav_control.guidance.follow_fast_validation import assess_curve
-            if now >= min(c.navigation_stamp+.125, c.attitude_stamp+.125,
-                          prediction.source_stamp+.125, prediction.observation_stamp+.125,
-                          prediction.valid_until):
+            if now >= context_deadline(context):
                 raise ValueError('INPUT_EXPIRED')
             checked, _ = assess_curve(updated, metrics, model, cache,
                                       budget-(clock()-started), clock)
@@ -91,9 +90,7 @@ def revalidate_prediction(request, output, prediction, now, model, budget=.03,
                 raise ValueError('YAW_RATE_LIMIT')
         problem = FollowProblem(updated, model, sum(ts))
         # No future prediction can refresh the unchanged raw navigation epoch.
-        if now >= min(c.navigation_stamp+.125, c.attitude_stamp+.125,
-                      prediction.source_stamp+.125, prediction.observation_stamp+.125,
-                      prediction.valid_until):
+        if now >= context_deadline(context):
             raise ValueError('INPUT_EXPIRED')
         peaks = {}
         for name, derivative, axes in (

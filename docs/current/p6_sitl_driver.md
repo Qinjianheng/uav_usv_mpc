@@ -129,3 +129,8 @@ P6 condition 中的历史合同明确记录为 `baseline_reference_constraint_fi
 当前作用域回归位于 `test_p61r_imm_qualification.py` 与 `test_p6_sitl_driver.py`，覆盖三种角色、五模式 B/D、非法配置组合、证据完整性及审查失败、共享 bootstrap 与独立 case 绑定、源码变更、robust 门禁和真实先行报告拒绝。
 
 测试中的合成外部进程返回值仅用于验证驱动拒绝错误，不能用作任何真实 pilot、baseline、IMM shadow 或飞行资格。该驱动为本人实现，测试与代码核对属于自检；独立审查由根任务另行完成。
+### 显式目标时效实验
+
+默认 `baseline_125` 保持125ms。`experiment_150` / `experiment_200` 是单独绑定源码、配置与独立审查的候选，不能沿用旧资格。Planner 的 `target_time_profile`、IMM 的同名参数及 `input_timeout`、Tracker 的 `follow_target_time_profile` 和 `follow_admission_target_observation_age` 必须一致；prepare/verify会拒绝不一致的case。
+
+契约分别限制原始图像年龄、已传播预测状态年龄、原生导航及姿态年龄。目标实验保留导航/姿态125ms、50ms原生插值括号、独立视觉锁定时效及450ms租约；预测有效期始终由原始采集戳计算，不能通过重发布更新。接收端依据本地不可变约束指纹验证时效，发布方快照不能授予更长有效期。IMM保持现有均值/协方差传播，在实验边界增加严格消息身份与过期拒绝回放。目标200ms不代表额外75ms可用规划时间：原生导航截止可能更早。

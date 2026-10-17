@@ -149,8 +149,14 @@ def _curve_errors(c, limits=None):
             or c.source_stamp > c.start or c.observation_stamp > c.source_stamp+1e-7
             or abs(c.navigation_stamp-c.attitude_stamp) > 1e-7):
         reasons.append('INVALID_INTERVAL')
-    raw_until = min(c.navigation_stamp+.125, c.attitude_stamp+.125,
-                    c.observation_stamp+.125, c.source_stamp+.125)
+    from uav_control.guidance.follow_time_contract import input_time_contract
+    # Policy comes exclusively from this receiver's immutable trusted limits.
+    trusted = limits.values.get('target_time_contract', {}) if limits is not None else {}
+    contract = input_time_contract(trusted.get('profile', 'baseline_125'))
+    raw_until = min(c.navigation_stamp+contract.navigation_age,
+                    c.attitude_stamp+contract.attitude_age,
+                    c.observation_stamp+contract.observation_age,
+                    c.source_stamp+contract.prediction_age)
     if c.input_until > raw_until+1e-7:
         reasons.append('TTL_EXTENSION')
     if c.holding_until < c.end or not c.holding_model:

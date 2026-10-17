@@ -36,9 +36,8 @@ class FastConfig:
 
 def freshness(request, now):
     """Compute remaining raw-input freshness without rewriting any acquisition epoch."""
-    c = request.context
-    until = min(c.navigation_stamp+.125, c.observation_stamp+.125,
-                c.prediction_source_stamp+.125, c.prediction_valid_until)
+    from uav_control.guidance.follow_time_contract import context_deadline
+    until = context_deadline(request.context)
     return until, until-now
 
 

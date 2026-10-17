@@ -437,6 +437,11 @@ def run(output, qualification, scene, task_root=None, authorization=None,
     # Legacy reference is explicit for P6; current limits/calibration bind the
     # actual local model, independently of the research YAML byte hash.
     condition.update(constraints)
+    from dataclasses import asdict
+    from uav_control.guidance.follow_time_contract import input_time_contract
+    condition['input_time_contract'] = asdict(input_time_contract(
+        research['p4_follow_planner_node']['ros__parameters'].get(
+            'target_time_profile', 'baseline_125')))
     if flight_parameters:
         condition['original_follow_settling']['relative_speed_max'] = flight_parameters.get(
             'follow_admission_relative_enter', .5)

@@ -29,6 +29,7 @@ def sources():
     return [WORKSPACE / path for path in (
         'scripts/p61r_imm_qualification.py',
         'src/uav_control/uav_control/common/record_snapshot.py',
+        'src/uav_control/uav_control/guidance/follow_time_contract.py',
         'src/uav_control/uav_control/tracking/imm_predictor.py',
         'src/uav_control/uav_control/tracking/imm_target_predictor_node.py',
         'src/uav_control/uav_control/tracking/target_prediction.py',
@@ -38,16 +39,20 @@ def sources():
         'src/uav_control/uav_control/usv_motion_profiles.py')]
 
 
-def replay_rows(rows):
+def replay_rows(rows, target_time_profile='baseline_125'):
     """
     Run the current engine, wire conversion and strict attach on every saved row.
 
     Recorded receipt epochs drive causal gates, while elapsed costs use only
     perf_counter. No truth or simulated optimizer outcome enters this replay.
     """
-    engine = ImmPredictionEngine()
+    from uav_control.guidance.follow_time_contract import input_time_contract
+    contract = input_time_contract(target_time_profile)
+    engine = ImmPredictionEngine(input_timeout=contract.observation_age,
+                                 target_time_profile=target_time_profile)
     rejected, samples = Counter(), Counter()
     elapsed, matches, expired, unsafe, accepted = [], 0, 0, 0, 0
+    aged_matches, aged_elapsed = 0, []
     for sequence, row in enumerate(rows, 1):
         observation = RawObservation(
             row['stamp'], tuple(row['p']), tuple(row['covariance']), row['frame'], row['source'],
@@ -72,16 +77,42 @@ def replay_rows(rows):
         matches += int(attached.uncertainty_identity == (
             1, sequence, result.source_stamp, observation.stamp))
         unsafe += int(result.observation_stamp != observation.stamp
-                      or result.valid_until != observation.stamp+.125
+                      or result.valid_until != observation.stamp+contract.observation_age
                       or result.generated_stamp != row['receipt']
                       or any(np.min(np.linalg.eigvalsh(
                           np.asarray(s.position_covariance).reshape(3, 3))) < -1e-9
                              for s in result.samples))
         # Isolate the negative case completely from the next recorded input.
-        stale = deepcopy(engine).generate(observation.stamp+.126, 1, sequence)
+        stale = deepcopy(engine).generate(observation.stamp+contract.observation_age+.001,
+                                          1, sequence)
         expired += int(not stale.valid and not stale.samples
                        and stale.invalid_reason == 'OBSERVATION_STALE')
-    return dict(attempts=len(rows), accepted=accepted, rejections=dict(rejected),
+        if target_time_profile != 'baseline_125':
+            aged_start = time.perf_counter()
+            aged_engine = deepcopy(engine)
+            aged_now = observation.stamp+contract.observation_age-.001
+            aged = aged_engine.generate(aged_now, 1, sequence)
+            attached_aged = attach_model_diagnostics(
+                prediction_from_message(prediction_to_message(aged, 0.)),
+                aged_engine.diagnostics(aged))
+            aged_elapsed.append(time.perf_counter()-aged_start)
+            aged_matches += int(
+                aged.valid and len(aged.samples) == 41
+                and aged.observation_stamp == observation.stamp
+                and aged.source_stamp == aged.generated_stamp == aged_now
+                and aged.valid_until == observation.stamp+contract.observation_age
+                and attached_aged.uncertainty_identity == (
+                    1, sequence, aged.source_stamp, observation.stamp)
+                and all(np.min(np.linalg.eigvalsh(np.asarray(s.position_covariance).reshape(3, 3)))
+                        >= -1e-9 for s in aged.samples))
+    return dict(target_time_profile=target_time_profile,
+                target_observation_timeout=contract.observation_age,
+                aged_forecast_strict_matches=aged_matches,
+                aged_forecast_age=contract.observation_age-.001,
+                aged_compute_p95=float(np.percentile(aged_elapsed, 95)) if aged_elapsed else None,
+                aged_scope='offline holding last real observation; original epoch, propagated '
+                           'mean/covariance and ROS identity; no actual sensor loss flight claim',
+                attempts=len(rows), accepted=accepted, rejections=dict(rejected),
                 strict_identity_matches=matches, expired_rejections=expired,
                 unsafe_output_count=unsafe, sample_counts=dict(samples),
                 compute_seconds=dict(zip(('p50', 'p95', 'p99', 'maximum'),
@@ -100,7 +131,10 @@ def replay_pass(report):
                 and report.get('expired_rejections') == n
                 and report.get('unsafe_output_count') == 0
                 and report.get('sample_counts') == {'41': n}
-                and 0 < report.get('compute_seconds', {}).get('p95', float('inf')) < .02)
+                and 0 < report.get('compute_seconds', {}).get('p95', float('inf')) < .02
+                and (report.get('target_time_profile', 'baseline_125') == 'baseline_125'
+                     or (report.get('aged_forecast_strict_matches') == n
+                         and 0 < report.get('aged_compute_p95', float('inf')) < .02)))
 
 
 def validate_primary_evidence(release, metadata, required_sources=None):
@@ -132,6 +166,10 @@ def validate_primary_evidence(release, metadata, required_sources=None):
         evidence = {r['role']: json.loads(Path(r['path']).read_text())
                     for r in report['evidence']}
         if (not replay_pass(evidence['replay'])
+                or report.get('target_time_profile', 'baseline_125')
+                != metadata.get('target_time_profile', 'baseline_125')
+                or evidence['replay'].get('target_time_profile', 'baseline_125')
+                != metadata.get('target_time_profile', 'baseline_125')
                 or evidence['review'].get('review_pass') is not True
                 or evidence['verification'].get('passed') is not True
                 or evidence['verification'].get('independent_review_pass') is not True):
@@ -144,7 +182,7 @@ def validate_primary_evidence(release, metadata, required_sources=None):
         raise ValueError('IMM_PRIMARY_EVIDENCE_REQUIRED') from exc
 
 
-def replay_case(case, output):
+def replay_case(case, output, target_time_profile='baseline_125'):
     """Create a new analysis alongside immutable history, retaining all window inputs."""
     case, output = Path(case).resolve(), Path(output).resolve()
     if output.is_relative_to(case) or case.is_relative_to(output):
@@ -157,7 +195,7 @@ def replay_case(case, output):
     rows = [json.loads(line) for line in raw_path.open()]
     selected = [r for r in rows if r.get('kind') == 'p6_observation'
                 and start <= r['receipt'] <= start+60.]
-    report = replay_rows(selected)
+    report = replay_rows(selected, target_time_profile)
     report.update(passed=replay_pass(report), scope='offline raw-observation compatibility only',
                   evidence=[dict(path=str(p), sha256=sha(p)) for p in (summary_path, raw_path)],
                   source_checks=[dict(path=str(p), sha256=sha(p)) for p in sources()])
@@ -171,8 +209,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('case', type=Path)
     parser.add_argument('output', type=Path)
+    parser.add_argument('--target-time-profile', default='baseline_125',
+                        choices=('baseline_125', 'experiment_150', 'experiment_200'))
     args = parser.parse_args()
-    print(json.dumps(replay_case(args.case, args.output), indent=2))
+    print(json.dumps(replay_case(args.case, args.output, args.target_time_profile), indent=2))
 
 
 if __name__ == '__main__':

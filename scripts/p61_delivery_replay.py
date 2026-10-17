@@ -2,7 +2,7 @@
 """Replay real successor requests through current math/wire/receiver code, without ROS flight."""
 import argparse
 from collections import Counter, deque
-from dataclasses import asdict
+from dataclasses import asdict, replace
 import hashlib
 from io import StringIO
 import json
@@ -15,7 +15,7 @@ import numpy as np
 from uav_usv_interfaces.msg import PredictedTargetPoint, TargetPrediction
 from uav_control.control.trajectory_tracker_node import TrajectoryTrackerNode
 from uav_control.controllers.follow_guided_feasible import P47FollowGuidedMinco
-from uav_control.controllers.follow_mpc_seed import FollowMpcSeed
+from uav_control.controllers.follow_mpc_seed import FollowMpcSeed, planning_context_from_payload
 from uav_control.controllers.follow_mpc_shadow_node import ShadowPrediction
 from uav_control.controllers.follow_transport import curve_from_message, stamp
 from uav_control.controllers.p4_follow_planner_node import P4FollowPlannerNode, P4ResearchRunner
@@ -23,7 +23,8 @@ from uav_control.guidance.camera_visibility import (
     CameraExtrinsics, CameraIntrinsics, TargetBoundingSphere, VisibilityConstraints,
 )
 from uav_control.guidance.follow_contract import ReceiverContext
-from uav_control.guidance.follow_limits import ResearchConfig
+from uav_control.guidance.follow_limits import ResearchConfig, constraint_snapshot
+from uav_control.guidance.follow_time_contract import input_time_contract
 from uav_control.guidance.follow_math_runtime import configure_numerical_threads
 from uav_control.guidance.follow_minco_execution import (
     NominalFollowReceiver, nominal_curve, request_from_payload,
@@ -50,11 +51,11 @@ def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def model_from_record(row):
+def model_from_record(row, target_time_profile='baseline_125'):
     """Restore the actual recorded constraints and camera, without nominal defaults."""
     m = row['input_provenance']['model_config']
     result = FollowMpcSeed(
-        ResearchConfig(**m['mpc']),
+        ResearchConfig(**dict(m['mpc'], target_time_profile=target_time_profile)),
         intrinsics=CameraIntrinsics(**m['intrinsics']),
         extrinsics=CameraExtrinsics(**m['extrinsics']),
         target=TargetBoundingSphere(**m['target']),
@@ -90,14 +91,23 @@ def prediction_message(prediction, accelerations=()):
     return message
 
 
-def raw_prediction(record):
+def raw_prediction(record, target_time_profile='baseline_125'):
     """Preserve all original epochs and identity of an actual recorded IMM forecast."""
-    return ShadowPrediction(
+    result = ShadowPrediction(
         record['mission'], record['sequence'], record['source_stamp'],
         record['observation_stamp'], record['generated_stamp'], record['valid_until'],
         record['frame'], record['source'], record['model'], record['times'][-1],
         tuple(record['times']), tuple(map(tuple, record['p'])), tuple(map(tuple, record['v'])),
         tuple(map(tuple, record['covariance'])))
+    return experimental_prediction(result, target_time_profile)
+
+
+def experimental_prediction(prediction, profile):
+    """Counterfactual current expiry policy; original mean/covariance/source epochs retained."""
+    if profile == 'baseline_125':
+        return prediction
+    return replace(prediction, valid_until=prediction.observation_stamp
+                   + input_time_contract(profile).observation_age)
 
 
 def summary(values):
@@ -109,7 +119,7 @@ def summary(values):
         ('min', 'p50', 'p95', 'max'), map(float, np.percentile(values, (0, 50, 95, 100))))))
 
 
-def replay(flight, output):
+def replay(flight, output, target_time_profile='baseline_125'):
     """All36 actual successor inputs; independent receiver models never grant flight authority."""
     output.mkdir(parents=True, exist_ok=False)
     paths = sorted((flight/'shadow').glob('mpc_seed_shadow_*.jsonl'))
@@ -140,7 +150,8 @@ def replay(flight, output):
                               - final['wire_cycle_seconds'])
     unmeasured_transport = max(transports)
     math_runtime = configure_numerical_threads(1)
-    model = model_from_record(cases[0][3])
+    contract = input_time_contract(target_time_profile)
+    model = model_from_record(cases[0][3], target_time_profile)
     solver = P47FollowGuidedMinco(
         model, duration=1.6, refinement=False, rolling=True,
         online_budget_guard=True, rollout_config=FollowRolloutConfig(reference_mode='rear_point'))
@@ -148,6 +159,14 @@ def replay(flight, output):
     receiver_samples, publication_samples = deque(maxlen=16), deque(maxlen=16)
     for path, line, text, row in cases:
         request = request_from_payload(row['request'])
+        if target_time_profile != 'baseline_125':
+            context = planning_context_from_payload(dict(
+                asdict(request.context), target_time_profile=target_time_profile,
+                prediction_valid_until=request.context.observation_stamp+contract.observation_age))
+            limits = constraint_snapshot(model)
+            parent_model = replace(request.prior_curve, constraint_snapshot=limits.payload,
+                                   constraint_fingerprint=limits.fingerprint)
+            request = replace(request, context=context, prior_curve=parent_model)
         c, parent = request.context, request.prior_curve
         old = row['candidate_output']['metrics']['worker_timeline']
         clock = ReplayClock(request.now_stamp)
@@ -163,14 +182,17 @@ def replay(flight, output):
         runner.current_receiver_epoch = tuple(row['receiver_epoch_at_dispatch'])
         runner.planner_boot_id, runner.math_runtime = parent.planner_boot_id, math_runtime
         runner.mission = row['input_provenance']['mission']
-        runner.prediction = ShadowPrediction(**row['input_provenance']['prepared_prediction'])
+        runner.prediction = experimental_prediction(
+            ShadowPrediction(**row['input_provenance']['prepared_prediction']),
+            target_time_profile)
         runner.prediction_provenance = row['input_provenance']['prediction']
         runner.receiver_cost_samples, runner.publication_cost_samples = (
             receiver_samples, publication_samples)
         item = dict(
             cycle=c.cycle_id, parent=parent.plan_id, source=str(path), source_line=line,
             source_line_sha256=hashlib.sha256(text.encode()).hexdigest(),
-            original_context=asdict(c), real_tracker_accepted=False,
+            original_context=row['request']['context'], model_context=asdict(c),
+            target_time_profile=target_time_profile, real_tracker_accepted=False,
             original_worker=old, current_source_model='recorded-state one-step successor')
         try:
             locked, _ = runner._prepare_delivery((request, None), request.now_stamp)
@@ -223,7 +245,7 @@ def replay(flight, output):
         receiver_clock = ReplayClock(outcome['wire_finish_ros']+transport)
         tracker = object.__new__(TrajectoryTrackerNode)
         tracker.follow_model, tracker.p6_runtime = model, P6Runtime(model)
-        tracker.follow_receiver = NominalFollowReceiver()
+        tracker.follow_receiver = NominalFollowReceiver(limits=constraint_snapshot(model))
         tracker.follow_receiver.active = parent
         tracker.follow_receiver.deadline = runner.execution_status['deadline']
         tracker.follow_minco_requested, tracker.follow_stable_ticks = True, 10
@@ -244,8 +266,9 @@ def replay(flight, output):
                 source_context['following'], source_context['offboard'], source_context['armed'],
                 source_context['visible'], receiver_boot_id=parent.receiver_boot_id,
                 navigation_fresh=0 <= now-navigation_stamp <= .125,
-                target_fresh=0 <= now-prediction.observation_stamp <= .125,
-                prediction_fresh=prediction.source_stamp <= now < prediction.valid_until,
+                target_fresh=0 <= now-prediction.observation_stamp <= contract.observation_age,
+                prediction_fresh=(prediction.source_stamp <= now < prediction.valid_until
+                                  and now-prediction.source_stamp <= contract.prediction_age),
                 observation_fresh=0 <= now-prediction.observation_stamp <= .150)
         tracker._follow_context = lambda: context_at(
             receiver_clock(), runner.prediction, c.navigation_stamp)
@@ -279,7 +302,7 @@ def replay(flight, output):
         continuity = np.asarray(curve.sample(curve.start))-parent.sample(curve.start)
         item['maximum_handover_pva_yaw_rate_delta'] = float(np.max(np.abs(continuity)))
         latest = [p for p in predictions if p['receipt'] <= curve.start]
-        prediction = raw_prediction(latest[-1])
+        prediction = raw_prediction(latest[-1], target_time_profile)
         nav = [d for d in debug if d['stamp'] <= curve.start][-1]['state_stamp']
         detail = {}
         valid_prefix = nominal_curve(curve, prediction, model, curve.start,
@@ -298,6 +321,7 @@ def replay(flight, output):
                             - r['original_worker']['solve_start_monotonic'] for r in live]
     report = dict(
         schema='p61-delivery-replay-v1', inputs=len(cases), outputs=len(outputs),
+        target_time_profile=target_time_profile, input_time_contract=asdict(contract),
         published=sum(r['published'] for r in outputs),
         model_accepted=sum(r.get('model_ack') == 'ACCEPTED' for r in outputs),
         model_active=sum(r.get('model_activation') == 'ACTIVE' for r in outputs),
@@ -315,6 +339,8 @@ def replay(flight, output):
             'Recorded preparation/queue/poll/DDS elapsed reused; original input epochs unchanged.',
             'Unpublished original cases use the declared maximum observed DDS scenario.',
             'Original ACTIVE parent bootstrap; live admission/performance history not simulated.',
+            'Experimental profiles rebuild expiry and parent policy as counterfactual models; '
+            'old actual ACK/TTL is not new-policy authority. Mean/covariance math is unchanged.',
             'Model activation uses causal monitor receipt as a proxy for latest IMM callback.',
             'No inference of60s ownership or continuous closed-loop physical success.'])
     (output/'analysis.json').write_text(json.dumps(report, indent=2)+'\n')
@@ -328,8 +354,11 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('flight', type=Path)
     parser.add_argument('output', type=Path)
+    parser.add_argument('--target-time-profile', default='baseline_125',
+                        choices=('baseline_125', 'experiment_150', 'experiment_200'))
     args = parser.parse_args()
-    print(json.dumps(replay(args.flight.resolve(), args.output.resolve()), indent=2))
+    print(json.dumps(replay(args.flight.resolve(), args.output.resolve(),
+                            args.target_time_profile), indent=2))
 
 
 if __name__ == '__main__':

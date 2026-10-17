@@ -119,8 +119,12 @@ def make_shadow_request(pose, prediction, mission_id, cycle_id, now, config,
         raise ValueError('PREDICTION_FUTURE')
     if pose.stamp > now + 1e-9 or prediction.observation_stamp > now + 1e-9:
         raise ValueError('INPUT_FUTURE')
-    if (max(now - pose.stamp, now - prediction.observation_stamp,
-            now - prediction.source_stamp) > config.maximum_input_age + 1e-9
+    from uav_control.guidance.follow_time_contract import input_time_contract
+    profile = getattr(config, 'target_time_profile', 'baseline_125')
+    contract = input_time_contract(profile)
+    if (now-pose.stamp > config.maximum_input_age+1e-9
+            or now-prediction.observation_stamp > contract.observation_age+1e-9
+            or now-prediction.source_stamp > contract.prediction_age+1e-9
             or now >= prediction.valid_until):
         raise ValueError('STALE_INPUT')
     execution_epoch = pose.stamp if execution_lead is None else now + execution_lead
@@ -131,10 +135,13 @@ def make_shadow_request(pose, prediction, mission_id, cycle_id, now, config,
         raise ValueError('PREDICTION_HORIZON')
     rotation = body_frd_to_ned_from_quaternion(pose.quaternion_wxyz)
     yaw = math.atan2(rotation[1, 0], rotation[0, 0])
-    context = PlanningContext(
+    from uav_control.controllers.follow_mpc_seed import TimedPlanningContext
+    context_type = PlanningContext if profile == 'baseline_125' else TimedPlanningContext
+    context = context_type(
         mission_id, cycle_id, pose.stamp, pose.stamp, pose.stamp,
         prediction.source_stamp, prediction.observation_stamp, prediction.sequence_id,
         prediction.valid_until, pose.clock_generation, prediction.frame_id, prediction.source,
+        **({} if profile == 'baseline_125' else dict(target_time_profile=profile)),
     )
     request = MpcRequest(context, (*pose.position, *pose.velocity, *pose.acceleration, yaw),
                          prediction.prediction_times, prediction.target_positions,
@@ -162,9 +169,11 @@ def completion_rejection(request, config, now, mission_id, generation, elapsed, 
         return 'CLOCK_GENERATION_CHANGED'
     if not math.isfinite(now) or now < request.now_stamp - 1e-9:
         return 'PUBLICATION_CLOCK_RESET'
-    if (max(now - context.navigation_stamp, now - context.observation_stamp,
-            now - context.prediction_source_stamp) > config.maximum_input_age + 1e-9
-            or now >= context.prediction_valid_until):
+    from uav_control.guidance.follow_time_contract import context_deadline
+    if (getattr(context, 'target_time_profile', 'baseline_125')
+            != getattr(config, 'target_time_profile', 'baseline_125')
+            or now-context.navigation_stamp > config.maximum_input_age+1e-9
+            or now >= context_deadline(context)):
         return 'STALE_INPUT'
     if not math.isfinite(elapsed) or elapsed < 0 or elapsed > config.solve_budget:
         return 'CYCLE_DEADLINE_EXCEEDED'
@@ -306,14 +315,15 @@ class ShadowResearchRunner:
             'cycle_started_monotonic': started,
             'submitted_monotonic': (self.pending.get('submitted_monotonic')
                                     if self.pending else None),
-            'expires_at_ros_stamp': (min(
-                request.context.navigation_stamp + self.config.maximum_input_age,
-                request.context.observation_stamp + self.config.maximum_input_age,
-                request.context.prediction_source_stamp + self.config.maximum_input_age,
-                request.context.prediction_valid_until) if request else None),
+            'expires_at_ros_stamp': (self._input_deadline(request) if request else None),
             'cycle_deadline_monotonic': (started + self.config.solve_budget
                                          if started is not None else None),
         }
+
+    @staticmethod
+    def _input_deadline(request):
+        from uav_control.guidance.follow_time_contract import context_deadline
+        return context_deadline(request.context)
 
     def reject(self, reason, now, monotonic_now):
         """Clear the research trajectory on input failure without repetitive unchanged logs."""

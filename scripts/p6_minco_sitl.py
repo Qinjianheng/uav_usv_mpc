@@ -30,6 +30,21 @@ GROUPS = {
 }
 
 
+def time_contract_for_configs(planner, tracker, imm):
+    """Require explicit agreement; never infer an experiment from a widened YAML number."""
+    from uav_control.guidance.follow_time_contract import input_time_contract
+    profile = planner.get('target_time_profile', 'baseline_125')
+    contract = input_time_contract(profile)
+    if (tracker.get('follow_target_time_profile', 'baseline_125') != profile
+            or imm.get('target_time_profile', 'baseline_125') != profile
+            or imm.get('input_timeout', .125) != contract.observation_age
+            or tracker.get('follow_admission_target_observation_age', .125)
+            != contract.observation_age
+            or planner.get('maximum_input_age', .125) > contract.navigation_age):
+        raise ValueError('P6_TARGET_TIME_CONTRACT_MISMATCH')
+    return contract
+
+
 def matrix_conditions():
     """A comparison plan only; no automatic launch/retry loop is provided."""
     return [dict(motion_mode=MOTION_MODES[index], mode_id=index, group=group,
@@ -100,6 +115,7 @@ def prepare_case(output, motion_mode, group, flight_config=None,
     for name, value in defaults.items():
         imm.setdefault(name, value)
     imm['prediction_topic'] = '/planning/target_prediction'
+    time_contract = time_contract_for_configs(planner, tracker, imm)
     # Validate/copy only; calibrated evidence and tuning are supplied by the
     # independently qualified root task, never manufactured by this driver.
     from uav_control.guidance.p6_follow import P6Policy
@@ -152,6 +168,7 @@ def prepare_case(output, motion_mode, group, flight_config=None,
         group=group, prediction_model=predictor, visibility_mode=visibility,
         adaptive_viewpoint=adaptive, imm_shadow_requested=bool(imm_shadow),
         imm_shadow_effective=effective_shadow, observation_seconds=60., seed=seed,
+        target_time_profile=time_contract.profile, input_time_contract=asdict(time_contract),
         seed_scope='metadata only; deterministic profiles; no noise injection by driver',
         launch_environment=environment, output=str(output / 'flight'),
         config_sources={str(path): harness.sha(path) for path in (flight_source, research_source)},
@@ -173,6 +190,16 @@ def verify_case(directory):
     if (metadata.get('kind') != KIND or metadata.get('observation_seconds') != 60.
             or Path(metadata.get('output', '')).resolve() != directory / 'flight'):
         raise ValueError('P6_CASE_SCOPE_MISMATCH')
+    flight = yaml.safe_load((directory/'config/flight.yaml').read_text())
+    research = yaml.safe_load((directory/'config/research.yaml').read_text())
+    contract = time_contract_for_configs(
+        research['p4_follow_planner_node']['ros__parameters'],
+        flight['trajectory_tracker_node']['ros__parameters'],
+        flight.get('imm_target_predictor_node', {}).get('ros__parameters', {}))
+    if (metadata.get('target_time_profile', 'baseline_125') != contract.profile
+            or metadata.get('input_time_contract', asdict(contract)) != asdict(contract)):
+        raise ValueError('P6_TARGET_TIME_CONTRACT_MISMATCH')
+    metadata['target_time_profile'] = contract.profile
     metadata['case_manifest_sha256'] = harness.sha(directory / 'SHA256SUMS')
     return metadata
 

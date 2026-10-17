@@ -90,7 +90,7 @@ class ImmPredictionEngine:
     """Transport-neutral time gate around the independent raw-position IMM."""
 
     def __init__(self, predictor=None, horizon=4., sample_period=.1,
-                 input_timeout=.125, frame_id='local_ned'):
+                 input_timeout=.125, frame_id='local_ned', target_time_profile='baseline_125'):
         self.predictor = predictor or ImmPredictor()
         for name, value in (('horizon', horizon), ('sample_period', sample_period),
                             ('input_timeout', input_timeout)):
@@ -98,8 +98,11 @@ class ImmPredictionEngine:
             if not math.isfinite(value) or value <= 0.:
                 raise ValueError(f'{name} must be finite and positive')
             setattr(self, name, value)
-        if self.input_timeout > .125:
-            raise ValueError('input_timeout cannot extend the original 125 ms observation lease')
+        from uav_control.guidance.follow_time_contract import input_time_contract
+        self.time_contract = input_time_contract(target_time_profile)
+        if self.input_timeout != self.time_contract.observation_age:
+            raise ValueError('125ms baseline input_timeout requires an explicit matching '
+                             'target_time_profile for experiments')
         self.frame_id = str(frame_id)
         self.last_clock = None
         self.clock_identity = None
@@ -327,7 +330,8 @@ def node_parameter_defaults():
                     diagnostics_topic='/planning/imm_diagnostics',
                     mission_topic='/mission/state', frame_id='local_ned',
                     update_rate_hz=20., prediction_horizon=4.,
-                    prediction_sample_period=.1, input_timeout=.125)
+                    prediction_sample_period=.1, input_timeout=.125,
+                    target_time_profile='baseline_125')
     config_defaults = ImmConfig()
     for name in config_defaults.__dataclass_fields__:
         value = getattr(config_defaults, name)
@@ -369,7 +373,8 @@ class ImmTargetPredictorNode(Node):
         self.engine = ImmPredictionEngine(
             ImmPredictor(config), horizon=parameter('prediction_horizon'),
             sample_period=parameter('prediction_sample_period'),
-            input_timeout=parameter('input_timeout'), frame_id=self.frame_id)
+            input_timeout=parameter('input_timeout'), frame_id=self.frame_id,
+            target_time_profile=parameter('target_time_profile'))
         self.mission_id = 0
         self.sequence_id = 0
         self.last_published_observation_stamp = None

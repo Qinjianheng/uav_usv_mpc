@@ -270,8 +270,11 @@ class P4ResearchRunner(ShadowResearchRunner):
             raise ValueError('CLOCK_GENERATION_CHANGED')
         if pair.snapshot.stamp > now:
             raise ValueError('INPUT_FUTURE')
-        if (max(now-pair.snapshot.stamp, now-p.observation_stamp,
-                now-p.source_stamp) > self.config.maximum_input_age
+        from uav_control.guidance.follow_time_contract import input_time_contract
+        contract = input_time_contract(self.config.target_time_profile)
+        if (now-pair.snapshot.stamp > self.config.maximum_input_age
+                or now-p.observation_stamp > contract.observation_age
+                or now-p.source_stamp > contract.prediction_age
                 or now >= p.valid_until):
             raise ValueError('STALE_INPUT')
         request = self.pending['request']
@@ -875,16 +878,20 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
         report = dict(valid=False, reason='PREDICTION_CHANGED', policy=self.prediction_policy)
         proposed = None
         if self.prediction_policy == 'full':
-            from uav_control.controllers.follow_mpc_seed import MpcSeedResult, PlanningContext
+            from uav_control.controllers.follow_mpc_seed import (
+                MpcSeedResult, planning_context_from_payload,
+            )
             from uav_control.guidance.follow_revalidation import revalidate_prediction
             payload = dict(request_data)
-            payload['context'] = PlanningContext(**payload['context'])
+            payload['context'] = planning_context_from_payload(payload['context'])
             from uav_control.guidance.follow_minco_execution import request_from_payload
             request = event.get('_typed_request') or request_from_payload(request_data)
-            until = min(request.context.navigation_stamp+.125,
-                        request.context.attitude_stamp+.125,
-                        prediction.observation_stamp+.125, prediction.source_stamp+.125,
-                        prediction.valid_until, request.context.execution_start_stamp)
+            from uav_control.guidance.follow_time_contract import context_deadline
+            until = min(context_deadline(replace(
+                request.context, observation_stamp=prediction.observation_stamp,
+                prediction_source_stamp=prediction.source_stamp,
+                prediction_valid_until=prediction.valid_until)),
+                request.context.execution_start_stamp)
             remaining = until-self._ros_seconds()-.005
             plan = getattr(request, 'delivery_plan', None)
             if plan is not None:

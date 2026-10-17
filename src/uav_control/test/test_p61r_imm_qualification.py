@@ -43,6 +43,15 @@ def test_shadow_boolean_alone_cannot_authorize_current_imm_pilot(tmp_path):
         module().validate_primary_evidence(dict(shadow_gate_pass=True), metadata)
 
 
+def test_aged_experimental_forecast_is_separate_from_baseline_replay():
+    rows = [raw(1792048950.+i*.05, p=[8.+i*.1, 0., -.15]) for i in range(4)]
+    report = module().replay_rows(rows, 'experiment_200')
+    assert report['accepted'] == report['aged_forecast_strict_matches'] == 4
+    assert report['expired_rejections'] == 4
+    assert report['aged_forecast_age'] == pytest.approx(.199)
+    assert report['unsafe_output_count'] == 0
+
+
 @pytest.fixture
 def primary_bundle(tmp_path):
     entry = module()
@@ -84,6 +93,14 @@ def test_primary_evidence_is_scoped_hashed_and_binds_current_source(primary_bund
     review.write_text('{"review_pass":false}')
     with pytest.raises(ValueError, match='IMM_PRIMARY_EVIDENCE_CHANGED'):
         entry.validate_primary_evidence(release, metadata, required_sources=[source])
+
+
+def test_old_bootstrap_does_not_approve_new_target_time_profile(primary_bundle):
+    entry, release, metadata, source, _, _ = primary_bundle
+    with pytest.raises(ValueError, match='IMM_PRIMARY_EVIDENCE_REQUIRED'):
+        entry.validate_primary_evidence(
+            release, dict(metadata, target_time_profile='experiment_200'),
+            required_sources=[source])
 
 
 @pytest.mark.parametrize('role,mode,group,visibility,adaptive', [

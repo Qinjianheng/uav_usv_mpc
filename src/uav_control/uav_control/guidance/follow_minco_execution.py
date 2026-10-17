@@ -9,7 +9,7 @@ import math
 
 import numpy as np
 
-from uav_control.controllers.follow_mpc_seed import PlanningContext
+from uav_control.controllers.follow_mpc_seed import planning_context_from_payload
 from uav_control.guidance.camera_visibility_batch import attitude_batch, visibility_batch
 from uav_control.guidance.follow_attitude_bounds import attitude_extrema
 from uav_control.guidance.follow_contract import FollowCurve, FollowReceiver, curve_errors
@@ -59,7 +59,7 @@ def accepted_request(request, curve):
 
 def request_from_payload(payload):
     """Restore reference provenance after JSON logging and new-prediction revalidation."""
-    values = dict(payload, context=PlanningContext(**payload['context']))
+    values = dict(payload, context=planning_context_from_payload(payload['context']))
     if values.get('boundary_policy') == 'tracker_accepted_reference':
         values['prior_curve'] = FollowCurve(**values['prior_curve'])
     if values.get('delivery_plan') is not None:

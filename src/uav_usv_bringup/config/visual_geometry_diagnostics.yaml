@@ -173,6 +173,7 @@ imm_target_predictor_node:
     prediction_horizon: 4.0
     prediction_sample_period: 0.1
     input_timeout: 0.125
+    target_time_profile: baseline_125
     imm_transition_matrix:
     - 0.96
     - 0.025

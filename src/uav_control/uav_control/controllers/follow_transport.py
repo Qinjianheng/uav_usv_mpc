@@ -2,6 +2,7 @@
 from uav_control.guidance.follow_profile import profiled
 
 from dataclasses import asdict
+from types import SimpleNamespace
 import math
 import json
 
@@ -10,6 +11,7 @@ from builtin_interfaces.msg import Time
 from uav_usv_interfaces.msg import FollowTrajectory, FollowPlanAck
 
 from uav_control.guidance.follow_contract import FollowCurve
+from uav_control.guidance.follow_time_contract import context_deadline
 
 
 def seconds(stamp):
@@ -76,8 +78,7 @@ def proposal_from_event(event, now):
     values = dict(navigation_stamp=c['navigation_stamp'], attitude_stamp=c['attitude_stamp'],
                   observation_stamp=c['observation_stamp'],
                   source_stamp=c['prediction_source_stamp'],
-                  input_until=min(c['navigation_stamp']+.125, c['observation_stamp']+.125,
-                                  c['prediction_source_stamp']+.125, c['prediction_valid_until']),
+                  input_until=context_deadline(SimpleNamespace(**c)),
                   coverage_until=c['prediction_source_stamp']+req['prediction_times'][-1],
                   start=start, end=start+sum(durations), holding_until=0.)
     if now >= values['input_until'] or now >= start:

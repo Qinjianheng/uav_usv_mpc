@@ -45,9 +45,12 @@ class MpcConfig:
     maximum_iterations: int = 4
     validation_substeps: int = 2
     allow_synthetic_predictions: bool = False
+    target_time_profile: str = 'baseline_125'
 
     def validate(self):
         """Reject unsafe configuration rather than widening current flight limits."""
+        from uav_control.guidance.follow_time_contract import input_time_contract
+        input_time_contract(self.target_time_profile)
         integers = (self.horizon_steps, self.control_blocks, self.maximum_iterations,
                     self.validation_substeps)
         if (any(isinstance(v, bool) or not isinstance(v, int) or v < 1 for v in integers)
@@ -85,6 +88,19 @@ class PlanningContext:
     clock_generation: int = 0
     frame_id: str = 'local_ned'
     prediction_source: str = 'tracking'
+
+
+@dataclass(frozen=True)
+class TimedPlanningContext(PlanningContext):
+    """Explicit experiment only; legacy context serialization remains byte-shape compatible."""
+
+    target_time_profile: str = 'baseline_125'
+
+
+def planning_context_from_payload(payload):
+    """Restore optional time policy without adding fields to immutable baseline records."""
+    kind = TimedPlanningContext if 'target_time_profile' in payload else PlanningContext
+    return kind(**payload)
 
 
 @dataclass(frozen=True)
@@ -225,9 +241,10 @@ class FollowMpcSeed:
                 or ctx.prediction_source_stamp > request.now_stamp
                 or ctx.navigation_stamp > request.now_stamp):
             raise _AdmissionError('INVALID_INPUT', 'input shape, source, frame or epoch mismatch')
-        if (max(request.now_stamp - ctx.navigation_stamp,
-                request.now_stamp - ctx.observation_stamp)
-                > c.maximum_input_age or request.now_stamp >= ctx.prediction_valid_until):
+        from uav_control.guidance.follow_time_contract import context_deadline
+        if (getattr(ctx, 'target_time_profile', 'baseline_125') != c.target_time_profile
+                or request.now_stamp-ctx.navigation_stamp > c.maximum_input_age
+                or request.now_stamp >= context_deadline(ctx)):
             raise _AdmissionError('STALE_INPUT', 'navigation or image acquisition expired')
         query = ctx.execution_start_stamp - ctx.prediction_source_stamp + np.arange(
             c.horizon_steps + 1) * c.dt
