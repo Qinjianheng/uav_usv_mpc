@@ -91,6 +91,8 @@ R4 的 `takeoff_visual_tracking: true` 为显式试验开关，缺省关闭。�
 
 接收端 `execution_prediction` 按接收端可见性策略选择负载：nominal 仅使用已通过 ROS 转换验证的预测均值，不在控制回调解码未使用的 IMM 条件模型 JSON；robust 仍要求完整模型诊断及严格身份匹配。原始诊断队列继续有界保存，125 ms 过期、独立全前缀几何和最终时钟复查保留。该优化不授予 D 组资格，也不把历史 pilot 变为当前版本的飞行结果；每个新 case 仍须绑定当前源码和独立审查。
 
+Planner 的诊断 callback 和 request factory 使用 `planning_prediction`：仅 nominal 且关闭 adaptive 的 case 跳过未使用的条件模型解码；robust 或 adaptive 仍完整解码并匹配原始身份。历史 preparation profile 仅有壁钟且未单列诊断 callback，不能将 unattributed 时间当成已测 decoder CPU。按完整 receiver/planner boot、mission、generation、plan 关联的后继事件链及本次真实输入离线对照在 `data/experiments/20261017_p61r4_event_chain_04/`，该离线修复尚未进行新 SITL，也未建立新 Readiness。
+
 显式研究 yaw 上限可到 2.5 rad/s，标准 MpcConfig 上限不变。该值需逐 case 绑定新约束指纹与当前真实输入离线结果、PX4 物理依据、独立审查和新 Readiness，不能复用原 1 rad/s formal 包。P6 准备拒绝 planner/receiver yaw 或 reference mode 不一致；实际 harness 从已审研究配置派生加载值，不再强制覆盖为 1 rad/s。当前离线证据在 `data/experiments/20261017_p61r4_turn_reference_03/`，其中新生成的 `f*_h1.6_main_C_single.jsonl` 仅保留旧 parser 文件名，内容明确标为当前真实 IMM/B 输入的离线计算，不能称为历史 C 组飞行或新闭环成功。
 
 本次仍保留 125 ms 原始观测租期。接收端新增 `validation_cpu_seconds` 和 `validation_stages`，与壁钟耗时分别记录，区分 admission、预测转换、prefix geometry、最终上下文/tick；不由 monitor receipt 推断 Tracker callback 到达时刻。修改 freshness 必须另建跨预测/规划/接收端一致的时间契约与资格，不能只改 YAML 或延长已有消息的 valid_until。

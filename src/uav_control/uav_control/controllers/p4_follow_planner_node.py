@@ -306,7 +306,7 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
 
         def p6_request(pose, prediction, *args, **kwargs):
             return self.p6_runtime.prepare(factory(
-                pose, self.p6_runtime.prediction(prediction), *args, **kwargs))
+                pose, self.p6_runtime.planning_prediction(prediction), *args, **kwargs))
 
         self.runner.request_factory = p6_request
         self.p6_diagnostic_sub = self.create_subscription(
@@ -335,7 +335,7 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
         """Cache immutable model evidence; match epochs before attaching it."""
         self.p6_runtime.diagnostic(message)
         if self.runner.prediction is not None:
-            self.runner.prediction = self.p6_runtime.prediction(self.runner.prediction)
+            self.runner.prediction = self.p6_runtime.planning_prediction(self.runner.prediction)
 
     def epoch_callback(self, message):
         """Trust the unique actual receiver graph endpoint, never a proposal counter."""

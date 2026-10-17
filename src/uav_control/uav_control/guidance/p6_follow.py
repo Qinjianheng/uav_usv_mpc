@@ -314,6 +314,12 @@ class P6Runtime:
         except (ValueError, KeyError, TypeError):
             return prediction
 
+    def planning_prediction(self, prediction):
+        """Decode model evidence only when robust or adaptive planning consumes it."""
+        if not self.policy.enabled:
+            return prediction
+        return self.prediction(prediction)
+
     def execution_prediction(self, prediction):
         """
         Nominal receiver needs the validated wire mean; robust risk needs model identity.
