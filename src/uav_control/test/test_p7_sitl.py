@@ -43,6 +43,16 @@ def test_f3_rejects_failed_or_different_source_f2(tmp_path):
             entry.require_f2(path)
 
 
+def test_motion_diagnostic_uses_existing_profile_and_preserves_f2_speed(tmp_path):
+    import p7_follow_sitl as entry
+    output = tmp_path/'turning'
+    entry.prepare(output, 'f2', motion='figure_eight')
+    flight = yaml.safe_load((output/'config/flight.yaml').read_text())
+    assert flight['moving_target']['ros__parameters']['trajectory_type'] == 'figure_eight'
+    assert flight['moving_target']['ros__parameters']['horizontal_speed'] == 2.
+    assert json.loads((output/'condition.json').read_text())['motion_mode'] == 'figure_eight'
+
+
 def test_p7_observer_distinguishes_existing_input_wait_from_visual_loss():
     from p7_follow_sitl import P7FollowHealthGuard
     from test_p53_sitl import healthy
@@ -67,3 +77,15 @@ def test_p7_observer_does_not_extend_input_wait_or_hide_physical_failure():
     assert reason == 'FOLLOW_INPUT_WAIT_TIMEOUT'
     state['vehicle']['nav_state'] = 0
     assert observer(state, 10.51) == 'OFFBOARD_OR_ARMING_LOST'
+
+
+@pytest.mark.parametrize('group,field', [
+    ('outer', 'errors'), ('outer', 'survivors'), ('late', 'errors'), ('late', 'survivors'),
+])
+def test_manual_and_automatic_runs_cannot_hide_cleanup_failure(group, field):
+    from p7_follow_sitl import clean_shutdown
+    cleanup = dict(errors=[], survivors=[], late_components=dict(errors=[], survivors=[]))
+    assert clean_shutdown(cleanup)
+    target = cleanup if group == 'outer' else cleanup['late_components']
+    target[field].append('task-owned process failure')
+    assert not clean_shutdown(cleanup)

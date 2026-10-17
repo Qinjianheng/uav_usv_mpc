@@ -1,9 +1,10 @@
 # 当前开发入口
 
-当前运行链为视觉/KF → BCTRA → MINCO → 唯一Tracker速度控制；MPC尚未作为在线控制器接管。P53 R11是保留的成功对照；2026-10-14目录精简后的新仿真与首轮预测时效回退，见[系统精简与复验](system_simplification.md)。历史成功不替代新实测。
+P7 配置已实现 X 后 KF/BCTRA/MINCO FOLLOW、Y 后 IBVS/PNG 安全接近，由唯一 Tracker 输出速度控制，见 [P7 使用与验证](p7_progress.md)。原 baseline/IMM 研究入口保留；MPC 尚未在线接管。P53 R11 是历史成功对照，不替代当前实测。
 
 | 文档 | 用途 |
 |---|---|
+| [P7 使用与实际验证](p7_progress.md) | 专用启动、X/Y 控制权、FOLLOW/制导曲线、当前边界与阶段提交 |
 | [P6 开发状态与研究边界](p6_design.md) | 五模式、IMM、校准、鲁棒几何、离线消融及实际闭环的当前进度与负结果 |
 | [P6 单轮闭环入口](p6_sitl_driver.md) | 完整参数、独立资格、固定60s控制权及逐轮停止条件 |
 | [系统精简、复验与恢复](system_simplification.md) | 最新直接删除旧日志、近期场景与运行依赖保留、前两轮归档及实际F2/F3边界 |

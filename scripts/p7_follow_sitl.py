@@ -19,6 +19,7 @@ from p4_sitl_session import WORKSPACE, identity, preflight
 from p51_execution_audit import audit
 from p53_minco_sitl import FollowHealthGuard, GroundStartupHealth
 from uav_control.guidance.follow_sitl_gate import require_isolated_sitl
+from uav_control.usv_motion_profiles import MOTION_MODES, normalize_motion_mode
 
 R11 = WORKSPACE/'data/experiments/20261013_p53_closed_loop_11'
 CONFIG = WORKSPACE/'src/uav_usv_bringup/config/p7_guidance.yaml'
@@ -87,7 +88,7 @@ class P7FollowHealthGuard(FollowHealthGuard):
         return 'FOLLOW_INPUT_WAIT_TIMEOUT' if not 0 <= elapsed <= limit else None
 
 
-def prepare(output, scene):
+def prepare(output, scene, motion=None):
     """Copy complete actual scene parameters into an exclusive new run directory."""
     if scene not in ('f2', 'f3'):
         raise ValueError('P7_F2_OR_F3_REQUIRED')
@@ -95,6 +96,9 @@ def prepare(output, scene):
     source = R11/f'{scene}_h16_01/config/flight.yaml'
     original = yaml.safe_load(source.read_text())
     flight['moving_target'] = original['moving_target']
+    if motion is not None:
+        mode = normalize_motion_mode(motion)
+        flight['moving_target']['ros__parameters']['trajectory_type'] = mode
     planner = flight.pop('p4_follow_planner_node')
     output.mkdir(exist_ok=False)
     (output/'COLCON_IGNORE').touch()
@@ -106,6 +110,7 @@ def prepare(output, scene):
     (output/'condition.json').write_text(json.dumps(dict(
         scene=scene, actual_controller='NOMINAL_MINCO', fallback='P44/D',
         prediction_model='bctra', maximum_input_age=.125, execution_lease_seconds=.45,
+        motion_mode=flight['moving_target']['ros__parameters']['trajectory_type'],
         source_fingerprint=source_fingerprint(),
         config_sources={str(p): harness.sha(p) for p in (CONFIG, source)},
         observation_seconds=25. if scene == 'f2' else 60.), indent=2)+'\n')
@@ -118,14 +123,20 @@ def guidance_health(health, now):
                                  maximum_observer_input_age=.3)
 
 
-def manual(output):
+def clean_shutdown(cleanup):
+    """Both layers must prove no errors or task-owned survivors."""
+    late = cleanup['late_components']
+    return not (cleanup['errors'] or cleanup['survivors'] or late['errors'] or late['survivors'])
+
+
+def manual(output, motion=None):
     """A bounded, isolated native X/Y console using the same P7 configs and sole Tracker."""
     if not output.is_relative_to(WORKSPACE/'data/experiments'):
         raise ValueError('OUTPUT_MUST_BE_EXPERIMENT_DIRECTORY')
     check = preflight()
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as port:
         port.bind(('127.0.0.1', 14550))
-    prepare(output, 'f2')
+    prepare(output, 'f2', motion)
     started = time.time()
     env = dict(os.environ, UAV_USV_WS=str(WORKSPACE),
                UAV_USV_RESEARCH_DIRECTORY=str(output),
@@ -136,6 +147,7 @@ def manual(output):
                UAV_USV_P6_PREDICTOR='bctra', UAV_USV_P7_MODE='true',
                UAV_USV_HEADLESS_GCS='true', UAV_USV_ENABLE_SHADOW_PERCEPTION='false',
                ROS_DOMAIN_ID=str(check['domain']), GZ_PARTITION='p7_'+str(int(started)),
+               ROS_LOCALHOST_ONLY='0',
                ROS_LOG_DIR=str(output/'ros_logs'),
                UAV_USV_TERMINAL_LOG_ROOT=str(output),
                OPENBLAS_NUM_THREADS='1', OMP_NUM_THREADS='1')
@@ -163,6 +175,8 @@ def manual(output):
         launcher = subprocess.Popen([str(WORKSPACE/'scripts/uav_lab.sh'), '--no-build'],
                                     cwd=WORKSPACE, env=env)
         launcher.wait(timeout=280.)
+    except (subprocess.TimeoutExpired, KeyboardInterrupt):
+        print('P7 manual session ended; stopping this session only.', flush=True)
     finally:
         if launcher is not None and launcher.poll() is None:
             launcher.send_signal(signal.SIGINT)
@@ -174,10 +188,10 @@ def manual(output):
         cleanup = harness.stop_owned(processes)
         cleanup['late_components'] = harness.stop_late_components(output)
         (output/'manual_cleanup.json').write_text(json.dumps(cleanup, indent=2)+'\n')
-    return 0
+    return 0 if clean_shutdown(cleanup) else 1
 
 
-def run(output, scene, prior_f2=None, guidance=None):
+def run(output, scene, prior_f2=None, guidance=None, motion=None):
     """Retain original admission warmup and strict health/lease checks, without P6 gates."""
     if not output.is_relative_to(WORKSPACE/'data/experiments'):
         raise ValueError('OUTPUT_MUST_BE_EXPERIMENT_DIRECTORY')
@@ -186,7 +200,7 @@ def run(output, scene, prior_f2=None, guidance=None):
             raise ValueError('CURRENT_HEALTHY_F2_REQUIRED')
         require_f2(prior_f2)
     preflight()
-    prepare(output, scene)
+    prepare(output, scene, motion)
     condition = json.loads((output/'condition.json').read_text())
     if guidance:
         condition.update(guidance_experiment=guidance,
@@ -333,7 +347,7 @@ def run(output, scene, prior_f2=None, guidance=None):
     else:
         summary = dict(completed=False, healthy=False, reason=reason, f3_eligible=False)
     summary.update(source_fingerprint=condition['source_fingerprint'], cleanup=cleanup)
-    if cleanup['survivors'] or cleanup['errors'] or late['errors']:
+    if not clean_shutdown(cleanup):
         summary.update(healthy=False, f3_eligible=False)
     (output/'summary.json').write_text(json.dumps(summary, indent=2)+'\n')
     manifest = {str(p.relative_to(output)): harness.sha(p)
@@ -352,6 +366,9 @@ if __name__ == '__main__':
     parser.add_argument('--prior-f2', type=Path)
     parser.add_argument('--guidance', choices=('c', 'd'))
     parser.add_argument('--manual', action='store_true')
+    parser.add_argument('--motion', choices=tuple(MOTION_MODES.values()))
     args = parser.parse_args()
-    raise SystemExit(manual(args.output.resolve()) if args.manual else run(
-        args.output.resolve(), args.scene, args.prior_f2, args.guidance))
+    if args.manual and (args.guidance or args.prior_f2):
+        parser.error('--manual cannot be combined with automated flight options')
+    raise SystemExit(manual(args.output.resolve(), args.motion) if args.manual else run(
+        args.output.resolve(), args.scene, args.prior_f2, args.guidance, args.motion))

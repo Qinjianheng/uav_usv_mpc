@@ -103,6 +103,18 @@ def analyze_guidance(run, output):
               and start <= r['stamp'] <= stop]
     t = np.array([r['stamp']-start for r in guidance])
     nt = np.array([r['stamp']-start for r in native])
+    headings = np.unwrap([r['yaw'] for r in native])
+    earlier = np.searchsorted(nt, nt-.2, side='right')-1
+    valid = earlier >= 0
+    yaw_times = nt[valid]
+    yaw_rates = ((headings[valid]-headings[earlier[valid]])
+                 / (nt[valid]-nt[earlier[valid]]))
+    before = [r for r in rows if r['kind'] == 'diagnostic' and r['stamp'] < start]
+    minco = [r for r in before if r['status'] == 'MINCO_FOLLOW']
+    summary['minco_before_y_observed_span_s'] = (
+        minco[-1]['stamp']-minco[0]['stamp'] if minco else 0.)
+    summary['actual_yaw_rate_0p2s_max_radps'] = float(max(abs(yaw_rates)))
+    summary['source_summary_sha256'] = sha(run/'summary.json')
     output.mkdir(exist_ok=False)
     (output/'metrics.json').write_text(json.dumps(summary, indent=2)+'\n')
     fields = ('stamp', 'distance', 'error_u', 'error_v', 'los_rate', 'closing_speed',
@@ -120,6 +132,8 @@ def analyze_guidance(run, output):
     axes[0, 1].set(ylabel='Distance (m)')
     axes[1, 0].plot(t, [r['yaw_rate'] for r in guidance], label='IBVS yaw rate')
     axes[1, 0].plot(t, [r['los_rate'] for r in guidance], label='LOS rate')
+    axes[1, 0].plot(yaw_times, yaw_rates, linestyle='--', alpha=.7,
+                    label='PX4 heading derivative (0.2 s)')
     axes[1, 0].set(ylabel='Angular rate (rad/s)')
     axes[1, 1].plot(t, [r['closing_speed'] for r in guidance], label='measured closure')
     axes[1, 1].plot(t, [r['lateral_acceleration'] for r in guidance], label='command lateral a')
@@ -137,6 +151,54 @@ def analyze_guidance(run, output):
         ax.legend()
     fig.tight_layout()
     fig.savefig(output/'guidance.png', dpi=160)
+    plt.close(fig)
+    references = [r for r in rows if r['kind'] == 'reference'
+                  and start-3. <= r['stamp'] <= start+4.
+                  and all(math.isfinite(v) for v in r['v'])]
+    measured = [r for r in rows if r['kind'] == 'uav' and r['valid']
+                and start-3. <= r['stamp'] <= start+4.]
+    fig, axes = plt.subplots(3, 1, figsize=(10, 7), sharex=True)
+    for i, (axis, name) in enumerate(zip(axes, ('North', 'East', 'Down'))):
+        axis.plot([r['stamp']-start for r in references], [r['v'][i] for r in references],
+                  label='final PX4 velocity setpoint')
+        axis.plot([r['stamp']-start for r in measured], [r['v'][i] for r in measured],
+                  label='actual PX4 velocity', linestyle='--')
+        axis.axvline(0., color='black', linestyle=':', label='first P7 guidance output')
+        axis.set_ylabel(name+' velocity (m/s)')
+        axis.grid(alpha=.25)
+        axis.legend()
+    axes[-1].set_xlabel('Time across Y handover (s)')
+    fig.tight_layout()
+    fig.savefig(output/'handover.png', dpi=160)
+    plt.close(fig)
+    takeoff = next(r['receipt'] for r in rows if r['kind'] == 'mission' and r['name'] == 'TAKEOFF')
+    flown = [r for r in rows if r['kind'] == 'uav' and r['valid']
+             and takeoff <= r['stamp'] <= stop]
+    boat = [r for r in rows if r['kind'] == 'ideal' and r['valid']
+            and takeoff <= r['stamp'] <= stop]
+    diag = [r for r in rows if r['kind'] == 'diagnostic' and takeoff <= r['stamp'] <= stop]
+    codes = {'TAKEOFF': 0, 'FOLLOW': 1, 'MINCO_FOLLOW': 2, 'P7_GUIDANCE': 3}
+    fig, axes = plt.subplots(2, 2, figsize=(11, 7))
+    axes[0, 0].plot([r['p'][0] for r in boat], [r['p'][1] for r in boat], label='USV')
+    axes[0, 0].plot([r['p'][0] for r in flown], [r['p'][1] for r in flown], label='PX4 UAV')
+    axes[0, 0].set(xlabel='North (m)', ylabel='East (m)')
+    axes[0, 0].axis('equal')
+    ft = [r['stamp']-takeoff for r in flown]
+    axes[0, 1].plot(ft, [-r['p'][2] for r in flown], label='actual height')
+    axes[0, 1].set(ylabel='Height (m)')
+    axes[1, 0].plot(ft, [np.linalg.norm(r['v'][:2]) for r in flown], label='actual UAV speed')
+    axes[1, 0].set(ylabel='Horizontal speed (m/s)')
+    axes[1, 1].step([r['stamp']-takeoff for r in diag],
+                    [codes.get(r['status'], -1) for r in diag], where='post', label='actual owner')
+    axes[1, 1].set_yticks([-1, 0, 1, 2, 3], ['Other', 'Takeoff', 'FOLLOW', 'MINCO', 'P7'])
+    for axis in (axes[0, 1], axes[1, 0], axes[1, 1]):
+        axis.axvline(start-takeoff, color='black', linestyle=':', label='Y guidance')
+        axis.set_xlabel('Time after X (s)')
+    for axis in axes.flat:
+        axis.grid(alpha=.25)
+        axis.legend()
+    fig.tight_layout()
+    fig.savefig(output/'xy_mission.png', dpi=160)
     plt.close(fig)
     (output/'SHA256SUMS.json').write_text(json.dumps(
         {p.name: sha(p) for p in output.iterdir()}, indent=2)+'\n')
