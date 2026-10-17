@@ -16,28 +16,37 @@ def current():
 class CycleProfile:
     """Nested stage time is charged once to its innermost owner."""
 
-    def __init__(self, cycle_id, clock=time.perf_counter):
+    def __init__(self, cycle_id, clock=time.perf_counter, cpu_clock=time.thread_time):
         """Accept a monotonic clock; no epoch ages use this clock."""
         self.cycle_id, self.clock = cycle_id, clock
+        self.cpu_clock = cpu_clock
         self.seconds, self.calls, self.counts = Counter(), Counter(), Counter()
+        self.cpu_seconds = Counter()
         self.stack = []
         self.total = 0.
+        self.cpu_total = 0.
 
     def __enter__(self):
         self.started = self.clock()
+        self.cpu_started = self.cpu_clock()
         self.token = _ACTIVE.set(self)
         return self
 
     def __exit__(self, *_):
         self.total = self.clock()-self.started
+        self.cpu_total = self.cpu_clock()-self.cpu_started
         _ACTIVE.reset(self.token)
 
     def report(self):
         """Return nonoverlapping totals; unmeasured producer/ACK time stays absent."""
         return dict(cycle_id=self.cycle_id, total_seconds=self.total,
-                    stages={key: dict(seconds=value, calls=self.calls[key])
+                    total_cpu_seconds=self.cpu_total,
+                    stages={key: dict(seconds=value, cpu_seconds=self.cpu_seconds[key],
+                                      calls=self.calls[key])
                             for key, value in self.seconds.items()}, counts=dict(self.counts),
-                    unattributed_seconds=max(0., self.total-sum(self.seconds.values())))
+                    unattributed_seconds=max(0., self.total-sum(self.seconds.values())),
+                    unattributed_cpu_seconds=max(
+                        0., self.cpu_total-sum(self.cpu_seconds.values())))
 
 
 @contextmanager
@@ -47,17 +56,20 @@ def stage(name):
     if recorder is None:
         yield
         return
-    entry = [recorder.clock(), 0.]
+    entry = [recorder.clock(), 0., recorder.cpu_clock(), 0.]
     recorder.stack.append(entry)
     try:
         yield
     finally:
         elapsed = recorder.clock()-entry[0]
+        cpu_elapsed = recorder.cpu_clock()-entry[2]
         recorder.stack.pop()
         recorder.seconds[name] += elapsed-entry[1]
+        recorder.cpu_seconds[name] += cpu_elapsed-entry[3]
         recorder.calls[name] += 1
         if recorder.stack:
             recorder.stack[-1][1] += elapsed
+            recorder.stack[-1][3] += cpu_elapsed
 
 
 def count(name, amount=1):

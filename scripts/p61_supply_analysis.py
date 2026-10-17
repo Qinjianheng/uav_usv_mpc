@@ -63,6 +63,18 @@ def cycle_metrics(record, final, acknowledgements):
                                           worker.get('solve_end_ros')),
         critical_cycle_monotonic=final.get('wire_cycle_seconds'),
         whole_audit_cycle_monotonic=final.get('whole_cycle_time'))
+    if record.get('critical_outcome') is not None:
+        # Typed delivery precedes candidate/provenance snapshots in the new path.
+        # Legacy snapshot-first traces retain their original timing semantics.
+        wire_mono = (record['cycle_started_monotonic']+final['wire_cycle_seconds']
+                     if final.get('wire_cycle_seconds') is not None else None)
+        durations['completion_payload_monotonic'] = difference(
+            completion.get('event_prepared_monotonic'),
+            completion.get('critical_finished_monotonic'))
+        durations['future_to_wire_monotonic'] = difference(
+            wire_mono, completion.get('future_observed_monotonic'))
+        durations['post_wire_critical_callback_monotonic'] = difference(
+            completion.get('critical_finished_monotonic'), wire_mono)
     for key, value in (candidate.get('timing') or {}).items():
         durations['solver_'+key+'_monotonic'] = value
     for key, value in (candidate.get('metrics', {}).get('cycle_profile') or {}).get(

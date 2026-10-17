@@ -126,3 +126,40 @@ def test_planner_model_consumers_keep_full_strict_identity(visibility, adaptive)
     assert np.asarray(node.runner.prediction.model_positions).shape == (3, 41, 3)
     assert not node.p6_runtime.planning_prediction(
         replace(parsed, sequence_id=781)).uncertainty_identity
+
+
+@pytest.mark.parametrize('visibility,expected_decodes', [('nominal', 0), ('robust', 1)])
+def test_actual_proposal_callback_demands_models_only_for_robust_policy(
+        monkeypatch, visibility, expected_decodes):
+    from test_follow_sitl_execution import ctx
+    from test_p4_receiver_node import event
+    from uav_control.control.trajectory_tracker_node import TrajectoryTrackerNode
+    from uav_control.controllers.follow_transport import proposal_from_event
+    from uav_control.guidance.follow_minco_execution import NominalFollowReceiver
+    n = object.__new__(TrajectoryTrackerNode)
+    configured = model()
+    configured.p6_policy = p6_follow.P6Policy(visibility_mode=visibility)
+    n.p6_runtime = p6_follow.P6Runtime(configured)
+    engine, _, _, result = real_sequence_780()
+    n.latest_prediction = prediction_to_message(result, .001)
+    n.p6_runtime.diagnostic(SimpleNamespace(data=p6_follow.json.dumps(engine.diagnostics(result))))
+    n.follow_minco_requested, n.follow_stable_ticks = True, 10
+    n.follow_receiver = NominalFollowReceiver()
+    n.follow_model = configured
+    n._follow_context = lambda: ctx()
+    n._ros_seconds = lambda: ctx().now
+    n._update_follow_admission = lambda _: ''
+    n.get_publishers_info_by_topic = lambda _: [SimpleNamespace(
+        node_name='p4_follow_planner_node')]
+    published = []
+    n.follow_ack_pub = n.follow_debug_pub = SimpleNamespace(publish=published.append)
+    message = proposal_from_event(event(), 100.)
+    calls = []
+    decode = p6_follow.json.loads
+    monkeypatch.setattr(p6_follow.json, 'loads',
+                        lambda v: (calls.append(v), decode(v))[1])
+    monkeypatch.setattr('uav_control.guidance.follow_minco_execution.nominal_attitude',
+                        lambda *_: False)
+    n.follow_trajectory_callback(message)
+    assert len(calls) == expected_decodes
+    assert next(m for m in published if hasattr(m, 'state')).state == 'REJECTED'

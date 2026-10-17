@@ -1,4 +1,5 @@
 """Exclusive monotonic attribution must not add nested cumulative times."""
+import pytest
 from uav_control.guidance import follow_profile as profile
 
 
@@ -24,3 +25,18 @@ def test_no_context_is_a_transparent_call():
     assert operation(9) == 10
     profile.count('not_recorded')
     assert profile.current() is None
+
+
+def test_exclusive_thread_cpu_is_separate_from_wall_and_nested_children():
+    wall = iter((0., 1., 3., 6., 8., 10.))
+    cpu = iter((0., .1, .3, .6, .8, 1.))
+    with profile.CycleProfile(9, clock=lambda: next(wall),
+                              cpu_clock=lambda: next(cpu)) as cycle:
+        with profile.stage('candidate'):
+            with profile.stage('geometry'):
+                pass
+    report = cycle.report()
+    assert report['total_cpu_seconds'] == 1.
+    assert report['stages']['candidate']['cpu_seconds'] == pytest.approx(.4)
+    assert report['stages']['geometry']['cpu_seconds'] == pytest.approx(.3)
+    assert report['unattributed_cpu_seconds'] == pytest.approx(.3)

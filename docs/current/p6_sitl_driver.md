@@ -79,7 +79,11 @@ readiness 绑定案例与配置清单、verification、qualification 和完整�
 
 `successor_scheduling: delivery` 显式启用后继交付调度；缺省 `periodic` 保持既有 case 的周期策略。仅在新鲜、真实 ACTIVE ACK 对应的父轨迹下提前派发一次后继；交付失败或丢失 ACK 时，仅对新采集输入允许一次有界重试。pending 后继阻止再提交，单 worker 不积压任务。ACTIVE ACK 可提前更新调度状态，较旧 heartbeat 不得覆盖；published/ACCEPTED 不代表实际控制接管。
 
-delivery 的预算使用完整 worker 成本提示、准备后实际时钟、排队/调度抖动提示及原有 20 ms 发布预留。排队/调度提示为近期排队中位数的 1.2 倍且保留既有 20 ms 下限；带载回放否决了仅使用排队中位数的较小预留。提示不保证完成，原 125 ms TTL、150 ms execution lead、450 ms 租约、50 ms 激活余量、预测复核及独立 Tracker 验收均保留。完成复核检查原始候选的接管时刻、最新输入和真实父轨迹，不再构造并丢弃一条更晚的新请求。P47 与 fallback 共享严格系数/约束/任务/时钟 key 的纯数学缓存，当前目标、视场和海面约束仍独立复核。
+delivery 在准备后按原始输入截止、计划接管和父租约建立不可变 `DeliveryPlan`，派发前选定一条实际求解路径。优先选择能装入预算的 P47，否则选择能装入预算的 P44；worker 不因提前开始而换路，也不隐式串行 fallback。完整 worker 的成功、失败及 deadline 删失耗时进入独立的近期 P90 成本提示，并有明确原观测 epoch 老化；提示不授予执行权。保留20ms排队下限，发布本地处理预留10ms、独立接收预留20ms，后两者再按实际完成/接收尾部更新。原125ms TTL、150ms execution lead、450ms租约及50ms激活间隙保持。
+
+typed完成通道先做当前输入/父身份复核、完整新预测复核及wire构造，再构建完整request/candidate/provenance审计快照；一次wire尝试不会因审计失败而重复。Tracker nominal提案和周期prefix均只消费严格wire mean；robust仍要求条件模型身份。接收器在数学验证后重新采样本地合法性，验证期间过期的输入必须拒绝。Planner与Tracker分别限制本地OpenBLAS数值并行为1线程，并记录实际backend/thread数；各stage分别记录wall和thread CPU，worker另记录runqueue及上下文切换，ACK记录真实发布起止戳。相同原因的预算拒绝按新采集图像保留完整当前请求与预算，不再引用上一次worker请求。
+
+`scripts/p61_delivery_replay.py`覆盖真实后继输入、当前求解、wire、接收和模型激活，严格区分记录状态的离线模型与ROS/PX4实际所有权。代码和门禁回归在`test_follow_delivery_budget.py`、`test_p6_locked_delivery.py`、`test_p6_critical_completion.py`、`test_p6_receiver_delivery_deadline.py`；本阶段来源和性能探针位于`data/experiments/20261017_p61r3_delivery_architecture_08/`。这些结果须与当前源码/完整case配置的独立审查、资格及Readiness绑定，才能用于一次新的有界F2。
 
 `test_p6_successor_delivery.py` 覆盖提前派发、新观测有界重试、pending 阻塞、乱序 ACK/heartbeat、过期状态和成本证据老化。阶段证据位于 `data/experiments/20261016_p61r3_successor_delivery_05/`；真实已配对输入的多租约回放仅为 recorded-state 时序模型，不是 ROS/PX4 闭环或飞行资格。新策略必须建立新 case 配置/源码指纹、当前测试、独立审查、资格及 Readiness 后才能启动有界 F2。
 

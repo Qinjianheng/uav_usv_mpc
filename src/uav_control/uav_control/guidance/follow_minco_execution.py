@@ -26,6 +26,27 @@ class AcceptedFollowRequest(FutureRequest):
     boundary_policy: str = 'tracker_accepted_reference'
 
 
+@dataclass(frozen=True)
+class DeliveryFollowRequest(FutureRequest):
+    """Original inputs with a scheduling contract; never a receiver approval."""
+
+    delivery_plan: object = None
+
+
+@dataclass(frozen=True)
+class DeliveryAcceptedRequest(AcceptedFollowRequest):
+    """Scheduling contract with the original independently ACKed boundary proof."""
+
+    delivery_plan: object = None
+
+
+def delivery_request(request, plan):
+    """Attach a locked budget without changing state, parent, input epochs or context."""
+    kind = (DeliveryAcceptedRequest if isinstance(request, AcceptedFollowRequest)
+            else DeliveryFollowRequest)
+    return kind(**dict(request.__dict__, delivery_plan=plan))
+
+
 def accepted_request(request, curve):
     """Keep input epochs, replacing only the execution boundary with an ACKed reference."""
     sample = curve.sample(request.context.execution_start_stamp)
@@ -41,6 +62,14 @@ def request_from_payload(payload):
     values = dict(payload, context=PlanningContext(**payload['context']))
     if values.get('boundary_policy') == 'tracker_accepted_reference':
         values['prior_curve'] = FollowCurve(**values['prior_curve'])
+    if values.get('delivery_plan') is not None:
+        from uav_control.guidance.follow_delivery_budget import DeliveryPlan
+        values['delivery_plan'] = DeliveryPlan(**dict(
+            values['delivery_plan'], identity=tuple(values['delivery_plan']['identity'])))
+        kind = (DeliveryAcceptedRequest if values.get('boundary_policy') ==
+                'tracker_accepted_reference' else DeliveryFollowRequest)
+        return kind(**values)
+    if values.get('boundary_policy') == 'tracker_accepted_reference':
         return AcceptedFollowRequest(**values)
     return FutureRequest(**values)
 
@@ -166,7 +195,8 @@ class NominalFollowReceiver(FollowReceiver):
         result, self.events = self.events, []
         return result
 
-    def propose(self, curve, ctx, validated_prediction_id=None, probe=False):
+    def propose(self, curve, ctx, validated_prediction_id=None, probe=False,
+                context_provider=None):
         """Admit a locally revalidated nominal curve; retain the old lease on rejection."""
         errors = [e for e in curve_errors(curve, self.limits) if e != 'HOLDING_DOES_NOT_COVER']
         errors += [e for e in self.context_errors(curve, ctx)
@@ -204,6 +234,21 @@ class NominalFollowReceiver(FollowReceiver):
             errors.append('PARENT_REFERENCE_INVALID')
         if self.pending and curve.start < self.pending.start:
             errors.append('PENDING_ORDER_CONFLICT')
+        if context_provider is not None:
+            before = ctx.now
+            ctx = context_provider()
+            if ctx.now < before:
+                errors.append('CLOCK_REVERSED')
+            errors += [e for e in self.context_errors(curve, ctx)
+                       if not (e == 'PREDICTION_CHANGED'
+                               and validated_prediction_id == ctx.prediction_id)]
+            if ctx.now >= curve.input_until:
+                errors.append('INPUT_EXPIRED')
+            if ctx.now >= curve.start:
+                errors.append('START_MISSED')
+            if curve.parent_id and (self.active is None or self.active.plan_id != curve.parent_id
+                                    or ctx.now >= self.deadline):
+                errors.append('PARENT_REFERENCE_LOST')
         if probe:
             if self.admission is not None:
                 self.admission.probe(ctx.now, key, not errors)

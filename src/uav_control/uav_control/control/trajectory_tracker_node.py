@@ -386,6 +386,8 @@ class TrajectoryTrackerNode(Node):
             self.follow_receiver = FollowReceiver(
                 limits=constraint_snapshot(FollowMpcSeed(research)))
             if self.follow_minco_requested:
+                from uav_control.guidance.follow_math_runtime import configure_numerical_threads
+                self.follow_math_runtime = configure_numerical_threads(1)
                 from uav_control.guidance.follow_minco_execution import NominalFollowReceiver
                 self.follow_model = FollowMpcSeed(research)
                 from uav_control.guidance.p6_follow import configure_p6
@@ -946,15 +948,42 @@ class TrajectoryTrackerNode(Node):
 
     def follow_trajectory_callback(self, message):
         """Real receiver rejection ACK. Qualification failure never mutates original control."""
+        from uav_control.guidance.follow_profile import CycleProfile
+        received_monotonic = time.perf_counter()
+        with CycleProfile(int(message.plan_id)) as profile:
+            response, context = self._follow_proposal_response(message)
+        response.receiver_compute_seconds = time.perf_counter()-received_monotonic
+        prepared = time.perf_counter()
+        requested = getattr(self, 'follow_minco_requested', False)
+        publish_start = self._ros_seconds() if requested else None
+        self.follow_ack_pub.publish(response)
+        published = time.perf_counter()
+        publish_end = self._ros_seconds() if requested else None
+        if response.state == 'ACCEPTED' and getattr(self, 'follow_minco_requested', False):
+            self._schedule_follow_activation()
+        if getattr(self, 'follow_minco_requested', False):
+            self.follow_debug_pub.publish(String(data=json.dumps(dict(
+                event='proposal_received', stamp=context.now, plan=int(message.plan_id),
+                parent=int(message.parent_plan_id), state=response.state,
+                reasons=list(response.reasons),
+                receiver_compute_seconds=response.receiver_compute_seconds,
+                receive_monotonic=received_monotonic, ack_monotonic=prepared,
+                ack_publish_start_ros=publish_start, ack_publish_end_ros=publish_end,
+                ack_publish_end_monotonic=published, validation_profile=profile.report(),
+                math_runtime=getattr(self, 'follow_math_runtime', None)))))
+
+    def _follow_proposal_response(self, message):
+        """Independently validate with policy-specific inputs before refreshing local legality."""
         from uav_control.controllers.follow_transport import curve_from_message, ack_message
         from uav_control.guidance.follow_contract import FollowAck
+        from uav_control.guidance.follow_profile import stage
         from numpy.linalg import LinAlgError
-        received_monotonic = time.perf_counter()
         context = self._follow_context()
         if getattr(self, 'follow_minco_requested', False):
             self._update_follow_admission(context)
         try:
-            candidate = curve_from_message(message)
+            with stage('proposal_conversion'):
+                candidate = curve_from_message(message)
             validated_prediction_id = None
             if getattr(self, 'follow_minco_requested', False):
                 from uav_control.guidance.follow_minco_execution import (
@@ -966,19 +995,30 @@ class TrajectoryTrackerNode(Node):
                     raise ValueError('PLANNER_AUTHORITY_CONFLICT')
                 if self.follow_stable_ticks < 10:
                     raise ValueError('FOLLOW_NOT_STABLE')
-                prediction = self.p6_runtime.prediction(
-                    prediction_from_message(self.latest_prediction))
+                with stage('proposal_model_conversion'):
+                    prediction = self.p6_runtime.execution_prediction(
+                        prediction_from_message(self.latest_prediction))
                 validated_prediction_id = int(self.latest_prediction.sequence_id)
-                if (not nominal_attitude(candidate, self.follow_model)
-                        or not nominal_curve(candidate, prediction, self.follow_model,
-                                             candidate.start, candidate.end)):
+                with stage('proposal_attitude'):
+                    attitude_ok = nominal_attitude(candidate, self.follow_model)
+                with stage('proposal_geometry'):
+                    geometry_ok = (attitude_ok and nominal_curve(
+                        candidate, prediction, self.follow_model, candidate.start, candidate.end))
+                if not geometry_ok:
                     raise ValueError('RECEIVER_NOMINAL_REVALIDATION_FAILED')
                 context = self._follow_context()
                 self._update_follow_admission(context)
             if getattr(self, 'follow_minco_requested', False):
-                ack = self.follow_receiver.propose(
-                    candidate, context, validated_prediction_id=validated_prediction_id,
-                    probe=message.reason == 'SHADOW_PROBE')
+                def final_context():
+                    nonlocal context
+                    with stage('proposal_final_context'):
+                        context = self._follow_context()
+                        self._update_follow_admission(context)
+                    return context
+                with stage('proposal_receiver_commit'):
+                    ack = self.follow_receiver.propose(
+                        candidate, context, validated_prediction_id=validated_prediction_id,
+                        probe=message.reason == 'SHADOW_PROBE', context_provider=final_context)
             else:
                 ack = self.follow_receiver.propose(candidate, context)
         except (ValueError, TypeError, AttributeError, OverflowError, FloatingPointError,
@@ -994,16 +1034,7 @@ class TrajectoryTrackerNode(Node):
         response = ack_message(ack)
         if getattr(self, 'follow_minco_requested', False) and self.follow_receiver.active:
             response.control_owner = 'MINCO_FOLLOW'
-        response.receiver_compute_seconds = time.perf_counter()-received_monotonic
-        if getattr(self, 'follow_minco_requested', False):
-            self.follow_debug_pub.publish(String(data=json.dumps(dict(
-                event='proposal_received', stamp=context.now, plan=int(message.plan_id),
-                parent=int(message.parent_plan_id), state=ack.state, reasons=list(ack.reasons),
-                receiver_compute_seconds=response.receiver_compute_seconds,
-                receive_monotonic=received_monotonic, ack_monotonic=time.perf_counter()))))
-        self.follow_ack_pub.publish(response)
-        if ack.state == 'ACCEPTED' and getattr(self, 'follow_minco_requested', False):
-            self._schedule_follow_activation()
+        return response, context
 
     def _schedule_follow_activation(self):
         """Wake the sole control path at an accepted start; never extend its window."""

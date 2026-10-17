@@ -141,6 +141,7 @@ def test_real_tracker_refreshes_gate_before_candidate_admission(monkeypatch):
     node.follow_minco_requested = True
     node.follow_receiver = SimpleNamespace(active=None)
     node._follow_context = lambda: ctx()
+    node._ros_seconds = lambda: ctx().now
     node._update_follow_admission = lambda context: calls.append(context.now)
     node.follow_ack_pub = SimpleNamespace(publish=lambda a: None)
     node.follow_debug_pub = SimpleNamespace(publish=lambda a: None)
@@ -243,6 +244,7 @@ def test_receiver_full_validation_failure_breaks_the_probe_success_streak(monkey
     node.follow_receiver = NominalFollowReceiver(admission=g)
     node.follow_minco_requested, node.follow_stable_ticks = True, 10
     node._follow_context = lambda: ctx()
+    node._ros_seconds = lambda: ctx().now
     node._update_follow_admission = lambda c: ''
     node.follow_model = None
     node.latest_prediction = _prediction()
@@ -310,6 +312,7 @@ def test_brief_context_loss_observed_between_ticks_cannot_disappear(callback):
     node.vehicle_status_stamp, node.vehicle_status_timeout = 100.04, .75
     context = ctx(100.06, offboard=False)
     node._follow_context = lambda: context
+    node._ros_seconds = lambda: context.now
     node.follow_clock = SimpleNamespace(boot_id='receiver')
     messages = []
     node.follow_epoch_pub = node.follow_ack_pub = node.follow_debug_pub = SimpleNamespace(

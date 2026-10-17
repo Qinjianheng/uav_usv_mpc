@@ -343,8 +343,6 @@ class ShadowResearchRunner:
         request = record['request']
         try:
             result = record['future'].result()
-            candidate = record_snapshot(result)
-            candidate_done = time.monotonic()
             reason = completion_rejection(request, self.config, now, self.mission['mission_id'],
                                           self.adapter.clock_generation,
                                           monotonic_now - record['started'], self._follow())
@@ -359,13 +357,25 @@ class ShadowResearchRunner:
                     self._prepare(now, monotonic_now)
                 except ValueError as error:
                     reason = str(error)
+            critical = getattr(self, 'critical_completion', None)
+            if (not reason and result.valid and critical is not None
+                    and 'critical_outcome' not in record):
+                record['critical_started_monotonic'] = time.monotonic()
+                record['critical_outcome'] = critical(request, result, record)
+                record['critical_finished_monotonic'] = time.monotonic()
+            candidate = record_snapshot(result)
+            candidate_done = time.monotonic()
             output = _empty_output(reason) if reason else candidate
         except Exception as error:
             candidate = {'exception_type': type(error).__name__, 'exception': str(error)}
             output = _empty_output('SOLVER_EXCEPTION')
         event = self.event(output, now, monotonic_now, candidate, record['started'])
+        if 'critical_outcome' in record:
+            event['critical_outcome'] = record['critical_outcome']
         event['completion_timeline'] = dict(
             future_observed_monotonic=finish_observed,
+            critical_started_monotonic=record.get('critical_started_monotonic'),
+            critical_finished_monotonic=record.get('critical_finished_monotonic'),
             candidate_serialized_monotonic=candidate_done,
             event_prepared_monotonic=time.monotonic())
         self.emit(event)

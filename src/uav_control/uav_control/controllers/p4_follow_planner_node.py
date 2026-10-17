@@ -5,6 +5,9 @@ from statistics import median
 import math
 import time
 import secrets
+import resource
+import threading
+from pathlib import Path
 from types import SimpleNamespace
 
 import rclpy
@@ -54,12 +57,28 @@ class P4ResearchRunner(ShadowResearchRunner):
         cpu_started = time.thread_time()
         wall = getattr(self.solver, 'wall_clock', None)
         ros_start = wall() if wall else None
+        usage = resource.getrusage(resource.RUSAGE_THREAD)
+        scheduler_path = Path(f'/proc/self/task/{threading.get_native_id()}/schedstat')
+        scheduler_start = tuple(map(int, scheduler_path.read_text().split()))
         result = self.solver.solve(request)
         cpu_ended, ended = time.thread_time(), time.monotonic()
+        usage_end = resource.getrusage(resource.RUSAGE_THREAD)
+        scheduler_end = tuple(map(int, scheduler_path.read_text().split()))
         timeline = dict(solve_start_monotonic=started, solve_end_monotonic=ended,
                         solve_start_ros=ros_start, solve_end_ros=wall() if wall else None,
                         solve_start_thread_cpu=cpu_started, solve_end_thread_cpu=cpu_ended,
-                        worker_thread_cpu_seconds=cpu_ended-cpu_started)
+                        worker_thread_cpu_seconds=cpu_ended-cpu_started,
+                        scheduler_runqueue_seconds=(scheduler_end[1]-scheduler_start[1])/1e9,
+                        voluntary_context_switches=usage_end.ru_nvcsw-usage.ru_nvcsw,
+                        involuntary_context_switches=usage_end.ru_nivcsw-usage.ru_nivcsw)
+        plan = getattr(request, 'delivery_plan', None)
+        if plan is not None:
+            self.solver.delivery_costs.observe(
+                plan.path, ended-started,
+                request.context.observation_stamp, result.valid, result.solver_status,
+                cpu=cpu_ended-cpu_started)
+            timeline['delivery_path'] = plan.path
+            timeline['math_runtime'] = getattr(self, 'math_runtime', None)
         return replace(result, metrics=dict(result.metrics, worker_timeline=timeline))
 
     def event(self, *args, **kwargs):
@@ -76,20 +95,88 @@ class P4ResearchRunner(ShadowResearchRunner):
         if result['event'] == 'completion':
             self.last_completed_valid = result['output']['valid']
         result['deadline_retry'] = getattr(self, 'deadline_retry', None)
+        rejected = getattr(self, 'delivery_rejected_request', None)
+        if (self.pending is None and rejected is not None
+                and result['admission_status'] == 'SUCCESSOR_AWAITING_FRESH_INPUT'):
+            result['request'] = record_snapshot(rejected)
+            result['input_provenance']['paired_navigation'] = record_snapshot(
+                getattr(self, 'delivery_rejected_pose', None))
+            result['input_provenance']['prepared_prediction'] = record_snapshot(self.prediction)
+            result['delivery_budget'] = self.delivery_budget
+            result['budget_rejection_before_submit'] = True
+            result['expires_at_ros_stamp'] = self.delivery_budget['freshness_deadline']
         return result
+
+    def reject(self, reason, now, monotonic_now):
+        """Record a budget denial once per acquired image rather than losing new epochs."""
+        request = getattr(self, 'delivery_rejected_request', None)
+        if reason == 'SUCCESSOR_AWAITING_FRESH_INPUT' and request is not None:
+            c = request.context
+            epoch = (c.mission_id, c.clock_generation, c.observation_stamp)
+            if getattr(self, 'last_delivery_denial', None) != epoch:
+                self.last_rejection = None
+                self.last_delivery_denial = epoch
+        super().reject(reason, now, monotonic_now)
+
+    def _prepare_delivery(self, result, now):
+        """Select one path against full original-epoch delivery cost before submission."""
+        from uav_control.guidance.fast_follow_minco import freshness
+        from uav_control.guidance.follow_delivery_budget import make_plan, tail_reserve
+        from uav_control.guidance.follow_minco_execution import delivery_request
+        request, pose = result
+        c = request.context
+        until, _ = freshness(request, now)
+        costs = self.solver.delivery_costs.hints(c.observation_stamp)
+        if not getattr(self.solver, 'fallback_enabled', False):
+            costs.pop('fallback', None)
+        current = self.solver.wall_clock()
+        samples = getattr(self, 'queue_samples', ())
+        queue = max(.020, float(sorted(samples)[-1])*1.2) if samples else .020
+        receiver = tail_reserve(getattr(self, 'receiver_cost_samples', ()), current, .020, .005)
+        publication = tail_reserve(getattr(self, 'publication_cost_samples', ()),
+                                   current, .010, .002)
+        status = getattr(self, 'execution_status', None) or {}
+        parent = getattr(request, 'prior_curve', None)
+        parent_id = parent.plan_id if parent is not None else 0
+        parent_deadline = status.get('deadline', 0.) if parent_id else 0.
+        epoch = getattr(self, 'current_receiver_epoch', None)
+        identity = ((epoch[0], getattr(self, 'planner_boot_id', '')) if epoch else ())
+        identity += (c.mission_id, c.clock_generation, c.cycle_id)
+        self.delivery_rejected_request = request
+        self.delivery_rejected_pose = pose
+        self.delivery_budget = dict(
+            prepared_ros=current, freshness_deadline=until,
+            preparation_seconds=current-now, queue_hint_seconds=queue,
+            publication_reserve_seconds=publication, receiver_reserve_seconds=receiver,
+            available_worker_seconds=(min(until, c.execution_start_stamp)-current
+                                      - queue-publication-receiver), path_costs=costs,
+            delivery_cost_evidence=self.solver.delivery_costs.report(c.observation_stamp),
+            parent_id=parent_id, parent_deadline=parent_deadline, estimate_is_guarantee=False)
+        plan = make_plan(identity, current, until, c.execution_start_stamp,
+                         parent_id, parent_deadline, costs, queue, publication, receiver)
+        self.delivery_budget.update(
+            full_worker_hint_seconds=plan.worker_hint,
+            selected_path=plan.path, worker_until=plan.worker_until,
+            wire_until=plan.wire_until, accept_until=plan.accept_until)
+        self.delivery_rejected_request = None
+        return delivery_request(request, plan), pose
 
     def _prepare(self, now, monotonic_now):
         if self._delivery_enabled() and self.pending is not None:
             return self._completion_inputs(now, monotonic_now)
+        self.delivery_rejected_request = None
         with CycleProfile(self.cycle_id+1) as profile:
             result = super()._prepare(now, monotonic_now)
+            integrated = self._delivery_enabled() and hasattr(self.solver, 'delivery_costs')
+            if integrated:
+                result = self._prepare_delivery(result, now)
             waiting = getattr(self, 'retry_waiting_parent', None)
             status = getattr(self, 'execution_status', None) or {}
             if waiting and status.get('active') != waiting:
                 self.retry_waiting_parent = None
                 waiting = None
             successor = (getattr(self, 'deadline_scheduling', False) and status.get('active'))
-            if ((waiting or successor) and self.pending is None
+            if (not integrated and (waiting or successor) and self.pending is None
                     and getattr(self.solver, 'online_budget_guard', False)):
                 from uav_control.guidance.fast_follow_minco import freshness
                 from uav_control.guidance.follow_cost_evidence import protect_costs
@@ -323,6 +410,11 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
         if self.prediction_policy not in ('latest_only', 'full'):
             raise ValueError('INVALID_PREDICTION_POLICY')
         self.planner_boot_id, self.receiver_epoch = secrets.token_hex(16), None
+        self.runner.planner_boot_id = self.planner_boot_id
+        if self.runner._delivery_enabled():
+            from uav_control.guidance.follow_math_runtime import configure_numerical_threads
+            self.runner.math_runtime = configure_numerical_threads(1)
+            self.runner.critical_completion = self._publish_typed_completion
         self.receiver_status = None
         epoch_qos = QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL,
                                reliability=ReliabilityPolicy.RELIABLE)
@@ -372,6 +464,8 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
             self.ack_order, self.last_control_ack = {}, None
             self.receiver_ack_floor = None
             self.runner.queue_samples = deque(maxlen=8)
+            self.runner.receiver_cost_samples = deque(maxlen=16)
+            self.runner.publication_cost_samples = deque(maxlen=16)
         self.last_receiver_heartbeat = (identity, stamp)
         self.receiver_epoch = (identity, stamp)
         self.runner.current_receiver_epoch = identity
@@ -487,6 +581,11 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
                 order.pop(next(iter(order)))
         unexpected_accept = not executing and message.state in ('ACCEPTED', 'ACTIVE')
         if executing and valid:
+            cost = getattr(message, 'receiver_compute_seconds', 0.)
+            if message.state in ('ACCEPTED', 'REJECTED') and math.isfinite(cost) and cost > 0:
+                if not hasattr(self.runner, 'receiver_cost_samples'):
+                    self.runner.receiver_cost_samples = deque(maxlen=16)
+                self.runner.receiver_cost_samples.append((ack_stamp, cost))
             if message.state == 'ACTIVE' and curve is not None:
                 self.accepted_curve = curve
                 self.last_control_ack = (ack_stamp, message.plan_id)
@@ -541,13 +640,58 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
         payload = event['request']
         request = SimpleNamespace(context=SimpleNamespace(**payload['context']),
                                   now_stamp=payload['now_stamp'])
-        return completion_rejection(request, self.runner.config, now,
-                                    self.runner.mission['mission_id'],
-                                    self.adapter.clock_generation, time.monotonic()-start,
-                                    self.runner._follow())
+        reason = completion_rejection(request, self.runner.config, now,
+                                      self.runner.mission['mission_id'],
+                                      self.adapter.clock_generation, time.monotonic()-start,
+                                      self.runner._follow())
+        plan = payload.get('delivery_plan')
+        if not reason and plan is not None and now >= plan['wire_until']:
+            reason = 'DELIVERY_WIRE_DEADLINE'
+        return reason
+
+    @staticmethod
+    def _request_view(request):
+        """Shallow typed view for wire conversion; full immutable snapshot follows delivery."""
+        result = dict(request.__dict__, context=dict(request.context.__dict__))
+        for name in ('prior_curve', 'delivery_plan'):
+            value = result.get(name)
+            if value is not None:
+                result[name] = dict(value.__dict__)
+        return result
+
+    def _publish_typed_completion(self, request, result, record):
+        """Use the original objects before copying large prediction/solver audit trees."""
+        self._pending_revalidation_audit = None
+        event = dict(
+            request=self._request_view(request),
+            output=dict(result.__dict__, context=dict(result.context.__dict__)),
+            _typed_request=request, _typed_result=result,
+            cycle_started_monotonic=record['started'],
+            receiver_epoch_at_dispatch=record.get('receiver_epoch'))
+        with CycleProfile(request.context.cycle_id) as profile:
+            outcome = self._publish_proposal(event)
+        worker_end = result.metrics.get('worker_timeline', {}).get('solve_end_monotonic')
+        if worker_end is not None:
+            finish = (record['started']+outcome['wire_cycle_seconds']
+                      if outcome.get('wire_cycle_seconds') is not None else time.monotonic())
+            if not hasattr(self.runner, 'publication_cost_samples'):
+                self.runner.publication_cost_samples = deque(maxlen=16)
+            self.runner.publication_cost_samples.append(
+                (request.context.observation_stamp, max(0., finish-worker_end)))
+        outcome['critical_publication_profile'] = profile.report()
+        return outcome
 
     def _publish_event(self, event):
         """Include prediction revalidation and wire publication in the final cycle audit."""
+        if 'critical_outcome' in event:
+            outcome = event['critical_outcome']
+            with CycleProfile(event['request']['context']['cycle_id']) as profile:
+                super()._publish_event(event)
+                self._flush_revalidation_audit()
+            self.runner.last_completed_valid = bool(
+                outcome['published'] and not outcome.get('reason'))
+            self._record_publication_final(event, outcome, profile)
+            return
         # Per-event audit buffer. A fresh buffer prevents cross-cycle leakage.
         self._pending_revalidation_audit = None
         cycle_id = event['request']['context']['cycle_id'] if event.get('request') else 0
@@ -578,6 +722,10 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
                 # not solver feasibility or a later research-marker deadline.
                 self.runner.last_completed_valid = bool(
                     outcome['published'] and not outcome.get('reason'))
+        self._record_publication_final(event, outcome, profile)
+
+    def _record_publication_final(self, event, outcome, profile):
+        """Audit delivery and later research-marker completion without another wire attempt."""
         if event.get('cycle_started_monotonic') is None or not event.get('request'):
             return
         finished = time.monotonic()
@@ -612,6 +760,11 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
         message = proposal_from_event(proposal_event, self._ros_seconds())
         if message is None:
             return dict(published=False, reason='INPUT_OR_START_EXPIRED')
+        plan = proposal_event['request'].get('delivery_plan')
+        if plan is not None:
+            from uav_control.controllers.follow_transport import stamp
+            message.input_valid_until = stamp(min(seconds(message.input_valid_until),
+                                                  plan['accept_until']))
         now = self._ros_seconds()
         reason = self._proposal_rejection(proposal_event, now)
         if reason:
@@ -634,6 +787,8 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
                 message.reason = 'SHADOW_PROBE'
         key = (message.receiver_boot_id, message.planner_boot_id, message.mission_id,
                message.clock_generation, message.plan_id)
+        if key in self.expected_plans:
+            return dict(published=False, reason='PLAN_ALREADY_PUBLISHED')
         self.expected_plans[key] = now
         if getattr(self, 'follow_execution_enabled', False):
             self.execution_curves[key] = curve_from_message(message)
@@ -707,23 +862,29 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
             payload = dict(request_data)
             payload['context'] = PlanningContext(**payload['context'])
             from uav_control.guidance.follow_minco_execution import request_from_payload
-            request = request_from_payload(request_data)
+            request = event.get('_typed_request') or request_from_payload(request_data)
             until = min(request.context.navigation_stamp+.125,
                         request.context.attitude_stamp+.125,
                         prediction.observation_stamp+.125, prediction.source_stamp+.125,
                         prediction.valid_until, request.context.execution_start_stamp)
             remaining = until-self._ros_seconds()-.005
+            plan = getattr(request, 'delivery_plan', None)
+            if plan is not None:
+                remaining = min(remaining, plan.wire_until-self._ros_seconds()-.005)
             if event.get('cycle_started_monotonic') is not None:
                 remaining = min(remaining, self.runner.config.solve_budget
                                 - (time.monotonic()-event['cycle_started_monotonic'])-.005)
             if remaining <= 0:
                 return None
             updated, report = revalidate_prediction(
-                request, MpcSeedResult(**event['output']), prediction, self._ros_seconds(),
+                request, event.get('_typed_result') or MpcSeedResult(**event['output']),
+                prediction, self._ros_seconds(),
                 self.runner.solver.model, budget=remaining,
                 cache=getattr(self.runner.solver, 'invariant_cache', None))
             if report['valid'] and self.runner.prediction is prediction:
-                proposed = dict(event, request=record_snapshot(updated))
+                view = (self._request_view(updated) if event.get('_typed_request') is not None
+                        else record_snapshot(updated))
+                proposed = dict(event, request=view)
                 proposed['output'] = dict(
                     event['output'], context=record_snapshot(updated.context), metrics=dict(
                         event['output']['metrics'],

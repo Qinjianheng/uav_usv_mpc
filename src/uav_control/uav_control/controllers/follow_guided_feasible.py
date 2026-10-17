@@ -1,5 +1,5 @@
 """P4.7 bounded FOLLOW/QVA research with original strict admission and P44/D fallback."""
-from dataclasses import replace
+from dataclasses import asdict, replace
 
 import numpy as np
 
@@ -44,6 +44,8 @@ class P47FollowGuidedMinco(P44FollowSolver):
         self.validation_estimate = .004
         self.online_budget_guard = online_budget_guard
         self.fallback_failed_cost = 0.
+        from uav_control.guidance.follow_delivery_budget import DeliveryCosts
+        self.delivery_costs = DeliveryCosts()
         if online_budget_guard:
             from uav_control.guidance.follow_terminal_correction import linear_geometry
             # Pure coefficient map; no target, attitude, input epoch or accepted curve cached.
@@ -62,6 +64,18 @@ class P47FollowGuidedMinco(P44FollowSolver):
             protect_costs(self, request.context.observation_stamp)
         until, _ = freshness(request, now)
         end = started+min(self.config.solve_budget, until-now-self.fast.publication_reserve)
+        plan = getattr(request, 'delivery_plan', None)
+        plan_error = ''
+        if plan is not None:
+            c = request.context
+            if (tuple(plan.identity[-3:]) != (c.mission_id, c.clock_generation, c.cycle_id)
+                    or plan.start != c.execution_start_stamp
+                    or plan.input_until > until+1e-7
+                    or plan.path not in ('follow', 'fallback') or now < plan.created_ros
+                    or plan.parent_id != getattr(
+                        getattr(request, 'prior_curve', None), 'plan_id', 0)):
+                plan_error = 'DELIVERY_PLAN_CONTEXT_MISMATCH'
+            end = min(end, started+plan.worker_until-now)
         timing = dict(initialization=0., coefficient_construction=0., optimization=0.,
                       validation=0., fallback=0., fit_analysis=0.)
         detail = dict(independent_valid=False, independent_status='NOT_ATTEMPTED',
@@ -71,6 +85,7 @@ class P47FollowGuidedMinco(P44FollowSolver):
                       terminal_mode=self.terminal_mode, refinement=self.refinement,
                       initial_fit=None, fit=None, fit_analysis_outside_solver=True,
                       holding_qualified=False, terminal_correction={},
+                      delivery_plan=asdict(plan) if plan is not None else None,
                       budget=dict(scheduling=self.scheduling,
                                   initial_gate=.025 if self.scheduling == 'legacy' else None,
                                   publication_reserve=self.fast.publication_reserve,
@@ -89,7 +104,8 @@ class P47FollowGuidedMinco(P44FollowSolver):
             current = self.wall_clock()
             if not np.isfinite(current) or current < request.now_stamp-1e-9:
                 return -1.
-            return min(end-self.clock(), until-current-self.fast.publication_reserve)
+            return min(end-self.clock(), until-current-self.fast.publication_reserve,
+                       plan.worker_until-current if plan is not None else float('inf'))
 
         def validate(seed):
             stamp = self.clock()
@@ -103,6 +119,8 @@ class P47FollowGuidedMinco(P44FollowSolver):
             return result
 
         try:
+            if plan_error:
+                raise ValueError(plan_error)
             if (not np.isfinite(now) or now < request.now_stamp-1e-9 or remaining() <= 0
                     or (self.scheduling == 'legacy' and remaining() < .025)):
                 raise ValueError('NO_FRESHNESS_BUDGET')
@@ -116,6 +134,8 @@ class P47FollowGuidedMinco(P44FollowSolver):
                 if not fallback_fits and available > self.follow_estimate:
                     # An impossible fallback reservation cannot consume a feasible P47 window.
                     try_follow, reserve = True, 0.
+            if plan is not None:
+                try_follow, reserve = plan.path == 'follow', 0.
             if try_follow:
                 stamp = self.clock()
                 try:
@@ -200,7 +220,8 @@ class P47FollowGuidedMinco(P44FollowSolver):
                     detail['boundary_projected_measurement_'+name+'_error'] = float(np.linalg.norm(
                         np.asarray(request.state)[part]-projected[part]))
             else:
-                detail['initial_status'] = 'SHORT_BUDGET_P44_PRIORITY'
+                detail['initial_status'] = ('LOCKED_P44_PATH' if plan is not None else
+                                            'SHORT_BUDGET_P44_PRIORITY')
         except TimeoutError:
             detail['independent_status'] = 'DEADLINE_EXCEEDED'
         except (ValueError, TypeError, FloatingPointError, OverflowError,
@@ -211,8 +232,12 @@ class P47FollowGuidedMinco(P44FollowSolver):
 
         fallback_gate = (.025 if self.scheduling == 'legacy' else
                          self.fallback_estimate if self.online_budget_guard else .003)
+        if plan is not None:
+            fallback_gate = 0.
         if (not best.valid and self.fallback_enabled and remaining() > fallback_gate
-                and not (self.scheduling == 'legacy' and end-started < .025)):
+                and (plan is None or (plan.path == 'fallback' and not plan_error))
+                and (plan is not None
+                     or not (self.scheduling == 'legacy' and end-started < .025))):
             detail['fallback_used'] = True
             stamp = self.clock()
             self.fallback.wall_clock = self.wall_clock

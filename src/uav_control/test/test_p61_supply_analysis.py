@@ -50,3 +50,19 @@ def test_unknown_wire_or_cpu_time_stays_absent_and_expiry_is_a_failure():
     assert result['failure'] == 'DEADLINE_EXCEEDED'
     assert api().statistics([.01, .02, None])['missing'] == 1
     assert api().statistics([.01, .02, None])['p95'] == pytest.approx(.0195)
+
+
+def test_typed_delivery_and_later_snapshot_costs_do_not_overlap():
+    row = dict(
+        request=dict(now_stamp=100., context=dict(cycle_id=23)),
+        candidate_output=dict(metrics={}), output=dict(valid=True),
+        cycle_started_monotonic=1000., critical_outcome=dict(published=True),
+        completion_timeline=dict(
+            future_observed_monotonic=1000.020,
+            critical_started_monotonic=1000.021, critical_finished_monotonic=1000.030,
+            event_prepared_monotonic=1000.038))
+    final = dict(published=True, wire_cycle_seconds=.025, wire_finish_ros=100.025)
+    d = api().cycle_metrics(row, final, [])['durations']
+    assert d['completion_payload_monotonic'] == pytest.approx(.008)
+    assert d['future_to_wire_monotonic'] == pytest.approx(.005)
+    assert d['post_wire_critical_callback_monotonic'] == pytest.approx(.005)
