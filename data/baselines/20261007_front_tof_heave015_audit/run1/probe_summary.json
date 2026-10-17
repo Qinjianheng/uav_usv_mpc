@@ -1,0 +1,30 @@
+{
+  "ready": false,
+  "phase": "FOLLOW",
+  "follow_since": 4069.800128381,
+  "x": 4060.480346092,
+  "y": 4072.810610804,
+  "result": {
+    "stamp": {
+      "sec": 1791339409,
+      "nanosec": 818325043
+    },
+    "mission_id": 1,
+    "success": false,
+    "outcome": "FAILURE",
+    "reason": "TIMEOUT",
+    "detail": "determined by simulation truth in evaluator only",
+    "elapsed_time": 30.048096656799316,
+    "capture_radius": 0.5,
+    "minimum_distance": 4.909626355238747,
+    "horizontal_distance": 3.947182701481704,
+    "vertical_error": 4.896987985571443,
+    "relative_speed": 2.094786606158933,
+    "closing_speed": 1.4246226872731351,
+    "max_horizontal_speed": 6.22043306205773,
+    "max_vertical_speed": 0.06923188011300051,
+    "max_horizontal_acceleration": 3.322737841450899,
+    "max_vertical_acceleration": 0.28171540115045013
+  },
+  "result_time": 4102.93050963
+}

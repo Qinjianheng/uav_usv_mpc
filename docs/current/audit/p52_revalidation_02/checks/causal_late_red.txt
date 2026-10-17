@@ -1,0 +1,29 @@
+......FF                                                                 [100%]
+=================================== FAILURES ===================================
+_ test_late_successful_bracket_restarts_qualification_instead_of_hiding_timeout _
+
+    def test_late_successful_bracket_restarts_qualification_instead_of_hiding_timeout():
+        gate = FollowAdmission()
+        gate.stable_since = 95.
+        gate.probes, gate.last_probe = [1, 2, 3], 100.
+        gate.update(100., dict(awaiting_native_bracket=True), True)
+        gate.update(100.06, healthy(), True)
+>       assert gate.stable_since == 100.06
+E       assert 95.0 == 100.06
+E        +  where 95.0 = <uav_control.guidance.follow_admission.FollowAdmission object at 0x74c59acd15a0>.stable_since
+
+test/test_p52_causal_admission.py:103: AssertionError
+_____ test_late_successful_bracket_cannot_hide_active_observation_timeout ______
+
+    def test_late_successful_bracket_cannot_hide_active_observation_timeout():
+        gate = FollowAdmission()
+        gate.update(100., dict(awaiting_native_bracket=True), True, active=True)
+>       assert gate.update(100.06, healthy(), True, active=True) == 'NATIVE_BRACKET_TIMEOUT'
+E       AssertionError: assert '' == 'NATIVE_BRACKET_TIMEOUT'
+E         - NATIVE_BRACKET_TIMEOUT
+
+test/test_p52_causal_admission.py:110: AssertionError
+=========================== short test summary info ============================
+FAILED test/test_p52_causal_admission.py::test_late_successful_bracket_restarts_qualification_instead_of_hiding_timeout
+FAILED test/test_p52_causal_admission.py::test_late_successful_bracket_cannot_hide_active_observation_timeout
+2 failed, 6 passed in 0.04s

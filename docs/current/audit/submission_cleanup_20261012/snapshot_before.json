@@ -1,0 +1,19 @@
+{
+  "workspace": "/home/qin/data/uav_usv_mpc",
+  "original_head": "43198343a2260392749e979bbc3beae6ce6f20c4",
+  "remote_master_verified": "741000cd8e1faa22ba85292827f59c2fc0a21f99",
+  "archive": "/home/qin/data/uav_usv_mpc_archive/20261012_submission_cleanup_4319834",
+  "local_backup_ref": "refs/archive/submission-cleanup-20261012-4319834",
+  "original_tracked_count": 4686,
+  "original_tracked_bytes": 6048342913,
+  "excluded_count": 470,
+  "excluded_bytes": 3026681971,
+  "keep_new_evidence": [
+    "data/experiments/20261010_p47_follow_guided/DELIVERY_SHA256SUMS",
+    "data/experiments/20261010_p47_follow_guided/README.md",
+    "data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_2/plots/f3_h1.2_boundary.png",
+    "data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_2/plots/f3_h1.2_jerk.png",
+    "data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_2/plots/f3_h1.2_trajectory.png"
+  ],
+  "commit_or_push_authorized": false
+}

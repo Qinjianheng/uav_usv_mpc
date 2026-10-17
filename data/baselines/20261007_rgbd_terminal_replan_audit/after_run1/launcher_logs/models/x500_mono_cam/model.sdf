@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='utf-8'?>
+<sdf version="1.9">
+  
+  <model name="x500_mono_cam">
+    <include merge="true">
+      <uri>x500</uri>
+    </include>
+
+    <link name="front_camera_link">
+      
+      <pose relative_to="base_link">0.18 0 0.15 0 0.4886921905584123 0</pose>
+      <inertial>
+        <mass>0.05</mass>
+        <inertia>
+          <ixx>0.00004</ixx>
+          <iyy>0.00004</iyy>
+          <izz>0.00004</izz>
+        </inertia>
+      </inertial>
+      <visual name="housing">
+        <geometry>
+          <box><size>0.03 0.05 0.04</size></box>
+        </geometry>
+        <material>
+          <ambient>0.12 0.12 0.14 1</ambient>
+          <diffuse>0.18 0.18 0.20 1</diffuse>
+        </material>
+      </visual>
+      <sensor name="front_tof_camera" type="rgbd_camera">
+        <topic>/uav/camera/front</topic>
+        <camera>
+          <optical_frame_id>front_camera_optical_frame</optical_frame_id>
+          <horizontal_fov>1.74</horizontal_fov>
+          <image>
+            <format>R8G8B8</format>
+            <width>640</width>
+            <height>480</height>
+          </image>
+          <clip>
+            <near>0.05</near>
+            
+            <far>60.0</far>
+          </clip>
+          <depth_camera>
+            <output>depths</output>
+            <clip>
+              <near>0.05</near>
+              <far>25.0</far>
+            </clip>
+          </depth_camera>
+        </camera>
+        <always_on>true</always_on>
+        <update_rate>20</update_rate>
+        
+        <visualize>false</visualize>
+        <enable_metrics>true</enable_metrics>
+      </sensor>
+    </link>
+    <joint name="front_camera_joint" type="fixed">
+      <parent>base_link</parent>
+      <child>front_camera_link</child>
+    </joint>
+
+    <link name="down_camera_link">
+      
+      <pose relative_to="base_link">0.05 0 -0.12 0 1.57079632679 0</pose>
+      <inertial>
+        <mass>0.05</mass>
+        <inertia>
+          <ixx>0.00004</ixx>
+          <iyy>0.00004</iyy>
+          <izz>0.00004</izz>
+        </inertia>
+      </inertial>
+      <visual name="housing">
+        <geometry>
+          <box><size>0.03 0.05 0.04</size></box>
+        </geometry>
+        <material>
+          <ambient>0.12 0.12 0.14 1</ambient>
+          <diffuse>0.18 0.18 0.20 1</diffuse>
+        </material>
+      </visual>
+      </link>
+    <joint name="down_camera_joint" type="fixed">
+      <parent>base_link</parent>
+      <child>down_camera_link</child>
+    </joint>
+
+  </model>
+</sdf>

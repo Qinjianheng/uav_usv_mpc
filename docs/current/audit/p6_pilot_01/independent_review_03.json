@@ -1,0 +1,42 @@
+{
+  "schema": "p6-independent-risk-scope-review-v1",
+  "reviewer": "/root/p6_visibility",
+  "independent_scope": [
+    "root-authored P6Policy risk horizon validation and scope fingerprint",
+    "root-authored assess_risk subset mapping and exact endpoint rejection",
+    "root-authored prepare checked-mask handling",
+    "root-authored FollowProblem.assess full nominal gate retention",
+    "root-authored assess_curve endpoint insertion",
+    "original receiver lease expiration and root risk plumbing"
+  ],
+  "source_sha256": {
+    "src/uav_control/uav_control/guidance/p6_follow.py": "92c9220108b15a40ba651dace7b41d3639714c66e11e9befb487971d1e372fb3",
+    "src/uav_control/uav_control/guidance/follow_fast_validation.py": "b6daa9a622ac76cb62504bac0a9a33d7789deedac56bcbf392445c9579e5f5b5",
+    "src/uav_control/uav_control/guidance/follow_problem.py": "65a21d8816fa9effaca83ff420c73187bdab3bccd1bc05364d99c3cb82be35fe",
+    "src/uav_control/uav_control/guidance/follow_minco_execution.py": "f06b2c9757cd6fa137f8151531f2e423d2a23421965e538f0892f1f8c046a43f",
+    "src/uav_control/uav_control/control/trajectory_tracker_node.py": "c9f53150179219d090a5611ba8348cd95bb2af0707dc50e2bcfc3d83ddd3a9ba",
+    "src/uav_control/test/test_p6_risk_prefix_review.py": "de1bd1046da3a3bdbfab6555e5e1ab1e605be2627b484327ce0574da306e09ec"
+  },
+  "review_pass": true,
+  "important_unresolved_findings": 0,
+  "findings": [],
+  "tests": {
+    "command": "python3 -m pytest -q test/test_p6_risk_prefix_review.py",
+    "result": "Current seven scope regression tests included in 211 passed in2.81s, and repeated combined scope/runner13 passed in0.25s.",
+    "coverage": [
+      "Exact .45 endpoint required",
+      "Original risk allocation retained across subset query",
+      "Risk scope bound to fingerprint",
+      "Remaining prefix capped at original supplied deadline",
+      "Whole-curve nominal FOV failure still rejects, scalar and batch",
+      "Explicit candidate batch index mapping",
+      "Invalid .2 horizon rejected"
+    ],
+    "log": "targeted_pytest_03.txt"
+  },
+  "limitations": [
+    "Authored robust_visibility and adaptive_viewpoint kernels are excluded from this independent review.",
+    "No real covariance coverage or actual attitude/error-bound identification is established.",
+    "Sampled lease-prefix envelope is not a full MINCO or whole-mission probability guarantee."
+  ]
+}

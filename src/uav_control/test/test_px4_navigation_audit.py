@@ -1,16 +1,10 @@
 """Native estimator audits must not extrapolate or fabricate time alignment."""
 
-import importlib.util
-from pathlib import Path
-
 import numpy as np
 import pytest
 
 
-PATH = Path(__file__).resolve().parents[3] / 'scripts/px4_navigation_audit.py'
-SPEC = importlib.util.spec_from_file_location('px4_navigation_audit', PATH)
-AUDIT = importlib.util.module_from_spec(SPEC)
-SPEC.loader.exec_module(AUDIT)
+from uav_control.analysis import native_time as AUDIT
 
 
 def test_brackets_reject_outside_and_missing_history():

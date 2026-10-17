@@ -24,17 +24,12 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'position_listener = uav_control.position_listener:main',
-            'offboard_takeoff = uav_control.offboard_takeoff:main',
+            'p4_follow_planner_node = uav_control.controllers.p4_follow_planner_node:main',
             'moving_target = uav_control.moving_target:main',
-            'usv_estimation_analysis = '
-            'uav_control.analysis.usv_estimation_analysis:main',
-            'intercept_outcome_analysis = '
-            'uav_control.analysis.intercept_outcome_analysis:main',
             'target_kalman_filter = '
             'uav_control.tracking.target_kalman_filter:main',
-            'target_predictor_node = '
-            'uav_control.tracking.target_predictor_node:main',
+            'imm_target_predictor_node = '
+            'uav_control.tracking.imm_target_predictor_node:main',
             'intercept_planner_node = '
             'uav_control.guidance.intercept_planner_node:main',
             'trajectory_tracker_node = '
@@ -49,6 +44,7 @@ setup(
             'uav_control.perception.target_bearing_node:main',
             'rgbd_target_localizer = '
             'uav_control.perception.rgbd_target_localizer:main',
+            'tof_depth_node = uav_control.perception.tof_depth_node:main',
             'dual_tof_selector = '
             'uav_control.perception.dual_tof_selector:main',
         ],

@@ -1,0 +1,40 @@
+{
+  "raw_maintenance": "/home/qin/data/uav_usv_mpc/data/experiments/20261014_cleanup_validation_01",
+  "frozen_reference": "/home/qin/data/uav_usv_mpc/data/experiments/20261013_p53_closed_loop_11",
+  "archives": [
+    {
+      "path": "/home/qin/data/uav_usv_mpc_archive/20261014_system_cleanup_01/before_cleanup_complete.tar.gz",
+      "sha256": "6513ea1ae835e43cf5bd30f8df291b395d092774848c4e385ca0be577cb54774"
+    },
+    {
+      "path": "/home/qin/data/uav_usv_mpc_archive/20261014_system_cleanup_02/historical_logs_and_plans.tar.gz",
+      "sha256": "93f582ebc1039031d09a03555b941dd39d5737bdcfc3551551f1149481cbd941"
+    }
+  ],
+  "external_file_manifest": {
+    "path": "/home/qin/data/uav_usv_mpc_archive/20261014_system_cleanup_02/archive_members.json",
+    "sha256": "a6771935677fdc511f4d59892dba03a54bb028f57ad19876c16e24d47413854d"
+  },
+  "protected_manifest": {
+    "path": "/home/qin/data/uav_usv_mpc_archive/20261014_system_cleanup_02/protected_before.json",
+    "sha256": "dbbecec053ec584a2fe19d051a02682c5a1ce2fd0eec9599a9e12b79c128b6c9"
+  },
+  "new_scenes": [
+    {
+      "path": "/home/qin/data/uav_usv_mpc/data/experiments/20261014_cleanup_sitl_01/f2_h16_01",
+      "source_manifest_sha256": "ae474652c047efa0a359e2f22d76e998feb85178600ff98a98359c9565eef684",
+      "files": 1398
+    },
+    {
+      "path": "/home/qin/data/uav_usv_mpc/data/experiments/20261014_cleanup_sitl_02/f2_h16_01",
+      "source_manifest_sha256": "c934cead4b30844e83f97bef5b7a3d4a0f79a0a68113f2f76566980a11018c4c",
+      "files": 1400
+    },
+    {
+      "path": "/home/qin/data/uav_usv_mpc/data/experiments/20261014_cleanup_sitl_02/f3_h16_01",
+      "source_manifest_sha256": "57d0023d348f749d388470ef65ec6d63f7203e97e585c56e975fa24cb6eae338",
+      "files": 1400
+    }
+  ],
+  "note": "New raw experiments remain local and ignored. Existing archives and qualifications are immutable; scene restoration is selective and refuses overwrite."
+}

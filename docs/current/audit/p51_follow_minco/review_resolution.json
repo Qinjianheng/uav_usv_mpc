@@ -1,0 +1,20 @@
+{
+  "reviewer": "one independent read-only final review",
+  "critical": 0,
+  "important_found": 3,
+  "resolved": [
+    {
+      "issue": "callback context loss erased before control tick",
+      "regression": "test_brief_context_loss_observed_between_ticks_cannot_disappear"
+    },
+    {
+      "issue": "old ACK/heartbeat regresses current parent",
+      "regression": "test_old_active_ack_cannot_roll_back_a_newer_parent_or_resurrect_a_terminal_plan"
+    },
+    {
+      "issue": "F3 gate lacks P51 actual reference and recovery evidence",
+      "regression": "test_p51_f3_requires_explicit_complete_execution_audit"
+    }
+  ],
+  "verification": "review_red.txt: 5 failed then review_green.txt: 124 passed; full final suite 1673 passed"
+}

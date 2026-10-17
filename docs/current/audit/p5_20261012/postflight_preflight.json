@@ -1,0 +1,9 @@
+{
+  "isolation": {
+    "processes": [],
+    "hardware_serial": [],
+    "udp8888_free": true,
+    "domain": 43
+  },
+  "still_matching_task_identities": []
+}

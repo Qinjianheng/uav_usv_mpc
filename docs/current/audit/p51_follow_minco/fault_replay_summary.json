@@ -1,0 +1,184 @@
+{
+  "one_solve_failure": {
+    "hypothetical_only": true,
+    "not_sitl": true,
+    "fault": "one_solve_failure",
+    "injected": true,
+    "solver_clock": "zero-duration deterministic fixture; measured wall cost logged separately and is not online timing proof",
+    "active_events": 17,
+    "ack_states": {
+      "ACTIVE": 17
+    },
+    "fallback_count": 0,
+    "failed_solve_kept_old": true,
+    "expired_active_count": 0,
+    "max_parent_pva_step": 2.842170943040401e-14,
+    "max_reference_height_error": 5.595524044110789e-14,
+    "recovery_immediate_reentry_count": 0,
+    "rejection_reasons": {
+      "SHADOW_PROBE_VALID": 3,
+      "NOMINAL_EXECUTION": 34
+    }
+  },
+  "prefix_invalid": {
+    "hypothetical_only": true,
+    "not_sitl": true,
+    "fault": "prefix_invalid",
+    "injected": true,
+    "solver_clock": "zero-duration deterministic fixture; measured wall cost logged separately and is not online timing proof",
+    "active_events": 2,
+    "ack_states": {
+      "ACTIVE": 2,
+      "REVOKED": 1,
+      "REJECTED": 1
+    },
+    "fallback_count": 1,
+    "failed_solve_kept_old": false,
+    "expired_active_count": 0,
+    "max_parent_pva_step": 0.0,
+    "max_reference_height_error": 0.0,
+    "recovery_immediate_reentry_count": 0,
+    "rejection_reasons": {
+      "SHADOW_PROBE_VALID": 3,
+      "NOMINAL_EXECUTION": 5,
+      "LATEST_PREFIX_INVALID": 1,
+      "PARENT_EXPIRED_AT_ACTIVATION": 1
+    }
+  },
+  "bad_parent": {
+    "hypothetical_only": true,
+    "not_sitl": true,
+    "fault": "bad_parent",
+    "injected": true,
+    "solver_clock": "zero-duration deterministic fixture; measured wall cost logged separately and is not online timing proof",
+    "active_events": 3,
+    "ack_states": {
+      "ACTIVE": 3,
+      "EXPIRED": 1
+    },
+    "fallback_count": 1,
+    "failed_solve_kept_old": false,
+    "expired_active_count": 0,
+    "max_parent_pva_step": 0.0,
+    "max_reference_height_error": 8.881784197001252e-16,
+    "recovery_immediate_reentry_count": 0,
+    "rejection_reasons": {
+      "SHADOW_PROBE_VALID": 3,
+      "NOMINAL_EXECUTION": 6,
+      "PARENT_REFERENCE_INVALID": 1
+    }
+  },
+  "none": {
+    "hypothetical_only": true,
+    "not_sitl": true,
+    "fault": "none",
+    "injected": false,
+    "solver_clock": "zero-duration deterministic fixture; measured wall cost logged separately and is not online timing proof",
+    "active_events": 17,
+    "ack_states": {
+      "ACTIVE": 17
+    },
+    "fallback_count": 0,
+    "failed_solve_kept_old": false,
+    "expired_active_count": 0,
+    "max_parent_pva_step": 2.842170943040401e-14,
+    "max_reference_height_error": 7.993605777301127e-15,
+    "recovery_immediate_reentry_count": 0,
+    "rejection_reasons": {
+      "SHADOW_PROBE_VALID": 3,
+      "NOMINAL_EXECUTION": 35
+    }
+  },
+  "offboard_lost": {
+    "hypothetical_only": true,
+    "not_sitl": true,
+    "fault": "offboard_lost",
+    "injected": true,
+    "solver_clock": "zero-duration deterministic fixture; measured wall cost logged separately and is not online timing proof",
+    "active_events": 2,
+    "ack_states": {
+      "ACTIVE": 2,
+      "REVOKED": 2
+    },
+    "fallback_count": 1,
+    "failed_solve_kept_old": false,
+    "expired_active_count": 0,
+    "max_parent_pva_step": 0.0,
+    "max_reference_height_error": 0.0,
+    "recovery_immediate_reentry_count": 0,
+    "rejection_reasons": {
+      "SHADOW_PROBE_VALID": 3,
+      "NOMINAL_EXECUTION": 5,
+      "OFFBOARD_UNAVAILABLE": 2
+    }
+  },
+  "no_successor": {
+    "hypothetical_only": true,
+    "not_sitl": true,
+    "fault": "no_successor",
+    "injected": true,
+    "solver_clock": "zero-duration deterministic fixture; measured wall cost logged separately and is not online timing proof",
+    "active_events": 3,
+    "ack_states": {
+      "ACTIVE": 3,
+      "EXPIRED": 1
+    },
+    "fallback_count": 1,
+    "failed_solve_kept_old": false,
+    "expired_active_count": 0,
+    "max_parent_pva_step": 0.0,
+    "max_reference_height_error": 8.881784197001252e-16,
+    "recovery_immediate_reentry_count": 0,
+    "rejection_reasons": {
+      "SHADOW_PROBE_VALID": 3,
+      "NOMINAL_EXECUTION": 6
+    }
+  },
+  "start_missed": {
+    "hypothetical_only": true,
+    "not_sitl": true,
+    "fault": "start_missed",
+    "injected": true,
+    "solver_clock": "zero-duration deterministic fixture; measured wall cost logged separately and is not online timing proof",
+    "active_events": 3,
+    "ack_states": {
+      "ACTIVE": 3,
+      "REJECTED": 1,
+      "EXPIRED": 1
+    },
+    "fallback_count": 1,
+    "failed_solve_kept_old": false,
+    "expired_active_count": 0,
+    "max_parent_pva_step": 2.842170943040401e-14,
+    "max_reference_height_error": 8.881784197001252e-16,
+    "recovery_immediate_reentry_count": 0,
+    "rejection_reasons": {
+      "SHADOW_PROBE_VALID": 3,
+      "NOMINAL_EXECUTION": 7,
+      "START_MISSED": 1
+    }
+  },
+  "clock_reversed": {
+    "hypothetical_only": true,
+    "not_sitl": true,
+    "fault": "clock_reversed",
+    "injected": true,
+    "solver_clock": "zero-duration deterministic fixture; measured wall cost logged separately and is not online timing proof",
+    "active_events": 2,
+    "ack_states": {
+      "ACTIVE": 2,
+      "REVOKED": 2
+    },
+    "fallback_count": 1,
+    "failed_solve_kept_old": false,
+    "expired_active_count": 0,
+    "max_parent_pva_step": 0.0,
+    "max_reference_height_error": 0.0,
+    "recovery_immediate_reentry_count": 0,
+    "rejection_reasons": {
+      "SHADOW_PROBE_VALID": 3,
+      "NOMINAL_EXECUTION": 5,
+      "CLOCK_REVERSED": 2
+    }
+  }
+}

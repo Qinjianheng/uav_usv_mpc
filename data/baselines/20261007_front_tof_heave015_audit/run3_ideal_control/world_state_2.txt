@@ -1,0 +1,3817 @@
+stats {
+  sim_time {
+    sec: 47
+    nsec: 68000000
+  }
+  real_time {
+    sec: 49
+    nsec: 340828697
+  }
+  paused: true
+  iterations: 11767
+  step_size {
+  }
+}
+state {
+  entities {
+    key: 1
+    value {
+      id: 1
+      components {
+        key: -8542172212698277821
+        value {
+          type: 9904571861011273795
+          component: "\0222\022\031gz::sim::systems::Physics\032\025gz-sim-physics-system\022=\022\036gz::sim::systems::UserCommands\032\033gz-sim-user-commands-system\022E\022\"gz::sim::systems::SceneBroadcaster\032\037gz-sim-scene-broadcaster-system\0222\022\031gz::sim::systems::Contact\032\025gz-sim-contact-system\022*\022\025gz::sim::systems::Imu\032\021gz-sim-imu-system\022;\022\035gz::sim::systems::AirPressure\032\032gz-sim-air-pressure-system\0225\022\032gz::sim::systems::AirSpeed\032\027gz-sim-air-speed-system\022D\022!gz::sim::systems::ApplyLinkWrench\032\037gz-sim-apply-link-wrench-system\0220\022\030gz::sim::systems::NavSat\032\024gz-sim-navsat-system\022\227\001\022\036gz::sim::systems::Magnetometer\032\032gz-sim-magnetometer-system\"Y<use_earth_frame_ned>false</use_earth_frame_ned>\n<use_units_gauss>true</use_units_gauss>\n\022Y\022\031gz::sim::systems::Sensors\032\025gz-sim-sensors-system\"%<render_engine>ogre2</render_engine>\n\0224\022\031custom::OpticalFlowSystem\032\027libOpticalFlowSystem.so\0220\022\027custom::GstCameraSystem\032\025libGstCameraSystem.so"
+        }
+      }
+      components {
+        key: -5036634187826362821
+        value {
+          type: 13410109885883188795
+          component: "\032\024\02533\263>\035ff\346>%\315\314\014?-\000\000\200?\"\024\025ff\346>\035{\024.?%fff?-\000\000\200?0\001`\001"
+        }
+      }
+      components {
+        key: -4871753376703032704
+        value {
+          type: 13574990697006518912
+        }
+      }
+      components {
+        key: -3778951716650154518
+        value {
+          type: 14667792357059397098
+          component: "q\000\000\000\000\000\000\360?\201\001\374\251\361\322Mbp?"
+        }
+      }
+      components {
+        key: -3166850689802537991
+        value {
+          type: 15279893383907013625
+        }
+      }
+      components {
+        key: -1784374263817645227
+        value {
+          type: 16662369809891906389
+          component: "6e-06 2.3e-05 -4.2e-05"
+        }
+      }
+      components {
+        key: -1626251571439600756
+        value {
+          type: 16820492502269950860
+          component: "ode"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "default"
+        }
+      }
+      components {
+        key: -370718060043699578
+        value {
+          type: 18076026013665852038
+        }
+      }
+      components {
+        key: 220821703896017421
+        value {
+          type: 220821703896017421
+          component: "\031fffff\002r@!\000\000\000\000\320\274\370@"
+        }
+      }
+      components {
+        key: 1986897847140768691
+        value {
+          type: 1986897847140768691
+          component: "0"
+        }
+      }
+      components {
+        key: 2448771481260561039
+        value {
+          type: 2448771481260561039
+          component: "\031\251\3312\267\360\262G@!\306g\021\306\242\027!@"
+        }
+      }
+      components {
+        key: 4319845713902148453
+        value {
+          type: 4319845713902148453
+          component: "DantzigBoxedLcpSolver"
+        }
+      }
+      components {
+        key: 4631933300314817085
+        value {
+          type: 4631933300314817085
+          component: "0 0 -9.8"
+        }
+      }
+      components {
+        key: 5105000996105513635
+        value {
+          type: 5105000996105513635
+          component: "gz-physics-dartsim-plugin"
+        }
+      }
+      components {
+        key: 5975074572899138571
+        value {
+          type: 5975074572899138571
+          component: "-"
+        }
+      }
+      components {
+        key: 6843495338011676091
+        value {
+          type: 6843495338011676091
+        }
+      }
+    }
+  }
+  entities {
+    key: 2
+    value {
+      id: 2
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "default"
+        }
+      }
+      components {
+        key: -547576547160231147
+        value {
+          type: 17899167526549320469
+          component: "-"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "1"
+        }
+      }
+      components {
+        key: 241501265637210950
+        value {
+          type: 241501265637210950
+          component: "ocean_surface\037sunUTC\037takeoff_platform\037"
+        }
+      }
+      components {
+        key: 7294427867177050164
+        value {
+          type: 7294427867177050164
+          component: "-"
+        }
+      }
+    }
+  }
+  entities {
+    key: 3
+    value {
+      id: 3
+      components {
+        key: -6411303447679010260
+        value {
+          type: 12035440626030541356
+          component: "0 0 0"
+        }
+      }
+      components {
+        key: -1027557039388574865
+        value {
+          type: 17419187034320976751
+          component: "-"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "1"
+        }
+      }
+      components {
+        key: 6822503852486540549
+        value {
+          type: 6822503852486540549
+          component: "0 0 0"
+        }
+      }
+    }
+  }
+  entities {
+    key: 4
+    value {
+      id: 4
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "0 0 -0.02 0 0 0"
+        }
+      }
+      components {
+        key: -5517554697507270515
+        value {
+          type: 12929189376202281101
+          component: "/home/qin/data/uav_usv_mpc/src/uav_usv_bringup/worlds/ocean.sdf"
+        }
+      }
+      components {
+        key: -4984255610533233528
+        value {
+          type: 13462488463176318088
+          component: "0"
+        }
+      }
+      components {
+        key: -2963615567024695870
+        value {
+          type: 15483128506684855746
+          component: "-"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "ocean_surface"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "1"
+        }
+      }
+      components {
+        key: 514273962667148627
+        value {
+          type: 514273962667148627
+          component: "0"
+        }
+      }
+      components {
+        key: 1448650493567121171
+        value {
+          type: 1448650493567121171
+          component: "1"
+        }
+      }
+      components {
+        key: 2204389715118210201
+        value {
+          type: 2204389715118210201
+          component: "<?xml version=\"1.0\" ?><sdf version=\'1.11\'><model name=\'ocean_surface\'>\n  <static>true</static>\n  <pose>0 0 -0.02 0 0 0</pose>\n  <link name=\'surface_link\'>\n    <visual name=\'ocean_visual\'>\n      <cast_shadows>false</cast_shadows>\n      <geometry>\n        <plane>\n          <normal>0 0 1</normal>\n          <size>500 500</size>\n        </plane>\n      </geometry>\n      <material>\n        <ambient>0.0199999996 0.119999997 0.219999999 1</ambient>\n        <diffuse>0.0299999993 0.280000001 0.5 1</diffuse>\n        <specular>0.800000012 0.850000024 0.949999988 1</specular>\n        <shininess>80</shininess>\n      </material>\n    </visual>\n  </link>\n</model>\n</sdf>"
+        }
+      }
+      components {
+        key: 2958716330662201668
+        value {
+          type: 2958716330662201668
+          component: "5"
+        }
+      }
+    }
+  }
+  entities {
+    key: 5
+    value {
+      id: 5
+      components {
+        key: -7567782760171863729
+        value {
+          type: 10878961313537687887
+          component: "\021\000\000\000\000\000\000\360?\032\r\"\000*\t)\000\000\000\000\000\000\360?!\000\000\000\000\000\000\360?9\000\000\000\000\000\000\360?I\000\000\000\000\000\000\360?"
+        }
+      }
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "0 0 0 0 0 0"
+        }
+      }
+      components {
+        key: -4984255610533233528
+        value {
+          type: 13462488463176318088
+          component: "0"
+        }
+      }
+      components {
+        key: -3677718506378185967
+        value {
+          type: 14769025567331365649
+          component: "-"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "surface_link"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "4"
+        }
+      }
+      components {
+        key: 1899862455720879825
+        value {
+          type: 1899862455720879825
+          component: "-"
+        }
+      }
+    }
+  }
+  entities {
+    key: 6
+    value {
+      id: 6
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "0 0 0 0 0 0"
+        }
+      }
+      components {
+        key: -5828171050081229676
+        value {
+          type: 12618573023628321940
+          component: "4294967295"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "ocean_visual"
+        }
+      }
+      components {
+        key: -170031897039044735
+        value {
+          type: 18276712176670506881
+          component: "-"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "5"
+        }
+      }
+      components {
+        key: 665776623189629951
+        value {
+          type: 665776623189629951
+          component: "0"
+        }
+      }
+      components {
+        key: 5322000723261735567
+        value {
+          type: 5322000723261735567
+          component: "0"
+        }
+      }
+      components {
+        key: 5653939253203759928
+        value {
+          type: 5653939253203759928
+          component: "*\024\025\n\327\243<\035\217\302\365=%\256Ga>-\000\000\200?2\024\025\217\302\365<\035)\\\217>%\000\000\000?-\000\000\200?:\024\025\315\314L?\035\232\231Y?%33s?-\000\000\200?B\005-\000\000\200?H\001i\000\000\000\000\000\000T@"
+        }
+      }
+      components {
+        key: 7625436923667245673
+        value {
+          type: 7625436923667245673
+          component: "\020\003*\037\022\t!\000\000\000\000\000\000\360?\032\022\021\000\000\000\000\000@\177@\031\000\000\000\000\000@\177@"
+        }
+      }
+    }
+  }
+  entities {
+    key: 7
+    value {
+      id: 7
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "0 0 -0.05 0 0 0"
+        }
+      }
+      components {
+        key: -5517554697507270515
+        value {
+          type: 12929189376202281101
+          component: "/home/qin/data/uav_usv_mpc/src/uav_usv_bringup/worlds/ocean.sdf"
+        }
+      }
+      components {
+        key: -4984255610533233528
+        value {
+          type: 13462488463176318088
+          component: "0"
+        }
+      }
+      components {
+        key: -2963615567024695870
+        value {
+          type: 15483128506684855746
+          component: "-"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "takeoff_platform"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "1"
+        }
+      }
+      components {
+        key: 514273962667148627
+        value {
+          type: 514273962667148627
+          component: "0"
+        }
+      }
+      components {
+        key: 1448650493567121171
+        value {
+          type: 1448650493567121171
+          component: "1"
+        }
+      }
+      components {
+        key: 2204389715118210201
+        value {
+          type: 2204389715118210201
+          component: "<?xml version=\"1.0\" ?><sdf version=\'1.11\'><model name=\'takeoff_platform\'>\n  <static>true</static>\n  <pose>0 0 -0.050000000000000003 0 0 0</pose>\n  <link name=\'platform_link\'>\n    <collision name=\'platform_collision\'>\n      <geometry>\n        <box>\n          <size>3 3 0.10000000000000001</size>\n        </box>\n      </geometry>\n      <surface>\n        <friction>\n          <ode>\n            <mu>1</mu>\n            <mu2>1</mu2>\n          </ode>\n        </friction>\n        <bounce/>\n        <contact/>\n      </surface>\n    </collision>\n    <visual name=\'platform_visual\'>\n      <geometry>\n        <box>\n          <size>3 3 0.10000000000000001</size>\n        </box>\n      </geometry>\n      <material>\n        <ambient>0.180000007 0.180000007 0.200000003 1</ambient>\n        <diffuse>0.280000001 0.280000001 0.319999993 1</diffuse>\n        <specular>0.100000001 0.100000001 0.100000001 1</specular>\n      </material>\n    </visual>\n  </link>\n</model>\n</sdf>"
+        }
+      }
+      components {
+        key: 2958716330662201668
+        value {
+          type: 2958716330662201668
+          component: "8"
+        }
+      }
+    }
+  }
+  entities {
+    key: 8
+    value {
+      id: 8
+      components {
+        key: -7567782760171863729
+        value {
+          type: 10878961313537687887
+          component: "\021\000\000\000\000\000\000\360?\032\r\"\000*\t)\000\000\000\000\000\000\360?!\000\000\000\000\000\000\360?9\000\000\000\000\000\000\360?I\000\000\000\000\000\000\360?"
+        }
+      }
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "0 0 0 0 0 0"
+        }
+      }
+      components {
+        key: -4984255610533233528
+        value {
+          type: 13462488463176318088
+          component: "0"
+        }
+      }
+      components {
+        key: -3677718506378185967
+        value {
+          type: 14769025567331365649
+          component: "-"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "platform_link"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "7"
+        }
+      }
+      components {
+        key: 1899862455720879825
+        value {
+          type: 1899862455720879825
+          component: "-"
+        }
+      }
+    }
+  }
+  entities {
+    key: 9
+    value {
+      id: 9
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "0 0 0 0 0 0"
+        }
+      }
+      components {
+        key: -5828171050081229676
+        value {
+          type: 12618573023628321940
+          component: "4294967295"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "platform_visual"
+        }
+      }
+      components {
+        key: -170031897039044735
+        value {
+          type: 18276712176670506881
+          component: "-"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "8"
+        }
+      }
+      components {
+        key: 665776623189629951
+        value {
+          type: 665776623189629951
+          component: "1"
+        }
+      }
+      components {
+        key: 5322000723261735567
+        value {
+          type: 5322000723261735567
+          component: "0"
+        }
+      }
+      components {
+        key: 5653939253203759928
+        value {
+          type: 5653939253203759928
+          component: "*\024\025\354Q8>\035\354Q8>%\315\314L>-\000\000\200?2\024\025)\\\217>\035)\\\217>%\n\327\243>-\000\000\200?:\024\025\315\314\314=\035\315\314\314=%\315\314\314=-\000\000\200?B\005-\000\000\200?H\001"
+        }
+      }
+      components {
+        key: 7625436923667245673
+        value {
+          type: 7625436923667245673
+          component: "\032\035\022\033\021\000\000\000\000\000\000\010@\031\000\000\000\000\000\000\010@!\232\231\231\231\231\231\271?"
+        }
+      }
+    }
+  }
+  entities {
+    key: 10
+    value {
+      id: 10
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "0 0 0 0 0 0"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "platform_collision"
+        }
+      }
+      components {
+        key: -992030514186885319
+        value {
+          type: 17454713559522666297
+          component: "\032\022platform_collision2\r\"\000*\t)\000\000\000\000\000\000\360?:\037\032\035\022\033\021\000\000\000\000\000\000\010@\031\000\000\000\000\000\000\010@!\232\231\231\231\231\231\271?"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "8"
+        }
+      }
+      components {
+        key: 4807123767067670551
+        value {
+          type: 4807123767067670551
+          component: "-"
+        }
+      }
+      components {
+        key: 7625436923667245673
+        value {
+          type: 7625436923667245673
+          component: "\032\035\022\033\021\000\000\000\000\000\000\010@\031\000\000\000\000\000\000\010@!\232\231\231\231\231\231\271?"
+        }
+      }
+    }
+  }
+  entities {
+    key: 11
+    value {
+      id: 11
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "0 0 500 0 0 0"
+        }
+      }
+      components {
+        key: -3852985885258209233
+        value {
+          type: 14593758188451342383
+          component: "directional"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "sunUTC"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "1"
+        }
+      }
+      components {
+        key: 599184545698878551
+        value {
+          type: 599184545698878551
+          component: "\022\006sunUTC\030\002\"\026\"\t!\000\000\000\000\000@\177@*\t)\000\000\000\000\000\000\360?*\024\025\213lg?\035\213lg?%\213lg?-\000\000\200?2\024\025\203\300\212>\035\203\300\212>%\203\300\212>-\000\000\200?=\000\000\200?R\033\021\374\251\361\322MbP?\031\000\000\000\000\000\000\344?!\366(\\\217\302\365\350\277]\000\000\372D`\001\225\001\000\000\200?\240\001\001"
+        }
+      }
+    }
+  }
+  entities {
+    key: 12
+    value {
+      id: 12
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "0 0 0 0 0 0"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "sunUTCVisual"
+        }
+      }
+      components {
+        key: -170031897039044735
+        value {
+          type: 18276712176670506881
+          component: "-"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "11"
+        }
+      }
+      components {
+        key: 665776623189629951
+        value {
+          type: 665776623189629951
+          component: "0"
+        }
+      }
+      components {
+        key: 5322000723261735567
+        value {
+          type: 5322000723261735567
+          component: "0"
+        }
+      }
+    }
+  }
+  entities {
+    key: 13
+    value {
+      id: 13
+      components {
+        key: -8542172212698277821
+        value {
+          type: 9904571861011273795
+          component: "\022\253\005\022\'gz::sim::systems::MulticopterMotorModel\032%gz-sim-multicopter-motor-model-system\"\330\004<jointName>rotor_0_joint</jointName>\n<linkName>rotor_0</linkName>\n<turningDirection>ccw</turningDirection>\n<timeConstantUp>0.0125</timeConstantUp>\n<timeConstantDown>0.025</timeConstantDown>\n<maxRotVelocity>1000.0</maxRotVelocity>\n<motorConstant>8.54858e-06</motorConstant>\n<momentConstant>0.016</momentConstant>\n<commandSubTopic>command/motor_speed</commandSubTopic>\n<motorNumber>0</motorNumber>\n<rotorDragCoefficient>8.06428e-05</rotorDragCoefficient>\n<rollingMomentCoefficient>1e-06</rollingMomentCoefficient>\n<rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>\n<motorType>velocity</motorType>\n\022\253\005\022\'gz::sim::systems::MulticopterMotorModel\032%gz-sim-multicopter-motor-model-system\"\330\004<jointName>rotor_1_joint</jointName>\n<linkName>rotor_1</linkName>\n<turningDirection>ccw</turningDirection>\n<timeConstantUp>0.0125</timeConstantUp>\n<timeConstantDown>0.025</timeConstantDown>\n<maxRotVelocity>1000.0</maxRotVelocity>\n<motorConstant>8.54858e-06</motorConstant>\n<momentConstant>0.016</momentConstant>\n<commandSubTopic>command/motor_speed</commandSubTopic>\n<motorNumber>1</motorNumber>\n<rotorDragCoefficient>8.06428e-05</rotorDragCoefficient>\n<rollingMomentCoefficient>1e-06</rollingMomentCoefficient>\n<rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>\n<motorType>velocity</motorType>\n\022\252\005\022\'gz::sim::systems::MulticopterMotorModel\032%gz-sim-multicopter-motor-model-system\"\327\004<jointName>rotor_2_joint</jointName>\n<linkName>rotor_2</linkName>\n<turningDirection>cw</turningDirection>\n<timeConstantUp>0.0125</timeConstantUp>\n<timeConstantDown>0.025</timeConstantDown>\n<maxRotVelocity>1000.0</maxRotVelocity>\n<motorConstant>8.54858e-06</motorConstant>\n<momentConstant>0.016</momentConstant>\n<commandSubTopic>command/motor_speed</commandSubTopic>\n<motorNumber>2</motorNumber>\n<rotorDragCoefficient>8.06428e-05</rotorDragCoefficient>\n<rollingMomentCoefficient>1e-06</rollingMomentCoefficient>\n<rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>\n<motorType>velocity</motorType>\n\022\252\005\022\'gz::sim::systems::MulticopterMotorModel\032%gz-sim-multicopter-motor-model-system\"\327\004<jointName>rotor_3_joint</jointName>\n<linkName>rotor_3</linkName>\n<turningDirection>cw</turningDirection>\n<timeConstantUp>0.0125</timeConstantUp>\n<timeConstantDown>0.025</timeConstantDown>\n<maxRotVelocity>1000.0</maxRotVelocity>\n<motorConstant>8.54858e-06</motorConstant>\n<momentConstant>0.016</momentConstant>\n<commandSubTopic>command/motor_speed</commandSubTopic>\n<motorNumber>3</motorNumber>\n<rotorDragCoefficient>8.06428e-05</rotorDragCoefficient>\n<rollingMomentCoefficient>1e-06</rollingMomentCoefficient>\n<rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>\n<motorType>velocity</motorType>\n\022:\022$gz::sim::systems::MotorFailureSystem\032\022MotorFailurePlugin"
+        }
+      }
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "-16.5903 66.6257 0.433221 0.0599053 0.0574248 2.02009"
+        }
+      }
+      components {
+        key: -5517554697507270515
+        value {
+          type: 12929189376202281101
+          component: "/tmp/uav_usv_lab.xOUueO/models/x500_mono_cam/model.sdf"
+        }
+      }
+      components {
+        key: -4984255610533233528
+        value {
+          type: 13462488463176318088
+          component: "0"
+        }
+      }
+      components {
+        key: -2963615567024695870
+        value {
+          type: 15483128506684855746
+          component: "-"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "x500_mono_cam_0"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "1"
+        }
+      }
+      components {
+        key: 514273962667148627
+        value {
+          type: 514273962667148627
+          component: "0"
+        }
+      }
+      components {
+        key: 1448650493567121171
+        value {
+          type: 1448650493567121171
+          component: "0"
+        }
+      }
+      components {
+        key: 2204389715118210201
+        value {
+          type: 2204389715118210201
+          component: "<?xml version=\"1.0\" ?><sdf version=\'1.11\'><model name=\'x500_mono_cam\'>\n  <frame name=\'_merged__x500__model__\' attached_to=\'base_link\'>\n    <pose relative_to=\'__model__\'>0 0 0 0 0 0</pose>\n  </frame>\n  <frame name=\'_merged__x500_base__model__\' attached_to=\'base_link\'>\n    <pose relative_to=\'_merged__x500__model__\'>0 0 0.23999999999999999 0 0 0</pose>\n  </frame>\n  <link name=\'base_link\'>\n    <inertial>\n      <mass>2</mass>\n      <inertia>\n        <ixx>0.021666666666666671</ixx>\n        <ixy>0</ixy>\n        <ixz>0</ixz>\n        <iyy>0.021666666666666671</iyy>\n        <iyz>0</iyz>\n        <izz>0.040000000000000008</izz>\n      </inertia>\n    </inertial>\n    <gravity>true</gravity>\n    <velocity_decay/>\n    <visual name=\'base_link_visual\'>\n      <pose>0 0 0.025000000000000001 0 0 -3.1415926531795866</pose>\n      <geometry>\n        <mesh>\n          <scale>1 1 1</scale>\n          <uri>model://x500_base/meshes/NXP-HGD-CF.dae</uri>\n        </mesh>\n      </geometry>\n    </visual>\n    <visual name=\'5010_motor_base_0\'>\n      <pose>0.17399999999999999 0.17399999999999999 0.032000000000000001 0 0 -0.45000000000000001</pose>\n      <geometry>\n        <mesh>\n          <scale>1 1 1</scale>\n          <uri>model://x500_base/meshes/5010Base.dae</uri>\n        </mesh>\n      </geometry>\n    </visual>\n    <visual name=\'5010_motor_base_1\'>\n      <pose>-0.17399999999999999 0.17399999999999999 0.032000000000000001 0 0 -0.45000000000000001</pose>\n      <geometry>\n        <mesh>\n          <scale>1 1 1</scale>\n          <uri>model://x500_base/meshes/5010Base.dae</uri>\n        </mesh>\n      </geometry>\n    </visual>\n    <visual name=\'5010_motor_base_2\'>\n      <pose>0.17399999999999999 -0.17399999999999999 0.032000000000000001 0 0 -0.45000000000000001</pose>\n      <geometry>\n        <mesh>\n          <scale>1 1 1</scale>\n          <uri>model://x500_base/meshes/5010Base.dae</uri>\n        </mesh>\n      </geometry>\n    </visual>\n    <visual name=\'5010_motor_base_3\'>\n      <pose>-0.17399999999999999 -0.17399999999999999 0.032000000000000001 0 0 -0.45000000000000001</pose>\n      <geometry>\n        <mesh>\n          <scale>1 1 1</scale>\n          <uri>model://x500_base/meshes/5010Base.dae</uri>\n        </mesh>\n      </geometry>\n    </visual>\n    <visual name=\'NXP_FMUK66_FRONT\'>\n      <pose>0.047 0.001 0.042999999999999997 1 1.1102230246251565e-16 1.5699999999999998</pose>\n      <cast_shadows>false</cast_shadows>\n      <geometry>\n        <plane>\n          <normal>0 0 1</normal>\n          <size>0.012999999999999999 0.0070000000000000001</size>\n        </plane>\n      </geometry>\n      <material>\n        <diffuse>1 1 1 1</diffuse>\n        <specular>1 1 1 1</specular>\n        <pbr>\n          <metal>\n            <albedo_map>model://x500_base/materials/textures/nxp.png</albedo_map>\n          </metal>\n        </pbr>\n      </material>\n    </visual>\n    <visual name=\'NXP_FMUK66_TOP\'>\n      <pose>-0.023 0 0.051499999999999997 0 0 -1.5700000000000001</pose>\n      <cast_shadows>false</cast_shadows>\n      <geometry>\n        <plane>\n          <normal>0 0 1</normal>\n          <size>0.012999999999999999 0.0070000000000000001</size>\n        </plane>\n      </geometry>\n      <material>\n        <diffuse>1 1 1 1</diffuse>\n        <specular>1 1 1 1</specular>\n        <pbr>\n          <metal>\n            <albedo_map>model://x500_base/materials/textures/nxp.png</albedo_map>\n          </metal>\n        </pbr>\n      </material>\n    </visual>\n    <visual name=\'RDDRONE_FMUK66_TOP\'>\n      <pose>-0.029999999999999999 0 0.051499999999999997 0 0 -1.5700000000000001</pose>\n      <cast_shadows>false</cast_shadows>\n      <geometry>\n        <plane>\n          <normal>0 0 1</normal>\n          <size>0.032000000000000001 0.0033999999999999998</size>\n        </plane>\n      </geometry>\n      <material>\n        <diffuse>1 1 1 1</diffuse>\n        <specular>1 1 1 1</specular>\n        <pbr>\n          <metal>\n            <albedo_map>model://x500_base/materials/textures/rd.png</albedo_map>\n          </metal>\n        </pbr>\n      </material>\n    </visual>\n    <collision name=\'base_link_collision_0\'>\n      <pose>0 0 0.0070000000000000001 0 0 0</pose>\n      <geometry>\n        <box>\n          <size>0.35355339059327373 0.35355339059327373 0.050000000000000003</size>\n        </box>\n      </geometry>\n      <surface>\n        <contact>\n          <ode>\n            <min_depth>0.001</min_depth>\n            <max_vel>0</max_vel>\n          </ode>\n        </contact>\n        <friction>\n          <ode/>\n        </friction>\n        <bounce/>\n      </surface>\n    </collision>\n    <collision name=\'base_link_collision_1\'>\n      <pose>0 -0.098000000000000004 -0.123 -0.34999999999999998 0 0</pose>\n      <geometry>\n        <box>\n          <size>0.014999999999999999 0.014999999999999999 0.20999999999999999</size>\n        </box>\n      </geometry>\n      <surface>\n        <contact>\n          <ode>\n            <min_depth>0.001</min_depth>\n            <max_vel>0</max_vel>\n          </ode>\n        </contact>\n        <friction>\n          <ode/>\n        </friction>\n        <bounce/>\n      </surface>\n    </collision>\n    <collision name=\'base_link_collision_2\'>\n      <pose>0 0.098000000000000004 -0.123 0.34999999999999998 0 0</pose>\n      <geometry>\n        <box>\n          <size>0.014999999999999999 0.014999999999999999 0.20999999999999999</size>\n        </box>\n      </geometry>\n      <surface>\n        <contact>\n          <ode>\n            <min_depth>0.001</min_depth>\n            <max_vel>0</max_vel>\n          </ode>\n        </contact>\n        <friction>\n          <ode/>\n        </friction>\n        <bounce/>\n      </surface>\n    </collision>\n    <collision name=\'base_link_collision_3\'>\n      <pose>0 -0.13200000000000001 -0.2195 0 0 0</pose>\n      <geometry>\n        <box>\n          <size>0.25 0.014999999999999999 0.014999999999999999</size>\n        </box>\n      </geometry>\n      <surface>\n        <contact>\n          <ode>\n            <min_depth>0.001</min_depth>\n            <max_vel>0</max_vel>\n          </ode>\n        </contact>\n        <friction>\n          <ode/>\n        </friction>\n        <bounce/>\n      </surface>\n    </collision>\n    <collision name=\'base_link_collision_4\'>\n      <pose>0 0.13200000000000001 -0.2195 0 0 0</pose>\n      <geometry>\n        <box>\n          <size>0.25 0.014999999999999999 0.014999999999999999</size>\n        </box>\n      </geometry>\n      <surface>\n        <contact>\n          <ode>\n            <min_depth>0.001</min_depth>\n            <max_vel>0</max_vel>\n          </ode>\n        </contact>\n        <friction>\n          <ode/>\n        </friction>\n        <bounce/>\n      </surface>\n    </collision>\n    <sensor name=\'air_pressure_sensor\' type=\'air_pressure\'>\n      <always_on>true</always_on>\n      <update_rate>50</update_rate>\n      <air_pressure>\n        <pressure>\n          <noise type=\'gaussian\'>\n            <mean>0</mean>\n            <stddev>3</stddev>\n          </noise>\n        </pressure>\n      </air_pressure>\n      <gz_frame_id>base_link</gz_frame_id>\n    </sensor>\n    <sensor name=\'magnetometer_sensor\' type=\'magnetometer\'>\n      <always_on>true</always_on>\n      <update_rate>100</update_rate>\n      <magnetometer>\n        <x>\n          <noise type=\'gaussian\'>\n            <stddev>0.0001</stddev>\n          </noise>\n        </x>\n        <y>\n          <noise type=\'gaussian\'>\n            <stddev>0.0001</stddev>\n          </noise>\n        </y>\n        <z>\n          <noise type=\'gaussian\'>\n            <stddev>0.0001</stddev>\n          </noise>\n        </z>\n      </magnetometer>\n      <gz_frame_id>base_link</gz_frame_id>\n    </sensor>\n    <sensor name=\'imu_sensor\' type=\'imu\'>\n      <always_on>true</always_on>\n      <update_rate>250</update_rate>\n      <imu>\n        <angular_velocity>\n          <x>\n            <noise type=\'gaussian\'>\n              <mean>0</mean>\n              <stddev>0.00087266459999999998</stddev>\n            </noise>\n          </x>\n          <y>\n            <noise type=\'gaussian\'>\n              <mean>0</mean>\n              <stddev>0.00087266459999999998</stddev>\n            </noise>\n          </y>\n          <z>\n            <noise type=\'gaussian\'>\n              <mean>0</mean>\n              <stddev>0.00087266459999999998</stddev>\n            </noise>\n          </z>\n        </angular_velocity>\n        <linear_acceleration>\n          <x>\n            <noise type=\'gaussian\'>\n              <mean>0</mean>\n              <stddev>0.0063699999999999998</stddev>\n            </noise>\n          </x>\n          <y>\n            <noise type=\'gaussian\'>\n              <mean>0</mean>\n              <stddev>0.0063699999999999998</stddev>\n            </noise>\n          </y>\n          <z>\n            <noise type=\'gaussian\'>\n              <mean>0</mean>\n              <stddev>0.0068599999999999998</stddev>\n            </noise>\n          </z>\n        </linear_acceleration>\n      </imu>\n      <gz_frame_id>base_link</gz_frame_id>\n    </sensor>\n    <sensor name=\'navsat_sensor\' type=\'navsat\'>\n      <always_on>true</always_on>\n      <update_rate>30</update_rate>\n      <gz_frame_id>base_link</gz_frame_id>\n      <gps/>\n    </sensor>\n    <pose relative_to=\'_merged__x500_base__model__\'>0 0 0 0 0 0</pose>\n  </link>\n  <link name=\'rotor_0\'>\n    <gravity>true</gravity>\n    <self_collide>false</self_collide>\n    <velocity_decay/>\n    <pose relative_to=\'_merged__x500_base__model__\'>0.17399999999999999 -0.17399999999999999 0.059999999999999998 0 0 0</pose>\n    <inertial>\n      <mass>0.016076923076923075</mass>\n      <inertia>\n        <ixx>3.8464910483993325e-07</ixx>\n        <iyy>2.6115851691700804e-05</iyy>\n        <izz>2.6498582347140039e-05</izz>\n        <ixy>0</ixy>\n        <ixz>0</ixz>\n        <iyz>0</iyz>\n      </inertia>\n    </inertial>\n    <visual name=\'rotor_0_visual\'>\n      <pose>-0.021999999999999999 -0.14638461538461536 -0.016 0 0 0</pose>\n      <geometry>\n        <mesh>\n          <scale>0.84615384615384615 0.84615384615384615 0.84615384615384615</scale>\n          <uri>model://x500_base/meshes/1345_prop_ccw.stl</uri>\n        </mesh>\n      </geometry>\n      <material>\n        <script>\n          <name>Gazebo/DarkGrey</name>\n          <uri>file://media/materials/scripts/gazebo.material</uri>\n        </script>\n      </material>\n    </visual>\n    <visual name=\'rotor_0_visual_motor_bell\'>\n      <pose>0 0 -0.032000000000000001 0 0 0</pose>\n      <geometry>\n        <mesh>\n          <scale>1 1 1</scale>\n          <uri>model://x500_base/meshes/5010Bell.dae</uri>\n        </mesh>\n      </geometry>\n    </visual>\n    <collision name=\'rotor_0_collision\'>\n      <pose>0 0 0 0 0 0</pose>\n      <geometry>\n        <box>\n          <size>0.27923076923076923 0.016923076923076923 0.0008461538461538462</size>\n        </box>\n      </geometry>\n      <surface>\n        <contact>\n          <ode>\n            <min_depth>0.001</min_depth>\n            <max_vel>0</max_vel>\n          </ode>\n        </contact>\n        <friction>\n          <ode/>\n        </friction>\n        <bounce/>\n      </surface>\n    </collision>\n  </link>\n  <joint name=\'rotor_0_joint\' type=\'revolute\'>\n    <parent>base_link</parent>\n    <child>rotor_0</child>\n    <axis>\n      <xyz>0 0 1</xyz>\n      <limit>\n        <lower>-10000000000000000</lower>\n        <upper>10000000000000000</upper>\n      </limit>\n      <dynamics>\n        <spring_reference>0</spring_reference>\n        <spring_stiffness>0</spring_stiffness>\n      </dynamics>\n    </axis>\n  </joint>\n  <link name=\'rotor_1\'>\n    <gravity>true</gravity>\n    <self_collide>false</self_collide>\n    <velocity_decay/>\n    <pose relative_to=\'_merged__x500_base__model__\'>-0.17399999999999999 0.17399999999999999 0.059999999999999998 0 0 0</pose>\n    <inertial>\n      <mass>0.016076923076923075</mass>\n      <inertia>\n        <ixx>3.8464910483993325e-07</ixx>\n        <iyy>2.6115851691700804e-05</iyy>\n        <izz>2.6498582347140039e-05</izz>\n        <ixy>0</ixy>\n        <ixz>0</ixz>\n        <iyz>0</iyz>\n      </inertia>\n    </inertial>\n    <visual name=\'rotor_1_visual\'>\n      <pose>-0.021999999999999999 -0.14638461538461536 -0.016 0 0 0</pose>\n      <geometry>\n        <mesh>\n          <scale>0.84615384615384615 0.84615384615384615 0.84615384615384615</scale>\n          <uri>model://x500_base/meshes/1345_prop_ccw.stl</uri>\n        </mesh>\n      </geometry>\n      <material>\n        <script>\n          <name>Gazebo/DarkGrey</name>\n          <uri>file://media/materials/scripts/gazebo.material</uri>\n        </script>\n      </material>\n    </visual>\n    <visual name=\'rotor_1_visual_motor_top\'>\n      <pose>0 0 -0.032000000000000001 0 0 0</pose>\n      <geometry>\n        <mesh>\n          <scale>1 1 1</scale>\n          <uri>model://x500_base/meshes/5010Bell.dae</uri>\n        </mesh>\n      </geometry>\n    </visual>\n    <collision name=\'rotor_1_collision\'>\n      <pose>0 0 0 0 0 0</pose>\n      <geometry>\n        <box>\n          <size>0.27923076923076923 0.016923076923076923 0.0008461538461538462</size>\n        </box>\n      </geometry>\n      <surface>\n        <contact>\n          <ode>\n            <min_depth>0.001</min_depth>\n            <max_vel>0</max_vel>\n          </ode>\n        </contact>\n        <friction>\n          <ode/>\n        </friction>\n        <bounce/>\n      </surface>\n    </collision>\n  </link>\n  <joint name=\'rotor_1_joint\' type=\'revolute\'>\n    <parent>base_link</parent>\n    <child>rotor_1</child>\n    <axis>\n      <xyz>0 0 1</xyz>\n      <limit>\n        <lower>-10000000000000000</lower>\n        <upper>10000000000000000</upper>\n      </limit>\n      <dynamics>\n        <spring_reference>0</spring_reference>\n        <spring_stiffness>0</spring_stiffness>\n      </dynamics>\n    </axis>\n  </joint>\n  <link name=\'rotor_2\'>\n    <gravity>true</gravity>\n    <self_collide>false</self_collide>\n    <velocity_decay/>\n    <pose relative_to=\'_merged__x500_base__model__\'>0.17399999999999999 0.17399999999999999 0.059999999999999998 0 0 0</pose>\n    <inertial>\n      <mass>0.016076923076923075</mass>\n      <inertia>\n        <ixx>3.8464910483993325e-07</ixx>\n        <iyy>2.6115851691700804e-05</iyy>\n        <izz>2.6498582347140039e-05</izz>\n        <ixy>0</ixy>\n        <ixz>0</ixz>\n        <iyz>0</iyz>\n      </inertia>\n    </inertial>\n    <visual name=\'rotor_2_visual\'>\n      <pose>-0.021999999999999999 -0.14638461538461536 -0.016 0 0 0</pose>\n      <geometry>\n        <mesh>\n          <scale>0.84615384615384615 0.84615384615384615 0.84615384615384615</scale>\n          <uri>model://x500_base/meshes/1345_prop_cw.stl</uri>\n        </mesh>\n      </geometry>\n      <material>\n        <script>\n          <name>Gazebo/DarkGrey</name>\n          <uri>file://media/materials/scripts/gazebo.material</uri>\n        </script>\n      </material>\n    </visual>\n    <visual name=\'rotor_2_visual_motor_top\'>\n      <pose>0 0 -0.032000000000000001 0 0 0</pose>\n      <geometry>\n        <mesh>\n          <scale>1 1 1</scale>\n          <uri>model://x500_base/meshes/5010Bell.dae</uri>\n        </mesh>\n      </geometry>\n    </visual>\n    <collision name=\'rotor_2_collision\'>\n      <pose>0 0 0 0 0 0</pose>\n      <geometry>\n        <box>\n          <size>0.27923076923076923 0.016923076923076923 0.0008461538461538462</size>\n        </box>\n      </geometry>\n      <surface>\n        <contact>\n          <ode>\n            <min_depth>0.001</min_depth>\n            <max_vel>0</max_vel>\n          </ode>\n        </contact>\n        <friction>\n          <ode/>\n        </friction>\n        <bounce/>\n      </surface>\n    </collision>\n  </link>\n  <joint name=\'rotor_2_joint\' type=\'revolute\'>\n    <parent>base_link</parent>\n    <child>rotor_2</child>\n    <axis>\n      <xyz>0 0 1</xyz>\n      <limit>\n        <lower>-10000000000000000</lower>\n        <upper>10000000000000000</upper>\n      </limit>\n      <dynamics>\n        <spring_reference>0</spring_reference>\n        <spring_stiffness>0</spring_stiffness>\n      </dynamics>\n    </axis>\n  </joint>\n  <link name=\'rotor_3\'>\n    <gravity>true</gravity>\n    <self_collide>false</self_collide>\n    <velocity_decay/>\n    <pose relative_to=\'_merged__x500_base__model__\'>-0.17399999999999999 -0.17399999999999999 0.059999999999999998 0 0 0</pose>\n    <inertial>\n      <mass>0.016076923076923075</mass>\n      <inertia>\n        <ixx>3.8464910483993325e-07</ixx>\n        <iyy>2.6115851691700804e-05</iyy>\n        <izz>2.6498582347140039e-05</izz>\n        <ixy>0</ixy>\n        <ixz>0</ixz>\n        <iyz>0</iyz>\n      </inertia>\n    </inertial>\n    <visual name=\'rotor_3_visual\'>\n      <pose>-0.021999999999999999 -0.14638461538461536 -0.016 0 0 0</pose>\n      <geometry>\n        <mesh>\n          <scale>0.84615384615384615 0.84615384615384615 0.84615384615384615</scale>\n          <uri>model://x500_base/meshes/1345_prop_cw.stl</uri>\n        </mesh>\n      </geometry>\n      <material>\n        <script>\n          <name>Gazebo/DarkGrey</name>\n          <uri>file://media/materials/scripts/gazebo.material</uri>\n        </script>\n      </material>\n    </visual>\n    <visual name=\'rotor_3_visual_motor_top\'>\n      <pose>0 0 -0.032000000000000001 0 0 0</pose>\n      <geometry>\n        <mesh>\n          <scale>1 1 1</scale>\n          <uri>model://x500_base/meshes/5010Bell.dae</uri>\n        </mesh>\n      </geometry>\n    </visual>\n    <collision name=\'rotor_3_collision\'>\n      <pose>0 0 0 0 0 0</pose>\n      <geometry>\n        <box>\n          <size>0.27923076923076923 0.016923076923076923 0.0008461538461538462</size>\n        </box>\n      </geometry>\n      <surface>\n        <contact>\n          <ode>\n            <min_depth>0.001</min_depth>\n            <max_vel>0</max_vel>\n          </ode>\n        </contact>\n        <friction>\n          <ode/>\n        </friction>\n        <bounce/>\n      </surface>\n    </collision>\n  </link>\n  <joint name=\'rotor_3_joint\' type=\'revolute\'>\n    <parent>base_link</parent>\n    <child>rotor_3</child>\n    <axis>\n      <xyz>0 0 1</xyz>\n      <limit>\n        <lower>-10000000000000000</lower>\n        <upper>10000000000000000</upper>\n      </limit>\n      <dynamics>\n        <spring_reference>0</spring_reference>\n        <spring_stiffness>0</spring_stiffness>\n      </dynamics>\n    </axis>\n  </joint>\n  <plugin name=\'gz::sim::systems::MulticopterMotorModel\' filename=\'gz-sim-multicopter-motor-model-system\'>\n    <jointName>rotor_0_joint</jointName>\n    <linkName>rotor_0</linkName>\n    <turningDirection>ccw</turningDirection>\n    <timeConstantUp>0.0125</timeConstantUp>\n    <timeConstantDown>0.025</timeConstantDown>\n    <maxRotVelocity>1000.0</maxRotVelocity>\n    <motorConstant>8.54858e-06</motorConstant>\n    <momentConstant>0.016</momentConstant>\n    <commandSubTopic>command/motor_speed</commandSubTopic>\n    <motorNumber>0</motorNumber>\n    <rotorDragCoefficient>8.06428e-05</rotorDragCoefficient>\n    <rollingMomentCoefficient>1e-06</rollingMomentCoefficient>\n    <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>\n    <motorType>velocity</motorType>\n  </plugin>\n  <plugin name=\'gz::sim::systems::MulticopterMotorModel\' filename=\'gz-sim-multicopter-motor-model-system\'>\n    <jointName>rotor_1_joint</jointName>\n    <linkName>rotor_1</linkName>\n    <turningDirection>ccw</turningDirection>\n    <timeConstantUp>0.0125</timeConstantUp>\n    <timeConstantDown>0.025</timeConstantDown>\n    <maxRotVelocity>1000.0</maxRotVelocity>\n    <motorConstant>8.54858e-06</motorConstant>\n    <momentConstant>0.016</momentConstant>\n    <commandSubTopic>command/motor_speed</commandSubTopic>\n    <motorNumber>1</motorNumber>\n    <rotorDragCoefficient>8.06428e-05</rotorDragCoefficient>\n    <rollingMomentCoefficient>1e-06</rollingMomentCoefficient>\n    <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>\n    <motorType>velocity</motorType>\n  </plugin>\n  <plugin name=\'gz::sim::systems::MulticopterMotorModel\' filename=\'gz-sim-multicopter-motor-model-system\'>\n    <jointName>rotor_2_joint</jointName>\n    <linkName>rotor_2</linkName>\n    <turningDirection>cw</turningDirection>\n    <timeConstantUp>0.0125</timeConstantUp>\n    <timeConstantDown>0.025</timeConstantDown>\n    <maxRotVelocity>1000.0</maxRotVelocity>\n    <motorConstant>8.54858e-06</motorConstant>\n    <momentConstant>0.016</momentConstant>\n    <commandSubTopic>command/motor_speed</commandSubTopic>\n    <motorNumber>2</motorNumber>\n    <rotorDragCoefficient>8.06428e-05</rotorDragCoefficient>\n    <rollingMomentCoefficient>1e-06</rollingMomentCoefficient>\n    <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>\n    <motorType>velocity</motorType>\n  </plugin>\n  <plugin name=\'gz::sim::systems::MulticopterMotorModel\' filename=\'gz-sim-multicopter-motor-model-system\'>\n    <jointName>rotor_3_joint</jointName>\n    <linkName>rotor_3</linkName>\n    <turningDirection>cw</turningDirection>\n    <timeConstantUp>0.0125</timeConstantUp>\n    <timeConstantDown>0.025</timeConstantDown>\n    <maxRotVelocity>1000.0</maxRotVelocity>\n    <motorConstant>8.54858e-06</motorConstant>\n    <momentConstant>0.016</momentConstant>\n    <commandSubTopic>command/motor_speed</commandSubTopic>\n    <motorNumber>3</motorNumber>\n    <rotorDragCoefficient>8.06428e-05</rotorDragCoefficient>\n    <rollingMomentCoefficient>1e-06</rollingMomentCoefficient>\n    <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>\n    <motorType>velocity</motorType>\n  </plugin>\n  <plugin name=\'gz::sim::systems::MotorFailureSystem\' filename=\'MotorFailurePlugin\'/>\n  <link name=\'front_camera_link\'>\n    <pose relative_to=\'base_link\'>0.17999999999999999 0 0.14999999999999999 0 0.48869219055841234 0</pose>\n    <inertial>\n      <mass>0.050000000000000003</mass>\n      <inertia>\n        <ixx>4.0000000000000003e-05</ixx>\n        <iyy>4.0000000000000003e-05</iyy>\n        <izz>4.0000000000000003e-05</izz>\n        <ixy>0</ixy>\n        <ixz>0</ixz>\n        <iyz>0</iyz>\n      </inertia>\n    </inertial>\n    <visual name=\'housing\'>\n      <geometry>\n        <box>\n          <size>0.029999999999999999 0.050000000000000003 0.040000000000000001</size>\n        </box>\n      </geometry>\n      <material>\n        <ambient>0.119999997 0.119999997 0.140000001 1</ambient>\n        <diffuse>0.180000007 0.180000007 0.200000003 1</diffuse>\n      </material>\n    </visual>\n    <sensor name=\'front_tof_camera\' type=\'rgbd_camera\'>\n      <topic>/uav/camera/front</topic>\n      <camera>\n        <optical_frame_id>front_camera_optical_frame</optical_frame_id>\n        <horizontal_fov>1.74</horizontal_fov>\n        <image>\n          <format>R8G8B8</format>\n          <width>640</width>\n          <height>480</height>\n        </image>\n        <clip>\n          <near>0.050000000000000003</near>\n          <far>60</far>\n        </clip>\n        <depth_camera>\n          <output>depths</output>\n          <clip>\n            <near>0.050000000000000003</near>\n            <far>25</far>\n          </clip>\n        </depth_camera>\n      </camera>\n      <always_on>true</always_on>\n      <update_rate>20</update_rate>\n      <visualize>false</visualize>\n      <enable_metrics>true</enable_metrics>\n    </sensor>\n  </link>\n  <joint name=\'front_camera_joint\' type=\'fixed\'>\n    <parent>base_link</parent>\n    <child>front_camera_link</child>\n  </joint>\n  <link name=\'down_camera_link\'>\n    <pose relative_to=\'base_link\'>0.050000000000000003 0 -0.12 0 1.5707963267948966 0</pose>\n    <inertial>\n      <mass>0.050000000000000003</mass>\n      <inertia>\n        <ixx>4.0000000000000003e-05</ixx>\n        <iyy>4.0000000000000003e-05</iyy>\n        <izz>4.0000000000000003e-05</izz>\n        <ixy>0</ixy>\n        <ixz>0</ixz>\n        <iyz>0</iyz>\n      </inertia>\n    </inertial>\n    <visual name=\'housing\'>\n      <geometry>\n        <box>\n          <size>0.029999999999999999 0.050000000000000003 0.040000000000000001</size>\n        </box>\n      </geometry>\n      <material>\n        <ambient>0.119999997 0.119999997 0.140000001 1</ambient>\n        <diffuse>0.180000007 0.180000007 0.200000003 1</diffuse>\n      </material>\n    </visual>\n  </link>\n  <joint name=\'down_camera_joint\' type=\'fixed\'>\n    <parent>base_link</parent>\n    <child>down_camera_link</child>\n  </joint>\n  <pose>0 0 0 0 0 1.57079632679</pose>\n</model>\n</sdf>"
+        }
+      }
+      components {
+        key: 2958716330662201668
+        value {
+          type: 2958716330662201668
+          component: "14"
+        }
+      }
+    }
+  }
+  entities {
+    key: 14
+    value {
+      id: 14
+      components {
+        key: -8375486275210973542
+        value {
+          type: 10071257798498578074
+          component: "-16.5833 66.6443 0.672395 0.0599053 0.0574248 2.02009"
+        }
+      }
+      components {
+        key: -7567782760171863729
+        value {
+          type: 10878961313537687887
+          component: "\021\000\000\000\000\000\000\000@\032\r\"\000*\t)\000\000\000\000\000\000\360?!1\226\374b\311/\226?91\226\374b\311/\226?I|\024\256G\341z\244?"
+        }
+      }
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "0 0 0.24 0 0 0"
+        }
+      }
+      components {
+        key: -6078538006196242579
+        value {
+          type: 12368206067513309037
+        }
+      }
+      components {
+        key: -4984255610533233528
+        value {
+          type: 13462488463176318088
+          component: "0"
+        }
+      }
+      components {
+        key: -3677718506378185967
+        value {
+          type: 14769025567331365649
+          component: "-"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "base_link"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "13"
+        }
+      }
+      components {
+        key: 1899862455720879825
+        value {
+          type: 1899862455720879825
+          component: "-"
+        }
+      }
+    }
+  }
+  entities {
+    key: 15
+    value {
+      id: 15
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "0 0 0.025 0 0 -3.14159"
+        }
+      }
+      components {
+        key: -5828171050081229676
+        value {
+          type: 12618573023628321940
+          component: "4294967295"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "base_link_visual"
+        }
+      }
+      components {
+        key: -170031897039044735
+        value {
+          type: 18276712176670506881
+          component: "-"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "14"
+        }
+      }
+      components {
+        key: 665776623189629951
+        value {
+          type: 665776623189629951
+          component: "1"
+        }
+      }
+      components {
+        key: 5322000723261735567
+        value {
+          type: 5322000723261735567
+          component: "0"
+        }
+      }
+      components {
+        key: 7625436923667245673
+        value {
+          type: 7625436923667245673
+          component: "\020\006JF\022\'model://x500_base/meshes/NXP-HGD-CF.dae\032\033\021\000\000\000\000\000\000\360?\031\000\000\000\000\000\000\360?!\000\000\000\000\000\000\360?"
+        }
+      }
+    }
+  }
+  entities {
+    key: 16
+    value {
+      id: 16
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "0.174 0.174 0.032 0 0 -0.45"
+        }
+      }
+      components {
+        key: -5828171050081229676
+        value {
+          type: 12618573023628321940
+          component: "4294967295"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "5010_motor_base_0"
+        }
+      }
+      components {
+        key: -170031897039044735
+        value {
+          type: 18276712176670506881
+          component: "-"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "14"
+        }
+      }
+      components {
+        key: 665776623189629951
+        value {
+          type: 665776623189629951
+          component: "1"
+        }
+      }
+      components {
+        key: 5322000723261735567
+        value {
+          type: 5322000723261735567
+          component: "0"
+        }
+      }
+      components {
+        key: 7625436923667245673
+        value {
+          type: 7625436923667245673
+          component: "\020\006JD\022%model://x500_base/meshes/5010Base.dae\032\033\021\000\000\000\000\000\000\360?\031\000\000\000\000\000\000\360?!\000\000\000\000\000\000\360?"
+        }
+      }
+    }
+  }
+  entities {
+    key: 17
+    value {
+      id: 17
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "-0.174 0.174 0.032 0 0 -0.45"
+        }
+      }
+      components {
+        key: -5828171050081229676
+        value {
+          type: 12618573023628321940
+          component: "4294967295"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "5010_motor_base_1"
+        }
+      }
+      components {
+        key: -170031897039044735
+        value {
+          type: 18276712176670506881
+          component: "-"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "14"
+        }
+      }
+      components {
+        key: 665776623189629951
+        value {
+          type: 665776623189629951
+          component: "1"
+        }
+      }
+      components {
+        key: 5322000723261735567
+        value {
+          type: 5322000723261735567
+          component: "0"
+        }
+      }
+      components {
+        key: 7625436923667245673
+        value {
+          type: 7625436923667245673
+          component: "\020\006JD\022%model://x500_base/meshes/5010Base.dae\032\033\021\000\000\000\000\000\000\360?\031\000\000\000\000\000\000\360?!\000\000\000\000\000\000\360?"
+        }
+      }
+    }
+  }
+  entities {
+    key: 18
+    value {
+      id: 18
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "0.174 -0.174 0.032 0 0 -0.45"
+        }
+      }
+      components {
+        key: -5828171050081229676
+        value {
+          type: 12618573023628321940
+          component: "4294967295"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "5010_motor_base_2"
+        }
+      }
+      components {
+        key: -170031897039044735
+        value {
+          type: 18276712176670506881
+          component: "-"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "14"
+        }
+      }
+      components {
+        key: 665776623189629951
+        value {
+          type: 665776623189629951
+          component: "1"
+        }
+      }
+      components {
+        key: 5322000723261735567
+        value {
+          type: 5322000723261735567
+          component: "0"
+        }
+      }
+      components {
+        key: 7625436923667245673
+        value {
+          type: 7625436923667245673
+          component: "\020\006JD\022%model://x500_base/meshes/5010Base.dae\032\033\021\000\000\000\000\000\000\360?\031\000\000\000\000\000\000\360?!\000\000\000\000\000\000\360?"
+        }
+      }
+    }
+  }
+  entities {
+    key: 19
+    value {
+      id: 19
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "-0.174 -0.174 0.032 0 0 -0.45"
+        }
+      }
+      components {
+        key: -5828171050081229676
+        value {
+          type: 12618573023628321940
+          component: "4294967295"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "5010_motor_base_3"
+        }
+      }
+      components {
+        key: -170031897039044735
+        value {
+          type: 18276712176670506881
+          component: "-"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "14"
+        }
+      }
+      components {
+        key: 665776623189629951
+        value {
+          type: 665776623189629951
+          component: "1"
+        }
+      }
+      components {
+        key: 5322000723261735567
+        value {
+          type: 5322000723261735567
+          component: "0"
+        }
+      }
+      components {
+        key: 7625436923667245673
+        value {
+          type: 7625436923667245673
+          component: "\020\006JD\022%model://x500_base/meshes/5010Base.dae\032\033\021\000\000\000\000\000\000\360?\031\000\000\000\000\000\000\360?!\000\000\000\000\000\000\360?"
+        }
+      }
+    }
+  }
+  entities {
+    key: 20
+    value {
+      id: 20
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "0.047 0.001 0.043 1 1.11022e-16 1.57"
+        }
+      }
+      components {
+        key: -5828171050081229676
+        value {
+          type: 12618573023628321940
+          component: "4294967295"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "NXP_FMUK66_FRONT"
+        }
+      }
+      components {
+        key: -170031897039044735
+        value {
+          type: 18276712176670506881
+          component: "-"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "14"
+        }
+      }
+      components {
+        key: 665776623189629951
+        value {
+          type: 665776623189629951
+          component: "0"
+        }
+      }
+      components {
+        key: 5322000723261735567
+        value {
+          type: 5322000723261735567
+          component: "0"
+        }
+      }
+      components {
+        key: 5653939253203759928
+        value {
+          type: 5653939253203759928
+          component: "*\005-\000\000\200?2\024\025\000\000\200?\035\000\000\200?%\000\000\200?-\000\000\200?:\024\025\000\000\200?\035\000\000\200?%\000\000\200?-\000\000\200?B\005-\000\000\200?H\001RB\010\001\022,model://x500_base/materials/textures/nxp.png!\000\000\000\000\000\000\340?1\000\000\000\000\000\000\340?"
+        }
+      }
+      components {
+        key: 7625436923667245673
+        value {
+          type: 7625436923667245673
+          component: "\020\003*\037\022\t!\000\000\000\000\000\000\360?\032\022\0219\264\310v\276\237\212?\031y\351&1\010\254|?"
+        }
+      }
+    }
+  }
+  entities {
+    key: 21
+    value {
+      id: 21
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "-0.023 0 0.0515 0 0 -1.57"
+        }
+      }
+      components {
+        key: -5828171050081229676
+        value {
+          type: 12618573023628321940
+          component: "4294967295"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "NXP_FMUK66_TOP"
+        }
+      }
+      components {
+        key: -170031897039044735
+        value {
+          type: 18276712176670506881
+          component: "-"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "14"
+        }
+      }
+      components {
+        key: 665776623189629951
+        value {
+          type: 665776623189629951
+          component: "0"
+        }
+      }
+      components {
+        key: 5322000723261735567
+        value {
+          type: 5322000723261735567
+          component: "0"
+        }
+      }
+      components {
+        key: 5653939253203759928
+        value {
+          type: 5653939253203759928
+          component: "*\005-\000\000\200?2\024\025\000\000\200?\035\000\000\200?%\000\000\200?-\000\000\200?:\024\025\000\000\200?\035\000\000\200?%\000\000\200?-\000\000\200?B\005-\000\000\200?H\001RB\010\001\022,model://x500_base/materials/textures/nxp.png!\000\000\000\000\000\000\340?1\000\000\000\000\000\000\340?"
+        }
+      }
+      components {
+        key: 7625436923667245673
+        value {
+          type: 7625436923667245673
+          component: "\020\003*\037\022\t!\000\000\000\000\000\000\360?\032\022\0219\264\310v\276\237\212?\031y\351&1\010\254|?"
+        }
+      }
+    }
+  }
+  entities {
+    key: 22
+    value {
+      id: 22
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "-0.03 0 0.0515 0 0 -1.57"
+        }
+      }
+      components {
+        key: -5828171050081229676
+        value {
+          type: 12618573023628321940
+          component: "4294967295"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "RDDRONE_FMUK66_TOP"
+        }
+      }
+      components {
+        key: -170031897039044735
+        value {
+          type: 18276712176670506881
+          component: "-"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "14"
+        }
+      }
+      components {
+        key: 665776623189629951
+        value {
+          type: 665776623189629951
+          component: "0"
+        }
+      }
+      components {
+        key: 5322000723261735567
+        value {
+          type: 5322000723261735567
+          component: "0"
+        }
+      }
+      components {
+        key: 5653939253203759928
+        value {
+          type: 5653939253203759928
+          component: "*\005-\000\000\200?2\024\025\000\000\200?\035\000\000\200?%\000\000\200?-\000\000\200?:\024\025\000\000\200?\035\000\000\200?%\000\000\200?-\000\000\200?B\005-\000\000\200?H\001RA\010\001\022+model://x500_base/materials/textures/rd.png!\000\000\000\000\000\000\340?1\000\000\000\000\000\000\340?"
+        }
+      }
+      components {
+        key: 7625436923667245673
+        value {
+          type: 7625436923667245673
+          component: "\020\003*\037\022\t!\000\000\000\000\000\000\360?\032\022\021\374\251\361\322Mb\240?\031_\007\316\031Q\332k?"
+        }
+      }
+    }
+  }
+  entities {
+    key: 23
+    value {
+      id: 23
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "0 0 0.007 0 0 0"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "base_link_collision_0"
+        }
+      }
+      components {
+        key: -992030514186885319
+        value {
+          type: 17454713559522666297
+          component: "\032\025base_link_collision_02\026\"\t!y\351&1\010\254|?*\t)\000\000\000\000\000\000\360?:\037\032\035\022\033\021\314;\177f\236\240\326?\031\314;\177f\236\240\326?!\232\231\231\231\231\231\251?"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "14"
+        }
+      }
+      components {
+        key: 4807123767067670551
+        value {
+          type: 4807123767067670551
+          component: "-"
+        }
+      }
+      components {
+        key: 7625436923667245673
+        value {
+          type: 7625436923667245673
+          component: "\032\035\022\033\021\314;\177f\236\240\326?\031\314;\177f\236\240\326?!\232\231\231\231\231\231\251?"
+        }
+      }
+    }
+  }
+  entities {
+    key: 24
+    value {
+      id: 24
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "0 -0.098 -0.123 -0.35 0 0"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "base_link_collision_1"
+        }
+      }
+      components {
+        key: -992030514186885319
+        value {
+          type: 17454713559522666297
+          component: "\032\025base_link_collision_12(\"\022\031J\014\002+\207\026\271\277!\260rh\221\355|\277\277*\022\021\217Jw\352,I\306\277)\3422\003;\341\202\357?:\037\032\035\022\033\021\270\036\205\353Q\270\216?\031\270\036\205\353Q\270\216?!\341z\024\256G\341\312?"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "14"
+        }
+      }
+      components {
+        key: 4807123767067670551
+        value {
+          type: 4807123767067670551
+          component: "-"
+        }
+      }
+      components {
+        key: 7625436923667245673
+        value {
+          type: 7625436923667245673
+          component: "\032\035\022\033\021\270\036\205\353Q\270\216?\031\270\036\205\353Q\270\216?!\341z\024\256G\341\312?"
+        }
+      }
+    }
+  }
+  entities {
+    key: 25
+    value {
+      id: 25
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "0 0.098 -0.123 0.35 0 0"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "base_link_collision_2"
+        }
+      }
+      components {
+        key: -992030514186885319
+        value {
+          type: 17454713559522666297
+          component: "\032\025base_link_collision_22(\"\022\031J\014\002+\207\026\271?!\260rh\221\355|\277\277*\022\021\217Jw\352,I\306?)\3422\003;\341\202\357?:\037\032\035\022\033\021\270\036\205\353Q\270\216?\031\270\036\205\353Q\270\216?!\341z\024\256G\341\312?"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "14"
+        }
+      }
+      components {
+        key: 4807123767067670551
+        value {
+          type: 4807123767067670551
+          component: "-"
+        }
+      }
+      components {
+        key: 7625436923667245673
+        value {
+          type: 7625436923667245673
+          component: "\032\035\022\033\021\270\036\205\353Q\270\216?\031\270\036\205\353Q\270\216?!\341z\024\256G\341\312?"
+        }
+      }
+    }
+  }
+  entities {
+    key: 26
+    value {
+      id: 26
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "0 -0.132 -0.2195 0 0 0"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "base_link_collision_3"
+        }
+      }
+      components {
+        key: -992030514186885319
+        value {
+          type: 17454713559522666297
+          component: "\032\025base_link_collision_32\037\"\022\031L7\211A`\345\300\277!\177j\274t\223\030\314\277*\t)\000\000\000\000\000\000\360?:\037\032\035\022\033\021\000\000\000\000\000\000\320?\031\270\036\205\353Q\270\216?!\270\036\205\353Q\270\216?"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "14"
+        }
+      }
+      components {
+        key: 4807123767067670551
+        value {
+          type: 4807123767067670551
+          component: "-"
+        }
+      }
+      components {
+        key: 7625436923667245673
+        value {
+          type: 7625436923667245673
+          component: "\032\035\022\033\021\000\000\000\000\000\000\320?\031\270\036\205\353Q\270\216?!\270\036\205\353Q\270\216?"
+        }
+      }
+    }
+  }
+  entities {
+    key: 27
+    value {
+      id: 27
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "0 0.132 -0.2195 0 0 0"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "base_link_collision_4"
+        }
+      }
+      components {
+        key: -992030514186885319
+        value {
+          type: 17454713559522666297
+          component: "\032\025base_link_collision_42\037\"\022\031L7\211A`\345\300?!\177j\274t\223\030\314\277*\t)\000\000\000\000\000\000\360?:\037\032\035\022\033\021\000\000\000\000\000\000\320?\031\270\036\205\353Q\270\216?!\270\036\205\353Q\270\216?"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "14"
+        }
+      }
+      components {
+        key: 4807123767067670551
+        value {
+          type: 4807123767067670551
+          component: "-"
+        }
+      }
+      components {
+        key: 7625436923667245673
+        value {
+          type: 7625436923667245673
+          component: "\032\035\022\033\021\000\000\000\000\000\000\320?\031\270\036\205\353Q\270\216?!\270\036\205\353Q\270\216?"
+        }
+      }
+    }
+  }
+  entities {
+    key: 28
+    value {
+      id: 28
+      components {
+        key: -8375486275210973542
+        value {
+          type: 10071257798498578074
+          component: "-16.5833 66.6443 0.672395 0.0599053 0.0574248 2.02009"
+        }
+      }
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "0 0 0 0 0 0"
+        }
+      }
+      components {
+        key: -5326676573418609154
+        value {
+          type: 13120067500290942462
+          component: "world/default/model/x500_mono_cam_0/link/base_link/sensor/air_pressure_sensor/air_pressure"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "air_pressure_sensor"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "14"
+        }
+      }
+      components {
+        key: 1487123851805453106
+        value {
+          type: 1487123851805453106
+          component: "\022\023air_pressure_sensor2\014air_pressureA\000\000\000\000\000\000I@J\r\"\000*\t)\000\000\000\000\000\000\360?\232\001\r\032\013\020\002!\000\000\000\000\000\000\010@"
+        }
+      }
+      components {
+        key: 5501240588895982851
+        value {
+          type: 5501240588895982851
+          component: "-"
+        }
+      }
+    }
+  }
+  entities {
+    key: 29
+    value {
+      id: 29
+      components {
+        key: -8375486275210973542
+        value {
+          type: 10071257798498578074
+          component: "-16.5833 66.6443 0.672395 0.0599053 0.0574248 2.02009"
+        }
+      }
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "0 0 0 0 0 0"
+        }
+      }
+      components {
+        key: -5326676573418609154
+        value {
+          type: 13120067500290942462
+          component: "world/default/model/x500_mono_cam_0/link/base_link/sensor/magnetometer_sensor/magnetometer"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "magnetometer_sensor"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "14"
+        }
+      }
+      components {
+        key: 586460592733032745
+        value {
+          type: 586460592733032745
+          component: "\022\023magnetometer_sensor2\014magnetometerA\000\000\000\000\000\000Y@J\r\"\000*\t)\000\000\000\000\000\000\360?\212\001\'\022\013\020\002!-C\034\353\3426\032?\032\013\020\002!-C\034\353\3426\032?\"\013\020\002!-C\034\353\3426\032?"
+        }
+      }
+      components {
+        key: 5501240588895982851
+        value {
+          type: 5501240588895982851
+          component: "-"
+        }
+      }
+    }
+  }
+  entities {
+    key: 30
+    value {
+      id: 30
+      components {
+        key: -8840417253355933162
+        value {
+          type: 9606326820353618454
+          component: "0.705422 -0.332218 -0.152947"
+        }
+      }
+      components {
+        key: -8375486275210973542
+        value {
+          type: 10071257798498578074
+          component: "-16.5833 66.6443 0.672395 0.0599053 0.0574248 2.02009"
+        }
+      }
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "0 0 0 0 0 0"
+        }
+      }
+      components {
+        key: -5326676573418609154
+        value {
+          type: 13120067500290942462
+          component: "world/default/model/x500_mono_cam_0/link/base_link/sensor/imu_sensor/imu"
+        }
+      }
+      components {
+        key: -1871070833954591988
+        value {
+          type: 16575673239754959628
+          component: "-0.249579 -0.60445 1.43428"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "imu_sensor"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "14"
+        }
+      }
+      components {
+        key: 4037604310053872914
+        value {
+          type: 4037604310053872914
+          component: "\022\nimu_sensor2\003imuA\000\000\000\000\000@o@J\r\"\000*\t)\000\000\000\000\000\000\360?\202\001i\022\'\n\013\020\002!b\233l\365p\230L?\022\013\020\002!b\233l\365p\230L?\032\013\020\002!b\233l\365p\230L?\032\'\n\013\020\002!\017\356\316\332m\027z?\022\013\020\002!\017\356\316\332m\027z?\032\013\020\002!\232\261h:;\031|?\"\025\n\006CUSTOM\022\000\"\t\021\000\000\000\000\000\000\360?"
+        }
+      }
+      components {
+        key: 5501240588895982851
+        value {
+          type: 5501240588895982851
+          component: "-"
+        }
+      }
+    }
+  }
+  entities {
+    key: 31
+    value {
+      id: 31
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "0 0 0 0 0 0"
+        }
+      }
+      components {
+        key: -5326676573418609154
+        value {
+          type: 13120067500290942462
+          component: "world/default/model/x500_mono_cam_0/link/base_link/sensor/navsat_sensor/navsat"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "navsat_sensor"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "14"
+        }
+      }
+      components {
+        key: 5501240588895982851
+        value {
+          type: 5501240588895982851
+          component: "-"
+        }
+      }
+      components {
+        key: 6822503852486540549
+        value {
+          type: 6822503852486540549
+          component: "-3.47165 5.69664 0.165079"
+        }
+      }
+      components {
+        key: 7236786947914523902
+        value {
+          type: 7236786947914523902
+          component: "\022\rnavsat_sensor2\006navsatA\000\000\000\000\000\000>@J\r\"\000*\t)\000\000\000\000\000\000\360?z\000"
+        }
+      }
+    }
+  }
+  entities {
+    key: 32
+    value {
+      id: 32
+      components {
+        key: -8375486275210973542
+        value {
+          type: 10071257798498578074
+          component: "-16.5003 66.8803 0.711802 0.059622 0.0577189 2.01516"
+        }
+      }
+      components {
+        key: -7567782760171863729
+        value {
+          type: 10878961313537687887
+          component: "\021\271\277W\013xv\220?\032\r\"\000*\t)\000\000\000\000\000\000\360?!\344nN\2478\320\231>9\3664\253\251kb\373>I!m\220\266(\311\373>"
+        }
+      }
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "0.174 -0.174 0.3 -8.54248e-21 3.46944e-18 -0.00492441"
+        }
+      }
+      components {
+        key: -6078538006196242579
+        value {
+          type: 12368206067513309037
+        }
+      }
+      components {
+        key: -4984255610533233528
+        value {
+          type: 13462488463176318088
+          component: "0"
+        }
+      }
+      components {
+        key: -3677718506378185967
+        value {
+          type: 14769025567331365649
+          component: "-"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "rotor_0"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "13"
+        }
+      }
+      components {
+        key: 6822503852486540549
+        value {
+          type: 6822503852486540549
+          component: "-3.39126 5.67941 0.0989158"
+        }
+      }
+    }
+  }
+  entities {
+    key: 33
+    value {
+      id: 33
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "-0.022 -0.146385 -0.016 0 0 0"
+        }
+      }
+      components {
+        key: -5828171050081229676
+        value {
+          type: 12618573023628321940
+          component: "4294967295"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "rotor_0_visual"
+        }
+      }
+      components {
+        key: -170031897039044735
+        value {
+          type: 18276712176670506881
+          component: "-"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "32"
+        }
+      }
+      components {
+        key: 665776623189629951
+        value {
+          type: 665776623189629951
+          component: "1"
+        }
+      }
+      components {
+        key: 5322000723261735567
+        value {
+          type: 5322000723261735567
+          component: "0"
+        }
+      }
+      components {
+        key: 5653939253203759928
+        value {
+          type: 5653939253203759928
+          component: "*\024\025333>\035333>%333>-\000\000\200?2\024\025333>\035333>%333>-\000\000\200?:\024\025333>\035333>%333>-\000\000\200?B\005-\000\000\200?H\001"
+        }
+      }
+      components {
+        key: 7625436923667245673
+        value {
+          type: 7625436923667245673
+          component: "\020\006JI\022*model://x500_base/meshes/1345_prop_ccw.stl\032\033\021;\261\023;\261\023\353?\031;\261\023;\261\023\353?!;\261\023;\261\023\353?"
+        }
+      }
+    }
+  }
+  entities {
+    key: 34
+    value {
+      id: 34
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "0 0 -0.032 0 0 0"
+        }
+      }
+      components {
+        key: -5828171050081229676
+        value {
+          type: 12618573023628321940
+          component: "4294967295"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "rotor_0_visual_motor_bell"
+        }
+      }
+      components {
+        key: -170031897039044735
+        value {
+          type: 18276712176670506881
+          component: "-"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "32"
+        }
+      }
+      components {
+        key: 665776623189629951
+        value {
+          type: 665776623189629951
+          component: "1"
+        }
+      }
+      components {
+        key: 5322000723261735567
+        value {
+          type: 5322000723261735567
+          component: "0"
+        }
+      }
+      components {
+        key: 7625436923667245673
+        value {
+          type: 7625436923667245673
+          component: "\020\006JD\022%model://x500_base/meshes/5010Bell.dae\032\033\021\000\000\000\000\000\000\360?\031\000\000\000\000\000\000\360?!\000\000\000\000\000\000\360?"
+        }
+      }
+    }
+  }
+  entities {
+    key: 35
+    value {
+      id: 35
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "0 0 0 0 0 0"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "rotor_0_collision"
+        }
+      }
+      components {
+        key: -992030514186885319
+        value {
+          type: 17454713559522666297
+          component: "\032\021rotor_0_collision2\r\"\000*\t)\000\000\000\000\000\000\360?:\037\032\035\022\033\021U\204x\273\352\336\321?\031\336\256\272wHT\221?!\227\344]\214\r\272K?"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "32"
+        }
+      }
+      components {
+        key: 4807123767067670551
+        value {
+          type: 4807123767067670551
+          component: "-"
+        }
+      }
+      components {
+        key: 7625436923667245673
+        value {
+          type: 7625436923667245673
+          component: "\032\035\022\033\021U\204x\273\352\336\321?\031\336\256\272wHT\221?!\227\344]\214\r\272K?"
+        }
+      }
+    }
+  }
+  entities {
+    key: 36
+    value {
+      id: 36
+      components {
+        key: -8375486275210973542
+        value {
+          type: 10071257798498578074
+          component: "-16.6628 66.4176 0.752575 0.0354956 0.0749982 1.65525"
+        }
+      }
+      components {
+        key: -7567782760171863729
+        value {
+          type: 10878961313537687887
+          component: "\021\271\277W\013xv\220?\032\r\"\000*\t)\000\000\000\000\000\000\360?!\344nN\2478\320\231>9\3664\253\251kb\373>I!m\220\266(\311\373>"
+        }
+      }
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "-0.174 0.174 0.3 1.88616e-18 -1.0236e-17 -0.364446"
+        }
+      }
+      components {
+        key: -6078538006196242579
+        value {
+          type: 12368206067513309037
+        }
+      }
+      components {
+        key: -4984255610533233528
+        value {
+          type: 13462488463176318088
+          component: "0"
+        }
+      }
+      components {
+        key: -3677718506378185967
+        value {
+          type: 14769025567331365649
+          component: "-"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "rotor_1"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "13"
+        }
+      }
+      components {
+        key: 6822503852486540549
+        value {
+          type: 6822503852486540549
+          component: "-3.45851 5.71445 0.22847"
+        }
+      }
+    }
+  }
+  entities {
+    key: 37
+    value {
+      id: 37
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "-0.022 -0.146385 -0.016 0 0 0"
+        }
+      }
+      components {
+        key: -5828171050081229676
+        value {
+          type: 12618573023628321940
+          component: "4294967295"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "rotor_1_visual"
+        }
+      }
+      components {
+        key: -170031897039044735
+        value {
+          type: 18276712176670506881
+          component: "-"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "36"
+        }
+      }
+      components {
+        key: 665776623189629951
+        value {
+          type: 665776623189629951
+          component: "1"
+        }
+      }
+      components {
+        key: 5322000723261735567
+        value {
+          type: 5322000723261735567
+          component: "0"
+        }
+      }
+      components {
+        key: 5653939253203759928
+        value {
+          type: 5653939253203759928
+          component: "*\024\025333>\035333>%333>-\000\000\200?2\024\025333>\035333>%333>-\000\000\200?:\024\025333>\035333>%333>-\000\000\200?B\005-\000\000\200?H\001"
+        }
+      }
+      components {
+        key: 7625436923667245673
+        value {
+          type: 7625436923667245673
+          component: "\020\006JI\022*model://x500_base/meshes/1345_prop_ccw.stl\032\033\021;\261\023;\261\023\353?\031;\261\023;\261\023\353?!;\261\023;\261\023\353?"
+        }
+      }
+    }
+  }
+  entities {
+    key: 38
+    value {
+      id: 38
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "0 0 -0.032 0 0 0"
+        }
+      }
+      components {
+        key: -5828171050081229676
+        value {
+          type: 12618573023628321940
+          component: "4294967295"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "rotor_1_visual_motor_top"
+        }
+      }
+      components {
+        key: -170031897039044735
+        value {
+          type: 18276712176670506881
+          component: "-"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "36"
+        }
+      }
+      components {
+        key: 665776623189629951
+        value {
+          type: 665776623189629951
+          component: "1"
+        }
+      }
+      components {
+        key: 5322000723261735567
+        value {
+          type: 5322000723261735567
+          component: "0"
+        }
+      }
+      components {
+        key: 7625436923667245673
+        value {
+          type: 7625436923667245673
+          component: "\020\006JD\022%model://x500_base/meshes/5010Bell.dae\032\033\021\000\000\000\000\000\000\360?\031\000\000\000\000\000\000\360?!\000\000\000\000\000\000\360?"
+        }
+      }
+    }
+  }
+  entities {
+    key: 39
+    value {
+      id: 39
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "0 0 0 0 0 0"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "rotor_1_collision"
+        }
+      }
+      components {
+        key: -992030514186885319
+        value {
+          type: 17454713559522666297
+          component: "\032\021rotor_1_collision2\r\"\000*\t)\000\000\000\000\000\000\360?:\037\032\035\022\033\021U\204x\273\352\336\321?\031\336\256\272wHT\221?!\227\344]\214\r\272K?"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "36"
+        }
+      }
+      components {
+        key: 4807123767067670551
+        value {
+          type: 4807123767067670551
+          component: "-"
+        }
+      }
+      components {
+        key: 7625436923667245673
+        value {
+          type: 7625436923667245673
+          component: "\032\035\022\033\021U\204x\273\352\336\321?\031\336\256\272wHT\221?!\227\344]\214\r\272K?"
+        }
+      }
+    }
+  }
+  entities {
+    key: 40
+    value {
+      id: 40
+      components {
+        key: -8375486275210973542
+        value {
+          type: 10071257798498578074
+          component: "-16.8137 66.7305 0.732603 -0.0562191 -0.0610381 -1.18376"
+        }
+      }
+      components {
+        key: -7567782760171863729
+        value {
+          type: 10878961313537687887
+          component: "\021\271\277W\013xv\220?\032\r\"\000*\t)\000\000\000\000\000\000\360?!\344nN\2478\320\231>9\3664\253\251kb\373>I!m\220\266(\311\373>"
+        }
+      }
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "0.174 0.174 0.3 -1.61943e-18 5.20165e-17 3.07935"
+        }
+      }
+      components {
+        key: -6078538006196242579
+        value {
+          type: 12368206067513309037
+        }
+      }
+      components {
+        key: -4984255610533233528
+        value {
+          type: 13462488463176318088
+          component: "0"
+        }
+      }
+      components {
+        key: -3677718506378185967
+        value {
+          type: 14769025567331365649
+          component: "-"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "rotor_2"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "13"
+        }
+      }
+      components {
+        key: 6822503852486540549
+        value {
+          type: 6822503852486540549
+          component: "-3.40721 5.74633 0.340503"
+        }
+      }
+    }
+  }
+  entities {
+    key: 41
+    value {
+      id: 41
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "-0.022 -0.146385 -0.016 0 0 0"
+        }
+      }
+      components {
+        key: -5828171050081229676
+        value {
+          type: 12618573023628321940
+          component: "4294967295"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "rotor_2_visual"
+        }
+      }
+      components {
+        key: -170031897039044735
+        value {
+          type: 18276712176670506881
+          component: "-"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "40"
+        }
+      }
+      components {
+        key: 665776623189629951
+        value {
+          type: 665776623189629951
+          component: "1"
+        }
+      }
+      components {
+        key: 5322000723261735567
+        value {
+          type: 5322000723261735567
+          component: "0"
+        }
+      }
+      components {
+        key: 5653939253203759928
+        value {
+          type: 5653939253203759928
+          component: "*\024\025333>\035333>%333>-\000\000\200?2\024\025333>\035333>%333>-\000\000\200?:\024\025333>\035333>%333>-\000\000\200?B\005-\000\000\200?H\001"
+        }
+      }
+      components {
+        key: 7625436923667245673
+        value {
+          type: 7625436923667245673
+          component: "\020\006JH\022)model://x500_base/meshes/1345_prop_cw.stl\032\033\021;\261\023;\261\023\353?\031;\261\023;\261\023\353?!;\261\023;\261\023\353?"
+        }
+      }
+    }
+  }
+  entities {
+    key: 42
+    value {
+      id: 42
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "0 0 -0.032 0 0 0"
+        }
+      }
+      components {
+        key: -5828171050081229676
+        value {
+          type: 12618573023628321940
+          component: "4294967295"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "rotor_2_visual_motor_top"
+        }
+      }
+      components {
+        key: -170031897039044735
+        value {
+          type: 18276712176670506881
+          component: "-"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "40"
+        }
+      }
+      components {
+        key: 665776623189629951
+        value {
+          type: 665776623189629951
+          component: "1"
+        }
+      }
+      components {
+        key: 5322000723261735567
+        value {
+          type: 5322000723261735567
+          component: "0"
+        }
+      }
+      components {
+        key: 7625436923667245673
+        value {
+          type: 7625436923667245673
+          component: "\020\006JD\022%model://x500_base/meshes/5010Bell.dae\032\033\021\000\000\000\000\000\000\360?\031\000\000\000\000\000\000\360?!\000\000\000\000\000\000\360?"
+        }
+      }
+    }
+  }
+  entities {
+    key: 43
+    value {
+      id: 43
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "0 0 0 0 0 0"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "rotor_2_collision"
+        }
+      }
+      components {
+        key: -992030514186885319
+        value {
+          type: 17454713559522666297
+          component: "\032\021rotor_2_collision2\r\"\000*\t)\000\000\000\000\000\000\360?:\037\032\035\022\033\021U\204x\273\352\336\321?\031\336\256\272wHT\221?!\227\344]\214\r\272K?"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "40"
+        }
+      }
+      components {
+        key: 4807123767067670551
+        value {
+          type: 4807123767067670551
+          component: "-"
+        }
+      }
+      components {
+        key: 7625436923667245673
+        value {
+          type: 7625436923667245673
+          component: "\032\035\022\033\021U\204x\273\352\336\321?\031\336\256\272wHT\221?!\227\344]\214\r\272K?"
+        }
+      }
+    }
+  }
+  entities {
+    key: 44
+    value {
+      id: 44
+      components {
+        key: -8375486275210973542
+        value {
+          type: 10071257798498578074
+          component: "-16.3494 66.5674 0.731775 0.0770433 -0.0307979 -3.12016"
+        }
+      }
+      components {
+        key: -7567782760171863729
+        value {
+          type: 10878961313537687887
+          component: "\021\271\277W\013xv\220?\032\r\"\000*\t)\000\000\000\000\000\000\360?!\344nN\2478\320\231>9\3664\253\251kb\373>I!m\220\266(\311\373>"
+        }
+      }
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "-0.174 -0.174 0.3 -1.5046e-17 -2.33236e-17 1.14585"
+        }
+      }
+      components {
+        key: -6078538006196242579
+        value {
+          type: 12368206067513309037
+        }
+      }
+      components {
+        key: -4984255610533233528
+        value {
+          type: 13462488463176318088
+          component: "0"
+        }
+      }
+      components {
+        key: -3677718506378185967
+        value {
+          type: 14769025567331365649
+          component: "-"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "rotor_3"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "13"
+        }
+      }
+      components {
+        key: 6822503852486540549
+        value {
+          type: 6822503852486540549
+          component: "-3.44256 5.64753 -0.0131172"
+        }
+      }
+    }
+  }
+  entities {
+    key: 45
+    value {
+      id: 45
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "-0.022 -0.146385 -0.016 0 0 0"
+        }
+      }
+      components {
+        key: -5828171050081229676
+        value {
+          type: 12618573023628321940
+          component: "4294967295"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "rotor_3_visual"
+        }
+      }
+      components {
+        key: -170031897039044735
+        value {
+          type: 18276712176670506881
+          component: "-"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "44"
+        }
+      }
+      components {
+        key: 665776623189629951
+        value {
+          type: 665776623189629951
+          component: "1"
+        }
+      }
+      components {
+        key: 5322000723261735567
+        value {
+          type: 5322000723261735567
+          component: "0"
+        }
+      }
+      components {
+        key: 5653939253203759928
+        value {
+          type: 5653939253203759928
+          component: "*\024\025333>\035333>%333>-\000\000\200?2\024\025333>\035333>%333>-\000\000\200?:\024\025333>\035333>%333>-\000\000\200?B\005-\000\000\200?H\001"
+        }
+      }
+      components {
+        key: 7625436923667245673
+        value {
+          type: 7625436923667245673
+          component: "\020\006JH\022)model://x500_base/meshes/1345_prop_cw.stl\032\033\021;\261\023;\261\023\353?\031;\261\023;\261\023\353?!;\261\023;\261\023\353?"
+        }
+      }
+    }
+  }
+  entities {
+    key: 46
+    value {
+      id: 46
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "0 0 -0.032 0 0 0"
+        }
+      }
+      components {
+        key: -5828171050081229676
+        value {
+          type: 12618573023628321940
+          component: "4294967295"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "rotor_3_visual_motor_top"
+        }
+      }
+      components {
+        key: -170031897039044735
+        value {
+          type: 18276712176670506881
+          component: "-"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "44"
+        }
+      }
+      components {
+        key: 665776623189629951
+        value {
+          type: 665776623189629951
+          component: "1"
+        }
+      }
+      components {
+        key: 5322000723261735567
+        value {
+          type: 5322000723261735567
+          component: "0"
+        }
+      }
+      components {
+        key: 7625436923667245673
+        value {
+          type: 7625436923667245673
+          component: "\020\006JD\022%model://x500_base/meshes/5010Bell.dae\032\033\021\000\000\000\000\000\000\360?\031\000\000\000\000\000\000\360?!\000\000\000\000\000\000\360?"
+        }
+      }
+    }
+  }
+  entities {
+    key: 47
+    value {
+      id: 47
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "0 0 0 0 0 0"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "rotor_3_collision"
+        }
+      }
+      components {
+        key: -992030514186885319
+        value {
+          type: 17454713559522666297
+          component: "\032\021rotor_3_collision2\r\"\000*\t)\000\000\000\000\000\000\360?:\037\032\035\022\033\021U\204x\273\352\336\321?\031\336\256\272wHT\221?!\227\344]\214\r\272K?"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "44"
+        }
+      }
+      components {
+        key: 4807123767067670551
+        value {
+          type: 4807123767067670551
+          component: "-"
+        }
+      }
+      components {
+        key: 7625436923667245673
+        value {
+          type: 7625436923667245673
+          component: "\032\035\022\033\021U\204x\273\352\336\321?\031\336\256\272wHT\221?!\227\344]\214\r\272K?"
+        }
+      }
+    }
+  }
+  entities {
+    key: 48
+    value {
+      id: 48
+      components {
+        key: -7567782760171863729
+        value {
+          type: 10878961313537687887
+          component: "\021\232\231\231\231\231\231\251?\032\r\"\000*\t)\000\000\000\000\000\000\360?!\361h\343\210\265\370\004?9\361h\343\210\265\370\004?I\361h\343\210\265\370\004?"
+        }
+      }
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "0.18 -6.39488e-14 0.39 -2.43355e-16 0.488692 -9.76044e-16"
+        }
+      }
+      components {
+        key: -4984255610533233528
+        value {
+          type: 13462488463176318088
+          component: "0"
+        }
+      }
+      components {
+        key: -3677718506378185967
+        value {
+          type: 14769025567331365649
+          component: "-"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "front_camera_link"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "13"
+        }
+      }
+    }
+  }
+  entities {
+    key: 49
+    value {
+      id: 49
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "1.38778e-17 0 5.55112e-17 0 0 0"
+        }
+      }
+      components {
+        key: -5828171050081229676
+        value {
+          type: 12618573023628321940
+          component: "4294967295"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "housing"
+        }
+      }
+      components {
+        key: -170031897039044735
+        value {
+          type: 18276712176670506881
+          component: "-"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "48"
+        }
+      }
+      components {
+        key: 665776623189629951
+        value {
+          type: 665776623189629951
+          component: "1"
+        }
+      }
+      components {
+        key: 5322000723261735567
+        value {
+          type: 5322000723261735567
+          component: "0"
+        }
+      }
+      components {
+        key: 5653939253203759928
+        value {
+          type: 5653939253203759928
+          component: "*\024\025\217\302\365=\035\217\302\365=%)\\\017>-\000\000\200?2\024\025\354Q8>\035\354Q8>%\315\314L>-\000\000\200?:\005-\000\000\200?B\005-\000\000\200?H\001"
+        }
+      }
+      components {
+        key: 7625436923667245673
+        value {
+          type: 7625436923667245673
+          component: "\032\035\022\033\021\270\036\205\353Q\270\236?\031\232\231\231\231\231\231\251?!{\024\256G\341z\244?"
+        }
+      }
+    }
+  }
+  entities {
+    key: 50
+    value {
+      id: 50
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "1.38778e-17 0 5.55112e-17 0 0 0"
+        }
+      }
+      components {
+        key: -7232516950886020545
+        value {
+          type: 11214227122823531071
+          component: "\022\020front_tof_camera2\013rgbd_cameraA\000\000\000\000\000\0004@J\r\"\000*\t)\000\000\000\000\000\000\360?RO\021\327\243p=\n\327\373?\032\022\021\000\000\000\000\000\000\204@\031\000\000\000\000\000\000~@\"\010RGB_INT8)\232\231\231\231\231\231\251?1\000\000\000\000\000\000N@J\024\022\022\021\000\000\000\000\000\000\340?\031\000\000\000\000\000\000\340?j\021/uav/camera/front"
+        }
+      }
+      components {
+        key: -5326676573418609154
+        value {
+          type: 13120067500290942462
+          component: "/uav/camera/front"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "front_tof_camera"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "48"
+        }
+      }
+      components {
+        key: 5501240588895982851
+        value {
+          type: 5501240588895982851
+          component: "-"
+        }
+      }
+    }
+  }
+  entities {
+    key: 51
+    value {
+      id: 51
+      components {
+        key: -7567782760171863729
+        value {
+          type: 10878961313537687887
+          component: "\021\232\231\231\231\231\231\251?\032\r\"\000*\t)\000\000\000\000\000\000\360?!\361h\343\210\265\370\004?9\361h\343\210\265\370\004?I\361h\343\210\265\370\004?"
+        }
+      }
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "0.05 -6.03961e-14 0.12 6.28037e-16 1.5708 0"
+        }
+      }
+      components {
+        key: -4984255610533233528
+        value {
+          type: 13462488463176318088
+          component: "0"
+        }
+      }
+      components {
+        key: -3677718506378185967
+        value {
+          type: 14769025567331365649
+          component: "-"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "down_camera_link"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "13"
+        }
+      }
+    }
+  }
+  entities {
+    key: 52
+    value {
+      id: 52
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "0 0 -6.93889e-18 0 0 0"
+        }
+      }
+      components {
+        key: -5828171050081229676
+        value {
+          type: 12618573023628321940
+          component: "4294967295"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "housing"
+        }
+      }
+      components {
+        key: -170031897039044735
+        value {
+          type: 18276712176670506881
+          component: "-"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "51"
+        }
+      }
+      components {
+        key: 665776623189629951
+        value {
+          type: 665776623189629951
+          component: "1"
+        }
+      }
+      components {
+        key: 5322000723261735567
+        value {
+          type: 5322000723261735567
+          component: "0"
+        }
+      }
+      components {
+        key: 5653939253203759928
+        value {
+          type: 5653939253203759928
+          component: "*\024\025\217\302\365=\035\217\302\365=%)\\\017>-\000\000\200?2\024\025\354Q8>\035\354Q8>%\315\314L>-\000\000\200?:\005-\000\000\200?B\005-\000\000\200?H\001"
+        }
+      }
+      components {
+        key: 7625436923667245673
+        value {
+          type: 7625436923667245673
+          component: "\032\035\022\033\021\270\036\205\353Q\270\236?\031\232\231\231\231\231\231\251?!{\024\256G\341z\244?"
+        }
+      }
+    }
+  }
+  entities {
+    key: 53
+    value {
+      id: 53
+      components {
+        key: -8367970844975482128
+        value {
+          type: 10078773228734069488
+          component: "\n\010\000\000\000\000\000\000\000\000"
+        }
+      }
+      components {
+        key: -7645209425785984105
+        value {
+          type: 10801534647923567511
+          component: "6"
+        }
+      }
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "0 0 0 0 0 0"
+        }
+      }
+      components {
+        key: -7019996967223444014
+        value {
+          type: 11426747106486107602
+          component: "base_link"
+        }
+      }
+      components {
+        key: -6495194767164233195
+        value {
+          type: 11951549306545318421
+          component: "-6.28319"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "rotor_0_joint"
+        }
+      }
+      components {
+        key: -437766479680048574
+        value {
+          type: 18008977594029503042
+          component: "rotor_0"
+        }
+      }
+      components {
+        key: -75373425752865265
+        value {
+          type: 18371370647956686351
+          component: "-"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "13"
+        }
+      }
+      components {
+        key: 99696134570833896
+        value {
+          type: 99696134570833896
+          component: "\n\010\263\006\344\254S\010W@"
+        }
+      }
+      components {
+        key: 2137893832496196346
+        value {
+          type: 2137893832496196346
+          component: "\022\t!\000\000\000\000\000\000\360?\031\000\200\3407y\303A\303!\000\200\3407y\303AC)\000\000\000\000\000\000\360\1771\000\000\000\000\000\000\360\177"
+        }
+      }
+    }
+  }
+  entities {
+    key: 54
+    value {
+      id: 54
+      components {
+        key: -8367970844975482128
+        value {
+          type: 10078773228734069488
+          component: "\n\010\000\000\000\000\000\000\000\000"
+        }
+      }
+      components {
+        key: -7645209425785984105
+        value {
+          type: 10801534647923567511
+          component: "6"
+        }
+      }
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "0 0 0 0 0 0"
+        }
+      }
+      components {
+        key: -7019996967223444014
+        value {
+          type: 11426747106486107602
+          component: "base_link"
+        }
+      }
+      components {
+        key: -6495194767164233195
+        value {
+          type: 11951549306545318421
+          component: "-6.28319"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "rotor_1_joint"
+        }
+      }
+      components {
+        key: -437766479680048574
+        value {
+          type: 18008977594029503042
+          component: "rotor_1"
+        }
+      }
+      components {
+        key: -75373425752865265
+        value {
+          type: 18371370647956686351
+          component: "-"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "13"
+        }
+      }
+      components {
+        key: 99696134570833896
+        value {
+          type: 99696134570833896
+          component: "\n\010\224$\211c\3672X@"
+        }
+      }
+      components {
+        key: 2137893832496196346
+        value {
+          type: 2137893832496196346
+          component: "\022\t!\000\000\000\000\000\000\360?\031\000\200\3407y\303A\303!\000\200\3407y\303AC)\000\000\000\000\000\000\360\1771\000\000\000\000\000\000\360\177"
+        }
+      }
+    }
+  }
+  entities {
+    key: 55
+    value {
+      id: 55
+      components {
+        key: -8367970844975482128
+        value {
+          type: 10078773228734069488
+          component: "\n\010\000\000\000\000\000\000\000\000"
+        }
+      }
+      components {
+        key: -7645209425785984105
+        value {
+          type: 10801534647923567511
+          component: "6"
+        }
+      }
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "0 0 0 0 0 0"
+        }
+      }
+      components {
+        key: -7019996967223444014
+        value {
+          type: 11426747106486107602
+          component: "base_link"
+        }
+      }
+      components {
+        key: -6495194767164233195
+        value {
+          type: 11951549306545318421
+          component: "-6.28319"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "rotor_2_joint"
+        }
+      }
+      components {
+        key: -437766479680048574
+        value {
+          type: 18008977594029503042
+          component: "rotor_2"
+        }
+      }
+      components {
+        key: -75373425752865265
+        value {
+          type: 18371370647956686351
+          component: "-"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "13"
+        }
+      }
+      components {
+        key: 99696134570833896
+        value {
+          type: 99696134570833896
+          component: "\n\010\034\220\275\262\311wR\300"
+        }
+      }
+      components {
+        key: 2137893832496196346
+        value {
+          type: 2137893832496196346
+          component: "\022\t!\000\000\000\000\000\000\360?\031\000\200\3407y\303A\303!\000\200\3407y\303AC)\000\000\000\000\000\000\360\1771\000\000\000\000\000\000\360\177"
+        }
+      }
+    }
+  }
+  entities {
+    key: 56
+    value {
+      id: 56
+      components {
+        key: -8367970844975482128
+        value {
+          type: 10078773228734069488
+          component: "\n\010\000\000\000\000\000\000\000\000"
+        }
+      }
+      components {
+        key: -7645209425785984105
+        value {
+          type: 10801534647923567511
+          component: "6"
+        }
+      }
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "0 0 0 0 0 0"
+        }
+      }
+      components {
+        key: -7019996967223444014
+        value {
+          type: 11426747106486107602
+          component: "base_link"
+        }
+      }
+      components {
+        key: -6495194767164233195
+        value {
+          type: 11951549306545318421
+          component: "-6.28319"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "rotor_3_joint"
+        }
+      }
+      components {
+        key: -437766479680048574
+        value {
+          type: 18008977594029503042
+          component: "rotor_3"
+        }
+      }
+      components {
+        key: -75373425752865265
+        value {
+          type: 18371370647956686351
+          component: "-"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "13"
+        }
+      }
+      components {
+        key: 99696134570833896
+        value {
+          type: 99696134570833896
+          component: "\n\010dG\242\'\310\230Q\300"
+        }
+      }
+      components {
+        key: 2137893832496196346
+        value {
+          type: 2137893832496196346
+          component: "\022\t!\000\000\000\000\000\000\360?\031\000\200\3407y\303A\303!\000\200\3407y\303AC)\000\000\000\000\000\000\360\1771\000\000\000\000\000\000\360\177"
+        }
+      }
+    }
+  }
+  entities {
+    key: 57
+    value {
+      id: 57
+      components {
+        key: -7645209425785984105
+        value {
+          type: 10801534647923567511
+          component: "3"
+        }
+      }
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "1.38778e-17 0 5.55112e-17 0 0 0"
+        }
+      }
+      components {
+        key: -7019996967223444014
+        value {
+          type: 11426747106486107602
+          component: "base_link"
+        }
+      }
+      components {
+        key: -6495194767164233195
+        value {
+          type: 11951549306545318421
+          component: "-6.28319"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "front_camera_joint"
+        }
+      }
+      components {
+        key: -437766479680048574
+        value {
+          type: 18008977594029503042
+          component: "front_camera_link"
+        }
+      }
+      components {
+        key: -75373425752865265
+        value {
+          type: 18371370647956686351
+          component: "-"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "13"
+        }
+      }
+    }
+  }
+  entities {
+    key: 58
+    value {
+      id: 58
+      components {
+        key: -7645209425785984105
+        value {
+          type: 10801534647923567511
+          component: "3"
+        }
+      }
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "0 0 -6.93889e-18 0 0 0"
+        }
+      }
+      components {
+        key: -7019996967223444014
+        value {
+          type: 11426747106486107602
+          component: "base_link"
+        }
+      }
+      components {
+        key: -6495194767164233195
+        value {
+          type: 11951549306545318421
+          component: "-6.28319"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "down_camera_joint"
+        }
+      }
+      components {
+        key: -437766479680048574
+        value {
+          type: 18008977594029503042
+          component: "down_camera_link"
+        }
+      }
+      components {
+        key: -75373425752865265
+        value {
+          type: 18371370647956686351
+          component: "-"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "13"
+        }
+      }
+    }
+  }
+  entities {
+    key: 59
+    value {
+      id: 59
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "-16.8164 67.1559 0.50739 0 0 0"
+        }
+      }
+      components {
+        key: -5517554697507270515
+        value {
+          type: 12929189376202281101
+        }
+      }
+      components {
+        key: -4984255610533233528
+        value {
+          type: 13462488463176318088
+          component: "0"
+        }
+      }
+      components {
+        key: -2963615567024695870
+        value {
+          type: 15483128506684855746
+          component: "-"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "usv_target"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "1"
+        }
+      }
+      components {
+        key: 514273962667148627
+        value {
+          type: 514273962667148627
+          component: "0"
+        }
+      }
+      components {
+        key: 1448650493567121171
+        value {
+          type: 1448650493567121171
+          component: "1"
+        }
+      }
+      components {
+        key: 2204389715118210201
+        value {
+          type: 2204389715118210201
+          component: "<?xml version=\"1.0\" ?><sdf version=\'1.11\'><model name=\'usv_target\'>\n  <static>true</static>\n  <link name=\'target_link\'>\n    <visual name=\'target_visual\'>\n      <cast_shadows>true</cast_shadows>\n      <geometry>\n        <sphere>\n          <radius>0.25</radius>\n        </sphere>\n      </geometry>\n      <material>\n        <ambient>1 0 0 1</ambient>\n        <diffuse>1 0 0 1</diffuse>\n        <specular>0.200000003 0.200000003 0.200000003 1</specular>\n      </material>\n    </visual>\n  </link>\n</model>\n</sdf>"
+        }
+      }
+      components {
+        key: 2958716330662201668
+        value {
+          type: 2958716330662201668
+          component: "60"
+        }
+      }
+    }
+  }
+  entities {
+    key: 60
+    value {
+      id: 60
+      components {
+        key: -7567782760171863729
+        value {
+          type: 10878961313537687887
+          component: "\021\000\000\000\000\000\000\360?\032\r\"\000*\t)\000\000\000\000\000\000\360?!\000\000\000\000\000\000\360?9\000\000\000\000\000\000\360?I\000\000\000\000\000\000\360?"
+        }
+      }
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "0 0 0 0 0 0"
+        }
+      }
+      components {
+        key: -4984255610533233528
+        value {
+          type: 13462488463176318088
+          component: "0"
+        }
+      }
+      components {
+        key: -3677718506378185967
+        value {
+          type: 14769025567331365649
+          component: "-"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "target_link"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "59"
+        }
+      }
+      components {
+        key: 1899862455720879825
+        value {
+          type: 1899862455720879825
+          component: "-"
+        }
+      }
+    }
+  }
+  entities {
+    key: 61
+    value {
+      id: 61
+      components {
+        key: -7527930132038368260
+        value {
+          type: 10918813941671183356
+          component: "0 0 0 0 0 0"
+        }
+      }
+      components {
+        key: -5828171050081229676
+        value {
+          type: 12618573023628321940
+          component: "4294967295"
+        }
+      }
+      components {
+        key: -998690179357215250
+        value {
+          type: 17448053894352336366
+          component: "target_visual"
+        }
+      }
+      components {
+        key: -170031897039044735
+        value {
+          type: 18276712176670506881
+          component: "-"
+        }
+      }
+      components {
+        key: 50322453549405034
+        value {
+          type: 50322453549405034
+          component: "60"
+        }
+      }
+      components {
+        key: 665776623189629951
+        value {
+          type: 665776623189629951
+          component: "1"
+        }
+      }
+      components {
+        key: 5322000723261735567
+        value {
+          type: 5322000723261735567
+          component: "0"
+        }
+      }
+      components {
+        key: 5653939253203759928
+        value {
+          type: 5653939253203759928
+          component: "*\n\025\000\000\200?-\000\000\200?2\n\025\000\000\200?-\000\000\200?:\024\025\315\314L>\035\315\314L>%\315\314L>-\000\000\200?B\005-\000\000\200?H\001"
+        }
+      }
+      components {
+        key: 7625436923667245673
+        value {
+          type: 7625436923667245673
+          component: "\020\0022\t\021\000\000\000\000\000\000\320?"
+        }
+      }
+    }
+  }
+}
+

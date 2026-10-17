@@ -1,0 +1,3 @@
+[INFO] [1791339549.708596379] [intercept_evaluator_node]: Truth-only evaluator ready | truth=/target/state | capture=0.50 m | output=/home/qin/data/uav_usv_mpc/data/experiments/current
+[INFO] [1791339604.776303957] [intercept_evaluator_node]: FAILURE: TIMEOUT | minimum distance=4.943 m | run artifacts: /home/qin/data/uav_usv_mpc/data/experiments/current/modular_intercept_20261007_101922_226956_mission_1.csv
+[INFO] [1791339636.597806998] [intercept_evaluator_node]: Run finalized: NODE_SHUTDOWN | artifacts=/home/qin/data/uav_usv_mpc/data/experiments/current/modular_intercept_20261007_101922_226956_mission_1.csv

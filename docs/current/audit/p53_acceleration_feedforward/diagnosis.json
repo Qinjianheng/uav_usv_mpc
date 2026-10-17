@@ -1,0 +1,11 @@
+{
+  "problem": "F3 lag at MINCO turn exits",
+  "source": "data/experiments/20261013_p53_closed_loop_04/f3_h16_01",
+  "observed": "Two PERFORMANCE_DEVIATION losses had ~1.1m actual-reference error; PX4 velocity lagged corrected command; acceleration FF all NaN.",
+  "change": "Explicit horizontal nominal-MINCO acceleration FF; derivative of corrected reference; final shaping respected; NED z NaN.",
+  "production_default": false,
+  "round_5_enabled": true,
+  "position_gain_unchanged": 0.8,
+  "px4_source": "/home/qin/Projects/PX4-Autopilot/src/modules/mc_pos_control/PositionControl/PositionControl.cpp",
+  "scope": "Execution change only, no truth input, no KF, optimizer, timestamp, vertical or capture-radius change."
+}

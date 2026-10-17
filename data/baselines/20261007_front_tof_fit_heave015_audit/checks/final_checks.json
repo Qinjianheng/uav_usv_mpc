@@ -1,0 +1,13 @@
+{
+  "pytest": "877 passed, 1 skipped, 2 pre-existing warnings",
+  "flake8": "passed",
+  "shell_syntax_files": 8,
+  "build": "4 packages passed",
+  "ros_prefix": "/home/qin/data/uav_usv_mpc/install/uav_control",
+  "pre_mpc_sha256": 46,
+  "previous_camera_audit_sha256": 124,
+  "diff_check": "passed",
+  "cached_diff_check": "passed",
+  "portable_recompute": "all accuracy metrics identical",
+  "code_review": "two Important issues (far-plane competition and residual P95 dilution) fixed and re-reviewed"
+}

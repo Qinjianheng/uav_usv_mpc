@@ -1,0 +1,127 @@
+.....................FFFF........F                                       [100%]
+=================================== FAILURES ===================================
+__ test_brief_context_loss_observed_between_ticks_cannot_disappear[heartbeat] __
+
+callback = 'heartbeat'
+
+    @pytest.mark.parametrize('callback', ['heartbeat', 'proposal'])
+    def test_brief_context_loss_observed_between_ticks_cannot_disappear(callback):
+        from types import SimpleNamespace
+        from uav_control.control.trajectory_tracker_node import TrajectoryTrackerNode
+        from uav_control.guidance.follow_minco_execution import NominalFollowReceiver
+        from uav_usv_interfaces.msg import FollowTrajectory
+        node = object.__new__(TrajectoryTrackerNode)
+        g = policy()
+        node.follow_receiver = r = NominalFollowReceiver(admission=g)
+        r.active, r.deadline = candidate(), 100.49
+        g.update(100.04, metrics(), True, active=True)
+        node.follow_minco_requested = True
+        node.follow_admission_identity = ('receiver', 0, 1)
+        node.follow_navigation_history = [dict(valid=True, stamp=100.04,
+                                              p=[0., 0., -5.], v=[1., 0., 0.])]
+        node.follow_target_history = [dict(valid=True, stamp=100.04, source=100.04,
+                                          p=[5., 0., 0.], v=[1., 0., 0.])]
+        node.flight_guidance = SimpleNamespace(follow_distance=5., flight_altitude=-5.)
+        node.vehicle_status_stamp, node.vehicle_status_timeout = 100.04, .75
+        context = ctx(100.06, offboard=False)
+        node._follow_context = lambda: context
+        node.follow_clock = SimpleNamespace(boot_id='receiver')
+        messages = []
+        node.follow_epoch_pub = node.follow_ack_pub = node.follow_debug_pub = SimpleNamespace(
+            publish=messages.append)
+        if callback == 'heartbeat':
+            node._publish_follow_epoch()
+        else:
+            node.follow_trajectory_callback(FollowTrajectory())
+        context = ctx(100.08)
+        node._update_follow_admission(context)
+        r.tick(context, nominal_valid=True)
+>       assert r.active is None and r.pending is None
+E       AssertionError: assert (FollowCurve(plan_id=1, mission_id=1, generation=0, prediction_id=7, parent_id=0, navigation_stamp=100.0, attitude_stam...ng_model='', receiver_boot_id='receiver', planner_boot_id='planner', constraint_snapshot='', constraint_fingerprint='') is None)
+E        +  where FollowCurve(plan_id=1, mission_id=1, generation=0, prediction_id=7, parent_id=0, navigation_stamp=100.0, attitude_stam...ng_model='', receiver_boot_id='receiver', planner_boot_id='planner', constraint_snapshot='', constraint_fingerprint='') = <uav_control.guidance.follow_minco_execution.NominalFollowReceiver object at 0x70fe75a88f10>.active
+
+test/test_p51_follow_admission.py:324: AssertionError
+__ test_brief_context_loss_observed_between_ticks_cannot_disappear[proposal] ___
+
+callback = 'proposal'
+
+    @pytest.mark.parametrize('callback', ['heartbeat', 'proposal'])
+    def test_brief_context_loss_observed_between_ticks_cannot_disappear(callback):
+        from types import SimpleNamespace
+        from uav_control.control.trajectory_tracker_node import TrajectoryTrackerNode
+        from uav_control.guidance.follow_minco_execution import NominalFollowReceiver
+        from uav_usv_interfaces.msg import FollowTrajectory
+        node = object.__new__(TrajectoryTrackerNode)
+        g = policy()
+        node.follow_receiver = r = NominalFollowReceiver(admission=g)
+        r.active, r.deadline = candidate(), 100.49
+        g.update(100.04, metrics(), True, active=True)
+        node.follow_minco_requested = True
+        node.follow_admission_identity = ('receiver', 0, 1)
+        node.follow_navigation_history = [dict(valid=True, stamp=100.04,
+                                              p=[0., 0., -5.], v=[1., 0., 0.])]
+        node.follow_target_history = [dict(valid=True, stamp=100.04, source=100.04,
+                                          p=[5., 0., 0.], v=[1., 0., 0.])]
+        node.flight_guidance = SimpleNamespace(follow_distance=5., flight_altitude=-5.)
+        node.vehicle_status_stamp, node.vehicle_status_timeout = 100.04, .75
+        context = ctx(100.06, offboard=False)
+        node._follow_context = lambda: context
+        node.follow_clock = SimpleNamespace(boot_id='receiver')
+        messages = []
+        node.follow_epoch_pub = node.follow_ack_pub = node.follow_debug_pub = SimpleNamespace(
+            publish=messages.append)
+        if callback == 'heartbeat':
+            node._publish_follow_epoch()
+        else:
+            node.follow_trajectory_callback(FollowTrajectory())
+        context = ctx(100.08)
+        node._update_follow_admission(context)
+        r.tick(context, nominal_valid=True)
+>       assert r.active is None and r.pending is None
+E       AssertionError: assert (FollowCurve(plan_id=1, mission_id=1, generation=0, prediction_id=7, parent_id=0, navigation_stamp=100.0, attitude_stam...ng_model='', receiver_boot_id='receiver', planner_boot_id='planner', constraint_snapshot='', constraint_fingerprint='') is None)
+E        +  where FollowCurve(plan_id=1, mission_id=1, generation=0, prediction_id=7, parent_id=0, navigation_stamp=100.0, attitude_stam...ng_model='', receiver_boot_id='receiver', planner_boot_id='planner', constraint_snapshot='', constraint_fingerprint='') = <uav_control.guidance.follow_minco_execution.NominalFollowReceiver object at 0x70fe75a18910>.active
+
+test/test_p51_follow_admission.py:324: AssertionError
+_ test_old_active_ack_cannot_roll_back_a_newer_parent_or_resurrect_a_terminal_plan _
+
+    def test_old_active_ack_cannot_roll_back_a_newer_parent_or_resurrect_a_terminal_plan():
+        n = planner_fixture()
+        actual_ack(n, 1, 100.05)
+        actual_ack(n, 2, 100.11)
+        actual_ack(n, 1, 100.05)
+>       assert n.accepted_curve.plan_id == 2
+E       AssertionError: assert 1 == 2
+E        +  where 1 = FollowCurve(plan_id=1, mission_id=1, generation=0, prediction_id=7, parent_id=0, navigation_stamp=100.0, attitude_stam...ng_model='', receiver_boot_id='receiver', planner_boot_id='planner', constraint_snapshot='', constraint_fingerprint='').plan_id
+E        +    where FollowCurve(plan_id=1, mission_id=1, generation=0, prediction_id=7, parent_id=0, navigation_stamp=100.0, attitude_stam...ng_model='', receiver_boot_id='receiver', planner_boot_id='planner', constraint_snapshot='', constraint_fingerprint='') = <uav_control.controllers.p4_follow_planner_node.P4FollowPlannerNode object at 0x70fe75a65ae0>.accepted_curve
+
+test/test_p51_follow_admission.py:366: AssertionError
+_ test_older_heartbeat_cannot_override_new_receiver_state_in_the_same_identity _
+
+    def test_older_heartbeat_cannot_override_new_receiver_state_in_the_same_identity():
+        from uav_usv_interfaces.msg import FollowReceiverState
+        from uav_control.controllers.follow_transport import stamp
+        n = planner_fixture()
+        m = FollowReceiverState()
+        m.receiver, m.receiver_boot_id, m.mission_id = 'trajectory_tracker_node', 'receiver', 1
+        m.stamp, m.active_plan_id = stamp(100.11), 2
+        n.epoch_callback(m)
+        m.stamp, m.active_plan_id = stamp(100.05), 1
+        n.epoch_callback(m)
+>       assert n.receiver_status['active'] == 2
+E       assert 1 == 2
+
+test/test_p51_follow_admission.py:387: AssertionError
+____________ test_p51_f3_requires_explicit_complete_execution_audit ____________
+
+    def test_p51_f3_requires_explicit_complete_execution_audit():
+>       from p51_minco_sitl import allow_f3
+E       ImportError: cannot import name 'allow_f3' from 'p51_minco_sitl' (/home/qin/data/uav_usv_mpc/scripts/p51_minco_sitl.py)
+
+test/test_p51_sitl.py:73: ImportError
+=========================== short test summary info ============================
+FAILED test/test_p51_follow_admission.py::test_brief_context_loss_observed_between_ticks_cannot_disappear[heartbeat]
+FAILED test/test_p51_follow_admission.py::test_brief_context_loss_observed_between_ticks_cannot_disappear[proposal]
+FAILED test/test_p51_follow_admission.py::test_old_active_ack_cannot_roll_back_a_newer_parent_or_resurrect_a_terminal_plan
+FAILED test/test_p51_follow_admission.py::test_older_heartbeat_cannot_override_new_receiver_state_in_the_same_identity
+FAILED test/test_p51_sitl.py::test_p51_f3_requires_explicit_complete_execution_audit
+5 failed, 29 passed in 0.41s

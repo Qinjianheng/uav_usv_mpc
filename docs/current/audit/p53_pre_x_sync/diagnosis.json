@@ -1,0 +1,6 @@
+{
+  "source": "data/experiments/20261013_p53_closed_loop_07/f2_h16_01",
+  "observed": "Observer INIT snapshot0.785s old, X_command file already created, actual X publish completed3.695s after observer STOP.",
+  "change": "Require fresh independent GROUND_HOLD/offboard/unarmed health for500ms before creating X_command; only P53 marker-enabled path. No TTL or flight controls changed.",
+  "native_epoch_check": "0 <= ros_now - navigation.stamp <=125ms"
+}

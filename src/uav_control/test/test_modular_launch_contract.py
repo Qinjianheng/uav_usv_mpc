@@ -14,20 +14,18 @@ def test_modular_launch_contains_five_pipeline_processes():
     source = LAUNCH_FILE.read_text(encoding='utf-8')
 
     for node_name in (
-        'target_predictor_node',
+        'imm_target_predictor_node',
         'intercept_planner_node',
         'trajectory_tracker_node',
         'mission_manager_node',
         'intercept_evaluator_node',
     ):
         assert f"executable='{node_name}'" in source
-        # Key the contract on node names, not executables: the shadow
-        # camera/KF predictor is a sixth process that deliberately reuses the
-        # target_predictor_node executable under its own node name.
         assert source.count(f"name='{node_name}'") == 1
 
-    assert source.count("executable='target_predictor_node'") == 2
-    assert source.count("name='shadow_target_predictor_node'") == 1
+    assert source.count("executable='imm_target_predictor_node'") == 1
+    assert "executable='target_predictor_node'" not in source
+    assert "name='shadow_target_predictor_node'" not in source
 
 
 def test_modular_launch_has_only_new_tracker_as_px4_control_owner():

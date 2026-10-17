@@ -1,0 +1,21 @@
+{
+  "date": "2026-10-07",
+  "workspace": "/home/qin/data/uav_usv_mpc",
+  "scenario": "marked validation sphere only; front RGB/ToF, down disabled, heave amplitude 0.15m at 0.25Hz",
+  "profile": "uncalibrated generic ToF test parameters; not hardware specifications",
+  "run1": {
+    "mode": "tof",
+    "packaging": "bytes; pre performance fix",
+    "outcome": "TIMEOUT"
+  },
+  "run2": {
+    "mode": "tof",
+    "packaging": "typed byte array",
+    "outcome": "TIMEOUT"
+  },
+  "run3_ideal_control": {
+    "mode": "ideal",
+    "outcome": "SUCCESS; single diagnostic control, not a ToF success or repeat validation"
+  },
+  "baseline_frozen_20261006": "unchanged; all 46 SHA256 entries verified"
+}

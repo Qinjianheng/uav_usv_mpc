@@ -1,0 +1,127 @@
+{
+  "accepted": [
+    {
+      "elapsed": 9.274432897567749,
+      "plan_id": 42,
+      "previous_execution_status": null,
+      "previous_plan_id": null,
+      "contact_shift": null,
+      "locked": true,
+      "observation_age": 0.05941915512084961,
+      "prediction_age": 0.05941915512084961,
+      "remaining": 1.4683010578155518,
+      "continuity_position": 0.0,
+      "continuity_velocity": 0.0,
+      "continuity_acceleration": 0.0
+    },
+    {
+      "elapsed": 9.550999164581299,
+      "plan_id": 43,
+      "previous_execution_status": "TRACKING",
+      "previous_plan_id": 42,
+      "contact_shift": 0.0,
+      "locked": true,
+      "observation_age": 0.035986900329589844,
+      "prediction_age": 0.035986900329589844,
+      "remaining": 1.191734790802002,
+      "continuity_position": 3.4268356889434055e-07,
+      "continuity_velocity": 0.00012590115081547077,
+      "continuity_acceleration": 0.030744062953307612
+    },
+    {
+      "elapsed": 9.649244546890259,
+      "plan_id": 44,
+      "previous_execution_status": "TRACKING",
+      "previous_plan_id": 43,
+      "contact_shift": 0.0,
+      "locked": true,
+      "observation_age": 0.03422856330871582,
+      "prediction_age": 0.03422856330871582,
+      "remaining": 1.093489408493042,
+      "continuity_position": 3.247125648713312e-08,
+      "continuity_velocity": 2.4903745167996164e-05,
+      "continuity_acceleration": 0.012712747082019546
+    },
+    {
+      "elapsed": 9.769224643707275,
+      "plan_id": 45,
+      "previous_execution_status": "TRACKING",
+      "previous_plan_id": 44,
+      "contact_shift": 0.0,
+      "locked": true,
+      "observation_age": 0.05420827865600586,
+      "prediction_age": 0.05420827865600586,
+      "remaining": 0.9735093116760254,
+      "continuity_position": 4.204523304631694e-06,
+      "continuity_velocity": 0.00043916307616185954,
+      "continuity_acceleration": 0.04234423801726787
+    },
+    {
+      "elapsed": 9.889617443084717,
+      "plan_id": 46,
+      "previous_execution_status": "TRACKING",
+      "previous_plan_id": 45,
+      "contact_shift": 0.0,
+      "locked": true,
+      "observation_age": 0.07460284233093262,
+      "prediction_age": 0.07460284233093262,
+      "remaining": 0.853116512298584,
+      "continuity_position": 1.314194902327628e-06,
+      "continuity_velocity": 1.282102925140552e-05,
+      "continuity_acceleration": 0.006841397227747885
+    },
+    {
+      "elapsed": 10.008684396743774,
+      "plan_id": 47,
+      "previous_execution_status": "TRACKING",
+      "previous_plan_id": 46,
+      "contact_shift": 0.0,
+      "locked": true,
+      "observation_age": 0.045671939849853516,
+      "prediction_age": 0.045671939849853516,
+      "remaining": 0.7340495586395264,
+      "continuity_position": 5.744314807124018e-06,
+      "continuity_velocity": 0.0008756739400937472,
+      "continuity_acceleration": 0.08796339437662365
+    },
+    {
+      "elapsed": 10.109598159790039,
+      "plan_id": 48,
+      "previous_execution_status": "TERMINAL_COMMITTED",
+      "previous_plan_id": 47,
+      "contact_shift": 0.19297432899475098,
+      "locked": true,
+      "observation_age": 0.04658246040344238,
+      "prediction_age": 0.04658246040344238,
+      "remaining": 0.8261101245880127,
+      "continuity_position": 5.321769291878973e-07,
+      "continuity_velocity": 0.00035531305351597106,
+      "continuity_acceleration": 0.1563505667735724
+    }
+  ],
+  "rejected": [
+    {
+      "elapsed": 10.269607782363892,
+      "active_plan_id": 48,
+      "candidate_plan_id": 49,
+      "reason": "STATE_VELOCITY_MISMATCH",
+      "trajectory_replaced": false
+    }
+  ],
+  "accepted_during_commitment": [
+    {
+      "elapsed": 10.109598159790039,
+      "plan_id": 48,
+      "previous_execution_status": "TERMINAL_COMMITTED",
+      "previous_plan_id": 47,
+      "contact_shift": 0.19297432899475098,
+      "locked": true,
+      "observation_age": 0.04658246040344238,
+      "prediction_age": 0.04658246040344238,
+      "remaining": 0.8261101245880127,
+      "continuity_position": 5.321769291878973e-07,
+      "continuity_velocity": 0.00035531305351597106,
+      "continuity_acceleration": 0.1563505667735724
+    }
+  ]
+}

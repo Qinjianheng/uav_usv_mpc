@@ -25,6 +25,7 @@ class TrajectoryRejectReason(str, Enum):
     REFERENCE_POSITION_MISMATCH = 'REFERENCE_POSITION_MISMATCH'
     REFERENCE_VELOCITY_MISMATCH = 'REFERENCE_VELOCITY_MISMATCH'
     REFERENCE_ACCELERATION_MISMATCH = 'REFERENCE_ACCELERATION_MISMATCH'
+    TERMINAL_COMMITTED = 'TERMINAL_COMMITTED'
 
 
 @dataclass(frozen=True)
@@ -496,12 +497,17 @@ class TrajectoryTrackerCore:
             self.previous_command_velocity[2] + delta_z,
         )
 
-    def _terminal_cruise_velocity(self, state, control_stamp, target_at_time, target_velocity):
+    def _terminal_cruise_velocity(
+        self, state, control_stamp, target_at_time, target_velocity,
+        cruise_from_start=False,
+    ):
         """Aim at a short future target position without lowering cruise speed."""
         trajectory = self.active_trajectory
         remaining = trajectory.contact_stamp - control_stamp
+        window = (trajectory.source_stamp <= control_stamp and remaining >= 0.
+                  if cruise_from_start else 0. <= remaining <= .7)
         if (target_at_time is None or target_velocity is None
-                or trajectory.contact_stamp <= 0. or not 0. <= remaining <= .7):
+                or trajectory.contact_stamp <= 0. or not window):
             return None
         # This is an explicit control-boundary model, not a retimed measurement.
         age = control_stamp - state.stamp
@@ -509,8 +515,14 @@ class TrajectoryTrackerCore:
         target = target_at_time(control_stamp)
         relative = tuple(target[a] - origin[a] for a in (0, 1))
         distance = math.hypot(*relative)
-        if not 1e-6 < distance <= 2.5:
+        if not cruise_from_start and distance > 2.5:
             return None
+        if distance <= 1e-6:
+            # Coincident XY does not imply a 3-D capture. Preserve the last
+            # direction when a fresh horizontal aim is undefined.
+            return self._limit_horizontal(
+                (self.previous_command_velocity or state.velocity)[:2],
+                self.maximum_horizontal_speed)
         speed = self.maximum_horizontal_speed
         a = sum(v * v for v in target_velocity[:2]) - speed * speed
         b = 2. * sum(relative[i] * target_velocity[i] for i in (0, 1))
@@ -523,7 +535,9 @@ class TrajectoryTrackerCore:
         aim = tuple(target[i] - origin[i] for i in (0, 1))
         norm = math.hypot(*aim)
         if norm <= 1e-6:
-            return None
+            return self._limit_horizontal(
+                (self.previous_command_velocity or state.velocity)[:2],
+                self.maximum_horizontal_speed)
         desired = tuple(speed * value / norm for value in aim)
         previous = (self.previous_command_velocity or state.velocity)[:2]
         old_speed = min(math.hypot(*previous), speed)
@@ -548,7 +562,8 @@ class TrajectoryTrackerCore:
         return (new_speed * math.cos(heading + turn), new_speed * math.sin(heading + turn))
 
     def command(self, state, mission_id, control_stamp=None,
-                terminal_target_at_time=None, terminal_target_velocity=None):
+                terminal_target_at_time=None, terminal_target_velocity=None,
+                hold_terminal_velocity=False, cruise_from_start=False):
         """Return one post-Safety-Guard command or no valid-plan status."""
         control_stamp = state.stamp if control_stamp is None else float(control_stamp)
         if not math.isfinite(control_stamp) or control_stamp < state.stamp:
@@ -582,7 +597,16 @@ class TrajectoryTrackerCore:
         velocity = self._shape_velocity(feedback_velocity, control_stamp)
         terminal_velocity = self._terminal_cruise_velocity(
             state, control_stamp, terminal_target_at_time, terminal_target_velocity,
+            cruise_from_start=cruise_from_start,
         )
+        if (hold_terminal_velocity and terminal_velocity is None
+                and trajectory.terminal_mode
+                and 0. < trajectory.contact_stamp - control_stamp <= .7
+                and previous_velocity is not None):
+            # Explicit execution authority, not a stale target measurement:
+            # preserve the last verified cruise vector until the plan expires.
+            terminal_velocity = self._limit_horizontal(
+                previous_velocity[:2], self.maximum_horizontal_speed)
         if terminal_velocity is not None:
             velocity = (*terminal_velocity, velocity[2])
         safety = apply_sea_safety_guard(

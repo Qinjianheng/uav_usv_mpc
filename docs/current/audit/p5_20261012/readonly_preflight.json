@@ -1,0 +1,19 @@
+{
+  "isolation": {
+    "processes": [],
+    "hardware_serial": [],
+    "udp8888_free": true,
+    "domain": 43
+  },
+  "engine": "P47FollowGuidedMinco",
+  "parameters": {
+    "minco_engine": "p47_follow_guided",
+    "short_horizon": 1.6,
+    "p47_terminal_mode": "qva",
+    "p47_refinement": false,
+    "p47_scheduling": "adaptive",
+    "follow_execution_enabled": false
+  },
+  "constraint_fingerprint": "3abf5a05f3d1d5507526df284a3ef49a9a207b38d47a982fd77b1fa2f65c0a1f",
+  "actual_execution_grant": false
+}

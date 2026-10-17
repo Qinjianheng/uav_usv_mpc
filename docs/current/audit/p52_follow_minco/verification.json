@@ -1,0 +1,67 @@
+{
+  "base_head": "413b54fefa35c01f8d235aa553249d2071de23f5",
+  "branch": "master",
+  "run_date": "2026-10-13",
+  "passed": true,
+  "a_e_offline_test_pass": true,
+  "independent_review_pass": true,
+  "independent_review_meaning": "Fresh read-only review completed; one important fixed by author RED-to-GREEN and final whole suite, no re-review asserted",
+  "actual_sitl_performed": false,
+  "actual_f2_pass": null,
+  "actual_f3_pass": null,
+  "explicit_f2_permission_received": false,
+  "explicit_f3_permission_received": false,
+  "pytest": {
+    "passed": 1704,
+    "skipped": 1,
+    "warnings": 3,
+    "seconds": 25.34,
+    "command": "cd src/uav_control; source ROS/install; OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 python3 -m pytest -q"
+  },
+  "targeted": {
+    "admission_budget": 84,
+    "extended_with_p51": 14,
+    "entry_audit": 63,
+    "final_review_budget": 52
+  },
+  "build_packages": [
+    "px4_msgs",
+    "uav_usv_interfaces",
+    "uav_control",
+    "uav_usv_bringup"
+  ],
+  "static_checks": {
+    "flake8": true,
+    "shell_syntax": true,
+    "shell_count": 5,
+    "launch_show_args": true,
+    "installed_message": true,
+    "git_diff_check": true,
+    "cached_diff_check": true
+  },
+  "package_prefix": "/home/qin/data/uav_usv_mpc/install/uav_control",
+  "source_check_count": 675,
+  "immutable_evidence": {
+    "protected_files": 984,
+    "protected_unchanged": true,
+    "old_checkout_writes": false
+  },
+  "environment": {
+    "processes": [],
+    "hardware_serial": [],
+    "udp8888_free": true,
+    "domain": 43
+  },
+  "historical_evidence": {
+    "named_historical_math_verified": true,
+    "formal_manifest_verified": true,
+    "actual_candidate_config_verified": true,
+    "current_new_protocol_tests_separate": true,
+    "actual_flight_qualification": false
+  },
+  "raw_directory": "/home/qin/data/uav_usv_mpc/data/experiments/20261013_p52_offline_01",
+  "new_sitl_root": "/home/qin/data/uav_usv_mpc/data/experiments/20261013_p52_closed_loop_01",
+  "math_scope": "Named historical H1.6 matrix reused with unchanged validators; current wrappers tested separately, no new whole-matrix or flight equivalence claim",
+  "timing_scope": "Final serial saved-request replay, three startup cases only; parallel replay retained separately; no online percentiles",
+  "fault_scope": "Virtual epochs/zero solver clock and analytical navigation; production solver/wire/Receiver/shaping, not ROS ACK or PX4 flight"
+}

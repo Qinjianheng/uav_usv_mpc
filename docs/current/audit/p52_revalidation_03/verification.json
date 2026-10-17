@@ -1,0 +1,48 @@
+{
+  "passed": true,
+  "independent_review_pass": true,
+  "independent_review_scope": "Activation wakeup and bounded-retry freshness implementations only; checks, source integrity and preflight verified separately by executor",
+  "pytest": {
+    "passed": 1724,
+    "skipped": 1,
+    "warnings": 3,
+    "seconds": 24.19
+  },
+  "source_check_count": 678,
+  "build_packages": [
+    "px4_msgs",
+    "uav_usv_interfaces",
+    "uav_control",
+    "uav_usv_bringup"
+  ],
+  "static_checks": {
+    "flake8": true,
+    "shell_syntax": true,
+    "installed_message": true,
+    "launch_args": true,
+    "git_diff": true
+  },
+  "environment": {
+    "processes": [],
+    "hardware_serial": [],
+    "udp8888_free": true,
+    "domain": 43
+  },
+  "protected_files": 984,
+  "old_manifests": {
+    "docs/current/audit/p52_follow_minco": 30,
+    "data/experiments/20261013_p52_offline_01": 87,
+    "data/experiments/20261013_p52_closed_loop_01/f2_h16_01": 887,
+    "docs/current/audit/p52_revalidation_02": 21,
+    "data/experiments/20261013_p52_diagnosis_01": 29,
+    "data/experiments/20261013_p52_closed_loop_02/f2_h16_01": 909
+  },
+  "actual_f2_attempt_02": "MINCO actual35.47pct, longest5.35s, 2 lawful lease fallbacks; F2 failed, sealed and retained",
+  "repair": "Accepted-start wakeup to sole control path and fresh-budget waiting before spending original parent retry",
+  "raw_directory": "/home/qin/data/uav_usv_mpc/data/experiments/20261013_p52_diagnosis_02",
+  "prior_offline_qualification": "/home/qin/data/uav_usv_mpc/docs/current/audit/p52_follow_minco",
+  "explicit_sitl_authorization_received": true,
+  "authorization": "授权，请全部执行，你可以自行修改和启动仿真",
+  "actual_f2_pass": false,
+  "actual_f3_performed": false
+}

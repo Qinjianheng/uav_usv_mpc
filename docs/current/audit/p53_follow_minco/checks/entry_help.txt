@@ -1,0 +1,17 @@
+usage: p53_minco_sitl.py [-h] [--scene {f2,f3}] --qualification QUALIFICATION
+                         --readiness READINESS [--authorize-f2]
+                         [--authorize-f3]
+                         output
+
+P5.3 one new authorized F2 and conditional actual-F2-qualified F3.
+
+positional arguments:
+  output
+
+options:
+  -h, --help            show this help message and exit
+  --scene {f2,f3}
+  --qualification QUALIFICATION
+  --readiness READINESS
+  --authorize-f2
+  --authorize-f3

@@ -1,0 +1,7 @@
+{
+  "independent_review_pass": true,
+  "important_unresolved": 0,
+  "minor_unresolved": 0,
+  "reviewer": "/root/p53_startup_final_review",
+  "conclusion": "P5/P51 default125ms, P53 observer300ms, online TTL/lease/pre-X125ms unchanged; condition separates observation and execution budgets; future/old/physical/offboard rejected."
+}

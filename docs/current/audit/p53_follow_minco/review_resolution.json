@@ -1,0 +1,15 @@
+{
+  "reviewer": "/root/p52_final_review",
+  "fresh_reviewer_error": "p53_final_review model capacity; existing independent reviewer reused",
+  "critical": 0,
+  "important": 1,
+  "minor": 0,
+  "important_unresolved": 0,
+  "source_scope": "Production publication/retry and readiness/recorded replay reviewed; no new physical-performance assertion",
+  "finding": "Late research marker could overwrite actual ACTIVE in attempt_blocker",
+  "red": "review_analysis_red.txt:1 failed4passed",
+  "green": "review_analysis_green.txt:29passed",
+  "resolution": "Actual ACTIVE/wire/ACK lifecycle prioritized; candidate and research marker reported separately",
+  "independent_re_review_asserted": false,
+  "final_checks_by_executor": true
+}

@@ -1,0 +1,17 @@
+{
+  "src/uav_control/uav_control/control/trajectory_tracker_node.py": "0740b427ecb325e04a039e314f38215c5d014d387dd7e70b0bcda650134ceae1",
+  "src/uav_control/uav_control/control/trajectory_tracking.py": "5085ea12032b4fae179d21e14f6c47cc1550df1ec77bb16be91d3e0d21c5a221",
+  "src/uav_control/uav_control/mission/mission_manager.py": "c7fea2759d347c475e9b4f32439638121c86ffe541f1a4b100142e59a5aea5f1",
+  "src/uav_control/uav_control/mission/mission_manager_node.py": "0ebadf55a252c0711692352563a21206f73882804acf420fbcb42945ecceb0a8",
+  "src/uav_control/test/test_terminal_execution.py": "243d34f5fbc5a9d93a54ccf589c8ecff8fdc6dbe883f2549e3e71cef947bd69a",
+  "src/uav_control/uav_control/perception/tof_sphere_localization.py": "6a994f9b06c1b3cd1d14cb36f57c9522397721ee2e9ab82ddb96da17f93a45f2",
+  "src/uav_control/uav_control/perception/rgbd_target_localizer.py": "6e7261fb11b67b4d88ed3bcfbe21bcb7f30927c105b302358309be3edff89a48",
+  "src/uav_control/uav_control/perception/tof_depth_model.py": "9d2fe95fc1ba07773c2ec010a8b6ae4810c5f6c845ba4a6dfbfd080ce7d9268c",
+  "src/uav_control/uav_control/perception/tof_depth_node.py": "ce7777d55c5ca3174305af9691958c6f8e933c15fec97d61918d8bd089eb1864",
+  "src/uav_usv_bringup/config/front_tof_simulation.yaml": "d74e947e180416a460717447d9bc300a1f60156d8ce04782337da659ce467363",
+  "src/uav_usv_bringup/config/visual_geometry_diagnostics.yaml": "e53582538abb30bf04afdc7fe27ae3af9d7cc4a95221c32e1697f547cb21db96",
+  "src/uav_usv_bringup/launch/modular_intercept.launch.py": "e60d58881a1d9af34db283b7a2e5bf90a9b0638cf09c543fd82a17a65fd1407f",
+  "src/uav_control/test/test_tof_sphere_localization.py": "ea44b5349bd06a50feea605717944fb302b83b09de44d4a8ba4c80ea824aa984",
+  "scripts/start_px4_ros2.sh": "c64a3eb0bdba0b7d73369379a73e72777bf1956479e650812bf32138a883dd25",
+  "src/uav_control/test/test_camera_profile.py": "5dc7e629a73f41d4e41240f63471c5db04096168bf80c107a4693f9aaad41688"
+}

@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "important_unresolved": 0,
+  "reviewer": "/root/p53_startup_final_review",
+  "driver_sha256": "722362f10285ad48367e074ac2b0634c4e746fc0e062c8d5f11de5919b4c1917",
+  "archive_manifest_sha256": "a6771935677fdc511f4d59892dba03a54bb028f57ad19876c16e24d47413854d",
+  "conditions_resolved": [
+    "Persistent external archive copied and verified before removal",
+    "run_sitl.py included in new readiness source_checks",
+    "Launch command explicitly exports server-only1 and BLAS/OMP1"
+  ],
+  "scope": "Archive list and validation driver; actual flight effect pending."
+}

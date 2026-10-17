@@ -1,0 +1,78 @@
+{
+  "reference_f2": {
+    "source": "data/experiments/20261013_p53_closed_loop_11/f2_h16_01",
+    "source_manifest_sha256": "18120301b2695a8fb0e083acdda372b21e708c1ef59e7d008adbd1f0be23c4a7",
+    "window_seconds": 25,
+    "native_samples": 1250,
+    "setpoint_samples": 617,
+    "maximum_horizontal_speed_mps": 2.044018435411277,
+    "maximum_horizontal_acceleration_mps2": 0.1049506694145577,
+    "maximum_command_horizontal_speed_mps": 2.083804126738156,
+    "finite_horizontal_feedforward_samples": 617,
+    "maximum_horizontal_feedforward_mps2": 0.10245353343422663,
+    "authority": {
+      "graph_samples": 74,
+      "discovered_samples": 58,
+      "all_discovered_single_tracker": true,
+      "conflicts": []
+    },
+    "method": "Same absolute native sample epoch for UAV speed/acceleration, observer receipt for sent native PX4 setpoints; full predefined window."
+  },
+  "reference_f3": {
+    "source": "data/experiments/20261013_p53_closed_loop_11/f3_h16_01",
+    "source_manifest_sha256": "b4b2c47c59f49472594b8299fb82dc896f23ab5ba24e607ed754c82dc2c5d4bb",
+    "window_seconds": 60,
+    "native_samples": 3000,
+    "setpoint_samples": 1455,
+    "maximum_horizontal_speed_mps": 4.464150990589798,
+    "maximum_horizontal_acceleration_mps2": 2.5686486989864687,
+    "maximum_command_horizontal_speed_mps": 4.679255544391545,
+    "finite_horizontal_feedforward_samples": 1455,
+    "maximum_horizontal_feedforward_mps2": 2.9999999105218738,
+    "authority": {
+      "graph_samples": 111,
+      "discovered_samples": 95,
+      "all_discovered_single_tracker": true,
+      "conflicts": []
+    },
+    "method": "Same absolute native sample epoch for UAV speed/acceleration, observer receipt for sent native PX4 setpoints; full predefined window."
+  },
+  "repeat_f2": {
+    "source": "data/experiments/20261014_cleanup_sitl_02/f2_h16_01",
+    "source_manifest_sha256": "c934cead4b30844e83f97bef5b7a3d4a0f79a0a68113f2f76566980a11018c4c",
+    "window_seconds": 25,
+    "native_samples": 1250,
+    "setpoint_samples": 613,
+    "maximum_horizontal_speed_mps": 2.0336286342620693,
+    "maximum_horizontal_acceleration_mps2": 0.0873135235063849,
+    "maximum_command_horizontal_speed_mps": 2.098702350554199,
+    "finite_horizontal_feedforward_samples": 613,
+    "maximum_horizontal_feedforward_mps2": 0.0742077996031409,
+    "authority": {
+      "graph_samples": 72,
+      "discovered_samples": 56,
+      "all_discovered_single_tracker": true,
+      "conflicts": []
+    },
+    "method": "Same absolute native sample epoch for UAV speed/acceleration, observer receipt for sent native PX4 setpoints; full predefined window."
+  },
+  "conditional_f3": {
+    "source": "data/experiments/20261014_cleanup_sitl_02/f3_h16_01",
+    "source_manifest_sha256": "57d0023d348f749d388470ef65ec6d63f7203e97e585c56e975fa24cb6eae338",
+    "window_seconds": 60,
+    "native_samples": 3000,
+    "setpoint_samples": 1482,
+    "maximum_horizontal_speed_mps": 4.535346682126008,
+    "maximum_horizontal_acceleration_mps2": 1.6951413278460241,
+    "maximum_command_horizontal_speed_mps": 4.695464155399103,
+    "finite_horizontal_feedforward_samples": 1482,
+    "maximum_horizontal_feedforward_mps2": 1.7523671203849733,
+    "authority": {
+      "graph_samples": 115,
+      "discovered_samples": 95,
+      "all_discovered_single_tracker": true,
+      "conflicts": []
+    },
+    "method": "Same absolute native sample epoch for UAV speed/acceleration, observer receipt for sent native PX4 setpoints; full predefined window."
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "base_commit": "a35e4051402907cde321b7667361dabefed297dc",
+  "source_changed_after_failed_f2": true,
+  "repair_sitl_revalidated": false,
+  "sha256": {
+    "scripts/p5_release.py": "f4a8463cf21b8070c5071c81502f2cc95285a3483b28c4f4a1e3bafcc5c04f06",
+    "scripts/p5_minco_sitl.py": "2ccc8894b292c7f5bb70e8cb34c6fe6fc0879c58a223a37b63a46518361a0eac",
+    "scripts/p5_live_health.py": "667726a58c8c84f011eb854d763d4e56d94f51b561f6a5db46f168a932caf0e3",
+    "src/uav_usv_bringup/config/p5_follow_research.yaml": "1205023788ea36fb480118b5d96d17d9f03006a0f75e71a016664686d53ee6bc",
+    "src/uav_usv_bringup/launch/p5_follow_research.launch.py": "a92a1c63d7659b4f2b24bcf070ecc0261e007bf40db3115bfccea59c704ff042",
+    "src/uav_control/test/test_p5_release.py": "12b538725352346e5db3cf2f83d984c18b6ca6fe34c3d1cf283b5e50f13ce547",
+    "src/uav_control/test/test_p5_sitl.py": "f50f6de4f528aa8163741c30bf293fa14b8c9853637b1ae271710639f03264af"
+  }
+}

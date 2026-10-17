@@ -1,0 +1,24 @@
+{
+  "archive": "/home/qin/data/uav_usv_mpc_archive/20261014_system_cleanup_01/before_cleanup_complete.tar.gz",
+  "archive_sha256": "6513ea1ae835e43cf5bd30f8df291b395d092774848c4e385ca0be577cb54774",
+  "removed_scripts": [
+    "scripts/p31_minco_audit.py",
+    "scripts/p31_minco_experiment.py",
+    "scripts/p32_follow_analysis.py",
+    "scripts/p43_synthetic_checks.py",
+    "scripts/p44_follow_study.py",
+    "scripts/p44_sitl_matrix.py",
+    "scripts/p45_execution_matrix.py",
+    "scripts/p7_px4_groundtruth_analysis.py",
+    "scripts/vision_p4_geometry_gate_analysis.py",
+    "scripts/vision_p4_px4_mag_audit.py",
+    "scripts/vision_p5_groundtruth_timing.py",
+    "scripts/vision_p5_kf_baseline.py",
+    "scripts/vision_px4_ulog_reference_analysis.py",
+    "scripts/vision_uav_pose_reference_analysis.py"
+  ],
+  "removed_log_directories": 193,
+  "removed_files": 1470,
+  "removed_bytes": 307447683,
+  "protected_files_unchanged": 6685
+}

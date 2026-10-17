@@ -1,0 +1,7 @@
+{
+  "independent_review_pass": true,
+  "important_unresolved": 0,
+  "reviewer": "/root/p53_startup_final_review",
+  "original_important": "Fresh receipt could hide old native navigation",
+  "resolution": "Added original native125ms causal gate; stale/future native two counterexamples RED then GREEN. Default unchanged; single existing X path; bounded watchdog cleanup."
+}

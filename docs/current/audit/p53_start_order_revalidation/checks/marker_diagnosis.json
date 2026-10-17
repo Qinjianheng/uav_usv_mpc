@@ -1,0 +1,60 @@
+[
+  {
+    "source": "/home/qin/data/uav_usv_mpc/data/experiments/20261013_p52_closed_loop_03/f2_h16_01",
+    "source_manifest_sha256": "f23f16bbb74aa6be617c3188fcfd2511daaf9d037e2cf6d23a561b98310f003f",
+    "original_follow_start": 1791852373.6446497,
+    "held_rendered_positions": [
+      {
+        "start_sim": 63.312,
+        "end_sim": 64.188,
+        "p": [
+          98.81426895420773,
+          0.0,
+          -0.5048003895660159
+        ],
+        "samples": 23,
+        "start": 1791852410.5852342,
+        "end": 1791852411.4612367,
+        "duration": 0.8760025501251221,
+        "truth_xy_at_end": [
+          100.63950813429899,
+          0.0
+        ],
+        "rendered_truth_xy_error_at_end": 1.825239180091259
+      }
+    ],
+    "late_max_vision_error": {
+      "measurement_stamp": "1791852411.4732244",
+      "position_x": "98.72796177468058",
+      "truth_x": "100.66348613579753",
+      "error_x": "-1.935524361116947",
+      "red_pixel_count": "792",
+      "target_range": "5.850046634674072"
+    },
+    "unlocked_samples": [],
+    "scope": "Original raw records only. Full native rendered pose, bounded clock interpolation, offline truth comparison. No online correction."
+  },
+  {
+    "source": "/home/qin/data/uav_usv_mpc/data/experiments/20261013_p53_closed_loop_01/f2_h16_01",
+    "source_manifest_sha256": "8e0dde34b6548d798acda2a55f2647b701d79c60a5b44748671aca4775b40a93",
+    "original_follow_start": 1791869708.6124036,
+    "held_rendered_positions": [],
+    "late_max_vision_error": null,
+    "unlocked_samples": [
+      {
+        "kind": "diagnostic",
+        "receipt": 1791869714.9168527,
+        "stamp": 1791869714.912454,
+        "mission": 1,
+        "plan": 0,
+        "status": "FOLLOW",
+        "compute": 0.0013707259786315262,
+        "locked": false,
+        "visible": true,
+        "search": "REACQUIRE",
+        "yaw_owner": "SEARCH"
+      }
+    ],
+    "scope": "Original raw records only. Full native rendered pose, bounded clock interpolation, offline truth comparison. No online correction."
+  }
+]

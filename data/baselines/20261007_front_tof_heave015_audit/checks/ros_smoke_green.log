@@ -1,0 +1,2 @@
+[INFO] [1791339147.704069920] [front_tof_depth_model]: FUNCTIONAL TOF SIMULATION | uncalibrated test profile | radial range 0.25-25.0 m | RGB/depth alignment retained; no optical/water physics model
+{"received": 1, "stamp_preserved": true, "size": [640, 480], "valid_fraction": 0.990087890625}

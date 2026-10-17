@@ -1,0 +1,110 @@
+FFFFFFFF                                                                 [100%]
+=================================== FAILURES ===================================
+_________ test_complete_reference_and_qualification_evidence_can_pass __________
+
+    def test_complete_reference_and_qualification_evidence_can_pass():
+>       from p51_execution_audit import audit_rows
+E       ModuleNotFoundError: No module named 'p51_execution_audit'
+
+test/test_p51_execution_audit.py:37: ModuleNotFoundError
+_ test_bad_or_missing_actual_evidence_cannot_qualify_f3[height-reference_height] _
+
+fault = 'height', check = 'reference_height'
+
+    @pytest.mark.parametrize('fault,check', [
+        ('height', 'reference_height'), ('expired', 'execution_gates'),
+        ('entry', 'entry_recovery'), ('prefix', 'execution_gates'),
+        ('missing', 'evidence_coverage'), ('ack', 'execution_gates'),
+    ])
+    def test_bad_or_missing_actual_evidence_cannot_qualify_f3(fault, check):
+>       from p51_execution_audit import audit_rows
+E       ModuleNotFoundError: No module named 'p51_execution_audit'
+
+test/test_p51_execution_audit.py:49: ModuleNotFoundError
+_ test_bad_or_missing_actual_evidence_cannot_qualify_f3[expired-execution_gates] _
+
+fault = 'expired', check = 'execution_gates'
+
+    @pytest.mark.parametrize('fault,check', [
+        ('height', 'reference_height'), ('expired', 'execution_gates'),
+        ('entry', 'entry_recovery'), ('prefix', 'execution_gates'),
+        ('missing', 'evidence_coverage'), ('ack', 'execution_gates'),
+    ])
+    def test_bad_or_missing_actual_evidence_cannot_qualify_f3(fault, check):
+>       from p51_execution_audit import audit_rows
+E       ModuleNotFoundError: No module named 'p51_execution_audit'
+
+test/test_p51_execution_audit.py:49: ModuleNotFoundError
+_ test_bad_or_missing_actual_evidence_cannot_qualify_f3[entry-entry_recovery] __
+
+fault = 'entry', check = 'entry_recovery'
+
+    @pytest.mark.parametrize('fault,check', [
+        ('height', 'reference_height'), ('expired', 'execution_gates'),
+        ('entry', 'entry_recovery'), ('prefix', 'execution_gates'),
+        ('missing', 'evidence_coverage'), ('ack', 'execution_gates'),
+    ])
+    def test_bad_or_missing_actual_evidence_cannot_qualify_f3(fault, check):
+>       from p51_execution_audit import audit_rows
+E       ModuleNotFoundError: No module named 'p51_execution_audit'
+
+test/test_p51_execution_audit.py:49: ModuleNotFoundError
+_ test_bad_or_missing_actual_evidence_cannot_qualify_f3[prefix-execution_gates] _
+
+fault = 'prefix', check = 'execution_gates'
+
+    @pytest.mark.parametrize('fault,check', [
+        ('height', 'reference_height'), ('expired', 'execution_gates'),
+        ('entry', 'entry_recovery'), ('prefix', 'execution_gates'),
+        ('missing', 'evidence_coverage'), ('ack', 'execution_gates'),
+    ])
+    def test_bad_or_missing_actual_evidence_cannot_qualify_f3(fault, check):
+>       from p51_execution_audit import audit_rows
+E       ModuleNotFoundError: No module named 'p51_execution_audit'
+
+test/test_p51_execution_audit.py:49: ModuleNotFoundError
+_ test_bad_or_missing_actual_evidence_cannot_qualify_f3[missing-evidence_coverage] _
+
+fault = 'missing', check = 'evidence_coverage'
+
+    @pytest.mark.parametrize('fault,check', [
+        ('height', 'reference_height'), ('expired', 'execution_gates'),
+        ('entry', 'entry_recovery'), ('prefix', 'execution_gates'),
+        ('missing', 'evidence_coverage'), ('ack', 'execution_gates'),
+    ])
+    def test_bad_or_missing_actual_evidence_cannot_qualify_f3(fault, check):
+>       from p51_execution_audit import audit_rows
+E       ModuleNotFoundError: No module named 'p51_execution_audit'
+
+test/test_p51_execution_audit.py:49: ModuleNotFoundError
+__ test_bad_or_missing_actual_evidence_cannot_qualify_f3[ack-execution_gates] __
+
+fault = 'ack', check = 'execution_gates'
+
+    @pytest.mark.parametrize('fault,check', [
+        ('height', 'reference_height'), ('expired', 'execution_gates'),
+        ('entry', 'entry_recovery'), ('prefix', 'execution_gates'),
+        ('missing', 'evidence_coverage'), ('ack', 'execution_gates'),
+    ])
+    def test_bad_or_missing_actual_evidence_cannot_qualify_f3(fault, check):
+>       from p51_execution_audit import audit_rows
+E       ModuleNotFoundError: No module named 'p51_execution_audit'
+
+test/test_p51_execution_audit.py:49: ModuleNotFoundError
+____ test_safe_fallback_is_classified_and_does_not_by_itself_fail_the_audit ____
+
+    def test_safe_fallback_is_classified_and_does_not_by_itself_fail_the_audit():
+>       from p51_execution_audit import audit_rows
+E       ModuleNotFoundError: No module named 'p51_execution_audit'
+
+test/test_p51_execution_audit.py:69: ModuleNotFoundError
+=========================== short test summary info ============================
+FAILED test/test_p51_execution_audit.py::test_complete_reference_and_qualification_evidence_can_pass
+FAILED test/test_p51_execution_audit.py::test_bad_or_missing_actual_evidence_cannot_qualify_f3[height-reference_height]
+FAILED test/test_p51_execution_audit.py::test_bad_or_missing_actual_evidence_cannot_qualify_f3[expired-execution_gates]
+FAILED test/test_p51_execution_audit.py::test_bad_or_missing_actual_evidence_cannot_qualify_f3[entry-entry_recovery]
+FAILED test/test_p51_execution_audit.py::test_bad_or_missing_actual_evidence_cannot_qualify_f3[prefix-execution_gates]
+FAILED test/test_p51_execution_audit.py::test_bad_or_missing_actual_evidence_cannot_qualify_f3[missing-evidence_coverage]
+FAILED test/test_p51_execution_audit.py::test_bad_or_missing_actual_evidence_cannot_qualify_f3[ack-execution_gates]
+FAILED test/test_p51_execution_audit.py::test_safe_fallback_is_classified_and_does_not_by_itself_fail_the_audit
+8 failed in 0.04s

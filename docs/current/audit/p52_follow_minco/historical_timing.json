@@ -1,0 +1,449 @@
+{
+  "no_new_sitl": true,
+  "historical": {
+    "b_f2_1": {
+      "direct_causes": {
+        "NOMINAL_LEASE_EXPIRED": 35
+      },
+      "upstream_update_states": {
+        "REPLACEMENT_REJECTED": 3,
+        "NO_REPLACEMENT_PROPOSAL_DURING_ACTIVE_LEASE": 32
+      },
+      "cadence": {
+        "proposal": {
+          "count": 149,
+          "interval_seconds": {
+            "count": 148,
+            "min": 0.16728806495666504,
+            "median": 0.22278296947479248,
+            "p95": 1.4168065428733827,
+            "max": 6.562397480010986
+          },
+          "intervals_ge_lease": 38,
+          "published_to_start_seconds": {
+            "count": 149,
+            "min": 0.052118539810180664,
+            "median": 0.09666204452514648,
+            "p95": 0.11649284362792969,
+            "max": 0.13152408599853516
+          },
+          "input_ttl_at_publication_seconds": {
+            "count": 149,
+            "min": 0.005758047103881836,
+            "median": 0.035333871841430664,
+            "p95": 0.05553383827209472,
+            "max": 0.05960679054260254
+          }
+        },
+        "accepted": {
+          "count": 140,
+          "interval_seconds": {
+            "count": 139,
+            "min": 0.17109036445617676,
+            "median": 0.22486114501953125,
+            "p95": 1.4806585788726785,
+            "max": 6.7870283126831055
+          },
+          "intervals_ge_lease": 36,
+          "published_to_start_seconds": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          },
+          "input_ttl_at_publication_seconds": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          }
+        },
+        "active": {
+          "count": 137,
+          "interval_seconds": {
+            "count": 136,
+            "min": 0.15647149085998535,
+            "median": 0.22644996643066406,
+            "p95": 1.5479130744934082,
+            "max": 6.798125743865967
+          },
+          "intervals_ge_lease": 37,
+          "published_to_start_seconds": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          },
+          "input_ttl_at_publication_seconds": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          }
+        }
+      },
+      "lifecycle": {
+        "ack_states": {
+          "REJECTED": 11,
+          "ACCEPTED": 140,
+          "ACTIVE": 137,
+          "EXPIRED": 35
+        },
+        "rejection_reasons": {
+          "FOLLOW_NOT_STABLE": 2,
+          "INPUT_EXPIRED": 4,
+          "PARENT_REFERENCE_INVALID": 2,
+          "START_MISSED": 3
+        }
+      },
+      "publication_to_active_seconds": {
+        "count": 137,
+        "min": 0.08034944534301758,
+        "median": 0.123199462890625,
+        "p95": 0.15765748023986814,
+        "max": 0.16960906982421875
+      }
+    },
+    "b_f2_2": {
+      "direct_causes": {
+        "NOMINAL_LEASE_EXPIRED": 31
+      },
+      "upstream_update_states": {
+        "NO_REPLACEMENT_PROPOSAL_DURING_ACTIVE_LEASE": 28,
+        "REPLACEMENT_REJECTED": 1,
+        "ACCEPTED_REPLACEMENT_START_MISSED": 2
+      },
+      "cadence": {
+        "proposal": {
+          "count": 154,
+          "interval_seconds": {
+            "count": 153,
+            "min": 0.1707932949066162,
+            "median": 0.21910309791564941,
+            "p95": 1.4980929851531997,
+            "max": 8.529316425323486
+          },
+          "intervals_ge_lease": 29,
+          "published_to_start_seconds": {
+            "count": 154,
+            "min": 0.06738162040710449,
+            "median": 0.10080206394195557,
+            "p95": 0.1169230580329895,
+            "max": 0.12745976448059082
+          },
+          "input_ttl_at_publication_seconds": {
+            "count": 154,
+            "min": 0.0008962154388427734,
+            "median": 0.03851795196533203,
+            "p95": 0.05750374794006347,
+            "max": 0.06598424911499023
+          }
+        },
+        "accepted": {
+          "count": 145,
+          "interval_seconds": {
+            "count": 144,
+            "min": 0.1700737476348877,
+            "median": 0.2221055030822754,
+            "p95": 1.3764754414558402,
+            "max": 2.7418272495269775
+          },
+          "intervals_ge_lease": 30,
+          "published_to_start_seconds": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          },
+          "input_ttl_at_publication_seconds": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          }
+        },
+        "active": {
+          "count": 140,
+          "interval_seconds": {
+            "count": 139,
+            "min": 0.15837764739990234,
+            "median": 0.20780229568481445,
+            "p95": 1.475860214233397,
+            "max": 2.7357687950134277
+          },
+          "intervals_ge_lease": 33,
+          "published_to_start_seconds": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          },
+          "input_ttl_at_publication_seconds": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          }
+        }
+      },
+      "lifecycle": {
+        "ack_states": {
+          "REJECTED": 13,
+          "ACCEPTED": 145,
+          "ACTIVE": 140,
+          "EXPIRED": 31
+        },
+        "rejection_reasons": {
+          "FOLLOW_NOT_STABLE": 3,
+          "INPUT_EXPIRED": 4,
+          "START_MISSED": 4,
+          "PARENT_REFERENCE_INVALID": 2
+        }
+      },
+      "publication_to_active_seconds": {
+        "count": 140,
+        "min": 0.07354187965393066,
+        "median": 0.12377727031707764,
+        "p95": 0.15412979125976561,
+        "max": 0.16314196586608887
+      }
+    },
+    "c_f2_1": {
+      "direct_causes": {
+        "NOMINAL_LEASE_EXPIRED": 28
+      },
+      "upstream_update_states": {
+        "NO_REPLACEMENT_PROPOSAL_DURING_ACTIVE_LEASE": 25,
+        "REPLACEMENT_REJECTED": 2,
+        "ACCEPTED_REPLACEMENT_START_MISSED": 1
+      },
+      "cadence": {
+        "proposal": {
+          "count": 171,
+          "interval_seconds": {
+            "count": 170,
+            "min": 0.16208219528198242,
+            "median": 0.21582770347595215,
+            "p95": 1.0291037678718502,
+            "max": 7.622995615005493
+          },
+          "intervals_ge_lease": 29,
+          "published_to_start_seconds": {
+            "count": 171,
+            "min": 0.045285701751708984,
+            "median": 0.09536337852478027,
+            "p95": 0.11411714553833008,
+            "max": 0.1243133544921875
+          },
+          "input_ttl_at_publication_seconds": {
+            "count": 171,
+            "min": 0.0063686370849609375,
+            "median": 0.03952932357788086,
+            "p95": 0.058309197425842285,
+            "max": 0.06864333152770996
+          }
+        },
+        "accepted": {
+          "count": 166,
+          "interval_seconds": {
+            "count": 165,
+            "min": 0.16600584983825684,
+            "median": 0.21645212173461914,
+            "p95": 0.8289546012878417,
+            "max": 4.66831111907959
+          },
+          "intervals_ge_lease": 30,
+          "published_to_start_seconds": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          },
+          "input_ttl_at_publication_seconds": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          }
+        },
+        "active": {
+          "count": 165,
+          "interval_seconds": {
+            "count": 164,
+            "min": 0.19378232955932617,
+            "median": 0.20346784591674805,
+            "p95": 0.848809015750885,
+            "max": 4.695770263671875
+          },
+          "intervals_ge_lease": 28,
+          "published_to_start_seconds": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          },
+          "input_ttl_at_publication_seconds": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          }
+        }
+      },
+      "lifecycle": {
+        "ack_states": {
+          "REJECTED": 6,
+          "ACCEPTED": 166,
+          "ACTIVE": 165,
+          "EXPIRED": 28
+        },
+        "rejection_reasons": {
+          "FOLLOW_NOT_STABLE": 2,
+          "PARENT_REFERENCE_INVALID": 1,
+          "INPUT_EXPIRED": 2,
+          "START_MISSED": 1
+        }
+      },
+      "publication_to_active_seconds": {
+        "count": 165,
+        "min": 0.07854819297790527,
+        "median": 0.1212160587310791,
+        "p95": 0.15304231643676755,
+        "max": 0.1588442325592041
+      }
+    },
+    "c_f2_2": {
+      "direct_causes": {
+        "NOMINAL_LEASE_EXPIRED": 37
+      },
+      "upstream_update_states": {
+        "NO_REPLACEMENT_PROPOSAL_DURING_ACTIVE_LEASE": 31,
+        "REPLACEMENT_REJECTED": 3,
+        "ACCEPTED_REPLACEMENT_START_MISSED": 3
+      },
+      "cadence": {
+        "proposal": {
+          "count": 159,
+          "interval_seconds": {
+            "count": 158,
+            "min": 0.17680001258850098,
+            "median": 0.2194734811782837,
+            "p95": 1.0635927200317392,
+            "max": 7.797736883163452
+          },
+          "intervals_ge_lease": 33,
+          "published_to_start_seconds": {
+            "count": 159,
+            "min": 0.05886220932006836,
+            "median": 0.09747052192687988,
+            "p95": 0.114447021484375,
+            "max": 0.12026047706604004
+          },
+          "input_ttl_at_publication_seconds": {
+            "count": 159,
+            "min": 0.007731914520263672,
+            "median": 0.03769683837890625,
+            "p95": 0.057057309150695804,
+            "max": 0.06538987159729004
+          }
+        },
+        "accepted": {
+          "count": 152,
+          "interval_seconds": {
+            "count": 151,
+            "min": 0.17935538291931152,
+            "median": 0.22072458267211914,
+            "p95": 1.0365043878555298,
+            "max": 3.455848455429077
+          },
+          "intervals_ge_lease": 34,
+          "published_to_start_seconds": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          },
+          "input_ttl_at_publication_seconds": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          }
+        },
+        "active": {
+          "count": 148,
+          "interval_seconds": {
+            "count": 147,
+            "min": 0.1528620719909668,
+            "median": 0.2041020393371582,
+            "p95": 1.04864559173584,
+            "max": 3.499160051345825
+          },
+          "intervals_ge_lease": 36,
+          "published_to_start_seconds": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          },
+          "input_ttl_at_publication_seconds": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          }
+        }
+      },
+      "lifecycle": {
+        "ack_states": {
+          "REJECTED": 11,
+          "ACCEPTED": 152,
+          "ACTIVE": 148,
+          "EXPIRED": 35
+        },
+        "rejection_reasons": {
+          "FOLLOW_NOT_STABLE": 1,
+          "INPUT_EXPIRED": 5,
+          "START_MISSED": 4,
+          "PARENT_REFERENCE_INVALID": 1
+        }
+      },
+      "publication_to_active_seconds": {
+        "count": 148,
+        "min": 0.07649707794189453,
+        "median": 0.12203323841094971,
+        "p95": 0.15358953475952147,
+        "max": 0.16766095161437988
+      }
+    }
+  },
+  "historical_upstream": {
+    "REPLACEMENT_REJECTED": 9,
+    "NO_REPLACEMENT_PROPOSAL_DURING_ACTIVE_LEASE": 116,
+    "ACCEPTED_REPLACEMENT_START_MISSED": 6
+  },
+  "sources": {
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261010_p45_minco_execution/b_f2_1/offline_evidence.jsonl": "368bf3a1153407d6bb0f6c6006f029d22957dc6072563665e29e235552194aed",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261010_p45_minco_execution/b_f2_2/offline_evidence.jsonl": "33b380d29ffe511aebfeef2238edad46e829ef33f46863849c1a6270f75c277e",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261010_p45_minco_execution/c_f2_1/offline_evidence.jsonl": "018fea9416ee70b919c80dcfa5c5f366564efa90809af418e3ab3099e8b5dada",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261010_p45_minco_execution/c_f2_2/offline_evidence.jsonl": "26059cf20523670ae2ff35cc0f5a221f27fd1bbdb3f539d96a7078cbe19de96a",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261012_p5_revalidation_02/f2_h16_01/shadow/mpc_seed_shadow_1791802864063701873_823401.jsonl": "7ebbae937d8e8bbb3097409c5d9eb5b98cb9d593e97127df368176c6fca9f468"
+  },
+  "clocks": "ROS/PX4 physical epochs for ages; perf_counter for processing durations; never subtract the two domains"
+}

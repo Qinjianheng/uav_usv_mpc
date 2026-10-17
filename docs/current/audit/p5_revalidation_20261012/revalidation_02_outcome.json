@@ -1,0 +1,316 @@
+{
+  "not_closed_loop_evidence": true,
+  "original_stamps_unchanged": true,
+  "no_new_sitl": true,
+  "stop_input_ages": {
+    "snapshot_ros_stamp": 1791802864.394235,
+    "prediction_source_age": 0.10743927955627441,
+    "prediction_observation_age": 0.13460397720336914,
+    "snapshot_file_age": 0.04579567909240723,
+    "raw_ttl": 0.125
+  },
+  "same_input_replays": [
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/20261012_p5_revalidation_02/f2_h16_01/shadow/mpc_seed_shadow_1791802864063701873_823401.jsonl",
+      "line": 3,
+      "source_sha256": "2ebdaedd58879d0f84273d0bb7ebfdc7c1bd46aec7fc8f8be699375c9edb7c7f",
+      "cycle": 1,
+      "started_before_stop": true,
+      "completed_before_stop": true,
+      "original_solver_status": "DEADLINE_EXCEEDED",
+      "original_admission": "CORE_DEADLINE_EXCEEDED",
+      "raw_remaining_at_dispatch": 0.05257606506347656,
+      "compute_remaining_after_20ms_reserve": 0.03257606506347656,
+      "original_solver_wall": 0.03848391099018045,
+      "original_whole_cycle": 0.042459390009753406,
+      "replay_elapsed": 0.031204045022604987,
+      "replay_valid": false,
+      "replay_solver_status": "VISIBILITY_INFEASIBLE"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/20261012_p5_revalidation_02/f2_h16_01/shadow/mpc_seed_shadow_1791802864063701873_823401.jsonl",
+      "line": 8,
+      "source_sha256": "451ef01cc870a325b99c38371e59feb19fd328e284ee9a39ca2814712cc98b83",
+      "cycle": 2,
+      "started_before_stop": false,
+      "completed_before_stop": false,
+      "original_solver_status": "DEADLINE_EXCEEDED",
+      "original_admission": "STALE_INPUT",
+      "raw_remaining_at_dispatch": 0.06851911544799805,
+      "compute_remaining_after_20ms_reserve": 0.04851911544799804,
+      "original_solver_wall": 0.08901106601115316,
+      "original_whole_cycle": 0.09602324099978432,
+      "replay_elapsed": 0.049204619019292295,
+      "replay_valid": false,
+      "replay_solver_status": "DEADLINE_EXCEEDED"
+    },
+    {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/20261012_p5_revalidation_02/f2_h16_01/shadow/mpc_seed_shadow_1791802864063701873_823401.jsonl",
+      "line": 10,
+      "source_sha256": "a5394220a0b8d1c217e191322449ef04ef3955485f7780d39f46206eaa7bcd80",
+      "cycle": 3,
+      "started_before_stop": false,
+      "completed_before_stop": false,
+      "original_solver_status": "DEADLINE_EXCEEDED",
+      "original_admission": "REVALIDATION_DEADLINE",
+      "raw_remaining_at_dispatch": 0.05929303169250488,
+      "compute_remaining_after_20ms_reserve": 0.03929303169250488,
+      "original_solver_wall": 0.043727997021051124,
+      "original_whole_cycle": 0.05563346602139063,
+      "replay_elapsed": 0.022962300019571558,
+      "replay_valid": true,
+      "replay_solver_status": "SAMPLED_FEASIBLE"
+    }
+  ],
+  "warmup_audit": {
+    "common_epoch": "KF projected state at its original stamp; native navigation bracket interpolation only, no extrapolation",
+    "samples": 200,
+    "horizontal_follow_rmse": 17.939374924079775,
+    "relative_speed_min": 0.14423378780376822,
+    "relative_speed_max": 4.5495025648852545,
+    "uav_speed_min": 0.01003154673176639,
+    "uav_speed_max": 6.513044001149284,
+    "target_speed_min": 1.9421242024425387,
+    "target_speed_max": 2.105584687202713,
+    "last": {
+      "epoch": 1791802863.0451622,
+      "horizontal_follow_error": 8.255264790635243,
+      "relative_horizontal_speed": 4.525037137983847,
+      "height_error": 0.03294003181847849,
+      "uav_speed": 6.474392894682702,
+      "target_speed": 1.9496099092143973,
+      "nav_bracket": [
+        1791802863.0356371,
+        1791802863.0516443
+      ]
+    }
+  },
+  "result": "F2_INPUT_STALE_BEFORE_TAKEOVER",
+  "actual_planner_started": true,
+  "actual_minco_authorized": true,
+  "actual_sitl_revalidation_02_f2_runs": 1,
+  "actual_f3_runs": 0,
+  "lifecycle": {
+    "proposals": 0,
+    "accepted_unique": 0,
+    "active_unique": 0,
+    "reasons": {},
+    "activation_deviation_seconds": null,
+    "handover_max_abs_pva_yaw_rate": null,
+    "receiver_service_seconds": null,
+    "first_active": null
+  },
+  "authority": {
+    "graph_samples": 37,
+    "discovered_samples": 21,
+    "all_discovered_single_tracker": true,
+    "conflicts": []
+  },
+  "actual_summary": {
+    "completed": false,
+    "healthy": false,
+    "reason": "PREDICTION_INPUT_STALE",
+    "first_minco_receipt": null,
+    "observation_seconds": 0,
+    "minco_fraction": 0.0,
+    "longest_minco_seconds": 0.0,
+    "diagnostic_coverage": 0.0,
+    "ownership": {
+      "seconds": {},
+      "minco_fraction": 0.0,
+      "continuous_seconds": null,
+      "fallback_count": 0
+    },
+    "harness_end": {
+      "start": 1791802826.2161353,
+      "ended": 1791802874.7503788,
+      "reason": "WATCHDOG",
+      "x_time": 1791802849.3955033,
+      "identities": {
+        "launcher": {
+          "pid": 822113,
+          "pgid": 822113,
+          "start": "35297673"
+        },
+        "gcs": {
+          "pid": 822112,
+          "pgid": 822112,
+          "start": "35297673"
+        },
+        "monitor": {
+          "pid": 822114,
+          "pgid": 822114,
+          "start": "35297673"
+        },
+        "gazebo": {
+          "pid": 822243,
+          "pgid": 822243,
+          "start": "35298020"
+        },
+        "px4": {
+          "pid": 822440,
+          "pgid": 822440,
+          "start": "35298243"
+        },
+        "dds": {
+          "pid": 822895,
+          "pgid": 822895,
+          "start": "35298780"
+        },
+        "experiment": {
+          "pid": 823087,
+          "pgid": 823087,
+          "start": "35299296"
+        }
+      },
+      "monitor_returncode": 0,
+      "launcher_returncode": -2,
+      "still_alive": []
+    },
+    "analysis": "execution_analysis.json; FOLLOW windows include original warmup",
+    "f3_eligible": false
+  },
+  "full_local_directory": "/home/qin/data/uav_usv_mpc/data/experiments/20261012_p5_revalidation_02/f2_h16_01",
+  "diagnosis_full": "/home/qin/data/uav_usv_mpc/data/experiments/20261012_p5_revalidation_02/diagnosis_01/diagnosis.json",
+  "original_follow_metrics": {
+    "all_follow": {
+      "samples": 137,
+      "evaluation": "evaluator native UAV snapshot vs ideal scene TargetState; not KF error",
+      "position_horizontal_rmse": 15.851540829787282,
+      "distance_rmse": 15.851525326957459,
+      "relative_velocity_rmse": 3.6102314264973514,
+      "altitude_rmse": 0.07180094570624873,
+      "visible_fraction": 1.0,
+      "locked_fraction": 0.9926470588235294,
+      "actual_whole_marker_safe_fraction": 0.893491124260355,
+      "actual_horizontal_margin": {
+        "count": 169,
+        "min": 0.7657553730423936,
+        "p50": 0.7821223676544602,
+        "p95": 0.7873138784504495,
+        "p99": 0.7877886150961323,
+        "max": 0.7883220567669234
+      },
+      "actual_vertical_margin": {
+        "count": 169,
+        "min": -0.01886607900246068,
+        "p50": 0.3075357873167973,
+        "p95": 0.5443582742361872,
+        "p99": 0.607597033160019,
+        "max": 0.6293524578436445
+      },
+      "actual_horizontal_speed": {
+        "count": 336,
+        "min": 0.010065865802484487,
+        "p50": 6.222975610298837,
+        "p95": 6.510643013782076,
+        "p99": 6.512921053561529,
+        "max": 6.513053396951018
+      },
+      "actual_horizontal_acceleration": {
+        "count": 336,
+        "min": 0.01359291968715636,
+        "p50": 0.5976354889107054,
+        "p95": 3.1130585317631785,
+        "p99": 3.1550179276202566,
+        "max": 3.160310851335097
+      },
+      "estimated_horizontal_jerk": {
+        "count": 335,
+        "min": 0.034209407247193485,
+        "p50": 0.8815194705471598,
+        "p95": 3.7858683826080215,
+        "p99": 4.270069653069092,
+        "max": 4.475919840714971
+      },
+      "reference_velocity_delta_over_receipt_dt": {
+        "count": 135,
+        "min": 0.004111031417434335,
+        "p50": 0.14513826886375342,
+        "p95": 3.1731339987683733,
+        "p99": 3.286759982226636,
+        "max": 11.647609747531092
+      },
+      "reference_gaps_seconds": {
+        "count": 135,
+        "min": 0.012878179550170898,
+        "p50": 0.04997706413269043,
+        "p95": 0.053880953788757326,
+        "p99": 0.0550793981552124,
+        "max": 0.055542707443237305
+      },
+      "position_3d_rmse": 15.851703443296485,
+      "horizontal_peak_error": 21.72496727472115
+    },
+    "follow_20_to_60": {
+      "samples": 0,
+      "evaluation": "evaluator native UAV snapshot vs ideal scene TargetState; not KF error",
+      "position_horizontal_rmse": null,
+      "distance_rmse": null,
+      "relative_velocity_rmse": null,
+      "altitude_rmse": null,
+      "visible_fraction": null,
+      "locked_fraction": null,
+      "actual_whole_marker_safe_fraction": null,
+      "actual_horizontal_margin": null,
+      "actual_vertical_margin": null,
+      "actual_horizontal_speed": null,
+      "actual_horizontal_acceleration": null,
+      "estimated_horizontal_jerk": null,
+      "reference_velocity_delta_over_receipt_dt": null,
+      "reference_gaps_seconds": null,
+      "position_3d_rmse": null,
+      "horizontal_peak_error": null
+    }
+  },
+  "metrics_warning": "These are short original FOLLOW startup metrics, including transition; there is no MINCO performance window.",
+  "warmup_repair_sitl_validated": false,
+  "deadline_or_latency_optimized": false,
+  "causal_claim": "Actual >125ms observation age and independent STATE_STALE/lock loss confirmed. Concurrent startup/load caused the delay is a hypothesis, not isolated causal proof.",
+  "source_files": {
+    "condition.json": {
+      "bytes": 1378,
+      "sha256": "400db205481252cb5c7595ce76a71aee4bd63442a65158a30eb4e1628902566c"
+    },
+    "bounded_stop.json": {
+      "bytes": 1214,
+      "sha256": "c3da57b742ec4371eeed9f4189ab2dfcd4963b088fe0a8469c17b0072c770f2f"
+    },
+    "p5_run_summary.json": {
+      "bytes": 1428,
+      "sha256": "6b66d0bf9457ff28b54c7c1f40a23d8ec9a97c07ae8bf235633d2fc083031009"
+    },
+    "watchdog_end.json": {
+      "bytes": 861,
+      "sha256": "d70c20bbdfacc93db1fcee6bc7c430dc21dba4ec2ac99d6fef65cf01866de0f5"
+    },
+    "p5_cleanup.json": {
+      "bytes": 150,
+      "sha256": "2876ab39d53087d80a70d3021d6007850fbdfb91f412735d4654b99dbe6c98df"
+    },
+    "p5_late_cleanup.json": {
+      "bytes": 80,
+      "sha256": "5a7ec3e03ca376edbafcf6329c1cbed571ec3ea38ebcf386e58558a1099b8285"
+    },
+    "postflight_preflight.json": {
+      "bytes": 143,
+      "sha256": "1319c009013ec33ca9fea1c90b2e68c6684b3bf3f8a0bf19b2ba371f41677761"
+    },
+    "failure_attribution.json": {
+      "bytes": 9569,
+      "sha256": "c5e53a2224842897f027fc9d83ce8c03499bf607fe064caa10019c5291d32891"
+    },
+    "P5_DELIVERY_SHA256SUMS": {
+      "bytes": 99504,
+      "sha256": "a937ed59572ed200b64367f1851de6f6cae6088fb9082448ad2e5a1669e5187b"
+    },
+    "offline_evidence.jsonl": {
+      "bytes": 1848895,
+      "sha256": "9ef021f4d94af22c8ef7e122c354599bea6adf66267f9cfb9566157d1255c9df"
+    },
+    "execution_analysis.json": {
+      "bytes": 10092,
+      "sha256": "9e8a2461f6ac6e56f6cd74161f968403eecfc2755b5f3fb3244090f52127fde7"
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "run": "run1",
+  "rows": 413,
+  "valid_observation_count": 0,
+  "valid_with_truth_count": 0,
+  "rejections": {
+    "DEPTH_FRAME_UNMATCHED": 412,
+    "IMAGE_INVALID": 1
+  },
+  "median_rgb_depth_raw_skew_s": 0.10000000000000142,
+  "position_rmse_m": null
+}

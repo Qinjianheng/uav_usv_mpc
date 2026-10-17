@@ -1,0 +1,17 @@
+....F                                                                    [100%]
+=================================== FAILURES ===================================
+___ test_late_research_marker_never_overwrites_real_wire_and_active_outcome ____
+
+    def test_late_research_marker_never_overwrites_real_wire_and_active_outcome():
+        event = dict(output=dict(valid=False, solver_status='STALE_INPUT'),
+                     candidate_output=dict(valid=True, solver_status='SAMPLED_FEASIBLE'))
+        final = dict(published=True)
+>       assert attempt_blocker(event, final, [dict(state='ACTIVE', reasons=[])]) == 'ACTIVE'
+E       AssertionError: assert 'STALE_INPUT' == 'ACTIVE'
+E         - ACTIVE
+E         + STALE_INPUT
+
+test/test_p53_f2_analysis.py:40: AssertionError
+=========================== short test summary info ============================
+FAILED test/test_p53_f2_analysis.py::test_late_research_marker_never_overwrites_real_wire_and_active_outcome
+1 failed, 4 passed in 0.16s

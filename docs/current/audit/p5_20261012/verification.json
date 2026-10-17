@@ -1,0 +1,73 @@
+{
+  "pytest": {
+    "passed": 1612,
+    "skipped": 1,
+    "warnings": 3,
+    "seconds": 16.27,
+    "log": "p5_pytest_after_health_fix.txt"
+  },
+  "build": {
+    "packages": [
+      "px4_msgs",
+      "uav_usv_interfaces",
+      "uav_control",
+      "uav_usv_bringup"
+    ],
+    "exit": 0,
+    "log": "p5_build_four.txt"
+  },
+  "flake8": {
+    "exit": 0,
+    "scope": "src/uav_control/uav_control src/uav_control/test scripts",
+    "log": "p5_flake8_after_health_fix.txt"
+  },
+  "shell": {
+    "scripts": 5,
+    "exit": 0
+  },
+  "messages": [
+    "FollowTrajectory",
+    "FollowPlanAck"
+  ],
+  "launch": "p5_follow_research.launch.py --show-args",
+  "prefix": "/home/qin/data/uav_usv_mpc/install/uav_control",
+  "review": "Independent review of source/config binding, completion authority, exact-process cleanup and health-monitor repairs; no remaining material static findings",
+  "git_diff_check": 0,
+  "git_cached_diff_check": 0,
+  "original_control_files_modified": false,
+  "old_p47_all_horizon_gate": false,
+  "commit": "a35e4051402907cde321b7667361dabefed297dc",
+  "logs": {
+    "p5_build.txt": "51c9083ca66676b8686095e98ed36e8db3d8b121f0bdf59eba452a4bdb9075a0",
+    "p5_build_four.txt": "cd228e57e72b603b0fe50a163f2250ad39bb878403b4c06cdbf3c67e9173a001",
+    "p5_bundle_verify.txt": "e698e47f2a35e443e4406b620ad46b2dd17ae320cb143b22340eea56f0c1cd98",
+    "p5_chain_red.txt": "58ec5ad12acf4b08be2e44aa0df96c9d96c828ed729757c33a9069b2ce198cd2",
+    "p5_cleanup_red.txt": "7c8a5424a561a4c98a9b2ea3a4bfb79483b9b73906007167da7b2244b3d4d166",
+    "p5_completion_red.txt": "4d26d0221f0bcb28cf76f887977ce0e348167dc64cd0aab62eb9b876582b31d4",
+    "p5_flake8.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "p5_flake8_after_health_fix.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "p5_guard_red.txt": "9ecc86bd4aae7a18f8b10f68103b1863bb49966d45bad2fb85ee8f07b17becb9",
+    "p5_health_crash_red.txt": "df7c1b7e45f21f0d33d9a31203c72a208ee407db179ad522d28df2d855b18855",
+    "p5_launch_args.txt": "65f1b2099b16f1fac587e018b48a9d6172d49e181dab835b4f740d5984a5a47f",
+    "p5_message_ack.txt": "6e81caf0f3d7113006f7a07b1ac6fe6d8b629f2544fe099507ff8e73fea64eaf",
+    "p5_message_trajectory.txt": "93a2cb7f9e39a7addd998e19e65d9e4c7d70cfb2cf07a6850118f7d3adc3b166",
+    "p5_overrun_red.txt": "db9056c1dc0c70fdc20deafbb8fbdef6312f5a1de5ef9642ce51cf204f3af3a7",
+    "p5_ownership_red.txt": "35abddc9fe2f9005068ebc1875bf82db53383019acdd6d588e7a5a3e5da30ddc",
+    "p5_pytest_after_health_fix.txt": "213f8192c7ab89cf118dbba1ed848a7c20c0ce877eb438236c8787751137a7a1",
+    "p5_pytest_full.txt": "9a95c9f3e23770a69b3a6b412b50b989c0634bb262bde56329b568b2977e48e2",
+    "p5_pytest_full_final.txt": "e7cc319aa2a5280f7a59a33cf3db72596b7350c1f8bf67c5c4354072e19256ca",
+    "p5_pytest_full_final_2.txt": "31c362aceff2638afddbaab44a7f9f0635af215f6ae8002304cc6e3a1808f2d1",
+    "p5_release_audit.txt": "e5d50b8aab85ae101ea4b665d240b6713de08ccf4a1a6dddf7f9b24215c50faa",
+    "p5_release_audit_02.txt": "9881250356a3d901b59b92ef3db2e95e0af30ff38e8179a017253dee45fce6cd",
+    "p5_release_audit_03.txt": "9881250356a3d901b59b92ef3db2e95e0af30ff38e8179a017253dee45fce6cd",
+    "p5_release_red.txt": "92a45b7c9a330dfe7e8fa7fafe1a7f5a47eb6ad0a4cd1d22a7841c532f72919f",
+    "p5_sitl_red.txt": "6ddd594058e5d31b1fe20195b6571179729666483f1b8d2c679b73f2b6eaa202",
+    "p5_vehicle_cadence_red.txt": "8e73dcca955c6894f10497d418cb5fc48759028c20aedd2e12a3b0bb3aefa771"
+  },
+  "new_tests_passed": 44,
+  "actual_sitl_attempts": 1,
+  "sitl_result": "F2_TOOLING_ABORT_BEFORE_MINCO",
+  "sitl_rerun_after_repair": false,
+  "actual_f3_runs": 0,
+  "cleanup_verified": true
+}

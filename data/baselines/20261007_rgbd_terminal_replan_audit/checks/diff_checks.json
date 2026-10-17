@@ -1,0 +1,5 @@
+{
+  "git diff --check": 0,
+  "git diff --cached --check": 0,
+  "note": "No paths were staged automatically."
+}

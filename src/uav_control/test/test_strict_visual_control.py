@@ -85,12 +85,17 @@ def test_optional_evaluator_and_shadow_nodes_cannot_disable_online_inputs():
             keywords = {item.arg: item.value for item in call.keywords}
             nodes[keywords['name'].value] = keywords
     for name in (
-        'target_predictor_node', 'intercept_planner_node',
+        'intercept_planner_node',
         'trajectory_tracker_node', 'mission_manager_node',
         'target_kalman_filter', 'dual_tof_image_bridge',
         'target_bearing_node', 'rgbd_target_localizer',
+        'imm_target_predictor_node',
     ):
         assert 'condition' not in nodes[name]
+    assert 'target_predictor_node' not in nodes
+    assert 'shadow_target_predictor_node' not in nodes
+    assert '/planning/target_prediction' in ast.unparse(
+        nodes['imm_target_predictor_node']['parameters'])
     condition = nodes['intercept_evaluator_node']['condition']
     assert condition.func.id == 'IfCondition'
     assert condition.args[0].id == 'enable_evaluator'
@@ -104,19 +109,14 @@ def test_optional_evaluator_and_shadow_nodes_cannot_disable_online_inputs():
     assert px4_publishers == ['trajectory_tracker_node']
 
 
-@pytest.mark.parametrize('module_name,class_name', (
-    ('pure_pursuit', 'PurePursuit'),
-    ('predictive_intercept', 'PredictiveIntercept'),
-    ('trajectory_impact_sim', 'TrajectoryImpactSim'),
+@pytest.mark.parametrize('module_name', (
+    'pure_pursuit', 'predictive_intercept', 'trajectory_impact_sim',
 ))
-def test_retired_truth_controllers_fail_before_ros_registration(
-    module_name, class_name,
-):
+def test_retired_truth_controllers_are_unimportable(module_name):
     import importlib
 
-    module = importlib.import_module('uav_control.' + module_name)
-    with pytest.raises(RuntimeError, match='Retired truth-control'):
-        getattr(module, class_name)()
+    with pytest.raises(ModuleNotFoundError, match='uav_control.' + module_name):
+        importlib.import_module('uav_control.' + module_name)
 
 
 def control_node(now=10.2, height=5.0):

@@ -168,7 +168,9 @@ def test_delivery_reaches_follow_and_translation_with_original_age_gate():
     controller.latest_state = replace(state, stamp=now[0])
     controller.timer_callback()
     assert controller.diagnostics[-1][1] == 'FOLLOW'
-    assert controller.visibility_decision.state == 'REACQUIRE'
+    assert controller.visibility_decision.state == 'INPUT_WAIT'
+    assert controller.visibility_decision.visual_locked
+    assert not controller.visibility_decision.locked
     assert controller.latest_target_state is None
     assert not controller.diagnostics[-1][0].far_guidance_available
     assert controller.diagnostics[-1][0].velocity == (0., 0., 0.)

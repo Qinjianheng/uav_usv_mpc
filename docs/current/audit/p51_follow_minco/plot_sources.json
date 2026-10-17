@@ -1,0 +1,9 @@
+{
+  "historical_run": "c_f2_1",
+  "historical_not_current": true,
+  "trace_source": "data/experiments/20261010_p45_minco_execution/c_f2_1/reference_errors.csv",
+  "trace_sha256": "c7a291ac54f9e62af755bcf8cef8b9dc0d1ffe680f03237e8aeb76da13465aff",
+  "fixture_source": "data/experiments/20261012_p51_offline_01/fault_replay/none/events.jsonl",
+  "fixture_sha256": "a7bf2d657d6f92d4412eabce26ec51bbc76673e324ec705e32363fe3cadbb1ec",
+  "target_truth": "historical CSV uses offline same-epoch TargetState evaluation, never online feedback"
+}

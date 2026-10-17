@@ -1,0 +1,9 @@
+{
+  "failed_source": "data/experiments/20261013_p53_closed_loop_06/f2_h16_01",
+  "x_time": null,
+  "first_minco": null,
+  "reason": "Gazebo GUI world did not become ready; log empty",
+  "diagnostic": "Independent server-only15s created world services promptly; normal timeout124 cleanup.",
+  "change": "Explicit UAV_USV_GZ_SERVER_ONLY=1; default0 unchanged; sensors rendered by server, camera readiness still required.",
+  "controller_changes": false
+}

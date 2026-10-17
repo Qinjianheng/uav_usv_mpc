@@ -1,0 +1,40 @@
+FF....                                                                   [100%]
+=================================== FAILURES ===================================
+_ test_research_observer_tolerates173ms_queue_age_without_rewriting_samples[FOLLOW] _
+
+owner = 'FOLLOW'
+
+    @pytest.mark.parametrize('owner', ('FOLLOW', 'MINCO_FOLLOW'))
+    def test_research_observer_tolerates173ms_queue_age_without_rewriting_samples(owner):
+        snapshot = healthy(10., owner=owner)
+        snapshot['navigation']['stamp'] = 9.827
+        snapshot['prediction'].update(stamp=9.827, observation=9.8)
+        assert health_decision(snapshot, 10.)['fatal'] == 'NAVIGATION_INPUT_STALE'
+>       assert entry.FollowHealthGuard()(snapshot, 10.) is None
+E       AssertionError: assert 'NAVIGATION_INPUT_STALE' is None
+E        +  where 'NAVIGATION_INPUT_STALE' = <p53_minco_sitl.FollowHealthGuard object at 0x755aec965450>({'attitude': {'q': [1.0, 0.0, 0.0, 0.0], 'receipt': 10.0}, 'control': {'compute': 0.001, 'locked': True, 'receipt': 10... 'stamp': 9.827, 'v': [2.0, 0.0, 0.0], ...}, 'p53_decision': {'fatal': 'NAVIGATION_INPUT_STALE', 'inhibit': None}, ...}, 10.0)
+E        +    where <p53_minco_sitl.FollowHealthGuard object at 0x755aec965450> = <class 'p53_minco_sitl.FollowHealthGuard'>()
+E        +      where <class 'p53_minco_sitl.FollowHealthGuard'> = entry.FollowHealthGuard
+
+test/test_p53_observer_tolerance.py:14: AssertionError
+_ test_research_observer_tolerates173ms_queue_age_without_rewriting_samples[MINCO_FOLLOW] _
+
+owner = 'MINCO_FOLLOW'
+
+    @pytest.mark.parametrize('owner', ('FOLLOW', 'MINCO_FOLLOW'))
+    def test_research_observer_tolerates173ms_queue_age_without_rewriting_samples(owner):
+        snapshot = healthy(10., owner=owner)
+        snapshot['navigation']['stamp'] = 9.827
+        snapshot['prediction'].update(stamp=9.827, observation=9.8)
+        assert health_decision(snapshot, 10.)['fatal'] == 'NAVIGATION_INPUT_STALE'
+>       assert entry.FollowHealthGuard()(snapshot, 10.) is None
+E       AssertionError: assert 'NAVIGATION_INPUT_STALE' is None
+E        +  where 'NAVIGATION_INPUT_STALE' = <p53_minco_sitl.FollowHealthGuard object at 0x755aec92ead0>({'attitude': {'q': [1.0, 0.0, 0.0, 0.0], 'receipt': 10.0}, 'control': {'compute': 0.001, 'locked': True, 'receipt': 10... 'stamp': 9.827, 'v': [2.0, 0.0, 0.0], ...}, 'p53_decision': {'fatal': 'NAVIGATION_INPUT_STALE', 'inhibit': None}, ...}, 10.0)
+E        +    where <p53_minco_sitl.FollowHealthGuard object at 0x755aec92ead0> = <class 'p53_minco_sitl.FollowHealthGuard'>()
+E        +      where <class 'p53_minco_sitl.FollowHealthGuard'> = entry.FollowHealthGuard
+
+test/test_p53_observer_tolerance.py:14: AssertionError
+=========================== short test summary info ============================
+FAILED test/test_p53_observer_tolerance.py::test_research_observer_tolerates173ms_queue_age_without_rewriting_samples[FOLLOW]
+FAILED test/test_p53_observer_tolerance.py::test_research_observer_tolerates173ms_queue_age_without_rewriting_samples[MINCO_FOLLOW]
+2 failed, 4 passed in 0.66s

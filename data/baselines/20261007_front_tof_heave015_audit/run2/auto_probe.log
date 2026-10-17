@@ -1,0 +1,9 @@
+PHASE INIT
+PHASE GROUND_HOLD
+PHASE INIT
+PHASE GROUND_HOLD
+SEND X
+PHASE TAKEOFF
+PHASE FOLLOW
+SEND Y
+RESULT OrderedDict([('stamp', OrderedDict([('sec', 1791339604), ('nanosec', 724806070)])), ('mission_id', 1), ('success', False), ('outcome', 'FAILURE'), ('reason', 'TIMEOUT'), ('detail', 'determined by simulation truth in evaluator only'), ('elapsed_time', 30.048641443252563), ('capture_radius', 0.5), ('minimum_distance', 4.942980865365802), ('horizontal_distance', 4.516059892802915), ('vertical_error', 4.87462295436104), ('relative_speed', 2.0789380621657467), ('closing_speed', 1.4737432782227269), ('max_horizontal_speed', 6.219372365311931), ('max_vertical_speed', 0.09246019752784236), ('max_horizontal_acceleration', 3.378056259017353), ('max_vertical_acceleration', 0.26998980472948164)])

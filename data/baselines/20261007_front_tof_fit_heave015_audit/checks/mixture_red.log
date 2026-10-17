@@ -1,0 +1,52 @@
+...............FFF                                                       [100%]
+=================================== FAILURES ===================================
+___________ test_eight_percent_wrong_depth_mixture_is_rejected[8.0] ____________
+
+distance = 8.0
+
+    @pytest.mark.parametrize('distance', [8., 12., 15.])
+    def test_eight_percent_wrong_depth_mixture_is_rejected(distance):
+        mask, depth, rays = sphere((distance, 0., 0.))
+        rows, cols = np.where(mask)
+        depth[rows[::12], cols[::12]] += .5
+        fit = fitting()(points(mask, depth, rays), .25,
+                        noise_std=.01, range_noise_scale=.001)
+>       assert fit is None
+E       assert SphereFit(center=(8.001611051892372, 0.00027242888008597715, -0.00018028880632649997), position_std=0.001224844649106504) is None
+
+test/test_tof_sphere_localization.py:138: AssertionError
+___________ test_eight_percent_wrong_depth_mixture_is_rejected[12.0] ___________
+
+distance = 12.0
+
+    @pytest.mark.parametrize('distance', [8., 12., 15.])
+    def test_eight_percent_wrong_depth_mixture_is_rejected(distance):
+        mask, depth, rays = sphere((distance, 0., 0.))
+        rows, cols = np.where(mask)
+        depth[rows[::12], cols[::12]] += .5
+        fit = fitting()(points(mask, depth, rays), .25,
+                        noise_std=.01, range_noise_scale=.001)
+>       assert fit is None
+E       assert SphereFit(center=(12.00215732086637, 3.20181042034286e-10, 5.782922009580298e-09), position_std=0.0024906635392341835) is None
+
+test/test_tof_sphere_localization.py:138: AssertionError
+___________ test_eight_percent_wrong_depth_mixture_is_rejected[15.0] ___________
+
+distance = 15.0
+
+    @pytest.mark.parametrize('distance', [8., 12., 15.])
+    def test_eight_percent_wrong_depth_mixture_is_rejected(distance):
+        mask, depth, rays = sphere((distance, 0., 0.))
+        rows, cols = np.where(mask)
+        depth[rows[::12], cols[::12]] += .5
+        fit = fitting()(points(mask, depth, rays), .25,
+                        noise_std=.01, range_noise_scale=.001)
+>       assert fit is None
+E       assert SphereFit(center=(15.002952797989657, -0.0021482164975922605, -0.000944134959427471), position_std=0.003189979178521872) is None
+
+test/test_tof_sphere_localization.py:138: AssertionError
+=========================== short test summary info ============================
+FAILED test/test_tof_sphere_localization.py::test_eight_percent_wrong_depth_mixture_is_rejected[8.0]
+FAILED test/test_tof_sphere_localization.py::test_eight_percent_wrong_depth_mixture_is_rejected[12.0]
+FAILED test/test_tof_sphere_localization.py::test_eight_percent_wrong_depth_mixture_is_rejected[15.0]
+3 failed, 15 passed in 1.22s

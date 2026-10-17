@@ -1,0 +1,11 @@
+{
+  "archive_path": "/home/qin/data/uav_usv_mpc_archive/20261012_submission_cleanup_4319834/repository_before.bundle",
+  "archive_bytes": 2381521875,
+  "archive_sha256": "f8b85f01e4db1757594093533803484438d1a001db6365898c0cf9d8b30f4e1d",
+  "self_contained": true,
+  "cold_restored_head": "43198343a2260392749e979bbc3beae6ce6f20c4",
+  "fsck_passed": true,
+  "tracked_files_restored_and_sha256_verified": 4686,
+  "tracked_bytes_verified": 6048342913,
+  "archive_manifest_checks_passed": true
+}

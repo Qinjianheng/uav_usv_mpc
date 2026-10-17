@@ -1,0 +1,68 @@
+{
+  "passed": true,
+  "independent_review_pass": true,
+  "pytest": {
+    "passed": 2097,
+    "skipped": 2
+  },
+  "four_package_build": true,
+  "flake8_pass": true,
+  "shell_syntax_pass": true,
+  "diff_check_pass": true,
+  "frozen_files_unchanged": 3222,
+  "scope": "One isolated 60s linear pilot with original R11 F2 BCTRA nominal primary and readonly IMM shadow; no IMM primary or robust flight authorization",
+  "code_version": "a44038492ad3d164c07c220fa298dee15fddebdf",
+  "source_count": 231,
+  "independent_review_limitations": [
+    "Review scope is root integration and exact source bytes; no self-review approval of reviewer-owned IMM algorithm.",
+    "Historical stopped-CTRA failures remain in prediction_02 and prediction_03; corrected stop Q and conservative posterior priors were frozen for prediction_04, never erased or relabelled.",
+    "Synthetic empirical envelopes provide engineering coverage only, with no real-world 95percent or joint/continuous-time probability guarantee.",
+    "IMM primary and robust strict require their separate actual shadow/robust gates; this review grants no such flight success.",
+    "Actual DDS/Gazebo CPU contention, RGB-D residuals and yaw/attitude/extrinsic errors require isolated pilot evidence.",
+    "Integrated consumers expect default /planning/imm_diagnostics unless producer and consumers are coherently remapped.",
+    "Any reviewed runtime source fingerprint change invalidates this exact snapshot; new evidence and qualification directory required.",
+    "No SITL/live command console validation; no control authority claim.",
+    "robust_visibility/adaptive_viewpoint are authored by this reviewer and are not independent review objects.",
+    "Authored robust_visibility and adaptive_viewpoint kernels are excluded from this independent review.",
+    "No real covariance coverage or actual attitude/error-bound identification is established.",
+    "Sampled lease-prefix envelope is not a full MINCO or whole-mission probability guarantee.",
+    {
+      "issue": "Stopped additive Q is an explicit engineering replacement and has a boundary discontinuity; it is PSD but does not dominate the preceding frozen-CTRA Q in every state direction.",
+      "state": [
+        0.0,
+        0.0,
+        2.0,
+        0.0,
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "times": [
+        1.9999999,
+        2.0
+      ],
+      "minimum_eigenvalue_of_Q_boundary_jump": -0.004807825385889711,
+      "scope": "Requires independent coverage calibration near stop; no exact nonlinear stochastic law or universal conservative-bound claim."
+    },
+    {
+      "issue": "P+delta*delta.T preserves the original second moment about the shifted declared mean, not the posterior covariance of a rigorously truncated or constrained Gaussian. Repeated projections may inflate uncertainty and change subsequent EKF gain.",
+      "scope": "Declared engineering prior needs genuine RGB-D shadow coverage, probability and downstream feasibility evidence."
+    },
+    {
+      "issue": "The 5m/s bound applies only to acquisition posterior current-state means. It is not a hard future speed bound; CTRA v0=5m/s,a=2m/s2 at4s remains13m/s.",
+      "demonstrated_future_speed_mps": 13.0,
+      "scope": "Expected specified implementation behavior; do not claim all future samples satisfy target max4m/s."
+    },
+    {
+      "issue": "Frozen prediction_04 uses fresh noise seed but shares deterministic trajectory paths across calibration/heldout and synthetic iid sensing. It does not establish actual perception coverage, native-owner health, timing budget or primary IMM authorization.",
+      "scope": "Actual healthy60s BCTRA-main/shadow pilot remains required."
+    }
+  ],
+  "environment": {
+    "processes": [],
+    "hardware_serial": [],
+    "udp8888_free": true,
+    "domain": 43
+  },
+  "status": "TESTED_PROTOCOL_CANDIDATE_NOT_FLOWN"
+}

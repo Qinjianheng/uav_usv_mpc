@@ -1,0 +1,50 @@
+{
+  "maintenance_complete": true,
+  "control_test_configuration_model_px4_changes_this_task": false,
+  "protected_files_unchanged": 3901,
+  "claims_preserved": 41,
+  "r11_program_files_unchanged": 599,
+  "pytest": {
+    "passed": 1848,
+    "skipped": 1,
+    "log_sha256": "21b10f19fc14ced67ba428479be68367e033d0657e0676389a0af66192028d43"
+  },
+  "four_package_build": {
+    "passed": true,
+    "log_sha256": "726a53c9e347e59453cd3ca05aed6b808bf841fc11af7a0f24b9d9087f8242cf"
+  },
+  "flake8": true,
+  "shell_syntax": true,
+  "git_diff_check": true,
+  "git_diff_cached_check": true,
+  "head": "2467c8a044d13f7877eff3cdc4c9969736f1e20f",
+  "branch": "master",
+  "remotes": {
+    "origin": {
+      "fetch": "https://github.com/Qinjianheng/uav_usv_mpc.git",
+      "push": "https://github.com/Qinjianheng/uav_usv_mpc.git"
+    },
+    "github": {
+      "fetch": "https://github.com/Qinjianheng/uav_usv_mpc.git",
+      "push": "https://github.com/Qinjianheng/uav_usv_mpc.git"
+    }
+  },
+  "current_entry_doc_links_checked": 118,
+  "broken_links": [],
+  "new_scene_manifests_verified": 3,
+  "experiment_process_survivors": [],
+  "unchanged_flight_reproduced_within_predefined_policy": true,
+  "absolute_flight_invariance_proven": false,
+  "first_f2_failed": true,
+  "first_failure_archived_or_sealed": true,
+  "diagnostic_f2_passed": true,
+  "conditional_f3_passed": true,
+  "residual": "First F2 prediction timing boundary persists as an uncorrected reliability risk. Source/config equality and successful repeat do not prove deterministic or universally stable flight. No online control change under cleanup scope.",
+  "package_prefix": "/home/qin/data/uav_usv_mpc/install/uav_control",
+  "original_repository_writes": false,
+  "commit_or_push": false,
+  "scope_note": "Prior uncommitted P53 functional changes retained. Cumulative archived byte count is gross removed historical data, not net storage savings after new validation.",
+  "independent_final_review_pass": true,
+  "report_sha256": "39d2f60abcdc5e7a8e9dc090c7f4b8db50b9431f81e0ca178a733214b4d65afb",
+  "external_archive_checksums_verified": true
+}

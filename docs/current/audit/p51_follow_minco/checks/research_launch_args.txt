@@ -1,0 +1,45 @@
+Arguments (pass arguments as '<name>:=<value>'):
+
+    'config_file':
+        no description given
+        (default: '/home/qin/data/uav_usv_mpc/install/uav_usv_bringup/share/uav_usv_bringup/config/baseline.yaml')
+
+    'log_directory':
+        no description given
+        (default: '/home/qin/data/uav_usv_mpc/data/experiments/p4_shadow/evaluator')
+
+    'enable_evaluator':
+        no description given
+        (default: 'true')
+
+    'enable_shadow_perception':
+        no description given
+        (default: 'false')
+
+    'enable_down_camera':
+        no description given
+        (default: 'false')
+
+    'front_depth_model':
+        no description given
+        (default: 'ideal')
+
+    'enable_planner':
+        no description given
+        (default: 'false')
+
+    'research_config_file':
+        no description given
+        (default: '/home/qin/data/uav_usv_mpc/install/uav_usv_bringup/share/uav_usv_bringup/config/p4_follow_research.yaml')
+
+    'enable_follow_minco':
+        One of: ['true', 'false']
+        (default: 'true')
+
+    'enable_follow_planner':
+        One of: ['true', 'false']
+        (default: 'true')
+
+    'tof_config_file':
+        Explicit functional ToF range/noise test assumptions.
+        (default: '/home/qin/data/uav_usv_mpc/install/uav_usv_bringup/share/uav_usv_bringup/config/front_tof_simulation.yaml')

@@ -1,0 +1,54 @@
+[
+  {
+    "cycle": 38,
+    "source": "data/experiments/20261013_p52_closed_loop_03/f2_h16_01/shadow/mpc_seed_shadow_1791852389019926148_1172359.jsonl",
+    "line": 157,
+    "line_sha256": "93fb8e7d2fa3fd819f216ab3c96957f3c70b672880a66eb232a3548de422e161",
+    "recorded_worker_start_delay": 0.0015206336975097656,
+    "elapsed": 0.008912891004001722,
+    "original_status": "DEADLINE_EXCEEDED",
+    "status": "SAMPLED_FEASIBLE",
+    "valid": true,
+    "fallback_enabled": false,
+    "scope": "Current measured wall cost; counterfactual if fallback disabled. Original inputs/epochs/parent; not ROS or actual supply improvement"
+  },
+  {
+    "cycle": 39,
+    "source": "data/experiments/20261013_p52_closed_loop_03/f2_h16_01/shadow/mpc_seed_shadow_1791852389019926148_1172359.jsonl",
+    "line": 159,
+    "line_sha256": "d2de2d028706970554b636c90981a79a9c7472e8f519d5080ee8d2fb24f811f7",
+    "recorded_worker_start_delay": 0.003370046615600586,
+    "elapsed": 0.008036389015614986,
+    "original_status": "DEADLINE_EXCEEDED",
+    "status": "SAMPLED_FEASIBLE",
+    "valid": true,
+    "fallback_enabled": false,
+    "scope": "Current measured wall cost; counterfactual if fallback disabled. Original inputs/epochs/parent; not ROS or actual supply improvement"
+  },
+  {
+    "cycle": 78,
+    "source": "data/experiments/20261013_p52_closed_loop_03/f2_h16_01/shadow/mpc_seed_shadow_1791852389019926148_1172359.jsonl",
+    "line": 247,
+    "line_sha256": "5cdb77fca264fa159a4ba67186839ac0a027d5c8c430ff43fcf623a4109619e1",
+    "recorded_worker_start_delay": 0.002337932586669922,
+    "elapsed": 0.00743089898605831,
+    "original_status": "NO_FRESHNESS_BUDGET",
+    "status": "SAMPLED_FEASIBLE",
+    "valid": true,
+    "fallback_enabled": false,
+    "scope": "Current measured wall cost; counterfactual if fallback disabled. Original inputs/epochs/parent; not ROS or actual supply improvement"
+  },
+  {
+    "cycle": 79,
+    "source": "data/experiments/20261013_p52_closed_loop_03/f2_h16_01/shadow/mpc_seed_shadow_1791852389019926148_1172359.jsonl",
+    "line": 249,
+    "line_sha256": "8f0b44a1225ddd8a0e0d9c6586edcd1ce2028cb14e8e8de04ff11d1d473ed164",
+    "recorded_worker_start_delay": 0.0018470287322998047,
+    "elapsed": 0.007511776988394558,
+    "original_status": "SAMPLED_FEASIBLE",
+    "status": "SAMPLED_FEASIBLE",
+    "valid": true,
+    "fallback_enabled": false,
+    "scope": "Current measured wall cost; counterfactual if fallback disabled. Original inputs/epochs/parent; not ROS or actual supply improvement"
+  }
+]

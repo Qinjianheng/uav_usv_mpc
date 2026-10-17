@@ -1,0 +1,477 @@
+{
+  "checked": [
+    {
+      "source": "README.md",
+      "link": "docs/current/p53_comprehensive_validation.md"
+    },
+    {
+      "source": "README.md",
+      "link": "docs/current/README.md"
+    },
+    {
+      "source": "README.md",
+      "link": "docs/current/system_simplification.md"
+    },
+    {
+      "source": "README.md",
+      "link": "docs/history.md"
+    },
+    {
+      "source": "README.md",
+      "link": "docs/archive_index.md"
+    },
+    {
+      "source": "docs/current/README.md",
+      "link": "system_simplification.md"
+    },
+    {
+      "source": "docs/current/README.md",
+      "link": "system_simplification.md"
+    },
+    {
+      "source": "docs/current/README.md",
+      "link": "p53_comprehensive_validation.md"
+    },
+    {
+      "source": "docs/current/README.md",
+      "link": "p53_comprehensive_diagnosis.md"
+    },
+    {
+      "source": "docs/current/README.md",
+      "link": "architecture.md"
+    },
+    {
+      "source": "docs/current/README.md",
+      "link": "camera_simulation.md"
+    },
+    {
+      "source": "docs/current/README.md",
+      "link": "terminal_replan_rgbd_20261007.md"
+    },
+    {
+      "source": "docs/current/README.md",
+      "link": "baseline.md"
+    },
+    {
+      "source": "docs/current/README.md",
+      "link": "environment.md"
+    },
+    {
+      "source": "docs/current/README.md",
+      "link": "analysis_and_recovery.md"
+    },
+    {
+      "source": "docs/current/README.md",
+      "link": "mpc_scope.md"
+    },
+    {
+      "source": "docs/current/README.md",
+      "link": "../history.md"
+    },
+    {
+      "source": "docs/current/README.md",
+      "link": "../archive_index.md"
+    },
+    {
+      "source": "docs/current/README.md",
+      "link": "../../AGENTS.md"
+    },
+    {
+      "source": "docs/current/architecture.md",
+      "link": "p53_comprehensive_validation.md"
+    },
+    {
+      "source": "docs/current/architecture.md",
+      "link": "camera_simulation.md"
+    },
+    {
+      "source": "docs/current/architecture.md",
+      "link": "../../src/uav_usv_bringup/launch/modular_intercept.launch.py"
+    },
+    {
+      "source": "docs/current/architecture.md",
+      "link": "../../src/uav_usv_bringup/config/baseline.yaml"
+    },
+    {
+      "source": "docs/current/architecture.md",
+      "link": "terminal_replan_rgbd_20261007.md"
+    },
+    {
+      "source": "docs/current/architecture.md",
+      "link": "mpc_scope.md"
+    },
+    {
+      "source": "docs/current/architecture.md",
+      "link": "p53_comprehensive_validation.md"
+    },
+    {
+      "source": "docs/current/architecture.md",
+      "link": "../history.md"
+    },
+    {
+      "source": "docs/current/architecture.md",
+      "link": "system_simplification.md"
+    },
+    {
+      "source": "docs/current/baseline.md",
+      "link": "../../data/baselines/20261006_pre_mpc/README.md"
+    },
+    {
+      "source": "docs/current/baseline.md",
+      "link": "../../data/baselines/20261006_pre_mpc/config/baseline.yaml"
+    },
+    {
+      "source": "docs/current/baseline.md",
+      "link": "../../data/baselines/20261006_pre_mpc/config/visual_geometry_diagnostics.yaml"
+    },
+    {
+      "source": "docs/current/baseline.md",
+      "link": "../../data/baselines/20261006_pre_mpc/evidence/terminal_cruise_validation_20261006.md"
+    },
+    {
+      "source": "docs/current/baseline.md",
+      "link": "../../data/baselines/20261006_pre_mpc/evidence/terminal_cruise_repeat_validation.json"
+    },
+    {
+      "source": "docs/current/baseline.md",
+      "link": "../../data/baselines/20261006_pre_mpc/evidence/terminal_cruise_code_fingerprint.json"
+    },
+    {
+      "source": "docs/current/baseline.md",
+      "link": "analysis_and_recovery.md"
+    },
+    {
+      "source": "docs/current/baseline.md",
+      "link": "repository_cleanup.md"
+    },
+    {
+      "source": "docs/current/environment.md",
+      "link": "../../src/uav_control/package.xml"
+    },
+    {
+      "source": "docs/current/environment.md",
+      "link": "../../src/uav_usv_bringup/package.xml"
+    },
+    {
+      "source": "docs/current/environment.md",
+      "link": "../../patches/px4"
+    },
+    {
+      "source": "docs/current/environment.md",
+      "link": "camera_simulation.md"
+    },
+    {
+      "source": "docs/current/environment.md",
+      "link": "repository_cleanup.md"
+    },
+    {
+      "source": "docs/current/environment.md",
+      "link": "terminal_replan_rgbd_20261007.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/README.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/p53_comprehensive_validation.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/system_simplification.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/p53_practical_follow_validation.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/p53_flight_effect_repair.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/p53_f2_root_cause.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/p53_closed_loop_root_cause.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/p53_switching_fix.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/p53_f3_validation.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/p53_f2_validation.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/p52_minco_closed_loop_report.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/p52_switching_and_lease_analysis.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/p52_failure_resolution.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/p51_follow_minco_switching.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/p51_online_timing_and_lease.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/p51_closed_loop_validation.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/tof_fit_validation_20261007.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/tof_validation_20261007.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/mpc_minco_visibility_design.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/mpc_seed_validation.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/p3_architecture_audit.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/greedy_minco_validation.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/p31_fast_visibility_minco_validation.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/p32_realtime_follow_validation.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/p32_follow_handover_protocol.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/p4_rolling_follow_validation.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/p4_follow_interface_contract.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/p4_closed_loop_comparison.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/p41_follow_tracking_optimization.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/p42_follow_safety_qualification.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/p42_closed_loop_validation.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/p43_dynamic_limits_study.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/p43_fast_visibility_minco.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/p43_online_follow_validation.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/p43_safety_qualification.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/p44_candidate_profiling.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/p44_adaptive_candidate_validation.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/p44_online_follow_validation.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/p46_follow_guided_minco.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/p47_execution_root_cause.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/p47_minco_closed_loop_diagnosis.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/p47_follow_guided_feasibility.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/p47_release_decision.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/p5_architecture_and_baseline.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/p5_minco_closed_loop_validation.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/p5_revalidation_20261012.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/p5_code_cleanup_report.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/repository_cleanup.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "current/redundancy_cleanup.md"
+    },
+    {
+      "source": "docs/history.md",
+      "link": "archive_index.md"
+    },
+    {
+      "source": "docs/archive_index.md",
+      "link": "current/system_simplification.md"
+    },
+    {
+      "source": "docs/archive_index.md",
+      "link": "history.md"
+    },
+    {
+      "source": "docs/archive_index.md",
+      "link": "current/submission_size_cleanup_20261012.md"
+    },
+    {
+      "source": "docs/archive_index.md",
+      "link": "../README.md"
+    },
+    {
+      "source": "docs/archive_index.md",
+      "link": "current/README.md"
+    },
+    {
+      "source": "docs/archive_index.md",
+      "link": "current/audit/retention_manifest.tsv"
+    },
+    {
+      "source": "docs/archive_index.md",
+      "link": "current/analysis_and_recovery.md"
+    },
+    {
+      "source": "docs/archive_index.md",
+      "link": "current/audit/local_only_files.json"
+    },
+    {
+      "source": "docs/archive_index.md",
+      "link": "current/audit/archive_verification.json"
+    },
+    {
+      "source": "docs/archive_index.md",
+      "link": "current/audit/snapshot_before.json"
+    },
+    {
+      "source": "docs/archive_index.md",
+      "link": "../data/baselines/20261006_pre_mpc/README.md"
+    },
+    {
+      "source": "docs/archive_index.md",
+      "link": "current/audit/redundancy_cleanup_20261006.json"
+    },
+    {
+      "source": "docs/archive_index.md",
+      "link": "current/redundancy_cleanup.md"
+    },
+    {
+      "source": "docs/current/system_simplification.md",
+      "link": "audit/system_cleanup_20261014/retention_manifest.tsv"
+    },
+    {
+      "source": "docs/current/system_simplification.md",
+      "link": "audit/system_cleanup_flight_20261014/applied_cleanup.json"
+    },
+    {
+      "source": "docs/current/system_simplification.md",
+      "link": "../history.md"
+    },
+    {
+      "source": "docs/current/system_simplification.md",
+      "link": "p53_comprehensive_validation.md"
+    },
+    {
+      "source": "docs/current/system_simplification.md",
+      "link": "architecture.md"
+    },
+    {
+      "source": "docs/current/system_simplification.md",
+      "link": "mpc_scope.md"
+    },
+    {
+      "source": "docs/current/system_simplification.md",
+      "link": "audit/system_cleanup_flight_20261014/archive_validation.json"
+    },
+    {
+      "source": "docs/current/system_simplification.md",
+      "link": "audit/system_cleanup_20261014/"
+    },
+    {
+      "source": "docs/current/system_simplification.md",
+      "link": "audit/system_cleanup_20261014/source_equivalence.tsv"
+    },
+    {
+      "source": "docs/current/system_simplification.md",
+      "link": "audit/system_cleanup_flight_20261014/"
+    },
+    {
+      "source": "docs/current/system_simplification.md",
+      "link": "audit/system_cleanup_repeat_20261014/"
+    },
+    {
+      "source": "docs/current/system_simplification.md",
+      "link": "audit/system_cleanup_results_20261014/"
+    },
+    {
+      "source": "docs/current/system_simplification.md",
+      "link": "audit/system_cleanup_results_20261014/comparison_actual.json"
+    }
+  ],
+  "broken": []
+}

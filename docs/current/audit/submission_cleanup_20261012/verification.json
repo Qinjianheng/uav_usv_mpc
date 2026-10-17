@@ -1,0 +1,87 @@
+{
+  "status": "prepared_for_authorized_amend_only",
+  "original_head_still_current": "43198343a2260392749e979bbc3beae6ce6f20c4",
+  "candidate_tree_without_verification_record": "651baa6bf7c21fafccaabe894961b756f454a7b0",
+  "base_remote_master": "741000cd8e1faa22ba85292827f59c2fc0a21f99",
+  "original_files_preserved_and_sha256_verified": 4684,
+  "intentional_existing_text_changes": [
+    ".gitignore",
+    "docs/archive_index.md"
+  ],
+  "excluded_files_present_local_and_absent_from_index": 470,
+  "candidate_new_blob_count": 27,
+  "candidate_new_blob_bytes": 1066749,
+  "candidate_file_tree_pack_bytes": 752401,
+  "pack_note": "Set difference between all candidate tree objects and ALL objects reachable from verified remote master. Standalone pack of new objects only; excludes future commit object and this verification JSON.",
+  "source_tests_configs_models_px4_and_frozen_baselines_index_identical_to_original_head": true,
+  "diff_checks_passed": true,
+  "evidence_sha256_checks": {
+    "data/experiments/20261010_p47_follow_guided/DELIVERY_SHA256SUMS": 33,
+    "data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_1/SHA256SUMS": 227,
+    "data/experiments/20261010_p47_follow_guided/comparison/formal_20261012_2/SHA256SUMS": 227,
+    "data/experiments/20261010_p47_follow_guided/final_evidence_20261012/SHA256SUMS": 190,
+    "data/experiments/20261010_p47_follow_guided/verification_20261012/SHA256SUMS": 16,
+    "data/baselines/20261006_pre_mpc/SHA256SUMS": 46
+  },
+  "build": {
+    "packages_passed": 4,
+    "log": "build.txt"
+  },
+  "shell_syntax_passed": [
+    "scripts/build_workspace.sh",
+    "scripts/start_px4_ros2.sh",
+    "scripts/uav_lab.sh",
+    "scripts/sync_github.sh"
+  ],
+  "ros_uav_control_prefix": "/home/qin/data/uav_usv_mpc/install/uav_control",
+  "p47_tests_with_archive": {
+    "passed": 83,
+    "failed": 1,
+    "seconds": 213.23,
+    "log": "pytest_p47_with_archive.txt"
+  },
+  "failed_test_isolated_rerun": {
+    "passed": 1,
+    "seconds": 0.18,
+    "log": "pytest_failed_isolated.txt"
+  },
+  "p47_tests_after_archive": {
+    "passed": 84,
+    "failed": 0,
+    "seconds": 0.99,
+    "log": "pytest_p47_isolated.txt"
+  },
+  "candidate_changes_relative_to_remote": [
+    "M\t.gitignore",
+    "A\tdata/experiments/20261010_p47_follow_guided/DELIVERY_SHA256SUMS",
+    "A\tdata/experiments/20261010_p47_follow_guided/README.md",
+    "A\tdata/experiments/20261010_p47_follow_guided/comparison/formal_20261012_2/plots/f3_h1.2_boundary.png",
+    "A\tdata/experiments/20261010_p47_follow_guided/comparison/formal_20261012_2/plots/f3_h1.2_jerk.png",
+    "A\tdata/experiments/20261010_p47_follow_guided/comparison/formal_20261012_2/plots/f3_h1.2_trajectory.png",
+    "M\tdocs/archive_index.md",
+    "M\tdocs/current/README.md",
+    "M\tdocs/current/architecture.md",
+    "A\tdocs/current/audit/submission_cleanup_20261012/archive_verification.json",
+    "A\tdocs/current/audit/submission_cleanup_20261012/build.txt",
+    "A\tdocs/current/audit/submission_cleanup_20261012/excluded_files.tsv",
+    "A\tdocs/current/audit/submission_cleanup_20261012/pytest_failed_isolated.txt",
+    "A\tdocs/current/audit/submission_cleanup_20261012/pytest_p47_isolated.txt",
+    "A\tdocs/current/audit/submission_cleanup_20261012/pytest_p47_with_archive.txt",
+    "A\tdocs/current/audit/submission_cleanup_20261012/snapshot_before.json",
+    "A\tdocs/current/p47_follow_guided_feasibility.md",
+    "A\tdocs/current/submission_size_cleanup_20261012.md",
+    "M\tdocs/superpowers/plans/2026-10-12-p47-follow-feasibility.md",
+    "M\tscripts/p47_follow_study.py",
+    "A\tscripts/p47_minco_sitl.py",
+    "M\tsrc/uav_control/test/test_p47_follow_guided_solver.py",
+    "M\tsrc/uav_control/test/test_p47_follow_study.py",
+    "A\tsrc/uav_control/test/test_p47_sitl_plan.py",
+    "M\tsrc/uav_control/test/test_p47_terminal_correction.py",
+    "M\tsrc/uav_control/uav_control/controllers/follow_guided_feasible.py",
+    "M\tsrc/uav_control/uav_control/guidance/follow_rollout.py",
+    "M\tsrc/uav_control/uav_control/guidance/follow_terminal_correction.py"
+  ],
+  "commit_created": false,
+  "push_performed": false,
+  "candidate_new_object_count": 47
+}

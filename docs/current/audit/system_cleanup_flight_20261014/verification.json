@@ -1,0 +1,44 @@
+{
+  "passed": true,
+  "independent_review_pass": true,
+  "maintenance_validation": true,
+  "pytest": {
+    "passed": 1848,
+    "skipped": 1
+  },
+  "four_package_build": true,
+  "source_count": 685,
+  "protected_files": 3901,
+  "claims_preserved": 41,
+  "base_head": "2467c8a044d13f7877eff3cdc4c9969736f1e20f",
+  "admission": {
+    "horizontal_enter": 1.0,
+    "relative_enter": 1.8,
+    "height_enter": 0.1,
+    "stable_seconds": 5.0,
+    "cooldown_seconds": 2.0,
+    "horizontal_exit": 1.5,
+    "relative_exit": 2.5,
+    "performance_seconds": 0.5,
+    "maximum_sample_gap": 0.2,
+    "probe_maximum_gap": 0.45,
+    "required_probes": 3,
+    "maximum_entries": 3
+  },
+  "environment": {
+    "processes": [],
+    "hardware_serial": [],
+    "udp8888_free": true,
+    "domain": 43
+  },
+  "launch_environment": {
+    "UAV_USV_GZ_SERVER_ONLY": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1"
+  },
+  "scope": "Production/control/test/config/model/PX4 code unchanged. Removed only archived historical evidence and completed plans. One new F2 followed by actual-F2-qualified F3 with R11 flight settings; raw driver source bound explicitly.",
+  "unresolved": [
+    "Actual post-cleanup F2 and conditional F3"
+  ],
+  "raw_directory": "/home/qin/data/uav_usv_mpc/data/experiments/20261014_cleanup_validation_01"
+}

@@ -31,7 +31,7 @@ def test_first_fresh_depth_sample_keeps_rgb_motion_until_follow_handover(phase):
     assert math.atan2(command.velocity[1], command.velocity[0]) == pytest.approx(.05)
 
 
-def test_expired_kf_in_follow_uses_independently_fresh_rgb_without_fake_lock():
+def test_expired_kf_after_follow_lock_brakes_with_independently_fresh_rgb_yaw():
     node, state = approach_node()
     node.mission_state = MissionState.FOLLOW
     node.mission_state_name = 'FOLLOW'
@@ -46,12 +46,16 @@ def test_expired_kf_in_follow_uses_independently_fresh_rgb_without_fake_lock():
     node.timer_callback()
     command, status = node.diagnostics[-1]
     assert status == 'FOLLOW'
-    assert node.bearing_approach_active
+    assert not node.bearing_approach_active
+    assert node.visibility_decision.state == 'INPUT_WAIT'
+    assert node.visibility_decision.visual_locked
+    assert node.yaw_owner == 'VISION'
     assert node.latest_target_state is None
     assert not node.visibility_decision.locked
     assert command.mode == 'VELOCITY'
     assert all(node.offboard_modes)
     assert math.dist(command.velocity[:2], previous[:2]) <= 3. * .13 + 1e-9
+    assert math.hypot(*command.velocity[:2]) < math.hypot(*previous[:2])
 
 
 def test_moving_visual_loss_brakes_without_capturing_old_position_anchor():

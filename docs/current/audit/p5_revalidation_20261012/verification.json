@@ -1,0 +1,41 @@
+{
+  "pytest": {
+    "passed": 1620,
+    "skipped": 1,
+    "warnings": 3,
+    "seconds": 16.75,
+    "log": "/home/qin/data/uav_usv_mpc/data/experiments/20261012_p5_revalidation_02/static_checks_01/p5_revalidation_pytest_delivery.txt"
+  },
+  "p5_targeted_tests": 52,
+  "flake8_exit": 0,
+  "source_checks_verified": 173,
+  "ros_production_packages_changed": false,
+  "four_package_build": "Prior verified build retained; no production package source changes in this continuation",
+  "f3_authorized": true,
+  "f3_health_prerequisite_met": false,
+  "actual_f3_runs": 0,
+  "warmup_repair_sitl_validated": false,
+  "commit": "877ec707d88213b1c4b3527a4e5ebf316e3358da",
+  "automatic_commit": false,
+  "push": false,
+  "review": "Independent review found non-atomic environment publication race, fixed with RED\u2192GREEN tests and green full suite; later settling gate checked with unit tests and original causal input replay",
+  "logs": {
+    "SHA256SUMS": "85fb625f32fb4b0dcbdb28a1e2fe00db45b41209184fe46f73e4f8f5bbbb068d",
+    "p5_diagnosis_01.txt": "adbec315f46d064b78fa6fadb76a760d6d6d01beab5e730b95638aeccf3b046b",
+    "p5_environment_red.txt": "bd6408d80f8100b0c22fdb69926fdd39feffd6f5dfdaedf9a64bc457974d3a43",
+    "p5_revalidation_02_f2_driver.txt": "6b66d0bf9457ff28b54c7c1f40a23d8ec9a97c07ae8bf235633d2fc083031009",
+    "p5_revalidation_clock_order_red.txt": "8cb5eb8023f958f191454153aa4baebb2bd846736c668479d9936d974c62c3e1",
+    "p5_revalidation_clock_red.txt": "78ba9737be393e1c731f25ef8f2d80e93b672f2f2a05a1237e9de529795bb140",
+    "p5_revalidation_f2_driver.txt": "2e4ee8c2c7c7f7f46804e45120760a319e2fa45e3ed255fc5e767080331e300b",
+    "p5_revalidation_flake8_delivery.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "p5_revalidation_late_cleanup_red.txt": "1881016f26910fc2a20ba64c1398e61294edbd445b69064a124ea104f21f4760",
+    "p5_revalidation_pytest.txt": "edef27e2047da7120d17bdc5b291f81518c6ba7ad5ace18f4e4b91a58249fd2c",
+    "p5_revalidation_pytest_delivery.txt": "9ec9f1746d080d271e771c6dfb46471336431dcef3475515a9edc14e11ca2c3d",
+    "p5_revalidation_pytest_final.txt": "6ef0a5729fa9d94e0e3cde3c0db5c36051d86d9567672778726df6237b5ff230",
+    "p5_revalidation_pytest_final2.txt": "aec36b19ae11c673f45e24d6db045240d2cf2c1f97e78664de816df9e4a925ba",
+    "p5_warmup_green.txt": "e0eb340a483e93543f70a34e2d943b4ca0acef9769b996e834b7ec48d832fc21",
+    "p5_warmup_red.txt": "c313ce54a81b45027b4404e24cae05d2fb9bd66e5bdc14b16367c9088610a08c",
+    "readonly_observer_before_warmup.json": "f80ed01fe08184399c317565d8d73ac1d00f01601c98fb94386ce34917367aa3",
+    "readonly_observer_delivery.json": "05604dbc60705803d4798056a2407622048e31c7f97d25bfbeda477d5ea067b2"
+  }
+}

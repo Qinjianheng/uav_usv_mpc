@@ -1,0 +1,1 @@
+[INFO] [1791340800.629805388] [rgbd_target_localizer]: RGB-D TARGET LOCALIZER READY | RGB=/camera/front/image_raw | depth=/camera/front/depth/image_raw | clock=/world/default/clock | output frame=local_ned | detector=red validation sphere

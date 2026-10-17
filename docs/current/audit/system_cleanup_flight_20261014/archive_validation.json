@@ -1,0 +1,8 @@
+{
+  "archive_sha256": "93f582ebc1039031d09a03555b941dd39d5737bdcfc3551551f1149481cbd941",
+  "files": 21098,
+  "directories": 1148,
+  "original_bytes": 682893799,
+  "compressed_bytes": 179171480,
+  "cold_restore_bytes_and_modes_equal": true
+}

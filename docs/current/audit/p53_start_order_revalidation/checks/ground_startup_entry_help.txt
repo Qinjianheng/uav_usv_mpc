@@ -1,0 +1,20 @@
+usage: p53_minco_sitl.py [-h] [--scene {f2,f3}] [--round {1,2,3}]
+                         [--f3-attempt {1,2,3}] --qualification QUALIFICATION
+                         --readiness READINESS [--authorize-f2]
+                         [--authorize-f3]
+                         output
+
+Bounded P5.3 diagnostic rounds and conditional actual-F2-qualified F3.
+
+positional arguments:
+  output
+
+options:
+  -h, --help            show this help message and exit
+  --scene {f2,f3}
+  --round {1,2,3}
+  --f3-attempt {1,2,3}
+  --qualification QUALIFICATION
+  --readiness READINESS
+  --authorize-f2
+  --authorize-f3

@@ -1,0 +1,19 @@
+{
+  "protected_count": 984,
+  "unchanged": true,
+  "historical_manifests": {
+    "docs/current/audit/p52_follow_minco": 30,
+    "docs/current/audit/p52_revalidation_02": 21,
+    "docs/current/audit/p52_revalidation_03": 19,
+    "data/experiments/20261013_p52_offline_01": 87,
+    "data/experiments/20261013_p52_diagnosis_01": 29,
+    "data/experiments/20261013_p52_diagnosis_02": 26,
+    "data/experiments/20261013_p52_closed_loop_01/f2_h16_01": 887,
+    "data/experiments/20261013_p52_closed_loop_02/f2_h16_01": 909,
+    "data/experiments/20261013_p52_closed_loop_03/f2_h16_01": 930
+  },
+  "baseline_source_count": 678,
+  "only_existing_source_changed": [
+    "src/uav_control/uav_control/controllers/p4_follow_planner_node.py"
+  ]
+}

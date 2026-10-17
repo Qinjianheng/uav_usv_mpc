@@ -1,0 +1,18 @@
+{
+  "scope": "Final working source fingerprint recorded after all three runs; NOT a captured full run1 source snapshot. Run1 used the earlier bytes data setter; run2 used typed array; run3 bypassed the ToF model.",
+  "git_head": "d823aacf225aa8d125b549117e629f89cfeafbf6",
+  "sha256": {
+    "scripts/start_px4_ros2.sh": "2450dbd5c1a97966436096b01c29c93ed12378b2a399e6c7eef4b6dc884ec238",
+    "scripts/prepare_gz_camera_model.py": "0515ece294232ae0e51dfa490edb2ef9f7bc7483ac1b19e3adc6470df92e85ec",
+    "src/uav_usv_bringup/launch/modular_intercept.launch.py": "e93349ce81196218f6d09a8e59dc94ba304c6386ec5aba37f9b491d0653b8e06",
+    "src/uav_usv_bringup/config/baseline.yaml": "e332192f01a4c3b3a9df04880a124e7acfa4a14a22dc4be9b945fb16cc2e4a43",
+    "src/uav_usv_bringup/config/visual_geometry_diagnostics.yaml": "e53582538abb30bf04afdc7fe27ae3af9d7cc4a95221c32e1697f547cb21db96",
+    "src/uav_usv_bringup/config/front_tof_simulation.yaml": "7b3b127b60e2d6a0b784874459c98381f26f69b5275e8d43d02bd25fdd72a567",
+    "src/uav_control/uav_control/perception/tof_depth_model.py": "9d2fe95fc1ba07773c2ec010a8b6ae4810c5f6c845ba4a6dfbfd080ce7d9268c",
+    "src/uav_control/uav_control/perception/tof_depth_node.py": "ce7777d55c5ca3174305af9691958c6f8e933c15fec97d61918d8bd089eb1864",
+    "src/uav_control/uav_control/perception/front_tof_monitor.py": "560e9b6164e30cd5a4bae7582dafbb0b8716edf72b13d8d932bc6e7a861e0c27",
+    "src/uav_control/uav_control/perception/rgbd_target_localizer.py": "f1bd9a4f2e2d636779696e33a69be0cb75b1a2f03ec24b8d01d852176ca0c533",
+    "src/uav_control/uav_control/control/trajectory_tracking.py": "bdb1d2a8d3aaaff45e579b3645fce04b1a99e49322c40c91d1a13e476b8c7573",
+    "src/uav_control/uav_control/control/trajectory_tracker_node.py": "0868b94516568130fb9db7d6b808c74c57a38c691dc1c89dd485c84a68f7f32b"
+  }
+}

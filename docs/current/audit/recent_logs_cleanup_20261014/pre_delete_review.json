@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "important_unresolved": 0,
+  "reviewer": "/root/p53_startup_final_review",
+  "manifest_sha256": "f2eb104ef48e2964c9f6ccfd35f935798bd16df5408b19e0b91f4f8c69d67aa3",
+  "runner_sha256": "73c65f78d48d1dacac6edcaeaf184001ad385f6c3721a6aaab85f115552e7fff",
+  "scope": "Current run/qualification closure; all recent raw scenes, 62 claims and 8469 protected files kept. User explicitly authorized direct deletion without archive."
+}

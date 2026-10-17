@@ -1,0 +1,31 @@
+..............................F                                          [100%]
+=================================== FAILURES ===================================
+____ test_delayed_navigation_cannot_admit_a_plan_too_short_at_control_epoch ____
+
+    def test_delayed_navigation_cannot_admit_a_plan_too_short_at_control_epoch():
+        node = terminal_node()
+        node.timer_callback()
+        execution = node.terminal_execution
+        node.latest_state = replace(node.latest_state, stamp=10.285,
+                                    position=(1.8525, 0., -.5))
+        node.latest_kf_message.position.x = 2.9725
+        for t, sample in zip((0., 4.), node.latest_prediction.samples):
+            sample.position.x = 2.9725 + 4. * t
+        coefficients = (1.8525, 6.5, -1., 0., 0., 0.,
+                        0., 0., 0., 0., 0., 0.,
+                        -.5, 0., .03 / .09, 0., 0., 0.)
+        candidate = replace(fresh_replacement(node), source_stamp=10.285,
+                            valid_until=10.585, contact_stamp=10.585,
+                            terminal_position=(3.7125, 0., -.47),
+                            segments=(PolynomialSegmentData(.3, coefficients),))
+        node.terminal_replacement_position_error = .15
+>       assert node._evaluate_trajectory(candidate) == (
+            TrajectoryRejectReason.INSUFFICIENT_REMAINING_TIME)
+E       AssertionError: assert <TrajectoryRe....NONE: 'NONE'> == <TrajectoryRe...MAINING_TIME'>
+E         - INSUFFICIENT_REMAINING_TIME
+E         + NONE
+
+test/test_terminal_execution.py:413: AssertionError
+=========================== short test summary info ============================
+FAILED test/test_terminal_execution.py::test_delayed_navigation_cannot_admit_a_plan_too_short_at_control_epoch
+1 failed, 30 passed in 0.27s

@@ -1,0 +1,38 @@
+{
+  "passed": true,
+  "independent_review_pass": true,
+  "base_head": "5a783ca87c240fe06ae457230a24b666a0f4bcdb",
+  "pytest": {
+    "passed": 1804,
+    "skipped": 1,
+    "warnings": 3
+  },
+  "source_count": 692,
+  "protected_files": 984,
+  "build_scope": "Prior four-package build verified by unchanged production SHA; snapshot harness/test changes only; full pytest and flake8 passed.",
+  "admission": {
+    "horizontal_enter": 1.0,
+    "relative_enter": 1.8,
+    "height_enter": 0.1,
+    "stable_seconds": 5.0,
+    "cooldown_seconds": 2.0,
+    "horizontal_exit": 1.5,
+    "relative_exit": 2.5,
+    "performance_seconds": 0.5,
+    "maximum_sample_gap": 0.2,
+    "probe_maximum_gap": 0.45,
+    "required_probes": 3,
+    "maximum_entries": 3
+  },
+  "environment": {
+    "processes": [],
+    "hardware_serial": [],
+    "udp8888_free": true,
+    "domain": 43
+  },
+  "scope": "User authorized flight-focused moderate thresholds and autonomous simulation; horizontal FF rounds5-7, default remains false; observer separate acquisition250ms/delivery250ms budgets. Mathematical/physical candidate validators unchanged.",
+  "unresolved": [
+    "Actual new F2 and F3 with server-only Gazebo"
+  ],
+  "raw_directory": "/home/qin/data/uav_usv_mpc/data/experiments/20261013_p53_server_start_01"
+}

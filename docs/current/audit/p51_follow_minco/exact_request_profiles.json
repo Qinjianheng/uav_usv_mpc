@@ -1,0 +1,298 @@
+[
+  {
+    "cycle": 1,
+    "source": "/home/qin/data/uav_usv_mpc/data/experiments/20261012_p5_revalidation_02/f2_h16_01/shadow/mpc_seed_shadow_1791802864063701873_823401.jsonl",
+    "line": 3,
+    "line_sha256": "2ebdaedd58879d0f84273d0bb7ebfdc7c1bd46aec7fc8f8be699375c9edb7c7f",
+    "original_context": {
+      "mission_id": 1,
+      "cycle_id": 1,
+      "execution_start_stamp": 1791802864.482055,
+      "navigation_stamp": 1791802864.3156476,
+      "attitude_stamp": 1791802864.3156476,
+      "prediction_source_stamp": 1791802864.2867956,
+      "observation_stamp": 1791802864.259631,
+      "prediction_sequence_id": 415,
+      "prediction_valid_until": 1791802864.3846312,
+      "clock_generation": 0,
+      "frame_id": "local_ned",
+      "prediction_source": "tracking"
+    },
+    "dispatch_stamp": 1791802864.3320549,
+    "original_compute_budget": 0.03257606506347656,
+    "original_timing": {
+      "initialization": 0.002506371005438268,
+      "coefficient_construction": 0.03243477700743824,
+      "optimization": 0.0,
+      "validation": 0.0,
+      "fallback": 0.0,
+      "fit_analysis": 0.0,
+      "total": 0.03848391099018045
+    },
+    "original_profile": {
+      "cycle_id": 1,
+      "total_seconds": 0.03855452701100148,
+      "stages": {
+        "target_interpolation": {
+          "seconds": 0.0005821919767186046,
+          "calls": 6
+        },
+        "future_reference": {
+          "seconds": 0.001084270013961941,
+          "calls": 3
+        },
+        "p47_follow_initialization": {
+          "seconds": 0.0012311619939282537,
+          "calls": 1
+        },
+        "trajectory_samples": {
+          "seconds": 0.026974944077664986,
+          "calls": 49
+        },
+        "minco_coefficients": {
+          "seconds": 0.00020296199363656342,
+          "calls": 1
+        },
+        "p47_terminal_quadratic": {
+          "seconds": 0.005106145952595398,
+          "calls": 1
+        }
+      },
+      "counts": {
+        "minco_builds": 1
+      },
+      "unattributed_seconds": 0.003372851002495736
+    },
+    "profiled_elapsed": 0.06378721399232745,
+    "replay_valid": false,
+    "replay_status": "DEADLINE_EXCEEDED",
+    "replay_timing": {
+      "initialization": 0.006497175985714421,
+      "coefficient_construction": 0.017717623995849863,
+      "optimization": 0.0,
+      "validation": 0.03402595000807196,
+      "fallback": 0.0,
+      "fit_analysis": 0.0,
+      "total": 0.06115719399531372
+    },
+    "caution": "instrumented exact-input replay; three startup requests, not an online latency percentile population"
+  },
+  {
+    "cycle": 2,
+    "source": "/home/qin/data/uav_usv_mpc/data/experiments/20261012_p5_revalidation_02/f2_h16_01/shadow/mpc_seed_shadow_1791802864063701873_823401.jsonl",
+    "line": 8,
+    "line_sha256": "451ef01cc870a325b99c38371e59feb19fd328e284ee9a39ca2814712cc98b83",
+    "original_context": {
+      "mission_id": 1,
+      "cycle_id": 2,
+      "execution_start_stamp": 1791802864.6858094,
+      "navigation_stamp": 1791802864.5113177,
+      "attitude_stamp": 1791802864.5113177,
+      "prediction_source_stamp": 1791802864.522007,
+      "observation_stamp": 1791802864.4793284,
+      "prediction_sequence_id": 420,
+      "prediction_valid_until": 1791802864.6043284,
+      "clock_generation": 0,
+      "frame_id": "local_ned",
+      "prediction_source": "tracking"
+    },
+    "dispatch_stamp": 1791802864.5358093,
+    "original_compute_budget": 0.04851911544799804,
+    "original_timing": {
+      "initialization": 0.0068899480102118105,
+      "coefficient_construction": 0.010660069005098194,
+      "optimization": 0.0,
+      "validation": 0.06882931699510664,
+      "fallback": 0.0,
+      "fit_analysis": 0.0,
+      "total": 0.08901106601115316
+    },
+    "original_profile": {
+      "cycle_id": 2,
+      "total_seconds": 0.08909885201137513,
+      "stages": {
+        "target_interpolation": {
+          "seconds": 0.003074086009291932,
+          "calls": 10
+        },
+        "future_reference": {
+          "seconds": 0.0025704600266180933,
+          "calls": 3
+        },
+        "p47_follow_initialization": {
+          "seconds": 0.0030770919693168253,
+          "calls": 1
+        },
+        "minco_coefficients": {
+          "seconds": 0.0032393319706898183,
+          "calls": 2
+        },
+        "trajectory_samples": {
+          "seconds": 0.0038156870286911726,
+          "calls": 4
+        },
+        "p47_terminal_quadratic": {
+          "seconds": 0.004529814992565662,
+          "calls": 1
+        },
+        "derivative_bounds": {
+          "seconds": 0.001391335972584784,
+          "calls": 6
+        },
+        "attitude_extrema": {
+          "seconds": 0.007124109979486093,
+          "calls": 1
+        },
+        "planned_attitude": {
+          "seconds": 0.0023693439725320786,
+          "calls": 3
+        },
+        "full_fov": {
+          "seconds": 0.05101848399499431,
+          "calls": 3
+        },
+        "other_constraints": {
+          "seconds": 0.0012711719900835305,
+          "calls": 3
+        },
+        "full_validation": {
+          "seconds": 0.003573847032384947,
+          "calls": 1
+        },
+        "p47_strict_validation": {
+          "seconds": 0.0005953180370852351,
+          "calls": 1
+        }
+      },
+      "counts": {
+        "minco_builds": 2,
+        "root_searches": 9,
+        "projection_samples": 189,
+        "full_validation_samples": 189
+      },
+      "unattributed_seconds": 0.0014487690350506455
+    },
+    "profiled_elapsed": 0.051634556002682075,
+    "replay_valid": false,
+    "replay_status": "DEADLINE_EXCEEDED",
+    "replay_timing": {
+      "initialization": 0.0060818130150437355,
+      "coefficient_construction": 0.0032244409958366305,
+      "optimization": 0.0,
+      "validation": 0.026968360994942486,
+      "fallback": 0.014084982976783067,
+      "fit_analysis": 0.0,
+      "total": 0.05148162000114098
+    },
+    "caution": "instrumented exact-input replay; three startup requests, not an online latency percentile population"
+  },
+  {
+    "cycle": 3,
+    "source": "/home/qin/data/uav_usv_mpc/data/experiments/20261012_p5_revalidation_02/f2_h16_01/shadow/mpc_seed_shadow_1791802864063701873_823401.jsonl",
+    "line": 10,
+    "line_sha256": "a5394220a0b8d1c217e191322449ef04ef3955485f7780d39f46206eaa7bcd80",
+    "original_context": {
+      "mission_id": 1,
+      "cycle_id": 3,
+      "execution_start_stamp": 1791802864.8960602,
+      "navigation_stamp": 1791802864.7113266,
+      "attitude_stamp": 1791802864.7113266,
+      "prediction_source_stamp": 1791802864.7326076,
+      "observation_stamp": 1791802864.6803532,
+      "prediction_sequence_id": 424,
+      "prediction_valid_until": 1791802864.8053534,
+      "clock_generation": 0,
+      "frame_id": "local_ned",
+      "prediction_source": "tracking"
+    },
+    "dispatch_stamp": 1791802864.7460601,
+    "original_compute_budget": 0.03929303169250488,
+    "original_timing": {
+      "initialization": 0.0052524079801514745,
+      "coefficient_construction": 0.005965855991235003,
+      "optimization": 0.0,
+      "validation": 0.03114906101836823,
+      "fallback": 0.0,
+      "fit_analysis": 0.0,
+      "total": 0.043727997021051124
+    },
+    "original_profile": {
+      "cycle_id": 3,
+      "total_seconds": 0.04389398900093511,
+      "stages": {
+        "target_interpolation": {
+          "seconds": 0.0010636599909048527,
+          "calls": 10
+        },
+        "future_reference": {
+          "seconds": 0.0023793559812474996,
+          "calls": 3
+        },
+        "p47_follow_initialization": {
+          "seconds": 0.002512631006538868,
+          "calls": 1
+        },
+        "minco_coefficients": {
+          "seconds": 0.000495842017699033,
+          "calls": 2
+        },
+        "trajectory_samples": {
+          "seconds": 0.003529462992446497,
+          "calls": 4
+        },
+        "p47_terminal_quadratic": {
+          "seconds": 0.005167125986190513,
+          "calls": 1
+        },
+        "derivative_bounds": {
+          "seconds": 0.0005393149913288653,
+          "calls": 6
+        },
+        "attitude_extrema": {
+          "seconds": 0.003131650999421254,
+          "calls": 1
+        },
+        "planned_attitude": {
+          "seconds": 0.0025200999807566404,
+          "calls": 3
+        },
+        "full_fov": {
+          "seconds": 0.01234089198987931,
+          "calls": 3
+        },
+        "other_constraints": {
+          "seconds": 0.0014246150676626712,
+          "calls": 3
+        },
+        "full_validation": {
+          "seconds": 0.006505471013952047,
+          "calls": 1
+        },
+        "p47_strict_validation": {
+          "seconds": 0.0007015909941401333,
+          "calls": 1
+        }
+      },
+      "counts": {
+        "minco_builds": 2,
+        "root_searches": 9,
+        "projection_samples": 205,
+        "full_validation_samples": 205
+      },
+      "unattributed_seconds": 0.0015822759887669235
+    },
+    "profiled_elapsed": 0.040196376998210326,
+    "replay_valid": false,
+    "replay_status": "DEADLINE_EXCEEDED",
+    "replay_timing": {
+      "initialization": 0.005880273994989693,
+      "coefficient_construction": 0.0030971179949119687,
+      "optimization": 0.0,
+      "validation": 0.026274664007360116,
+      "fallback": 0.0037041319883428514,
+      "fit_analysis": 0.0,
+      "total": 0.04002754998509772
+    },
+    "caution": "instrumented exact-input replay; three startup requests, not an online latency percentile population"
+  }
+]

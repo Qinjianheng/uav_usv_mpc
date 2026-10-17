@@ -15,10 +15,11 @@ from rclpy.qos import (
     QoSProfile,
     ReliabilityPolicy,
 )
-from sensor_msgs.msg import CameraInfo
+from sensor_msgs.msg import CameraInfo, Image
 from std_msgs.msg import Bool, Float32, String, UInt64
 
 from uav_control.common.runtime_performance import RateMeter
+from .tof_depth_model import decode_depth_image
 
 
 COLOR_PIXEL_FORMATS = {
@@ -261,6 +262,7 @@ class FrontTofMonitor(Node):
         self.declare_parameter('analysis_rate_hz', 10.0)
         self.declare_parameter('gazebo_world_name', 'default')
         self.declare_parameter('publish_gazebo_rtf', True)
+        self.declare_parameter('depth_input_ros', False)
 
         self.camera_name = str(
             self.get_parameter('camera_name').value
@@ -507,11 +509,16 @@ class FrontTofMonitor(Node):
             self.color_gazebo_topic,
             self.color_callback,
         )
-        depth_subscribed = self.gazebo_node.subscribe(
-            GazeboImage,
-            self.depth_gazebo_topic,
-            self.depth_callback,
-        )
+        self.depth_input_ros = bool(self.get_parameter('depth_input_ros').value)
+        if self.depth_input_ros:
+            self.depth_ros_sub = self.create_subscription(
+                Image, self.depth_ros_topic, self.ros_depth_callback, sensor_qos,
+            )
+            depth_subscribed = True
+        else:
+            depth_subscribed = self.gazebo_node.subscribe(
+                GazeboImage, self.depth_gazebo_topic, self.depth_callback,
+            )
         if not color_subscribed or not depth_subscribed:
             raise RuntimeError(
                 f'Could not subscribe to {self.camera_name} ToF streams.'
@@ -533,7 +540,7 @@ class FrontTofMonitor(Node):
         self.get_logger().info(
             f'{self.camera_name.upper()} TOF READY | '
             f'RGB={self.color_gazebo_topic} | '
-            f'depth={self.depth_gazebo_topic} | '
+            f'depth={self.depth_ros_topic if self.depth_input_ros else self.depth_gazebo_topic} | '
             f'ROS RGB={self.color_ros_topic} | '
             f'RGB clip={self.minimum_rgb_distance:.1f}-'
             f'{self.maximum_rgb_distance:.1f} m | '
@@ -662,6 +669,26 @@ class FrontTofMonitor(Node):
         self.last_monitor_compute_time = max(
             self.last_monitor_compute_time,
             time.monotonic() - now,
+        )
+
+    def ros_depth_callback(self, message):
+        """Diagnose modeled returns, retaining NaNs instead of ideal fallback."""
+        if self.shutting_down:
+            return
+        now = time.monotonic()
+        self.depth_rate_meter.observe(now)
+        try:
+            depth = decode_depth_image(message)
+        except ValueError:
+            return
+        with self.lock:
+            if now - self.last_depth_analysis_time < self.analysis_period:
+                return
+            self.last_depth_analysis_time = now
+            self.last_depth_time = now
+            self.depth = depth
+        self.last_monitor_compute_time = max(
+            self.last_monitor_compute_time, time.monotonic() - now,
         )
 
     def world_stats_callback(self, message):
@@ -884,7 +911,8 @@ class FrontTofMonitor(Node):
         self.shutting_down = True
         if hasattr(self, 'gazebo_node'):
             self.gazebo_node.unsubscribe(self.color_gazebo_topic)
-            self.gazebo_node.unsubscribe(self.depth_gazebo_topic)
+            if not getattr(self, 'depth_input_ros', False):
+                self.gazebo_node.unsubscribe(self.depth_gazebo_topic)
             if self.world_stats_topic is not None:
                 self.gazebo_node.unsubscribe(self.world_stats_topic)
             time.sleep(0.1)

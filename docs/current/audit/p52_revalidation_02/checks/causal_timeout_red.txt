@@ -1,0 +1,40 @@
+...FF.                                                                   [100%]
+=================================== FAILURES ===================================
+_ test_fresh_rolling_unbracketable_epochs_cannot_preserve_steady_qualification _
+
+    def test_fresh_rolling_unbracketable_epochs_cannot_preserve_steady_qualification():
+        gate = FollowAdmission()
+        gate.stable_since, gate.last_now = 95., 100.
+        gate.probes, gate.last_probe = [1, 2, 3], 100.
+        nav, kf = [], []
+        for step in range(101):
+            now = 100.+step*.06
+            nav.append(dict(valid=True, stamp=now-.02, p=[0., 0., -5.], v=[2., 0., 0.]))
+            kf.append(dict(valid=True, stamp=now-.01, source=now-.03,
+                           p=[5., 0., 0.], v=[2., 0., 0.]))
+            pending = follow_settling(nav, kf, now)
+            assert pending.get('awaiting_native_bracket')
+            reason = gate.update(now, pending, True)
+            if step:
+>               assert reason == 'NATIVE_BRACKET_TIMEOUT'
+E               AssertionError: assert '' == 'NATIVE_BRACKET_TIMEOUT'
+E                 - NATIVE_BRACKET_TIMEOUT
+
+test/test_p52_causal_admission.py:69: AssertionError
+___ test_active_bracket_wait_has_fixed_fifty_ms_deadline_despite_new_epochs ____
+
+    def test_active_bracket_wait_has_fixed_fifty_ms_deadline_despite_new_epochs():
+        gate = FollowAdmission()
+        for step in range(7):
+            now = 100.+step*.01
+            pending = dict(settled=False, awaiting_native_bracket=True, epoch=now-.001)
+            reason = gate.update(now, pending, True, active=True)
+>           assert reason == ('' if step <= 5 else 'NATIVE_BRACKET_TIMEOUT')
+E           AssertionError: assert '' == 'NATIVE_BRACKET_TIMEOUT'
+E             - NATIVE_BRACKET_TIMEOUT
+
+test/test_p52_causal_admission.py:85: AssertionError
+=========================== short test summary info ============================
+FAILED test/test_p52_causal_admission.py::test_fresh_rolling_unbracketable_epochs_cannot_preserve_steady_qualification
+FAILED test/test_p52_causal_admission.py::test_active_bracket_wait_has_fixed_fifty_ms_deadline_despite_new_epochs
+2 failed, 4 passed in 0.03s

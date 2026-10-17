@@ -1,0 +1,52 @@
+FFFF                                                                     [100%]
+=================================== FAILURES ===================================
+_ test_turning_viewpoint_can_enter_while_original_center_velocity_gate_blocks __
+
+    def test_turning_viewpoint_can_enter_while_original_center_velocity_gate_blocks():
+        # Target heading rotates +.3rad/s. d/dt(target - 5*heading) = (4,-1.5).
+        nav = [dict(stamp=100., valid=True, p=[-5., 0., -5.], v=[4., -1.5, 0.])]
+        kf = [dict(stamp=100., source=99.98, valid=True, p=[0., 0., 0.], v=[4., 0., 0.])]
+        assert not follow_settling(nav, kf, 100., admission_config=AdmissionConfig())['settled']
+>       assert follow_settling(nav, kf, 100., admission_config=entry.flight_admission())['settled']
+E       AttributeError: module 'p53_minco_sitl' has no attribute 'flight_admission'
+
+test/test_p53_practical_admission.py:17: AttributeError
+_ test_practical_velocity_gate_retains_stability_probes_and_active_deviation_recovery _
+
+    def test_practical_velocity_gate_retains_stability_probes_and_active_deviation_recovery():
+>       gate = FollowAdmission(entry.flight_admission())
+E       AttributeError: module 'p53_minco_sitl' has no attribute 'flight_admission'
+
+test/test_p53_practical_admission.py:21: AttributeError
+____ test_practical_entry_still_rejects_position_height_or_illegal_context _____
+
+    def test_practical_entry_still_rejects_position_height_or_illegal_context():
+        for patch, legal in ((dict(horizontal_error=1.01), True),
+                             (dict(height_error=.101), True), ({}, False)):
+>           gate = FollowAdmission(entry.flight_admission())
+E           AttributeError: module 'p53_minco_sitl' has no attribute 'flight_admission'
+
+test/test_p53_practical_admission.py:40: AttributeError
+_______ test_execution_audit_reports_loaded_admission_instead_of_default _______
+
+tmp_path = PosixPath('/tmp/pytest-of-qin/pytest-252/test_execution_audit_reports_l0')
+
+    def test_execution_audit_reports_loaded_admission_instead_of_default(tmp_path):
+        import yaml
+        from p51_execution_audit import audit
+        config = tmp_path/'config'
+        config.mkdir()
+        (config/'flight.yaml').write_text(yaml.safe_dump(dict(trajectory_tracker_node=dict(
+            ros__parameters=dict(follow_admission_relative_enter=1.8,
+                                 follow_admission_relative_exit=2.5)))))
+        report = audit(tmp_path, [], None, 'f2')
+>       assert report['thresholds']['admission']['relative_enter'] == 1.8
+E       assert 0.5 == 1.8
+
+test/test_p53_practical_admission.py:57: AssertionError
+=========================== short test summary info ============================
+FAILED test/test_p53_practical_admission.py::test_turning_viewpoint_can_enter_while_original_center_velocity_gate_blocks
+FAILED test/test_p53_practical_admission.py::test_practical_velocity_gate_retains_stability_probes_and_active_deviation_recovery
+FAILED test/test_p53_practical_admission.py::test_practical_entry_still_rejects_position_height_or_illegal_context
+FAILED test/test_p53_practical_admission.py::test_execution_audit_reports_loaded_admission_instead_of_default
+4 failed in 0.18s

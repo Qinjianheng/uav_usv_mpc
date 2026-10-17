@@ -1,0 +1,94 @@
+{
+  "source": "data/experiments/20261013_p53_closed_loop_05/f2_h16_01",
+  "stop": {
+    "reason": "HEALTH_INPUT_LOST",
+    "stamp": 1791888794.6081347,
+    "follow_start": 1791888785.4182737,
+    "first_minco": null,
+    "health_observed_wall": 1791888794.6080685,
+    "health_snapshot": {
+      "prediction": {
+        "receipt": 1791888794.3942266,
+        "stamp": 1791888794.390059,
+        "observation": 1791888794.3630676,
+        "valid": true
+      },
+      "control": {
+        "receipt": 1791888794.3501623,
+        "status": "FOLLOW",
+        "locked": true,
+        "compute": 0.0008895920182112604
+      },
+      "attitude": {
+        "receipt": 1791888794.3836823,
+        "q": [
+          0.9996952414512634,
+          -0.0006709183217026293,
+          -0.024648893624544144,
+          0.0011631521629169583
+        ]
+      },
+      "vehicle": {
+        "receipt": 1791888794.1157775,
+        "nav_state": 14,
+        "armed": 2
+      },
+      "navigation": {
+        "receipt": 1791888794.3844025,
+        "stamp": 1791888794.3750699,
+        "valid": true,
+        "p": [
+          37.87470245361328,
+          0.003437323961406946,
+          -4.992138385772705
+        ],
+        "v": [
+          1.4440712928771973,
+          -0.03615780174732208,
+          -0.0066579794511199
+        ]
+      },
+      "tracking": {
+        "receipt": 1791888794.3907785,
+        "stamp": 1791888794.390059,
+        "source": 1791888794.3630676,
+        "valid": true,
+        "p": [
+          42.749860825073654,
+          -0.03828893642888747,
+          -0.1654076801047421
+        ],
+        "v": [
+          2.037497348083191,
+          -0.004099927716365829,
+          -0.2231965980016162
+        ]
+      },
+      "written": 1791888794.3948627,
+      "ros_now": 1791888794.3945444,
+      "follow_settling": {
+        "settled": true,
+        "epoch": 1791888794.3703752,
+        "source_stamp": 1791888794.3111198,
+        "navigation_bracket": [
+          1791888794.35908,
+          1791888794.3750699
+        ],
+        "horizontal_error": 0.15942747969295085,
+        "relative_speed": 0.6000404546959907,
+        "height_error": 0.00795457581618031,
+        "desired_position": [
+          37.71166389250504,
+          -0.02865074111986681,
+          -5.0
+        ],
+        "method": "native bracket interpolation; no extrapolation"
+      },
+      "p53_decision": {
+        "fatal": "HEALTH_INPUT_LOST",
+        "inhibit": null
+      }
+    }
+  },
+  "change": "Separate acquisition receipt age<=250ms and snapshot delivery<=250ms, read-time receipt total<=500ms (vehicle<=1s); controller125ms and lease unchanged."
+}

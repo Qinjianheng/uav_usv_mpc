@@ -1,0 +1,28 @@
+{
+  "rows": 469,
+  "valid_observation_count": 362,
+  "valid_with_truth_count": 362,
+  "rejections": {
+    "": 362,
+    "IMAGE_INVALID": 32,
+    "DEPTH_RATIO_LOW": 75
+  },
+  "accuracy_by_logged_phase": {
+    "PREPARATION": {
+      "rows": 440,
+      "valid_aligned_samples": 332,
+      "coverage_s": 21.949862480163574,
+      "rmse_m": 0.17058246213553083,
+      "p95_m": 0.4496204705713593,
+      "max_m": 0.5277308553504086
+    },
+    "TERMINAL_APPROACH": {
+      "rows": 29,
+      "valid_aligned_samples": 29,
+      "coverage_s": 1.400003433227539,
+      "rmse_m": 0.11381916445532347,
+      "p95_m": 0.16377486015428327,
+      "max_m": 0.1712873296968649
+    }
+  }
+}

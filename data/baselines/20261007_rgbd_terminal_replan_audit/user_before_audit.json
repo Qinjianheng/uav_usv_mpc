@@ -1,0 +1,66 @@
+{
+  "modular_intercept_20261007_114222_380966_mission_1_summary.json": {
+    "outcome": "SUCCESS",
+    "elapsed": 6.409844636917114,
+    "summary_minimum_distance": 0.3902222432931761,
+    "closest_task_csv_sample": {
+      "intercept_elapsed_time": "6.457535982131958",
+      "distance": "0.3902222432931761",
+      "horizontal_distance": "0.3073450139683402",
+      "vertical_error": "0.2404421792231128",
+      "uav_z": "-0.39028018720198066",
+      "target_z": "-0.14983800797886784",
+      "controller_status": "TERMINAL_COMMITTED"
+    },
+    "terminal_exits": []
+  },
+  "modular_intercept_20261007_114314_183841_mission_1_summary.json": {
+    "outcome": "FAILURE",
+    "elapsed": 30.027169227600098,
+    "summary_minimum_distance": 0.5897694766547396,
+    "closest_task_csv_sample": {
+      "intercept_elapsed_time": "24.070599794387817",
+      "distance": "0.5920837550365862",
+      "horizontal_distance": "0.2813832741667141",
+      "vertical_error": "0.5209478150423936",
+      "uav_z": "-0.4002944841497192",
+      "target_z": "0.12065333089267438",
+      "controller_status": "TERMINAL_COMMITTED"
+    },
+    "terminal_exits": [
+      {
+        "intercept_elapsed_time": "4.570604562759399",
+        "horizontal_distance": "0.2795895502536907",
+        "vertical_error": "0.5738579989556587",
+        "distance": "0.6383442014904294",
+        "remaining_t_go": "0.0",
+        "kf_state_age": "0.09534001350402832",
+        "prediction_sample_age": "0.030404090881347656"
+      },
+      {
+        "intercept_elapsed_time": "24.120638370513916",
+        "horizontal_distance": "0.28284638359160763",
+        "vertical_error": "0.5324543234403437",
+        "distance": "0.6029176421876914",
+        "remaining_t_go": "0.0",
+        "kf_state_age": "0.13348722457885742",
+        "prediction_sample_age": "0.05809617042541504"
+      }
+    ]
+  },
+  "modular_intercept_20261007_114512_706892_mission_1_summary.json": {
+    "outcome": "SUCCESS",
+    "elapsed": 11.125696420669556,
+    "summary_minimum_distance": 0.43314123810026256,
+    "closest_task_csv_sample": {
+      "intercept_elapsed_time": "11.125970363616943",
+      "distance": "0.5634899260742144",
+      "horizontal_distance": "0.45789668868261263",
+      "vertical_error": "0.3284075505840604",
+      "uav_z": "-0.45889776119195214",
+      "target_z": "-0.13049021060789173",
+      "controller_status": "TERMINAL_COMMITTED"
+    },
+    "terminal_exits": []
+  }
+}

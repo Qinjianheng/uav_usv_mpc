@@ -1,0 +1,39 @@
+{
+  "schema": "p6-independent-review-v1",
+  "reviewer": "/root/p6_visibility",
+  "independent_scope": [
+    "USV motion profiles",
+    "MovingTarget mode parameter commit and ACK",
+    "motion mode console X/R gating"
+  ],
+  "source_sha256": {
+    "src/uav_control/uav_control/usv_motion_profiles.py": "5e80f769734caaf11cd2ba0d6bcb3a5bc1ce55dff90cd5f5d5edcf521fb1751e",
+    "src/uav_control/uav_control/moving_target.py": "55c0ffbcf509437878582fa7975b5f5ae1cd431c25b729d2aff976e40f47322e",
+    "src/uav_control/uav_control/motion_mode_client.py": "1931cc7abb0aa6da0241832d6bca154bc8d12c81edd289a86bb61d72565113be",
+    "scripts/start_px4_ros2.sh": "cb24d804785da534284a9e844b67db5563b22d340e5df8a7a48178a04e3f202f",
+    "src/uav_control/test/test_p6_motion_profiles.py": "0a2b573c02a045ca3f6a6e019844355009efadb778bf666e7f409bd57f6f96fb",
+    "src/uav_control/test/test_p6_motion_node.py": "40a0198e79725998eeb7cc607811cadf22b7431655492242785038fe90b8baeb",
+    "src/uav_control/test/test_p6_console.py": "e9bd25bea20e53c6c9923ac9c42755a50d70773032d0de1ca7a229dfd72d3658"
+  },
+  "review_pass": true,
+  "important_unresolved_findings": 0,
+  "findings": [],
+  "validation": {
+    "pytest": "49 passed in 4.81s",
+    "ros_domain_id": 168,
+    "real_dds_parameter_service": true,
+    "late_transient_local_join": true,
+    "px4_or_gazebo_started": false,
+    "log": "visibility/independent_motion_review_tests_02.txt",
+    "shell_syntax": "bash -n scripts/start_px4_ros2.sh passed"
+  },
+  "limitations": [
+    "No SITL/live command console validation; no control authority claim.",
+    "robust_visibility/adaptive_viewpoint are authored by this reviewer and are not independent review objects."
+  ],
+  "earlier_check": {
+    "log": "visibility/independent_motion_review_tests.txt",
+    "result": "37 passed, 12 setup errors",
+    "cause": "Sandbox ROS default log directory outside writable roots; corrected ROS_LOG_DIR for the independent rerun; no production code changed."
+  }
+}

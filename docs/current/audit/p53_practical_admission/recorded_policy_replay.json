@@ -1,0 +1,45 @@
+{
+  "reports": [
+    {
+      "policy": "original",
+      "config": {
+        "horizontal_enter": 1.0,
+        "relative_enter": 0.5,
+        "height_enter": 0.1,
+        "stable_seconds": 5.0,
+        "cooldown_seconds": 2.0,
+        "horizontal_exit": 1.5,
+        "relative_exit": 0.75,
+        "performance_seconds": 0.5,
+        "maximum_sample_gap": 0.2,
+        "probe_maximum_gap": 0.45,
+        "required_probes": 3,
+        "maximum_entries": 3
+      },
+      "samples": 212,
+      "converged_samples": 0,
+      "first_converged": null
+    },
+    {
+      "policy": "practical",
+      "config": {
+        "horizontal_enter": 1.0,
+        "relative_enter": 1.8,
+        "height_enter": 0.1,
+        "stable_seconds": 5.0,
+        "cooldown_seconds": 2.0,
+        "horizontal_exit": 1.5,
+        "relative_exit": 2.5,
+        "performance_seconds": 0.5,
+        "maximum_sample_gap": 0.2,
+        "probe_maximum_gap": 0.45,
+        "required_probes": 3,
+        "maximum_entries": 3
+      },
+      "samples": 212,
+      "converged_samples": 111,
+      "first_converged": 1791875087.074527
+    }
+  ],
+  "scope": "Actual local metrics replay only; no counterfactual ACTIVE or physical flight proof"
+}

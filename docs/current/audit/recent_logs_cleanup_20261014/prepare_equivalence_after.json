@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "scenes": {
+    "f2": {
+      "complete_flight_config_equals_r11": true,
+      "complete_research_config_equals_r11": true,
+      "candidate_config_valid": true
+    },
+    "f3": {
+      "complete_flight_config_equals_r11": true,
+      "complete_research_config_equals_r11": true,
+      "candidate_config_valid": true
+    }
+  },
+  "readiness_valid": true,
+  "release_valid": true,
+  "formal_manifest_entries": 227,
+  "not_a_new_sitl_run": true
+}

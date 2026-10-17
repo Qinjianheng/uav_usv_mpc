@@ -1,0 +1,38 @@
+{
+  "passed": true,
+  "independent_review_pass": true,
+  "base_head": "2467c8a044d13f7877eff3cdc4c9969736f1e20f",
+  "pytest": {
+    "passed": 1843,
+    "skipped": 1,
+    "warnings": 3
+  },
+  "source_count": 697,
+  "protected_files": 984,
+  "build_scope": "Fresh four-package symlink build.",
+  "admission": {
+    "horizontal_enter": 1.0,
+    "relative_enter": 1.8,
+    "height_enter": 0.1,
+    "stable_seconds": 5.0,
+    "cooldown_seconds": 2.0,
+    "horizontal_exit": 1.5,
+    "relative_exit": 2.5,
+    "performance_seconds": 0.5,
+    "maximum_sample_gap": 0.2,
+    "probe_maximum_gap": 0.45,
+    "required_probes": 3,
+    "maximum_entries": 3
+  },
+  "environment": {
+    "processes": [],
+    "hardware_serial": [],
+    "udp8888_free": true,
+    "domain": 43
+  },
+  "scope": "Recent successful cost evidence retained across waiting; visual lock, input freshness and execution permission separated; INPUT_WAIT brakes with visual yaw. Same practical admission and horizontal FF as R9. Online125ms, lease450ms, full curve validation, original epochs and truth isolation preserved.",
+  "unresolved": [
+    "Actual new same-config F2 and conditional F3"
+  ],
+  "raw_directory": "/home/qin/data/uav_usv_mpc/data/experiments/20261013_p53_input_roles_01"
+}

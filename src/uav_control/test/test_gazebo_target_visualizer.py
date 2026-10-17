@@ -48,3 +48,61 @@ def test_red_sphere_is_visual_only_and_has_requested_size():
 def test_red_sphere_rejects_unsafe_entity_names(entity_name):
     with pytest.raises(ValueError):
         red_sphere_sdf(entity_name, 0.5)
+
+
+def visualizer_with_transport(monkeypatch, outcomes):
+    """Keep real update/pose conversion; replace only the external Gazebo RPC."""
+    from types import SimpleNamespace
+    import uav_control.gazebo_target_visualizer as module
+    from gz.msgs10.pose_pb2 import Pose
+    from gz.msgs10.entity_factory_pb2 import EntityFactory
+    visualizer = GazeboTargetVisualizer.__new__(GazeboTargetVisualizer)
+    visualizer._created = True
+    visualizer._last_create_attempt = 10.
+    visualizer._create_retry_period = 1.
+    visualizer._entity_name = 'usv_target'
+    visualizer._model_sdf = red_sphere_sdf('usv_target', .5)
+    visualizer._set_pose_service = '/world/default/set_pose'
+    visualizer._create_service = '/world/default/create'
+    visualizer._pose_type, visualizer._entity_factory_type = Pose, EntityFactory
+    visualizer._pose_failures = 0
+    visualizer.last_error = ''
+    transport = SimpleNamespace(now=10.1, calls=[], results=iter(outcomes))
+
+    def request(service, value, request_type):
+        transport.calls.append((service, value))
+        return next(transport.results)
+
+    monkeypatch.setattr(module.time, 'monotonic', lambda: transport.now)
+    monkeypatch.setattr(visualizer, '_request', request)
+    return visualizer, transport
+
+
+def test_single_pose_timeout_retries_latest_pose_next_tick_without_creation_wait(monkeypatch):
+    visualizer, transport = visualizer_with_transport(monkeypatch, [False, True])
+    assert not visualizer.update(2., 3., -4.)
+    transport.now += .05
+    assert visualizer.update(2.1, 3., -4.)
+    assert [c[0] for c in transport.calls] == ['/world/default/set_pose']*2
+    assert transport.calls[-1][1].position.y == pytest.approx(2.1)
+    assert visualizer.last_error == ''
+
+
+def test_persistently_missing_entity_still_attempts_bounded_recreation(monkeypatch):
+    visualizer, transport = visualizer_with_transport(monkeypatch, [False]*3+[True, True])
+    for i in range(3):
+        transport.now = 10.1+i*.1
+        assert not visualizer.update(2.+i*.2, 3., -4.)
+    transport.now = 10.4
+    assert visualizer.update(2.6, 3., -4.)
+    assert [c[0] for c in transport.calls] == (
+        ['/world/default/set_pose']*3+['/world/default/create', '/world/default/set_pose'])
+
+
+def test_success_between_timeouts_resets_consecutive_missing_entity_evidence(monkeypatch):
+    visualizer, transport = visualizer_with_transport(monkeypatch, [False, False, True, False])
+    for i, expected in enumerate([False, False, True, False]):
+        transport.now = 10.1+i*.1
+        assert visualizer.update(2.+i*.2, 3., -4.) == expected
+    assert visualizer.created
+    assert [c[0] for c in transport.calls] == ['/world/default/set_pose']*4

@@ -705,6 +705,7 @@ class RgbdTargetGeometry:
     intrinsics: tuple
     surface_camera: tuple
     center_camera: tuple
+    fit_position_std: float = 0.0
 
 
 class RgbDepthPairBuffer:
@@ -884,6 +885,9 @@ def target_geometry_from_rgbd(
     maximum_depth,
     target_radius=0.0,
     require_valid_sphere=False,
+    sphere_fit_mode='ideal',
+    sphere_noise_std=.01,
+    sphere_range_noise_scale=.001,
 ):
     """
     Return the current estimator inputs and intermediate camera vectors.
@@ -938,7 +942,17 @@ def target_geometry_from_rgbd(
         -(columns - cx) * valid_depths / fx,
         -(rows - cy) * valid_depths / fy,
     ))
-    fitted = validation_sphere_center(points, target_radius)
+    fit_position_std = 0.0
+    if sphere_fit_mode == 'tof' and target_radius > 0:
+        from .tof_sphere_localization import fit_tof_sphere
+        fit = fit_tof_sphere(points, target_radius, noise_std=sphere_noise_std,
+                             range_noise_scale=sphere_range_noise_scale)
+        fitted = None if fit is None else fit.center
+        fit_position_std = 0.0 if fit is None else fit.position_std
+    elif sphere_fit_mode == 'ideal':
+        fitted = validation_sphere_center(points, target_radius)
+    else:
+        raise ValueError('sphere_fit_mode must be ideal or tof with positive radius')
     if require_valid_sphere and target_radius > 0.0 and fitted is None:
         return None
     if fitted is not None:
@@ -963,6 +977,7 @@ def target_geometry_from_rgbd(
         intrinsics=(float(fx), float(fy), float(cx), float(cy)),
         surface_camera=(surface_forward, surface_left, surface_up),
         center_camera=(forward, left, up),
+        fit_position_std=fit_position_std,
     )
 
 
@@ -1108,6 +1123,9 @@ class RgbdTargetLocalizer(Node):
             'camera_translation_z', DEFAULT_CAMERA_TRANSLATION_FLU[2],
         )
         self.declare_parameter('target_radius', 0.25)
+        self.declare_parameter('sphere_fit_mode', 'ideal')
+        self.declare_parameter('sphere_noise_std', .01)
+        self.declare_parameter('sphere_range_noise_scale', .001)
         self.declare_parameter('target_reference_z_offset', 0.42)
         self.declare_parameter('geometry_diagnostics_enabled', False)
         self.declare_parameter('base_position_std', 0.08)
@@ -1198,6 +1216,17 @@ class RgbdTargetLocalizer(Node):
             float(self.get_parameter('target_radius').value),
             0.0,
         )
+        self.sphere_fit_mode = str(self.get_parameter('sphere_fit_mode').value)
+        self.sphere_noise_std = float(self.get_parameter('sphere_noise_std').value)
+        self.sphere_range_noise_scale = float(
+            self.get_parameter('sphere_range_noise_scale').value,
+        )
+        if (self.sphere_fit_mode not in ('ideal', 'tof')
+                or (self.sphere_fit_mode == 'tof' and self.target_radius <= 0)
+                or not math.isfinite(self.sphere_noise_std) or self.sphere_noise_std <= 0
+                or not math.isfinite(self.sphere_range_noise_scale)
+                or self.sphere_range_noise_scale < 0):
+            raise ValueError('invalid sphere fitting mode/noise parameters')
         self.target_reference_z_offset = float(
             self.get_parameter('target_reference_z_offset').value
         )
@@ -2272,6 +2301,9 @@ class RgbdTargetLocalizer(Node):
             self.maximum_depth,
             self.target_radius,
             require_valid_sphere=True,
+            sphere_fit_mode=getattr(self, 'sphere_fit_mode', 'ideal'),
+            sphere_noise_std=getattr(self, 'sphere_noise_std', .01),
+            sphere_range_noise_scale=getattr(self, 'sphere_range_noise_scale', .001),
         )
         if geometry is None:
             self.publish_invalid_observation(
@@ -2313,6 +2345,7 @@ class RgbdTargetLocalizer(Node):
             self.base_position_std
             + self.range_position_std_scale * target_range
         )
+        position_std = max(position_std, geometry.fit_position_std)
         variance = position_std * position_std
         covariance = [
             variance, 0.0, 0.0,

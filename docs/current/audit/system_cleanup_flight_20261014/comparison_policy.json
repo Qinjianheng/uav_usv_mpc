@@ -1,0 +1,29 @@
+{
+  "reference": "data/experiments/20261013_p53_closed_loop_11",
+  "fixed_observation_seconds": {
+    "f2": 25.0,
+    "f3": 60.0
+  },
+  "same_flight_and_research_parameters": true,
+  "minimum_minco_fraction": 0.95,
+  "minimum_longest_seconds": {
+    "f2": 20.0,
+    "f3": 55.0
+  },
+  "maximum_horizontal_rmse_increase_m": {
+    "f2": 0.05,
+    "f3": 0.1
+  },
+  "maximum_height_rmse_m": {
+    "f2": 0.02,
+    "f3": 0.025
+  },
+  "maximum_reference_tracking_increase_m": {
+    "f2": 0.03,
+    "f3": 0.06
+  },
+  "minimum_full_marker_fov_fraction": 1.0,
+  "allowed_audit_violations": 0,
+  "expected_fallbacks": 0,
+  "scope": "Predetermined offline maintenance comparison, not changed online safety gates. Actual runs are nondeterministic; do not claim identical samples."
+}

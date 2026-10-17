@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "scenes": {
+    "data/experiments/20261013_p53_closed_loop_11/f2_h16_01": 1388,
+    "data/experiments/20261013_p53_closed_loop_11/f3_h16_01": 1388,
+    "data/experiments/20261014_cleanup_sitl_01/f2_h16_01": 1398,
+    "data/experiments/20261014_cleanup_sitl_02/f2_h16_01": 1400,
+    "data/experiments/20261014_cleanup_sitl_02/f3_h16_01": 1400
+  }
+}

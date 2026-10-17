@@ -1,0 +1,112 @@
+{
+  "recorded_and_injected": {
+    "actual_ack_delivery": {
+      "final_active": 129,
+      "processed": 91,
+      "injected_count": 0
+    },
+    "offboard_loss": {
+      "observed_sequence_matches": null,
+      "successor_activations": 16,
+      "expired_active_count": 0,
+      "illegal_parent_activations": 0,
+      "simulated_delay": null
+    },
+    "none": {
+      "observed_sequence_matches": true,
+      "successor_activations": 36,
+      "expired_active_count": 0,
+      "illegal_parent_activations": 0,
+      "simulated_delay": null
+    },
+    "solve_spike": {
+      "observed_sequence_matches": null,
+      "successor_activations": 17,
+      "expired_active_count": 0,
+      "illegal_parent_activations": 0,
+      "simulated_delay": 0.06
+    },
+    "infeasible": {
+      "observed_sequence_matches": null,
+      "successor_activations": 17,
+      "expired_active_count": 0,
+      "illegal_parent_activations": 0,
+      "simulated_delay": null
+    },
+    "one_solve_failure": {
+      "observed_sequence_matches": null,
+      "successor_activations": 17,
+      "expired_active_count": 0,
+      "illegal_parent_activations": 0,
+      "simulated_delay": null
+    },
+    "height_reference": {
+      "observed_sequence_matches": null,
+      "successor_activations": 17,
+      "expired_active_count": 0,
+      "illegal_parent_activations": 0,
+      "simulated_delay": null
+    },
+    "two_solve_failures": {
+      "observed_sequence_matches": null,
+      "successor_activations": 17,
+      "expired_active_count": 0,
+      "illegal_parent_activations": 0,
+      "simulated_delay": null
+    },
+    "input_expired": {
+      "observed_sequence_matches": null,
+      "successor_activations": 17,
+      "expired_active_count": 0,
+      "illegal_parent_activations": 0,
+      "simulated_delay": 0.13
+    },
+    "prediction_delay": {
+      "observed_sequence_matches": null,
+      "successor_activations": 16,
+      "expired_active_count": 0,
+      "illegal_parent_activations": 0,
+      "simulated_delay": null
+    },
+    "reordered_ack": {
+      "final_active": 129,
+      "processed": 91,
+      "injected_count": 42
+    },
+    "parent_expired": {
+      "observed_sequence_matches": null,
+      "successor_activations": 17,
+      "expired_active_count": 0,
+      "illegal_parent_activations": 0,
+      "simulated_delay": 0.45
+    },
+    "callback_delay_50ms": {
+      "observed_sequence_matches": null,
+      "successor_activations": 16,
+      "expired_active_count": 0,
+      "illegal_parent_activations": 0,
+      "simulated_delay": 0.05
+    },
+    "pending_parent_loss": {
+      "observed_sequence_matches": null,
+      "successor_activations": 16,
+      "expired_active_count": 0,
+      "illegal_parent_activations": 0,
+      "simulated_delay": null
+    },
+    "lease_natural": {
+      "observed_sequence_matches": null,
+      "successor_activations": 14,
+      "expired_active_count": 0,
+      "illegal_parent_activations": 0,
+      "simulated_delay": null
+    }
+  },
+  "separate_policy_tests": {
+    "ACK order": "production Planner consumer + actual ACK receipt",
+    "cooldown and reentry": "test_p51_follow_admission / test_p52_receiver_replay",
+    "native KF alignment": "test_p52_causal_admission",
+    "clock parent and50ms delay": "test_p53_wakeup_faults"
+  },
+  "scope": "Real coefficients and recorded completion/delivery epochs; upstream worker/prediction clocks retained, not a newly flown physical trajectory. Explicit fault injections separated."
+}

@@ -1,0 +1,40 @@
+{
+  "passed": true,
+  "independent_review_pass": true,
+  "head": "98b532377564386d1e5a1d0bc4bb7fe9c00573d7",
+  "pytest": {
+    "passed": 2124,
+    "skipped": 1,
+    "seconds": 43.57,
+    "dds_transport_enabled": true
+  },
+  "targeted_passed": 202,
+  "four_package_build": true,
+  "flake8_pass": true,
+  "shell_syntax_pass": true,
+  "diff_check_pass": true,
+  "package_prefix": "/home/qin/data/uav_usv_mpc/install/uav_control",
+  "evidence_root": "/home/qin/data/uav_usv_mpc/data/experiments/20261015_p6_stabilization_01",
+  "evidence_sha256": {
+    "full_pytest_02.txt": "d24722e7f0182efe1dabb771543eaf89450e703505dbdac5020289144ed46a0a",
+    "targeted_01.txt": "80d08ef8574c2206e62f9b00680080f04749edc70e54e7517a98006f949754e5",
+    "build_01.txt": "ee66945b5dacca0bd1a7c1bafcf2b2227d467913a7d5bd028b4b68d7755970fa",
+    "package_prefix.txt": "7a4b4daa40c56aec6f93a3df1300130e164fdfaa1786fe5eb8f60791449123d4",
+    "flake8.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "shell_syntax.txt": "22d4f3631e04f05978407cd8f733c9958af6f8e139de81bac67d98e0b72000c6",
+    "diff_check.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "cached_diff_check.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "frozen_preservation.json": "dc0da6467d965a1dab1acecd2c1134cd0791cb0d6ad8843a1b87a75fe1ed4236",
+    "same_config_check.json": "65b18b60ecc8817e912f9567db883760edd574b9f8d511ff4288f351d0d55b32",
+    "real_validation_timing.json": "c6cb5d7bc4933b723d37c6b7cd44db00a5585027e51819f19bf7a87e2b4ae621"
+  },
+  "review": "/home/qin/data/uav_usv_mpc/data/experiments/20261015_p6_stabilization_01/independent_review/review.json",
+  "review_sha256": "52d24884b1d03661dd8b0d3a5b74c7c256612fba7bed9bbf548c8d6106b91fdc",
+  "extra_test": {
+    "path": "src/uav_control/test/test_follow_fast_validation.py",
+    "sha256": "a16cc24ae60cdbc1fc7736512316be1178034bbd720f9feb399882736155185c"
+  },
+  "source_count": 232,
+  "scope": "Static independent review only: one freshly qualified same-config 60s F2 linear group A, BCTRA primary, IMM shadow, original nominal MINCO/FOV and fixed 5m viewpoint. This is not flight qualification by itself, stabilization success, IMM-primary approval, or robust approval.",
+  "status": "TESTED_PROTOCOL_CANDIDATE_NOT_FLIGHT_SUCCESS"
+}

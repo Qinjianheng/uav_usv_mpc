@@ -1,0 +1,31 @@
+1791339363.1885068 [INFO] [launch]: All log files can be found below /tmp/uav_usv_camera_20261007/run1_roslogs/2026-10-07-10-16-03-187734-qin-GLO-FX6-42973
+1791339363.1886344 [INFO] [launch]: Default logging verbosity is set to INFO
+1791339363.2414472 [INFO] [moving_target-1]: process started with pid [42979]
+1791339363.2418027 [INFO] [target_predictor_node-2]: process started with pid [42981]
+1791339363.2419386 [INFO] [target_predictor_node-3]: process started with pid [42983]
+1791339363.2420490 [INFO] [intercept_planner_node-4]: process started with pid [42985]
+1791339363.2421687 [INFO] [trajectory_tracker_node-5]: process started with pid [42987]
+1791339363.2422807 [INFO] [mission_manager_node-6]: process started with pid [42989]
+1791339363.2423787 [INFO] [intercept_evaluator_node-7]: process started with pid [42991]
+1791339363.2424800 [INFO] [target_kalman_filter-8]: process started with pid [42993]
+1791339363.2434156 [INFO] [image_bridge-9]: process started with pid [42995]
+1791339363.2436118 [INFO] [tof_depth_node-10]: process started with pid [42997]
+1791339363.2437544 [INFO] [target_bearing_node-11]: process started with pid [42999]
+1791339363.2438564 [INFO] [front_tof_monitor-12]: process started with pid [43001]
+1791339363.2440875 [INFO] [rgbd_target_localizer-13]: process started with pid [43003]
+1791339363.2441843 [INFO] [dual_tof_selector-14]: process started with pid [43005]
+1791339494.2379158 [WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+1791339494.4247496 [INFO] [target_predictor_node-2]: process has finished cleanly [pid 42981]
+1791339494.4321816 [INFO] [target_kalman_filter-8]: process has finished cleanly [pid 42993]
+1791339494.4386628 [INFO] [target_predictor_node-3]: process has finished cleanly [pid 42983]
+1791339494.4571710 [INFO] [moving_target-1]: process has finished cleanly [pid 42979]
+1791339494.4743187 [INFO] [dual_tof_selector-14]: process has finished cleanly [pid 43005]
+1791339494.4919741 [ERROR] [mission_manager_node-6]: process has died [pid 42989, exit code 1, cmd '/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/mission_manager_node --ros-args -r __node:=mission_manager_node --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/visual_geometry_diagnostics.yaml'].
+1791339494.5036581 [ERROR] [tof_depth_node-10]: process has died [pid 42997, exit code 1, cmd '/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/tof_depth_node --ros-args -r __node:=front_tof_depth_model --params-file /home/qin/data/uav_usv_mpc/install/uav_usv_bringup/share/uav_usv_bringup/config/front_tof_simulation.yaml'].
+1791339494.5101659 [INFO] [rgbd_target_localizer-13]: process has finished cleanly [pid 43003]
+1791339494.5103250 [ERROR] [trajectory_tracker_node-5]: process has died [pid 42987, exit code 1, cmd '/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/trajectory_tracker_node --ros-args -r __node:=trajectory_tracker_node --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/visual_geometry_diagnostics.yaml'].
+1791339494.5107992 [ERROR] [target_bearing_node-11]: process has died [pid 42999, exit code 1, cmd '/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/target_bearing_node --ros-args -r __node:=target_bearing_node --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/visual_geometry_diagnostics.yaml'].
+1791339494.5247500 [INFO] [front_tof_monitor-12]: process has finished cleanly [pid 43001]
+1791339494.7445872 [INFO] [intercept_planner_node-4]: process has finished cleanly [pid 42985]
+1791339494.7476206 [ERROR] [intercept_evaluator_node-7]: process has died [pid 42991, exit code 1, cmd '/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/intercept_evaluator_node --ros-args -r __node:=intercept_evaluator_node --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/visual_geometry_diagnostics.yaml --params-file /tmp/launch_params_knj_r8tk'].
+1791339494.9565237 [INFO] [image_bridge-9]: process has finished cleanly [pid 42995]

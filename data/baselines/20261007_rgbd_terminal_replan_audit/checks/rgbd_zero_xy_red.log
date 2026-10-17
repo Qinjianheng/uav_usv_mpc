@@ -1,0 +1,24 @@
+............................F.                                           [100%]
+=================================== FAILURES ===================================
+___________ test_coincident_xy_without_capture_preserves_speed[11.0] ___________
+
+end = 11.0
+
+    @pytest.mark.parametrize('end', [11., 12.])
+    def test_coincident_xy_without_capture_preserves_speed(end):
+        node = terminal_node(end=end)
+        node.latest_kf_message.position.x = node.latest_state.position[0]
+        node.latest_kf_message.position.z = .06  # 0.56 m vertical separation.
+        for sample in node.latest_prediction.samples:
+            sample.position.x = node.latest_state.position[0]
+        node.timer_callback()
+        assert math.hypot(*node.diagnostics[-1][0].velocity[:2]) == pytest.approx(6.5)
+        if end == 11.:
+>           assert node.terminal_execution is not None
+E           assert None is not None
+E            +  where None = <uav_control.control.trajectory_tracker_node.TrajectoryTrackerNode object at 0x71414ff96830>.terminal_execution
+
+test/test_terminal_execution.py:384: AssertionError
+=========================== short test summary info ============================
+FAILED test/test_terminal_execution.py::test_coincident_xy_without_capture_preserves_speed[11.0]
+1 failed, 29 passed in 0.27s

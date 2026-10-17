@@ -1,0 +1,74 @@
+FFFFF.F                                                                  [100%]
+=================================== FAILURES ===================================
+_ test_feedforward_is_derivative_of_reference_velocity_plus_position_feedback __
+
+    def test_feedforward_is_derivative_of_reference_velocity_plus_position_feedback():
+>       value = execution.reference_acceleration(curve(), 100.1, 100.08, (4., -1., 0.), .8, 3.)
+E       AttributeError: module 'uav_control.guidance.follow_minco_execution' has no attribute 'reference_acceleration'
+
+test/test_p53_acceleration_feedforward.py:17: AttributeError
+_______ test_horizontal_feedforward_is_bounded_without_vertical_override _______
+
+    def test_horizontal_feedforward_is_bounded_without_vertical_override():
+>       value = execution.reference_acceleration(curve((3., 4., -9.)), 100.1, 100.08,
+                                                 (4., 0., 100.), .8, 3.)
+E       AttributeError: module 'uav_control.guidance.follow_minco_execution' has no attribute 'reference_acceleration'
+
+test/test_p53_acceleration_feedforward.py:23: AttributeError
+_ test_invalid_feedforward_input_never_produces_a_setpoint[100.1-100.2-velocity0] _
+
+now = 100.1, navigation = 100.2, velocity = (4.0, 0.0, 0.0)
+
+    @pytest.mark.parametrize('now,navigation,velocity', [
+        (100.1, 100.2, (4., 0., 0.)), (101.1, 101., (4., 0., 0.)),
+        (100.1, 100.08, (math.nan, 0., 0.)),
+    ])
+    def test_invalid_feedforward_input_never_produces_a_setpoint(now, navigation, velocity):
+        with pytest.raises(ValueError):
+>           execution.reference_acceleration(curve(), now, navigation, velocity, .8, 3.)
+E           AttributeError: module 'uav_control.guidance.follow_minco_execution' has no attribute 'reference_acceleration'
+
+test/test_p53_acceleration_feedforward.py:35: AttributeError
+_ test_invalid_feedforward_input_never_produces_a_setpoint[101.1-101.0-velocity1] _
+
+now = 101.1, navigation = 101.0, velocity = (4.0, 0.0, 0.0)
+
+    @pytest.mark.parametrize('now,navigation,velocity', [
+        (100.1, 100.2, (4., 0., 0.)), (101.1, 101., (4., 0., 0.)),
+        (100.1, 100.08, (math.nan, 0., 0.)),
+    ])
+    def test_invalid_feedforward_input_never_produces_a_setpoint(now, navigation, velocity):
+        with pytest.raises(ValueError):
+>           execution.reference_acceleration(curve(), now, navigation, velocity, .8, 3.)
+E           AttributeError: module 'uav_control.guidance.follow_minco_execution' has no attribute 'reference_acceleration'
+
+test/test_p53_acceleration_feedforward.py:35: AttributeError
+_ test_invalid_feedforward_input_never_produces_a_setpoint[100.1-100.08-velocity2] _
+
+now = 100.1, navigation = 100.08, velocity = (nan, 0.0, 0.0)
+
+    @pytest.mark.parametrize('now,navigation,velocity', [
+        (100.1, 100.2, (4., 0., 0.)), (101.1, 101., (4., 0., 0.)),
+        (100.1, 100.08, (math.nan, 0., 0.)),
+    ])
+    def test_invalid_feedforward_input_never_produces_a_setpoint(now, navigation, velocity):
+        with pytest.raises(ValueError):
+>           execution.reference_acceleration(curve(), now, navigation, velocity, .8, 3.)
+E           AttributeError: module 'uav_control.guidance.follow_minco_execution' has no attribute 'reference_acceleration'
+
+test/test_p53_acceleration_feedforward.py:35: AttributeError
+_ test_explicit_nominal_feedforward_reaches_velocity_setpoint_with_vertical_unset _
+
+    def test_explicit_nominal_feedforward_reaches_velocity_setpoint_with_vertical_unset():
+>       message = flight_command_to_setpoint(command(), 100000, acceleration_feedforward=True)
+E       TypeError: flight_command_to_setpoint() got an unexpected keyword argument 'acceleration_feedforward'
+
+test/test_p53_acceleration_feedforward.py:51: TypeError
+=========================== short test summary info ============================
+FAILED test/test_p53_acceleration_feedforward.py::test_feedforward_is_derivative_of_reference_velocity_plus_position_feedback
+FAILED test/test_p53_acceleration_feedforward.py::test_horizontal_feedforward_is_bounded_without_vertical_override
+FAILED test/test_p53_acceleration_feedforward.py::test_invalid_feedforward_input_never_produces_a_setpoint[100.1-100.2-velocity0]
+FAILED test/test_p53_acceleration_feedforward.py::test_invalid_feedforward_input_never_produces_a_setpoint[101.1-101.0-velocity1]
+FAILED test/test_p53_acceleration_feedforward.py::test_invalid_feedforward_input_never_produces_a_setpoint[100.1-100.08-velocity2]
+FAILED test/test_p53_acceleration_feedforward.py::test_explicit_nominal_feedforward_reaches_velocity_setpoint_with_vertical_unset
+6 failed, 1 passed in 0.32s

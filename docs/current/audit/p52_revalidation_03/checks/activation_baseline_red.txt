@@ -1,0 +1,49 @@
+FFFFF                                                                    [100%]
+=================================== FAILURES ===================================
+_______ test_accepted_start_wakes_same_control_path_and_preserves_lease ________
+
+    def test_accepted_start_wakes_same_control_path_and_preserves_lease():
+        node, curve = fixture()
+>       node._schedule_follow_activation()
+E       AttributeError: 'TrajectoryTrackerNode' object has no attribute '_schedule_follow_activation'
+
+test/test_p52_activation_wakeup.py:41: AttributeError
+_____ test_cancelled_or_replaced_pending_cannot_be_activated_by_old_wakeup _____
+
+    def test_cancelled_or_replaced_pending_cannot_be_activated_by_old_wakeup():
+        node, curve = fixture()
+>       node._schedule_follow_activation()
+E       AttributeError: 'TrajectoryTrackerNode' object has no attribute '_schedule_follow_activation'
+
+test/test_p52_activation_wakeup.py:53: AttributeError
+_ test_regular_control_activation_before_wakeup_does_not_send_an_extra_command _
+
+    def test_regular_control_activation_before_wakeup_does_not_send_an_extra_command():
+        node, curve = fixture()
+>       node._schedule_follow_activation()
+E       AttributeError: 'TrajectoryTrackerNode' object has no attribute '_schedule_follow_activation'
+
+test/test_p52_activation_wakeup.py:63: AttributeError
+_____ test_late_wakeup_still_rejects_missed_start_without_faking_ack_time ______
+
+    def test_late_wakeup_still_rejects_missed_start_without_faking_ack_time():
+        node, curve = fixture()
+>       node._schedule_follow_activation()
+E       AttributeError: 'TrajectoryTrackerNode' object has no attribute '_schedule_follow_activation'
+
+test/test_p52_activation_wakeup.py:72: AttributeError
+____ test_nearby_regular_tick_defers_wakeup_to_existing_minimum_control_dt _____
+
+    def test_nearby_regular_tick_defers_wakeup_to_existing_minimum_control_dt():
+        node, curve = fixture()
+>       node._schedule_follow_activation()
+E       AttributeError: 'TrajectoryTrackerNode' object has no attribute '_schedule_follow_activation'
+
+test/test_p52_activation_wakeup.py:81: AttributeError
+=========================== short test summary info ============================
+FAILED test/test_p52_activation_wakeup.py::test_accepted_start_wakes_same_control_path_and_preserves_lease
+FAILED test/test_p52_activation_wakeup.py::test_cancelled_or_replaced_pending_cannot_be_activated_by_old_wakeup
+FAILED test/test_p52_activation_wakeup.py::test_regular_control_activation_before_wakeup_does_not_send_an_extra_command
+FAILED test/test_p52_activation_wakeup.py::test_late_wakeup_still_rejects_missed_start_without_faking_ack_time
+FAILED test/test_p52_activation_wakeup.py::test_nearby_regular_tick_defers_wakeup_to_existing_minimum_control_dt
+5 failed in 0.29s

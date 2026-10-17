@@ -1,24 +1,13 @@
 """P7.3 pairing is bounded, causal, and in the P7 operational NED frame."""
 
-import importlib.util
-from pathlib import Path
-import sys
 
 import numpy as np
 import pytest
 
 
-SCRIPTS = Path(__file__).resolve().parents[3] / 'scripts'
-
-
 def module():
-    if str(SCRIPTS) not in sys.path:
-        sys.path.insert(0, str(SCRIPTS))
-    spec = importlib.util.spec_from_file_location(
-        'p7_kf_dynamic_analysis', SCRIPTS / 'p7_kf_dynamic_analysis.py')
-    loaded = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(loaded)
-    return loaded
+    from uav_control.analysis import observation_pairing
+    return observation_pairing
 
 
 def test_interpolation_requires_two_close_samples():

@@ -1,0 +1,49 @@
+Arguments (pass arguments as '<name>:=<value>'):
+
+    'engine':
+        One of: ['p47_follow_guided', 'p44_adaptive']
+        (default: 'p47_follow_guided')
+
+    'config_file':
+        no description given
+        (default: '/home/qin/data/uav_usv_mpc/install/uav_usv_bringup/share/uav_usv_bringup/config/baseline.yaml')
+
+    'log_directory':
+        no description given
+        (default: '/tmp/p5_shadow/evaluator')
+
+    'enable_planner':
+        no description given
+        (default: 'true')
+
+    'enable_execution':
+        no description given
+        (default: 'false')
+
+    'enable_follow_minco':
+        One of: ['true', 'false']
+        (default: 'true')
+
+    'enable_follow_planner':
+        One of: ['true', 'false']
+        (default: 'true')
+
+    'enable_shadow_perception':
+        Run optional shadow prediction and image diagnostics.
+        (default: 'true')
+
+    'enable_evaluator':
+        Record evaluation-only truth; never affects control.
+        (default: 'true')
+
+    'enable_down_camera':
+        Bridge and diagnose an explicitly enabled down sensor. Valid choices are: ['true', 'false']
+        (default: 'false')
+
+    'front_depth_model':
+        Functional uncalibrated ToF model, or ideal baseline depth. Valid choices are: ['tof', 'ideal']
+        (default: 'ideal')
+
+    'tof_config_file':
+        Explicit functional ToF range/noise test assumptions.
+        (default: '/home/qin/data/uav_usv_mpc/install/uav_usv_bringup/share/uav_usv_bringup/config/front_tof_simulation.yaml')

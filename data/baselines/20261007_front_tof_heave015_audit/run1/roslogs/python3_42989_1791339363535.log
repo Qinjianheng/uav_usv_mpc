@@ -1,0 +1,7 @@
+[INFO] [1791339363.674199055] [mission_manager_node]: Mission manager ready | tracker age<=0.125 s | recovery timeout=0.50 s
+[INFO] [1791339367.438446801] [mission_manager_node]: X accepted | mission=1 | state=TAKEOFF
+[WARN] [1791339367.588715957] [mission_manager_node]: 'X' rejected in TAKEOFF | target_locked=False
+[WARN] [1791339367.738927778] [mission_manager_node]: 'X' rejected in TAKEOFF | target_locked=False
+[INFO] [1791339379.769817847] [mission_manager_node]: Y accepted | mission=1 | state=FOLLOW | pending fresh visual/KF lock; FOLLOW continues
+[INFO] [1791339379.920138881] [mission_manager_node]: Y accepted | mission=1 | state=FOLLOW | pending fresh visual/KF lock; FOLLOW continues
+[INFO] [1791339380.070181103] [mission_manager_node]: Y accepted | mission=1 | state=FOLLOW | pending fresh visual/KF lock; FOLLOW continues

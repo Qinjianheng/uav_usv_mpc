@@ -14,6 +14,12 @@ WS_ROOT="${UAV_USV_WS:-${DEFAULT_WS_ROOT}}"
 PX4_ROOT="${PX4_ROOT:-/home/qin/Projects/PX4-Autopilot}"
 OCEAN_WORLD="${WS_ROOT}/src/uav_usv_bringup/worlds/ocean.sdf"
 PX4_GZ_ENV="${PX4_ROOT}/build/px4_sitl_default/rootfs/gz_env.sh"
+LAB_GZ_SERVER_FLAG=""
+case "${UAV_USV_GZ_SERVER_ONLY:-0}" in
+    0) ;;
+    1) LAB_GZ_SERVER_FLAG="-s" ;;
+    *) echo "UAV_USV_GZ_SERVER_ONLY must be 0 or 1." >&2; exit 2 ;;
+esac
 CUSTOM_GZ_MODELS="${WS_ROOT}/src/uav_usv_bringup/models"
 QGC_APPIMAGE="${QGC_APPIMAGE:-/home/qin/桌面/QGroundControl-x86_64.AppImage}"
 BUILD_WORKSPACE=true
@@ -24,7 +30,9 @@ EXPERIMENT_LAUNCH="${UAV_USV_EXPERIMENT_LAUNCH:-modular_intercept.launch.py}"
 EXPERIMENT_CONFIG_FILE="${UAV_USV_EXPERIMENT_CONFIG_FILE:-}"
 EXPERIMENT_CONFIG_ARG=""
 EXPERIMENT_ENABLE_EVALUATOR="${UAV_USV_ENABLE_EVALUATOR:-true}"
-EXPERIMENT_ENABLE_SHADOW="${UAV_USV_ENABLE_SHADOW_PERCEPTION:-true}"
+EXPERIMENT_ENABLE_SHADOW="${UAV_USV_ENABLE_SHADOW_PERCEPTION:-false}"
+EXPERIMENT_ENABLE_DOWN="${UAV_USV_ENABLE_DOWN_CAMERA:-false}"
+EXPERIMENT_FRONT_DEPTH_MODEL="${UAV_USV_FRONT_DEPTH_MODEL:-ideal}"
 
 if [[ "${1:-}" == "--no-build" ]]; then
     BUILD_WORKSPACE=false
@@ -64,12 +72,18 @@ if ! [[ "${EXPERIMENT_LAUNCH}" =~ ^[A-Za-z0-9_.-]+[.]launch[.]py$ ]]; then
     echo "UAV_USV_EXPERIMENT_LAUNCH must be a launch filename." >&2
     exit 2
 fi
-for experiment_boolean in "${EXPERIMENT_ENABLE_EVALUATOR}" "${EXPERIMENT_ENABLE_SHADOW}"; do
+for experiment_boolean in "${EXPERIMENT_ENABLE_EVALUATOR}" \
+    "${EXPERIMENT_ENABLE_SHADOW}" "${EXPERIMENT_ENABLE_DOWN}"; do
     if [[ "${experiment_boolean}" != "true" && "${experiment_boolean}" != "false" ]]; then
-        echo "UAV_USV_ENABLE_EVALUATOR and UAV_USV_ENABLE_SHADOW_PERCEPTION must be true or false." >&2
+        echo "Evaluator, shadow and down-camera switches must be true or false." >&2
         exit 2
     fi
 done
+if [[ "${EXPERIMENT_FRONT_DEPTH_MODEL}" != "tof" ]] \
+    && [[ "${EXPERIMENT_FRONT_DEPTH_MODEL}" != "ideal" ]]; then
+    echo "UAV_USV_FRONT_DEPTH_MODEL must be tof or ideal." >&2
+    exit 2
+fi
 if [[ -n "${EXPERIMENT_CONFIG_FILE}" ]]; then
     if [[ ! -f "${EXPERIMENT_CONFIG_FILE}" ]]; then
         echo "Experiment config file not found: ${EXPERIMENT_CONFIG_FILE}" >&2
@@ -86,7 +100,9 @@ for required_command in gnome-terminal gz MicroXRCEAgent timeout rg; do
     fi
 done
 
-if ! pgrep -f '[Q]GroundControl' >/dev/null; then
+if [[ "${UAV_USV_HEADLESS_GCS:-false}" == true ]]; then
+    echo "Using task-owned local SITL GCS heartbeat (no flight commands)."
+elif ! pgrep -f '[Q]GroundControl' >/dev/null; then
     if [[ ! -x "${QGC_APPIMAGE}" ]]; then
         echo "QGroundControl is not running and its AppImage was not found:" >&2
         echo "  ${QGC_APPIMAGE}" >&2
@@ -179,12 +195,18 @@ if [[ ! -f "${PX4_GZ_ENV}" ]]; then
 fi
 
 source "${PX4_GZ_ENV}"
-export GZ_SIM_RESOURCE_PATH="${CUSTOM_GZ_MODELS}:${GZ_SIM_RESOURCE_PATH:-}"
-export PX4_GZ_MODELS="${CUSTOM_GZ_MODELS}"
-
 LAB_SESSION_DIR="$(mktemp -d "${TMPDIR:-/tmp}/uav_usv_lab.XXXXXX")"
 LAB_RESTART_MARKER="${LAB_SESSION_DIR}/restarting"
 LAB_GZ_SERVER_CONFIG="${LAB_SESSION_DIR}/magnetometer_enu.config"
+LAB_CAMERA_MODELS="${LAB_SESSION_DIR}/models"
+python3 "${WS_ROOT}/scripts/prepare_gz_camera_model.py" \
+    --source "${CUSTOM_GZ_MODELS}/x500_mono_cam" \
+    --output "${LAB_CAMERA_MODELS}/x500_mono_cam" \
+    --enable-down-camera "${EXPERIMENT_ENABLE_DOWN}"
+export GZ_SIM_RESOURCE_PATH="${LAB_CAMERA_MODELS}:${CUSTOM_GZ_MODELS}:${GZ_SIM_RESOURCE_PATH:-}"
+export PX4_GZ_MODELS="${LAB_CAMERA_MODELS}"
+echo "Down camera enabled: ${EXPERIMENT_ENABLE_DOWN}"
+echo "Front depth model: ${EXPERIMENT_FRONT_DEPTH_MODEL}"
 
 # The native bridge and Gazebo field must select the same coordinates. Fail
 # before launching either component if only one half of the fix is installed.
@@ -320,18 +342,21 @@ restart_lab()
         "${LAB_SESSION_DIR}/dds.pid" \
         "${LAB_SESSION_DIR}/px4.pid" \
         "${LAB_SESSION_DIR}/gazebo.pid"
+    rm -rf -- "${LAB_CAMERA_MODELS}"
     rmdir "${LAB_SESSION_DIR}" 2>/dev/null || true
     echo "Previous simulation stopped. Starting a clean session..."
+    export UAV_USV_RESET_MOTION_MODE=1
     exec "${BASH_SOURCE[0]}" --no-build
 }
 
 echo "Starting Gazebo ocean world..."
+echo "Gazebo server-only mode: ${UAV_USV_GZ_SERVER_ONLY:-0}"
 gnome-terminal --title="Gazebo Ocean" -- bash -lc "
 printf '%s\n' \"\${BASHPID}\" > '${LAB_SESSION_DIR}/gazebo.pid' &&
 source '${PX4_GZ_ENV}' &&
 export GZ_SIM_SERVER_CONFIG_PATH='${LAB_GZ_SERVER_CONFIG}' &&
-export GZ_SIM_RESOURCE_PATH='${CUSTOM_GZ_MODELS}':\${GZ_SIM_RESOURCE_PATH:-} &&
-gz sim -r '${OCEAN_WORLD}';
+export GZ_SIM_RESOURCE_PATH='${LAB_CAMERA_MODELS}':'${CUSTOM_GZ_MODELS}':\${GZ_SIM_RESOURCE_PATH:-} &&
+gz sim ${LAB_GZ_SERVER_FLAG} -r '${OCEAN_WORLD}';
 component_status=\$?;
 if [[ ! -f '${LAB_RESTART_MARKER}' ]]; then exec bash; fi;
 exit \${component_status}"
@@ -359,8 +384,8 @@ source '${PX4_GZ_ENV}' &&
 export GZ_SIM_SERVER_CONFIG_PATH='${LAB_GZ_SERVER_CONFIG}' &&
 export PX4_GZ_MAGNETOMETER_ENU=1 &&
 export PX4_GZ_GNSS_NO_DELAY=1 &&
-export GZ_SIM_RESOURCE_PATH='${CUSTOM_GZ_MODELS}':\${GZ_SIM_RESOURCE_PATH:-} &&
-export PX4_GZ_MODELS='${CUSTOM_GZ_MODELS}' &&
+export GZ_SIM_RESOURCE_PATH='${LAB_CAMERA_MODELS}':'${CUSTOM_GZ_MODELS}':\${GZ_SIM_RESOURCE_PATH:-} &&
+export PX4_GZ_MODELS='${LAB_CAMERA_MODELS}' &&
 export PX4_GZ_STANDALONE=1 &&
 export PX4_GZ_WORLD=default &&
 # Face Gazebo +Y (local NED north), where the USV starts 8 m away.
@@ -371,37 +396,38 @@ component_status=\$?;
 if [[ ! -f '${LAB_RESTART_MARKER}' ]]; then exec bash; fi;
 exit \${component_status}"
 
-echo "Waiting up to ${CAMERA_STARTUP_TIMEOUT} seconds for PX4 and dual ToF..."
+echo "Waiting up to ${CAMERA_STARTUP_TIMEOUT} seconds for PX4 and camera streams..."
 camera_topics_ready=false
 gazebo_topics=""
 for ((elapsed = 0; elapsed < CAMERA_STARTUP_TIMEOUT; elapsed++)); do
     gazebo_topics="$(timeout 3s gz topic -l 2>/dev/null || true)"
     if grep -Fxq '/uav/camera/front/image' <<< "${gazebo_topics}" \
         && grep -Fxq '/uav/camera/front/depth_image' \
-            <<< "${gazebo_topics}" \
-        && grep -Fxq '/uav/camera/down/image' <<< "${gazebo_topics}" \
-        && grep -Fxq '/uav/camera/down/depth_image' \
             <<< "${gazebo_topics}"; then
-        camera_topics_ready=true
-        break
+        if [[ "${EXPERIMENT_ENABLE_DOWN}" == "false" ]] \
+            || { grep -Fxq '/uav/camera/down/image' <<< "${gazebo_topics}" \
+                && grep -Fxq '/uav/camera/down/depth_image' <<< "${gazebo_topics}"; }; then
+            camera_topics_ready=true
+            break
+        fi
     fi
     if ((elapsed > 0 && elapsed % 15 == 0)); then
-        echo "Still waiting for PX4/dual ToF (${elapsed}s)..."
+        echo "Still waiting for PX4/cameras (${elapsed}s)..."
     fi
     sleep 1
 done
 
 if ! ${camera_topics_ready}; then
-    echo "Dual ToF topics were not available within" \
+    echo "Required camera topics were not available within" \
         "${CAMERA_STARTUP_TIMEOUT} seconds." >&2
-    echo "Expected front/down image and depth_image topics." >&2
+    echo "Expected front image/depth, plus down streams only when enabled." >&2
     echo "Available camera-related topics:" >&2
     rg -i 'camera|image|depth' <<< "${gazebo_topics}" >&2 || true
     echo "Check the PX4 SITL terminal for model-spawn errors." >&2
     exit 1
 fi
 
-echo "Front and down ToF cameras are publishing aligned RGB/depth images."
+echo "Required RGB/depth camera streams are available."
 
 # PX4's stock x500 descent limit is 1.5 m/s. Keep its velocity controller
 # aligned with the ROS terminal envelope so a 4 m/s by 4 m/s flight path can
@@ -442,7 +468,9 @@ source '${WS_ROOT}/install/setup.bash' &&
 cd '${WS_ROOT}' &&
 ros2 launch uav_usv_bringup '${EXPERIMENT_LAUNCH}' \
     enable_evaluator:=${EXPERIMENT_ENABLE_EVALUATOR} \
-    enable_shadow_perception:=${EXPERIMENT_ENABLE_SHADOW}${EXPERIMENT_CONFIG_ARG};
+    enable_shadow_perception:=${EXPERIMENT_ENABLE_SHADOW} \
+    front_depth_model:=${EXPERIMENT_FRONT_DEPTH_MODEL} \
+    enable_down_camera:=${EXPERIMENT_ENABLE_DOWN}${EXPERIMENT_CONFIG_ARG};
 component_status=\$?;
 if [[ ! -f '${LAB_RESTART_MARKER}' ]]; then exec bash; fi;
 exit \${component_status}"
@@ -511,14 +539,41 @@ echo "  X: start UAV takeoff and USV motion simultaneously"
 echo "  Y: start interception from visually locked FOLLOW"
 echo "  R: stop this simulation and restart a clean session"
 echo "  Q: leave this command console"
+echo "  1/2/3/4/5: straight/eight/variable-eight/S/Z (before X)"
+
+motion_reset_pending=0
+if [[ "${UAV_USV_RESET_MOTION_MODE:-0}" == 1 ]]; then
+    motion_reset_pending=1
+    if ! timeout 8s python3 -m uav_control.motion_mode_client 2; then
+        echo "Motion reset was not acknowledged; X remains gated." >&2
+    else
+        motion_reset_pending=0
+    fi
+    unset UAV_USV_RESET_MOTION_MODE
+fi
 
 while true; do
-    read -r -p "Command [X/Y/R/Q]: " command
+    read -r -p "Command [1-5/X/Y/R/Q]: " command
     command=${command^^}
 
     case "${command}" in
         X)
-            publish_command X
+            if [[ "${motion_reset_pending}" == 1 ]] \
+                && ! timeout 8s python3 -m uav_control.motion_mode_client 2; then
+                echo "X blocked: R requires an acknowledged default figure eight." >&2
+            elif timeout 8s python3 -m uav_control.motion_mode_client; then
+                motion_reset_pending=0
+                publish_command X
+            else
+                echo "X blocked: USV motion mode not acknowledged." >&2
+            fi
+            ;;
+        [1-5])
+            if timeout 8s python3 -m uav_control.motion_mode_client "${command}"; then
+                motion_reset_pending=0
+            else
+                echo "Motion selection rejected; current mode unchanged." >&2
+            fi
             ;;
         Y)
             publish_command Y
@@ -531,7 +586,7 @@ while true; do
             break
             ;;
         *)
-            echo "Please enter X, Y, R, or Q."
+            echo "Please enter 1-5, X, Y, R, or Q."
             ;;
     esac
 done

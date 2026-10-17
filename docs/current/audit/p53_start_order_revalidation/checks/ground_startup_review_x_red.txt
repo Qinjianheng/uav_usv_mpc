@@ -1,0 +1,39 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+___________ test_only_a_verified_pre_x_stall_allows_one_ground_retry ___________
+
+tmp_path = PosixPath('/tmp/pytest-of-qin/pytest-235/test_only_a_verified_pre_x_sta0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x719e3040a6b0>
+
+    def test_only_a_verified_pre_x_stall_allows_one_ground_retry(tmp_path, monkeypatch):
+        monkeypatch.setattr(entry, 'ROOT', tmp_path/'20261013_p53_closed_loop_01')
+        base = entry.round_root(3)
+        base.mkdir()
+        (base/'attempt_f3.json').write_text('{}')
+        # Preserve the real F2 gate; use the same helper-tested complete audit shape.
+        checks = dict(reference_height=True, entry_recovery=True, execution_gates=True,
+                      evidence_coverage=True, switching=True, handovers=True)
+        good = dict(completed=True, healthy=True, minco_fraction=1., longest_minco_seconds=25.,
+                    observation_seconds=25., diagnostic_coverage=1.,
+                    p51_audit=dict(passed=True, checks=checks))
+        (base/'f2_summary.json').write_text(json.dumps(good))
+        retry2 = entry.f3_retry_root(3)
+        (retry2/'attempt_f3.json').write_text('{}')
+        source = retry2/'f3_h16_01'
+        source.mkdir()
+        (source/'bounded_stop.json').write_text(json.dumps(dict(reason='HEALTH_MONITOR_STALLED')))
+        (source/'watchdog_end.json').write_text(json.dumps(dict(x_time=10.)))
+        with pytest.raises(ValueError, match='PRE_X_RECORDER_STALL_REQUIRED'):
+            entry.f3_retry_root(3, 3)
+        (source/'watchdog_end.json').write_text('{}')
+        with pytest.raises(ValueError, match='PRE_X_RECORDER_STALL_REQUIRED'):
+            entry.f3_retry_root(3, 3)
+        (source/'watchdog_end.json').write_text(json.dumps(dict(x_time=None)))
+        (source/'X_command.txt').touch()
+>       with pytest.raises(ValueError, match='PRE_X_RECORDER_STALL_REQUIRED'):
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+test/test_p53_sitl.py:217: Failed
+=========================== short test summary info ============================
+FAILED test/test_p53_sitl.py::test_only_a_verified_pre_x_stall_allows_one_ground_retry
+1 failed in 0.26s

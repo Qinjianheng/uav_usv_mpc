@@ -1,0 +1,189 @@
+{
+  "result": "F2_TOOLING_ABORT_BEFORE_MINCO",
+  "actual_sitl_attempts": 1,
+  "actual_f2_runs": 1,
+  "actual_f3_runs": 0,
+  "actual_planner_started": false,
+  "actual_harness_grant_issued": true,
+  "actual_minco_takeover": false,
+  "proposals": 0,
+  "accepted": 0,
+  "active": 0,
+  "actual_minco_fraction": 0.0,
+  "continuous_minco_seconds": 0.0,
+  "lease_expiry_count": 0,
+  "lease_expiry_interpretation": "No MINCO plans existed; zero does not imply improvement",
+  "input_publication_margin_seconds": null,
+  "tracker_receive_margin_seconds": null,
+  "planner_cycle_p95_seconds": null,
+  "reference_height_error": null,
+  "actual_minco_tracking_error": null,
+  "root_cause": "PX4 numpy.float32 quaternion not JSON serializable; health recorder exited and outer wrapper failed to check its liveness before FOLLOW",
+  "supervisor_stop_record": "health_monitor_failure.json",
+  "wrapper_original_reason": "OUTER_WATCHDOG",
+  "wrapper_reason_interpretation": "OUTER_WATCHDOG was the default label on external early STOP, not evidence that its 295s deadline elapsed",
+  "duration_seconds": 120.9433023929596,
+  "original_follow_seconds": 67.95035195350647,
+  "original_follow_20_60": {
+    "samples": 801,
+    "evaluation": "evaluator native UAV snapshot vs ideal scene TargetState; not KF error",
+    "position_horizontal_rmse": 0.06265744435814014,
+    "distance_rmse": 0.06084001302068205,
+    "relative_velocity_rmse": 0.02092350296577667,
+    "altitude_rmse": 0.007717843289816228,
+    "visible_fraction": 1.0,
+    "locked_fraction": 1.0,
+    "actual_whole_marker_safe_fraction": 1.0,
+    "actual_horizontal_margin": {
+      "count": 1002,
+      "min": 0.7506971270606957,
+      "p50": 0.7589943019228685,
+      "p95": 0.7620425701744912,
+      "p99": 0.7625114820918358,
+      "max": 0.762793394437564
+    },
+    "actual_vertical_margin": {
+      "count": 1002,
+      "min": 0.31662066698418156,
+      "p50": 0.33942376623185316,
+      "p95": 0.3571454508119986,
+      "p99": 0.36211055371072876,
+      "max": 0.3662577453828831
+    },
+    "actual_horizontal_speed": {
+      "count": 2000,
+      "min": 1.9657593496791255,
+      "p50": 2.0014680091385983,
+      "p95": 2.0229274308302636,
+      "p99": 2.028880058068648,
+      "max": 2.0306459033071533
+    },
+    "actual_horizontal_acceleration": {
+      "count": 2000,
+      "min": 0.000664719984256951,
+      "p50": 0.02717881366087664,
+      "p95": 0.05674267466498324,
+      "p99": 0.06541483657600711,
+      "max": 0.07310614231930755
+    },
+    "estimated_horizontal_jerk": {
+      "count": 1999,
+      "min": 0.0039214348423555635,
+      "p50": 0.3321652777844283,
+      "p95": 0.7468829055127748,
+      "p99": 0.9779627210130594,
+      "max": 1.659351458664883
+    },
+    "reference_velocity_delta_over_receipt_dt": {
+      "count": 799,
+      "min": 0.001899939930228414,
+      "p50": 0.2496029812000383,
+      "p95": 0.5759699424773004,
+      "p99": 0.7648448965355642,
+      "max": 0.8456782097899691
+    },
+    "reference_gaps_seconds": {
+      "count": 799,
+      "min": 0.042554378509521484,
+      "p50": 0.04997730255126953,
+      "p95": 0.05409107208251953,
+      "p99": 0.056575660705566404,
+      "max": 0.05751514434814453
+    },
+    "position_3d_rmse": 0.06313097843800292,
+    "horizontal_peak_error": 0.09153695108828666
+  },
+  "authority": {
+    "graph_samples": 110,
+    "discovered_samples": 84,
+    "all_discovered_single_tracker": true,
+    "conflicts": []
+  },
+  "cleanup": {
+    "errors": [],
+    "survivors": []
+  },
+  "candidate": {
+    "name": "f2_h16_01",
+    "scene": "f2",
+    "shadow": false,
+    "engine": "p47_follow_guided",
+    "acceleration": 3.0,
+    "yaw": 1.0,
+    "horizon": 1.6,
+    "refinement": false,
+    "actual_controller": "NOMINAL_MINCO",
+    "minco_authorized": false,
+    "config_source": "/home/qin/data/uav_usv_mpc/data/experiments/20261009_p41_rolling_follow/f2_original_retry_1/config/flight.yaml",
+    "terminal_mode": "qva",
+    "scheduling": "adaptive",
+    "fallback": "P4.4/D",
+    "commit": "a35e4051402907cde321b7667361dabefed297dc",
+    "qualification_sha256": "013cac1f018fa79622dc04e5de65598b5e835170e502c991d3c71cbb3ed2b38d",
+    "execution_lease_seconds": 0.45,
+    "maximum_input_age": 0.125,
+    "authorization": "User P5 plan: one F2 and conditional one F3",
+    "original_follow_warmup_seconds": 5.0,
+    "observation_seconds": 25.0,
+    "research_config_sha256": "8ad2e37f48c7ce919c6f240998cdecfc174448833d7585a81e641b341c37ceae",
+    "qualified_holding": false,
+    "constraint_fingerprint": "3abf5a05f3d1d5507526df284a3ef49a9a207b38d47a982fd77b1fa2f65c0a1f"
+  },
+  "full_local_directory": "/home/qin/data/uav_usv_mpc/data/experiments/20261012_p5_closed_loop/f2_h16_01",
+  "source_files": {
+    "condition.json": {
+      "sha256": "8d63708da82d9edf46fd38ab15ed1ef532a11b590a29b1d14e60e49b56369a65",
+      "bytes": 1028
+    },
+    "watchdog_end.json": {
+      "sha256": "0f126292d2010d02acbfc09a5649bd7a800daf6a04ab1cffebbd43ed76fae1fd",
+      "bytes": 860
+    },
+    "p5_run_summary.json": {
+      "sha256": "0762a20b0e4c63bee2c327ee4363017cbf52357cc0732a26c8cc976bbec357f3",
+      "bytes": 1419
+    },
+    "p5_cleanup.json": {
+      "sha256": "b8e510f08d46449badf05c6aff3f357492dda1a55d1fec5f9fa2372660ae5830",
+      "bytes": 38
+    },
+    "health_monitor_failure.json": {
+      "sha256": "efa49813fc514780cc1326b516952b8bbdf7787ee0769fc44051c2d4c424b3ff",
+      "bytes": 2149
+    },
+    "bounded_stop.json": {
+      "sha256": "02b9121c074a243faa338b79809ba478e61dd187091c17dfcde0b62ebf80c184",
+      "bytes": 111
+    },
+    "p5_health_monitor.txt": {
+      "sha256": "dd2cac5b31e57749e974f4a93547294e1bb3b311ff17dd7289df2606698f41c1",
+      "bytes": 1855
+    },
+    "offline_evidence.jsonl": {
+      "sha256": "05680745ee90c43b2692a34c449ed100c9402303dfb61f7a716b6a4b55affdb5",
+      "bytes": 7427262
+    },
+    "execution_analysis.json": {
+      "sha256": "d3b5b66b01732f2d171429ff33830ecc9db7e0e482bc5f38e00aed5b4fd351fb",
+      "bytes": 12697
+    },
+    "sitl_execution_grant.json": {
+      "sha256": "6a3f736d0afdec81b59cdaae61bce9434e8383330fd70ff3915113745c8b7c94",
+      "bytes": 234
+    },
+    "config/flight.yaml": {
+      "sha256": "79169a90b6e2bb596fb4168e72f30a5dceaf2f9a1f2d3ef5bdd1e2390ba0e960",
+      "bytes": 13728
+    },
+    "config/research.yaml": {
+      "sha256": "8ad2e37f48c7ce919c6f240998cdecfc174448833d7585a81e641b341c37ceae",
+      "bytes": 1343
+    },
+    "environment.json": {
+      "sha256": "4abc06195898c9314398a9d182f0f50beb27d00e29e8686887b26ae77a3b019f",
+      "bytes": 1253
+    }
+  },
+  "repair_sitl_revalidated": false,
+  "f3_eligible": false
+}

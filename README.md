@@ -1,17 +1,10 @@
-# UAV–USV MPC 开发工作区
+# UAV–USV 开发工作区
 
-当前仍运行原有视觉/KF → BCTRA 预测 → MINCO 规划 → 速度跟踪控制器，**MPC 尚未实现**。本仓库从原项目 `85e13461` 建立，2026-10-06 的整理只调整数据、文档和构建路径，保持现有控制行为。
+当前运行视觉/KF → BCTRA预测 → MINCO规划 → Tracker速度控制，Tracker是唯一PX4指令发布者。MPC研究模块保留，尚未作为在线控制器接管。
 
-优先阅读 [当前文档](docs/current/README.md)、[架构与控制边界](docs/current/architecture.md)、[成功基线](docs/current/baseline.md)、[环境与启动](docs/current/environment.md)。后续工作见 [MPC 范围](docs/current/mpc_scope.md)，历史材料见 [归档索引](docs/archive_index.md)。
+最新[P53同配置F2/F3验收](docs/current/p53_comprehensive_validation.md)已完成：两场景MINCO占比100%、零回退；F3水平观察点RMSE约0.70m。普通baseline启动与P53有界验收的运行配置分别保留，不混称同一轮验证。
 
-当前事实以 [baseline.yaml](src/uav_usv_bringup/config/baseline.yaml) 和代码为准：
-
-- 主 predictor 和 tracker 从 `/tracking/target_state` 使用 KF 状态；真值 `/target/state` 供仿真评价及明确的 shadow/离线审计。
-- tracker 自行做位置反馈、限速和加速度整形，向 PX4 发送速度指令；`use_velocity_control: true`。
-- BCTRA 预测窗口为 4.0 s；MINCO 规划最大时域为 1.5 s，常规/末端调度分别为 5/10 Hz。
-- 现有 0.50 m 捕获判据、125 ms freshness、海面保护和末端速度修复保持。
-
-## 构建与启动
+## 日常构建与轻量启动
 
 ```bash
 cd /home/qin/data/uav_usv_mpc
@@ -19,16 +12,18 @@ cd /home/qin/data/uav_usv_mpc
 source /opt/ros/humble/setup.bash
 source /home/qin/data/uav_usv_mpc/install/setup.bash
 export UAV_USV_WS=/home/qin/data/uav_usv_mpc
-ros2 pkg prefix uav_control
-./scripts/uav_lab.sh --no-build
+UAV_USV_ENABLE_SHADOW_PERCEPTION=false ./scripts/uav_lab.sh --no-build
 ```
 
-包前缀应为 `/home/qin/data/uav_usv_mpc/install/uav_control`。启动控制台中 X 同时开始起飞与目标运动，视觉锁定 FOLLOW 后 Y 开始截击；Q 仅退出控制台，仿真终端仍保留。完整环境要求和独立 launch 命令见 [环境文档](docs/current/environment.md)。
+该命令使用已有开关关闭shadow predictor、front monitor、selector三个诊断节点，主RGB-D、bearing、KF、预测、规划、任务与评价保留。需要完整诊断时将`false`改为`true`；启动器原默认值未改。当前前视理想RGB-D、下视关闭，ToF选项保留。X开始起飞/FOLLOW，Y开始截击，R重启，Q退出控制台。
 
-## 数据与提交
+## 开发与资料入口
 
-[20261006_pre_mpc](data/baselines/20261006_pre_mpc/README.md) 保存一轮失败对照和三轮连续成功，包含原始 CSV、vision CSV、evaluator 配置快照、summary、完整基线配置及速度/冻结证据。原始记录内容不变。
+- [当前文档](docs/current/README.md)：架构、环境、基线、最新验收与未来MPC范围。
+- [系统精简与恢复](docs/current/system_simplification.md)：保留依据、旧工具恢复、检查结果。
+- [研究历史](docs/history.md)：各阶段设计、对照、失败归因及旧验收；[更早归档](docs/archive_index.md)。
+- `src/uav_control/`保留控制、感知、研究模块与测试；`src/uav_usv_bringup/`保留launch、配置和模型；`scripts/`保留当前运行、回放、诊断与构建工具。
 
-新实验写入 `data/experiments/`，参数备份和视频默认忽略；审计后选择必要证据放入 `data/baselines/`，附来源与 SHA256 再明确暂存。`.gitignore` 不会取消旧文件跟踪，本轮已经按 [逐文件清单](docs/current/audit/retention_manifest.tsv) 处理旧副本。
+主predictor/tracker使用`/tracking/target_state`；`/target/state`真值仅评价、显式shadow和离线分析。图像采集戳、因果pose等待、原始导航epoch、安全门禁及0.50m捕获球保持。
 
-只暂存明确审核的路径，不使用 `git add -A`。现有 `sync_github.sh` 会全量暂存并推送，不作为精选基线的默认提交入口。`origin` 和 `github` 的 fetch/push 均指向 [新仓库](https://github.com/Qinjianheng/uav_usv_mpc)。本轮检查与规模见 [整理交付记录](docs/current/repository_cleanup.md)。
+新实验与视频留在忽略的`data/experiments/`、`data/videos/`；冻结证据位于`data/baselines/`，不得改写。只暂存明确路径，不使用`git add -A`或全量推送脚本。原仓库`/home/qin/data/uav_usv`保持只读，两远端均指向[本仓库](https://github.com/Qinjianheng/uav_usv_mpc)。

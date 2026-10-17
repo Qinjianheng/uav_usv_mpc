@@ -1,0 +1,31 @@
+1791340799.4838636 [INFO] [launch]: All log files can be found below /tmp/uav_usv_tof_fit_20261007/run1_roslogs/2026-10-07-10-39-59-482861-qin-GLO-FX6-59581
+1791340799.4840169 [INFO] [launch]: Default logging verbosity is set to INFO
+1791340799.5346711 [INFO] [moving_target-1]: process started with pid [59582]
+1791340799.5349202 [INFO] [target_predictor_node-2]: process started with pid [59584]
+1791340799.5350463 [INFO] [target_predictor_node-3]: process started with pid [59586]
+1791340799.5351505 [INFO] [intercept_planner_node-4]: process started with pid [59588]
+1791340799.5352502 [INFO] [trajectory_tracker_node-5]: process started with pid [59590]
+1791340799.5353491 [INFO] [mission_manager_node-6]: process started with pid [59592]
+1791340799.5354369 [INFO] [intercept_evaluator_node-7]: process started with pid [59594]
+1791340799.5355327 [INFO] [target_kalman_filter-8]: process started with pid [59596]
+1791340799.5356407 [INFO] [image_bridge-9]: process started with pid [59598]
+1791340799.5357342 [INFO] [tof_depth_node-10]: process started with pid [59600]
+1791340799.5358291 [INFO] [target_bearing_node-11]: process started with pid [59602]
+1791340799.5359190 [INFO] [front_tof_monitor-12]: process started with pid [59604]
+1791340799.5360065 [INFO] [rgbd_target_localizer-13]: process started with pid [59606]
+1791340799.5360942 [INFO] [dual_tof_selector-14]: process started with pid [59608]
+1791340865.9036222 [ERROR] [intercept_planner_node-4]: process has died [pid 59588, exit code 1, cmd '/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/intercept_planner_node --ros-args -r __node:=intercept_planner_node --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/visual_geometry_diagnostics.yaml'].
+1791340989.3337853 [WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+1791340989.5826929 [INFO] [target_predictor_node-3]: process has finished cleanly [pid 59586]
+1791340989.5860686 [INFO] [target_kalman_filter-8]: process has finished cleanly [pid 59596]
+1791340989.5928826 [INFO] [image_bridge-9]: process has finished cleanly [pid 59598]
+1791340989.6066628 [INFO] [target_predictor_node-2]: process has finished cleanly [pid 59584]
+1791340989.6313500 [INFO] [moving_target-1]: process has finished cleanly [pid 59582]
+1791340989.6381783 [INFO] [dual_tof_selector-14]: process has finished cleanly [pid 59608]
+1791340989.6466904 [ERROR] [mission_manager_node-6]: process has died [pid 59592, exit code 1, cmd '/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/mission_manager_node --ros-args -r __node:=mission_manager_node --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/visual_geometry_diagnostics.yaml'].
+1791340989.6600633 [ERROR] [tof_depth_node-10]: process has died [pid 59600, exit code 1, cmd '/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/tof_depth_node --ros-args -r __node:=front_tof_depth_model --params-file /home/qin/data/uav_usv_mpc/install/uav_usv_bringup/share/uav_usv_bringup/config/front_tof_simulation.yaml'].
+1791340989.6627116 [INFO] [rgbd_target_localizer-13]: process has finished cleanly [pid 59606]
+1791340989.6734633 [ERROR] [target_bearing_node-11]: process has died [pid 59602, exit code 1, cmd '/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/target_bearing_node --ros-args -r __node:=target_bearing_node --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/visual_geometry_diagnostics.yaml'].
+1791340989.6813900 [ERROR] [trajectory_tracker_node-5]: process has died [pid 59590, exit code 1, cmd '/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/trajectory_tracker_node --ros-args -r __node:=trajectory_tracker_node --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/visual_geometry_diagnostics.yaml'].
+1791340989.6914890 [INFO] [front_tof_monitor-12]: process has finished cleanly [pid 59604]
+1791340989.7148693 [ERROR] [intercept_evaluator_node-7]: process has died [pid 59594, exit code 1, cmd '/home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/intercept_evaluator_node --ros-args -r __node:=intercept_evaluator_node --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/visual_geometry_diagnostics.yaml --params-file /tmp/launch_params_ao0brukr'].

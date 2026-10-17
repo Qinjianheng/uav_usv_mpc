@@ -1,0 +1,340 @@
+FFFFFFFFFFF                                                              [100%]
+=================================== FAILURES ===================================
+________ test_modeled_noise_and_missing_returns_recover_center[center0] ________
+
+center = (1.0, 0.0, 0.0)
+
+    @pytest.mark.parametrize('center', [
+        (1., 0., 0.), (3., .4, -.1), (8., 2.5, .3), (15., -3., .4), (24., 0., 0.),
+    ])
+    def test_modeled_noise_and_missing_returns_recover_center(center):
+        mask, depth, rays = sphere(center)
+        model = TofDepthModel(seed=73)
+        errors = []
+        for _ in range(8):
+>           fit = fitting()(points(mask, model.measure(depth), rays), .25,
+                            noise_std=.01, range_noise_scale=.001)
+
+test/test_tof_sphere_localization.py:40: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def fitting():
+        name = 'uav_control.perception.tof_sphere_localization'
+>       assert importlib.util.find_spec(name), 'noise-aware sphere fitting is missing'
+E       AssertionError: noise-aware sphere fitting is missing
+E       assert None
+E        +  where None = <function find_spec at 0x7ed3b7bfa7a0>('uav_control.perception.tof_sphere_localization')
+E        +    where <function find_spec at 0x7ed3b7bfa7a0> = <module 'importlib.util' from '/usr/lib/python3.10/importlib/util.py'>.find_spec
+E        +      where <module 'importlib.util' from '/usr/lib/python3.10/importlib/util.py'> = importlib.util
+
+test/test_tof_sphere_localization.py:15: AssertionError
+________ test_modeled_noise_and_missing_returns_recover_center[center1] ________
+
+center = (3.0, 0.4, -0.1)
+
+    @pytest.mark.parametrize('center', [
+        (1., 0., 0.), (3., .4, -.1), (8., 2.5, .3), (15., -3., .4), (24., 0., 0.),
+    ])
+    def test_modeled_noise_and_missing_returns_recover_center(center):
+        mask, depth, rays = sphere(center)
+        model = TofDepthModel(seed=73)
+        errors = []
+        for _ in range(8):
+>           fit = fitting()(points(mask, model.measure(depth), rays), .25,
+                            noise_std=.01, range_noise_scale=.001)
+
+test/test_tof_sphere_localization.py:40: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def fitting():
+        name = 'uav_control.perception.tof_sphere_localization'
+>       assert importlib.util.find_spec(name), 'noise-aware sphere fitting is missing'
+E       AssertionError: noise-aware sphere fitting is missing
+E       assert None
+E        +  where None = <function find_spec at 0x7ed3b7bfa7a0>('uav_control.perception.tof_sphere_localization')
+E        +    where <function find_spec at 0x7ed3b7bfa7a0> = <module 'importlib.util' from '/usr/lib/python3.10/importlib/util.py'>.find_spec
+E        +      where <module 'importlib.util' from '/usr/lib/python3.10/importlib/util.py'> = importlib.util
+
+test/test_tof_sphere_localization.py:15: AssertionError
+________ test_modeled_noise_and_missing_returns_recover_center[center2] ________
+
+center = (8.0, 2.5, 0.3)
+
+    @pytest.mark.parametrize('center', [
+        (1., 0., 0.), (3., .4, -.1), (8., 2.5, .3), (15., -3., .4), (24., 0., 0.),
+    ])
+    def test_modeled_noise_and_missing_returns_recover_center(center):
+        mask, depth, rays = sphere(center)
+        model = TofDepthModel(seed=73)
+        errors = []
+        for _ in range(8):
+>           fit = fitting()(points(mask, model.measure(depth), rays), .25,
+                            noise_std=.01, range_noise_scale=.001)
+
+test/test_tof_sphere_localization.py:40: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def fitting():
+        name = 'uav_control.perception.tof_sphere_localization'
+>       assert importlib.util.find_spec(name), 'noise-aware sphere fitting is missing'
+E       AssertionError: noise-aware sphere fitting is missing
+E       assert None
+E        +  where None = <function find_spec at 0x7ed3b7bfa7a0>('uav_control.perception.tof_sphere_localization')
+E        +    where <function find_spec at 0x7ed3b7bfa7a0> = <module 'importlib.util' from '/usr/lib/python3.10/importlib/util.py'>.find_spec
+E        +      where <module 'importlib.util' from '/usr/lib/python3.10/importlib/util.py'> = importlib.util
+
+test/test_tof_sphere_localization.py:15: AssertionError
+________ test_modeled_noise_and_missing_returns_recover_center[center3] ________
+
+center = (15.0, -3.0, 0.4)
+
+    @pytest.mark.parametrize('center', [
+        (1., 0., 0.), (3., .4, -.1), (8., 2.5, .3), (15., -3., .4), (24., 0., 0.),
+    ])
+    def test_modeled_noise_and_missing_returns_recover_center(center):
+        mask, depth, rays = sphere(center)
+        model = TofDepthModel(seed=73)
+        errors = []
+        for _ in range(8):
+>           fit = fitting()(points(mask, model.measure(depth), rays), .25,
+                            noise_std=.01, range_noise_scale=.001)
+
+test/test_tof_sphere_localization.py:40: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def fitting():
+        name = 'uav_control.perception.tof_sphere_localization'
+>       assert importlib.util.find_spec(name), 'noise-aware sphere fitting is missing'
+E       AssertionError: noise-aware sphere fitting is missing
+E       assert None
+E        +  where None = <function find_spec at 0x7ed3b7bfa7a0>('uav_control.perception.tof_sphere_localization')
+E        +    where <function find_spec at 0x7ed3b7bfa7a0> = <module 'importlib.util' from '/usr/lib/python3.10/importlib/util.py'>.find_spec
+E        +      where <module 'importlib.util' from '/usr/lib/python3.10/importlib/util.py'> = importlib.util
+
+test/test_tof_sphere_localization.py:15: AssertionError
+________ test_modeled_noise_and_missing_returns_recover_center[center4] ________
+
+center = (24.0, 0.0, 0.0)
+
+    @pytest.mark.parametrize('center', [
+        (1., 0., 0.), (3., .4, -.1), (8., 2.5, .3), (15., -3., .4), (24., 0., 0.),
+    ])
+    def test_modeled_noise_and_missing_returns_recover_center(center):
+        mask, depth, rays = sphere(center)
+        model = TofDepthModel(seed=73)
+        errors = []
+        for _ in range(8):
+>           fit = fitting()(points(mask, model.measure(depth), rays), .25,
+                            noise_std=.01, range_noise_scale=.001)
+
+test/test_tof_sphere_localization.py:40: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def fitting():
+        name = 'uav_control.perception.tof_sphere_localization'
+>       assert importlib.util.find_spec(name), 'noise-aware sphere fitting is missing'
+E       AssertionError: noise-aware sphere fitting is missing
+E       assert None
+E        +  where None = <function find_spec at 0x7ed3b7bfa7a0>('uav_control.perception.tof_sphere_localization')
+E        +    where <function find_spec at 0x7ed3b7bfa7a0> = <module 'importlib.util' from '/usr/lib/python3.10/importlib/util.py'>.find_spec
+E        +      where <module 'importlib.util' from '/usr/lib/python3.10/importlib/util.py'> = importlib.util
+
+test/test_tof_sphere_localization.py:15: AssertionError
+_____ test_clipped_close_sphere_remains_usable_without_complete_silhouette _____
+
+    def test_clipped_close_sphere_remains_usable_without_complete_silhouette():
+        center = (1., .5, .3)
+        mask, depth, rays = sphere(center)
+        mask[:, :420] = False
+>       fit = fitting()(points(mask, TofDepthModel(seed=9).measure(depth), rays), .25,
+                        noise_std=.01, range_noise_scale=.001)
+
+test/test_tof_sphere_localization.py:52: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def fitting():
+        name = 'uav_control.perception.tof_sphere_localization'
+>       assert importlib.util.find_spec(name), 'noise-aware sphere fitting is missing'
+E       AssertionError: noise-aware sphere fitting is missing
+E       assert None
+E        +  where None = <function find_spec at 0x7ed3b7bfa7a0>('uav_control.perception.tof_sphere_localization')
+E        +    where <function find_spec at 0x7ed3b7bfa7a0> = <module 'importlib.util' from '/usr/lib/python3.10/importlib/util.py'>.find_spec
+E        +      where <module 'importlib.util' from '/usr/lib/python3.10/importlib/util.py'> = importlib.util
+
+test/test_tof_sphere_localization.py:15: AssertionError
+____________ test_wrong_or_unobservable_geometry_is_rejected[plane] ____________
+
+kind = 'plane'
+
+    @pytest.mark.parametrize('kind', ['plane', 'tiny_cap', 'wrong_radius', 'mixture'])
+    def test_wrong_or_unobservable_geometry_is_rejected(kind):
+        mask, depth, rays = sphere((5., 0., 0.))
+        if kind == 'plane':
+            depth[mask] = 4.75
+        elif kind == 'tiny_cap':
+            mask[:, :315] = False
+            mask[:, 326:] = False
+            mask[:235, :] = False
+            mask[246:, :] = False
+        elif kind == 'wrong_radius':
+            fit = fitting()(points(mask, depth, rays), .1,
+                            noise_std=.01, range_noise_scale=.001)
+            assert fit is None
+            return
+        else:
+            rows, cols = np.where(mask)
+            depth[rows[::3], cols[::3]] += .5
+>       fit = fitting()(points(mask, depth, rays), .25,
+                        noise_std=.01, range_noise_scale=.001)
+
+test/test_tof_sphere_localization.py:76: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def fitting():
+        name = 'uav_control.perception.tof_sphere_localization'
+>       assert importlib.util.find_spec(name), 'noise-aware sphere fitting is missing'
+E       AssertionError: noise-aware sphere fitting is missing
+E       assert None
+E        +  where None = <function find_spec at 0x7ed3b7bfa7a0>('uav_control.perception.tof_sphere_localization')
+E        +    where <function find_spec at 0x7ed3b7bfa7a0> = <module 'importlib.util' from '/usr/lib/python3.10/importlib/util.py'>.find_spec
+E        +      where <module 'importlib.util' from '/usr/lib/python3.10/importlib/util.py'> = importlib.util
+
+test/test_tof_sphere_localization.py:15: AssertionError
+__________ test_wrong_or_unobservable_geometry_is_rejected[tiny_cap] ___________
+
+kind = 'tiny_cap'
+
+    @pytest.mark.parametrize('kind', ['plane', 'tiny_cap', 'wrong_radius', 'mixture'])
+    def test_wrong_or_unobservable_geometry_is_rejected(kind):
+        mask, depth, rays = sphere((5., 0., 0.))
+        if kind == 'plane':
+            depth[mask] = 4.75
+        elif kind == 'tiny_cap':
+            mask[:, :315] = False
+            mask[:, 326:] = False
+            mask[:235, :] = False
+            mask[246:, :] = False
+        elif kind == 'wrong_radius':
+            fit = fitting()(points(mask, depth, rays), .1,
+                            noise_std=.01, range_noise_scale=.001)
+            assert fit is None
+            return
+        else:
+            rows, cols = np.where(mask)
+            depth[rows[::3], cols[::3]] += .5
+>       fit = fitting()(points(mask, depth, rays), .25,
+                        noise_std=.01, range_noise_scale=.001)
+
+test/test_tof_sphere_localization.py:76: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def fitting():
+        name = 'uav_control.perception.tof_sphere_localization'
+>       assert importlib.util.find_spec(name), 'noise-aware sphere fitting is missing'
+E       AssertionError: noise-aware sphere fitting is missing
+E       assert None
+E        +  where None = <function find_spec at 0x7ed3b7bfa7a0>('uav_control.perception.tof_sphere_localization')
+E        +    where <function find_spec at 0x7ed3b7bfa7a0> = <module 'importlib.util' from '/usr/lib/python3.10/importlib/util.py'>.find_spec
+E        +      where <module 'importlib.util' from '/usr/lib/python3.10/importlib/util.py'> = importlib.util
+
+test/test_tof_sphere_localization.py:15: AssertionError
+________ test_wrong_or_unobservable_geometry_is_rejected[wrong_radius] _________
+
+kind = 'wrong_radius'
+
+    @pytest.mark.parametrize('kind', ['plane', 'tiny_cap', 'wrong_radius', 'mixture'])
+    def test_wrong_or_unobservable_geometry_is_rejected(kind):
+        mask, depth, rays = sphere((5., 0., 0.))
+        if kind == 'plane':
+            depth[mask] = 4.75
+        elif kind == 'tiny_cap':
+            mask[:, :315] = False
+            mask[:, 326:] = False
+            mask[:235, :] = False
+            mask[246:, :] = False
+        elif kind == 'wrong_radius':
+>           fit = fitting()(points(mask, depth, rays), .1,
+                            noise_std=.01, range_noise_scale=.001)
+
+test/test_tof_sphere_localization.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def fitting():
+        name = 'uav_control.perception.tof_sphere_localization'
+>       assert importlib.util.find_spec(name), 'noise-aware sphere fitting is missing'
+E       AssertionError: noise-aware sphere fitting is missing
+E       assert None
+E        +  where None = <function find_spec at 0x7ed3b7bfa7a0>('uav_control.perception.tof_sphere_localization')
+E        +    where <function find_spec at 0x7ed3b7bfa7a0> = <module 'importlib.util' from '/usr/lib/python3.10/importlib/util.py'>.find_spec
+E        +      where <module 'importlib.util' from '/usr/lib/python3.10/importlib/util.py'> = importlib.util
+
+test/test_tof_sphere_localization.py:15: AssertionError
+___________ test_wrong_or_unobservable_geometry_is_rejected[mixture] ___________
+
+kind = 'mixture'
+
+    @pytest.mark.parametrize('kind', ['plane', 'tiny_cap', 'wrong_radius', 'mixture'])
+    def test_wrong_or_unobservable_geometry_is_rejected(kind):
+        mask, depth, rays = sphere((5., 0., 0.))
+        if kind == 'plane':
+            depth[mask] = 4.75
+        elif kind == 'tiny_cap':
+            mask[:, :315] = False
+            mask[:, 326:] = False
+            mask[:235, :] = False
+            mask[246:, :] = False
+        elif kind == 'wrong_radius':
+            fit = fitting()(points(mask, depth, rays), .1,
+                            noise_std=.01, range_noise_scale=.001)
+            assert fit is None
+            return
+        else:
+            rows, cols = np.where(mask)
+            depth[rows[::3], cols[::3]] += .5
+>       fit = fitting()(points(mask, depth, rays), .25,
+                        noise_std=.01, range_noise_scale=.001)
+
+test/test_tof_sphere_localization.py:76: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def fitting():
+        name = 'uav_control.perception.tof_sphere_localization'
+>       assert importlib.util.find_spec(name), 'noise-aware sphere fitting is missing'
+E       AssertionError: noise-aware sphere fitting is missing
+E       assert None
+E        +  where None = <function find_spec at 0x7ed3b7bfa7a0>('uav_control.perception.tof_sphere_localization')
+E        +    where <function find_spec at 0x7ed3b7bfa7a0> = <module 'importlib.util' from '/usr/lib/python3.10/importlib/util.py'>.find_spec
+E        +      where <module 'importlib.util' from '/usr/lib/python3.10/importlib/util.py'> = importlib.util
+
+test/test_tof_sphere_localization.py:15: AssertionError
+______ test_integration_preserves_ideal_path_and_exposes_fit_uncertainty _______
+
+    def test_integration_preserves_ideal_path_and_exposes_fit_uncertainty():
+        from uav_control.perception.rgbd_target_localizer import target_geometry_from_rgbd
+        mask, depth, _ = sphere((8., 0., 0.))
+        ideal = target_geometry_from_rgbd(mask, depth, 1.74, .05, 25., .25,
+                                          require_valid_sphere=True)
+        assert ideal is not None
+        noisy = TofDepthModel(seed=4).measure(depth)
+        assert target_geometry_from_rgbd(mask, noisy, 1.74, .05, 25., .25,
+                                        require_valid_sphere=True) is None
+>       fit = target_geometry_from_rgbd(
+            mask, noisy, 1.74, .05, 25., .25, require_valid_sphere=True,
+            sphere_fit_mode='tof', sphere_noise_std=.01, sphere_range_noise_scale=.001,
+        )
+E       TypeError: target_geometry_from_rgbd() got an unexpected keyword argument 'sphere_fit_mode'
+
+test/test_tof_sphere_localization.py:90: TypeError
+=========================== short test summary info ============================
+FAILED test/test_tof_sphere_localization.py::test_modeled_noise_and_missing_returns_recover_center[center0]
+FAILED test/test_tof_sphere_localization.py::test_modeled_noise_and_missing_returns_recover_center[center1]
+FAILED test/test_tof_sphere_localization.py::test_modeled_noise_and_missing_returns_recover_center[center2]
+FAILED test/test_tof_sphere_localization.py::test_modeled_noise_and_missing_returns_recover_center[center3]
+FAILED test/test_tof_sphere_localization.py::test_modeled_noise_and_missing_returns_recover_center[center4]
+FAILED test/test_tof_sphere_localization.py::test_clipped_close_sphere_remains_usable_without_complete_silhouette
+FAILED test/test_tof_sphere_localization.py::test_wrong_or_unobservable_geometry_is_rejected[plane]
+FAILED test/test_tof_sphere_localization.py::test_wrong_or_unobservable_geometry_is_rejected[tiny_cap]
+FAILED test/test_tof_sphere_localization.py::test_wrong_or_unobservable_geometry_is_rejected[wrong_radius]
+FAILED test/test_tof_sphere_localization.py::test_wrong_or_unobservable_geometry_is_rejected[mixture]
+FAILED test/test_tof_sphere_localization.py::test_integration_preserves_ideal_path_and_exposes_fit_uncertainty
+11 failed in 0.54s

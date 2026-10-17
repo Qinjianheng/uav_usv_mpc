@@ -1,0 +1,131 @@
+{
+  "result_cutoff_ros_s": 1791340855.4614508,
+  "selection": "receipt <= result; valid accuracy also requires 0 < acquisition <= result, aligned truth and finite error; no post-timeout metrics",
+  "raw_rows": 3518,
+  "rows_before_result": 846,
+  "valid_accuracy_samples": 660,
+  "rejections_before_result": {
+    "": 662,
+    "IMAGE_INVALID": 64,
+    "DEPTH_RATIO_LOW": 120
+  },
+  "by_phase": {
+    "PREPARATION": {
+      "position_3d_error": {
+        "n": 579,
+        "rmse_m": 0.3684641837435348,
+        "p95_abs_m": 0.2970231637090615,
+        "max_abs_m": 3.3873513852564505
+      },
+      "error_x": {
+        "n": 579,
+        "rmse_m": 0.26809389695112373,
+        "p95_abs_m": 0.24378253736194289,
+        "max_abs_m": 2.469295323104433
+      },
+      "error_y": {
+        "n": 579,
+        "rmse_m": 0.24048757158387235,
+        "p95_abs_m": 0.13774665221929352,
+        "max_abs_m": 2.307752654414852
+      },
+      "error_z": {
+        "n": 579,
+        "rmse_m": 0.07782830483212047,
+        "p95_abs_m": 0.10238622051151502,
+        "max_abs_m": 0.2258488444393148
+      },
+      "camera_center_error_3d": {
+        "n": 579,
+        "rmse_m": 0.14564653374559441,
+        "p95_abs_m": 0.2505915536644521,
+        "max_abs_m": 0.3239002869560087
+      }
+    },
+    "RECOVERY": {
+      "position_3d_error": {
+        "n": 49,
+        "rmse_m": 0.0949986164833996,
+        "p95_abs_m": 0.13908731356639206,
+        "max_abs_m": 0.15082383824968784
+      },
+      "error_x": {
+        "n": 49,
+        "rmse_m": 0.03989534541439695,
+        "p95_abs_m": 0.05567284058506344,
+        "max_abs_m": 0.058910686313737415
+      },
+      "error_y": {
+        "n": 49,
+        "rmse_m": 0.07417116135271033,
+        "p95_abs_m": 0.1280858849803657,
+        "max_abs_m": 0.13798655456204223
+      },
+      "error_z": {
+        "n": 49,
+        "rmse_m": 0.04395153434882802,
+        "p95_abs_m": 0.08212204355273073,
+        "max_abs_m": 0.10331641549737203
+      },
+      "camera_center_error_3d": {
+        "n": 49,
+        "rmse_m": 0.08809283105175465,
+        "p95_abs_m": 0.13008598144981845,
+        "max_abs_m": 0.19370907038594762
+      }
+    },
+    "TERMINAL_APPROACH": {
+      "position_3d_error": {
+        "n": 32,
+        "rmse_m": 0.09242177228361258,
+        "p95_abs_m": 0.1039221032764182,
+        "max_abs_m": 0.10712767490684963
+      },
+      "error_x": {
+        "n": 32,
+        "rmse_m": 0.04356611230107036,
+        "p95_abs_m": 0.07175524807885267,
+        "max_abs_m": 0.07778482778374496
+      },
+      "error_y": {
+        "n": 32,
+        "rmse_m": 0.055752128513672214,
+        "p95_abs_m": 0.06808457517302005,
+        "max_abs_m": 0.06866646812702015
+      },
+      "error_z": {
+        "n": 32,
+        "rmse_m": 0.05945988578200803,
+        "p95_abs_m": 0.07333053506494888,
+        "max_abs_m": 0.07379661168904428
+      },
+      "camera_center_error_3d": {
+        "n": 32,
+        "rmse_m": 0.1160701205910246,
+        "p95_abs_m": 0.17443388794759987,
+        "max_abs_m": 0.17979683995331747
+      }
+    }
+  },
+  "stable_follow_window": {
+    "begin_ros_s": 1791340822.8849373,
+    "end_ros_s": 1791340826.4363596,
+    "n": 2,
+    "rmse_m": 0.09919843717399046,
+    "p95_m": 0.11218293101506463,
+    "max_m": 0.11376711048033336
+  },
+  "nearest_during_task": {
+    "time": "24.338289260864258",
+    "intercept_elapsed_time": "11.93781852722168",
+    "phase": "SAFE_RECOVERY",
+    "distance": "0.5041915004529873",
+    "horizontal_distance": "0.10363245793620014",
+    "vertical_error": "0.49342616751763013",
+    "target_locked": "False",
+    "kf_state_age": "inf",
+    "planner_failure_reason": "DYNAMIC_LIMIT_HORIZONTAL",
+    "sea_safety_state": "SAFE",
+    "body_clearance": "0.19558075707154218"
+  }
+}

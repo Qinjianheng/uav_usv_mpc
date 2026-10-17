@@ -1,0 +1,72 @@
+...........FFFF                                                          [100%]
+=================================== FAILURES ===================================
+______ test_far_noisy_plane_cannot_masquerade_as_validation_sphere[12.0] _______
+
+distance = 12.0
+
+    @pytest.mark.parametrize('distance', [12., 15., 20., 24.])
+    def test_far_noisy_plane_cannot_masquerade_as_validation_sphere(distance):
+        mask, depth, rays = sphere((distance, 0., 0.))
+        depth[mask] = distance - .25
+        model = TofDepthModel(seed=0)
+        for _ in range(20):
+            fit = fitting()(points(mask, model.measure(depth), rays), .25,
+                            noise_std=.01, range_noise_scale=.001)
+>           assert fit is None
+E           assert SphereFit(center=(11.941475101103062, 0.0056001255487916155, -0.0003185283392465904), position_std=0.008458370249712521) is None
+
+test/test_tof_sphere_localization.py:112: AssertionError
+______ test_far_noisy_plane_cannot_masquerade_as_validation_sphere[15.0] _______
+
+distance = 15.0
+
+    @pytest.mark.parametrize('distance', [12., 15., 20., 24.])
+    def test_far_noisy_plane_cannot_masquerade_as_validation_sphere(distance):
+        mask, depth, rays = sphere((distance, 0., 0.))
+        depth[mask] = distance - .25
+        model = TofDepthModel(seed=0)
+        for _ in range(20):
+            fit = fitting()(points(mask, model.measure(depth), rays), .25,
+                            noise_std=.01, range_noise_scale=.001)
+>           assert fit is None
+E           assert SphereFit(center=(14.931748162523236, 0.0017573661825611392, 0.002787952040319655), position_std=0.009724843848011784) is None
+
+test/test_tof_sphere_localization.py:112: AssertionError
+______ test_far_noisy_plane_cannot_masquerade_as_validation_sphere[20.0] _______
+
+distance = 20.0
+
+    @pytest.mark.parametrize('distance', [12., 15., 20., 24.])
+    def test_far_noisy_plane_cannot_masquerade_as_validation_sphere(distance):
+        mask, depth, rays = sphere((distance, 0., 0.))
+        depth[mask] = distance - .25
+        model = TofDepthModel(seed=0)
+        for _ in range(20):
+            fit = fitting()(points(mask, model.measure(depth), rays), .25,
+                            noise_std=.01, range_noise_scale=.001)
+>           assert fit is None
+E           assert SphereFit(center=(19.92765050541891, 0.0061597379242342015, -0.0015369228173081047), position_std=0.014056543883413809) is None
+
+test/test_tof_sphere_localization.py:112: AssertionError
+______ test_far_noisy_plane_cannot_masquerade_as_validation_sphere[24.0] _______
+
+distance = 24.0
+
+    @pytest.mark.parametrize('distance', [12., 15., 20., 24.])
+    def test_far_noisy_plane_cannot_masquerade_as_validation_sphere(distance):
+        mask, depth, rays = sphere((distance, 0., 0.))
+        depth[mask] = distance - .25
+        model = TofDepthModel(seed=0)
+        for _ in range(20):
+            fit = fitting()(points(mask, model.measure(depth), rays), .25,
+                            noise_std=.01, range_noise_scale=.001)
+>           assert fit is None
+E           assert SphereFit(center=(23.93913400931237, 0.01648598738262455, -0.005433010394670995), position_std=0.01756105924250106) is None
+
+test/test_tof_sphere_localization.py:112: AssertionError
+=========================== short test summary info ============================
+FAILED test/test_tof_sphere_localization.py::test_far_noisy_plane_cannot_masquerade_as_validation_sphere[12.0]
+FAILED test/test_tof_sphere_localization.py::test_far_noisy_plane_cannot_masquerade_as_validation_sphere[15.0]
+FAILED test/test_tof_sphere_localization.py::test_far_noisy_plane_cannot_masquerade_as_validation_sphere[20.0]
+FAILED test/test_tof_sphere_localization.py::test_far_noisy_plane_cannot_masquerade_as_validation_sphere[24.0]
+4 failed, 11 passed in 0.68s

@@ -198,7 +198,7 @@ def test_follow_timer_expired_image_preempts_translation_and_anchors_xyz():
     node.timer_callback()
     command, status = node.diagnostics[-1]
     assert status == 'FOLLOW'
-    assert node.visibility_decision.state == 'REACQUIRE'
+    assert node.visibility_decision.state == 'INPUT_WAIT'
     assert command.position == state.position
     assert command.velocity == (0., 0., 0.)
     assert node.latest_target_state is None

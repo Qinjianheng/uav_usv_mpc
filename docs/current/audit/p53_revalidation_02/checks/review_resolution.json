@@ -1,0 +1,7 @@
+{
+  "critical": 0,
+  "important_unresolved": 0,
+  "important_closed": "Late recovered/clock-reversed lock samples checked before clearing original200ms wait; RED two failures then joint20pass",
+  "independent_review": "p52_final_review; source review of observer and Gazebo retry; joint20tests passed",
+  "limitation": "No actual flight improvement claim before new F2"
+}

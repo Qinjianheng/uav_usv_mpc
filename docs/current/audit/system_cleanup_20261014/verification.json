@@ -1,0 +1,24 @@
+{
+  "passed": true,
+  "protected_files_unchanged": 6685,
+  "pytest": {
+    "passed": 1848,
+    "skipped": 1
+  },
+  "four_package_build": true,
+  "flake8": true,
+  "shell_syntax": true,
+  "package_prefix": "/home/qin/data/uav_usv_mpc/install/uav_control",
+  "local_doc_links_checked": 97,
+  "broken_links": [],
+  "source_equivalence": "All retained program/config/test/model/PX4 files and frozen/raw experiment evidence byte-identical to task start.",
+  "old_flight_qualifications_preserved": true,
+  "old_flight_readiness_current": false,
+  "maintenance_only": true,
+  "new_sitl_runs": 0,
+  "raw_directory": "/home/qin/data/uav_usv_mpc/data/experiments/20261014_system_cleanup_01",
+  "archive": "/home/qin/data/uav_usv_mpc_archive/20261014_system_cleanup_01/before_cleanup_complete.tar.gz",
+  "retained_program_files": 685,
+  "protected_manifest_sha256": "b06bdfa3595d5fca7d58682ba02b994ca547305b35582418424878a47158b356",
+  "independent_final_review_pass": true
+}
