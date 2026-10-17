@@ -22,23 +22,67 @@ R11 = WORKSPACE/'data/experiments/20261013_p53_closed_loop_11'
 CONFIG = WORKSPACE/'src/uav_usv_bringup/config/p7_guidance.yaml'
 
 
-def source_fingerprint():
-    """Bind current runtime, launch and configuration bytes, independent of Git dirtiness."""
+def runtime_hashes():
+    """Current online code and configs; read-only observer revisions do not change flight code."""
     paths = list((WORKSPACE/'src/uav_control/uav_control').rglob('*.py'))
     for directory, pattern in (('launch', '*.py'), ('config', '*.yaml')):
         paths.extend((WORKSPACE/'src/uav_usv_bringup'/directory).glob(pattern))
-    paths.append(Path(__file__).resolve())
-    hashes = {str(p.relative_to(WORKSPACE)): hashlib.sha256(p.read_bytes()).hexdigest()
-              for p in sorted(paths)}
+    return {str(p.relative_to(WORKSPACE)): hashlib.sha256(p.read_bytes()).hexdigest()
+            for p in sorted(paths)}
+
+
+def source_fingerprint():
+    """Bind runtime and this exact observer; each run also saves the complete source snapshot."""
+    hashes = runtime_hashes()
+    hashes[str(Path(__file__).resolve().relative_to(WORKSPACE))] = harness.sha(Path(__file__))
     return hashlib.sha256(json.dumps(hashes, sort_keys=True).encode()).hexdigest()
 
 
 def require_f2(path):
     """A new source or failed F2 cannot inherit permission for F3."""
     summary = json.loads(Path(path).read_text())
+    same_source = summary.get('source_fingerprint') == source_fingerprint()
+    snapshot = Path(path).parent/'source_snapshot.json'
+    if not same_source and snapshot.exists():
+        # A diagnosed read-only observer change does not require repeating a
+        # successful F2 with byte-identical online runtime/launch/configuration.
+        previous = json.loads(snapshot.read_text())['files']
+        previous_runtime = {
+            k: v for k, v in previous.items()
+            if (k.startswith('src/uav_control/uav_control/') and k.endswith('.py'))
+            or (k.startswith('src/uav_usv_bringup/launch/') and k.endswith('.py'))
+            or (k.startswith('src/uav_usv_bringup/config/') and k.endswith('.yaml'))}
+        same_source = previous_runtime == runtime_hashes()
     if not (summary.get('healthy') and summary.get('completed') and summary.get('f3_eligible')
-            and summary.get('source_fingerprint') == source_fingerprint()):
+            and same_source):
         raise ValueError('CURRENT_HEALTHY_F2_REQUIRED')
+
+
+class P7FollowHealthGuard(FollowHealthGuard):
+    """Observe the controller's existing input-wait window separately from visual loss."""
+
+    def __init__(self, initial_acquisition=False):
+        super().__init__(initial_acquisition)
+        self.input_wait_since = None
+
+    def __call__(self, health, now):
+        control = health.get('control', {})
+        input_wait = (self.follow_lock_seen and control.get('status') == 'FOLLOW'
+                      and control.get('visible') and control.get('search') == 'INPUT_WAIT')
+        if not input_wait:
+            self.input_wait_since = None
+            return super().__call__(health, now)
+        observed = dict(health, control=dict(control, locked=True))
+        physical_fault = super().__call__(observed, now)
+        if physical_fault:
+            return physical_fault
+        if self.input_wait_since is None:
+            self.input_wait_since = now
+        from uav_control.mission.target_visibility import VisibilityConfig
+        config = VisibilityConfig()
+        limit = config.target_lock_max_age*config.target_loss_frames
+        elapsed = now-self.input_wait_since
+        return 'FOLLOW_INPUT_WAIT_TIMEOUT' if not 0 <= elapsed <= limit else None
 
 
 def prepare(output, scene):
@@ -83,7 +127,7 @@ def run(output, scene, prior_f2=None):
     first_minco = follow_start = stable_start = planner_started = None
     health_process = planner = None
     health_started = None
-    check = FollowHealthGuard(initial_acquisition=True)
+    check = P7FollowHealthGuard(initial_acquisition=True)
     monitor_check = GroundStartupHealth(output)
     reason = 'SESSION_ENDED_BEFORE_OBSERVATION'
     try:

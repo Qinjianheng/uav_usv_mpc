@@ -61,7 +61,8 @@ def run(root):
 
     def control(m):
         latest['control'] = dict(receipt=time.time(), status=m.status,
-                                 locked=m.target_locked, compute=m.callback_compute_time)
+                                 locked=m.target_locked, compute=m.callback_compute_time,
+                                 visible=m.target_visible, search=m.search_state)
 
     subscriptions = [
         node.create_subscription(UavState, '/navigation/uav_state', nav, qos_profile_sensor_data),

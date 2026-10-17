@@ -41,3 +41,29 @@ def test_f3_rejects_failed_or_different_source_f2(tmp_path):
         path.write_text(json.dumps(summary))
         with pytest.raises(ValueError, match='CURRENT_HEALTHY_F2_REQUIRED'):
             entry.require_f2(path)
+
+
+def test_p7_observer_distinguishes_existing_input_wait_from_visual_loss():
+    from p7_follow_sitl import P7FollowHealthGuard
+    from test_p53_sitl import healthy
+    observer = P7FollowHealthGuard(initial_acquisition=True)
+    assert observer(healthy(10., owner='MINCO_FOLLOW'), 10.) is None
+    for now in (10.05, 10.30, 10.45):
+        state = healthy(now, locked=False)
+        state['control'].update(visible=True, search='INPUT_WAIT')
+        assert observer(state, now) is None
+    assert observer(healthy(10.49, owner='FOLLOW'), 10.49) is None
+
+
+def test_p7_observer_does_not_extend_input_wait_or_hide_physical_failure():
+    from p7_follow_sitl import P7FollowHealthGuard
+    from test_p53_sitl import healthy
+    observer = P7FollowHealthGuard(initial_acquisition=True)
+    observer(healthy(10., owner='MINCO_FOLLOW'), 10.)
+    for now in (10.05, 10.51):
+        state = healthy(now, locked=False)
+        state['control'].update(visible=True, search='INPUT_WAIT')
+        reason = observer(state, now)
+    assert reason == 'FOLLOW_INPUT_WAIT_TIMEOUT'
+    state['vehicle']['nav_state'] = 0
+    assert observer(state, 10.51) == 'OFFBOARD_OR_ARMING_LOST'
