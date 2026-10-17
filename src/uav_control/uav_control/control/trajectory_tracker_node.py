@@ -1221,19 +1221,27 @@ class TrajectoryTrackerNode(Node):
         self.pre_flight_checks_pass = bool(message.pre_flight_checks_pass)
 
     def target_state_callback(self, message):
+        now = self._ros_seconds()
         if message.valid and message.frame_id == self.expected_frame_id:
             previous = self.latest_kf_message
             stamp = _stamp_seconds(message.stamp)
             source = _stamp_seconds(message.source_stamp)
-            now = self._ros_seconds()
             if (0.0 < source <= stamp <= now and previous is not None
                     and (stamp < _stamp_seconds(previous.stamp)
                          or source < _stamp_seconds(previous.source_stamp))):
                 return
-        converted = fresh_flight_target(
-            message, self._ros_seconds(), self.maximum_state_age,
-            self.expected_frame_id,
-        )
+        original_target = fresh_flight_target(
+            message, now, self.maximum_state_age, self.expected_frame_id)
+        converted = original_target
+        contract = getattr(self, 'follow_time_contract', None)
+        experimental_follow = bool(
+            contract is not None and contract.profile != 'baseline_125'
+            and getattr(self, 'follow_minco_requested', False)
+            and getattr(self, 'mission_state', None) == MissionState.FOLLOW)
+        if experimental_follow:
+            converted = fresh_flight_target(
+                message, now, min(.125, self.maximum_state_age), self.expected_frame_id,
+                source_max_age=contract.observation_age)
         if hasattr(self, 'follow_target_history'):
             self.follow_target_history.append(dict(
                 valid=converted is not None,
@@ -1251,7 +1259,9 @@ class TrajectoryTrackerNode(Node):
                 < _stamp_seconds(previous.stamp)):
             return
         self.latest_kf_message = message
-        self.latest_target_state = converted
+        # The experimental cache feeds independent MINCO admission/context only.
+        # Original FOLLOW fallback/takeoff/intercept keep their source-age policy.
+        self.latest_target_state = original_target
         self.follow_input_receipts = dict(
             getattr(self, 'follow_input_receipts', {}), target=now)
 

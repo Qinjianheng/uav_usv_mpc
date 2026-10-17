@@ -176,3 +176,31 @@ def test_actual_tracker_native_and_visual_gates_stay_independent_of_target_exper
     c = n._follow_context()
     assert c.navigation_fresh and c.prediction_fresh
     assert not c.observation_fresh
+
+
+@pytest.mark.parametrize('profile,mission,state_age,source_age,accepted', [
+    ('experiment_200', 'FOLLOW', .01, .18, True),
+    ('experiment_200', 'FOLLOW', .01, .201, False),
+    ('experiment_200', 'FOLLOW', .13, .18, False),
+    ('baseline_125', 'FOLLOW', .01, .18, False),
+    ('experiment_200', 'TAKEOFF', .01, .18, False),
+])
+def test_real_kf_callback_respects_experimental_source_and_separate_state_age(
+        profile, mission, state_age, source_age, accepted):
+    from collections import deque
+    from uav_control.controllers.follow_transport import stamp
+    from uav_usv_interfaces.msg import MissionState, TargetState
+    n = experimental_tracker()
+    n.follow_time_contract = input_time_contract(profile)
+    n.mission_state = getattr(MissionState, mission)
+    n.follow_minco_requested = True
+    n.follow_target_history = deque()
+    n.latest_kf_message = n.latest_target_state = None
+    n._update_follow_admission = lambda _: ''
+    message = TargetState(valid=True, frame_id='local_ned')
+    message.stamp, message.source_stamp = stamp(100.18-state_age), stamp(100.18-source_age)
+    n.target_state_callback(message)
+    assert (n.latest_kf_message is message) == accepted
+    assert n.follow_target_history[-1]['valid'] == accepted
+    # Original FOLLOW fallback and all other controllers retain their own125ms source gate.
+    assert n.latest_target_state is None
