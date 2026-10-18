@@ -117,8 +117,12 @@ def capture_reference(uav_position, target_position, target_velocity,
     # The 2:1 corridor leaves room for velocity-loop braking and the fixed
     # forward camera; closing over the target before descent loses its image.
     standoff = min(4.5, .3+2.*descent_remaining)
+    # Differentiate the same sea-bounded reference in both directions. A
+    # negative-only feedforward accumulates an upward bias during periodic
+    # heave; below sea the reference is constant and its derivative is zero.
+    goal_velocity = tv[2] if tp[2] < sea_surface_z else 0.
     vertical = min(maximum_descent_speed,
-                   max(-maximum_descent_speed, goal_z-up[2]+min(0., tv[2])))
+                   max(-maximum_descent_speed, goal_z-up[2]+goal_velocity))
     return standoff, vertical
 
 
@@ -131,6 +135,8 @@ class P7VisualGuidance:
         self.yaw_rate = 0.
         self.last_stamp = None
         self.previous_target_velocity = None
+        self.previous_image = None
+        self.image_v_rate = 0.
 
     def reset(self, velocity=None, yaw_rate=0.):
         self.previous = None if velocity is None else np.asarray(velocity[:2], dtype=float)
@@ -140,6 +146,8 @@ class P7VisualGuidance:
         self.yaw_rate = float(yaw_rate) if math.isfinite(yaw_rate) else 0.
         self.last_stamp = None
         self.previous_target_velocity = None
+        self.previous_image = None
+        self.image_v_rate = 0.
 
     def step(self, now, dt, uav_position, uav_velocity, target_position, target_velocity,
              image_stamp, error_u, error_v, approach_distance=None):
@@ -163,31 +171,42 @@ class P7VisualGuidance:
             return GuidanceOutput()
         direction = ((tp-up)/los.distance if los.distance > 1e-8 else np.zeros(2))
         normal = np.array((-direction[1], direction[0]))
+        actual_closing = float((uv-tv)@direction)
         standoff = config.standoff_distance if approach_distance is None else approach_distance
         closing = max(-config.maximum_closing_speed, min(
             config.maximum_closing_speed,
             config.closing_gain*(los.distance-standoff)))
         if abs(error_u) > config.alignment_limit:
             closing = min(0., closing)
-        if approach_distance is not None and error_v > config.vertical_alignment_limit:
+        if self.previous_image is None or image_stamp > self.previous_image[0]:
+            self.image_v_rate = (0. if self.previous_image is None else
+                                 (error_v-self.previous_image[1]) /
+                                 (image_stamp-self.previous_image[0]))
+            self.previous_image = (image_stamp, error_v)
+        # Forecast over the existing velocity response time, not a fitted
+        # sensor delay. Hold the causal rate across repeated image stamps.
+        # This is an early braking request, not a geometric safety proof.
+        guard_error_v = error_v+max(0., self.image_v_rate)/config.velocity_gain
+        if approach_distance is not None and guard_error_v > config.vertical_alignment_limit:
             # A fixed forward camera cannot pitch independently. Stand back
             # before the target leaves its lower edge; descent stays sea guarded.
             closing = min(closing, max(-config.maximum_closing_speed,
                                        config.closing_gain*(config.vertical_alignment_limit
-                                                            - error_v)))
+                                                            - guard_error_v)))
+        feedback_velocity = uv if approach_distance is not None else self.previous
         longitudinal = config.velocity_gain*(float(tv@direction)+closing
-                                             - float(self.previous@direction))
+                                             - float(feedback_velocity@direction))
         lateral = float(np.asarray(los.acceleration)@normal)
         mode = 'PNG'
         if los.distance <= standoff+.75 or los.closing_speed <= 0.:
             # Approach ends above the sea at finite standoff; keep matching a
             # moving target rather than commanding zero world-frame velocity.
-            lateral = config.velocity_gain*float((tv-self.previous)@normal)
+            lateral = config.velocity_gain*float((tv-feedback_velocity)@normal)
             mode = 'STANDOFF' if los.distance <= standoff+.75 else 'CLOSING'
         if approach_distance is not None and los.distance < 1.:
             mode = 'CAPTURE_MATCH'
             desired = tv+closing*direction
-            acceleration = config.velocity_gain*(desired-self.previous)
+            acceleration = config.velocity_gain*(desired-feedback_velocity)
         else:
             acceleration = longitudinal*direction+lateral*normal
         if approach_distance is not None and self.previous_target_velocity is not None:
@@ -209,5 +228,5 @@ class P7VisualGuidance:
         self.yaw_rate = max(-config.maximum_yaw_rate, min(config.maximum_yaw_rate, self.yaw_rate))
         self.previous, self.last_stamp = velocity, now
         return GuidanceOutput(True, mode, tuple(velocity), tuple(emitted_acceleration),
-                              self.yaw_rate, los.distance, los.los_rate, los.closing_speed,
+                              self.yaw_rate, los.distance, los.los_rate, actual_closing,
                               float(emitted_acceleration@normal), error_u, error_v)
