@@ -1,0 +1,106 @@
+{
+  "run": "data/experiments/20261018_p7_nearfield_repair_s_01",
+  "runtime_head": "511f6a9adf538c4d9d4c7a8a135e26bba5e5819a",
+  "source_fingerprint": "4bb0f8e7626148f02311c23b5ef52314ecce70a70da31b665ee0b8d899c6db4f",
+  "scope": "Exactly one repaired variable-speed-S capture; uninterrupted detection, partial clipping remains. Large raw evidence stays local.",
+  "files": {
+    "summary.json": {
+      "source": "data/experiments/20261018_p7_nearfield_repair_s_01/summary.json",
+      "sha256": "614c9647f81e5df59c59b3138290c898c26c28cda02f077e0b20988e073fb2b3"
+    },
+    "condition.json": {
+      "source": "data/experiments/20261018_p7_nearfield_repair_s_01/condition.json",
+      "sha256": "4a9971b28ccfe65aa27c3e2a1533a6c531f46f2021f081aec98c9d88aefbb1ee"
+    },
+    "terminal_result.json": {
+      "source": "data/experiments/20261018_p7_nearfield_repair_s_01/terminal_result.json",
+      "sha256": "cadc59809c6a5875bb83d566946c262fd892b34fe74e992c4387dee772309005"
+    },
+    "config/flight.yaml": {
+      "source": "data/experiments/20261018_p7_nearfield_repair_s_01/config/flight.yaml",
+      "sha256": "c947e2eb73effcd6fc0941b65bd1650f26f728873c36bee52b30972fece6502e"
+    },
+    "config/research.yaml": {
+      "source": "data/experiments/20261018_p7_nearfield_repair_s_01/config/research.yaml",
+      "sha256": "024fd57c80081d88229458860c6f9b9f090fb589251ce5da55bf8578627576f1"
+    },
+    "scoped_validation.json": {
+      "source": "data/experiments/20261018_p7_nearfield_repair_delivery_01/scoped_validation.json",
+      "sha256": "46bf13d2c1de3470fc4d09949c2af0f2d4a89bca3854c98202434aeaf558b793"
+    },
+    "offline_validation.json": {
+      "source": "data/experiments/20261018_p7_nearfield_repair_delivery_01/offline_validation.json",
+      "sha256": "7a9f2fad98f18c55b4333cee7341815a8f2e484895b8c76689753751753274c3"
+    },
+    "geometry_validation.json": {
+      "source": "data/experiments/20261018_p7_nearfield_repair_delivery_01/geometry_validation.json",
+      "sha256": "766bc358f7198f1561d808c1ba2ad0d972ca52b921ace5c3ff1d16e06df9c49d"
+    },
+    "protocol.json": {
+      "source": "data/experiments/20261018_p7_nearfield_repair_delivery_01/protocol.json",
+      "sha256": "8603d6132875d1f634ad1675c3ecd1231e6d64ffa3aba418888417cef2626360"
+    },
+    "source_binding.json": {
+      "source": "data/experiments/20261018_p7_nearfield_repair_delivery_01/preflight_sources.json",
+      "sha256": "b6e3cae52b251faef02e84c0bb4b3ff8d66c6ee4f90aed7fc25e7d085619f7a0"
+    },
+    "final_preflight_sources.json": {
+      "source": "data/experiments/20261018_p7_nearfield_repair_delivery_01/final_preflight_sources.json",
+      "sha256": "4c804a1f5cfc4152cabc3d3eb327915ab7e6b03788f7ea5ad286f643d583b7c9"
+    },
+    "figures/capture.png": {
+      "source": "data/experiments/20261018_p7_nearfield_repair_s_analysis_01/capture.png",
+      "sha256": "54e90b9d42e45cf2094af399cacc7c955cff0be5f24e79b54f968a8ea24c8ca6"
+    },
+    "figures/offline_validation.png": {
+      "source": "data/experiments/20261018_p7_nearfield_repair_delivery_01/offline_validation.png",
+      "sha256": "fd6f0ae8a857c425ea8b4a8ed021005bc083694af04995cd800861905f95d2e5"
+    },
+    "figures/geometry_validation.png": {
+      "source": "data/experiments/20261018_p7_nearfield_repair_delivery_01/geometry_validation.png",
+      "sha256": "8c56e7c705efaedffd2e2b265cd4cbc924221ee9172c5a12d7cc3e94dd352727"
+    },
+    "verification/full_tests_native.txt": {
+      "source": "data/experiments/20261018_p7_nearfield_repair_delivery_01/full_tests_native.txt",
+      "sha256": "e0974b9a481339ecd862b2183693bf30b04699eaa008053dbeae452bdc442b54"
+    },
+    "verification/phase_tests.txt": {
+      "source": "data/experiments/20261018_p7_nearfield_repair_delivery_01/phase_tests.txt",
+      "sha256": "da014ef238d4637c703ce7b1378bcbd0347117b7fc276905d52949763178a435"
+    },
+    "verification/build.txt": {
+      "source": "data/experiments/20261018_p7_nearfield_repair_delivery_01/build.txt",
+      "sha256": "7650aae696fa6885c947f18f22e501f811695e95cb40d89336700a02544268db"
+    },
+    "verification/package_prefix.txt": {
+      "source": "data/experiments/20261018_p7_nearfield_repair_delivery_01/package_prefix.txt",
+      "sha256": "7a4b4daa40c56aec6f93a3df1300130e164fdfaa1786fe5eb8f60791449123d4"
+    },
+    "verification/flake8_final.txt": {
+      "source": "data/experiments/20261018_p7_nearfield_repair_delivery_01/flake8_final.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "verification/previous_audit_integrity.json": {
+      "source": "data/experiments/20261018_p7_nearfield_repair_delivery_01/previous_audit_integrity.json",
+      "sha256": "d3b46bf0e442c7855a700d9b631a73e39e68ab215ae072f237112b1569edc400"
+    },
+    "analysis/analyze_geometry.py": {
+      "source": "data/experiments/20261018_p7_nearfield_repair_delivery_01/analyze_geometry.py",
+      "sha256": "384627170ab8864d952f4aaa2cc10e4cf579e924d7cd4d6b0a605f472bdd8425"
+    },
+    "analysis/validate_run.py": {
+      "source": "data/experiments/20261018_p7_nearfield_repair_delivery_01/validate_run.py",
+      "sha256": "2a0f39faa0c97e9c23cf4e3d4e330f104b711b0459a524f759598eb711959f3c"
+    },
+    "analysis/offline_validation.py": {
+      "source": "data/experiments/20261018_p7_nearfield_repair_delivery_01/offline_validation.py",
+      "sha256": "983c068a15508da64ea7486fc44791221f967e4597c22fc71a1d8d79bc3d6adb"
+    },
+    "verification/red_tests.txt.gz": {
+      "source": "data/experiments/20261018_p7_nearfield_repair_delivery_01/red_tests.txt",
+      "source_sha256": "aeeff79f0894f24dc5b03008a7f1f77f310299998d1d3802a84ae256f8bef0d1",
+      "sha256": "c4bc2f34220e6118c7340189d423128ab409809f6be16e190d51ee007a2b947b",
+      "encoding": "gzip; decompressed bytes match source exactly"
+    }
+  }
+}

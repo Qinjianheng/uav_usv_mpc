@@ -1,0 +1,17 @@
+{
+  "authorization": "User requested diagnose/fix first, then one simulation experiment",
+  "trial_budget": 1,
+  "scene": "f2",
+  "motion": "variable_speed_s",
+  "capture_radius_m": 0.5,
+  "heave_m": 0.15,
+  "maximum_input_age_s": 0.125,
+  "native_bracket_s": 0.05,
+  "lease_s": 0.45,
+  "changes": ["capture-only measured velocity feedback", "causal image vertical rate anticipates lower edge using existing 1/velocity_gain horizon", "differentiate sea-bounded vertical reference in both directions"],
+  "unchanged": ["controller gains", "camera/model", "KF/Q/R", "timing gates", "capture radius", "single Tracker ownership", "loss recovery", "sea barrier"],
+  "offline": "Four heave phases; independent camera/actuator plus original sea guard. Test capture and visibility jointly.",
+  "acceptance": "Report radius capture separately from uninterrupted valid vision/lock. Preserve failure if the single simulation fails; no automatic repeat. Freeze sources before X. Native truth only evaluation/offline.",
+  "run_directory": "data/experiments/20261018_p7_nearfield_repair_s_01",
+  "pre_fix_commit": "4b0dfb5"
+}
