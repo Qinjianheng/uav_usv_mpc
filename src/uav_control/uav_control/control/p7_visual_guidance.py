@@ -33,7 +33,7 @@ class LosResult:
 
 
 def png_los(relative_position, relative_velocity, navigation_constant=3., minimum_range=1.):
-    """True horizontal LOS PN; opening/near-zero ranges never produce a PN command."""
+    """Compute horizontal LOS PN without commanding opening or near-zero ranges."""
     r, v = (np.asarray(value, dtype=float) for value in (relative_position, relative_velocity))
     if (r.shape != (2,) or v.shape != (2,) or not np.isfinite(r).all()
             or not np.isfinite(v).all() or not math.isfinite(navigation_constant)
@@ -96,7 +96,8 @@ def _limit(vector, maximum):
 
 def capture_reference(uav_position, target_position, target_velocity,
                       sea_surface_z=0., contact_clearance=.33, maximum_descent_speed=.6):
-    """Coordinate descent with finite camera standoff and a sea-safe contact height.
+    """
+    Coordinate descent with finite camera standoff and a sea-safe contact height.
 
     Positions are measured navigation/KF states, never simulation truth. The
     existing final sea barrier still shapes the returned vertical request.

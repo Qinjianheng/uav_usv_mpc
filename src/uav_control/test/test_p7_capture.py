@@ -227,3 +227,39 @@ def test_tracker_capture_descent_stops_and_recovers_when_visual_input_expires():
     node.timer_callback()
     assert node.p7_result is None
     assert node.setpoint_pub.messages[-1].velocity[2] <= 0.
+
+
+@pytest.mark.parametrize('phase', ('SAFE_RECOVERY', 'REACQUIRE', 'TARGET_ACQUIRE'))
+@pytest.mark.parametrize('p7_enabled', (False, True))
+def test_low_altitude_recovery_keeps_p7_velocity_interface_and_existing_braking_climb(
+        phase, p7_enabled):
+    from dataclasses import replace
+    from test_follow_wait import runnable_follow_node, CapturedPublisher
+    from uav_usv_interfaces.msg import MissionState
+
+    node, state = runnable_follow_node()
+    node.p7_guidance_enabled = p7_enabled
+    node.mission_state = getattr(MissionState, phase)
+    node.mission_state_name = phase
+    node.latest_state = replace(state, position=(1., 2., -.4), velocity=(3., 0., 0.))
+    node.latest_kf_message = None
+    node.visibility.observe(10.2, 0., False, 10.2)
+    node.tracker.previous_command_velocity = (3., 0., 0.)
+    node.tracker.previous_command_stamp = 10.15
+    del node._publish_offboard_mode  # Exercise the real mode publisher with captured messages.
+    node.offboard_pub = CapturedPublisher()
+    node.timer_callback()
+
+    out = node.setpoint_pub.messages[-1]
+    mode = node.offboard_pub.messages[-1]
+    assert node.safe_recovery_latched
+    assert node.search_state == 'SAFE_RECOVERY'
+    assert 0. < out.velocity[0] < 3.  # Existing bounded brake; no instantaneous stop.
+    assert out.velocity[2] < 0.  # Lost visual input cannot keep descending.
+    assert all(math.isfinite(v) for v in out.velocity)
+    if p7_enabled:
+        assert mode.velocity and not mode.position and not mode.acceleration
+        assert all(math.isnan(v) for v in (*out.position, *out.acceleration))
+    else:
+        assert mode.position and not mode.velocity
+        assert all(math.isfinite(v) for v in (*out.position, *out.acceleration))

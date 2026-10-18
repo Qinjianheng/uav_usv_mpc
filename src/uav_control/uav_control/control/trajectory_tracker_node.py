@@ -2352,13 +2352,21 @@ class TrajectoryTrackerNode(Node):
             self._publish_bool(self.flight_ready_pub, False)
             self._request_flight_mode()
             command = self._search_or_recovery_command(current, dt)
+            p7_velocity_recovery = getattr(self, 'p7_guidance_enabled', False)
+            velocity_control = (p7_velocity_recovery
+                                or getattr(command, 'mode', '') == 'VELOCITY')
             self._publish_offboard_mode(
-                timestamp_us, velocity_control=getattr(command, 'mode', '') == 'VELOCITY',
+                timestamp_us, velocity_control=velocity_control,
             )
             if hasattr(command, 'mode'):
                 setpoint = flight_command_to_setpoint(command, timestamp_us)
             else:
-                setpoint = command_to_setpoint(command, timestamp_us)
+                setpoint = command_to_setpoint(
+                    command, timestamp_us, velocity_mode=p7_velocity_recovery)
+            if p7_velocity_recovery:
+                # P7 keeps its velocity-only interface after visual loss too;
+                # the same post-guard braking/climb command remains in charge.
+                setpoint.acceleration = [math.nan, math.nan, math.nan]
             self._publish_bool(self.far_guidance_pub, False)
             status = self.search_state
             if (getattr(command, 'mode', '') == 'VELOCITY'
