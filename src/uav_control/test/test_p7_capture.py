@@ -87,6 +87,69 @@ def test_coordinated_approach_reaches_original_3d_radius_in_ideal_kinematics():
     assert minimum_height >= .33
 
 
+@pytest.mark.parametrize('turn_rate', (-.25, .25))
+def test_capture_tracks_continuously_turning_target_with_delayed_measurement_and_vehicle_lag(
+        turn_rate):
+    from uav_control.control.p7_visual_guidance import P7VisualGuidance, capture_reference
+    controller = P7VisualGuidance()
+    p, v = np.array([-5., 0., -5.]), np.array([4., 0., 0.])
+    controller.reset(v)
+    heading = yaw_rate = 0.
+    dt, speed = .05, 4.
+    minimum = 100.
+    for i in range(400):
+        t = i*dt
+
+        def target(s):
+            return (np.array([speed/turn_rate*math.sin(turn_rate*s),
+                              speed/turn_rate*(1-math.cos(turn_rate*s)), 0.]),
+                    np.array([speed*math.cos(turn_rate*s),
+                              speed*math.sin(turn_rate*s), 0.]))
+
+        actual, _ = target(t)
+        q, w = target(t-.04)
+        bearing = math.atan2(actual[1]-p[1], actual[0]-p[0])-heading
+        bearing = math.atan2(math.sin(bearing), math.cos(bearing))
+        assert abs(bearing) < .87  # Independent horizontal half-FOV.
+        minimum = min(minimum, float(np.linalg.norm(actual-p)))
+        if minimum <= .5:
+            break
+        reference, vz = capture_reference(p, q, w)
+        out = controller.step(10.+t, dt, p[:2], v[:2], q[:2], w[:2], 10.+t-.04,
+                              math.tan(bearing), .3, approach_distance=reference)
+        assert out.valid
+        assert np.linalg.norm(out.acceleration) <= 2.+1e-10
+        desired = np.array([*out.velocity, vz])
+        v += (desired-v)*dt/.25
+        p += v*dt
+        yaw_rate += (out.yaw_rate-yaw_rate)*dt/.15
+        heading += yaw_rate*dt
+    assert minimum <= .5
+
+
+def test_capture_maneuver_feedforward_keeps_bounds_and_does_not_survive_invalid_input():
+    from uav_control.control.p7_visual_guidance import P7VisualGuidance
+    controller = P7VisualGuidance()
+    controller.reset((2., 0.))
+    previous = np.array([2., 0.])
+    for i in range(20):
+        now = 10.+i*.05
+        out = controller.step(now, .05, (0., 0.), previous, (5., 0.),
+                              (2., (-1.)**i*4.), now-.02, 0., .3,
+                              approach_distance=.3)
+        assert out.valid
+        assert np.linalg.norm(np.array(out.velocity)-previous) <= .1+1e-10
+        assert np.linalg.norm(out.velocity) <= 6.2+1e-10
+        previous = np.array(out.velocity)
+    invalid = controller.step(11., .05, (0., 0.), previous, (5., 0.), (2., 0.),
+                              10.8, 0., .3, approach_distance=.3)
+    assert not invalid.valid
+    controller.reset((2., 0.))
+    out = controller.step(11.05, .05, (0., 0.), (2., 0.), (4.5, 0.), (2., 0.),
+                          11.03, 0., .3, approach_distance=4.5)
+    assert out.valid and out.velocity == pytest.approx((2., 0.))
+
+
 def test_pause_evidence_requires_repeated_clock_target_and_native_pose_samples():
     from p7_capture_analysis import freeze_metrics
     rows = [dict(kind='gazebo_stats', receipt=t, paused=True, sim=50.) for t in (11., 12., 13.)]

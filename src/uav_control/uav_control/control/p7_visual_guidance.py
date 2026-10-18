@@ -129,6 +129,7 @@ class P7VisualGuidance:
         self.previous = None
         self.yaw_rate = 0.
         self.last_stamp = None
+        self.previous_target_velocity = None
 
     def reset(self, velocity=None, yaw_rate=0.):
         self.previous = None if velocity is None else np.asarray(velocity[:2], dtype=float)
@@ -137,6 +138,7 @@ class P7VisualGuidance:
             raise ValueError('INVALID_P7_INITIAL_VELOCITY')
         self.yaw_rate = float(yaw_rate) if math.isfinite(yaw_rate) else 0.
         self.last_stamp = None
+        self.previous_target_velocity = None
 
     def step(self, now, dt, uav_position, uav_velocity, target_position, target_velocity,
              image_stamp, error_u, error_v, approach_distance=None):
@@ -187,6 +189,12 @@ class P7VisualGuidance:
             acceleration = config.velocity_gain*(desired-self.previous)
         else:
             acceleration = longitudinal*direction+lateral*normal
+        if approach_distance is not None and self.previous_target_velocity is not None:
+            # Capture follows a maneuvering target: integrate in its moving
+            # velocity frame. Only accepted, causal KF samples contribute;
+            # resets discard history and all existing emission bounds follow.
+            acceleration += (tv-self.previous_target_velocity)/dt
+        self.previous_target_velocity = tv.copy()
         acceleration = _limit(acceleration, config.maximum_acceleration)
         velocity = _limit(self.previous+acceleration*dt, config.maximum_speed)
         # Projection onto the speed ball cannot enlarge a velocity increment
