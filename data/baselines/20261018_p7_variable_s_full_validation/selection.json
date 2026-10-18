@@ -1,0 +1,53 @@
+{
+  "kind": "P7_VARIABLE_S_FULL_CAPTURE_LIGHTWEIGHT_SELECTION",
+  "validated_head": "68091c63b332652f970dbb7c1414c9e9e9a4be6b",
+  "source_fingerprint": "484076a1d6aef5e6cd037b533c5f317c095a6256718b48f88bea7c331d59a6a8",
+  "run": "data/experiments/20261018_p7_variable_s_full_validation_01",
+  "copied": {
+    "config/flight.yaml": {
+      "source": "data/experiments/20261018_p7_variable_s_full_validation_01/config/flight.yaml",
+      "sha256": "c947e2eb73effcd6fc0941b65bd1650f26f728873c36bee52b30972fece6502e"
+    },
+    "config/research.yaml": {
+      "source": "data/experiments/20261018_p7_variable_s_full_validation_01/config/research.yaml",
+      "sha256": "024fd57c80081d88229458860c6f9b9f090fb589251ce5da55bf8578627576f1"
+    },
+    "summary.json": {
+      "source": "data/experiments/20261018_p7_variable_s_full_validation_01/summary.json",
+      "sha256": "327351b3b639c6a645f4465f09db67320a49237b4edef69fd16a7f090c0c2d87"
+    },
+    "condition.json": {
+      "source": "data/experiments/20261018_p7_variable_s_full_validation_01/condition.json",
+      "sha256": "bf9eb65d0003601b4ae0c220100568a8950bdd0ce89fc2a419a60f49487e24c7"
+    },
+    "terminal_result.json": {
+      "source": "data/experiments/20261018_p7_variable_s_full_validation_01/terminal_result.json",
+      "sha256": "b78b754bccdf2d0040faece930e1f9d7c07e8cf91231fa4c66ffbdd0c33d3c36"
+    },
+    "scoped_validation.json": {
+      "source": "data/experiments/20261018_p7_variable_s_full_validation_delivery_01/scoped_analysis/validation.json",
+      "sha256": "0561540bc9c38282ce3187424987bda095371889dbf024c6548f62d0539f0305"
+    }
+  },
+  "raw_local_only": {
+    "offline_evidence.jsonl": {
+      "path": "data/experiments/20261018_p7_variable_s_full_validation_01/offline_evidence.jsonl",
+      "sha256": "568b26c1b0486d5a587ee353cbebdd098f6e4b69892669b437996aa6059b9ed0"
+    },
+    "source_snapshot.json": {
+      "path": "data/experiments/20261018_p7_variable_s_full_validation_01/source_snapshot.json",
+      "sha256": "fa644faa8ad72b8fdd4c7cc33779e51f96a8a7680577db71b7186419926341c0"
+    },
+    "SHA256SUMS.json": {
+      "path": "data/experiments/20261018_p7_variable_s_full_validation_01/SHA256SUMS.json",
+      "sha256": "724b744973cada154545b92c2cb71b03c7270445f0dd1f00129a4026f7e9161e"
+    }
+  },
+  "qualification": {
+    "radius_capture": true,
+    "world_pause": true,
+    "velocity_only_recovery": true,
+    "continuous_visual_lock_to_contact": false
+  },
+  "scope": "Exactly one requested run. No source/config fix was made because no new control/interface failure was found; brief near-field visual loss and correct protective recovery remain explicit."
+}

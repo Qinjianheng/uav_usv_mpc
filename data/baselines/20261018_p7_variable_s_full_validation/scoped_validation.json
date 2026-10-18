@@ -1,0 +1,61 @@
+{
+  "20261018_p7_variable_s_full_validation_01": {
+    "run": "/home/qin/data/uav_usv_mpc/data/experiments/20261018_p7_variable_s_full_validation_01",
+    "motion": "variable_speed_s",
+    "healthy": true,
+    "reason": "P7_CAPTURE_COMPLETE",
+    "result": {
+      "kind": "capture_result",
+      "receipt": 1792307918.9828002,
+      "stamp": 1792307918.9449873,
+      "success": true,
+      "outcome": "SUCCESS",
+      "reason": "CAPTURE_RADIUS_REACHED",
+      "radius": 0.5,
+      "minimum_distance": 0.493206025039814,
+      "elapsed": 10.903095245361328,
+      "relative_speed": 0.6688596789860878
+    },
+    "independent_native_3d_minimum_m": 0.4795493383723188,
+    "independent_distance_at_result_m": 0.47730843058835754,
+    "result_native_brackets": {
+      "navigation": [
+        1792307918.9300537,
+        1792307918.9540527
+      ],
+      "target": [
+        1792307918.9449873,
+        1792307918.9449873
+      ]
+    },
+    "minimum_height_m": 0.3814539611339569,
+    "maximum_actual_horizontal_speed_mps": 4.755130153998778,
+    "maximum_actual_horizontal_acceleration_mps2": 1.2170193901540387,
+    "maximum_image_error_u": 0.9890522015214388,
+    "maximum_image_error_v": 3.4971230181981503,
+    "freeze": {
+      "verified": false,
+      "world_verified": true,
+      "native_pose_verified": false,
+      "pause_samples": 47,
+      "paused_seconds": 4.659604072570801,
+      "clock_span_s": 0.0,
+      "target_position_span_m": 0.0,
+      "target_velocity_zero": true,
+      "native_pose_span_m": {},
+      "native_pose_continuity_error_m": {}
+    },
+    "single_tracker": true,
+    "single_bctra": true,
+    "velocity_only_interface": true,
+    "retired_authority_events": 0,
+    "minco_before_y_seconds": 6.236640691757202,
+    "pre_y_actual_minco_seconds": 6.285560131072998,
+    "pre_y_observed_owner_coverage_seconds": 6.285560131072998,
+    "pre_y_actual_minco_fraction": 1.0,
+    "source_fingerprint": "484076a1d6aef5e6cd037b533c5f317c095a6256718b48f88bea7c331d59a6a8",
+    "raw_sha256": "568b26c1b0486d5a587ee353cbebdd098f6e4b69892669b437996aa6059b9ed0",
+    "recorded_summary_sha256": "327351b3b639c6a645f4465f09db67320a49237b4edef69fd16a7f090c0c2d87",
+    "scope": "Actual navigation/target samples inside coverage; offline interpolation only. Detection visibility is distinct from full-object containment."
+  }
+}
