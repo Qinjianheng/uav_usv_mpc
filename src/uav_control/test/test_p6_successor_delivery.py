@@ -190,9 +190,12 @@ def test_accepted_ack_blocks_duplicate_delivery_without_granting_active_control(
     assert n.runner.execution_status['pending'] == 1
 
 
-def test_completion_checks_original_handover_without_building_a_later_unused_request():
+@pytest.mark.parametrize('policy', ['periodic', 'delivery'])
+def test_completion_checks_original_handover_without_building_a_later_unused_request(policy):
     from uav_control.controllers.follow_mpc_shadow_node import make_shadow_request
     r, pool, events = delivery_runner()
+    r.successor_scheduling = policy
+    r.next_solve = 10.23
     r.execution_status['deadline'] = 100.48
     constructions = []
 

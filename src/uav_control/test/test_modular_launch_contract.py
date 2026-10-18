@@ -24,7 +24,7 @@ def test_modular_launch_contains_five_pipeline_processes():
         assert source.count(f"name='{node_name}'") == 1
 
     assert source.count("executable='imm_target_predictor_node'") == 1
-    assert "executable='target_predictor_node'" not in source
+    assert source.count("executable='target_predictor_node'") == 1
     assert "name='shadow_target_predictor_node'" not in source
 
 

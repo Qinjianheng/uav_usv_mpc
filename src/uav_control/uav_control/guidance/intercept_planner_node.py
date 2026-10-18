@@ -291,6 +291,8 @@ class InterceptPlannerNode(Node):
 
     def __init__(self):
         super().__init__('intercept_planner_node')
+        self.declare_parameter('p7_guidance_enabled', False)
+        self.p7_guidance_enabled = bool(self.get_parameter('p7_guidance_enabled').value)
         self.declare_parameter('planning_rate_hz', 5.0)
         self.declare_parameter('terminal_planning_rate_hz', 10.0)
         self.declare_parameter('completion_poll_rate_hz', 100.0)
@@ -908,6 +910,8 @@ class InterceptPlannerNode(Node):
         )
 
     def _publish_job(self, job):
+        if getattr(self, 'p7_guidance_enabled', False):
+            return
         publish_stamp = self._ros_seconds()
         outcome = job.outcome
         candidate_contact_stamp = None
@@ -1378,6 +1382,8 @@ class InterceptPlannerNode(Node):
         self._publish_job(job)
 
     def _planning_tick(self, terminal_tick, prediction_triggered=False):
+        if getattr(self, 'p7_guidance_enabled', False):
+            return
         if (
             not self.intercept_requested
             or self.mission_state not in self.PLANNING_STATES

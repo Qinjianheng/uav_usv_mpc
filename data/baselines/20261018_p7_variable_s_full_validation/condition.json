@@ -1,0 +1,18 @@
+{
+  "scene": "f2",
+  "actual_controller": "NOMINAL_MINCO",
+  "fallback": "P44/D",
+  "prediction_model": "bctra",
+  "maximum_input_age": 0.125,
+  "execution_lease_seconds": 0.45,
+  "motion_mode": "variable_speed_s",
+  "capture_enabled": true,
+  "source_fingerprint": "484076a1d6aef5e6cd037b533c5f317c095a6256718b48f88bea7c331d59a6a8",
+  "config_sources": {
+    "/home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/p7_guidance.yaml": "7e81b6c6cfb088e08ec56243b35feb13ff0b26a545c946fed07a69fd9c24db43",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261013_p53_closed_loop_11/f2_h16_01/config/flight.yaml": "f97ce0da14b23e845ecbc3287fee5750bc800e6f2cb849e46808f40cb034f26c"
+  },
+  "observation_seconds": 25.0,
+  "guidance_experiment": "d",
+  "guidance_observation_seconds": 60.0
+}

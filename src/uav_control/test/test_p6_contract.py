@@ -109,7 +109,8 @@ def test_offline_config_reconstruction_matches_nominal_and_adaptive_contract():
 @pytest.mark.parametrize('evaluator', ('true', 'false'))
 def test_imm_primary_graph_is_unique_with_every_optional_diagnostic_switch(shadow, evaluator):
     path = Path(__file__).resolve().parents[2]/'uav_usv_bringup/launch/modular_intercept.launch.py'
-    choices = dict(enable_shadow_perception=shadow, enable_evaluator=evaluator)
+    choices = dict(enable_shadow_perception=shadow, enable_evaluator=evaluator,
+                   prediction_model='imm')
     primary = []
     for call in ast.walk(ast.parse(path.read_text())):
         if not isinstance(call, ast.Call) or not isinstance(call.func, ast.Name):

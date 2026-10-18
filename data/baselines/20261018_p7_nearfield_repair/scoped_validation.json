@@ -1,0 +1,54 @@
+{
+  "source_run": "/home/qin/data/uav_usv_mpc/data/experiments/20261018_p7_nearfield_repair_s_01",
+  "strict_window": [
+    1792310182.2558057,
+    1792310196.7689831
+  ],
+  "evaluator_distance_m": 0.4982387343002886,
+  "evaluator_elapsed_s": 14.513177394866943,
+  "independent_point_distance_at_result_m": 0.4975376474992538,
+  "result_brackets": {
+    "navigation": [
+      1792310196.7540457,
+      1792310196.7700458
+    ],
+    "target": [
+      1792310196.7689831,
+      1792310196.7689831
+    ]
+  },
+  "guidance_samples": 290,
+  "diagnostic_samples": 290,
+  "diagnostic_status": {
+    "P7_GUIDANCE": 290
+  },
+  "visible_all": true,
+  "locked_all": true,
+  "image_samples": 290,
+  "invalid_observations": 0,
+  "minimum_red_pixels": 243,
+  "image_error_u_max": 0.47165178334774127,
+  "image_error_v_max": 1.5912196031619719,
+  "post_result_guidance_samples_excluded": 3,
+  "velocity_only": true,
+  "pre_y_first_minco": 1792310174.3357477,
+  "pre_y_observed_minco_span_s": 7.89732813835144,
+  "pre_y_owner_status": {
+    "MINCO_FOLLOW": 175
+  },
+  "pre_y_minco_sample_fraction": 1.0,
+  "revocations": [
+    {
+      "stamp": 1792310182.2559602,
+      "state": "REVOKED",
+      "reasons": [
+        "P7_GUIDANCE_ENTERED"
+      ]
+    }
+  ],
+  "run_manifest_mismatches": [],
+  "current_source_mismatches": [],
+  "raw_sha256": "4c78e702b51139251794ef4ee9f4ae6a621b6bc7da274d512f1bfd0c31128bf4",
+  "source_fingerprint": "4bb0f8e7626148f02311c23b5ef52314ecce70a70da31b665ee0b8d899c6db4f",
+  "scope": "Physical result epoch, no extrapolation or time fit. Valid detection differs from center/whole-object containment. Raw summary retained; unbounded post-result guidance extrema are excluded here."
+}

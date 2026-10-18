@@ -1,0 +1,34 @@
+{
+  "fixture_sha256": "a3d86c001ad37bef0901e1a4f6a3b1018e11b01ebb7ad6d1b9c9c1250f332a3d",
+  "results": [
+    {
+      "phase_rad": 0.0,
+      "capture_elapsed_s": 14.200000000000001,
+      "capture_distance_m": 0.4990152558054325,
+      "maximum_center_error_v": 0.6984902914414552,
+      "minimum_sampled_height_m": 0.3141393033160927
+    },
+    {
+      "phase_rad": 1.5707963267948966,
+      "capture_elapsed_s": 13.25,
+      "capture_distance_m": 0.49970950303544037,
+      "maximum_center_error_v": 0.5978665423122818,
+      "minimum_sampled_height_m": 0.3147733170917468
+    },
+    {
+      "phase_rad": 3.141592653589793,
+      "capture_elapsed_s": 12.05,
+      "capture_distance_m": 0.49458700601423067,
+      "maximum_center_error_v": 0.5050617208741117,
+      "minimum_sampled_height_m": 0.316915012837015
+    },
+    {
+      "phase_rad": 4.71238898038469,
+      "capture_elapsed_s": 15.15,
+      "capture_distance_m": 0.49580862123650554,
+      "maximum_center_error_v": 0.6659897449048798,
+      "minimum_sampled_height_m": 0.3140788310178296
+    }
+  ],
+  "scope": "Offline fixture, level body, causal KF source, independent camera and lag; production sea guard retained. This does not qualify real flight."
+}

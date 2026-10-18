@@ -28,6 +28,8 @@ setup(
             'moving_target = uav_control.moving_target:main',
             'target_kalman_filter = '
             'uav_control.tracking.target_kalman_filter:main',
+            'target_predictor_node = '
+            'uav_control.tracking.target_predictor_node:main',
             'imm_target_predictor_node = '
             'uav_control.tracking.imm_target_predictor_node:main',
             'intercept_planner_node = '

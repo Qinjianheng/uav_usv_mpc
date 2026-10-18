@@ -1,0 +1,90 @@
+{
+  "kind": "P7_STRAIGHT_FOLLOW_CONTINUITY_LIGHTWEIGHT_SELECTION",
+  "runtime_commit": "fa5bd6e",
+  "runtime_fingerprint": "484076a1d6aef5e6cd037b533c5f317c095a6256718b48f88bea7c331d59a6a8",
+  "cases": {
+    "repeat_01": {
+      "run": "data/experiments/20261018_p7_follow_continuity_f2_01",
+      "copied": {
+        "config/flight.yaml": {
+          "source": "data/experiments/20261018_p7_follow_continuity_f2_01/config/flight.yaml",
+          "sha256": "4f985752c704da93d2a40ec2b148de5f9040ec1b5079c4b709540998b0061690"
+        },
+        "config/research.yaml": {
+          "source": "data/experiments/20261018_p7_follow_continuity_f2_01/config/research.yaml",
+          "sha256": "024fd57c80081d88229458860c6f9b9f090fb589251ce5da55bf8578627576f1"
+        },
+        "summary.json": {
+          "source": "data/experiments/20261018_p7_follow_continuity_f2_01/summary.json",
+          "sha256": "da7bc1ad54a2fe0b412817afa166851013465d4b08764669b11bd1edaa890411"
+        },
+        "condition.json": {
+          "source": "data/experiments/20261018_p7_follow_continuity_f2_01/condition.json",
+          "sha256": "5f96d91dff71ec3428a10f11fee27d0a8e0fcebb89c0f1a8b58bc9234891966d"
+        },
+        "metrics.json": {
+          "source": "data/experiments/20261018_p7_follow_continuity_f2_analysis_01/metrics.json",
+          "sha256": "7a387540773f6e77dc73197c57dab4b9442cae1618003fc9ef7a00d7d803288a"
+        }
+      },
+      "raw_local_only": {
+        "offline_evidence.jsonl": {
+          "path": "data/experiments/20261018_p7_follow_continuity_f2_01/offline_evidence.jsonl",
+          "sha256": "21b6f47c5545b92c23a5e91b9de439f06005d68040e8a2522c1acac9d71e9d8e"
+        },
+        "source_snapshot.json": {
+          "path": "data/experiments/20261018_p7_follow_continuity_f2_01/source_snapshot.json",
+          "sha256": "5ac7d35ed8df6354e4de689aa9964e28ee6f6bbf3bbc53fee47d7a912c611b67"
+        },
+        "SHA256SUMS.json": {
+          "path": "data/experiments/20261018_p7_follow_continuity_f2_01/SHA256SUMS.json",
+          "sha256": "5a17b864a2905037546179fa3f57a4d09910084edc60c37e2b40e7cfee098267"
+        }
+      }
+    },
+    "repeat_02": {
+      "run": "data/experiments/20261018_p7_follow_continuity_f2_02",
+      "copied": {
+        "config/flight.yaml": {
+          "source": "data/experiments/20261018_p7_follow_continuity_f2_02/config/flight.yaml",
+          "sha256": "4f985752c704da93d2a40ec2b148de5f9040ec1b5079c4b709540998b0061690"
+        },
+        "config/research.yaml": {
+          "source": "data/experiments/20261018_p7_follow_continuity_f2_02/config/research.yaml",
+          "sha256": "024fd57c80081d88229458860c6f9b9f090fb589251ce5da55bf8578627576f1"
+        },
+        "summary.json": {
+          "source": "data/experiments/20261018_p7_follow_continuity_f2_02/summary.json",
+          "sha256": "2802e9d325db4bc4503bdab4686fdbab20aab4598275bace50103a94e31fb907"
+        },
+        "condition.json": {
+          "source": "data/experiments/20261018_p7_follow_continuity_f2_02/condition.json",
+          "sha256": "5f96d91dff71ec3428a10f11fee27d0a8e0fcebb89c0f1a8b58bc9234891966d"
+        },
+        "metrics.json": {
+          "source": "data/experiments/20261018_p7_follow_continuity_f2_analysis_02/metrics.json",
+          "sha256": "f45ce9582010032873c603df0b22853d649ed32eacc263c5ea0da37d2e673f33"
+        }
+      },
+      "raw_local_only": {
+        "offline_evidence.jsonl": {
+          "path": "data/experiments/20261018_p7_follow_continuity_f2_02/offline_evidence.jsonl",
+          "sha256": "a74946df45aa03d5baa303165b20ea3ef40af2751dc6863d9d970583678ad143"
+        },
+        "source_snapshot.json": {
+          "path": "data/experiments/20261018_p7_follow_continuity_f2_02/source_snapshot.json",
+          "sha256": "8d81d7160dcdae19f1b308c89d1696da8d6072b397ebcd97c0865ad31ec29c7f"
+        },
+        "SHA256SUMS.json": {
+          "path": "data/experiments/20261018_p7_follow_continuity_f2_02/SHA256SUMS.json",
+          "sha256": "6f2e0f1250db7114f69663616f663ea96f3d8791a2463619bb5226967ce9b722"
+        }
+      }
+    }
+  },
+  "negative_comparison": {
+    "run": "data/experiments/20261018_p7_variable_capture_f2_01",
+    "findings": "data/experiments/20261018_p7_follow_continuity_audit_01/original_findings.json"
+  },
+  "scope": "Two straight F2 25-second regressions only; no F3/capture rerun. Raw JSONL/source snapshots/ULog remain local in ignored experiments."
+}

@@ -1,0 +1,273 @@
+{
+  "kind": "P7_VARIABLE_CAPTURE_LIGHTWEIGHT_SELECTION",
+  "runtime_commit": "f2f4a20",
+  "cases": {
+    "eight": {
+      "run": "data/experiments/20261018_p7_variable_capture_eight_02",
+      "copied": {
+        "config/flight.yaml": {
+          "source": "data/experiments/20261018_p7_variable_capture_eight_02/config/flight.yaml",
+          "sha256": "8cb9ea58be6b9aebfb54b5ebeff9df99e94415a57f22e7fdf04d00f8666f3108"
+        },
+        "config/research.yaml": {
+          "source": "data/experiments/20261018_p7_variable_capture_eight_02/config/research.yaml",
+          "sha256": "024fd57c80081d88229458860c6f9b9f090fb589251ce5da55bf8578627576f1"
+        },
+        "summary.json": {
+          "source": "data/experiments/20261018_p7_variable_capture_eight_02/summary.json",
+          "sha256": "37e4dfe5da416ae56f2db211b82a877acfc735727550d2b4b50c8f9994095f08"
+        },
+        "terminal_result.json": {
+          "source": "data/experiments/20261018_p7_variable_capture_eight_02/terminal_result.json",
+          "sha256": "5e07d17b6f7419acb7a4f9b91079f5e17636017db099df7877873cdf9fceda1a"
+        }
+      },
+      "raw_local_only": {
+        "path": "data/experiments/20261018_p7_variable_capture_eight_02/offline_evidence.jsonl",
+        "sha256": "59184a6cf78f68f3673db80ade3da587854e70fca3bde730762a2e0963955292"
+      },
+      "source_snapshot_local_only": {
+        "path": "data/experiments/20261018_p7_variable_capture_eight_02/source_snapshot.json",
+        "sha256": "7d3be298952fbbd37a43d17214d0cbd424b53d63d45b476bca7714e51a327abd"
+      }
+    },
+    "s": {
+      "run": "data/experiments/20261018_p7_variable_capture_s_02",
+      "copied": {
+        "config/flight.yaml": {
+          "source": "data/experiments/20261018_p7_variable_capture_s_02/config/flight.yaml",
+          "sha256": "c947e2eb73effcd6fc0941b65bd1650f26f728873c36bee52b30972fece6502e"
+        },
+        "config/research.yaml": {
+          "source": "data/experiments/20261018_p7_variable_capture_s_02/config/research.yaml",
+          "sha256": "024fd57c80081d88229458860c6f9b9f090fb589251ce5da55bf8578627576f1"
+        },
+        "summary.json": {
+          "source": "data/experiments/20261018_p7_variable_capture_s_02/summary.json",
+          "sha256": "c0a6177e422c6f5f8288e7dffbcfcc3b8862d8feb019e6a3ca382af72dfd3893"
+        },
+        "terminal_result.json": {
+          "source": "data/experiments/20261018_p7_variable_capture_s_02/terminal_result.json",
+          "sha256": "f9f481540a9c20ac5abdf389adff4c9ac826091c43dd6c1ebb84c206375022a9"
+        }
+      },
+      "raw_local_only": {
+        "path": "data/experiments/20261018_p7_variable_capture_s_02/offline_evidence.jsonl",
+        "sha256": "9fb664495146ac31275ac756fa4bbbd2b28335881711702ffb630484a71fc5e2"
+      },
+      "source_snapshot_local_only": {
+        "path": "data/experiments/20261018_p7_variable_capture_s_02/source_snapshot.json",
+        "sha256": "1aa10e21873e5186a347267c3a0227bbb5a1f3e21276e3fe21e9c5d28b15eadf"
+      }
+    },
+    "z": {
+      "run": "data/experiments/20261018_p7_variable_capture_z_01",
+      "copied": {
+        "config/flight.yaml": {
+          "source": "data/experiments/20261018_p7_variable_capture_z_01/config/flight.yaml",
+          "sha256": "b23e54080f968ecf1443325cb16e03281213de7b7b990015d777ff43d5f0e270"
+        },
+        "config/research.yaml": {
+          "source": "data/experiments/20261018_p7_variable_capture_z_01/config/research.yaml",
+          "sha256": "024fd57c80081d88229458860c6f9b9f090fb589251ce5da55bf8578627576f1"
+        },
+        "summary.json": {
+          "source": "data/experiments/20261018_p7_variable_capture_z_01/summary.json",
+          "sha256": "5a39cde937388501e17c12cd55427cac4bd8a337efa0a87a76a2b5a1ebee8b8d"
+        },
+        "terminal_result.json": {
+          "source": "data/experiments/20261018_p7_variable_capture_z_01/terminal_result.json",
+          "sha256": "f0a96630a495b6488da19f7cc591ad4d2a8dcd8301df977d164dfc4315d1f6f2"
+        }
+      },
+      "raw_local_only": {
+        "path": "data/experiments/20261018_p7_variable_capture_z_01/offline_evidence.jsonl",
+        "sha256": "0a5f5735d8b8155ec5a830eb09cb6cf21d0e83fbbe8c1da9002a59d4db0215ed"
+      },
+      "source_snapshot_local_only": {
+        "path": "data/experiments/20261018_p7_variable_capture_z_01/source_snapshot.json",
+        "sha256": "8c11590a52de321b4b5d145058e19d93c3f49f8206bb458aa140389da9282098"
+      }
+    }
+  },
+  "metrics": {
+    "20261018_p7_variable_capture_eight_02": {
+      "run": "/home/qin/data/uav_usv_mpc/data/experiments/20261018_p7_variable_capture_eight_02",
+      "motion": "variable_speed_eight",
+      "healthy": true,
+      "reason": "P7_CAPTURE_COMPLETE",
+      "result": {
+        "kind": "capture_result",
+        "receipt": 1792300542.7884753,
+        "stamp": 1792300542.736295,
+        "success": true,
+        "outcome": "SUCCESS",
+        "reason": "CAPTURE_RADIUS_REACHED",
+        "radius": 0.5,
+        "minimum_distance": 0.49177480414118757,
+        "elapsed": 13.481507062911987,
+        "relative_speed": 0.7241650752083685
+      },
+      "independent_native_3d_minimum_m": 0.49055055638250467,
+      "independent_distance_at_result_m": 0.48761060332243755,
+      "result_native_brackets": {
+        "navigation": [
+          1792300542.7297208,
+          1792300542.745732
+        ],
+        "target": [
+          1792300542.736295,
+          1792300542.736295
+        ]
+      },
+      "minimum_height_m": 0.3488397002220154,
+      "maximum_actual_horizontal_speed_mps": 4.449616577007448,
+      "maximum_actual_horizontal_acceleration_mps2": 1.6528844041288193,
+      "maximum_image_error_u": 0.46556916684388133,
+      "maximum_image_error_v": 1.6404595231430783,
+      "freeze": {
+        "verified": false,
+        "world_verified": true,
+        "native_pose_verified": false,
+        "pause_samples": 50,
+        "paused_seconds": 4.991994857788086,
+        "clock_span_s": 0.0,
+        "target_position_span_m": 0.0,
+        "target_velocity_zero": true,
+        "native_pose_span_m": {},
+        "native_pose_continuity_error_m": {}
+      },
+      "single_tracker": true,
+      "single_bctra": true,
+      "velocity_only_interface": true,
+      "retired_authority_events": 0,
+      "minco_before_y_seconds": 6.830953598022461,
+      "pre_y_actual_minco_seconds": 6.88089919090271,
+      "pre_y_observed_owner_coverage_seconds": 6.88089919090271,
+      "pre_y_actual_minco_fraction": 1.0,
+      "source_fingerprint": "bed597c09761a2feadc9848a81f5d773dead5390cd38dcd98419cc3b68ca519d",
+      "raw_sha256": "59184a6cf78f68f3673db80ade3da587854e70fca3bde730762a2e0963955292",
+      "recorded_summary_sha256": "37e4dfe5da416ae56f2db211b82a877acfc735727550d2b4b50c8f9994095f08",
+      "scope": "Actual navigation/target samples inside coverage; offline interpolation only. Detection visibility is distinct from full-object containment."
+    },
+    "20261018_p7_variable_capture_s_02": {
+      "run": "/home/qin/data/uav_usv_mpc/data/experiments/20261018_p7_variable_capture_s_02",
+      "motion": "variable_speed_s",
+      "healthy": true,
+      "reason": "P7_CAPTURE_COMPLETE",
+      "result": {
+        "kind": "capture_result",
+        "receipt": 1792300323.6702957,
+        "stamp": 1792300323.6334677,
+        "success": true,
+        "outcome": "SUCCESS",
+        "reason": "CAPTURE_RADIUS_REACHED",
+        "radius": 0.5,
+        "minimum_distance": 0.49521001190959607,
+        "elapsed": 18.930907487869263,
+        "relative_speed": 0.42907103592597434
+      },
+      "independent_native_3d_minimum_m": 0.49285125564043314,
+      "independent_distance_at_result_m": 0.49112901617515614,
+      "result_native_brackets": {
+        "navigation": [
+          1792300323.624523,
+          1792300323.6485145
+        ],
+        "target": [
+          1792300323.6334677,
+          1792300323.6334677
+        ]
+      },
+      "minimum_height_m": 0.3589416742324829,
+      "maximum_actual_horizontal_speed_mps": 4.817860427160302,
+      "maximum_actual_horizontal_acceleration_mps2": 1.13264519492012,
+      "maximum_image_error_u": 2.6735270770961885,
+      "maximum_image_error_v": 3.527914699918733,
+      "freeze": {
+        "verified": false,
+        "world_verified": true,
+        "native_pose_verified": false,
+        "pause_samples": 46,
+        "paused_seconds": 4.579493522644043,
+        "clock_span_s": 0.0,
+        "target_position_span_m": 0.0,
+        "target_velocity_zero": true,
+        "native_pose_span_m": {},
+        "native_pose_continuity_error_m": {}
+      },
+      "single_tracker": true,
+      "single_bctra": true,
+      "velocity_only_interface": true,
+      "retired_authority_events": 0,
+      "minco_before_y_seconds": 6.292096138000488,
+      "pre_y_actual_minco_seconds": 6.341987133026123,
+      "pre_y_observed_owner_coverage_seconds": 6.341987133026123,
+      "pre_y_actual_minco_fraction": 1.0,
+      "source_fingerprint": "bed597c09761a2feadc9848a81f5d773dead5390cd38dcd98419cc3b68ca519d",
+      "raw_sha256": "9fb664495146ac31275ac756fa4bbbd2b28335881711702ffb630484a71fc5e2",
+      "recorded_summary_sha256": "c0a6177e422c6f5f8288e7dffbcfcc3b8862d8feb019e6a3ca382af72dfd3893",
+      "scope": "Actual navigation/target samples inside coverage; offline interpolation only. Detection visibility is distinct from full-object containment."
+    },
+    "20261018_p7_variable_capture_z_01": {
+      "run": "/home/qin/data/uav_usv_mpc/data/experiments/20261018_p7_variable_capture_z_01",
+      "motion": "variable_speed_z",
+      "healthy": true,
+      "reason": "P7_CAPTURE_COMPLETE",
+      "result": {
+        "kind": "capture_result",
+        "receipt": 1792300450.1462843,
+        "stamp": 1792300450.1074498,
+        "success": true,
+        "outcome": "SUCCESS",
+        "reason": "CAPTURE_RADIUS_REACHED",
+        "radius": 0.5,
+        "minimum_distance": 0.4995271481133547,
+        "elapsed": 10.74109411239624,
+        "relative_speed": 0.7216700889128357
+      },
+      "independent_native_3d_minimum_m": 0.4857208679577365,
+      "independent_distance_at_result_m": 0.4847836462093113,
+      "result_native_brackets": {
+        "navigation": [
+          1792300450.1055462,
+          1792300450.12955
+        ],
+        "target": [
+          1792300450.1074498,
+          1792300450.1074498
+        ]
+      },
+      "minimum_height_m": 0.3707994818687439,
+      "maximum_actual_horizontal_speed_mps": 4.614807674700934,
+      "maximum_actual_horizontal_acceleration_mps2": 0.6489474754729947,
+      "maximum_image_error_u": 0.042266564383649334,
+      "maximum_image_error_v": 1.5194478205635567,
+      "freeze": {
+        "verified": false,
+        "world_verified": true,
+        "native_pose_verified": false,
+        "pause_samples": 47,
+        "paused_seconds": 4.68726921081543,
+        "clock_span_s": 0.0,
+        "target_position_span_m": 0.0,
+        "target_velocity_zero": true,
+        "native_pose_span_m": {},
+        "native_pose_continuity_error_m": {}
+      },
+      "single_tracker": true,
+      "single_bctra": true,
+      "velocity_only_interface": true,
+      "retired_authority_events": 0,
+      "minco_before_y_seconds": 6.352795839309692,
+      "pre_y_actual_minco_seconds": 6.4030985832214355,
+      "pre_y_observed_owner_coverage_seconds": 6.4030985832214355,
+      "pre_y_actual_minco_fraction": 1.0,
+      "source_fingerprint": "bed597c09761a2feadc9848a81f5d773dead5390cd38dcd98419cc3b68ca519d",
+      "raw_sha256": "0a5f5735d8b8155ec5a830eb09cb6cf21d0e83fbbe8c1da9002a59d4db0215ed",
+      "recorded_summary_sha256": "5a39cde937388501e17c12cd55427cac4bd8a337efa0a87a76a2b5a1ebee8b8d",
+      "scope": "Actual navigation/target samples inside coverage; offline interpolation only. Detection visibility is distinct from full-object containment."
+    }
+  },
+  "scope": "Selected complete configs, original summary and result receipts. Raw JSONL, full source snapshots and curves remain local in ignored experiment directories; this is not their Git backup."
+}

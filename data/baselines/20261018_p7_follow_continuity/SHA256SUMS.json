@@ -1,0 +1,14 @@
+{
+  "README.md": "1dc1ee11eab6919118695f463de63db7dcdd8737bdfa270438a24d753605268c",
+  "repeat_01/condition.json": "5f96d91dff71ec3428a10f11fee27d0a8e0fcebb89c0f1a8b58bc9234891966d",
+  "repeat_01/config/flight.yaml": "4f985752c704da93d2a40ec2b148de5f9040ec1b5079c4b709540998b0061690",
+  "repeat_01/config/research.yaml": "024fd57c80081d88229458860c6f9b9f090fb589251ce5da55bf8578627576f1",
+  "repeat_01/metrics.json": "7a387540773f6e77dc73197c57dab4b9442cae1618003fc9ef7a00d7d803288a",
+  "repeat_01/summary.json": "da7bc1ad54a2fe0b412817afa166851013465d4b08764669b11bd1edaa890411",
+  "repeat_02/condition.json": "5f96d91dff71ec3428a10f11fee27d0a8e0fcebb89c0f1a8b58bc9234891966d",
+  "repeat_02/config/flight.yaml": "4f985752c704da93d2a40ec2b148de5f9040ec1b5079c4b709540998b0061690",
+  "repeat_02/config/research.yaml": "024fd57c80081d88229458860c6f9b9f090fb589251ce5da55bf8578627576f1",
+  "repeat_02/metrics.json": "f45ce9582010032873c603df0b22853d649ed32eacc263c5ea0da37d2e673f33",
+  "repeat_02/summary.json": "2802e9d325db4bc4503bdab4686fdbab20aab4598275bace50103a94e31fb907",
+  "selection.json": "291788056b13a0ae4560922582caf39fd75496274d4d4f2525ab81b1a8f983ea"
+}

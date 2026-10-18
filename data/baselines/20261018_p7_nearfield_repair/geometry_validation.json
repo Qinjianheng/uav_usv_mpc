@@ -1,0 +1,835 @@
+{
+  "source_run": "/home/qin/data/uav_usv_mpc/data/experiments/20261018_p7_nearfield_repair_s_01",
+  "source_sha256": "4c78e702b51139251794ef4ee9f4ae6a621b6bc7da274d512f1bfd0c31128bf4",
+  "result_epoch": 1792310196.7689831,
+  "analytic_fixture_checks_passed": 7,
+  "matched_images": 20,
+  "invalid_images": 0,
+  "center_in_frame_count": 16,
+  "minimum_sphere_bottom_margin_m": 0.1332616696526141,
+  "minimum_rendered_red_pixels": 29280,
+  "hold_residual_p95_m": 0.11044329318999097,
+  "geometry": [
+    {
+      "stamp": 1792310195.778046,
+      "before_result": -0.9909372329711914,
+      "raw_stamp": 57.052,
+      "valid": true,
+      "reason": "",
+      "red_pixels": 29280,
+      "input_age": 0.02947711944580078,
+      "rgb_depth_skew": 0.0,
+      "native_nav_bracket": [
+        57.024,
+        57.064
+      ],
+      "native_target_source_stamp": 57.024,
+      "target_pose_age": 0.027999999999998693,
+      "target_next_stamp": 57.064,
+      "camera_held": [
+        0.7537432527952296,
+        0.11741330258407101,
+        0.13439034370010006
+      ],
+      "camera_linear": [
+        0.7496840511929318,
+        0.043228409257480505,
+        0.1427137432629029
+      ],
+      "observed_center": [
+        0.7480371608237366,
+        0.013015440411236368,
+        0.1474646931820714
+      ],
+      "hold_residual": 0.10536798245303,
+      "linear_residual": 0.0306285366860174,
+      "bottom_plane_margin": 0.8512320958366173,
+      "linear_bottom_margin": 0.8547557943571608,
+      "level_body_counterfactual_bottom_margin": 0.8410116795722142,
+      "visible_pixel_rays_without_near": 29174,
+      "visible_pixel_rays_with_near": 29174,
+      "effective_optical_pitch_down_deg": 31.174164303678182,
+      "center_in_frame": true
+    },
+    {
+      "stamp": 1792310195.8260565,
+      "before_result": -0.9429266452789307,
+      "raw_stamp": 57.1,
+      "valid": true,
+      "reason": "",
+      "red_pixels": 32097,
+      "input_age": 0.016851425170898438,
+      "rgb_depth_skew": 0.0,
+      "native_nav_bracket": [
+        57.064,
+        57.104
+      ],
+      "native_target_source_stamp": 57.064,
+      "target_pose_age": 0.036000000000001364,
+      "target_next_stamp": 57.104,
+      "camera_held": [
+        0.7229084954885453,
+        0.11373303937387519,
+        0.11761692209534849
+      ],
+      "camera_linear": [
+        0.7178386645293445,
+        0.018547532456306748,
+        0.1282317948246689
+      ],
+      "observed_center": [
+        0.7173487670946715,
+        0.009422713045277253,
+        0.13039042681858828
+      ],
+      "hold_residual": 0.10523648217945555,
+      "linear_residual": 0.00938946328953749,
+      "bottom_plane_margin": 0.8182092900572818,
+      "linear_bottom_margin": 0.8227740980915976,
+      "level_body_counterfactual_bottom_margin": 0.809777438369916,
+      "visible_pixel_rays_without_near": 32002,
+      "visible_pixel_rays_with_near": 32002,
+      "effective_optical_pitch_down_deg": 30.86209576357455,
+      "center_in_frame": true
+    },
+    {
+      "stamp": 1792310195.878044,
+      "before_result": -0.8909392356872559,
+      "raw_stamp": 57.152,
+      "valid": true,
+      "reason": "",
+      "red_pixels": 35545,
+      "input_age": 0.020884275436401367,
+      "rgb_depth_skew": 0.0,
+      "native_nav_bracket": [
+        57.144,
+        57.184
+      ],
+      "native_target_source_stamp": 57.144,
+      "target_pose_age": 0.008000000000002672,
+      "target_next_stamp": 57.184,
+      "camera_held": [
+        0.6847402780203573,
+        0.013047263325596803,
+        0.1074144383969953
+      ],
+      "camera_linear": [
+        0.6847402780203573,
+        0.013047263325596803,
+        0.10741443839699535
+      ],
+      "observed_center": [
+        0.6849202136902478,
+        0.014446990924261105,
+        0.10834673413847051
+      ],
+      "hold_residual": 0.0016913868703919558,
+      "linear_residual": 0.0016913868703919252,
+      "bottom_plane_margin": 0.7852250025736208,
+      "linear_bottom_margin": 0.7852250025736209,
+      "level_body_counterfactual_bottom_margin": 0.7784926711819156,
+      "visible_pixel_rays_without_near": 35723,
+      "visible_pixel_rays_with_near": 35723,
+      "effective_optical_pitch_down_deg": 30.49816179456403,
+      "center_in_frame": true
+    },
+    {
+      "stamp": 1792310195.926071,
+      "before_result": -0.8429121971130371,
+      "raw_stamp": 57.2,
+      "valid": true,
+      "reason": "",
+      "red_pixels": 39329,
+      "input_age": 0.020284414291381836,
+      "rgb_depth_skew": 0.0,
+      "native_nav_bracket": [
+        57.184,
+        57.224
+      ],
+      "native_target_source_stamp": 57.184,
+      "target_pose_age": 0.016000000000005343,
+      "target_next_stamp": 57.224,
+      "camera_held": [
+        0.6595622279647633,
+        0.11471576408269818,
+        0.07463788552178069
+      ],
+      "camera_linear": [
+        0.6575029896198995,
+        0.0726390861244195,
+        0.07920851647157803
+      ],
+      "observed_center": [
+        0.6545483630489887,
+        0.01092187012518564,
+        0.08696276985129053
+      ],
+      "hold_residual": 0.10464327039037337,
+      "linear_residual": 0.062272570320699,
+      "bottom_plane_margin": 0.7440002886480701,
+      "linear_bottom_margin": 0.7460480695677087,
+      "level_body_counterfactual_bottom_margin": 0.738766590445455,
+      "visible_pixel_rays_without_near": 39374,
+      "visible_pixel_rays_with_near": 39374,
+      "effective_optical_pitch_down_deg": 30.144173569823508,
+      "center_in_frame": true
+    },
+    {
+      "stamp": 1792310195.9780579,
+      "before_result": -0.7909252643585205,
+      "raw_stamp": 57.252,
+      "valid": true,
+      "reason": "",
+      "red_pixels": 44139,
+      "input_age": 0.022328853607177734,
+      "rgb_depth_skew": 0.0,
+      "native_nav_bracket": [
+        57.224,
+        57.264
+      ],
+      "native_target_source_stamp": 57.224,
+      "target_pose_age": 0.028000000000005798,
+      "target_next_stamp": 57.264,
+      "camera_held": [
+        0.6268678614273699,
+        0.11935272801678898,
+        0.049301871329436364
+      ],
+      "camera_linear": [
+        0.6234878035246332,
+        0.04606060536304246,
+        0.057098630512528475
+      ],
+      "observed_center": [
+        0.6221027940067848,
+        0.01597844930117609,
+        0.06118306603684337
+      ],
+      "hold_residual": 0.10416386204039889,
+      "linear_residual": 0.03038975120410333,
+      "bottom_plane_margin": 0.7033425158104232,
+      "linear_bottom_margin": 0.7069238470950961,
+      "level_body_counterfactual_bottom_margin": 0.6995177124765734,
+      "visible_pixel_rays_without_near": 44382,
+      "visible_pixel_rays_with_near": 44382,
+      "effective_optical_pitch_down_deg": 29.75033466776096,
+      "center_in_frame": true
+    },
+    {
+      "stamp": 1792310196.0260513,
+      "before_result": -0.7429318428039551,
+      "raw_stamp": 57.3,
+      "valid": true,
+      "reason": "",
+      "red_pixels": 49604,
+      "input_age": 0.030862092971801758,
+      "rgb_depth_skew": 0.0,
+      "native_nav_bracket": [
+        57.264,
+        57.304
+      ],
+      "native_target_source_stamp": 57.264,
+      "target_pose_age": 0.03599999999999426,
+      "target_next_stamp": 57.304,
+      "camera_held": [
+        0.5963096712579963,
+        0.11574213003132311,
+        0.025731957045213055
+      ],
+      "camera_linear": [
+        0.5922602176122256,
+        0.02152990923579884,
+        0.03549061615941271
+      ],
+      "observed_center": [
+        0.5918968965465993,
+        0.012302970589562479,
+        0.03723135468980301
+      ],
+      "hold_residual": 0.10416990176082497,
+      "linear_residual": 0.009396731857902687,
+      "bottom_plane_margin": 0.6654239655972105,
+      "linear_bottom_margin": 0.67002681129846,
+      "level_body_counterfactual_bottom_margin": 0.6627347518462026,
+      "visible_pixel_rays_without_near": 49992,
+      "visible_pixel_rays_with_near": 49992,
+      "effective_optical_pitch_down_deg": 29.383000373568976,
+      "center_in_frame": true
+    },
+    {
+      "stamp": 1792310196.078049,
+      "before_result": -0.6909341812133789,
+      "raw_stamp": 57.352,
+      "valid": true,
+      "reason": "",
+      "red_pixels": 56866,
+      "input_age": 0.030255794525146484,
+      "rgb_depth_skew": 0.0,
+      "native_nav_bracket": [
+        57.344,
+        57.384
+      ],
+      "native_target_source_stamp": 57.344,
+      "target_pose_age": 0.007999999999995566,
+      "target_next_stamp": 57.384,
+      "camera_held": [
+        0.559497528619899,
+        0.01557972302592775,
+        0.00888834940827754
+      ],
+      "camera_linear": [
+        0.5594975286199073,
+        0.015579723025917147,
+        0.008888349408282314
+      ],
+      "observed_center": [
+        0.5597491916291731,
+        0.016724043074591854,
+        0.009550089352185263
+      ],
+      "hold_residual": 0.0013456234233152067,
+      "linear_residual": 0.0013456234233203183,
+      "bottom_plane_margin": 0.6283772847704523,
+      "linear_bottom_margin": 0.6283772847704615,
+      "level_body_counterfactual_bottom_margin": 0.6264644259126853,
+      "visible_pixel_rays_without_near": 57145,
+      "visible_pixel_rays_with_near": 57145,
+      "effective_optical_pitch_down_deg": 28.983943585038876,
+      "center_in_frame": true
+    },
+    {
+      "stamp": 1792310196.1260564,
+      "before_result": -0.6429266929626465,
+      "raw_stamp": 57.4,
+      "valid": true,
+      "reason": "",
+      "red_pixels": 65398,
+      "input_age": 0.029434919357299805,
+      "rgb_depth_skew": 0.0,
+      "native_nav_bracket": [
+        57.384,
+        57.424
+      ],
+      "native_target_source_stamp": 57.384,
+      "target_pose_age": 0.015999999999998238,
+      "target_next_stamp": 57.424,
+      "camera_held": [
+        0.5332252977914919,
+        0.11606210439178258,
+        -0.026575749326880116
+      ],
+      "camera_linear": [
+        0.5317470449601165,
+        0.07456210606831726,
+        -0.022573877015327093
+      ],
+      "observed_center": [
+        0.5298181571563754,
+        0.013473509346182438,
+        -0.016044769070265467
+      ],
+      "hold_residual": 0.1031839618637645,
+      "linear_residual": 0.06146679191398644,
+      "bottom_plane_margin": 0.5844169965172518,
+      "linear_bottom_margin": 0.5864257152173563,
+      "level_body_counterfactual_bottom_margin": 0.5836894005530875,
+      "visible_pixel_rays_without_near": 66546,
+      "visible_pixel_rays_with_near": 66546,
+      "effective_optical_pitch_down_deg": 28.61587125514532,
+      "center_in_frame": true
+    },
+    {
+      "stamp": 1792310196.178046,
+      "before_result": -0.5909371376037598,
+      "raw_stamp": 57.452,
+      "valid": true,
+      "reason": "",
+      "red_pixels": 77390,
+      "input_age": 0.02334761619567871,
+      "rgb_depth_skew": 0.0,
+      "native_nav_bracket": [
+        57.424,
+        57.464
+      ],
+      "native_target_source_stamp": 57.424,
+      "target_pose_age": 0.027999999999998693,
+      "target_next_stamp": 57.464,
+      "camera_held": [
+        0.5008424938748646,
+        0.12085854921531503,
+        -0.054956570380952696
+      ],
+      "camera_linear": [
+        0.49854886690735556,
+        0.04797651026233096,
+        -0.048241607450134394
+      ],
+      "observed_center": [
+        0.4977600649203232,
+        0.017736332146038924,
+        -0.044948756130460454
+      ],
+      "hold_residual": 0.10365254153958334,
+      "linear_residual": 0.030429154620089143,
+      "bottom_plane_margin": 0.5416906295958646,
+      "linear_bottom_margin": 0.5451852912789052,
+      "level_body_counterfactual_bottom_margin": 0.5418076240812624,
+      "visible_pixel_rays_without_near": 79452,
+      "visible_pixel_rays_with_near": 79452,
+      "effective_optical_pitch_down_deg": 28.220208818781277,
+      "center_in_frame": true
+    },
+    {
+      "stamp": 1792310196.2260501,
+      "before_result": -0.5429329872131348,
+      "raw_stamp": 57.5,
+      "valid": true,
+      "reason": "",
+      "red_pixels": 92349,
+      "input_age": 0.018993616104125977,
+      "rgb_depth_skew": 0.0,
+      "native_nav_bracket": [
+        57.464,
+        57.504
+      ],
+      "native_target_source_stamp": 57.464,
+      "target_pose_age": 0.036000000000001364,
+      "target_next_stamp": 57.504,
+      "camera_held": [
+        0.47094075339466623,
+        0.11664710714593776,
+        -0.08061625018045906
+      ],
+      "camera_linear": [
+        0.46842455522172144,
+        0.02385876246895674,
+        -0.07250647986198167
+      ],
+      "observed_center": [
+        0.4683535756491637,
+        0.014534056549255353,
+        -0.07139008247104717
+      ],
+      "hold_residual": 0.10256164371464432,
+      "linear_residual": 0.009391566521252987,
+      "bottom_plane_margin": 0.5026464005517544,
+      "linear_bottom_margin": 0.5070356220534438,
+      "level_body_counterfactual_bottom_margin": 0.5034181001152094,
+      "visible_pixel_rays_without_near": 95338,
+      "visible_pixel_rays_with_near": 95338,
+      "effective_optical_pitch_down_deg": 27.85196605880698,
+      "center_in_frame": true
+    },
+    {
+      "stamp": 1792310196.2780464,
+      "before_result": -0.4909367561340332,
+      "raw_stamp": 57.552,
+      "valid": true,
+      "reason": "",
+      "red_pixels": 106167,
+      "input_age": 0.028203487396240234,
+      "rgb_depth_skew": 0.0,
+      "native_nav_bracket": [
+        57.544,
+        57.584
+      ],
+      "native_target_source_stamp": 57.544,
+      "target_pose_age": 0.008000000000002672,
+      "target_next_stamp": 57.584,
+      "camera_held": [
+        0.4369433491664971,
+        0.018045579034671994,
+        -0.10100631634572887
+      ],
+      "camera_linear": [
+        0.43694334916650424,
+        0.018045579034660364,
+        -0.10100631634572496
+      ],
+      "observed_center": [
+        0.43731604668644647,
+        0.018995514854387302,
+        -0.10079659756202872
+      ],
+      "hold_residual": 0.0010417597953421402,
+      "linear_residual": 0.001041759795349395,
+      "bottom_plane_margin": 0.4648193349648498,
+      "linear_bottom_margin": 0.4648193349648574,
+      "level_body_counterfactual_bottom_margin": 0.4657660493504474,
+      "visible_pixel_rays_without_near": 107672,
+      "visible_pixel_rays_with_near": 107672,
+      "effective_optical_pitch_down_deg": 27.431282476350383,
+      "center_in_frame": true
+    },
+    {
+      "stamp": 1792310196.3260486,
+      "before_result": -0.442934513092041,
+      "raw_stamp": 57.6,
+      "valid": true,
+      "reason": "",
+      "red_pixels": 115567,
+      "input_age": 0.020398616790771484,
+      "rgb_depth_skew": 0.0,
+      "native_nav_bracket": [
+        57.584,
+        57.624
+      ],
+      "native_target_source_stamp": 57.584,
+      "target_pose_age": 0.015999999999998238,
+      "target_next_stamp": 57.624,
+      "camera_held": [
+        0.4102955342603736,
+        0.11732506403201168,
+        -0.13556753983364192
+      ],
+      "camera_linear": [
+        0.40956742054456263,
+        0.07611972783152923,
+        -0.13240232392187307
+      ],
+      "observed_center": [
+        0.408975056998534,
+        0.01521099513382998,
+        -0.12770828624947145
+      ],
+      "hold_residual": 0.1024245800286334,
+      "linear_residual": 0.06109221393173084,
+      "bottom_plane_margin": 0.42128428807821183,
+      "linear_bottom_margin": 0.4231661126247058,
+      "level_body_counterfactual_bottom_margin": 0.42332833852052454,
+      "visible_pixel_rays_without_near": 115744,
+      "visible_pixel_rays_with_near": 115744,
+      "effective_optical_pitch_down_deg": 27.013940183383834,
+      "center_in_frame": true
+    },
+    {
+      "stamp": 1792310196.378044,
+      "before_result": -0.39093923568725586,
+      "raw_stamp": 57.652,
+      "valid": true,
+      "reason": "",
+      "red_pixels": 120475,
+      "input_age": 0.01972675323486328,
+      "rgb_depth_skew": 0.0,
+      "native_nav_bracket": [
+        57.624,
+        57.664
+      ],
+      "native_target_source_stamp": 57.624,
+      "target_pose_age": 0.027999999999998693,
+      "target_next_stamp": 57.664,
+      "camera_held": [
+        0.3796618409155715,
+        0.1215482740951027,
+        -0.16438902496543453
+      ],
+      "camera_linear": [
+        0.37874897714353717,
+        0.049448304672463916,
+        -0.15926902392417658
+      ],
+      "observed_center": [
+        0.379331697847236,
+        0.0191593257980264,
+        -0.15779253511775715
+      ],
+      "hold_residual": 0.10260175147694821,
+      "linear_residual": 0.03033054275594361,
+      "bottom_plane_margin": 0.37939070416063464,
+      "linear_bottom_margin": 0.3826107279958687,
+      "level_body_counterfactual_bottom_margin": 0.382071063564728,
+      "visible_pixel_rays_without_near": 113022,
+      "visible_pixel_rays_with_near": 113022,
+      "effective_optical_pitch_down_deg": 26.53239423084772,
+      "center_in_frame": true
+    },
+    {
+      "stamp": 1792310196.4260502,
+      "before_result": -0.34293293952941895,
+      "raw_stamp": 57.7,
+      "valid": true,
+      "reason": "",
+      "red_pixels": 121154,
+      "input_age": 0.01917743682861328,
+      "rgb_depth_skew": 0.0,
+      "native_nav_bracket": [
+        57.664,
+        57.704
+      ],
+      "native_target_source_stamp": 57.664,
+      "target_pose_age": 0.036000000000001364,
+      "target_next_stamp": 57.704,
+      "camera_held": [
+        0.3518839295406724,
+        0.11724700626150653,
+        -0.19011436146729005
+      ],
+      "camera_linear": [
+        0.35118475010686684,
+        0.02482340735360261,
+        -0.1841207222716827
+      ],
+      "observed_center": [
+        0.3519898506141829,
+        0.015210488556187271,
+        -0.18395454819351767
+      ],
+      "hold_residual": 0.10222233349062956,
+      "linear_residual": 0.009648005413391713,
+      "bottom_plane_margin": 0.3417084933794472,
+      "linear_bottom_margin": 0.3457234220403653,
+      "level_body_counterfactual_bottom_margin": 0.3449011806823048,
+      "visible_pixel_rays_without_near": 109464,
+      "visible_pixel_rays_with_near": 109464,
+      "effective_optical_pitch_down_deg": 26.061238975952463,
+      "center_in_frame": true
+    },
+    {
+      "stamp": 1792310196.4780438,
+      "before_result": -0.2909393310546875,
+      "raw_stamp": 57.752,
+      "valid": true,
+      "reason": "",
+      "red_pixels": 113643,
+      "input_age": 0.030614376068115234,
+      "rgb_depth_skew": 0.0,
+      "native_nav_bracket": [
+        57.744,
+        57.784
+      ],
+      "native_target_source_stamp": 57.744,
+      "target_pose_age": 0.008000000000002672,
+      "target_next_stamp": 57.784,
+      "camera_held": [
+        0.3224938313895162,
+        0.01874959597913778,
+        -0.212048921361768
+      ],
+      "camera_linear": [
+        0.3224938313895235,
+        0.01874959597912612,
+        -0.21204892136176434
+      ],
+      "observed_center": [
+        0.3230568505020002,
+        0.019303935918903774,
+        -0.21218711928801404
+      ],
+      "hold_residual": 0.0008021109378762791,
+      "linear_residual": 0.0008021109378798623,
+      "bottom_plane_margin": 0.30578824788146464,
+      "linear_bottom_margin": 0.3057882478814722,
+      "level_body_counterfactual_bottom_margin": 0.3089482352262242,
+      "visible_pixel_rays_without_near": 117514,
+      "visible_pixel_rays_with_near": 117514,
+      "effective_optical_pitch_down_deg": 25.5138821195799,
+      "center_in_frame": true
+    },
+    {
+      "stamp": 1792310196.5260594,
+      "before_result": -0.24292373657226562,
+      "raw_stamp": 57.8,
+      "valid": true,
+      "reason": "",
+      "red_pixels": 108781,
+      "input_age": 0.030112266540527344,
+      "rgb_depth_skew": 0.0,
+      "native_nav_bracket": [
+        57.784,
+        57.824
+      ],
+      "native_target_source_stamp": 57.784,
+      "target_pose_age": 0.015999999999998238,
+      "target_next_stamp": 57.824,
+      "camera_held": [
+        0.29667598613949586,
+        0.11686844196616081,
+        -0.24265652554271902
+      ],
+      "camera_linear": [
+        0.29679086173664576,
+        0.0758361589552562,
+        -0.24054018422168122
+      ],
+      "observed_center": [
+        0.2976540883530016,
+        0.014743918266557174,
+        -0.2379945159417526
+      ],
+      "hold_residual": 0.10223555818955786,
+      "linear_residual": 0.06115134879582422,
+      "bottom_plane_margin": 0.2657594573266815,
+      "linear_bottom_margin": 0.2674174724908213,
+      "level_body_counterfactual_bottom_margin": 0.2700304372513518,
+      "visible_pixel_rays_without_near": 93963,
+      "visible_pixel_rays_with_near": 93963,
+      "effective_optical_pitch_down_deg": 24.974733161106823,
+      "center_in_frame": true
+    },
+    {
+      "stamp": 1792310196.5780542,
+      "before_result": -0.19092893600463867,
+      "raw_stamp": 57.852,
+      "valid": true,
+      "reason": "",
+      "red_pixels": 95226,
+      "input_age": 0.030602216720581055,
+      "rgb_depth_skew": 0.0,
+      "native_nav_bracket": [
+        57.824,
+        57.864
+      ],
+      "native_target_source_stamp": 57.824,
+      "target_pose_age": 0.027999999999998693,
+      "target_next_stamp": 57.864,
+      "camera_held": [
+        0.26954185195841035,
+        0.1203226969421704,
+        -0.2688691431692071
+      ],
+      "camera_linear": [
+        0.2701099249850018,
+        0.048868120859884415,
+        -0.2656923886083365
+      ],
+      "observed_center": [
+        0.2709506287347271,
+        0.018649982117416444,
+        -0.26423335058049585
+      ],
+      "hold_residual": 0.10178809441563774,
+      "linear_residual": 0.0302650207966314,
+      "bottom_plane_margin": 0.22814079747921479,
+      "linear_bottom_margin": 0.23089244195879383,
+      "level_body_counterfactual_bottom_margin": 0.23296335080688643,
+      "visible_pixel_rays_without_near": 82535,
+      "visible_pixel_rays_with_near": 82535,
+      "effective_optical_pitch_down_deg": 24.371239386260296,
+      "center_in_frame": false
+    },
+    {
+      "stamp": 1792310196.626055,
+      "before_result": -0.1429281234741211,
+      "raw_stamp": 57.9,
+      "valid": true,
+      "reason": "",
+      "red_pixels": 70944,
+      "input_age": 0.022637128829956055,
+      "rgb_depth_skew": 0.0,
+      "native_nav_bracket": [
+        57.864,
+        57.904
+      ],
+      "native_target_source_stamp": 57.864,
+      "target_pose_age": 0.036000000000001364,
+      "target_next_stamp": 57.904,
+      "camera_held": [
+        0.24575726712672075,
+        0.11591515512790693,
+        -0.29164240118863766
+      ],
+      "camera_linear": [
+        0.24575726712672075,
+        0.11591515512790693,
+        -0.29164240118863766
+      ],
+      "observed_center": [
+        0.24637763684858277,
+        0.11620445179663624,
+        -0.2919508474157267
+      ],
+      "hold_residual": 0.000750793066927568,
+      "linear_residual": 0.000750793066927568,
+      "bottom_plane_margin": 0.19531807929391726,
+      "linear_bottom_margin": 0.19531807929391726,
+      "level_body_counterfactual_bottom_margin": 0.2005711212905665,
+      "visible_pixel_rays_without_near": 72268,
+      "visible_pixel_rays_with_near": 72268,
+      "effective_optical_pitch_down_deg": 23.813866002938198,
+      "center_in_frame": false
+    },
+    {
+      "stamp": 1792310196.6780472,
+      "before_result": -0.09093594551086426,
+      "raw_stamp": 57.952,
+      "valid": true,
+      "reason": "",
+      "red_pixels": 66485,
+      "input_age": 0.028824806213378906,
+      "rgb_depth_skew": 0.0,
+      "native_nav_bracket": [
+        57.944,
+        57.984
+      ],
+      "native_target_source_stamp": 57.944,
+      "target_pose_age": 0.007999999999995566,
+      "target_next_stamp": 57.984,
+      "camera_held": [
+        0.22028140663989831,
+        0.22152023627274678,
+        -0.3189030706918488
+      ],
+      "camera_linear": [
+        0.22092114522998357,
+        0.1801080544209646,
+        -0.3175463896582921
+      ],
+      "observed_center": [
+        0.22408206267778646,
+        0.014767212368676709,
+        -0.3129301665287365
+      ],
+      "hold_residual": 0.2068741971922478,
+      "linear_residual": 0.16543547069976644,
+      "bottom_plane_margin": 0.1580179060534,
+      "linear_bottom_margin": 0.15945689652045883,
+      "level_body_counterfactual_bottom_margin": 0.1643147303481849,
+      "visible_pixel_rays_without_near": 45634,
+      "visible_pixel_rays_with_near": 45634,
+      "effective_optical_pitch_down_deg": 23.21480352053696,
+      "center_in_frame": false
+    },
+    {
+      "stamp": 1792310196.7260566,
+      "before_result": -0.04292654991149902,
+      "raw_stamp": 58.0,
+      "valid": true,
+      "reason": "",
+      "red_pixels": 51759,
+      "input_age": 0.027415752410888672,
+      "rgb_depth_skew": 0.0,
+      "native_nav_bracket": [
+        57.984,
+        58.024
+      ],
+      "native_target_source_stamp": 57.984,
+      "target_pose_age": 0.015999999999998238,
+      "target_next_stamp": 58.024,
+      "camera_held": [
+        0.20114439334963363,
+        0.11181086577714905,
+        -0.3350148396029172
+      ],
+      "camera_linear": [
+        0.20204515913446974,
+        0.07272587013212398,
+        -0.3342081478623253
+      ],
+      "observed_center": [
+        0.20373632750401205,
+        0.01423805495705706,
+        -0.3337592261126469
+      ],
+      "hold_residual": 0.09761530668512516,
+      "linear_residual": 0.05851398213371111,
+      "bottom_plane_margin": 0.1332616696526141,
+      "linear_bottom_margin": 0.1344630428239592,
+      "level_body_counterfactual_bottom_margin": 0.13936536793800292,
+      "visible_pixel_rays_without_near": 48864,
+      "visible_pixel_rays_with_near": 48864,
+      "effective_optical_pitch_down_deg": 22.68394947542949,
+      "center_in_frame": false
+    }
+  ],
+  "method": "Full native attitude with <=50ms brackets; native target causal hold; no offset, extrapolation or online truth."
+}

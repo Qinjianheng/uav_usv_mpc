@@ -1,5 +1,7 @@
 # 当前架构与控制边界
 
+2026-10-17：P7 专用配置以 KF/BCTRA → P47/C MINCO 执行 FOLLOW，Y 后撤销 FOLLOW 并由同一 Tracker 执行 IBVS/PNG，保持安全高度与 4.5 m 水平间距。旧截击 Planner 和状态转移在 P7 中禁用，原研究配置保留。启动和当前实测见 [P7 入口](p7_progress.md)；下文 P53 内容保留其阶段上下文。
+
 P5.3最新实际状态见 [全面修复与最终验收](p53_comprehensive_validation.md)：同配置R11的F2/F3均完成，实际MINCO占比100%、零回退；后文P4/P5/P5.1段落保留各阶段时点。控制链仍为BCTRA/MINCO/唯一Tracker速度控制，MPC尚未实现。
 
 当前默认只有前视 RGB-D 输入，下视关闭；升沉幅值 0.15 m。ToF 实现保留并由显式开关启用；模型假设、真机边界和切换步骤见 [相机文档](camera_simulation.md)。
