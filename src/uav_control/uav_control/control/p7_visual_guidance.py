@@ -63,6 +63,7 @@ class GuidanceConfig:
     maximum_yaw_rate: float = .6
     maximum_yaw_acceleration: float = 1.2
     alignment_limit: float = .15
+    vertical_alignment_limit: float = .7
     maximum_input_age: float = .125
     maximum_dt: float = .1
 
@@ -93,6 +94,33 @@ def _limit(vector, maximum):
     return vector*min(1., maximum/max(norm, 1e-12))
 
 
+def capture_reference(uav_position, target_position, target_velocity,
+                      sea_surface_z=0., contact_clearance=.33, maximum_descent_speed=.6):
+    """Coordinate descent with finite camera standoff and a sea-safe contact height.
+
+    Positions are measured navigation/KF states, never simulation truth. The
+    existing final sea barrier still shapes the returned vertical request.
+    """
+    vectors = [np.asarray(v, dtype=float) for v in (
+        uav_position, target_position, target_velocity)]
+    if (not all(v.shape == (3,) and np.isfinite(v).all() for v in vectors)
+            or not all(math.isfinite(v) for v in (
+                sea_surface_z, contact_clearance, maximum_descent_speed))
+            or contact_clearance < .33 or not 0 < maximum_descent_speed <= .6):
+        raise ValueError('INVALID_P7_CAPTURE_REFERENCE')
+    up, tp, tv = vectors
+    goal_z = min(tp[2]-contact_clearance, sea_surface_z-contact_clearance)
+    descent_remaining = max(0., goal_z-up[2])
+    # Descend before the final horizontal closure. A 0.30 m horizontal offset
+    # at 0.33 m vertical separation is inside the unchanged 0.50 m sphere.
+    # The 2:1 corridor leaves room for velocity-loop braking and the fixed
+    # forward camera; closing over the target before descent loses its image.
+    standoff = min(4.5, .3+2.*descent_remaining)
+    vertical = min(maximum_descent_speed,
+                   max(-maximum_descent_speed, goal_z-up[2]+min(0., tv[2])))
+    return standoff, vertical
+
+
 class P7VisualGuidance:
     """Integrate PN acceleration using actual dt; initialize from the last emitted command."""
 
@@ -111,7 +139,7 @@ class P7VisualGuidance:
         self.last_stamp = None
 
     def step(self, now, dt, uav_position, uav_velocity, target_position, target_velocity,
-             image_stamp, error_u, error_v):
+             image_stamp, error_u, error_v, approach_distance=None):
         config = self.config
         vectors = [np.asarray(v, dtype=float) for v in (
             uav_position, uav_velocity, target_position, target_velocity)]
@@ -120,31 +148,46 @@ class P7VisualGuidance:
                 or not all(math.isfinite(v) for v in (now, dt, image_stamp, error_u, error_v))
                 or not 0 < dt <= config.maximum_dt
                 or not 0 <= now-image_stamp <= config.maximum_input_age
+                or (approach_distance is not None and (
+                    not math.isfinite(approach_distance) or approach_distance < 0.))
                 or (self.last_stamp is not None and not 0 < now-self.last_stamp <= .25)):
             self.reset()
             return GuidanceOutput()
         up, uv, tp, tv = vectors
         los = png_los(tp-up, tv-uv, config.navigation_constant)
-        if not los.valid:
+        if not los.valid and approach_distance is None:
             self.reset()
             return GuidanceOutput()
-        direction = (tp-up)/los.distance
+        direction = ((tp-up)/los.distance if los.distance > 1e-8 else np.zeros(2))
         normal = np.array((-direction[1], direction[0]))
+        standoff = config.standoff_distance if approach_distance is None else approach_distance
         closing = max(-config.maximum_closing_speed, min(
             config.maximum_closing_speed,
-            config.closing_gain*(los.distance-config.standoff_distance)))
+            config.closing_gain*(los.distance-standoff)))
         if abs(error_u) > config.alignment_limit:
             closing = min(0., closing)
+        if approach_distance is not None and error_v > config.vertical_alignment_limit:
+            # A fixed forward camera cannot pitch independently. Stand back
+            # before the target leaves its lower edge; descent stays sea guarded.
+            closing = min(closing, max(-config.maximum_closing_speed,
+                                       config.closing_gain*(config.vertical_alignment_limit
+                                                            - error_v)))
         longitudinal = config.velocity_gain*(float(tv@direction)+closing
                                              - float(self.previous@direction))
         lateral = float(np.asarray(los.acceleration)@normal)
         mode = 'PNG'
-        if los.distance <= config.standoff_distance+.75 or los.closing_speed <= 0.:
+        if los.distance <= standoff+.75 or los.closing_speed <= 0.:
             # Approach ends above the sea at finite standoff; keep matching a
             # moving target rather than commanding zero world-frame velocity.
             lateral = config.velocity_gain*float((tv-self.previous)@normal)
-            mode = 'STANDOFF' if los.distance <= config.standoff_distance+.75 else 'CLOSING'
-        acceleration = _limit(longitudinal*direction+lateral*normal, config.maximum_acceleration)
+            mode = 'STANDOFF' if los.distance <= standoff+.75 else 'CLOSING'
+        if approach_distance is not None and los.distance < 1.:
+            mode = 'CAPTURE_MATCH'
+            desired = tv+closing*direction
+            acceleration = config.velocity_gain*(desired-self.previous)
+        else:
+            acceleration = longitudinal*direction+lateral*normal
+        acceleration = _limit(acceleration, config.maximum_acceleration)
         velocity = _limit(self.previous+acceleration*dt, config.maximum_speed)
         # Projection onto the speed ball cannot enlarge a velocity increment
         # when its initial command is already inside that ball.

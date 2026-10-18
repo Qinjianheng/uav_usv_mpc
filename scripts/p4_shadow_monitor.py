@@ -18,6 +18,32 @@ def execution_debug_kind(record):
     return 'follow_receive' if record.get('event') == 'proposal_received' else 'execution_debug'
 
 
+def component_id(name):
+    """Gazebo hash64, represented by the signed int64 key in SerializedEntityMap."""
+    value = 0xcbf29ce484222325
+    for byte in ('gz_sim_components.'+name).encode():
+        value = ((value ^ byte)*0x100000001b3) & ((1 << 64)-1)
+    return value if value < 1 << 63 else value-(1 << 64)
+
+
+def state_model_poses(message):
+    """Decode current top-level model Pose components, rather than initial Scene poses."""
+    poses = {}
+    for entity in message.state.entities.values():
+        components = entity.components
+        name = components.get(component_id('Name'))
+        pose = components.get(component_id('Pose'))
+        if name is None or pose is None:
+            continue
+        name = name.component.decode()
+        if name == 'usv_target' or name.startswith('x500_mono_cam_'):
+            values = [float(v) for v in pose.component.decode().split()]
+            if len(values) >= 6 and np.isfinite(values).all():
+                poses[name] = dict(p=[values[1], values[0], -values[2]],
+                                   rpy=values[3:6])
+    return poses
+
+
 def run(output):
     """Read only; truth is never published or passed to the planner/control receiver."""
     import rclpy
@@ -30,12 +56,15 @@ def run(output):
         ControllerDiagnostic, UavState, TargetState, TargetObservation, TargetPrediction,
         FollowPlanAck, FollowTrajectory, FollowReceiverState, MissionState,
         InterceptTrajectory,
+        InterceptResult,
     )
     from std_msgs.msg import String
     from px4_msgs.msg import TrajectorySetpoint, VehicleAttitude, VehicleStatus
     from gz.msgs10.clock_pb2 import Clock
     from gz.msgs10.pose_v_pb2 import Pose_V
     from gz.msgs10.world_stats_pb2 import WorldStatistics
+    from gz.msgs10.empty_pb2 import Empty
+    from gz.msgs10.serialized_map_pb2 import SerializedStepMap
     from gz.transport13 import Node as GzNode
     rclpy.init(signal_handler_options=SignalHandlerOptions.NO)
     stopping = threading.Event()
@@ -141,6 +170,17 @@ def run(output):
               receiver_compute_seconds=message.receiver_compute_seconds,
               receiver_boot=message.receiver_boot_id, planner_boot=message.planner_boot_id)
 
+    def result(message):
+        data = dict(stamp=seconds(message.stamp), success=message.success,
+                    outcome=message.outcome, reason=message.reason,
+                    radius=message.capture_radius, minimum_distance=message.minimum_distance,
+                    elapsed=message.elapsed_time, relative_speed=message.relative_speed)
+        latest['result'] = data
+        write('capture_result', **data)
+        snapshot = output.parent/'terminal_result.tmp'
+        snapshot.write_text(json.dumps(data))
+        snapshot.replace(output.parent/'terminal_result.json')
+
     def graph():
         health = output.parent/'live_health.tmp'
         health.write_text(json.dumps(latest))
@@ -158,6 +198,18 @@ def run(output):
         snapshot = output.parent/'live_graph.tmp'
         snapshot.write_text(json.dumps(publishers, indent=2))
         snapshot.replace(output.parent/'live_graph.json')
+        if latest.get('paused'):
+            executed, state = transport.request('/world/default/state', Empty(),
+                                                Empty, SerializedStepMap, 250)
+            if executed and state is not None:
+                for name, pose in state_model_poses(state).items():
+                    write('paused_native_pose', name=name, sim=seconds(state.stats.sim_time, True),
+                          **pose)
+
+    def statistics(message):
+        latest['paused'] = message.paused
+        write('gazebo_stats', rtf=message.real_time_factor,
+              paused=message.paused, sim=seconds(message.sim_time, True))
 
     def clock(message):
         native = seconds(message.sim, True)
@@ -180,6 +232,9 @@ def run(output):
 
     sensor = qos_profile_sensor_data
     subscriptions = [
+        node.create_subscription(InterceptResult, '/simulation/impact/result', result,
+                                 QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL,
+                                            reliability=ReliabilityPolicy.RELIABLE)),
         node.create_subscription(InterceptTrajectory, '/planning/intercept_trajectory',
                                  lambda m: write('intercept_proposal', plan=m.plan_id,
                                                  stamp=seconds(m.published_stamp)), 10),
@@ -263,9 +318,7 @@ def run(output):
     write('start', evaluation_only=True, gazebo_subscriptions=[
         transport.subscribe(Clock, '/world/default/clock', clock),
         transport.subscribe(Pose_V, '/world/default/pose/info', poses),
-        transport.subscribe(WorldStatistics, '/world/default/stats',
-                            lambda m: write('gazebo_stats', rtf=m.real_time_factor,
-                                            paused=m.paused, sim=seconds(m.sim_time, True)))],
+        transport.subscribe(WorldStatistics, '/world/default/stats', statistics)],
           ros_subscriptions=len(subscriptions), timer_period=timer.timer_period_ns/1e9,
           numerical_library=np.__version__)
     try:

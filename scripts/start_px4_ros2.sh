@@ -536,7 +536,9 @@ publish_command()
 echo
 echo "Two-stage control is ready; PX4 is disarmed in OFFBOARD ground hold."
 echo "  X: start UAV takeoff and USV motion simultaneously"
-if [[ "${UAV_USV_P7_MODE:-false}" == true ]]; then
+if [[ "${UAV_USV_P7_CAPTURE:-false}" == true ]]; then
+    echo "  Y: IBVS/PNG radius capture; evaluator pauses Gazebo at 0.50 m"
+elif [[ "${UAV_USV_P7_MODE:-false}" == true ]]; then
     echo "  Y: switch locked FOLLOW to safe IBVS/PNG approach"
 else
     echo "  Y: start interception from visually locked FOLLOW"

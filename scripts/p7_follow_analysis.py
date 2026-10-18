@@ -16,14 +16,15 @@ from p4_follow_analysis import read  # noqa: E402
 from p5_minco_sitl import sha  # noqa: E402
 
 
-def guidance_metrics(run, reason):
+def guidance_metrics(run, reason, stop=None):
     """Judge actual guidance, reference arbitration and safe finite standoff in a new run."""
     rows, malformed = read(run/'offline_evidence.jsonl')
     guidance = [r for r in rows if r['kind'] == 'p7_guidance' and r.get('valid')]
     if not guidance:
         return dict(completed=False, healthy=False, reason=reason, f3_eligible=False)
     start = guidance[0]['stamp']
-    stop = json.loads((run/'bounded_stop.json').read_text())['stamp']
+    if stop is None:
+        stop = json.loads((run/'bounded_stop.json').read_text())['stamp']
     selected = [r for r in rows if start <= r.get('stamp', r['receipt']) <= stop]
     diagnostics = [r for r in selected if r['kind'] == 'diagnostic']
     native = [r for r in selected if r['kind'] == 'uav' and r['valid']]

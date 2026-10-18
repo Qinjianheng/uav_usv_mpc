@@ -88,7 +88,7 @@ class P7FollowHealthGuard(FollowHealthGuard):
         return 'FOLLOW_INPUT_WAIT_TIMEOUT' if not 0 <= elapsed <= limit else None
 
 
-def prepare(output, scene, motion=None):
+def prepare(output, scene, motion=None, capture=False):
     """Copy complete actual scene parameters into an exclusive new run directory."""
     if scene not in ('f2', 'f3'):
         raise ValueError('P7_F2_OR_F3_REQUIRED')
@@ -99,6 +99,9 @@ def prepare(output, scene, motion=None):
     if motion is not None:
         mode = normalize_motion_mode(motion)
         flight['moving_target']['ros__parameters']['trajectory_type'] = mode
+    if capture:
+        flight['trajectory_tracker_node']['ros__parameters']['p7_capture_enabled'] = True
+        flight['intercept_evaluator_node']['ros__parameters']['maximum_duration'] = 60.
     planner = flight.pop('p4_follow_planner_node')
     output.mkdir(exist_ok=False)
     (output/'COLCON_IGNORE').touch()
@@ -111,16 +114,27 @@ def prepare(output, scene, motion=None):
         scene=scene, actual_controller='NOMINAL_MINCO', fallback='P44/D',
         prediction_model='bctra', maximum_input_age=.125, execution_lease_seconds=.45,
         motion_mode=flight['moving_target']['ros__parameters']['trajectory_type'],
+        capture_enabled=capture,
         source_fingerprint=source_fingerprint(),
         config_sources={str(p): harness.sha(p) for p in (CONFIG, source)},
         observation_seconds=25. if scene == 'f2' else 60.), indent=2)+'\n')
 
 
-def guidance_health(health, now):
+def guidance_health(health, now, capture=False):
     """Keep physical stops; P7 guidance has no MINCO prediction/owner requirement."""
     observed = dict(health, control=dict(health.get('control', {}), status='FOLLOW', locked=True))
     return harness.safety_reason(observed, now, planning_required=False,
-                                 maximum_observer_input_age=.3)
+                                 maximum_observer_input_age=.3, capture_height=capture)
+
+
+def capture_health(health, now, result, seen):
+    """A terminal evaluator event supersedes live-flight freshness only after capture."""
+    if result:
+        if not result['success']:
+            return seen, 'CAPTURE_'+result['reason'], True
+        seen = now if seen is None else seen
+        return seen, 'P7_CAPTURE_COMPLETE' if now-seen >= 5. else None, True
+    return seen, guidance_health(health, now, capture=True), False
 
 
 def clean_shutdown(cleanup):
@@ -129,14 +143,14 @@ def clean_shutdown(cleanup):
     return not (cleanup['errors'] or cleanup['survivors'] or late['errors'] or late['survivors'])
 
 
-def manual(output, motion=None):
+def manual(output, motion=None, capture=False):
     """A bounded, isolated native X/Y console using the same P7 configs and sole Tracker."""
     if not output.is_relative_to(WORKSPACE/'data/experiments'):
         raise ValueError('OUTPUT_MUST_BE_EXPERIMENT_DIRECTORY')
     check = preflight()
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as port:
         port.bind(('127.0.0.1', 14550))
-    prepare(output, 'f2', motion)
+    prepare(output, 'f2', motion, capture)
     started = time.time()
     env = dict(os.environ, UAV_USV_WS=str(WORKSPACE),
                UAV_USV_RESEARCH_DIRECTORY=str(output),
@@ -145,6 +159,7 @@ def manual(output, motion=None):
                UAV_USV_RESEARCH_CONFIG_FILE=str(output/'config/research.yaml'),
                UAV_USV_MINCO_EXECUTE='true', UAV_USV_P4_SHADOW='true',
                UAV_USV_P6_PREDICTOR='bctra', UAV_USV_P7_MODE='true',
+               UAV_USV_P7_CAPTURE='true' if capture else 'false',
                UAV_USV_HEADLESS_GCS='true', UAV_USV_ENABLE_SHADOW_PERCEPTION='false',
                ROS_DOMAIN_ID=str(check['domain']), GZ_PARTITION='p7_'+str(int(started)),
                ROS_LOCALHOST_ONLY='0',
@@ -170,7 +185,8 @@ def manual(output, motion=None):
                                 ([sys.executable, str(WORKSPACE/'scripts/p4_shadow_monitor.py'),
                                   str(output/'offline_evidence.jsonl')], 'monitor.txt')):
             processes.append(harness.shell_process(arguments, env, output/name))
-        print('P7 SITL: 1-5 select motion before X; X FOLLOW; Y safe guidance; Q abort. '
+        action = 'radius capture and pause' if capture else 'safe guidance'
+        print(f'P7 SITL: 1-5 select motion before X; X FOLLOW; Y {action}; Q abort. '
               'Session bound: 280 seconds.', flush=True)
         launcher = subprocess.Popen([str(WORKSPACE/'scripts/uav_lab.sh'), '--no-build'],
                                     cwd=WORKSPACE, env=env)
@@ -191,7 +207,7 @@ def manual(output, motion=None):
     return 0 if clean_shutdown(cleanup) else 1
 
 
-def run(output, scene, prior_f2=None, guidance=None, motion=None):
+def run(output, scene, prior_f2=None, guidance=None, motion=None, capture=False):
     """Retain original admission warmup and strict health/lease checks, without P6 gates."""
     if not output.is_relative_to(WORKSPACE/'data/experiments'):
         raise ValueError('OUTPUT_MUST_BE_EXPERIMENT_DIRECTORY')
@@ -200,11 +216,12 @@ def run(output, scene, prior_f2=None, guidance=None, motion=None):
             raise ValueError('CURRENT_HEALTHY_F2_REQUIRED')
         require_f2(prior_f2)
     preflight()
-    prepare(output, scene, motion)
+    prepare(output, scene, motion, capture)
     condition = json.loads((output/'condition.json').read_text())
     if guidance:
         condition.update(guidance_experiment=guidance,
-                         guidance_observation_seconds=25. if guidance == 'c' else 20.)
+                         guidance_observation_seconds=(60. if capture else
+                                                       25. if guidance == 'c' else 20.))
         (output/'condition.json').write_text(json.dumps(condition, indent=2)+'\n')
     env = dict(os.environ, UAV_USV_HEADLESS_GCS='true', UAV_USV_MINCO_EXECUTE='true',
                UAV_USV_REQUIRE_PRE_X_HEALTH='true', UAV_USV_P6_PREDICTOR='bctra')
@@ -214,6 +231,7 @@ def run(output, scene, prior_f2=None, guidance=None, motion=None):
     health_process = planner = None
     health_started = None
     y_sent = guidance_started = target_lost_since = None
+    capture_seen = None
     check = P7FollowHealthGuard(initial_acquisition=True)
     monitor_check = GroundStartupHealth(output)
     reason = 'SESSION_ENDED_BEFORE_OBSERVATION'
@@ -234,6 +252,16 @@ def run(output, scene, prior_f2=None, guidance=None, motion=None):
                 processes.append((health_process, owned))
                 health_started = time.time()
             health, now = harness.read_health_snapshot(output/'p5_health.json')
+            if capture and y_sent is not None:
+                result_path = output/'terminal_result.json'
+                result = json.loads(result_path.read_text()) if result_path.exists() else None
+                capture_seen, problem, terminal = capture_health(health, now, result, capture_seen)
+                if terminal:
+                    if problem:
+                        reason = problem
+                        break
+                    time.sleep(.05)
+                    continue
             if health_process is not None:
                 problem = monitor_check(health_process.poll(), health, now, health_started)
                 if problem:
@@ -244,7 +272,7 @@ def run(output, scene, prior_f2=None, guidance=None, motion=None):
                 continue
             status = health.get('control', {}).get('status')
             if y_sent is not None:
-                problem = guidance_health(health, now)
+                problem = guidance_health(health, now, capture)
                 if problem:
                     reason = problem
                     break
@@ -281,7 +309,7 @@ def run(output, scene, prior_f2=None, guidance=None, motion=None):
                                 and now-first_minco >= 5. and health['control'].get('locked'))
                 if ready_for_y:
                     y, owned = harness.shell_process([
-                        'timeout', '8s', 'ros2', 'topic', 'pub', '--times', '1',
+                        'timeout', '8s', 'ros2', 'topic', 'pub', '--times', '3', '--rate', '10',
                         '--wait-matching-subscriptions', '2', '--keep-alive', '.5',
                         '/simulation/impact/command', 'std_msgs/msg/String', '{data: Y}'],
                         env, output/'Y_command.txt')
@@ -339,8 +367,12 @@ def run(output, scene, prior_f2=None, guidance=None, motion=None):
     ended_path = output/'watchdog_end.json'
     ended = json.loads(ended_path.read_text()) if ended_path.exists() else {}
     if guidance and (output/'offline_evidence.jsonl').exists():
-        from p7_follow_analysis import guidance_metrics
-        summary = guidance_metrics(output, reason)
+        if capture:
+            from p7_capture_analysis import capture_metrics
+            summary = capture_metrics(output, reason)
+        else:
+            from p7_follow_analysis import guidance_metrics
+            summary = guidance_metrics(output, reason)
     elif (output/'offline_evidence.jsonl').exists():
         summary = harness.assess(output, scene, reason, first_minco, ended,
                                  task_root=output, extra_audit=audit)
@@ -366,9 +398,15 @@ if __name__ == '__main__':
     parser.add_argument('--prior-f2', type=Path)
     parser.add_argument('--guidance', choices=('c', 'd'))
     parser.add_argument('--manual', action='store_true')
+    parser.add_argument('--capture', action='store_true',
+                        help='Opt in to 0.50 m 3-D capture and evaluator-driven world pause')
     parser.add_argument('--motion', choices=tuple(MOTION_MODES.values()))
     args = parser.parse_args()
     if args.manual and (args.guidance or args.prior_f2):
         parser.error('--manual cannot be combined with automated flight options')
-    raise SystemExit(manual(args.output.resolve(), args.motion) if args.manual else run(
-        args.output.resolve(), args.scene, args.prior_f2, args.guidance, args.motion))
+    if args.capture and not (args.manual or args.guidance):
+        parser.error('--capture requires --guidance or --manual')
+    if args.manual:
+        raise SystemExit(manual(args.output.resolve(), args.motion, args.capture))
+    raise SystemExit(run(args.output.resolve(), args.scene, args.prior_f2,
+                         args.guidance, args.motion, args.capture))

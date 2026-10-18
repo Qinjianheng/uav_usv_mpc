@@ -77,7 +77,8 @@ def constraint_metadata(baseline_fingerprint, research, p6_enabled=False):
                 actual_constraint_snapshot=snapshot.values)
 
 
-def safety_reason(health, now, planning_required=True, maximum_observer_input_age=.125):
+def safety_reason(health, now, planning_required=True, maximum_observer_input_age=.125,
+                  capture_height=False):
     """Experiment bounds only; controller TTL, lease and whole-sphere admission stay intact."""
     if not 0 <= now-health.get('written', 0.) <= .25:
         return 'HEALTH_MONITOR_STALE'
@@ -105,7 +106,9 @@ def safety_reason(health, now, planning_required=True, maximum_observer_input_ag
     if len(position) != 3 or len(velocity) != 3 or len(q) != 4 or not all(
             math.isfinite(x) for x in (*position, *velocity, *q)):
         return 'INVALID_PHYSICAL_STATE'
-    if abs(position[2]+5.) > 1.:
+    if capture_height and not .25 <= -position[2] <= 6.:
+        return 'CAPTURE_HEIGHT_OUTSIDE_ENVELOPE'
+    if not capture_height and abs(position[2]+5.) > 1.:
         return 'HEIGHT_ERROR_OVER_1M'
     if sum(x*x for x in velocity) > 8.5**2:
         return 'VELOCITY_DIVERGENCE'

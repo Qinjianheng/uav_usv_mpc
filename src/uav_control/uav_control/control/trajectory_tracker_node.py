@@ -814,6 +814,8 @@ class TrajectoryTrackerNode(Node):
         self.terminal_hold_position = None
         self.terminal_mode_latched = False
         self.p7_image = self.p7_result = None
+        self.declare_parameter('p7_capture_enabled', False)
+        self.p7_capture_enabled = bool(self.get_parameter('p7_capture_enabled').value)
         if self.p7_guidance_enabled:
             from .p7_visual_guidance import GuidanceConfig, P7VisualGuidance
             parameters = vars(GuidanceConfig()).copy()
@@ -2142,20 +2144,29 @@ class TrajectoryTrackerNode(Node):
             previous = current.velocity
         if self.p7_controller.previous is None:
             self.p7_controller.reset(previous, getattr(self, 'search_yaw_rate_command', 0.))
+        capture = getattr(self, 'p7_capture_enabled', False)
+        approach_distance = None
+        desired_z = self.flight_guidance.altitude_velocity_gain*(
+            self.flight_guidance.flight_altitude-current.position[2])
+        if capture:
+            from .p7_visual_guidance import capture_reference
+            approach_distance, desired_z = capture_reference(
+                current.position, target.position, target.velocity,
+                sea_surface_z=self.flight_guidance.sea_surface_z,
+                contact_clearance=max(.33, self.flight_guidance.approach_contact_clearance))
         result = self.p7_controller.step(
             now, self.p7_actual_dt, current.position[:2], current.velocity[:2],
-            target.position[:2], target.velocity[:2], *image)
+            target.position[:2], target.velocity[:2], *image, approach_distance=approach_distance)
         if not result.valid:
             return self._search_or_recovery_command(current, dt)
         self.flight_guidance.previous_velocity = previous
-        desired_z = self.flight_guidance.altitude_velocity_gain*(
-            self.flight_guidance.flight_altitude-current.position[2])
         command = self.flight_guidance._velocity_command(
             FlightKinematicState(current.position, current.velocity),
             (*result.velocity, desired_z), dt, True, True)
         self.p7_result = result
         self.p7_diagnostic_pub.publish(String(data=json.dumps(dict(
             vars(result), stamp=now, image_stamp=image[0], dt=self.p7_actual_dt,
+            capture_enabled=capture, approach_distance=approach_distance,
             velocity=list(command.velocity)))))
         return command
 
@@ -2306,7 +2317,10 @@ class TrajectoryTrackerNode(Node):
             self.pending_trajectory = self.tracker.active_trajectory = None
             command = self._p7_guidance_command(current, now, dt)
             self._publish_offboard_mode(timestamp_us, velocity_control=True)
-            setpoint = flight_command_to_setpoint(command, timestamp_us)
+            setpoint = (flight_command_to_setpoint(command, timestamp_us)
+                        if hasattr(command, 'mode') else command_to_setpoint(
+                            command, timestamp_us, velocity_mode=True))
+            setpoint.acceleration = [math.nan, math.nan, math.nan]
             self._publish_bool(self.far_guidance_pub, self.p7_result is not None)
             status = 'P7_GUIDANCE' if self.p7_result is not None else 'P7_BRAKING'
         elif self._bearing_approach_available(current, now):

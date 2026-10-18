@@ -53,6 +53,48 @@ def test_motion_diagnostic_uses_existing_profile_and_preserves_f2_speed(tmp_path
     assert json.loads((output/'condition.json').read_text())['motion_mode'] == 'figure_eight'
 
 
+def test_capture_is_explicit_and_does_not_change_evaluation_radius(tmp_path):
+    import p7_follow_sitl as entry
+    entry.prepare(tmp_path/'capture', 'f2', motion='variable_speed_z', capture=True)
+    flight = yaml.safe_load((tmp_path/'capture/config/flight.yaml').read_text())
+    assert flight['trajectory_tracker_node']['ros__parameters']['p7_capture_enabled']
+    evaluator = flight['intercept_evaluator_node']['ros__parameters']
+    assert evaluator['evaluation_capture_radius'] == .5
+    assert evaluator['enable_sea_contact_failure']
+
+
+def test_capture_observer_uses_descent_envelope_and_keeps_body_clear_of_sea():
+    from p7_follow_sitl import guidance_health
+    from test_p53_sitl import healthy
+    health = healthy(10.)
+    health['navigation']['p'][2] = -.33
+    assert guidance_health(health, 10.) == 'HEIGHT_ERROR_OVER_1M'
+    assert guidance_health(health, 10., capture=True) is None
+    health['navigation']['p'][2] = -.2
+    assert guidance_health(health, 10., capture=True) == 'CAPTURE_HEIGHT_OUTSIDE_ENVELOPE'
+
+
+def test_capture_result_precedes_paused_navigation_staleness_without_hiding_failure():
+    from p7_follow_sitl import capture_health
+    result = dict(success=True, reason='CAPTURE_RADIUS_REACHED')
+    assert capture_health({}, 10., result, None) == (10., None, True)
+    assert capture_health({}, 13.1, result, 10.) == (10., None, True)
+    assert capture_health({}, 15.1, result, 10.) == (10., 'P7_CAPTURE_COMPLETE', True)
+    assert capture_health({}, 10., dict(success=False, reason='SEA_CONTACT'), None) == (
+        None, 'CAPTURE_SEA_CONTACT', True)
+    assert capture_health({}, 10., None, None) == (None, 'HEALTH_MONITOR_STALE', False)
+
+
+def test_inner_follow_watchdog_uses_explicit_capture_floor_after_guidance_only(tmp_path):
+    from p7_follow_sitl import prepare
+    from p4_sitl_session import capture_stop_policy
+    prepare(tmp_path/'normal', 'f2')
+    prepare(tmp_path/'capture', 'f2', capture=True)
+    assert capture_stop_policy(tmp_path/'normal') == (False, .5)
+    assert capture_stop_policy(tmp_path/'capture') == (True, .5)
+    assert capture_stop_policy(tmp_path/'capture', guidance_seen=True) == (True, .25)
+
+
 def test_p7_observer_distinguishes_existing_input_wait_from_visual_loss():
     from p7_follow_sitl import P7FollowHealthGuard
     from test_p53_sitl import healthy

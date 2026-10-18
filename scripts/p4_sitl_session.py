@@ -85,6 +85,19 @@ def session_exit_code(ended):
                  and ended['monitor_returncode'] == 0 and not ended['still_alive']) else 1
 
 
+def capture_stop_policy(root, guidance_seen=False):
+    """FOLLOW retains 0.50 m; explicit P7 capture uses body/sea clearance after Y."""
+    import yaml
+    path = root/'config/flight.yaml'
+    config = yaml.safe_load(path.read_text()) if path.exists() else {}
+    tracker = config.get('trajectory_tracker_node', {}).get('ros__parameters', {})
+    evaluator = config.get('intercept_evaluator_node', {}).get('ros__parameters', {})
+    enabled = bool(tracker.get('p7_guidance_enabled') and tracker.get('p7_capture_enabled'))
+    floor = max(.25, float(evaluator.get('body_lower_extent', .23))+.02,
+                float(tracker.get('reserve_clearance', .2))+.05)
+    return enabled, floor if enabled and guidance_seen else .5
+
+
 def pre_x_health_ready(health, now):
     """Require the independent recorder to catch up before issuing any takeoff command."""
     written = health.get('written', 0.)
@@ -159,6 +172,8 @@ def run(root, shadow, follow_seconds, watchdog, kill_planner_after=None, fault_s
     injector = FaultInjector(root) if fault_suite else None
     planner_killed = False
     follow_seen = False
+    capture_enabled, capture_floor = capture_stop_policy(root, guidance_seen=True)
+    capture_started = False
     pre_x_stable_since = None
     unlocked_since = None
     previous_load, load_time, loads = {}, time.monotonic(), []
@@ -278,9 +293,11 @@ def run(root, shadow, follow_seconds, watchdog, kill_planner_after=None, fault_s
             if x_time and health_path.exists():
                 health = json.loads(health_path.read_text())
                 control = health.get('control', {})
+                capture_started |= capture_enabled and control.get('status') == 'P7_GUIDANCE'
                 if control.get('status') in ('FOLLOW', 'MINCO_FOLLOW'):
                     follow_seen = True
-                if follow_seen:
+                terminal = capture_enabled and health.get('result', {}).get('success', False)
+                if follow_seen and not terminal:
                     nav, vehicle = health.get('navigation', {}), health.get('vehicle', {})
                     problem = None
                     unlocked_since = (unlocked_since or time.time()) if not control.get(
@@ -296,7 +313,8 @@ def run(root, shadow, follow_seconds, watchdog, kill_planner_after=None, fault_s
                         problem = 'TARGET_LOCK_LOST_FOR_2S'
                     elif control.get('compute', 0) > .2:
                         problem = 'CONTROL_CALLBACK_OVERRUN_200MS'
-                    elif nav.get('p', [0, 0, -5])[2] > -.5:
+                    elif nav.get('p', [0, 0, -5])[2] > -(
+                            capture_floor if capture_started else .5):
                         problem = 'SEA_CLEARANCE_VIOLATED'
                     elif sum(v*v for v in nav.get('v', ())) > 8.5**2:
                         problem = 'VELOCITY_DIVERGENCE'
