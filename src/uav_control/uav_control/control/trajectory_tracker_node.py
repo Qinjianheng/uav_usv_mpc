@@ -2094,10 +2094,13 @@ class TrajectoryTrackerNode(Node):
                     rate = max(-self.max_observation_yaw_rate, min(
                         self.max_observation_yaw_rate, rate,
                     ))
-                if (getattr(self, 'follow_reference_mode', 'target') == 'rear_point'
-                        and self.mission_state == MissionState.FOLLOW
-                        and getattr(getattr(self, 'follow_receiver', None), 'active', None)
-                        is not None and decision.locked
+                legacy_follow_feedforward = (
+                    getattr(self, 'follow_reference_mode', 'target') == 'rear_point'
+                    and getattr(getattr(self, 'follow_receiver', None), 'active', None)
+                    is not None and decision.locked)
+                p7_follow_feedforward = getattr(self, 'p7_guidance_enabled', False)
+                if (self.mission_state == MissionState.FOLLOW
+                        and (legacy_follow_feedforward or p7_follow_feedforward)
                         and measurement_age(current.stamp,
                                             self.visibility.last_valid_bearing_stamp or 0.)
                         <= min(.125, self.maximum_state_age)):
@@ -2105,6 +2108,8 @@ class TrajectoryTrackerNode(Node):
                     # expired or unresolved pair never grants feedforward.
                     metrics = getattr(self, 'follow_metrics', {})
                     limit = self.max_observation_yaw_rate
+                    if p7_follow_feedforward and not visual_lock:
+                        limit = min(limit, self.visibility.config.maximum_search_yaw_rate)
                     if hasattr(self, 'follow_model'):
                         limit = min(limit, self.follow_model.config.maximum_yaw_rate)
                     los_rate = metrics.get('los_yaw_rate', math.nan)

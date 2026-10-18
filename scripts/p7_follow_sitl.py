@@ -67,9 +67,32 @@ class P7FollowHealthGuard(FollowHealthGuard):
     def __init__(self, initial_acquisition=False):
         super().__init__(initial_acquisition)
         self.input_wait_since = None
+        self.prediction_response_since = None
 
     def __call__(self, health, now):
         control = health.get('control', {})
+        prediction = health.get('prediction', {})
+        if (control.get('status') == 'MINCO_FOLLOW' and not prediction.get('valid')
+                and prediction.get('receipt', 0.) > control.get('receipt', 0.)):
+            reason = super().__call__(health, now)
+            if reason == 'PREDICTION_INPUT_STALE':
+                # DDS callbacks are asynchronous: a new invalid prediction
+                # cannot prove that the preceding control sample ignored it.
+                # Observe at most one existing 20 Hz cycle for the response.
+                if self.prediction_response_since is None:
+                    self.prediction_response_since = now
+                elapsed = now-self.prediction_response_since
+                if 0 <= elapsed <= .05:
+                    reason = harness.safety_reason(
+                        health, now, planning_required=False,
+                        maximum_observer_input_age=self.maximum_observer_input_age)
+                    health['p53_decision'].update(
+                        fatal=reason, inhibit='AWAIT_NEXT_CONTROL_SAMPLE',
+                        prediction_response_seconds=elapsed,
+                        prediction_response_limit=.05)
+            return reason
+        if control.get('status') != 'MINCO_FOLLOW' or prediction.get('valid'):
+            self.prediction_response_since = None
         input_wait = (self.follow_lock_seen and control.get('status') == 'FOLLOW'
                       and control.get('visible') and control.get('search') == 'INPUT_WAIT')
         if not input_wait:

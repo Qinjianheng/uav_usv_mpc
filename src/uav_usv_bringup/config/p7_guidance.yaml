@@ -224,6 +224,7 @@ trajectory_tracker_node:
     offboard_prestream_time: 2.0
     px4_command_retry_time: 1.0
     vehicle_status_timeout: 2.0
+    takeoff_visual_tracking: true
     flight_altitude: -5.0
     takeoff_tolerance: 0.5
     takeoff_settle_time: 1.0

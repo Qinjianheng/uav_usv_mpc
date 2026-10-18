@@ -121,6 +121,44 @@ def test_p7_observer_does_not_extend_input_wait_or_hide_physical_failure():
     assert observer(state, 10.51) == 'OFFBOARD_OR_ARMING_LOST'
 
 
+def test_new_invalid_prediction_cannot_be_joined_to_an_older_minco_diagnostic():
+    from p7_follow_sitl import P7FollowHealthGuard
+    from test_p53_sitl import healthy
+    observer = P7FollowHealthGuard()
+    assert observer(healthy(10., owner='MINCO_FOLLOW'), 10.) is None
+    state = healthy(10.05, owner='MINCO_FOLLOW')
+    state['prediction'].update(valid=False, receipt=10.04)
+    state['control']['receipt'] = 10.03
+    assert observer(state, 10.05) is None
+    # The next control sample has actually relinquished MINCO authority.
+    state = healthy(10.10, owner='FOLLOW')
+    assert observer(state, 10.10) is None
+
+
+def test_prediction_response_wait_is_one_cycle_and_cannot_hide_unsafe_minco_or_physical_fault():
+    from p7_follow_sitl import P7FollowHealthGuard
+    from test_p53_sitl import healthy
+    observer = P7FollowHealthGuard()
+    state = healthy(10., owner='MINCO_FOLLOW')
+    state['prediction'].update(valid=False, receipt=9.99)
+    state['control']['receipt'] = 9.98
+    assert observer(state, 10.) is None
+    # A newer MINCO diagnostic would prove that it did not relinquish control.
+    state = healthy(10.02, owner='MINCO_FOLLOW')
+    state['prediction'].update(valid=False, receipt=9.99)
+    state['control']['receipt'] = 10.01
+    assert observer(state, 10.02) == 'PREDICTION_INPUT_STALE'
+    state = healthy(10.051, owner='MINCO_FOLLOW')
+    state['control']['receipt'] = 9.98
+    state['prediction'].update(valid=False, receipt=10.03)
+    assert observer(state, 10.051) == 'PREDICTION_INPUT_STALE'
+    state = healthy(10.04, owner='MINCO_FOLLOW')
+    state['prediction'].update(valid=False, receipt=10.03)
+    state['control']['receipt'] = 10.02
+    state['vehicle']['nav_state'] = 0
+    assert observer(state, 10.04) == 'OFFBOARD_OR_ARMING_LOST'
+
+
 @pytest.mark.parametrize('group,field', [
     ('outer', 'errors'), ('outer', 'survivors'), ('late', 'errors'), ('late', 'survivors'),
 ])
