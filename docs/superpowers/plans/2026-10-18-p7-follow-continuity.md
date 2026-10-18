@@ -22,15 +22,15 @@
 
 - [x] Record the exact input context when execution is revoked, if existing logs cannot distinguish delayed callbacks from missing publication.
 - [x] Build, check package prefix and run one isolated straight F2 with the original observer and gates.
-- [ ] If it fails, retain the run, diagnose the first failure, add a failing regression and make one evidence-based fix before another run.
-- [ ] Measure actual MINCO/FOLLOW ownership, uninterrupted windows, fallback reasons, native input freshness and cleanup; never infer ownership from solver feasibility.
+- [x] If it fails, retain the run, diagnose the first failure, add a failing regression and make one evidence-based fix before another run.
+- [x] Measure actual MINCO/FOLLOW ownership, uninterrupted windows, fallback reasons, native input freshness and cleanup; never infer ownership from solver feasibility.
 
 ## Task 3: Delivery and review
 
-- [ ] Run full tests, flake8, required shell syntax, build and diff checks on final sources.
-- [ ] Review the diff separately, especially completion validation, explicit invalid inputs, receiver identity and lease boundaries.
-- [ ] Save source-bound report and selected lightweight baseline with source paths and SHA256; link current documentation.
-- [ ] Commit only explicit code/test/doc/baseline paths; leave ignored raw data local and do not push.
+- [x] Run full tests, flake8, required shell syntax, build and diff checks on final sources.
+- [x] Review the diff separately, especially completion validation, explicit invalid inputs, receiver identity and lease boundaries.
+- [x] Save source-bound report and selected lightweight baseline with source paths and SHA256; link current documentation.
+- [x] Commit only explicit code/test/doc/baseline paths; leave ignored raw data local and do not push.
 
 ## Review focus / progress
 
@@ -41,3 +41,5 @@ Initial evidence: plan 98 was feasible with original start 1792300165.2127955 an
 Progress: periodic completion RED (1 failed / delivery control passed); completion and context GREEN (75 passed). Full first run: 2154 passed, 2 skipped, 1 new-test indentation lint failure; corrected and rerun. Two packages built; prefix verified. No simulation has started while sources/builds changed.
 
 F2_01: healthy/completed; MINCO 100%, longest 24.9435317516 s, no fallback ACKs, f3_eligible true, owned cleanup clean. Full suite 2155 passed / 2 skipped / 3 warnings (37.49 s); flake8 and build passed. F2_02 is the final identical-runtime repeat; no F3 is planned.
+
+Final: identical online runtime in both repeats, MINCO 100%, continuous 24.9435317516 / 24.9500083923 s, no losses, safety/execution audits green. Original and both new experiment manifests verified byte-for-byte. KF stale guard retained; exact original internal callback delay remains unproven and is stated explicitly. Recorder-only post-flight classification issue reproduced RED (INVALID_REFERENCE), fixed GREEN (18 related tests), final whole suite 2156 passed / 2 skipped / 3 warnings (38.55 s). No F3/capture/hardware expansion. Review performed inline; no subagent dispatched.

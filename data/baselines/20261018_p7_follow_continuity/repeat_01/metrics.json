@@ -1,0 +1,26 @@
+{
+  "window": "fixed first-MINCO receipt + 25/60 s; includes every control owner",
+  "start": 1792307219.9688225,
+  "requested_duration": 25.0,
+  "completed": true,
+  "measured_span": 24.97597098350525,
+  "native_samples": 1250,
+  "reference_samples": 588,
+  "horizontal_viewpoint_rmse_m": 0.04019778353062824,
+  "altitude_rmse_m": 0.007392957968096123,
+  "target_relative_velocity_rmse_mps": 0.018057910712643455,
+  "actual_reference_3d_rmse_m": 0.043549252554278294,
+  "maximum_actual_horizontal_speed_mps": 2.0255432434459775,
+  "maximum_actual_horizontal_acceleration_mps2": 0.0798045787056696,
+  "visible_fraction": 1.0,
+  "locked_fraction": 1.0,
+  "minco_fraction": 1.0,
+  "longest_minco_seconds": 24.94353175163269,
+  "fallbacks": {},
+  "source_fingerprint": "484076a1d6aef5e6cd037b533c5f317c095a6256718b48f88bea7c331d59a6a8",
+  "evidence": {
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261018_p7_follow_continuity_f2_01/summary.json": "da7bc1ad54a2fe0b412817afa166851013465d4b08764669b11bd1edaa890411",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261018_p7_follow_continuity_f2_01/offline_evidence.jsonl": "21b6f47c5545b92c23a5e91b9de439f06005d68040e8a2522c1acac9d71e9d8e"
+  },
+  "interpolation": "offline only, original sample epochs, inside recorded coverage"
+}
