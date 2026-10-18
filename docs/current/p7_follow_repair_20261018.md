@@ -2,6 +2,8 @@
 
 本轮对应“原 4 m/s 八字捕获，以及变速八字/S/Z 跟随失败修复”。原失败数据和冻结基线保持原样。各轮保留完整配置、源码快照、原始记录及 SHA256；本文件区分 FOLLOW、Y 后制导与终态暂停。
 
+后续已完成[三种变速模式捕获验证](p7_variable_capture_20261018.md)。下方保留本阶段结果；后续恢复接口修复与直线连续性不足另列，不能沿用本阶段 F2 资格。
+
 ## FOLLOW 根因与修复
 
 **变速 S/Z：起飞时静止爬升导致目标逃出深度量程。** P7 未开启已经实现的 `takeoff_visual_tracking`，默认起飞时不给水平目标。按原图像采集时刻，以不超过 50 ms 的原生 Gazebo 位姿 bracket、完整姿态、真实相机外参独立复算：S 的 47 个匹配 `DEPTH_RATIO_LOW` 样本中，46 个球体整体超过 25 m 前向深度；Z 为 69/69。有效观测的中心深度残差 p95 分别为 0.052/0.078 m。S 的一个边界样本未归为纯量程原因，没有隐藏。详见[独立归因](../../data/experiments/20261018_p7_follow_repair_audit_01/README.md)及[深度曲线](../../data/experiments/20261018_p7_follow_repair_audit_01/depth_boundary.png)。
