@@ -15,7 +15,8 @@ from p32_shadow_monitor import encode_record
 
 def execution_debug_kind(record):
     """Reception timing must not masquerade as the one control-cycle reference record."""
-    return 'follow_receive' if record.get('event') == 'proposal_received' else 'execution_debug'
+    return {'proposal_received': 'follow_receive',
+            'execution_revoked': 'follow_revocation'}.get(record.get('event'), 'execution_debug')
 
 
 def component_id(name):

@@ -1122,6 +1122,14 @@ class TrajectoryTrackerNode(Node):
         if lost is not None and getattr(receiver, 'admission', None):
             receiver.admission.lost(context.now, reason, lost)
         self.follow_stable_ticks = 0
+        if lost is not None and hasattr(self, 'follow_debug_pub'):
+            self.follow_debug_pub.publish(String(data=json.dumps(dict(
+                event='execution_revoked', stamp=context.now, plan=lost.plan_id,
+                reason=reason, input_freshness=dict(getattr(self, 'follow_input_status', {})),
+                execution_context=dict(
+                    navigation_fresh=context.navigation_fresh, target_fresh=context.target_fresh,
+                    prediction_fresh=context.prediction_fresh,
+                    observation_fresh=context.observation_fresh)))))
 
     def _nominal_follow_command(self, current, now, dt):
         """Finite nominal reference lease; measured-feedback shaping and visual yaw stay local."""

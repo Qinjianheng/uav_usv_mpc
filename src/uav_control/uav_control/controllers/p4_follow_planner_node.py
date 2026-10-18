@@ -165,7 +165,11 @@ class P4ResearchRunner(ShadowResearchRunner):
         return delivery_request(request, plan), pose
 
     def _prepare(self, now, monotonic_now):
-        if self._delivery_enabled() and self.pending is not None:
+        if getattr(self, 'deadline_scheduling', False) and self.pending is not None:
+            # A worker already owns its request/start. Rebuilding now+lead can
+            # falsely reject that original handover near the parent's deadline,
+            # even in periodic scheduling. Recheck live inputs and the original
+            # request; wire publication and receiver checks still run afterward.
             return self._completion_inputs(now, monotonic_now)
         self.delivery_rejected_request = None
         with CycleProfile(self.cycle_id+1) as profile:
