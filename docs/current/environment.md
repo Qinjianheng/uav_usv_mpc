@@ -23,14 +23,18 @@ ros2 pkg prefix uav_control
 
 ```bash
 cd /home/qin/data/uav_usv_mpc
-./scripts/uav_lab.sh --no-build
+./scripts/uav_lab.sh
 ```
 
-启动器使用新仓库路径，并打开 Gazebo、PX4、DDS 和实验终端。X 同步启动 UAV 起飞/USV 运动；视觉锁定 FOLLOW 后发送 Y。成功后现有评价器暂停 Gazebo 并冻结目标。R 通过启动器恢复干净会话；Q 只关闭指令控制台，其他终端仍运行。
+启动器自动构建、加载 ROS 与本工作区，并打开 Gazebo、PX4、DDS 和实验终端。已有构建可加 `--no-build`。默认进入独立的 P7 手动捕获会话，日志写入新的 `data/experiments/p7_manual_*`。
+
+输入 1 直线、2 八字、3 变速八字、4 变速 S、5 变速 Z 并回车；选模式不会开始运动。等 `FLIGHT READY` 后输入 X，同步启动 UAV 起飞/USV 运动；视觉锁定且 MINCO FOLLOW 稳定后输入 Y，开始捕获。评价器在 0.50 m 三维接触半径内暂停 Gazebo 并冻结目标。R 恢复干净会话并重置八字，可重新选模；Q 结束并清理本轮。手动会话上限 280 s。
+
+P7 默认不打开 QGroundControl，由驱动管理轻量本地 GCS 心跳（需现有 `pymavlink`）。旧 IMM 基线可用 `./scripts/uav_lab.sh --baseline --no-build`，此入口的 Q 仅关闭控制台；需要自动打开 QGC 时用 `UAV_USV_START_QGC=true ./scripts/uav_lab.sh --baseline --no-build`。节点裁剪和生命周期详见[仿真按需启动](startup_profile.md)。
 
 当前默认前视 RGB-D、下视关闭、目标升沉 0.15 m。ToF 暂停使用，代码保留。物理传感器开关需要重启完整仿真；详细配置与切换见 [相机文档](camera_simulation.md)。
 
-已有 PX4/Gazebo/DDS 会话时只启动 ROS 图可用：
+已有 PX4/Gazebo/DDS 会话时，只启动旧 IMM 基线 ROS 图可用：
 
 ```bash
 source /opt/ros/humble/setup.bash

@@ -882,6 +882,7 @@ def _send_pose(node, kind, source, quaternion=(1.0, 0.0, 0.0, 0.0),
     if kind == 'position':
         message = VehicleLocalPosition()
         message.x, message.y, message.z = position
+        message.xy_valid = message.z_valid = True
         callback = node.position_callback
     else:
         message = VehicleAttitude()
@@ -1642,6 +1643,7 @@ def test_px4_callbacks_use_timestamp_sample_before_causal_timesync_mapping():
     position.timestamp = 50_200_000
     position.timestamp_sample = 50_100_000
     position.x, position.y, position.z = 1.0, 2.0, -5.0
+    position.xy_valid = position.z_valid = True
     attitude = VehicleAttitude()
     attitude.timestamp = 50_210_000
     attitude.timestamp_sample = 50_110_000

@@ -76,7 +76,8 @@ def capture_metrics(run, reason):
     minco = [r['stamp'] for r in rows if r['kind'] == 'diagnostic'
              and r['status'] == 'MINCO_FOLLOW' and r['stamp'] < start]
     complete = bool(reason == 'P7_CAPTURE_COMPLETE' and result and result['success'])
-    healthy = bool(complete and not malformed and result['radius'] == .5
+    healthy = bool(complete and 'guidance_start' in summary
+                   and not malformed and result['radius'] == .5
                    and result['minimum_distance'] <= .5 and frozen['world_verified']
                    and summary['single_tracker'] and summary['single_bctra']
                    and summary['velocity_only_interface']
@@ -93,7 +94,8 @@ def capture_metrics(run, reason):
                    observed_target_speed_max_mps=max(target_speeds, default=None),
                    motion_mode=json.loads((run/'condition.json').read_text())['motion_mode'],
                    capture_window_end=end)
-    for name in ('initial_distance_m', 'final_distance_m', 'minimum_distance_m'):
+    for name in ('initial_distance_m', 'final_distance_m', 'minimum_distance_m',
+                 'final_2s_median_distance_m'):
         if name in summary:
             summary[name.replace('distance', 'horizontal_distance')] = summary.pop(name)
     return summary

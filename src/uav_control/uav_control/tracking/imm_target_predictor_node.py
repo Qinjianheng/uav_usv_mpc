@@ -13,6 +13,7 @@ from rclpy.qos import DurabilityPolicy, HistoryPolicy, QoSProfile, ReliabilityPo
 from std_msgs.msg import String
 from uav_usv_interfaces.msg import MissionState, PredictedTargetPoint
 from uav_usv_interfaces.msg import TargetObservation, TargetPrediction
+from uav_control.common.navigation_frame import install_navigation_frame_guard
 
 from .imm_predictor import ImmConfig, ImmPredictor, MODEL_NAMES, UpdateStatus
 from .target_prediction import PredictionResult
@@ -391,11 +392,19 @@ class ImmTargetPredictorNode(Node):
         self.diagnostics_pub = self.create_publisher(
             String, str(parameter('diagnostics_topic')), sensor_qos)
         self.timer = self.create_timer(1. / rate, self.timer_callback)
+        install_navigation_frame_guard(self, self.navigation_frame_failed)
         self.get_logger().info(
             f'IMM raw observation input={input_topic} output={parameter("prediction_topic")} '
             f'with original {self.engine.input_timeout:.3f}s acquisition lease')
 
+    def navigation_frame_failed(self, reason):
+        self.engine.reset(reason)
+        self.last_published_observation_stamp = None
+        self.timer_callback(force=True)
+
     def observation_callback(self, message):
+        if getattr(self, 'navigation_frame_fault', ''):
+            return
         started = time.perf_counter()
         now = self.get_clock().now().nanoseconds * 1e-9
         status = self.engine.update(observation_from_message(message), now)
@@ -411,6 +420,8 @@ class ImmTargetPredictorNode(Node):
 
     def timer_callback(self, force=False, observation_compute_time=0.):
         started = time.perf_counter()
+        if getattr(self, 'navigation_frame_fault', ''):
+            self.engine.invalidate(self.navigation_frame_fault)
         now = self.get_clock().now().nanoseconds * 1e-9
         stamp = self.engine.predictor.stamp
         # Checking the clock before suppression ensures simulation reset is

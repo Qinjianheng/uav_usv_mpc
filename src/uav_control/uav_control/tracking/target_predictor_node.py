@@ -14,6 +14,7 @@ from rclpy.qos import DurabilityPolicy, HistoryPolicy, QoSProfile
 from rclpy.qos import ReliabilityPolicy
 from uav_usv_interfaces.msg import MissionState, PredictedTargetPoint
 from uav_usv_interfaces.msg import TargetPrediction, TargetState
+from uav_control.common.navigation_frame import install_navigation_frame_guard
 
 from .maneuvering_target_predictor import ManeuveringTargetPredictor
 from .target_prediction import PredictionEngine, TargetKinematicState
@@ -266,12 +267,21 @@ class TargetPredictorNode(Node):
             1.0 / update_rate_hz,
             self.timer_callback,
         )
+        install_navigation_frame_guard(self, self.navigation_frame_failed)
         self.get_logger().info(
             f'Target predictor ready | source={source} | input={input_topic} '
             f'| output={output_topic} | rate={update_rate_hz:.1f} Hz'
         )
 
+    def navigation_frame_failed(self, reason):
+        self.engine.invalidate(reason)
+        self.latest_source_message = None
+        self.last_prediction_observation_stamp = None
+        self.timer_callback()
+
     def state_callback(self, message):
+        if getattr(self, 'navigation_frame_fault', ''):
+            return
         if not message.valid:
             self.engine.invalidate('INVALID_TARGET_STATE')
             return

@@ -22,6 +22,8 @@ case "${UAV_USV_GZ_SERVER_ONLY:-0}" in
 esac
 CUSTOM_GZ_MODELS="${WS_ROOT}/src/uav_usv_bringup/models"
 QGC_APPIMAGE="${QGC_APPIMAGE:-/home/qin/桌面/QGroundControl-x86_64.AppImage}"
+START_QGC="${UAV_USV_START_QGC:-false}"
+EXPERIMENT_GCS_PREFIX=""
 BUILD_WORKSPACE=true
 CAMERA_STARTUP_TIMEOUT="${CAMERA_STARTUP_TIMEOUT:-180}"
 FLIGHT_READY_TIMEOUT="${FLIGHT_READY_TIMEOUT:-60}"
@@ -73,9 +75,10 @@ if ! [[ "${EXPERIMENT_LAUNCH}" =~ ^[A-Za-z0-9_.-]+[.]launch[.]py$ ]]; then
     exit 2
 fi
 for experiment_boolean in "${EXPERIMENT_ENABLE_EVALUATOR}" \
-    "${EXPERIMENT_ENABLE_SHADOW}" "${EXPERIMENT_ENABLE_DOWN}"; do
+    "${EXPERIMENT_ENABLE_SHADOW}" "${EXPERIMENT_ENABLE_DOWN}" \
+    "${START_QGC}" "${UAV_USV_HEADLESS_GCS:-false}"; do
     if [[ "${experiment_boolean}" != "true" && "${experiment_boolean}" != "false" ]]; then
-        echo "Evaluator, shadow and down-camera switches must be true or false." >&2
+        echo "Evaluator, camera and GCS switches must be true or false." >&2
         exit 2
     fi
 done
@@ -102,7 +105,15 @@ done
 
 if [[ "${UAV_USV_HEADLESS_GCS:-false}" == true ]]; then
     echo "Using task-owned local SITL GCS heartbeat (no flight commands)."
-elif ! pgrep -f '[Q]GroundControl' >/dev/null; then
+elif pgrep -f '[Q]GroundControl' >/dev/null; then
+    echo "Using the already running QGroundControl."
+elif [[ "${START_QGC}" == false ]]; then
+    # Start inside the experiment terminal, not this command console: Q may
+    # close only the console, while R/terminal exit must stop both processes.
+    printf -v EXPERIMENT_GCS_PREFIX 'python3 %q -- ' \
+        "${WS_ROOT}/scripts/run_with_sitl_gcs.py"
+    echo "QGroundControl auto-start disabled; using experiment-owned local GCS heartbeat."
+else
     if [[ ! -x "${QGC_APPIMAGE}" ]]; then
         echo "QGroundControl is not running and its AppImage was not found:" >&2
         echo "  ${QGC_APPIMAGE}" >&2
@@ -136,9 +147,8 @@ if timeout 3s gz topic -e -t /world/default/clock -n 1 \
     exit 1
 fi
 
-# Gazebo Transport can retain a stopped world's topic discovery records for a
-# short time.  If no live clock is present, a PX4 process left by an aborted
-# launch is orphaned and must not attach to the next Gazebo instance.
+# A clock lookup is scoped to one partition; a matching PX4 executable may
+# belong to another live task. Only restart_lab may stop its owned session.
 PX4_EXECUTABLE="$(readlink -f \
     "${PX4_ROOT}/build/px4_sitl_default/bin/px4" 2>/dev/null || true)"
 if [[ -n "${PX4_EXECUTABLE}" ]]; then
@@ -146,26 +156,10 @@ if [[ -n "${PX4_EXECUTABLE}" ]]; then
         pgrep -f "^${PX4_EXECUTABLE}([[:space:]]|$)" || true
     )
     if [[ ${#stale_px4_pids[@]} -gt 0 ]]; then
-        echo "Stopping orphaned PX4 SITL from an earlier launch..."
-        kill -INT "${stale_px4_pids[@]}" 2>/dev/null || true
-        for _ in {1..10}; do
-            px4_still_running=false
-            for stale_pid in "${stale_px4_pids[@]}"; do
-                if kill -0 "${stale_pid}" 2>/dev/null; then
-                    px4_still_running=true
-                    break
-                fi
-            done
-            if ! ${px4_still_running}; then
-                break
-            fi
-            sleep 0.2
-        done
-        if ${px4_still_running}; then
-            echo "Orphaned PX4 SITL did not stop cleanly." >&2
-            echo "Close its PX4 SITL terminal, then retry." >&2
-            exit 1
-        fi
+        echo "Existing PX4 SITL has no ownership proof for this launcher:" >&2
+        printf '  PID %s\n' "${stale_px4_pids[@]}" >&2
+        echo "Stop it from its owning session before starting another simulation." >&2
+        exit 1
     fi
 fi
 
@@ -466,7 +460,7 @@ export UAV_USV_WS='${WS_ROOT}' &&
 source /opt/ros/humble/setup.bash &&
 source '${WS_ROOT}/install/setup.bash' &&
 cd '${WS_ROOT}' &&
-ros2 launch uav_usv_bringup '${EXPERIMENT_LAUNCH}' \
+${EXPERIMENT_GCS_PREFIX}ros2 launch uav_usv_bringup '${EXPERIMENT_LAUNCH}' \
     enable_evaluator:=${EXPERIMENT_ENABLE_EVALUATOR} \
     enable_shadow_perception:=${EXPERIMENT_ENABLE_SHADOW} \
     front_depth_model:=${EXPERIMENT_FRONT_DEPTH_MODEL} \
@@ -544,8 +538,13 @@ else
     echo "  Y: start interception from visually locked FOLLOW"
 fi
 echo "  R: stop this simulation and restart a clean session"
-echo "  Q: leave this command console"
-echo "  1/2/3/4/5: straight/eight/variable-eight/S/Z (before X)"
+if [[ "${UAV_USV_P7_MODE:-false}" == true ]]; then
+    echo "  Q: abort and clean up this P7 session"
+else
+    echo "  Q: leave this command console"
+fi
+echo "  1/2/3/4/5: straight/eight/variable-eight/variable-S/variable-Z (select only)"
+echo "  Selecting a mode keeps the USV stationary until X."
 
 motion_reset_pending=0
 if [[ "${UAV_USV_RESET_MOTION_MODE:-0}" == 1 ]]; then

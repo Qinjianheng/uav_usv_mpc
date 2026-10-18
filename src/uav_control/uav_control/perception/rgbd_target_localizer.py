@@ -29,8 +29,9 @@ from rclpy.qos import (
     ReliabilityPolicy,
 )
 from sensor_msgs.msg import Image
-from std_msgs.msg import Float32
+from std_msgs.msg import Float32, String
 from uav_usv_interfaces.msg import TargetObservation, UavState
+from uav_control.common.navigation_frame import FRAME_FAULT_TOPIC, navigation_frame_fault_qos
 
 from .front_tof_monitor import (
     camera_intrinsics,
@@ -1305,6 +1306,10 @@ class RgbdTargetLocalizer(Node):
         self.navigation_state_pub = self.create_publisher(
             UavState, '/navigation/uav_state', 10,
         )
+        self.frame_fault_pub = self.create_publisher(
+            String, FRAME_FAULT_TOPIC, navigation_frame_fault_qos())
+        self.navigation_frame_fault = ''
+        self._pose_reset_records = {}
         self._navigation_lock = threading.RLock()
         self._navigation_samples = deque(maxlen=32)
         self._navigation_last_stamp = -math.inf
@@ -1642,12 +1647,49 @@ class RgbdTargetLocalizer(Node):
 
         self._pending_raw_pose_samples = remaining
 
+    def _observe_pose_reset(self, stream, message, native_stamp, usable=True):
+        """Seed native counters once; reject old delivery and latch any spatial discontinuity."""
+        if getattr(self, 'navigation_frame_fault', ''):
+            return True
+        fields = (('xy_reset_counter', 'z_reset_counter', 'heading_reset_counter',
+                   'vxy_reset_counter', 'vz_reset_counter') if stream == 'POSITION'
+                  else ('quat_reset_counter',))
+        counters = tuple((name, int(getattr(message, name))) for name in fields
+                         if hasattr(message, name))
+        if not counters:
+            return False
+        # DDS applies a changing timesync offset to timestamp_sample. Ordering
+        # here must use the causally recovered native epoch, not that wire value.
+        stamp = float(native_stamp)
+        records = getattr(self, '_pose_reset_records', {})
+        previous = records.get(stream)
+        if stamp <= 0 or (previous is not None and stamp <= previous[0]):
+            return True
+        if previous is None and not usable:
+            return False
+        if previous is not None and counters != previous[1]:
+            reason = f'PX4_{stream}_RESET'
+            self.navigation_frame_fault = reason
+            self._reset_pose_time_state()
+            if hasattr(self, 'pending_image_pairs'):
+                self.pending_image_pairs.clear()
+            self.frame_fault_pub.publish(String(data=reason))
+            self.publish_invalid_observation(reason)
+            self.get_logger().error(reason + ': full simulation restart (R) required')
+            return True
+        records[stream] = stamp, counters
+        self._pose_reset_records = records
+        return False
+
     def position_callback(self, message):
         """Store UAV position using recovered physical PX4 sample time."""
+        if getattr(self, 'navigation_frame_fault', ''):
+            return
         values = (message.x, message.y, message.z)
 
         if not all(math.isfinite(value) for value in values):
             return
+        usable = bool(getattr(message, 'xy_valid', True) and getattr(message, 'z_valid', True))
 
         receipt = self._ros_seconds()
         source_timestamp = (
@@ -1663,6 +1705,8 @@ class RgbdTargetLocalizer(Node):
 
         if raw_sim_stamp is None:
             return
+        if self._observe_pose_reset('POSITION', message, raw_sim_stamp, usable):
+            return
 
         self.position_raw_sim_stamp = raw_sim_stamp
         if getattr(self, 'navigation_state_pub', None) is not None:
@@ -1671,6 +1715,9 @@ class RgbdTargetLocalizer(Node):
                     message, raw_sim_stamp, time.monotonic(),
                 ))
             self._flush_navigation_states()
+        if not usable:
+            self.position_history.clear()
+            return
         position = tuple(float(value) for value in values)
 
         if stamp is None:
@@ -1690,7 +1737,8 @@ class RgbdTargetLocalizer(Node):
 
     def _flush_navigation_states(self):
         """Publish physical state only after a causal clock bracket exists."""
-        if getattr(self, 'navigation_state_pub', None) is None:
+        if (getattr(self, 'navigation_frame_fault', '')
+                or getattr(self, 'navigation_state_pub', None) is None):
             return
         with self._navigation_lock:
             remaining = deque(maxlen=self._navigation_samples.maxlen)
@@ -1731,6 +1779,8 @@ class RgbdTargetLocalizer(Node):
 
     def attitude_callback(self, message):
         """Store attitude using recovered physical PX4 sample time."""
+        if getattr(self, 'navigation_frame_fault', ''):
+            return
         quaternion = tuple(float(value) for value in message.q)
 
         if not all(math.isfinite(value) for value in quaternion):
@@ -1749,6 +1799,9 @@ class RgbdTargetLocalizer(Node):
         )
 
         if raw_sim_stamp is None:
+            return
+        if self._observe_pose_reset('ATTITUDE', message, raw_sim_stamp,
+                                    sum(q*q for q in quaternion) > 1e-9):
             return
 
         self.attitude_raw_sim_stamp = raw_sim_stamp
@@ -1785,6 +1838,7 @@ class RgbdTargetLocalizer(Node):
             self.uav_attitude_time = stamp
 
     def _reset_pose_time_state(self):
+        self._pose_reset_records = {}
         if getattr(self, 'navigation_state_pub', None) is not None:
             with self._navigation_lock:
                 self._navigation_samples.clear()
@@ -1989,6 +2043,9 @@ class RgbdTargetLocalizer(Node):
 
     def localize(self):
         """Publish one synchronized RGB-D target observation when valid."""
+        if getattr(self, 'navigation_frame_fault', ''):
+            self.publish_invalid_observation(self.navigation_frame_fault)
+            return
         self._apply_pending_image_clock_reset()
         now = self._ros_seconds()
         waiting_pair = getattr(self, 'waiting_image_pair', None)

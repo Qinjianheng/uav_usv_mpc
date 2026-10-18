@@ -21,6 +21,7 @@ from uav_usv_interfaces.msg import TargetBearing, TargetObservation
 
 from ..mission.target_visibility import TargetVisibilityState, VisibilityConfig
 from ..common.navigation_state import navigation_components
+from ..common.navigation_frame import install_navigation_frame_guard
 
 from .flight_guidance import FlightGuidanceCore, FlightKinematicState
 from .trajectory_tracking import PolynomialSegmentData
@@ -830,6 +831,7 @@ class TrajectoryTrackerNode(Node):
                 raise ValueError('P7_LIMIT_EXCEEDS_EXISTING_PHYSICAL_LIMIT')
             self.p7_controller = P7VisualGuidance(config)
             self.p7_diagnostic_pub = self.create_publisher(String, '/control/p7_guidance', 10)
+        install_navigation_frame_guard(self, self.navigation_frame_failed)
         self.get_logger().info(
             'Trajectory tracker ready | rate='
             f'{control_rate:.1f} Hz | plan age<='
@@ -844,7 +846,26 @@ class TrajectoryTrackerNode(Node):
     def _timestamp_us(self):
         return self.get_clock().now().nanoseconds // 1000
 
+    def navigation_frame_failed(self, reason):
+        """Drop every old-frame reference; no setpoints until a full graph restart."""
+        self._revoke_nominal_follow(reason)
+        self.tracker.reset()
+        self.flight_guidance.reset()
+        self.visibility.reset()
+        self.latest_state = self.latest_prediction = self.latest_target_state = None
+        self.latest_kf_message = self.pending_trajectory = self.terminal_execution = None
+        self.terminal_hold_position = self.search_hold_position = None
+        self.p7_image = self.p7_result = None
+        for name in ('follow_navigation_history', 'follow_tracking_history'):
+            history = getattr(self, name, None)
+            if history is not None:
+                history.clear()
+        if getattr(self, 'p7_guidance_enabled', False):
+            self.p7_controller.reset()
+
     def uav_callback(self, message):
+        if getattr(self, 'navigation_frame_fault', ''):
+            return
         received = self._ros_seconds()
         try:
             self.latest_state = tracker_state_from_navigation(
@@ -981,6 +1002,8 @@ class TrajectoryTrackerNode(Node):
             recovering=self.safe_recovery_latched, observation_fresh=observation_fresh)
 
     def follow_trajectory_callback(self, message):
+        if getattr(self, 'navigation_frame_fault', ''):
+            return
         """Real receiver rejection ACK. Qualification failure never mutates original control."""
         from uav_control.guidance.follow_profile import CycleProfile
         received_monotonic = time.perf_counter()
@@ -1248,6 +1271,8 @@ class TrajectoryTrackerNode(Node):
         self.pre_flight_checks_pass = bool(message.pre_flight_checks_pass)
 
     def target_state_callback(self, message):
+        if getattr(self, 'navigation_frame_fault', ''):
+            return
         now = self._ros_seconds()
         if message.valid and message.frame_id == self.expected_frame_id:
             previous = self.latest_kf_message
@@ -1341,6 +1366,8 @@ class TrajectoryTrackerNode(Node):
             self.p7_image = (stamp, *image_errors(ray)) if trusted else None
 
     def prediction_callback(self, message):
+        if getattr(self, 'navigation_frame_fault', ''):
+            return
         if not (message.valid and message.frame_id == self.expected_frame_id
                 and message.source == 'tracking' and message.samples):
             self.latest_prediction = None
@@ -1358,6 +1385,12 @@ class TrajectoryTrackerNode(Node):
 
     def mission_callback(self, message):
         new_mission_id = int(message.mission_id)
+        previous_state = getattr(self, 'mission_state', MissionState.INIT)
+        if new_mission_id < self.mission_id:
+            return
+        if (new_mission_id == self.mission_id and previous_state in self.TERMINAL_STATES
+                and int(message.state) not in self.TERMINAL_STATES):
+            return
         if new_mission_id != self.mission_id:
             if getattr(self, 'p7_guidance_enabled', False):
                 self.p7_controller.reset()
@@ -1382,11 +1415,15 @@ class TrajectoryTrackerNode(Node):
             self.search_hold_position = None
             self.safe_recovery_latched = False
             self.bearing_approach_active = False
-        previous_state = getattr(self, 'mission_state', MissionState.INIT)
         self.mission_id = new_mission_id
         self.intercept_requested = bool(getattr(message, 'intercept_requested', False))
         self.mission_state = int(message.state)
         self.mission_state_name = str(message.state_name) or 'INIT'
+        if getattr(message, 'completed', False) and self.mission_state not in self.TERMINAL_STATES:
+            self.mission_state = MissionState.ABORTED
+            self.mission_state_name = 'ABORTED'
+        if self.mission_state in self.TERMINAL_STATES:
+            self.intercept_requested = False
         if (getattr(self, 'p7_guidance_enabled', False)
                 and self.mission_state == MissionState.FAR_GUIDANCE
                 and previous_state != MissionState.FAR_GUIDANCE):
@@ -1549,6 +1586,8 @@ class TrajectoryTrackerNode(Node):
         )
 
     def trajectory_callback(self, message):
+        if getattr(self, 'navigation_frame_fault', ''):
+            return
         if getattr(self, 'p7_guidance_enabled', False):
             return
         started = time.perf_counter()
@@ -2186,6 +2225,11 @@ class TrajectoryTrackerNode(Node):
     def timer_callback(self):
         started = time.perf_counter()
         now = self._ros_seconds()
+        if getattr(self, 'navigation_frame_fault', ''):
+            self._publish_bool(self.flight_ready_pub, False)
+            self._publish_diagnostic(now, None, 'NAVIGATION_FRAME_FAULT',
+                                     time.perf_counter() - started)
+            return
         last_control = getattr(self, 'last_timer_stamp', None)
         self.p7_actual_dt = (now-last_control if last_control is not None
                              else self.tracker.control_dt)

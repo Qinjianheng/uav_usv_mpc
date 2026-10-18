@@ -112,6 +112,43 @@ def test_status_payload_has_applied_mode_and_started_state(node):
     'linear', 'figure_eight', 'variable_speed_eight',
     'variable_speed_s', 'variable_speed_z',
 ])
+def test_selecting_mode_holds_usv_stationary_until_x(node, mode):
+    clock = [1_000_000_000]
+    node.get_clock = lambda: SimpleNamespace(
+        now=lambda: SimpleNamespace(nanoseconds=clock[0]))
+    positions, velocities, states = [], [], []
+    node.position_pub = SimpleNamespace(publish=positions.append)
+    node.velocity_pub = SimpleNamespace(publish=velocities.append)
+    node.state_pub = SimpleNamespace(publish=states.append)
+    node.flight_ready = True
+    initial_position = (node.x, node.y, node.z)
+    result = node.set_parameters([Parameter('trajectory_type', value=mode)])[0]
+    assert result.successful
+    assert json.loads(result.reason)['started'] is False
+    assert (node.x, node.y, node.z) == pytest.approx(initial_position, abs=1e-12)
+    initial_position = (node.x, node.y, node.z)
+    for _ in range(20):
+        clock[0] += 50_000_000
+        node.timer_callback()
+        assert not node.started
+        assert node.elapsed_time == 0.
+        assert (positions[-1].x, positions[-1].y, positions[-1].z) == initial_position
+        assert (velocities[-1].x, velocities[-1].y, velocities[-1].z) == (0., 0., 0.)
+        assert (states[-1].acceleration.x, states[-1].acceleration.y,
+                states[-1].acceleration.z) == (0., 0., 0.)
+    node.command_callback(SimpleNamespace(data='X'))
+    assert node.started
+    for _ in range(4):
+        clock[0] += 50_000_000
+        node.timer_callback()
+    assert node.elapsed_time == pytest.approx(.2)
+    assert math.hypot(node.x-initial_position[0], node.y-initial_position[1]) > 0.
+
+
+@pytest.mark.parametrize('mode', [
+    'linear', 'figure_eight', 'variable_speed_eight',
+    'variable_speed_s', 'variable_speed_z',
+])
 def test_state_velocity_acceleration_and_visualizer_share_current_sample(node, mode):
     node.set_parameters([Parameter('trajectory_type', value=mode)])
     assert node.motion_profile.mode == mode

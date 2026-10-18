@@ -25,6 +25,7 @@ from std_msgs.msg import String
 from uav_usv_interfaces.msg import MissionState, TargetPrediction, UavState
 
 from uav_control.common.record_snapshot import record_snapshot
+from uav_control.common.navigation_frame import install_navigation_frame_guard
 from uav_control.controllers.follow_mpc_seed import (
     FollowMpcSeed, MpcConfig, MpcRequest, PlanningContext,
 )
@@ -486,6 +487,7 @@ class FollowMpcShadowNode(Node):
                                       self.gazebo_clock_callback):
             raise RuntimeError(f'Cannot subscribe to trusted clock {self.gz_clock_topic}')
         self.timer = self.create_timer(.02, self.tick)
+        install_navigation_frame_guard(self, self.navigation_frame_failed)
         self.get_logger().info(
             f'MPC SHADOW READY | 1 worker | research only | JSONL={self.log_path}')
 
@@ -515,16 +517,29 @@ class FollowMpcShadowNode(Node):
             _gazebo_seconds(message.sim), _gazebo_seconds(message.system),
             self._ros_seconds(), time.monotonic())
 
+    def navigation_frame_failed(self, _reason):
+        self.runner.prediction = None
+        self.runner.mission['completed'] = True
+        self.runner.prediction_revision += 1
+        self.runner.mission_revision += 1
+        self.runner._invalidate_warm()
+
     def prediction_callback(self, message):
         """Replace the tracking prediction snapshot or immediately publish an invalid marker."""
+        if getattr(self, 'navigation_frame_fault', ''):
+            return
         self.runner.update_prediction(message, self._ros_seconds(), time.monotonic())
 
     def mission_callback(self, message):
         """Observe mission identity/state without publishing mission transitions."""
+        if getattr(self, 'navigation_frame_fault', ''):
+            return
         self.runner.update_mission(message, self._ros_seconds(), time.monotonic())
 
     def tick(self):
         """Service bounded research work without delaying subscription delivery."""
+        if getattr(self, 'navigation_frame_fault', ''):
+            return
         self.runner.tick(self._ros_seconds(), time.monotonic())
 
     @profiled('ros_publication')

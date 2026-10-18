@@ -17,6 +17,7 @@ from uav_usv_interfaces.msg import PlannerDiagnostic, PolynomialSegment
 from uav_usv_interfaces.msg import TargetPrediction
 
 from uav_control.tracking.ros_time import seconds_to_duration, seconds_to_time
+from uav_control.common.navigation_frame import install_navigation_frame_guard
 
 from .fast_minco_planner import FastMincoPlanner, FastPlanningFailure
 from .fast_minco_planner import FastPlanningOutcome
@@ -551,6 +552,7 @@ class InterceptPlannerNode(Node):
             terminal_time_threshold=self.terminal_time_threshold,
             terminal_state=MissionState.TERMINAL_MINCO,
         )
+        install_navigation_frame_guard(self, self.navigation_frame_failed)
         self.get_logger().info(
             'Fast MINCO planner ready | rate='
             f'{planning_rate_hz:.1f} Hz | candidates<=6 | '
@@ -561,7 +563,16 @@ class InterceptPlannerNode(Node):
     def _ros_seconds(self):
         return self.get_clock().now().nanoseconds * 1e-9
 
+    def navigation_frame_failed(self, _reason):
+        self.intercept_requested = False
+        self.latest_prediction = self.latest_uav = None
+        self.ready_job = self.active_plan_reference = None
+        self.published_plan_references.clear()
+        self.request_slot = LatestRequestSlot()
+
     def prediction_callback(self, message):
+        if getattr(self, 'navigation_frame_fault', ''):
+            return
         if (
             not message.valid
             or not message.samples
@@ -603,6 +614,8 @@ class InterceptPlannerNode(Node):
             self._planning_tick(terminal_tick=None, prediction_triggered=True)
 
     def uav_callback(self, message):
+        if getattr(self, 'navigation_frame_fault', ''):
+            return
         try:
             self.latest_uav = uav_state_from_navigation(
                 message, self._ros_seconds(),
@@ -611,6 +624,8 @@ class InterceptPlannerNode(Node):
             self.latest_uav = None
 
     def mission_callback(self, message):
+        if getattr(self, 'navigation_frame_fault', ''):
+            return
         new_mission_id = int(message.mission_id)
         new_state = int(message.state)
         mission_changed = new_mission_id != self.mission_id
@@ -910,7 +925,8 @@ class InterceptPlannerNode(Node):
         )
 
     def _publish_job(self, job):
-        if getattr(self, 'p7_guidance_enabled', False):
+        if (getattr(self, 'navigation_frame_fault', '')
+                or getattr(self, 'p7_guidance_enabled', False)):
             return
         publish_stamp = self._ros_seconds()
         outcome = job.outcome
@@ -1382,7 +1398,8 @@ class InterceptPlannerNode(Node):
         self._publish_job(job)
 
     def _planning_tick(self, terminal_tick, prediction_triggered=False):
-        if getattr(self, 'p7_guidance_enabled', False):
+        if (getattr(self, 'navigation_frame_fault', '')
+                or getattr(self, 'p7_guidance_enabled', False)):
             return
         if (
             not self.intercept_requested

@@ -768,6 +768,8 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
 
     def _publish_proposal(self, event):
         """Recheck all epochs after allocation; a published nominal curve grants no holding."""
+        if getattr(self, 'navigation_frame_fault', ''):
+            return dict(published=False, reason='NAVIGATION_FRAME_FAULT')
         before = time.perf_counter()
         reason = self._proposal_rejection(event, self._ros_seconds())
         if reason:
@@ -868,6 +870,8 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
 
     @profiled('ros_publication')
     def _publish_wire_proposal(self, message):
+        if getattr(self, 'navigation_frame_fault', ''):
+            return
         self.follow_proposal_pub.publish(message)
 
     @profiled('prediction_revalidation')

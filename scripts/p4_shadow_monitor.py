@@ -231,8 +231,12 @@ def run(output):
                       q=[pose.orientation.w, pose.orientation.x,
                          pose.orientation.y, pose.orientation.z])
 
+    from uav_control.common.navigation_frame import FRAME_FAULT_TOPIC, navigation_frame_fault_qos
     sensor = qos_profile_sensor_data
     subscriptions = [
+        node.create_subscription(String, FRAME_FAULT_TOPIC,
+                                 lambda m: write('navigation_frame_fault', reason=m.data),
+                                 navigation_frame_fault_qos()),
         node.create_subscription(InterceptResult, '/simulation/impact/result', result,
                                  QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL,
                                             reliability=ReliabilityPolicy.RELIABLE)),

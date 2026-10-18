@@ -68,6 +68,12 @@ class MissionManagerCore:
     def _transition(self, phase, now):
         changed = self.phase != MissionPhase(phase)
         self.phase = MissionPhase(phase)
+        if self.phase in (MissionPhase.CAPTURE, MissionPhase.FAILURE, MissionPhase.ABORTED):
+            self.completed = True
+            self.intercept_requested = False
+            self.target_locked = False
+            self.active_plan_id = 0
+            self.recovery_started_at = None
         if self.phase != MissionPhase.TERMINAL_MINCO:
             self.terminal_execution_deadline = None
             self.terminal_execution_plan_id = 0
@@ -200,7 +206,7 @@ class MissionManagerCore:
         target_distance=math.inf,
     ):
         """Accept only a fresh, currently executable tracker decision."""
-        if self.p7_guidance_enabled:
+        if self.completed or self.p7_guidance_enabled:
             return False
         now = float(now)
         current_mission = int(mission_id) == self.mission_id
@@ -262,6 +268,8 @@ class MissionManagerCore:
     def tick(self, now, far_guidance_available=False):
         """Advance transient and timeout-driven recoverable phases."""
         now = float(now)
+        if self.completed:
+            return self.phase
         if (self.terminal_execution_deadline is not None
                 and now >= self.terminal_execution_deadline):
             self.active_plan_id = 0

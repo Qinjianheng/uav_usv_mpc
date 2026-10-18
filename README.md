@@ -8,14 +8,19 @@ P7 专用配置已完成视觉/KF → BCTRA → MINCO FOLLOW，以及 Y 后的 I
 
 ```bash
 cd /home/qin/data/uav_usv_mpc
-./scripts/build_workspace.sh
-source /opt/ros/humble/setup.bash
-source /home/qin/data/uav_usv_mpc/install/setup.bash
-export UAV_USV_WS=/home/qin/data/uav_usv_mpc
-UAV_USV_ENABLE_SHADOW_PERCEPTION=false ./scripts/uav_lab.sh --no-build
+./scripts/uav_lab.sh
 ```
 
-该命令使用已有开关关闭shadow predictor、front monitor、selector三个诊断节点，主RGB-D、bearing、KF、预测、规划、任务与评价保留。需要完整诊断时将`false`改为`true`；启动器原默认值未改。当前前视理想RGB-D、下视关闭，ToF选项保留。X开始起飞/FOLLOW，Y开始截击，R重启，Q退出控制台。
+脚本自动构建并加载 ROS/本工作区；已经构建时可用 `./scripts/uav_lab.sh --no-build`。默认进入 P7 手动捕获，不固定变速模式，也不自动发送 X/Y。
+
+- 输入 `1` 直线、`2` 八字、`3` 变速八字、`4` 变速 S、`5` 变速 Z，再回车。数字只选择，USV 保持静止；未选择时初始为直线。
+- 等待 `FLIGHT READY` 后输入 `X`：UAV 起飞、USV 开始运动，视觉锁定后进入 MINCO FOLLOW。
+- 稳定跟随后输入 `Y`：进入 IBVS/PNG 捕获；到达 0.50 m 三维接触半径后评价器暂停仿真。
+- `Q` 结束并清理本轮，`R` 完整重启；R 后默认八字，可在 X 前重新选择。每轮手动会话上限 280 s。
+
+直线和恒速八字均为 **4 m/s**，按原 1 m/s² 起步限制加速；三种变速模式保持原 2–4 m/s 规律。
+
+P7 默认运行 10 个节点，关闭闲置的旧截击规划器；主 RGB-D、bearing、KF、BCTRA、FOLLOW 规划、任务与评价保留。下视、额外感知诊断、功能 ToF 按需启动。默认使用随实验结束的轻量 GCS 心跳，不自动打开 QGroundControl。旧 11 节点 IMM 基线入口保留为 `./scripts/uav_lab.sh --baseline --no-build`。详见[启动说明](docs/current/startup_profile.md)。
 
 ## 开发与资料入口
 

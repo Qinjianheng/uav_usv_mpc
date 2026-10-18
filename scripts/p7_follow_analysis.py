@@ -19,15 +19,18 @@ from p5_minco_sitl import sha  # noqa: E402
 def guidance_metrics(run, reason, stop=None):
     """Judge actual guidance, reference arbitration and safe finite standoff in a new run."""
     rows, malformed = read(run/'offline_evidence.jsonl')
-    guidance = [r for r in rows if r['kind'] == 'p7_guidance' and r.get('valid')]
-    if not guidance:
-        return dict(completed=False, healthy=False, reason=reason, f3_eligible=False)
-    start = guidance[0]['stamp']
+    failed = dict(completed=False, healthy=False, reason=reason, f3_eligible=False)
     if stop is None:
         stop = json.loads((run/'bounded_stop.json').read_text())['stamp']
+    guidance = sorted((r for r in rows if r['kind'] == 'p7_guidance' and r.get('valid')
+                       and r['stamp'] <= stop), key=lambda r: r['stamp'])
+    if not guidance:
+        return dict(failed, input_reason='NO_GUIDANCE_IN_WINDOW')
+    start = guidance[0]['stamp']
     selected = [r for r in rows if start <= r.get('stamp', r['receipt']) <= stop]
     diagnostics = [r for r in selected if r['kind'] == 'diagnostic']
-    native = [r for r in selected if r['kind'] == 'uav' and r['valid']]
+    native = sorted((r for r in selected if r['kind'] == 'uav' and r['valid']),
+                    key=lambda r: r['stamp'])
     references = [r for r in selected if r['kind'] == 'reference']
     graphs = [r for r in rows if r['kind'] == 'graph' and start <= r['receipt'] <= stop]
     topics = ('/fmu/in/trajectory_setpoint', '/fmu/in/offboard_control_mode',
@@ -47,9 +50,13 @@ def guidance_metrics(run, reason, stop=None):
         and not any(math.isfinite(v) for v in (*r['p'], *r['a'])) for r in references)
     targets = sorted((r for r in rows if r['kind'] == 'ideal' and r['valid']),
                      key=lambda r: r['stamp'])
+    if not targets:
+        return dict(failed, input_reason='NO_TARGET_TRUTH')
     tt = np.array([r['stamp'] for r in targets])
     tp = np.array([r['p'][:2] for r in targets])
     physical = [r for r in native if tt[0] <= r['stamp'] <= tt[-1]]
+    if not physical:
+        return dict(failed, input_reason='NO_SYNCHRONIZED_NAVIGATION')
     t = np.array([r['stamp'] for r in physical])
     p = np.array([r['p'] for r in physical])
     target = np.column_stack([np.interp(t, tt, tp[:, i]) for i in (0, 1)])
@@ -66,18 +73,19 @@ def guidance_metrics(run, reason, stop=None):
     active_fraction = (sum(r['status'] == 'P7_GUIDANCE' for r in diagnostics)
                        / max(1, len(diagnostics)))
     visible_fraction = sum(r['visible'] for r in diagnostics)/max(1, len(diagnostics))
-    final_distance = float(np.median(distance[t >= t[-1]-2.]))
+    median_distance = float(np.median(distance[t >= t[-1]-2.]))
     complete = reason == 'P7_GUIDANCE_OBSERVATION_COMPLETE'
     healthy = bool(complete and not malformed and one_tracker and one_bctra
                    and not retired and valid_interface and len(guidance) >= 100
                    and active_fraction >= .9 and visible_fraction >= .95
                    and max(altitude_error) <= 1. and max(speeds) <= 7.
-                   and max(accelerations) <= 4. and 4. <= final_distance <= 5.3
-                   and min(distance) >= 3.8 and float(distance[0])-final_distance >= .2)
+                   and max(accelerations) <= 4. and 4. <= median_distance <= 5.3
+                   and min(distance) >= 3.8 and float(distance[0])-median_distance >= .2)
     return dict(completed=complete, healthy=healthy, reason=reason, f3_eligible=False,
                 guidance_start=start, guidance_samples=len(guidance),
                 guidance_fraction=active_fraction, visible_fraction=visible_fraction,
-                initial_distance_m=float(distance[0]), final_distance_m=final_distance,
+                initial_distance_m=float(distance[0]), final_distance_m=float(distance[-1]),
+                final_distance_stamp=float(t[-1]), final_2s_median_distance_m=median_distance,
                 minimum_distance_m=float(min(distance)),
                 maximum_height_error_m=float(max(altitude_error)),
                 actual_speed_max_mps=float(max(speeds)),

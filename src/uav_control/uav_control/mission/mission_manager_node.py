@@ -13,6 +13,7 @@ from uav_usv_interfaces.msg import MissionState, PlannerDiagnostic
 from uav_usv_interfaces.msg import UavState
 
 from .mission_manager import MissionManagerCore, MissionPhase
+from uav_control.common.navigation_frame import install_navigation_frame_guard
 
 
 def _seconds_to_time(value):
@@ -138,6 +139,7 @@ class MissionManagerNode(Node):
             self.navigation_sub = self.create_subscription(
                 UavState, '/navigation/uav_state', self.navigation_callback,
                 qos_profile_sensor_data)
+        install_navigation_frame_guard(self, self.navigation_frame_failed)
         self.get_logger().info(
             'Mission manager ready | tracker age<='
             f'{self.core.maximum_tracker_age:.3f} s | recovery timeout='
@@ -150,7 +152,13 @@ class MissionManagerNode(Node):
     def _publish(self):
         self.state_pub.publish(mission_state_message(self.core, self._now()))
 
+    def navigation_frame_failed(self, _reason):
+        self.core.mark_failure(self._now())
+        self._publish()
+
     def command_callback(self, message):
+        if getattr(self, 'navigation_frame_fault', ''):
+            return
         command = message.data.strip().upper()
         now = self._now()
         navigation_ready = False

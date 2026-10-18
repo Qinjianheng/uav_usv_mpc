@@ -1,4 +1,4 @@
-"""P7 preparation retains real scene parameters and requires current healthy F2."""
+"""P7 preparation applies current speed and requires current healthy F2."""
 
 import json
 from pathlib import Path
@@ -10,15 +10,20 @@ import yaml
 sys.path.insert(0, str(Path(__file__).resolve().parents[3]/'scripts'))
 
 
-def test_p7_cases_preserve_full_r11_motion_and_nominal_policy(tmp_path):
+def test_p7_cases_preserve_r11_geometry_and_apply_current_constant_speed(tmp_path):
     import p7_follow_sitl as entry
-    for scene, speed, mode in (('f2', 2., 'linear'), ('f3', 4., 'figure_eight')):
+    for scene, mode in (('f2', 'linear'), ('f3', 'figure_eight')):
         output = tmp_path/scene
         entry.prepare(output, scene)
         flight = yaml.safe_load((output/'config/flight.yaml').read_text())
         target = flight['moving_target']['ros__parameters']
-        assert target['horizontal_speed'] == speed
+        assert target['horizontal_speed'] == 4.
+        original = yaml.safe_load((entry.R11/f'{scene}_h16_01/config/flight.yaml').read_text())
+        original_target = original['moving_target']['ros__parameters']
+        assert {k: v for k, v in target.items() if k != 'horizontal_speed'} == {
+            k: v for k, v in original_target.items() if k != 'horizontal_speed'}
         assert target['trajectory_type'] == mode
+        assert target['start_on_command'] is True
         planner = yaml.safe_load((output/'config/research.yaml').read_text())
         params = planner['p4_follow_planner_node']['ros__parameters']
         assert params['minco_engine'] == 'p47_follow_guided'
@@ -43,14 +48,30 @@ def test_f3_rejects_failed_or_different_source_f2(tmp_path):
             entry.require_f2(path)
 
 
-def test_motion_diagnostic_uses_existing_profile_and_preserves_f2_speed(tmp_path):
+@pytest.mark.parametrize('mode', ['linear', 'figure_eight'])
+def test_prepared_constant_modes_reach_four_mps_with_existing_acceleration(tmp_path, mode):
+    from dataclasses import fields
+    import math
     import p7_follow_sitl as entry
+    from uav_control.usv_motion_profiles import MotionParameters, UsvMotionProfile
     output = tmp_path/'turning'
-    entry.prepare(output, 'f2', motion='figure_eight')
+    entry.prepare(output, 'f2', motion=mode)
     flight = yaml.safe_load((output/'config/flight.yaml').read_text())
-    assert flight['moving_target']['ros__parameters']['trajectory_type'] == 'figure_eight'
-    assert flight['moving_target']['ros__parameters']['horizontal_speed'] == 2.
-    assert json.loads((output/'condition.json').read_text())['motion_mode'] == 'figure_eight'
+    target = flight['moving_target']['ros__parameters']
+    assert target['trajectory_type'] == mode
+    parameters = {field.name: target[field.name] for field in fields(MotionParameters)
+                  if field.name in target}
+    parameters.update(linear_vx=target['velocity_x'], linear_vy=target['velocity_y'],
+                      velocity_z=target['velocity_z'])
+    profile = UsvMotionProfile(mode, MotionParameters(**parameters))
+    previous = 0.
+    for _ in range(120):
+        sample = profile.advance(.05)
+        speed = math.hypot(*sample.velocity[:2])
+        assert -1e-10 <= speed-previous <= target['horizontal_acceleration_limit']*.05+1e-10
+        previous = speed
+    assert speed == pytest.approx(4.)
+    assert json.loads((output/'condition.json').read_text())['motion_mode'] == mode
 
 
 def test_capture_is_explicit_and_does_not_change_evaluation_radius(tmp_path):
@@ -58,6 +79,7 @@ def test_capture_is_explicit_and_does_not_change_evaluation_radius(tmp_path):
     entry.prepare(tmp_path/'capture', 'f2', motion='variable_speed_z', capture=True)
     flight = yaml.safe_load((tmp_path/'capture/config/flight.yaml').read_text())
     assert flight['trajectory_tracker_node']['ros__parameters']['p7_capture_enabled']
+    assert flight['moving_target']['ros__parameters']['start_on_command'] is True
     evaluator = flight['intercept_evaluator_node']['ros__parameters']
     assert evaluator['evaluation_capture_radius'] == .5
     assert evaluator['enable_sea_contact_failure']

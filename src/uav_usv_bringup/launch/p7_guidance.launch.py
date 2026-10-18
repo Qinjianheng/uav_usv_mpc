@@ -16,6 +16,7 @@ def generate_launch_description():
         config_file=os.path.join(share, 'config/p7_guidance.yaml'),
         log_directory=os.path.join(workspace, 'data/experiments/p7_manual'),
         prediction_model='bctra', enable_follow_minco='true', enable_follow_planner='true',
+        enable_intercept_planner='false',
         enable_evaluator='true', enable_shadow_perception='false')
     return LaunchDescription([
         *(DeclareLaunchArgument(key, default_value=value) for key, value in defaults.items()),

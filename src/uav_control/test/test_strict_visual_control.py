@@ -85,12 +85,15 @@ def test_optional_evaluator_and_shadow_nodes_cannot_disable_online_inputs():
             keywords = {item.arg: item.value for item in call.keywords}
             nodes[keywords['name'].value] = keywords
     for name in (
-        'intercept_planner_node',
         'trajectory_tracker_node', 'mission_manager_node',
         'target_kalman_filter', 'dual_tof_image_bridge',
         'target_bearing_node', 'rgbd_target_localizer',
     ):
         assert 'condition' not in nodes[name]
+    # P7 omits the unused legacy planner through its own switch. Evaluator
+    # and perception diagnostics must never gate that switch or online inputs.
+    assert ast.unparse(nodes['intercept_planner_node']['condition']) == (
+        "IfCondition(LaunchConfiguration('enable_intercept_planner'))")
     for name in ('target_predictor_node', 'imm_target_predictor_node'):
         assert 'prediction_model' in ast.unparse(nodes[name]['condition'])
     assert 'shadow_target_predictor_node' not in nodes

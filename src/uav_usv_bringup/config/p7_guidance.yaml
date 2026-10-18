@@ -114,7 +114,7 @@ moving_target:
     velocity_y: 0.0
     velocity_z: 0.0
     trajectory_type: linear
-    horizontal_speed: 2.0
+    horizontal_speed: 4.0
     horizontal_acceleration_limit: 1.0
     maximum_turn_rate: 0.65
     maximum_lateral_acceleration: 3.2

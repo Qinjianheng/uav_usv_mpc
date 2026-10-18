@@ -49,6 +49,9 @@ def generate_launch_description():
                               choices=['true', 'false']),
         DeclareLaunchArgument('enable_follow_planner', default_value='true',
                               choices=['true', 'false']),
+        DeclareLaunchArgument('enable_intercept_planner', default_value='true',
+                              choices=['true', 'false'],
+                              description='Legacy terminal planner; unused by P7 IBVS/PNG.'),
         DeclareLaunchArgument('prediction_model', default_value='imm', choices=['bctra', 'imm']),
         DeclareLaunchArgument(
             'log_directory',
@@ -114,6 +117,7 @@ def generate_launch_description():
             executable='intercept_planner_node',
             name='intercept_planner_node',
             output='screen',
+            condition=IfCondition(LaunchConfiguration('enable_intercept_planner')),
             parameters=[config_file],
         ),
         Node(

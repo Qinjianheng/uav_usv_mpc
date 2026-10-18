@@ -112,13 +112,16 @@ class P7FollowHealthGuard(FollowHealthGuard):
 
 
 def prepare(output, scene, motion=None, capture=False):
-    """Copy complete actual scene parameters into an exclusive new run directory."""
+    """Copy scene geometry and current P7 constant speed into an exclusive run."""
     if scene not in ('f2', 'f3'):
         raise ValueError('P7_F2_OR_F3_REQUIRED')
     flight = yaml.safe_load(CONFIG.read_text())
+    constant_speed = flight['moving_target']['ros__parameters']['horizontal_speed']
     source = R11/f'{scene}_h16_01/config/flight.yaml'
     original = yaml.safe_load(source.read_text())
     flight['moving_target'] = original['moving_target']
+    # Historical scene files supply geometry, not the current UI speed setting.
+    flight['moving_target']['ros__parameters']['horizontal_speed'] = constant_speed
     if motion is not None:
         mode = normalize_motion_mode(motion)
         flight['moving_target']['ros__parameters']['trajectory_type'] = mode
@@ -247,6 +250,7 @@ def run(output, scene, prior_f2=None, guidance=None, motion=None, capture=False)
                                                        25. if guidance == 'c' else 20.))
         (output/'condition.json').write_text(json.dumps(condition, indent=2)+'\n')
     env = dict(os.environ, UAV_USV_HEADLESS_GCS='true', UAV_USV_MINCO_EXECUTE='true',
+               UAV_USV_P7_MODE='true', UAV_USV_P7_CAPTURE='true' if capture else 'false',
                UAV_USV_REQUIRE_PRE_X_HEALTH='true', UAV_USV_P6_PREDICTOR='bctra')
     processes, health = [], {}
     started = time.time()

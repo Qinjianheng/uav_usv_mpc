@@ -2,6 +2,8 @@
 
 P7 配置已实现 X 后 KF/BCTRA/MINCO FOLLOW、Y 后 IBVS/PNG 安全接近，由唯一 Tracker 输出速度控制，见 [P7 使用与验证](p7_progress.md)。原 baseline/IMM 研究入口保留；MPC 尚未在线接管。P53 R11 是历史成功对照，不替代当前实测。
 
+日常一键入口 `./scripts/uav_lab.sh` 已接入 P7 手动捕获：1–5 只选择运动方式，X 才启动 UAV 起飞与 USV 运动，Y 捕获并在 0.50 m 内暂停。构建、旧基线入口与退出规则见[启动说明](startup_profile.md)。
+
 | 文档 | 用途 |
 |---|---|
 | [P7 使用与实际验证](p7_progress.md) | 专用启动、X/Y 控制权、FOLLOW/制导曲线、当前边界与阶段提交 |
@@ -18,6 +20,9 @@ P7 配置已实现 X 后 KF/BCTRA/MINCO FOLLOW、Y 后 IBVS/PNG 安全接近，�
 | [P5.3 全面修复与最终验收](p53_comprehensive_validation.md) | 最新R11同配置F2/F3均100%MINCO、零回退；全窗口飞行误差、阶段回归与证据 |
 | [P5.3 全链路代码审查](p53_comprehensive_diagnosis.md) | F2成本低估、F3时效误标、文献对照与确认/未确认边界 |
 | [架构](architecture.md) | 节点、消息、速度控制和真值边界 |
+| [仿真按需启动](startup_profile.md) | P7 闲置规划器关闭、QGC 按需启动、心跳生命周期与保留功能 |
+| [当前代码审查](code_audit_20261018.md) | 架构梳理、六个确认缺陷、离线复现、启动修改及完整回归 |
+| [六项修复与单次 S 捕获](audit_repair_validation_20261018.md) | 六项缺陷修复、2212 项回归、实际 10 节点、视觉连续捕获与原生位姿复算 |
 | [前视 RGB-D、ToF 与升沉](camera_simulation.md) | 当前 RGB-D 输入、保留的 ToF、0.15 m 场景及切换 |
 | [RGB-D 末端重新验收](terminal_replan_rgbd_20261007.md) | 间歇减速归因、新鲜轨迹接替与实际验证 |
 | [基线](baseline.md) | 四轮实验、完整配置、速度与冻结证据 |

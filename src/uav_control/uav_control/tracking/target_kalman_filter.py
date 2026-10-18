@@ -1,11 +1,13 @@
 """ROS 2 node that filters camera-derived target observations."""
 
+import copy
 import numpy as np
 import rclpy
 from geometry_msgs.msg import PointStamped
 from rclpy.node import Node
 from rclpy.time import Time
 from uav_usv_interfaces.msg import TargetObservation, TargetState
+from uav_control.common.navigation_frame import install_navigation_frame_guard
 
 from .constant_velocity_kalman import ConstantVelocityKalmanFilter
 
@@ -181,6 +183,7 @@ class TargetKalmanFilterNode(Node):
             1.0 / update_rate_hz,
             self.timer_callback,
         )
+        install_navigation_frame_guard(self, self.navigation_frame_failed)
 
         self.get_logger().info(
             'Target Kalman filter ready | '
@@ -189,7 +192,15 @@ class TargetKalmanFilterNode(Node):
             f'horizon={self.prediction_horizon:.2f} s'
         )
 
+    def navigation_frame_failed(self, _reason):
+        """Discard the estimator; fresh images alone cannot reopen a mixed coordinate frame."""
+        self.filter.initialized = False
+        self.filter_time_ns = self.last_measurement_time_ns = None
+        self.timer_callback()
+
     def measurement_callback(self, message):
+        if getattr(self, 'navigation_frame_fault', ''):
+            return
         if (
             not message.valid
             or message.frame_id != self.frame_id
@@ -206,6 +217,8 @@ class TargetKalmanFilterNode(Node):
         except ValueError:
             return
 
+        if timestamp_ns > self.get_clock().now().nanoseconds:
+            return
         if (
             self.last_measurement_time_ns is not None
             and timestamp_ns
@@ -214,21 +227,27 @@ class TargetKalmanFilterNode(Node):
             return
 
         try:
-            if not self.filter.initialized:
-                self.filter.initialize(
+            # Prediction and update commit together. A rejected covariance or
+            # singular innovation must not advance the live state epoch.
+            candidate = copy.deepcopy(self.filter)
+            if not candidate.initialized:
+                candidate.initialize(
                     measurement,
                     covariance,
                 )
-                self.filter_time_ns = timestamp_ns
             else:
-                self.predict_to(timestamp_ns)
-                self.filter.update(
+                dt = max(0., (timestamp_ns - self.filter_time_ns) * 1e-9)
+                if dt > 0.:
+                    candidate.predict(dt)
+                candidate.update(
                     measurement,
                     covariance,
                 )
-        except ValueError:
+        except (ValueError, np.linalg.LinAlgError, FloatingPointError, OverflowError):
             return
 
+        self.filter = candidate
+        self.filter_time_ns = timestamp_ns
         self.last_measurement_time_ns = timestamp_ns
         # A new image must not wait another publication period before control
         # sees it. Projection keeps the original source stamp and KF state.
@@ -253,6 +272,13 @@ class TargetKalmanFilterNode(Node):
             self.filter_time_ns = int(timestamp_ns)
 
     def timer_callback(self):
+        if getattr(self, 'navigation_frame_fault', ''):
+            message = TargetState()
+            message.stamp = self.get_clock().now().to_msg()
+            message.frame_id = self.frame_id
+            message.valid = False
+            self.state_pub.publish(message)
+            return
         if (
             not self.filter.initialized
             or self.filter_time_ns is None
