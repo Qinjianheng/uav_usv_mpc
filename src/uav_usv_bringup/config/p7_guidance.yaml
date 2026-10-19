@@ -307,7 +307,7 @@ trajectory_tracker_node:
     p7_guidance_enabled: true
     p7_navigation_constant: 3.0
     p7_standoff_distance: 4.5
-    p7_maximum_closing_speed: 0.75
+    p7_maximum_closing_speed: 2.0
     p7_closing_gain: 0.6
     p7_velocity_gain: 1.2
     p7_maximum_speed: 6.2
