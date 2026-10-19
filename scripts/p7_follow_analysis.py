@@ -11,9 +11,18 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt  # noqa: E402
 import numpy as np  # noqa: E402
+import yaml  # noqa: E402
 
 from p4_follow_analysis import read  # noqa: E402
 from p5_minco_sitl import sha  # noqa: E402
+
+
+def configured_altitude(run):
+    """Read the per-run altitude while retaining the historical fixture default."""
+    path = run/'config/flight.yaml'
+    config = yaml.safe_load(path.read_text()) if path.exists() else {}
+    return config.get('trajectory_tracker_node', {}).get('ros__parameters', {}).get(
+        'flight_altitude', -5.)
 
 
 def guidance_metrics(run, reason, stop=None):
@@ -61,7 +70,7 @@ def guidance_metrics(run, reason, stop=None):
     p = np.array([r['p'] for r in physical])
     target = np.column_stack([np.interp(t, tt, tp[:, i]) for i in (0, 1)])
     distance = np.linalg.norm(p[:, :2]-target, axis=1)
-    altitude_error = np.abs(p[:, 2]+5.)
+    altitude_error = np.abs(p[:, 2]-configured_altitude(run))
     speeds = [np.linalg.norm(r['v'][:2]) for r in native]
     accelerations = [np.linalg.norm(r['a'][:2]) for r in native]
     emitted = [r for r in rows if r['kind'] == 'reference' and r['stamp'] <= stop
@@ -152,7 +161,8 @@ def analyze_guidance(run, output):
                     label='velocity command')
     axes[2, 0].set(ylabel='Horizontal speed (m/s)')
     axes[2, 1].plot(nt, [-r['p'][2] for r in native], label='PX4 actual height')
-    axes[2, 1].axhline(5., linestyle='--', color='gray', label='height reference')
+    axes[2, 1].axhline(-configured_altitude(run), linestyle='--', color='gray',
+                       label='configured height reference')
     axes[2, 1].set(ylabel='Height (m)')
     for ax in axes.flat:
         ax.set_xlabel('Time since guidance (s)')

@@ -1,0 +1,181 @@
+{
+  "base": "9b7dddaa07f33fe7522b44f30981faaaa6ccf438",
+  "protected_sources": [
+    {
+      "path": "src/uav_control/uav_control/tracking/target_kalman_filter.py",
+      "unchanged": true,
+      "sha256": "1de51efba98ea8b740780bff474e1948302ba48536f5177664ae884be1ec00a5"
+    },
+    {
+      "path": "src/uav_control/uav_control/tracking/constant_velocity_kalman.py",
+      "unchanged": true,
+      "sha256": "36cf136350e35ca1e503a307131d2b003b36c17d30f6db05871875b6d6b6dac4"
+    },
+    {
+      "path": "src/uav_control/uav_control/tracking/maneuvering_target_predictor.py",
+      "unchanged": true,
+      "sha256": "33abd90600d85bda1c1622a49d6c777da42f32f5c540df90aba0f56ffc5a4328"
+    },
+    {
+      "path": "src/uav_control/uav_control/controllers/follow_guided_feasible.py",
+      "unchanged": true,
+      "sha256": "8f8843c779ec230acb667697448e13c3fd86d2ca237faea5d1eb0caaebc59da2"
+    },
+    {
+      "path": "src/uav_control/uav_control/controllers/direct_reference_minco.py",
+      "unchanged": true,
+      "sha256": "1ee31f2db1489a65bf8f9601cf8504771760d7097183e2ef06890cc53d37c513"
+    },
+    {
+      "path": "src/uav_control/uav_control/controllers/p44_follow_solver.py",
+      "unchanged": true,
+      "sha256": "937b24188c075bad53c8208f55936db76f28aa74959d72b1b3f5a575080813f3"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/follow_contract.py",
+      "unchanged": true,
+      "sha256": "561db04b8ed6a51e45be38eef96b3efbe8cc5800d8bd46194b2c576f67412d88"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/follow_minco_execution.py",
+      "unchanged": true,
+      "sha256": "ea47d84c708af78a92a18e668b119114be474e0908aae243c5ab4e0e711e0675"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/p6_follow.py",
+      "unchanged": true,
+      "sha256": "d2cc1ee198bb9d5ab0b7c86a063e1b15375637469ddc80386d36e2e5ed669a77"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/robust_visibility.py",
+      "unchanged": true,
+      "sha256": "3e6b4a758f0e42d5073f1193feae63a701908292a25fec95948af5d939b0e8e9"
+    },
+    {
+      "path": "src/uav_control/uav_control/common/sea_safety.py",
+      "unchanged": true,
+      "sha256": "522dbcc5afe28f0a03a6acca28dda5d74bcb411a2626d2df2f2cec95117e235c"
+    },
+    {
+      "path": "src/uav_control/uav_control/evaluation/intercept_evaluator.py",
+      "unchanged": true,
+      "sha256": "65db048918a907bc58e2199af803742137f7f70f40d71b459554da081caadf3f"
+    },
+    {
+      "path": "src/uav_control/uav_control/evaluation/gazebo_capture_geometry.py",
+      "unchanged": true,
+      "sha256": "d4b187cf481817628a153ce8cef7043c41cbf4b19265bbb24e77d6d0135a14ac"
+    },
+    {
+      "path": "src/uav_control/uav_control/moving_target.py",
+      "unchanged": true,
+      "sha256": "55c0ffbcf509437878582fa7975b5f5ae1cd431c25b729d2aff976e40f47322e"
+    },
+    {
+      "path": "src/uav_control/uav_control/usv_motion_profiles.py",
+      "unchanged": true,
+      "sha256": "5e80f769734caaf11cd2ba0d6bcb3a5bc1ce55dff90cd5f5d5edcf521fb1751e"
+    }
+  ],
+  "full_suite": {
+    "passed": 2247,
+    "failed": 3,
+    "errors": 44,
+    "skipped": 2,
+    "warnings": 3,
+    "seconds": 34.24,
+    "unavailable_input": "data/experiments/20261013_p53_closed_loop_11/f3_h16_01/config/flight.yaml",
+    "scope": "All 3 failures and 44 errors are in unchanged P6 historical-input tests; not repaired or relabeled."
+  },
+  "ideal_probe": {
+    "scope": "Synthetic noiseless first-order straight/heave only. No online truth wiring; not SITL qualification.",
+    "cases": [
+      {
+        "phase": -1.5707963267948966,
+        "outcome": "IDEAL_CAPTURE",
+        "seconds": 9.4,
+        "minimum": 0.24477120360334498,
+        "first_near": 2.95,
+        "last": {
+          "t": 9.35,
+          "distance": 0.2534712316758294,
+          "height": 0.33293095475196455,
+          "xy": 0.19801650849488794,
+          "mode": "CAPTURE_MATCH",
+          "goal_z": -0.34160156234172,
+          "reason": "CAMERA_CORRIDOR",
+          "view_margin": 0.3871773525680626,
+          "closing": 0.001251172526458788,
+          "velocity": [
+            4.002035920779662,
+            0.0,
+            -0.02187032521568503
+          ]
+        }
+      },
+      {
+        "phase": 0,
+        "outcome": "IDEAL_CAPTURE",
+        "seconds": 8.4,
+        "minimum": 0.2464850317942306,
+        "first_near": 2.95,
+        "last": {
+          "t": 8.35,
+          "distance": 0.25470498629610006,
+          "height": 0.3345763787995044,
+          "xy": 0.193861824223589,
+          "mode": "CAPTURE_MATCH",
+          "goal_z": -0.34534645527087876,
+          "reason": "CAMERA_CORRIDOR",
+          "view_margin": 0.4132446233887932,
+          "closing": 0.003871896828444221,
+          "velocity": [
+            4.006299712086626,
+            0.0,
+            -0.03156738015779304
+          ]
+        }
+      },
+      {
+        "phase": 1.5707963267948966,
+        "outcome": "IDEAL_CAPTURE",
+        "seconds": 7.4,
+        "minimum": 0.24986772707256297,
+        "first_near": 2.95,
+        "last": {
+          "t": 7.3500000000000005,
+          "distance": 0.2573839740810217,
+          "height": 0.3376791785750215,
+          "xy": 0.18666032504833652,
+          "mode": "CAPTURE_MATCH",
+          "goal_z": -0.3514739766423428,
+          "reason": "CAMERA_CORRIDOR",
+          "view_margin": 0.4575703943075331,
+          "closing": 0.00841777771608605,
+          "velocity": [
+            4.013799091502964,
+            0.0,
+            -0.046061433487510635
+          ]
+        }
+      }
+    ],
+    "core_milliseconds_p50_p95_max": {
+      "legacy": [
+        0.038142499999999996,
+        0.0410355,
+        0.092105
+      ],
+      "spatial": [
+        0.28759049999999997,
+        0.29999505,
+        0.605242
+      ]
+    }
+  },
+  "geometry_status": "PHASE_DEPENDENT",
+  "camera_pitch_degrees": 48.0,
+  "follow_height": 3.0,
+  "capture_radius": 0.25,
+  "flight_qualified": false
+}

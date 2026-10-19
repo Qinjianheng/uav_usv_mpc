@@ -73,3 +73,31 @@ def test_empty_physical_window_returns_unhealthy_without_crashing(tmp_path, miss
     run = write_run(tmp_path, rows)
     assert not guidance_metrics(run, 'P7_CAPTURE_COMPLETE', stop=11.)['healthy']
     assert not capture_metrics(run, 'P7_CAPTURE_COMPLETE')['healthy']
+
+
+@pytest.mark.parametrize('radius', [.25, .5])
+def test_capture_analysis_uses_each_runs_frozen_radius(tmp_path, radius):
+    import yaml
+    from p7_capture_analysis import configured_capture_radius, radius_result_valid
+    (tmp_path / 'config').mkdir()
+    frozen = dict(intercept_evaluator_node=dict(ros__parameters=dict(
+        evaluation_capture_radius=radius, planned_capture_radius=radius)))
+    (tmp_path / 'config/flight.yaml').write_text(yaml.safe_dump(frozen))
+    actual = configured_capture_radius(tmp_path)
+    assert actual == radius
+    assert radius_result_valid(dict(radius=radius, minimum_distance=radius-.001), actual)
+    assert not radius_result_valid(dict(radius=radius, minimum_distance=radius+.001), actual)
+    assert not radius_result_valid(dict(radius=1., minimum_distance=.2), actual)
+
+
+def test_capture_analysis_never_guesses_or_accepts_inconsistent_radius(tmp_path):
+    import yaml
+    from p7_capture_analysis import configured_capture_radius, radius_result_valid
+    assert configured_capture_radius(tmp_path) is None
+    assert not radius_result_valid(dict(radius=.5, minimum_distance=.2), None)
+    (tmp_path / 'config').mkdir()
+    frozen = dict(intercept_evaluator_node=dict(ros__parameters=dict(
+        evaluation_capture_radius=.25, planned_capture_radius=.5)))
+    (tmp_path / 'config/flight.yaml').write_text(yaml.safe_dump(frozen))
+    with pytest.raises(ValueError, match='CAPTURE_RADIUS_CONFIG_MISMATCH'):
+        configured_capture_radius(tmp_path)

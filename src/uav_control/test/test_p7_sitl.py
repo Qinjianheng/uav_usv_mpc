@@ -10,15 +10,24 @@ import yaml
 sys.path.insert(0, str(Path(__file__).resolve().parents[3]/'scripts'))
 
 
-def test_p7_cases_preserve_r11_geometry_and_apply_current_constant_speed(tmp_path):
+def test_p7_cases_preserve_current_f2_and_explicit_f3_geometry(tmp_path, monkeypatch):
     import p7_follow_sitl as entry
+    # Unit input only: never rebuild or relabel an absent historical qualification artifact.
+    current = yaml.safe_load(entry.CONFIG.read_text())
+    historical = yaml.safe_load(entry.CONFIG.read_text())
+    historical['moving_target']['ros__parameters'].update(
+        trajectory_type='figure_eight', initial_x=11., horizontal_speed=2.)
+    source = tmp_path/'unit_scene_input/f3_h16_01/config/flight.yaml'
+    source.parent.mkdir(parents=True)
+    source.write_text(yaml.safe_dump(historical))
+    monkeypatch.setattr(entry, 'R11', tmp_path/'unit_scene_input')
     for scene, mode in (('f2', 'linear'), ('f3', 'figure_eight')):
         output = tmp_path/scene
         entry.prepare(output, scene)
         flight = yaml.safe_load((output/'config/flight.yaml').read_text())
         target = flight['moving_target']['ros__parameters']
         assert target['horizontal_speed'] == 4.
-        original = yaml.safe_load((entry.R11/f'{scene}_h16_01/config/flight.yaml').read_text())
+        original = current if scene == 'f2' else historical
         original_target = original['moving_target']['ros__parameters']
         assert {k: v for k, v in target.items() if k != 'horizontal_speed'} == {
             k: v for k, v in original_target.items() if k != 'horizontal_speed'}
@@ -81,7 +90,7 @@ def test_capture_is_explicit_and_does_not_change_evaluation_radius(tmp_path):
     assert flight['trajectory_tracker_node']['ros__parameters']['p7_capture_enabled']
     assert flight['moving_target']['ros__parameters']['start_on_command'] is True
     evaluator = flight['intercept_evaluator_node']['ros__parameters']
-    assert evaluator['evaluation_capture_radius'] == .5
+    assert evaluator['evaluation_capture_radius'] == .25
     assert evaluator['enable_sea_contact_failure']
 
 

@@ -331,7 +331,7 @@ def test_current_sdf_and_config_extrinsics_are_consistent():
     bringup = root / 'src/uav_usv_bringup'
     model = ET.parse(bringup / 'models/x500_mono_cam/model.sdf').getroot()
     pose = [float(x) for x in model.find('.//link[@name="front_camera_link"]/pose').text.split()]
-    config = yaml.safe_load((bringup / 'config/baseline.yaml').read_text())
+    config = yaml.safe_load((bringup / 'config/p7_guidance.yaml').read_text())
     params = config['rgbd_target_localizer']['ros__parameters']
     translation = tuple(params['camera_translation_' + axis] for axis in 'xyz')
     assert translation == pytest.approx((pose[0], pose[1], pose[2] + 0.24))
