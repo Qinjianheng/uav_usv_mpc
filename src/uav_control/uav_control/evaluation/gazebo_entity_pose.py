@@ -46,13 +46,15 @@ class TimedPoseHistory:
         self.maximum_age = max(float(maximum_age), 1e-3)
         self.interpolator = interpolator
         self._samples = deque()
+        self._source_brackets = {}
         self._lock = threading.Lock()
 
     def clear(self):
         with self._lock:
             self._samples.clear()
+            self._source_brackets.clear()
 
-    def add(self, sim_stamp, ros_stamp, value):
+    def add(self, sim_stamp, ros_stamp, value, source_bracket=None):
         sim_stamp = float(sim_stamp)
         ros_stamp = float(ros_stamp)
         if not all(math.isfinite(x) for x in (sim_stamp, ros_stamp)):
@@ -65,9 +67,11 @@ class TimedPoseHistory:
                 self._samples[-1] = sample
             else:
                 self._samples.append(sample)
+            self._source_brackets[ros_stamp] = source_bracket
             cutoff = ros_stamp - self.maximum_age
             while len(self._samples) > 2 and self._samples[1][1] < cutoff:
-                self._samples.popleft()
+                discarded = self._samples.popleft()
+                self._source_brackets.pop(discarded[1], None)
         return True
 
     def query_at(self, ros_stamp):
@@ -107,6 +111,12 @@ class TimedPoseHistory:
                     fraction, interval, left_value, value,
                 )
         return TimedPoseQuery(None, 'QUERY_GAP', ros_stamp)
+
+    def snapshot(self):
+        """Return bounded immutable epoch/value entries for chronological evaluation."""
+        with self._lock:
+            return tuple((raw, mapped, value, self._source_brackets.get(mapped))
+                         for raw, mapped, value in self._samples)
 
 
 @dataclass(frozen=True)

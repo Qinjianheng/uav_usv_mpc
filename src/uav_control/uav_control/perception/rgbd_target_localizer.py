@@ -494,6 +494,7 @@ class GazeboImageClockMapper:
         self.last_status = 'CLOCK_REFERENCE_UNAVAILABLE'
         self.offset = None
         self.last_quality = math.nan
+        self.last_mapping_bracket = None
         self.last_anchor_sim_time = math.nan
         self.last_anchor_system_time = math.nan
         self.last_reference_age = math.nan
@@ -509,6 +510,7 @@ class GazeboImageClockMapper:
         self.last_status = str(status)
         self.offset = None
         self.last_quality = math.nan
+        self.last_mapping_bracket = None
         self.last_anchor_sim_time = math.nan
         self.last_anchor_system_time = math.nan
         self.last_reference_age = math.nan
@@ -674,6 +676,8 @@ class GazeboImageClockMapper:
                 self.last_quality = sim_delta
                 self.last_status = 'MAPPED_INTERPOLATED'
             self.offset = mapped - sim_time
+            self.last_mapping_bracket = (left.sim_time, right.sim_time,
+                                         left.system_time, right.system_time)
             self.last_anchor_sim_time = right.sim_time
             self.last_anchor_system_time = right.system_time
             return mapped, self.last_status

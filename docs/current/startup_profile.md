@@ -25,6 +25,10 @@ P7 的 FOLLOW 规划器仍然运行。前视 RGB-D 桥、方位检测、定位�
 
 旧基线与 P7 的主 predictor 分别为 IMM 与 BCTRA。一键入口默认调用 `p7_follow_sitl.py --manual --capture`，启用半径捕获；底层 P7 实验入口仍通过 `--capture` 显式选择，省略时保持安全接近。
 
+P7 使用原生 Gazebo 几何判定原 0.50 m 半径，成功后暂停世界；Gazebo 窗口可以仍然显示暂停场景。原生几何只用于评价，不向制导纠偏。近场修复及恒速/变速八字的实测、部分裁切边界见[论文参考与终端验证](p7_paper_terminal_validation_20261018.md)。
+
+2026-10-19 的高度协调与逐原生样本判据已接入同一入口，无需新开关。单次变速八字在首次近场进近完成捕获并暂停；准备阶段仍有约 0.30 m 拉距，范围见[完整验证](p7_height_capture_validation_20261019.md)。
+
 QGroundControl 默认不自动打开。P7 自动/手动实验驱动提供自己的轻量心跳，并设置 `UAV_USV_HEADLESS_GCS=true`，后端不重复启动。旧基线后端若已有 QGC 则复用，否则由 `scripts/run_with_sitl_gcs.py` 管理仅发送 GCS 心跳的本地辅助进程，不发送飞行或参数指令；随 ROS launch 结束、实验终端退出或 R 重启一起停止。旧基线模式 Q 只关闭命令台，因此不会中断仍运行的实验心跳。
 
 旧基线入口需要自动打开 QGroundControl 时：

@@ -96,7 +96,8 @@ class GazeboUavPoseTracker(GazeboEntityPoseTracker):
                           'IMAGE_AFTER_CLOCK_REFERENCE'):
                 self.pending_poses.append((sim_stamp, value, receipt))
             return False
-        if not self.history.add(sim_stamp, mapped, value):
+        if not self.history.add(sim_stamp, mapped, value,
+                                source_bracket=self.clock_mapper.last_mapping_bracket):
             self.last_status = 'UAV_POSE_OUT_OF_ORDER'
             return False
         self.last_mapped_stamp = mapped

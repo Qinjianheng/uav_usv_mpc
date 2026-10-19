@@ -41,14 +41,14 @@ def test_capture_anticipates_lower_edge_and_holds_forecast_for_repeated_image():
     assert reset.acceleration[0] > 0.
 
 
-def test_heave_feedforward_is_derivative_of_sea_bounded_height_reference():
-    # Above sea: reference follows target both up and down. Below sea: reference
-    # remains on the .33 m floor, so neither sign of target heave moves it.
+def test_contact_height_tracks_configured_sea_layer_instead_of_target_heave():
+    # At a configured sea z=.50, the .33 m contact layer is z=.17.
+    # UAV z=.07 has .10 m descent left, independent of target wave velocity.
     for vz in (-.2, .2):
-        _, actual = capture_reference((0., 0., -.43), (1., 0., -.1), (3., 0., vz))
-        assert actual == pytest.approx(vz)
-        _, actual = capture_reference((0., 0., -.33), (1., 0., .1), (3., 0., vz))
-        assert actual == pytest.approx(0.)
+        distance, actual = capture_reference((0., 0., .07), (1., 0., .4),
+                                             (3., 0., vz), sea_surface_z=.5)
+        assert distance == pytest.approx(.5)
+        assert actual == pytest.approx(.1)
 
 
 @pytest.mark.parametrize('heave_phase', (0., math.pi/2., math.pi, 3.*math.pi/2.))

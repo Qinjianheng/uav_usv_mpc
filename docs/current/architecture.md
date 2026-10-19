@@ -6,6 +6,10 @@ P5.3最新实际状态见 [全面修复与最终验收](p53_comprehensive_valida
 
 当前默认只有前视 RGB-D 输入，下视关闭；升沉幅值 0.15 m。ToF 实现保留并由显式开关启用；模型假设、真机边界和切换步骤见 [相机文档](camera_simulation.md)。
 
+P7 半径捕获现显式采用 `gazebo_native` 评价几何，以因果映射、同刻原生模型参考判定 0.50 m 并暂停；导航估计与 Gazebo 模型原点不混作同一几何。此真值只进入评价终态，在线 P7 仍使用视觉/KF 与导航。PNG 终端包含自身 LOS 偏航前馈和深度相关趋近，详情及两种八字实测见[终端验证](p7_paper_terminal_validation_20261018.md)。
+
+2026-10-19：捕获参考层改为既有海面安全接触高度，避免随艇体升沉周期爬升；PNG 反馈与限幅未改。评价器按时间消费每个有效同刻原生配对，位置入径与速度历史解耦，并保留独立触海时序；逐条 Clock 括号和命中来源保存为 `*_capture.jsonl`。单轮变速八字首次近场捕获及保留边界见[高度协调验证](p7_height_capture_validation_20261019.md)。
+
 一键脚本默认由 `p7_follow_sitl.py --manual --capture` 生成独立配置，使用 BCTRA 与 P7 参数。显式 `--baseline` 保留 [modular_intercept.launch.py](../../src/uav_usv_bringup/launch/modular_intercept.launch.py)、[baseline.yaml](../../src/uav_usv_bringup/config/baseline.yaml)与 IMM；已有研究驱动设置的 launch 也直接透传。它们使用多个进程隔离感知、预测、规划、跟踪、任务和评价，tracker 是 PX4 指令的唯一在线发布者。数字选模只更新运动参数，`start_on_command=true` 保持目标静止；有效 X／任务 TAKEOFF 后才推进运动。
 
 ```mermaid

@@ -2061,7 +2061,8 @@ class TrajectoryTrackerNode(Node):
         """One arbiter owns yaw for every final PX4 setpoint."""
         if (getattr(self, 'p7_guidance_enabled', False)
                 and self.mission_state == MissionState.FAR_GUIDANCE):
-            # P7 has no LOS-rate yaw feedforward: PNG owns horizontal motion only.
+            # P7 owns its capture LOS feedforward and image feedback together;
+            # never add the previous FOLLOW owner's yaw rate here.
             result = getattr(self, 'p7_result', None)
             rate = result.yaw_rate if result is not None and result.valid else 0.
             self.yaw_owner = 'IBVS' if result is not None and result.valid else 'P7_WAIT'

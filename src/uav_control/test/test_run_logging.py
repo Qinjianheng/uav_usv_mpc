@@ -29,6 +29,7 @@ def node_fixture(tmp_path):
     node.planned_capture_radius = .5
     node.truth_topic = '/target/state'
     node.truth_role = 'evaluation_only'
+    node.capture_geometry_source = 'navigation_estimate'
     node.detailed_diagnostics_enabled = False
     node.visual_evaluation_enabled = True
     node.gazebo_entity_tracker = None

@@ -172,6 +172,7 @@ class InterceptEvaluatorNode(Node):
         )
         self.declare_parameter('truth_topic', '/target/state')
         self.declare_parameter('truth_role', 'evaluation_only')
+        self.declare_parameter('capture_geometry_source', 'navigation_estimate')
         self.declare_parameter(
             'shadow_prediction_topic',
             '/planning/shadow_target_prediction',
@@ -220,12 +221,20 @@ class InterceptEvaluatorNode(Node):
         self.truth_role = str(self.get_parameter('truth_role').value)
         if self.truth_role != 'evaluation_only':
             raise ValueError('truth_role must be evaluation_only')
+        self.capture_geometry_source = str(self.get_parameter('capture_geometry_source').value)
+        if self.capture_geometry_source not in ('navigation_estimate', 'gazebo_native'):
+            raise ValueError('invalid capture geometry source')
         self.shadow_prediction_topic = str(
             self.get_parameter('shadow_prediction_topic').value
         )
         self.gazebo_pauser = None
         self.gazebo_entity_tracker = None
         self.gazebo_uav_tracker = None
+        self.gazebo_capture_target_tracker = None
+        self.last_native_capture_sample = None
+        self.last_native_capture_sim_stamp = None
+        self.native_capture_stream = None
+        self.native_capture_event = None
         self.gazebo_uav_diagnostics_enabled = bool(self.get_parameter(
             'gazebo_uav_diagnostics_enabled'
         ).value)
@@ -261,7 +270,9 @@ class InterceptEvaluatorNode(Node):
         self.gazebo_entity_diagnostics_enabled = bool(self.get_parameter(
             'gazebo_entity_diagnostics_enabled'
         ).value)
-        if self.gazebo_entity_diagnostics_enabled or self.gazebo_uav_diagnostics_enabled:
+        native_capture = self.capture_geometry_source == 'gazebo_native'
+        if (self.gazebo_entity_diagnostics_enabled or self.gazebo_uav_diagnostics_enabled
+                or native_capture):
             try:
                 from gz.msgs10.clock_pb2 import Clock as GazeboClock
                 from gz.msgs10.pose_v_pb2 import Pose_V
@@ -269,10 +280,13 @@ class InterceptEvaluatorNode(Node):
 
                 if self.gazebo_entity_diagnostics_enabled:
                     self.gazebo_entity_tracker = GazeboEntityPoseTracker()
-                if self.gazebo_uav_diagnostics_enabled:
+                if self.gazebo_uav_diagnostics_enabled or native_capture:
                     self.gazebo_uav_tracker = GazeboUavPoseTracker(
                         model_name=self.gazebo_uav_entity_name,
                     )
+                if native_capture:
+                    self.gazebo_capture_target_tracker = GazeboUavPoseTracker(
+                        model_name=self.gazebo_target_entity_name)
                 self.gazebo_entity_node = GazeboTransportNode()
                 clock_topic = f'/world/{world_name}/clock'
                 pose_topic = f'/world/{world_name}/pose/info'
@@ -293,6 +307,8 @@ class InterceptEvaluatorNode(Node):
                         f'could not subscribe to {pose_topic}'
                     )
             except (ImportError, RuntimeError, TypeError) as error:
+                if native_capture:
+                    raise RuntimeError('Native capture geometry unavailable') from error
                 self.gazebo_entity_tracker = None
                 self.gazebo_uav_tracker = None
                 self.gazebo_entity_node = None
@@ -482,7 +498,8 @@ class InterceptEvaluatorNode(Node):
 
     def gazebo_entity_clock_callback(self, message):
         """Keep the evaluator-only entity history in ROS system time."""
-        for tracker in (self.gazebo_entity_tracker, self.gazebo_uav_tracker):
+        for tracker in (self.gazebo_entity_tracker, self.gazebo_uav_tracker,
+                        getattr(self, 'gazebo_capture_target_tracker', None)):
             if tracker is not None:
                 tracker.add_clock_anchor(
                     self._gazebo_stamp(message.sim),
@@ -495,6 +512,12 @@ class InterceptEvaluatorNode(Node):
         sim_stamp = self._gazebo_stamp(message.header.stamp)
         for pose in message.pose:
             name = str(pose.name)
+            native_target = getattr(self, 'gazebo_capture_target_tracker', None)
+            if native_target is not None and native_target.matches_model(name):
+                native_target.add_pose(
+                    sim_stamp, (pose.position.x, pose.position.y, pose.position.z),
+                    (pose.orientation.w, pose.orientation.x,
+                     pose.orientation.y, pose.orientation.z), self._now())
             if self.gazebo_entity_tracker is not None and (
                 name == self.gazebo_target_entity_name
                 or name.rsplit('::', 1)[-1]
@@ -1312,6 +1335,7 @@ class InterceptEvaluatorNode(Node):
 
     def _config_snapshot(self):
         return {
+            'capture_geometry_source': self.capture_geometry_source,
             'evaluation_capture_radius': self.evaluation_capture_radius,
             'planned_capture_radius': self.planned_capture_radius,
             'sea_surface_z': self.evaluator.sea_surface_z,
@@ -1406,6 +1430,10 @@ class InterceptEvaluatorNode(Node):
         self.intercept_started_at = float(now)
         self.evaluator.begin(mission_id, now)
         self.last_synchronized_stamp = None
+        self.last_native_capture_sim_stamp = None
+        self.last_native_capture_sample = None
+        self.native_capture_stream = None
+        self.native_capture_event = None
         self.result_published = False
         return True
 
@@ -1796,6 +1824,24 @@ class InterceptEvaluatorNode(Node):
             'truth_role': self.truth_role,
             'controller_callback_p95': 0.0,
         }
+        sample = getattr(self, 'last_native_capture_sample', None)
+        summary['capture_geometry_source'] = self.capture_geometry_source
+        if sample is not None:
+            summary['native_capture_sample'] = dict(
+                stamp=sample.stamp, native_stamp=sample.native_stamp,
+                maximum_bracket=sample.maximum_bracket,
+                uav_position=sample.uav.position, target_position=sample.target.position,
+                velocity_valid=sample.velocity_valid, segment_valid=sample.segment_valid,
+                uav_clock_bracket=sample.uav_clock_bracket,
+                target_clock_bracket=sample.target_clock_bracket,
+                velocity_role='NATIVE_DISPLACEMENT_RATE_DIAGNOSTIC')
+        native_stream = getattr(self, 'native_capture_stream', None)
+        if native_stream is not None:
+            summary['native_capture_stream'] = dict(
+                counters=dict(native_stream.counters),
+                last_query=native_stream.last_diagnostics,
+                geometry='CHRONOLOGICAL_EXACT_NATIVE_PAIRS')
+            summary['native_capture_event'] = getattr(self, 'native_capture_event', None)
         if self.terminal_pause_result is not None:
             summary.update({
                 'terminal_event': self.terminal_pause_result.terminal_event,
@@ -1908,22 +1954,63 @@ class InterceptEvaluatorNode(Node):
         self._write_run_sample(run_now, synchronized=synchronized)
         if self.evaluator.started_at is None or self.result_published:
             return
-        if synchronized is None:
-            return
-        now, uav, truth = synchronized
-        if now < self.intercept_started_at:
-            return
-        if (
-            self.last_synchronized_stamp is not None
-            and now <= self.last_synchronized_stamp + 1e-9
-        ):
-            return
-        self.last_synchronized_stamp = now
-        result = self.evaluator.update(
-            now,
-            uav,
-            truth,
-        )
+        native = getattr(self, 'capture_geometry_source', 'navigation_estimate') == 'gazebo_native'
+        if native:
+            from .gazebo_capture_geometry import NativeCaptureStream
+            if getattr(self, 'native_capture_stream', None) is None:
+                self.native_capture_stream = NativeCaptureStream(self.intercept_started_at)
+            samples = self.native_capture_stream.drain(
+                self.gazebo_uav_tracker, self.gazebo_capture_target_tracker,
+                run_now, self.gazebo_visual_height_offset)
+            if hasattr(self.writer, 'append_capture_event'):
+                self.writer.append_capture_event(dict(
+                    kind='QUERY', **self.native_capture_stream.last_diagnostics))
+        else:
+            samples = [] if synchronized is None else [synchronized]
+        result = None
+        for sample in samples:
+            if native:
+                self.last_native_capture_sample = sample
+                now, uav, truth = sample.stamp, sample.uav, sample.target
+            else:
+                now, uav, truth = sample
+            if (now < self.intercept_started_at or
+                    (self.last_synchronized_stamp is not None and
+                     now <= self.last_synchronized_stamp+1e-9)):
+                continue
+            self.last_synchronized_stamp = now
+            if native:
+                result = self.evaluator.update(now, uav, truth,
+                                               capture_segment=sample.segment_valid,
+                                               sea_segment=sample.velocity_valid)
+            else:
+                result = self.evaluator.update(now, uav, truth)
+            if native:
+                if result is not None and self.evaluator.event_provenance is not None:
+                    event = self.evaluator.event_provenance
+                    left_native = (getattr(self, 'last_native_capture_sim_stamp', None)
+                                   if event['left_stamp'] is not None else None)
+                    self.native_capture_event = dict(
+                        event, decision_stamp=run_now, left_native_stamp=left_native,
+                        right_native_stamp=sample.native_stamp,
+                        event_native_stamp=(left_native+event['fraction']*(
+                            sample.native_stamp-left_native)
+                            if left_native is not None else sample.native_stamp))
+                self.last_native_capture_sim_stamp = sample.native_stamp
+            if native and hasattr(self.writer, 'append_capture_event'):
+                self.writer.append_capture_event(dict(
+                    kind='EVALUATED', stamp=now, native_stamp=sample.native_stamp,
+                    decision_stamp=run_now, uav_position=uav.position,
+                    target_position=truth.position,
+                    velocity_valid=sample.velocity_valid, segment_valid=sample.segment_valid,
+                    maximum_bracket=sample.maximum_bracket,
+                    uav_clock_bracket=sample.uav_clock_bracket,
+                    target_clock_bracket=sample.target_clock_bracket,
+                    distance=math.dist(uav.position, truth.position),
+                    event=getattr(self, 'native_capture_event', None),
+                    terminal_reason=result.reason if result is not None else ''))
+            if result is not None:
+                break
         if result is None:
             return
         self.result_pub.publish(

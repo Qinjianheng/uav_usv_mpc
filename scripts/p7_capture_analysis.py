@@ -2,6 +2,7 @@
 """Offline radius-capture and frozen-world checks; never part of flight feedback."""
 
 import argparse
+import bisect
 import json
 from pathlib import Path
 
@@ -10,6 +11,37 @@ import numpy as np
 from p4_follow_analysis import read
 from p5_minco_sitl import sha
 from p7_follow_analysis import guidance_metrics
+
+
+def native_reference_distances(rows, start, end, marker_height):
+    """Same native pose epoch, mapped only inside <=50 ms server clock brackets."""
+    first_clocks = {}
+    for row in rows:
+        if row['kind'] == 'clock':
+            first_clocks.setdefault(row['sim'], row)
+    clocks = sorted(first_clocks.values(), key=lambda r: r['sim'])
+    times = [r['sim'] for r in clocks]
+    boats = {r['sim']: r for r in rows if r['kind'] == 'rendered_target'}
+    result = []
+    for uav in (r for r in rows if r['kind'] == 'rendered_uav' and r['sim'] in boats):
+        i = bisect.bisect_left(times, uav['sim'])
+        if i < len(times) and abs(times[i]-uav['sim']) <= 1e-9:
+            stamp = clocks[i]['system']
+        elif 0 < i < len(times):
+            a, b = clocks[i-1:i+1]
+            if not (0 < b['sim']-a['sim'] <= .05+1e-9
+                    and 0 < b['system']-a['system'] <= .05+1e-9):
+                continue
+            stamp = a['system']+(uav['sim']-a['sim'])/(b['sim']-a['sim'])*(b['system']-a['system'])
+        else:
+            continue
+        if not start <= stamp <= end:
+            continue
+        target = np.array(boats[uav['sim']]['p'])
+        target[2] += marker_height
+        result.append((stamp, uav['sim'], float(np.linalg.norm(np.array(uav['p'])-target)),
+                       -uav['p'][2]))
+    return result
 
 
 def freeze_metrics(rows, result_receipt):
@@ -106,6 +138,7 @@ def analyze(run, output):
     import matplotlib
     matplotlib.use('Agg')
     import matplotlib.pyplot as plt
+    import yaml
     recorded = json.loads((run/'summary.json').read_text())
     summary = capture_metrics(run, recorded['reason'])
     summary.update(recorded_run_healthy=recorded['healthy'],
@@ -133,11 +166,21 @@ def analyze(run, output):
     q = np.column_stack([np.interp(nt, tt, tp[:, i]) for i in range(3)])
     distance = np.linalg.norm(p-q, axis=1)
     guidance = [r for r in rows if r['kind'] == 'p7_guidance' and start <= r['stamp'] <= end]
+    config = yaml.safe_load((run/'config/flight.yaml').read_text())
+    native_geometry = native_reference_distances(
+        rows, start, end,
+        config['moving_target']['ros__parameters']['gazebo_visual_height_offset'])
     fig, axes = plt.subplots(2, 2, figsize=(11, 7))
-    axes[0, 0].plot(nt-start, distance, label='3-D UAV to USV reference')
+    axes[0, 0].plot(nt-start, distance, label='PX4 estimate to USV reference')
+    if native_geometry:
+        actual = np.array(native_geometry)
+        axes[0, 0].plot(actual[:, 0]-start, actual[:, 2], label='Gazebo model references')
+        axes[0, 1].plot(actual[:, 0]-start, actual[:, 3], label='Gazebo model height')
+        np.savetxt(output/'native_distance.csv', actual, delimiter=',',
+                   header='ros_epoch,native_sim_seconds,distance_3d_m,model_height_m', comments='')
     axes[0, 0].axhline(.5, color='gray', linestyle='--', label='capture radius')
     axes[0, 0].set(ylabel='Distance (m)')
-    axes[0, 1].plot(nt-start, -p[:, 2], label='PX4 actual height')
+    axes[0, 1].plot(nt-start, -p[:, 2], label='PX4 estimated height')
     axes[0, 1].axhline(.33, color='gray', linestyle='--', label='terminal clearance request')
     axes[0, 1].set(ylabel='Height (m)')
     axes[1, 0].plot(q[:, 0], q[:, 1], label='USV evaluation truth')

@@ -109,20 +109,21 @@ def capture_reference(uav_position, target_position, target_velocity,
                 sea_surface_z, contact_clearance, maximum_descent_speed))
             or contact_clearance < .33 or not 0 < maximum_descent_speed <= .6):
         raise ValueError('INVALID_P7_CAPTURE_REFERENCE')
-    up, tp, tv = vectors
-    goal_z = min(tp[2]-contact_clearance, sea_surface_z-contact_clearance)
+    up = vectors[0]
+    # This is a radius intercept, not deck landing: prepare at the existing
+    # sea-safe contact layer. Chasing each heave crest lifts the UAV just as
+    # the target starts descending, reopening the horizontal corridor.
+    # Target heave remains in the measured relative capture/visual geometry;
+    # it must not move this sea-referenced preparation layer up and down.
+    goal_z = sea_surface_z-contact_clearance
     descent_remaining = max(0., goal_z-up[2])
     # Descend before the final horizontal closure. A 0.30 m horizontal offset
     # at 0.33 m vertical separation is inside the unchanged 0.50 m sphere.
     # The 2:1 corridor leaves room for velocity-loop braking and the fixed
     # forward camera; closing over the target before descent loses its image.
     standoff = min(4.5, .3+2.*descent_remaining)
-    # Differentiate the same sea-bounded reference in both directions. A
-    # negative-only feedforward accumulates an upward bias during periodic
-    # heave; below sea the reference is constant and its derivative is zero.
-    goal_velocity = tv[2] if tp[2] < sea_surface_z else 0.
     vertical = min(maximum_descent_speed,
-                   max(-maximum_descent_speed, goal_z-up[2]+goal_velocity))
+                   max(-maximum_descent_speed, goal_z-up[2]))
     return standoff, vertical
 
 
@@ -165,7 +166,8 @@ class P7VisualGuidance:
             self.reset()
             return GuidanceOutput()
         up, uv, tp, tv = vectors
-        los = png_los(tp-up, tv-uv, config.navigation_constant)
+        los = png_los(tp-up, tv-uv, config.navigation_constant,
+                      minimum_range=.001 if approach_distance is not None else 1.)
         if not los.valid and approach_distance is None:
             self.reset()
             return GuidanceOutput()
@@ -176,6 +178,11 @@ class P7VisualGuidance:
         closing = max(-config.maximum_closing_speed, min(
             config.maximum_closing_speed,
             config.closing_gain*(los.distance-standoff)))
+        if approach_distance is not None:
+            # Depth-adaptive pursuit: taper relative closure within one existing
+            # velocity-response distance, while keeping target velocity matching.
+            response_distance = config.maximum_closing_speed/config.velocity_gain
+            closing *= min(1., los.distance/response_distance)
         if abs(error_u) > config.alignment_limit:
             closing = min(0., closing)
         if self.previous_image is None or image_stamp > self.previous_image[0]:
@@ -223,6 +230,11 @@ class P7VisualGuidance:
         emitted_acceleration = (velocity-self.previous)/dt
         desired_yaw = ibvs_yaw_rate(error_u, config.yaw_gain, config.yaw_deadband,
                                     config.maximum_yaw_rate)
+        if approach_distance is not None:
+            # A moving LOS needs pointing motion even at zero image error.
+            # This is the current accepted KF/navigation pair, never truth or
+            # FOLLOW ownership state; the original yaw limits apply below.
+            desired_yaw += los.los_rate
         yaw_step = config.maximum_yaw_acceleration*dt
         self.yaw_rate += max(-yaw_step, min(yaw_step, desired_yaw-self.yaw_rate))
         self.yaw_rate = max(-config.maximum_yaw_rate, min(config.maximum_yaw_rate, self.yaw_rate))

@@ -694,6 +694,7 @@ class InterceptEvaluatorCore:
         self.maximum_horizontal_acceleration = 0.0
         self.maximum_vertical_acceleration = 0.0
         self.result = None
+        self.event_provenance = None
 
     def begin(self, mission_id, now):
         """Start a clean truth-evaluation interval for one mission."""
@@ -844,7 +845,7 @@ class InterceptEvaluatorCore:
         )
         return self.result
 
-    def update(self, now, uav, target):
+    def update(self, now, uav, target, *, capture_segment=True, sea_segment=True):
         """Consume synchronized truth and return a terminal event."""
         if self.started_at is None or self.result is not None:
             return self.result
@@ -861,31 +862,38 @@ class InterceptEvaluatorCore:
         )
 
         event = None
+        event_fraction, event_source = 1., ''
+        interval_start = self.previous_time
         if self.previous_uav is not None and self.previous_target is not None:
             previous_relative = self._relative(
                 self.previous_uav,
                 self.previous_target,
             )
-            self._update_closest(
-                self._closest_relative(previous_relative, relative)
-            )
-            capture_fraction = self._capture_fraction(
-                previous_relative,
-                relative,
-            )
-            sea_fraction = self._sea_fraction(
-                self.previous_uav.position[2],
-                uav.position[2],
-            )
+            if capture_segment:
+                self._update_closest(self._closest_relative(previous_relative, relative))
+                capture_fraction = self._capture_fraction(previous_relative, relative)
+            else:
+                capture_fraction = 1. if _norm(relative) <= self.capture_radius else None
+            if sea_segment:
+                sea_fraction = self._sea_fraction(self.previous_uav.position[2], uav.position[2])
+            else:
+                sea_fraction = (1. if self.enable_sea_contact_failure and
+                                uav.position[2] >= self.body_contact_z else None)
             if capture_fraction is not None and (
-                sea_fraction is None or capture_fraction <= sea_fraction
+                sea_fraction is None or capture_fraction < sea_fraction or
+                (capture_fraction == sea_fraction and capture_segment and sea_segment)
             ):
                 event = True, 'CAPTURE_RADIUS_REACHED'
+                event_fraction = capture_fraction
+                event_source = ('CAPTURE_SEGMENT' if capture_segment and capture_fraction < 1.
+                                else 'CAPTURE_POSITION')
             elif sea_fraction is not None:
                 self.detail = self._sea_contact_detail(uav.position[2])
                 event = False, 'SEA_CONTACT'
+                event_fraction = sea_fraction
+                event_source = 'SEA_SEGMENT' if sea_segment else 'SEA_POSITION'
             dt = now - self.previous_time
-            if dt > 1e-6:
+            if dt > 1e-6 and sea_segment:
                 acceleration = tuple(
                     (current - previous) / dt
                     for current, previous in zip(
@@ -902,19 +910,32 @@ class InterceptEvaluatorCore:
                     abs(acceleration[2]),
                 )
         else:
-            if _norm(relative) <= self.capture_radius:
+            if (not sea_segment and self.enable_sea_contact_failure and
+                    uav.position[2] >= self.body_contact_z):
+                self.detail = self._sea_contact_detail(uav.position[2])
+                event = False, 'SEA_CONTACT'
+                event_source = 'SEA_POSITION'
+            elif _norm(relative) <= self.capture_radius:
                 event = True, 'CAPTURE_RADIUS_REACHED'
+                event_source = 'CAPTURE_POSITION'
             elif (
                 self.enable_sea_contact_failure
                 and uav.position[2] >= self.body_contact_z
             ):
                 self.detail = self._sea_contact_detail(uav.position[2])
                 event = False, 'SEA_CONTACT'
+                event_source = 'SEA_POSITION'
 
         self.previous_time = now
         self.previous_uav = uav
         self.previous_target = target
         if event is not None:
+            segment = event_source.endswith('SEGMENT') and interval_start is not None
+            self.event_provenance = dict(
+                source=event_source, fraction=event_fraction,
+                left_stamp=interval_start if segment else None, right_stamp=now,
+                event_stamp=(interval_start+event_fraction*(now-interval_start)
+                             if segment else now))
             return self._finish(event[0], event[1], now, uav, target)
         if now - self.started_at >= self.maximum_duration:
             return self._finish(False, 'TIMEOUT', now, uav, target)
@@ -930,6 +951,7 @@ class ArtifactPaths:
     config_path: Path
     diagnostics_path: Path = None
     visual_path: Path = None
+    capture_path: Path = None
 
 
 class ExperimentArtifactWriter:
@@ -1075,6 +1097,8 @@ class ExperimentArtifactWriter:
                 directory / f'{stem}_vision.csv'
                 if visual_evaluation_enabled else None
             ),
+            capture_path=(directory / f'{stem}_capture.jsonl'
+                          if config.get('capture_geometry_source') == 'gazebo_native' else None),
         )
         self.mission_id = int(mission_id)
         self._stream = self.paths.csv_path.open(
@@ -1101,6 +1125,8 @@ class ExperimentArtifactWriter:
             )
             if self.paths.visual_path is not None else None
         )
+        self._capture_stream = (self.paths.capture_path.open('x', encoding='utf-8', buffering=1)
+                                if self.paths.capture_path is not None else None)
         self._visual_writer = (
             csv.DictWriter(
                 self._visual_stream,
@@ -1147,6 +1173,15 @@ class ExperimentArtifactWriter:
         self._visual_writer.writerow(dict(values))
         return True
 
+    def append_capture_event(self, values):
+        """Keep native query/rejection/hit provenance independently of optional logs."""
+        if self._finalized:
+            raise RuntimeError('experiment artifacts are already finalized')
+        if self._capture_stream is None:
+            return False
+        self._capture_stream.write(json.dumps(dict(values), ensure_ascii=False)+'\n')
+        return True
+
     def finalize(self, summary):
         """Write exactly one summary and close the line-buffered CSV."""
         if self._finalized:
@@ -1161,5 +1196,7 @@ class ExperimentArtifactWriter:
             self._diagnostics_stream.close()
         if self._visual_stream is not None:
             self._visual_stream.close()
+        if self._capture_stream is not None:
+            self._capture_stream.close()
         self._finalized = True
         return self.paths

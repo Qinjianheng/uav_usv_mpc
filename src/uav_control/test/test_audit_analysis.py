@@ -9,6 +9,7 @@ import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parents[3] / 'scripts'))
 from p7_follow_analysis import guidance_metrics  # noqa: E402
 from p7_capture_analysis import capture_metrics  # noqa: E402
+from p7_capture_analysis import native_reference_distances  # noqa: E402
 
 
 def write_run(tmp_path, rows):
@@ -45,6 +46,19 @@ def test_post_capture_guidance_cannot_change_count_or_extrema(tmp_path):
     assert metrics['png_samples'] == 2
     assert metrics['final_distance_m'] == pytest.approx(1.)
     assert metrics['final_2s_median_distance_m'] == pytest.approx(3.)
+
+
+def test_native_distance_uses_same_pose_epoch_and_never_pause_receipt_or_extrapolation():
+    rows = [dict(kind='clock', sim=1., system=10.),
+            dict(kind='clock', sim=1.04, system=10.04),
+            dict(kind='clock', sim=1.04, system=14.04),
+            dict(kind='rendered_uav', sim=1.02, p=[.3, 0., -.35]),
+            dict(kind='rendered_target', sim=1.02, p=[0., 0., -.42]),
+            dict(kind='rendered_uav', sim=2., p=[0., 0., 0.]),
+            dict(kind='rendered_target', sim=2., p=[0., 0., -.42])]
+    values = native_reference_distances(rows, 10., 10.03, .42)
+    assert len(values) == 1
+    assert values[0] == pytest.approx((10.02, 1.02, (.3**2+.35**2)**.5, .35))
 
 
 @pytest.mark.parametrize('missing', ['all', 'ideal', 'uav', 'before_stop'])
