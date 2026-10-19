@@ -1,0 +1,229 @@
+{
+  "final_source_commit": "62f56109b587334c98947d555fb735cdcdf72e2f",
+  "final_source_hashes": {
+    "scripts/p51_execution_audit.py": "b7494c713f1d692a4a047bed08c9cedb642a9545be3146bd916cc8fb24af87c8",
+    "scripts/p5_minco_sitl.py": "a3b595c38b0ccd2dd559cdf23c1e013a8aa3ceb0ca52e73ab6a4f3c1e9b7e9dc",
+    "scripts/p7_capture_analysis.py": "4d3d02a072407cefb5fbf1c881825cc6e28f465bd08ce3e4bf3d637635d6a113",
+    "scripts/p7_follow_analysis.py": "18d21d5b8d9c883d9d7a6a548ecc773ea2a7055d50093112165a2ba8d93f0217",
+    "scripts/p7_follow_sitl.py": "2598fdb5abb677f2480bc1bdd34b8a15a9ab3f0371daa36388062b709a8d0aed",
+    "scripts/prepare_gz_camera_model.py": "215a5eb80eedd0aba749e49f85983954e05ef8f6f746a0d5504dd4c0de8d0ac9",
+    "scripts/start_px4_ros2.sh": "a9c14ced06731a2bac01a3a8307958addea6337e921bed99f533183556b1c56a",
+    "src/uav_control/test/test_audit_analysis.py": "66635141e2e47e006d1c7553c75a031d9d2ec460a37d4e1d3e946e81bbc78da7",
+    "src/uav_control/test/test_camera_visibility.py": "44e960cceef9ade6df4d985e2c4fc0725dd97e34b1bc4647c204b31cf8d422c8",
+    "src/uav_control/test/test_modular_configuration.py": "6f6cb979b04b7e26023ed64454dcd673f2637257b4ff1fd592fd10f92fb10e6f",
+    "src/uav_control/test/test_p7_sitl.py": "1ed8f8be96a3820efc274e4b9d9902f0b9522e2cb760b25cba082e2566217c17",
+    "src/uav_control/test/test_p7_spatial_guidance.py": "36219ce264d451696a6db5f2e4074cb789e8b164aee5b0b440d34ab198504bcf",
+    "src/uav_control/test/test_p7_spatial_integration.py": "2a602d410b4fc409173e889e876d9eec47430ca1f25ce1bba1b82e82acbf4eab",
+    "src/uav_control/uav_control/control/p7_spatial_guidance.py": "c8e8c8698155dac2e90965497b6bfe1bc0a6e9b3de0929cb17eef30dc515a9fd",
+    "src/uav_control/uav_control/control/trajectory_tracker_node.py": "10f00a6c3273ffc11200729683e7f9a89d7cf61e638b838f2df3adde3f02bdc8",
+    "src/uav_control/uav_control/controllers/p4_follow_planner_node.py": "990c5b1f13c839bb5797b0fbe00bfa211d9a582780d2063fb9e122ee7d116aae",
+    "src/uav_usv_bringup/config/p7_guidance.yaml": "b3a6ff5e7881b167f0c47bf9ad49f778236446f5487a2cf08cc8ddacc7c0d795",
+    "src/uav_usv_bringup/config/p7_spatial_candidate.yaml": "5848500f77fd92114fe91c79012653639d80ff29cdd26f1544dfac61e8d51117"
+  },
+  "base": "9b7dddaa07f33fe7522b44f30981faaaa6ccf438",
+  "geometry_status": "PHASE_DEPENDENT",
+  "configured_capture_radius": 0.25,
+  "capture_semantics": "UAV native model origin to USV reference, 3D",
+  "A1": {
+    "head": "8075bf1",
+    "camera_pitch_degrees": 48,
+    "follow_height": 3,
+    "inner_stop": "TARGET_LOCK_LOST_FOR_2S",
+    "secondary_outer_stop": "HEALTH_INPUT_LOST",
+    "actual_minco_fraction": 0.0,
+    "qualified": false
+  },
+  "A2": {
+    "head": "972ab50cb6aa6f094c08877739e720d451e6b91d",
+    "camera_pitch_degrees": 42,
+    "follow_height": 3,
+    "reason": "FOLLOW_LOCK_RECOVERY_TIMEOUT",
+    "accepted_x": 1792387875.274392,
+    "watchdog_x": 1792387876.158863,
+    "follow_after_x": 8.090144395828247,
+    "takeoff_first_image_invalid": 2.8815507888793945,
+    "follow_first_invalid": 8.281553506851196,
+    "bad_interval": 0.5000030994415283,
+    "first_bad_publication_age": 0.029752016067504883,
+    "latest_navigation_age_at_bad_publication": 0.021736860275268555,
+    "actual_minco_fraction": 0.0,
+    "qualified": false,
+    "cleanup_clean": true,
+    "target_observation_post_x_counts": {
+      "True:": 134,
+      "False:TARGET_VECTOR_INVALID": 12,
+      "False:IMAGE_INVALID": 31,
+      "False:POSITION_HISTORY_EMPTY": 1
+    },
+    "tracker_compute_ms_p50_p95_max": [
+      0.7763655157759786,
+      2.158800241886638,
+      52.93091997737065
+    ],
+    "tracker_period_ms_p50_p95_max": [
+      50.00782012939453,
+      51.959729194641106,
+      53.98678779602051
+    ],
+    "observation_publish_age_ms_p50_p95_max": [
+      27.45652198791504,
+      35.61602830886841,
+      46.01931571960449
+    ],
+    "max_setpoint_publishers": 1,
+    "Y_sent": false,
+    "capture_pause_verified": false
+  },
+  "B": {
+    "executed": false,
+    "reason": "A_NOT_QUALIFIED"
+  },
+  "C": {
+    "executed": false,
+    "reason": "B_NOT_PASSED"
+  },
+  "default_rollback": {
+    "camera_pitch_degrees": 28,
+    "follow_height": 5,
+    "spatial_enabled": false,
+    "config_semantically_equals_task_base": true,
+    "source_sdf_equals_task_base": true,
+    "new_algorithm_and_geometry": "src/uav_usv_bringup/config/p7_spatial_candidate.yaml",
+    "automated_spatial_capture_requires_same_source_and_profile_A": true
+  },
+  "final_available_suite": {
+    "passed": 2248,
+    "skipped": 2,
+    "warnings": 3,
+    "seconds": 33.46,
+    "excluded": [
+      "test/test_p6_sitl_driver.py",
+      "test/test_p6_turn_case_config.py"
+    ],
+    "reason": "Real R11 F3 input absent; not fabricated; full-suite qualification remains blocked"
+  },
+  "direct_checks": {
+    "passed": 103,
+    "seconds": 1.26
+  },
+  "build_packages": [
+    "uav_control",
+    "uav_usv_bringup"
+  ],
+  "protected_sources": [
+    {
+      "path": "src/uav_control/uav_control/tracking/target_kalman_filter.py",
+      "unchanged": true,
+      "sha256": "1de51efba98ea8b740780bff474e1948302ba48536f5177664ae884be1ec00a5"
+    },
+    {
+      "path": "src/uav_control/uav_control/tracking/constant_velocity_kalman.py",
+      "unchanged": true,
+      "sha256": "36cf136350e35ca1e503a307131d2b003b36c17d30f6db05871875b6d6b6dac4"
+    },
+    {
+      "path": "src/uav_control/uav_control/tracking/maneuvering_target_predictor.py",
+      "unchanged": true,
+      "sha256": "33abd90600d85bda1c1622a49d6c777da42f32f5c540df90aba0f56ffc5a4328"
+    },
+    {
+      "path": "src/uav_control/uav_control/controllers/follow_guided_feasible.py",
+      "unchanged": true,
+      "sha256": "8f8843c779ec230acb667697448e13c3fd86d2ca237faea5d1eb0caaebc59da2"
+    },
+    {
+      "path": "src/uav_control/uav_control/controllers/direct_reference_minco.py",
+      "unchanged": true,
+      "sha256": "1ee31f2db1489a65bf8f9601cf8504771760d7097183e2ef06890cc53d37c513"
+    },
+    {
+      "path": "src/uav_control/uav_control/controllers/p44_follow_solver.py",
+      "unchanged": true,
+      "sha256": "937b24188c075bad53c8208f55936db76f28aa74959d72b1b3f5a575080813f3"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/follow_contract.py",
+      "unchanged": true,
+      "sha256": "561db04b8ed6a51e45be38eef96b3efbe8cc5800d8bd46194b2c576f67412d88"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/follow_minco_execution.py",
+      "unchanged": true,
+      "sha256": "ea47d84c708af78a92a18e668b119114be474e0908aae243c5ab4e0e711e0675"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/p6_follow.py",
+      "unchanged": true,
+      "sha256": "d2cc1ee198bb9d5ab0b7c86a063e1b15375637469ddc80386d36e2e5ed669a77"
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/robust_visibility.py",
+      "unchanged": true,
+      "sha256": "3e6b4a758f0e42d5073f1193feae63a701908292a25fec95948af5d939b0e8e9"
+    },
+    {
+      "path": "src/uav_control/uav_control/common/sea_safety.py",
+      "unchanged": true,
+      "sha256": "522dbcc5afe28f0a03a6acca28dda5d74bcb411a2626d2df2f2cec95117e235c"
+    },
+    {
+      "path": "src/uav_control/uav_control/evaluation/intercept_evaluator.py",
+      "unchanged": true,
+      "sha256": "65db048918a907bc58e2199af803742137f7f70f40d71b459554da081caadf3f"
+    },
+    {
+      "path": "src/uav_control/uav_control/evaluation/gazebo_capture_geometry.py",
+      "unchanged": true,
+      "sha256": "d4b187cf481817628a153ce8cef7043c41cbf4b19265bbb24e77d6d0135a14ac"
+    },
+    {
+      "path": "src/uav_control/uav_control/moving_target.py",
+      "unchanged": true,
+      "sha256": "55c0ffbcf509437878582fa7975b5f5ae1cd431c25b729d2aff976e40f47322e"
+    },
+    {
+      "path": "src/uav_control/uav_control/usv_motion_profiles.py",
+      "unchanged": true,
+      "sha256": "5e80f769734caaf11cd2ba0d6bcb3a5bc1ce55dff90cd5f5d5edcf521fb1751e"
+    }
+  ],
+  "flight_qualified": false,
+  "capture_success": false,
+  "raw_input_and_output_sha256": {
+    "data/experiments/20261019_p73_025_final_audit_01/A2_attribution.json": "5d6745d49a18462f5e1cc5c761ce55654d0904acbcab90fbfd3cdf422d38d8c5",
+    "data/experiments/20261019_p73_025_final_audit_01/A2_camera_window.json": "df5ce3dc3808984c561de4e7d13a802623b74f2bab9206227f955fb9e2e91e51",
+    "data/experiments/20261019_p73_025_final_audit_01/A2_takeoff_attribution.json": "6d733f54f769871029c8d3cd3c94a6999c007f9a8626aa1ddd38ba3eb92d0706",
+    "data/experiments/20261019_p73_025_final_audit_01/A2_takeoff_camera_window.json": "020f3ea180e23472ec2581d24469e3e7780ce84317a00dec228420e440b93045",
+    "data/experiments/20261019_p73_025_final_audit_01/analyze_a2.py": "b86d0f0516c3f91c3e24fe03192a3e3ec1413c61f1392e44dcb1f12b01e3b244",
+    "data/experiments/20261019_p73_025_final_audit_01/analyze_a2_takeoff.py": "71835404fe69ee1d7703525fb86ba719672436aa9a7abc3d807697709572c1d1",
+    "data/experiments/20261019_p73_025_final_audit_01/plot_a2.py": "99b4214d60cce2f96b0c93d62fc07f650d0cfd67574a2b735a3ea24f69a364c7",
+    "data/experiments/20261019_p73_025_final_audit_01/finalize_checks.py": "e97360d25313811d236724045894214393525f597d82eab4b2bd4a7d13a59d4b",
+    "data/experiments/20261019_p73_025_final_audit_01/rollback_red.txt": "6649b1a93f800cf2c5570b2de38ccf0dd7c40813450cbe568a443402cce31e8e",
+    "data/experiments/20261019_p73_025_final_audit_01/profile_gate_green.txt": "04ef877443fb70b11c1749b3f4fc73e8380cd6f864677093012348adea8f4a9c",
+    "data/experiments/20261019_p73_025_final_audit_01/final_current_source_pytest.txt": "594c49300cf715c5b57d41334e3b46c6f70326551e417e907ccd5b917e845a14",
+    "data/experiments/20261019_p73_025_final_audit_01/final_build.txt": "6e206d0030ef17362d61ff2b3819009e7e817a06129c713ca0767544484efb5f",
+    "data/experiments/20261019_p73_025_diagnosis_01/body_collision_audit.json": "a85a6b9a9c9cbdd0af50033939f32d67b216fc5bb19dbde965cdb22127a7bd62",
+    "docs/current/audit/p7_025/A2_camera_follow.png": "68f3e8fec35fed21cfba811cb3774631142214c576c5c92a3b7976dfc3c3474d",
+    "data/experiments/20261019_p73_025_A_follow_01/summary.json": "7391954260fcd46d174faaa1c063e4a2a7dcf5fab6c340b6f7faba2d6b8b9474",
+    "data/experiments/20261019_p73_025_A_follow_01/condition.json": "85d3a3577503621a76d7a5c42b7c0f207911a1067a041ba745443a3edd4bdbcc",
+    "data/experiments/20261019_p73_025_A_follow_01/config/flight.yaml": "c0111e51c0a0d9708b2e2a634fded5656e470bd3244e6b1534eee384e0049ea2",
+    "data/experiments/20261019_p73_025_A_follow_01/config/research.yaml": "d2be2f17b741b999c9bd277c52b7975dfc1e5cee79c22beb2311a8da5b382fd5",
+    "data/experiments/20261019_p73_025_A_follow_01/source_snapshot.json": "9c9caf2d82bb64a822f04cb60ed9ad021b5f8c58ef2633f898e4b63a68086db0",
+    "data/experiments/20261019_p73_025_A_follow_01/offline_evidence.jsonl": "9353d1d070a0f8139247f0cf91b1da69a9e23a4bc2cfb4fd0022b3e004302c9d",
+    "data/experiments/20261019_p73_025_A_follow_01/bounded_stop.json": "b384b47b2b0a2e74ed6f0d15bdba8a8b54b15fe67e7ef3d7144ed1ae26942da2",
+    "data/experiments/20261019_p73_025_A_follow_01/p5_cleanup.json": "96497b82b318e440efa9911cbfcd340cadd89ae59b61be4e6e02c967f565a03d",
+    "data/experiments/20261019_p73_025_A_follow_01/watchdog_end.json": "ca25195253e2420eb9afd2c3ea29e6bcbc6ad6bb6f800e8debe94be8fdbffd26",
+    "data/experiments/20261019_p73_025_A_follow_01/UAV-USV_experiment.txt": "a790fbe3f4960261bd8a2ace1a18242cda61669c0fd0f8ea12f0fbb31573ce6b",
+    "data/experiments/20261019_p73_025_A_follow_01/safety_stop.json": "044ced81cea64482cba53fc82d344154cf39297cefea376b8a21e7628c837c46",
+    "data/experiments/20261019_p73_025_A_follow_02/summary.json": "7b3b98a2663b2ec201d777f1cb876c25098995296d15c40928ca9d39ec8eb919",
+    "data/experiments/20261019_p73_025_A_follow_02/condition.json": "bee12f8fc5b5e89f85988f775ccf90d0db447d200b8caf66c34e66f3e7d6a4a4",
+    "data/experiments/20261019_p73_025_A_follow_02/config/flight.yaml": "44295d25afa54379975e875eb38c0f5c54f078212320b15e3ec85ea72850ad58",
+    "data/experiments/20261019_p73_025_A_follow_02/config/research.yaml": "2ec89e53f8a98df88a9bc51792746ea23238749ea11d821eae39257b4d141c7b",
+    "data/experiments/20261019_p73_025_A_follow_02/source_snapshot.json": "426fedc08f5c0770079400af27bb1f997d447102075bf23d4ab574823884086e",
+    "data/experiments/20261019_p73_025_A_follow_02/offline_evidence.jsonl": "ea92ac25c3915c2d89a7a46fca8b35613e870c52b0d668105e0ea58047ecb831",
+    "data/experiments/20261019_p73_025_A_follow_02/bounded_stop.json": "e10554a5fc5238173627bef1036d2a3ecb7f682d0220fae156d24b02babfa16c",
+    "data/experiments/20261019_p73_025_A_follow_02/p5_cleanup.json": "96497b82b318e440efa9911cbfcd340cadd89ae59b61be4e6e02c967f565a03d",
+    "data/experiments/20261019_p73_025_A_follow_02/watchdog_end.json": "b6f71825bef3aed7a592c4cab29f001ec17863e77d4f1d602b554aea7bc4bdc6",
+    "data/experiments/20261019_p73_025_A_follow_02/UAV-USV_experiment.txt": "ce38a81d2610c735ee544abe102b0773b7259ff7e1cc036aec1631053545b670"
+  }
+}

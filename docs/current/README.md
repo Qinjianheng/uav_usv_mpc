@@ -2,10 +2,12 @@
 
 P7 配置已实现 X 后 KF/BCTRA/MINCO FOLLOW、Y 后 IBVS/PNG 安全接近，由唯一 Tracker 输出速度控制，见 [P7 使用与验证](p7_progress.md)。原 baseline/IMM 研究入口保留；MPC 尚未在线接管。P53 R11 是历史成功对照，不替代当前实测。
 
-日常一键入口 `./scripts/uav_lab.sh` 已接入 P7 手动捕获：1–5 只选择运动方式，X 才启动 UAV 起飞与 USV 运动，Y 捕获并在 0.50 m 内暂停。构建、旧基线入口与退出规则见[启动说明](startup_profile.md)。
+日常一键入口 `./scripts/uav_lab.sh` 已接入 P7 手动捕获：1–5 只选择运动方式，X 才启动 UAV 起飞与 USV 运动，Y 捕获并在当前 0.25 m 内暂停。0.25 m 升级尚未通过实际验收，默认保留原相机/FOLLOW/P7；历史 0.50 m 成功不可沿用。构建、旧基线入口与退出规则见[启动说明](startup_profile.md)。
 
 | 文档 | 用途 |
 |---|---|
+| [P7.3 三维导引与 0.25 m 验证](p7_025_ibvs_png_upgrade.md) | 代码候选、相位可达性、两次 A 失败归因；B/C 未执行，默认配置已回退 |
+| [0.25 m 原失败实验归因](p7_025_failure_diagnosis.md) | 原生最近 0.360932 m、首次下缘离场与恢复时序 |
 | [P7 使用与实际验证](p7_progress.md) | 专用启动、X/Y 控制权、FOLLOW/制导曲线、当前边界与阶段提交 |
 | [P7 半径捕获与变速验证](p7_capture.md) | 显式终端下降、0.50 m 三维捕获、暂停冻结与三种变速场景 |
 | [论文参考与两种八字终端验证](p7_paper_terminal_validation_20261018.md) | LOS 终端前馈、深度趋近、原生几何捕获；恒速/变速各一次成功，保留近场裁切与独立采样边界 |
