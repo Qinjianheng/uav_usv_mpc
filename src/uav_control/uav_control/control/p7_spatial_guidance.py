@@ -428,12 +428,20 @@ class P7SpatialGuidance:
                 geometry_reason += '_NO_CAPTURE_INTERSECTION'
         endpoint = tuple(horizontal)
         if capture and self.project_capture_reference:
-            if self.approach_origin is None:
+            if not feasible:
+                # No capture intersection: hold a visible position at the actual
+                # vertical gap, rather than pursuing the unreachable final entry.
+                center = rotation@_FLU_FRD@np.array((.18, 0., .39))+np.array((0., 0., .42))
+                forward = rotation@_FLU_FRD@_mount(self.camera_pitch_down)[:, 0]
+                horizontal = (center+max(0., (r[2]-center[2])/forward[2])*forward)[:2]
                 self.approach_origin = r.copy()
-            remaining = float(self.approach_origin[2]-entry[2])
-            progress = (float(np.clip((r[2]-entry[2])/remaining, 0., 1.))
-                        if remaining > 1e-6 else 0.)
-            horizontal = horizontal+progress*(self.approach_origin[:2]-horizontal)
+            else:
+                if self.approach_origin is None:
+                    self.approach_origin = r.copy()
+                remaining = float(self.approach_origin[2]-entry[2])
+                progress = (float(np.clip((r[2]-entry[2])/remaining, 0., 1.))
+                            if remaining > 1e-6 else 0.)
+                horizontal = horizontal+progress*(self.approach_origin[:2]-horizontal)
         near_velocity = (config.closing_gain*(r[:2]-horizontal) if capture else
                          config.closing_gain*(xy-4.5)*direction_xy)
         near_velocity = _limit(near_velocity, config.maximum_closing_speed)
@@ -451,6 +459,9 @@ class P7SpatialGuidance:
         norm_xy = float(np.linalg.norm(pn_xy))
         pn_xy = pn_xy/norm_xy if norm_xy > 1e-8 else direction_xy
         desired_xy = tv[:2]+(1.-blend)*near_velocity+blend*closing*pn_xy
+        if capture and self.project_capture_reference and not feasible:
+            # A scalar LOS projection discards the cross-track position hold.
+            desired_xy = tv[:2]+near_velocity
         if not capture:
             goal = float(up[2])
         reference_vz = config.velocity_gain*(goal-up[2])
@@ -492,7 +503,7 @@ class P7SpatialGuidance:
                                       config.maximum_yaw_rate))
         velocity = (*velocity_xy, desired_vz)
         self.previous, self.last_stamp = np.asarray(velocity), now
-        mode = ('GEOMETRY_WAIT' if not feasible and xy < 1.25 else
+        mode = ('GEOMETRY_WAIT' if not feasible else
                 'CAPTURE_MATCH' if xy < 1. else 'PNG' if blend >= 1. else 'STANDOFF')
         return SpatialOutput(
             valid=True, mode=mode, velocity=tuple(velocity), acceleration=tuple(emitted),

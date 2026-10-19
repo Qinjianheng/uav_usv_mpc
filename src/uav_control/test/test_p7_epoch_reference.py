@@ -142,7 +142,9 @@ def test_geometry_wait_holds_a_safe_relative_position_instead_of_velocity_only_d
     out = control.step(10., .05, image.uav_position, (4., 0., 0.),
                        image.target_position, (4., 0., 0.), image, capture=True)
     assert out.valid and out.mode == 'GEOMETRY_WAIT'
-    assert out.horizontal_reference == pytest.approx((.3, 0.))
+    # With an unreachable vertical gap, keep the sphere on the optical axis.
+    expected = .18+(.5-.03)/math.tan(math.radians(38.))
+    assert out.horizontal_reference == pytest.approx((expected, 0.))
     assert out.goal_z <= -.33
     image = spatial.ImageSample(10.05, (1., 0., -.1), (1., 0., 0., 0.),
                                 (0., 0., -.5), (.25, 0., 0.))
@@ -180,6 +182,23 @@ def test_horizontal_approach_progresses_with_actual_descent_instead_of_only_fina
                            image.target_position, (4., 0., 0.), image, capture=True)
         assert out.valid
         if i == 0:
-            assert out.horizontal_reference == pytest.approx((5., 0.))
+            assert out.horizontal_reference[0] > 5.
         else:
-            assert .1 < out.horizontal_reference[0] < .5
+            assert .7 < out.horizontal_reference[0] < .9
+
+
+def test_unreachable_heave_phase_preserves_cross_track_feedback_before_near_field():
+    from uav_control.control.p7_visual_guidance import GuidanceConfig
+    control = spatial.P7SpatialGuidance(
+        GuidanceConfig(maximum_closing_speed=2.), camera_pitch_down=math.radians(38.),
+        project_capture_reference=True, minimum_center_depth=.01)
+    control.reset((4., 0., 0.))
+    image = spatial.ImageSample(10., (2., 0., -.1), (1., 0., 0., 0.),
+                                (0., 0., -.5), (0., 2., .15))
+    out = control.step(10., .05, image.uav_position, (4., 0., 0.),
+                       image.target_position, (4., 0., 0.), image, capture=True)
+    assert out.valid and out.mode == 'GEOMETRY_WAIT'
+    # Reference requires north opening even though LOS/PNG points due east.
+    assert out.horizontal_reference[0] > .9
+    assert out.velocity[0] < 4.
+    assert out.velocity[1] > 0.
