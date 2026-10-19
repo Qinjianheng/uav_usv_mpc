@@ -1,7 +1,7 @@
-# EXPERIMENTAL: A2 FOLLOW gate failed; no B/C qualification.
+# EXPERIMENTAL: 38-degree/5m candidate; current-source FOLLOW qualification required.
 # Opt-in only. See docs/current/p7_025_ibvs_png_upgrade.md.
 # P7: X -> KF/BCTRA + R11 MINCO FOLLOW; Y -> bounded IBVS/PNG.
-# P7 spatial capture: 42-degree front camera, -3 m FOLLOW; legacy P7 remains selectable.
+# P7 spatial capture: 38-degree front camera, -5 m FOLLOW; legacy P7 remains selectable.
 trajectory_impact_sim:
   ros__parameters:
     control_rate_hz: 20.0
@@ -227,7 +227,7 @@ trajectory_tracker_node:
     px4_command_retry_time: 1.0
     vehicle_status_timeout: 2.0
     takeoff_visual_tracking: true
-    flight_altitude: -3.0
+    flight_altitude: -5.0
     takeoff_tolerance: 0.5
     takeoff_settle_time: 1.0
     takeoff_maximum_vertical_speed: 1.5
@@ -308,8 +308,11 @@ trajectory_tracker_node:
     p6_adaptive_viewpoint: false
     p7_guidance_enabled: true
     p7_spatial_enabled: true
+    p7_common_epoch_enabled: true
+    p7_project_capture_reference: true
+    p7_minimum_camera_center_depth: 0.01
     p7_follow_geometry_enabled: true
-    p7_camera_pitch_down: 0.7330382858376184
+    p7_camera_pitch_down: 0.6632251157578453
     p7_capture_radius: 0.25
     p7_navigation_constant: 3.0
     p7_standoff_distance: 4.5
@@ -352,7 +355,7 @@ intercept_evaluator_node:
     truth_role: evaluation_only
     shadow_prediction_topic: /planning/shadow_target_prediction
     gazebo_world_name: default
-    gazebo_entity_diagnostics_enabled: false
+    gazebo_entity_diagnostics_enabled: true
     gazebo_target_entity_name: usv_target
     gazebo_visual_height_offset: 0.42
     pause_gazebo_on_success: true
@@ -399,7 +402,7 @@ rgbd_target_localizer:
     image_pair_buffer_size: 8
     time_pair_diagnostics_enabled: false
     localization_rate_hz: 10.0
-    camera_pitch_down: 0.7330382858376184
+    camera_pitch_down: 0.6632251157578453
     camera_translation_x: 0.18
     camera_translation_y: 0.0
     camera_translation_z: 0.39
@@ -427,7 +430,7 @@ front_tof_monitor:
     minimum_depth: 0.05
     maximum_depth: 25.0
     evaluation_window_seconds: 5.0
-    camera_pitch_down: 0.7330382858376184
+    camera_pitch_down: 0.6632251157578453
     target_visual_height_offset: 0.42
     analysis_rate_hz: 5.0
     gazebo_world_name: default
@@ -440,7 +443,7 @@ dual_tof_selector:
     selection_rate_hz: 10.0
 target_bearing_node:
   ros__parameters:
-    camera_pitch_down: 0.7330382858376184
+    camera_pitch_down: 0.6632251157578453
     color_topic: /camera/front/image_raw
     bearing_topic: /perception/front/target_bearing
     horizontal_fov: 1.74
@@ -480,7 +483,7 @@ target_predictor_node:
 p4_follow_planner_node:
   ros__parameters:
     p7_follow_geometry_enabled: true
-    p7_camera_pitch_down: 0.7330382858376184
+    p7_camera_pitch_down: 0.6632251157578453
     use_sim_time: false
     shadow_rate_hz: 5.0
     gazebo_world_name: default
@@ -493,7 +496,7 @@ p4_follow_planner_node:
     horizon_steps: 12
     control_blocks: 2
     follow_distance: 5.0
-    flight_altitude: -3.0
+    flight_altitude: -5.0
     maximum_horizontal_speed: 6.2
     maximum_vertical_speed: 4.0
     maximum_horizontal_acceleration: 3.0

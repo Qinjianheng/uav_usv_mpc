@@ -2,6 +2,7 @@
 
 from dataclasses import dataclass
 from dataclasses import replace
+import bisect
 import math
 
 import numpy as np
@@ -11,6 +12,41 @@ from .p7_visual_guidance import GuidanceConfig, GuidanceOutput, _limit, image_er
 
 
 _FLU_FRD = np.diag((1., -1., -1.))
+
+
+def common_epoch_feedback(navigation, tracking, now):
+    """Pair KF with delivered native navigation at one epoch, without extrapolation."""
+    def valid(row):
+        return (row.get('valid') and all(len(row.get(k, ())) == 3 for k in ('p', 'v'))
+                and all(math.isfinite(x) for k in ('p', 'v') for x in row[k]))
+
+    if (not math.isfinite(now) or not navigation or not tracking
+            or not valid(navigation[-1]) or not valid(tracking[-1])
+            or not 0 < tracking[-1].get('source', 0.) <= tracking[-1]['stamp'] <= now
+            or not 0 <= now-navigation[-1]['stamp'] <= .125):
+        return None
+    nav = sorted((r for r in navigation if valid(r) and 0 < r['stamp'] <= now
+                  and now-r['stamp'] <= .125), key=lambda r: r['stamp'])
+    stamps = [r['stamp'] for r in nav]
+    for target in sorted(tracking, key=lambda r: r['stamp'], reverse=True):
+        if (not valid(target) or not 0 < target.get('source', 0.) <= target['stamp'] <= now
+                or not 0 <= now-target['source'] <= .125):
+            continue
+        i = bisect.bisect_left(stamps, target['stamp'])
+        if i < len(nav) and stamps[i] == target['stamp']:
+            a = b = nav[i]
+        elif 0 < i < len(nav) and 0 < stamps[i]-stamps[i-1] <= .05:
+            a, b = nav[i-1:i+1]
+        else:
+            continue
+        fraction = ((target['stamp']-a['stamp'])/(b['stamp']-a['stamp'])
+                    if b['stamp'] > a['stamp'] else 0.)
+        return dict(epoch=target['stamp'], source_stamp=target['source'],
+                    navigation_bracket=(a['stamp'], b['stamp']),
+                    **{key: tuple(x+fraction*(y-x) for x, y in zip(a[key], b[key]))
+                       for key in ('p', 'v')},
+                    target_p=tuple(target['p']), target_v=tuple(target['v']))
+    return None
 
 
 def configure_p7_follow_geometry(node, model):
@@ -102,11 +138,13 @@ def _mount(pitch):
 
 def capture_entry_reference(rotation, *, camera_pitch_down=math.radians(42.),
                             camera_translation_flu=(.18, 0., .39), target_radius=.25,
-                            visual_height=.42):
+                            visual_height=.42, minimum_center_depth=.02):
     """Closed-form origin entry point at the camera surface/depth corridor intersection."""
     rotation = np.asarray(rotation, dtype=float)
     if (rotation.shape != (3, 3) or not np.isfinite(rotation).all()
-            or not np.allclose(rotation.T@rotation, np.eye(3), atol=1e-7)):
+            or not np.allclose(rotation.T@rotation, np.eye(3), atol=1e-7)
+            or not math.isfinite(minimum_center_depth)
+            or not 0 < minimum_center_depth < target_radius+.02):
         raise ValueError('INVALID_CAMERA_ENTRY_ROTATION')
     offset = rotation@_FLU_FRD@np.asarray(camera_translation_flu)
     forward = rotation@_FLU_FRD@_mount(camera_pitch_down)[:, 0]
@@ -119,8 +157,71 @@ def capture_entry_reference(rotation, *, camera_pitch_down=math.radians(42.),
     direction = -_unit(perpendicular)
     if direction[2] < 0:
         direction = -direction
-    axial, radius = .02, target_radius+.02
+    axial, radius = minimum_center_depth, target_radius+.02
     return center+axial*forward+math.sqrt(radius**2-axial**2)*direction
+
+
+def horizontal_capture_reference(relative_z, rotation, *, camera_pitch_down,
+                                 capture_radius=.25, preferred_xy=(0., 0.),
+                                 minimum_center_depth=.02):
+    """Closest horizontal point in the capture/depth/surface intersection, or None."""
+    rotation = np.asarray(rotation, dtype=float)
+    preferred = np.asarray(preferred_xy, dtype=float)
+    if (not math.isfinite(relative_z) or not math.isfinite(capture_radius)
+            or capture_radius <= 0 or not math.isfinite(camera_pitch_down)
+            or rotation.shape != (3, 3) or not np.isfinite(rotation).all()
+            or not np.allclose(rotation.T@rotation, np.eye(3), atol=1e-7)
+            or preferred.shape != (2,) or not np.isfinite(preferred).all()
+            or not math.isfinite(minimum_center_depth) or not 0 < minimum_center_depth < .27):
+        raise ValueError('INVALID_HORIZONTAL_CAPTURE_GEOMETRY')
+    if abs(relative_z) >= capture_radius:
+        return None
+    center = rotation@_FLU_FRD@np.array((.18, 0., .39))+np.array((0., 0., .42))
+    forward = rotation@_FLU_FRD@_mount(camera_pitch_down)[:, 0]
+    normal, origin = forward[:2], center[:2]
+    limit = minimum_center_depth+forward@center-forward[2]*relative_z
+    depth_norm = float(normal@normal)
+    capture_xy = math.sqrt(capture_radius**2-relative_z**2)
+    surface_sq = .27**2-(relative_z-center[2])**2
+    candidates = [np.zeros(2)]
+    if depth_norm > 1e-12:
+        foot = limit*normal/depth_norm
+        candidates.append(foot)
+        side = np.array((-normal[1], normal[0]))/math.sqrt(depth_norm)
+        remainder = capture_xy**2-float(foot@foot)
+        if remainder >= -1e-10:
+            for sign in (-1, 1):
+                candidates.append(foot+sign*math.sqrt(max(0., remainder))*side)
+    if surface_sq > 0:
+        surface = math.sqrt(surface_sq)
+        distance = float(np.linalg.norm(origin))
+        if distance > 1e-12:
+            candidates.append(origin-surface*origin/distance)
+            along = (capture_xy**2-surface_sq+distance**2)/(2.*distance)
+            remainder = capture_xy**2-along**2
+            if remainder >= -1e-10:
+                side = np.array((-origin[1], origin[0]))/distance
+                for sign in (-1, 1):
+                    candidates.append(along*origin/distance
+                                      + sign*math.sqrt(max(0., remainder))*side)
+        if depth_norm > 1e-12:
+            foot = origin+(limit-normal@origin)*normal/depth_norm
+            remainder = surface_sq-float((foot-origin)@(foot-origin))
+            if remainder >= -1e-10:
+                side = np.array((-normal[1], normal[0]))/math.sqrt(depth_norm)
+                for sign in (-1, 1):
+                    candidates.append(foot+sign*math.sqrt(max(0., remainder))*side)
+    legal = [xy for xy in candidates if (
+        xy@xy <= capture_xy**2+1e-10 and normal@xy >= limit-1e-10
+        and (xy-origin)@(xy-origin) >= surface_sq-1e-10)]
+    if not legal:
+        return None
+
+    def rank(xy):
+        return round(float(xy@xy), 12), float((xy-preferred)@(xy-preferred))
+
+    chosen = min(legal, key=rank)
+    return tuple(float(x) for x in chosen)
 
 
 def spatial_capture_reference(uav_position, target_position, rotation, *,
@@ -128,7 +229,8 @@ def spatial_capture_reference(uav_position, target_position, rotation, *,
                               camera_translation_flu=(.18, 0., .39), target_radius=.25,
                               visual_height=.42, capture_radius=.25, sea_surface_z=0.,
                               contact_clearance=.33, relative_velocity=(0., 0., 0.),
-                              target_velocity=(0., 0., 0.), response_delay=.15):
+                              target_velocity=(0., 0., 0.), response_delay=.15,
+                              minimum_center_depth=.02):
     """
     Origin capture corridor with a camera-surface barrier, using measured states.
 
@@ -144,9 +246,9 @@ def spatial_capture_reference(uav_position, target_position, rotation, *,
             or not np.allclose(rotation.T@rotation, np.eye(3), atol=1e-7)
             or not all(math.isfinite(v) for v in (
                 camera_pitch_down, target_radius, visual_height, capture_radius,
-                sea_surface_z, contact_clearance, response_delay))
+                sea_surface_z, contact_clearance, response_delay, minimum_center_depth))
             or contact_clearance < .33 or target_radius <= 0 or capture_radius <= 0
-            or not 0 <= response_delay <= .15):
+            or not 0 <= response_delay <= .15 or not 0 < minimum_center_depth < .27):
         raise ValueError('INVALID_SPATIAL_CAPTURE_REFERENCE')
     camera_offset = rotation@_FLU_FRD@np.asarray(camera_translation_flu)
     forward = rotation@_FLU_FRD@_mount(camera_pitch_down)[:, 0]
@@ -161,13 +263,14 @@ def spatial_capture_reference(uav_position, target_position, rotation, *,
     entry = capture_entry_reference(
         rotation, camera_pitch_down=camera_pitch_down,
         camera_translation_flu=camera_translation_flu, target_radius=target_radius,
-        visual_height=visual_height)
+        visual_height=visual_height, minimum_center_depth=minimum_center_depth)
     gap = max(float(entry[2]), surface_gap)
     reason = 'CAMERA_CORRIDOR' if surface_gap >= entry[2] else 'CAPTURE_CORRIDOR'
     if np.linalg.norm(entry) >= capture_radius:
         reason += '_ATTITUDE_ENTRY_WAIT'
     if forward[2] > 1e-6:
-        axial_gap = visual_height+camera_offset[2]+(.02-forward[:2]@horizontal)/forward[2]
+        axial_gap = (visual_height+camera_offset[2]
+                     + (minimum_center_depth-forward[:2]@horizontal)/forward[2])
         gap = max(gap, float(axial_gap))
     else:
         raise ValueError('CAMERA_NOT_DOWNWARD')
@@ -205,18 +308,24 @@ class SpatialOutput(GuidanceOutput):
     view_margin: float = 0.
     depth_down: float = 1.
     entry_relative: tuple = (0., 0., 0.)
+    horizontal_reference: tuple = (0., 0.)
+    capture_horizontal_endpoint: tuple = (0., 0.)
+    capture_reference_feasible: bool = False
 
 
 class P7SpatialGuidance:
     """One bounded velocity controller; the existing Tracker retains final authority."""
 
     def __init__(self, config=GuidanceConfig(), *, camera_pitch_down=math.radians(42.),
-                 capture_radius=.25, sea_surface_z=0., contact_clearance=.33):
+                 capture_radius=.25, sea_surface_z=0., contact_clearance=.33,
+                 project_capture_reference=False, minimum_center_depth=.02):
         self.config = config
         self.camera_pitch_down = camera_pitch_down
         self.capture_radius = capture_radius
         self.sea_surface_z = sea_surface_z
         self.contact_clearance = contact_clearance
+        self.project_capture_reference = project_capture_reference
+        self.minimum_center_depth = minimum_center_depth
         self.reset()
 
     def reset(self, velocity=None, yaw_rate=0.):
@@ -234,6 +343,7 @@ class P7SpatialGuidance:
         self.previous_target_velocity = None
         self.previous_margin = None
         self.margin_rate = 0.
+        self.approach_origin = None
 
     def step(self, now, dt, uav_position, uav_velocity, target_position, target_velocity,
              image, capture=False):
@@ -254,7 +364,9 @@ class P7SpatialGuidance:
             camera_range = float(np.linalg.norm(image.ray))
             down, gain_up = depth_factors(camera_range, .25)
             rotation = body_frd_to_ned_from_quaternion(image.quaternion)
-            entry = capture_entry_reference(rotation, camera_pitch_down=self.camera_pitch_down)
+            entry = capture_entry_reference(
+                rotation, camera_pitch_down=self.camera_pitch_down,
+                minimum_center_depth=self.minimum_center_depth)
             r, relative_velocity = tp-up, tv-uv
             distance = float(np.linalg.norm(r))
             if distance < max(.01, .1*self.capture_radius):
@@ -265,7 +377,8 @@ class P7SpatialGuidance:
                 image.uav_position, image.target_position, rotation,
                 camera_pitch_down=self.camera_pitch_down, capture_radius=self.capture_radius,
                 sea_surface_z=self.sea_surface_z, contact_clearance=self.contact_clearance,
-                relative_velocity=relative_velocity, target_velocity=tv) if capture else
+                relative_velocity=relative_velocity, target_velocity=tv,
+                minimum_center_depth=self.minimum_center_depth) if capture else
                 (float(up[2]), 'SAFE_STANDOFF'))
         except (ValueError, TypeError, AttributeError):
             self.reset()
@@ -301,7 +414,27 @@ class P7SpatialGuidance:
             self.margin_rate = (0. if self.previous_margin is None else
                                 (margin-self.previous_margin)/image_dt)
             self.previous_margin, self.last_image_stamp = margin, image.stamp
-        near_velocity = (config.closing_gain*(r[:2]-entry[:2]) if capture else
+        horizontal = entry[:2]
+        feasible = True
+        if capture and self.project_capture_reference:
+            projected = horizontal_capture_reference(
+                float(image.target_position[2]-goal), rotation,
+                camera_pitch_down=self.camera_pitch_down, capture_radius=self.capture_radius,
+                preferred_xy=r[:2], minimum_center_depth=self.minimum_center_depth)
+            feasible = projected is not None
+            if feasible:
+                horizontal = np.asarray(projected)
+            else:
+                geometry_reason += '_NO_CAPTURE_INTERSECTION'
+        endpoint = tuple(horizontal)
+        if capture and self.project_capture_reference:
+            if self.approach_origin is None:
+                self.approach_origin = r.copy()
+            remaining = float(self.approach_origin[2]-entry[2])
+            progress = (float(np.clip((r[2]-entry[2])/remaining, 0., 1.))
+                        if remaining > 1e-6 else 0.)
+            horizontal = horizontal+progress*(self.approach_origin[:2]-horizontal)
+        near_velocity = (config.closing_gain*(r[:2]-horizontal) if capture else
                          config.closing_gain*(xy-4.5)*direction_xy)
         near_velocity = _limit(near_velocity, config.maximum_closing_speed)
         # Continuous alignment reduction; no abrupt reversal from a center-pixel threshold.
@@ -359,7 +492,8 @@ class P7SpatialGuidance:
                                       config.maximum_yaw_rate))
         velocity = (*velocity_xy, desired_vz)
         self.previous, self.last_stamp = np.asarray(velocity), now
-        mode = 'CAPTURE_MATCH' if xy < 1. else 'PNG' if blend >= 1. else 'STANDOFF'
+        mode = ('GEOMETRY_WAIT' if not feasible and xy < 1.25 else
+                'CAPTURE_MATCH' if xy < 1. else 'PNG' if blend >= 1. else 'STANDOFF')
         return SpatialOutput(
             valid=True, mode=mode, velocity=tuple(velocity), acceleration=tuple(emitted),
             yaw_rate=self.yaw_rate, distance=xy, los_rate=float(omega[2]),
@@ -369,4 +503,6 @@ class P7SpatialGuidance:
             closing_request=closing, desired_direction=tuple(self.desired_direction),
             los_direction=tuple(los), omega_los=tuple(omega), new_observation=new,
             geometry_reason=geometry_reason, goal_z=goal, view_margin=margin, depth_down=down,
-            entry_relative=tuple(entry))
+            entry_relative=tuple(entry), horizontal_reference=tuple(horizontal),
+            capture_horizontal_endpoint=endpoint,
+            capture_reference_feasible=feasible)

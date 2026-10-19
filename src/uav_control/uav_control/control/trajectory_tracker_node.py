@@ -840,6 +840,11 @@ class TrajectoryTrackerNode(Node):
             if not self.has_parameter('p7_camera_pitch_down'):
                 self.declare_parameter('p7_camera_pitch_down', math.radians(42.))
             self.declare_parameter('p7_capture_radius', .25)
+            self.declare_parameter('p7_common_epoch_enabled', False)
+            self.declare_parameter('p7_project_capture_reference', False)
+            self.declare_parameter('p7_minimum_camera_center_depth', .02)
+            self.p7_common_epoch_enabled = bool(
+                self.get_parameter('p7_common_epoch_enabled').value)
             self.p7_spatial_enabled = bool(self.get_parameter('p7_spatial_enabled').value)
             if self.p7_spatial_enabled and self.p7_capture_enabled:
                 from .p7_spatial_guidance import P7SpatialGuidance
@@ -847,7 +852,11 @@ class TrajectoryTrackerNode(Node):
                     config, camera_pitch_down=self.get_parameter('p7_camera_pitch_down').value,
                     capture_radius=self.get_parameter('p7_capture_radius').value,
                     sea_surface_z=self.flight_guidance.sea_surface_z,
-                    contact_clearance=max(.33, self.flight_guidance.approach_contact_clearance))
+                    contact_clearance=max(.33, self.flight_guidance.approach_contact_clearance),
+                    project_capture_reference=bool(
+                        self.get_parameter('p7_project_capture_reference').value),
+                    minimum_center_depth=float(
+                        self.get_parameter('p7_minimum_camera_center_depth').value))
             else:
                 self.p7_controller = P7VisualGuidance(config)
             self.p7_diagnostic_pub = self.create_publisher(String, '/control/p7_guidance', 10)
@@ -2229,6 +2238,21 @@ class TrajectoryTrackerNode(Node):
             self.p7_controller.reset(previous, getattr(self, 'search_yaw_rate_command', 0.))
         capture = getattr(self, 'p7_capture_enabled', False)
         spatial = capture and getattr(self, 'p7_spatial_enabled', False)
+        feedback_position, feedback_velocity = current.position, current.velocity
+        feedback_epoch = current.stamp
+        feedback_source_stamp = _stamp_seconds(self.latest_kf_message.source_stamp)
+        feedback_bracket = None
+        if spatial and getattr(self, 'p7_common_epoch_enabled', False):
+            from .p7_spatial_guidance import common_epoch_feedback
+            pair = common_epoch_feedback(
+                self.follow_navigation_history, self.follow_target_history, now)
+            if pair is None:
+                self.p7_controller.reset()
+                return self._search_or_recovery_command(current, dt)
+            feedback_position, feedback_velocity = pair['p'], pair['v']
+            target = FlightKinematicState(pair['target_p'], pair['target_v'])
+            feedback_epoch, feedback_bracket = pair['epoch'], pair['navigation_bracket']
+            feedback_source_stamp = pair['source_stamp']
         approach_distance = None
         desired_z = self.flight_guidance.altitude_velocity_gain*(
             self.flight_guidance.flight_altitude-current.position[2])
@@ -2240,7 +2264,7 @@ class TrajectoryTrackerNode(Node):
                 contact_clearance=max(.33, self.flight_guidance.approach_contact_clearance))
         if spatial:
             result = self.p7_controller.step(
-                now, self.p7_actual_dt, current.position, current.velocity,
+                now, self.p7_actual_dt, feedback_position, feedback_velocity,
                 target.position, target.velocity, getattr(self, 'p7_spatial_image', None),
                 capture=True)
             desired_z = result.vertical_velocity
@@ -2260,6 +2284,10 @@ class TrajectoryTrackerNode(Node):
             vars(result), stamp=now, image_stamp=image[0], dt=self.p7_actual_dt,
             navigation_stamp=current.stamp, target_source_stamp=(
                 _stamp_seconds(self.latest_kf_message.source_stamp)),
+            feedback_epoch=feedback_epoch, feedback_navigation_bracket=feedback_bracket,
+            feedback_source_stamp=feedback_source_stamp,
+            feedback_uav_position=list(feedback_position),
+            feedback_target_position=list(target.position),
             capture_enabled=capture, approach_distance=approach_distance,
             velocity=list(command.velocity)))))
         return command
