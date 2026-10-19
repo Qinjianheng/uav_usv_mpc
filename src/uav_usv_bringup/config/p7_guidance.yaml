@@ -332,8 +332,8 @@ intercept_evaluator_node:
   ros__parameters:
     capture_geometry_source: gazebo_native
     evaluation_rate_hz: 20.0
-    evaluation_capture_radius: 0.5
-    planned_capture_radius: 0.5
+    evaluation_capture_radius: 0.25
+    planned_capture_radius: 0.25
     sea_surface_z: 0.0
     enable_sea_contact_failure: true
     body_lower_extent: 0.23
