@@ -18,12 +18,12 @@
     <link name="front_camera_link">
       <!--
         Place the sensor above the front edge of the central body and tilt
-        its optical axis 48 degrees down. The original forward boom entered
+        its optical axis 42 degrees down. The original forward boom entered
         the raised validation sphere before the UAV reference reached the
         capture surface. This higher mount retains a visible depth surface.
         Model-origin calibration includes x500_base's +0.24 m link offset.
       -->
-      <pose relative_to="base_link">0.18 0 0.15 0 0.8377580409572782 0</pose>
+      <pose relative_to="base_link">0.18 0 0.15 0 0.7330382858376184 0</pose>
       <inertial>
         <mass>0.05</mass>
         <inertia>

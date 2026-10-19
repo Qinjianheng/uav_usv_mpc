@@ -838,7 +838,7 @@ class TrajectoryTrackerNode(Node):
                 raise ValueError('P7_LIMIT_EXCEEDS_EXISTING_PHYSICAL_LIMIT')
             self.declare_parameter('p7_spatial_enabled', False)
             if not self.has_parameter('p7_camera_pitch_down'):
-                self.declare_parameter('p7_camera_pitch_down', math.radians(48.))
+                self.declare_parameter('p7_camera_pitch_down', math.radians(42.))
             self.declare_parameter('p7_capture_radius', .25)
             self.p7_spatial_enabled = bool(self.get_parameter('p7_spatial_enabled').value)
             if self.p7_spatial_enabled and self.p7_capture_enabled:

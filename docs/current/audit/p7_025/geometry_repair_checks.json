@@ -1,0 +1,148 @@
+{
+  "camera_pitch_degrees": 42.0,
+  "follow_height": 3.0,
+  "entry_relative": [
+    0.014693966872533132,
+    0.0,
+    0.24348048016542603
+  ],
+  "entry_norm": 0.24392346521816535,
+  "prior_failed_run": "data/experiments/20261019_p73_025_A_follow_01",
+  "prior_head": "8075bf1",
+  "first_stop_reason": "TARGET_LOCK_LOST_FOR_2S",
+  "secondary_outer_reason": "HEALTH_INPUT_LOST",
+  "acquisition_probe": [
+    {
+      "pitch": 36,
+      "first_valid_seconds": -0.9725692272186279,
+      "fraction": 0.740506329113924,
+      "pre_x_valid": 25,
+      "early_first2s_valid": 50,
+      "early_first2s_samples": 50
+    },
+    {
+      "pitch": 42,
+      "first_valid_seconds": -0.9725692272186279,
+      "fraction": 0.5316455696202531,
+      "pre_x_valid": 25,
+      "early_first2s_valid": 47,
+      "early_first2s_samples": 50
+    },
+    {
+      "pitch": 45,
+      "first_valid_seconds": 5.299430847167969,
+      "fraction": 0.006329113924050633,
+      "pre_x_valid": 0,
+      "early_first2s_valid": 0,
+      "early_first2s_samples": 50
+    },
+    {
+      "pitch": 48,
+      "first_valid_seconds": null,
+      "fraction": 0.0,
+      "pre_x_valid": 0,
+      "early_first2s_valid": 0,
+      "early_first2s_samples": 50
+    }
+  ],
+  "ideal_probe": {
+    "scope": "Synthetic noiseless first-order straight/heave only. No online truth wiring; not SITL qualification.",
+    "cases": [
+      {
+        "phase": -1.5707963267948966,
+        "outcome": "IDEAL_CAPTURE",
+        "seconds": 9.450000000000001,
+        "minimum": 0.24727028726031766,
+        "first_near": 2.95,
+        "last": {
+          "t": 9.4,
+          "distance": 0.2511622489139791,
+          "height": 0.3438847374317975,
+          "xy": 0.1800914207525537,
+          "mode": "CAPTURE_MATCH",
+          "goal_z": -0.3643648607605316,
+          "reason": "CAMERA_CORRIDOR",
+          "view_margin": 0.4253444624293028,
+          "closing": 0.0032802751170121934,
+          "velocity": [
+            4.00505025640221,
+            0.0,
+            -0.10730371542299355
+          ]
+        }
+      },
+      {
+        "phase": 0,
+        "outcome": "IDEAL_CAPTURE",
+        "seconds": 8.5,
+        "minimum": 0.24952897075107086,
+        "first_near": 2.95,
+        "last": {
+          "t": 8.450000000000001,
+          "distance": 0.251060773866907,
+          "height": 0.3543475063823829,
+          "xy": 0.1750799405591792,
+          "mode": "CAPTURE_MATCH",
+          "goal_z": -0.37567143350150417,
+          "reason": "CAMERA_CORRIDOR",
+          "view_margin": 0.47168535393200783,
+          "closing": 0.006442904983366132,
+          "velocity": [
+            4.010241648079808,
+            0.0,
+            -0.14321937756493366
+          ]
+        }
+      },
+      {
+        "phase": 1.5707963267948966,
+        "outcome": "IDEAL_CAPTURE",
+        "seconds": 11.4,
+        "minimum": 0.24827169396998053,
+        "first_near": 2.95,
+        "last": {
+          "t": 11.350000000000001,
+          "distance": 0.25457881932709536,
+          "height": 0.3359338473974082,
+          "xy": 0.18416289925406204,
+          "mode": "CAPTURE_MATCH",
+          "goal_z": -0.3529110778370729,
+          "reason": "CAMERA_CORRIDOR",
+          "view_margin": 0.37680306190215984,
+          "closing": 0.0007177958718982024,
+          "velocity": [
+            4.00106385159516,
+            0.0,
+            -0.06953294530823537
+          ]
+        }
+      }
+    ],
+    "core_milliseconds_p50_p95_max": {
+      "legacy": [
+        0.0388465,
+        0.042954099999999995,
+        0.117704
+      ],
+      "spatial": [
+        0.38110449999999996,
+        0.40394230000000003,
+        0.521174
+      ]
+    }
+  },
+  "available_suite": {
+    "passed": 2245,
+    "skipped": 2,
+    "warnings": 3,
+    "seconds": 32.79,
+    "excluded": [
+      "test_p6_sitl_driver.py",
+      "test_p6_turn_case_config.py"
+    ],
+    "reason": "Missing real R11 historical input; no fabricated fixtures in runtime"
+  },
+  "configured_capture_radius": 0.25,
+  "sea_floor_unchanged": true,
+  "flight_qualified": false
+}

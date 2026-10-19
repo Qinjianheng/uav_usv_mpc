@@ -1,5 +1,5 @@
 # P7: X -> KF/BCTRA + R11 MINCO FOLLOW; Y -> bounded IBVS/PNG.
-# P7 spatial capture: 48-degree front camera, -3 m FOLLOW; legacy P7 remains selectable.
+# P7 spatial capture: 42-degree front camera, -3 m FOLLOW; legacy P7 remains selectable.
 trajectory_impact_sim:
   ros__parameters:
     control_rate_hz: 20.0
@@ -307,7 +307,7 @@ trajectory_tracker_node:
     p7_guidance_enabled: true
     p7_spatial_enabled: true
     p7_follow_geometry_enabled: true
-    p7_camera_pitch_down: 0.8377580409572782
+    p7_camera_pitch_down: 0.7330382858376184
     p7_capture_radius: 0.25
     p7_navigation_constant: 3.0
     p7_standoff_distance: 4.5
@@ -397,7 +397,7 @@ rgbd_target_localizer:
     image_pair_buffer_size: 8
     time_pair_diagnostics_enabled: false
     localization_rate_hz: 10.0
-    camera_pitch_down: 0.8377580409572782
+    camera_pitch_down: 0.7330382858376184
     camera_translation_x: 0.18
     camera_translation_y: 0.0
     camera_translation_z: 0.39
@@ -425,7 +425,7 @@ front_tof_monitor:
     minimum_depth: 0.05
     maximum_depth: 25.0
     evaluation_window_seconds: 5.0
-    camera_pitch_down: 0.8377580409572782
+    camera_pitch_down: 0.7330382858376184
     target_visual_height_offset: 0.42
     analysis_rate_hz: 5.0
     gazebo_world_name: default
@@ -438,7 +438,7 @@ dual_tof_selector:
     selection_rate_hz: 10.0
 target_bearing_node:
   ros__parameters:
-    camera_pitch_down: 0.8377580409572782
+    camera_pitch_down: 0.7330382858376184
     color_topic: /camera/front/image_raw
     bearing_topic: /perception/front/target_bearing
     horizontal_fov: 1.74
@@ -478,7 +478,7 @@ target_predictor_node:
 p4_follow_planner_node:
   ros__parameters:
     p7_follow_geometry_enabled: true
-    p7_camera_pitch_down: 0.8377580409572782
+    p7_camera_pitch_down: 0.7330382858376184
     use_sim_time: false
     shadow_rate_hz: 5.0
     gazebo_world_name: default

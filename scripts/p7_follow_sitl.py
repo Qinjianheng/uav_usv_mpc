@@ -377,7 +377,8 @@ def run(output, scene, prior_f2=None, guidance=None, motion=None, capture=False)
                 ready_for_y = (guidance == 'c' and health['control'].get('locked')
                                and 8. <= distance <= 20.)
                 ready_for_y |= (guidance == 'd' and first_minco is not None
-                                and now-first_minco >= 5. and health['control'].get('locked'))
+                                and now-first_minco >= 5. and status == 'MINCO_FOLLOW'
+                                and health['control'].get('locked'))
                 if ready_for_y:
                     y, owned = harness.shell_process([
                         'timeout', '8s', 'ros2', 'topic', 'pub', '--times', '3', '--rate', '10',

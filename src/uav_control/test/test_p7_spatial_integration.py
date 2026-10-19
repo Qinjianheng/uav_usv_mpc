@@ -44,7 +44,7 @@ def test_session_camera_uses_config_pitch_and_preserves_all_translation_and_body
     original = ET.parse(model/'model.sdf')
     pose = original.find(".//link[@name='front_camera_link']/pose")
     source = [float(v) for v in pose.text.split()]
-    assert source[4] == pytest.approx(math.radians(48.))
+    assert source[4] == pytest.approx(math.radians(42.))
     # A baseline session retains its own 28-degree calibration even though P7 defaults changed.
     module.prepare(model, tmp_path/'baseline', front_camera_pitch_down=math.radians(28.))
     prepared = ET.parse(tmp_path/'baseline/model.sdf')
@@ -59,7 +59,7 @@ def test_three_metre_follow_whole_sphere_visibility_uses_full_attitude(pitch, ro
     result = evaluate_visibility(
         (0., 0., -3.), Rotation.from_euler('xyz', (roll, pitch, 8.), degrees=True).as_matrix(),
         (5., 0., -heave-.42), CameraIntrinsics.from_horizontal_fov(640, 480, 1.74),
-        CameraExtrinsics.from_sdf_pose((.18, 0., .39), 0., math.radians(48.), 0.),
+        CameraExtrinsics.from_sdf_pose((.18, 0., .39), 0., math.radians(42.), 0.),
         TargetBoundingSphere(.25), VisibilityConstraints(.05, 25.))
     assert result.center_visible and result.whole_target_safe
 
@@ -69,7 +69,7 @@ def test_partial_near_field_rgbd_fit_is_valid_but_not_whole_sphere_visibility():
     intrinsic = CameraIntrinsics.from_horizontal_fov(640, 480, 1.74)
     view = evaluate_visibility(
         (0., 0., 0.), np.eye(3), (0., 0., .24-.42), intrinsic,
-        CameraExtrinsics.from_sdf_pose((.18, 0., .39), 0., math.radians(48.), 0.),
+        CameraExtrinsics.from_sdf_pose((.18, 0., .39), 0., math.radians(42.), 0.),
         TargetBoundingSphere(.25), VisibilityConstraints(.05, 25.))
     center = np.array(view.target_camera_flu)
     yy, xx = np.mgrid[0:480, 0:640]
@@ -134,7 +134,7 @@ def test_p7_follow_sender_receiver_use_same_new_height_and_mount_contract():
     from uav_control.guidance.follow_limits import ResearchConfig, constraint_snapshot
     from uav_control.control.p7_spatial_guidance import configure_p7_follow_geometry
     values = dict(p7_follow_geometry_enabled=True, flight_altitude=-3.,
-                  p7_camera_pitch_down=math.radians(48.))
+                  p7_camera_pitch_down=math.radians(42.))
     node = SimpleNamespace(has_parameter=lambda name: name in values,
                            declare_parameter=lambda name, value: values.setdefault(name, value),
                            get_parameter=lambda name: SimpleNamespace(value=values[name]))

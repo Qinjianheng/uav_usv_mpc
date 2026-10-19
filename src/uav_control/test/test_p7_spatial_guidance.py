@@ -8,6 +8,7 @@ import pytest
 from uav_control.control.p7_spatial_guidance import (
     ImageSample, P7SpatialGuidance, depth_factors, shape_image_error,
     scaled_los_direction, spatial_capture_reference,
+    capture_entry_reference,
 )
 from uav_control.control.p7_visual_guidance import GuidanceConfig
 
@@ -58,13 +59,32 @@ def test_capture_reference_respects_sea_floor_phase_and_camera_surface():
     # At the camera's horizontal offset, do not descend through the sphere.
     assert target[2]-goal >= .299-1e-6
     assert 'CAMERA' in reason
-    # Over the target there is a phase-dependent origin capture region.
-    goal, _ = spatial_capture_reference(up, (0., 0., -.15), np.eye(3))
+    # Use the camera-derived entry corridor; zero horizontal distance need not be observable.
+    entry = capture_entry_reference(np.eye(3))
+    goal, _ = spatial_capture_reference(up, (entry[0], entry[1], -.15), np.eye(3))
     assert abs(goal+.15) < .25
     goal, reason = spatial_capture_reference(up, (0., 0., .15), np.eye(3))
     assert goal <= -.33
     assert .15-goal > .25
     assert 'SEA' in reason
+
+
+def test_entry_reference_is_inside_origin_radius_with_real_camera_surface_and_depth():
+    from uav_control.guidance.camera_visibility import (
+        CameraIntrinsics, CameraExtrinsics, TargetBoundingSphere, VisibilityConstraints,
+        evaluate_visibility,
+    )
+    entry = capture_entry_reference(np.eye(3))
+    assert np.linalg.norm(entry) < .25
+    view = evaluate_visibility(
+        (0., 0., 0.), np.eye(3), entry-np.array((0., 0., .42)),
+        CameraIntrinsics.from_horizontal_fov(640, 480, 1.74),
+        CameraExtrinsics.from_sdf_pose((.18, 0., .39), 0., math.radians(42.), 0.),
+        TargetBoundingSphere(.25), VisibilityConstraints(.05, 25.))
+    assert np.linalg.norm(view.target_camera_flu) == pytest.approx(.27)
+    assert view.target_camera_flu[0] == pytest.approx(.02)
+    assert np.linalg.norm(capture_entry_reference(
+        np.eye(3), camera_pitch_down=math.radians(36.))) > .25
 
 
 @pytest.mark.parametrize('age', [.126, -.001])

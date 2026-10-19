@@ -20,7 +20,7 @@ def configure_p7_follow_geometry(node, model):
         node.declare_parameter('p7_follow_geometry_enabled', False)
     if not node.get_parameter('p7_follow_geometry_enabled').value:
         return
-    for key, default in (('p7_camera_pitch_down', math.radians(48.)),
+    for key, default in (('p7_camera_pitch_down', math.radians(42.)),
                          ('flight_altitude', model.config.flight_altitude)):
         if not node.has_parameter(key):
             node.declare_parameter(key, default)
@@ -100,8 +100,31 @@ def _mount(pitch):
     return np.array(((c, 0., s), (0., 1., 0.), (-s, 0., c)))
 
 
+def capture_entry_reference(rotation, *, camera_pitch_down=math.radians(42.),
+                            camera_translation_flu=(.18, 0., .39), target_radius=.25,
+                            visual_height=.42):
+    """Closed-form origin entry point at the camera surface/depth corridor intersection."""
+    rotation = np.asarray(rotation, dtype=float)
+    if (rotation.shape != (3, 3) or not np.isfinite(rotation).all()
+            or not np.allclose(rotation.T@rotation, np.eye(3), atol=1e-7)):
+        raise ValueError('INVALID_CAMERA_ENTRY_ROTATION')
+    offset = rotation@_FLU_FRD@np.asarray(camera_translation_flu)
+    forward = rotation@_FLU_FRD@_mount(camera_pitch_down)[:, 0]
+    # r is UAV origin -> USV reference. The marker center adds -visual_height in NED.
+    center = offset+np.array((0., 0., visual_height))
+    perpendicular = center-forward*float(center@forward)
+    if np.linalg.norm(perpendicular) < 1e-9:
+        basis = np.eye(3)[int(np.argmin(np.abs(forward)))]
+        perpendicular = np.cross(forward, basis)
+    direction = -_unit(perpendicular)
+    if direction[2] < 0:
+        direction = -direction
+    axial, radius = .02, target_radius+.02
+    return center+axial*forward+math.sqrt(radius**2-axial**2)*direction
+
+
 def spatial_capture_reference(uav_position, target_position, rotation, *,
-                              camera_pitch_down=math.radians(48.),
+                              camera_pitch_down=math.radians(42.),
                               camera_translation_flu=(.18, 0., .39), target_radius=.25,
                               visual_height=.42, capture_radius=.25, sea_surface_z=0.,
                               contact_clearance=.33, relative_velocity=(0., 0., 0.),
@@ -135,8 +158,14 @@ def spatial_capture_reference(uav_position, target_position, rotation, *,
     # Keep the optical origin outside the surface, with 2 cm geometric margin.
     surface_gap = visual_height+camera_offset[2]+math.sqrt(max(
         0., (target_radius+.02)**2-closest_xy**2))
-    gap = max(.9*capture_radius, surface_gap)
-    reason = 'CAMERA_CORRIDOR' if surface_gap >= .9*capture_radius else 'CAPTURE_CORRIDOR'
+    entry = capture_entry_reference(
+        rotation, camera_pitch_down=camera_pitch_down,
+        camera_translation_flu=camera_translation_flu, target_radius=target_radius,
+        visual_height=visual_height)
+    gap = max(float(entry[2]), surface_gap)
+    reason = 'CAMERA_CORRIDOR' if surface_gap >= entry[2] else 'CAPTURE_CORRIDOR'
+    if np.linalg.norm(entry) >= capture_radius:
+        reason += '_ATTITUDE_ENTRY_WAIT'
     if forward[2] > 1e-6:
         axial_gap = visual_height+camera_offset[2]+(.02-forward[:2]@horizontal)/forward[2]
         gap = max(gap, float(axial_gap))
@@ -175,12 +204,13 @@ class SpatialOutput(GuidanceOutput):
     goal_z: float = 0.
     view_margin: float = 0.
     depth_down: float = 1.
+    entry_relative: tuple = (0., 0., 0.)
 
 
 class P7SpatialGuidance:
     """One bounded velocity controller; the existing Tracker retains final authority."""
 
-    def __init__(self, config=GuidanceConfig(), *, camera_pitch_down=math.radians(48.),
+    def __init__(self, config=GuidanceConfig(), *, camera_pitch_down=math.radians(42.),
                  capture_radius=.25, sea_surface_z=0., contact_clearance=.33):
         self.config = config
         self.camera_pitch_down = camera_pitch_down
@@ -224,6 +254,7 @@ class P7SpatialGuidance:
             camera_range = float(np.linalg.norm(image.ray))
             down, gain_up = depth_factors(camera_range, .25)
             rotation = body_frd_to_ned_from_quaternion(image.quaternion)
+            entry = capture_entry_reference(rotation, camera_pitch_down=self.camera_pitch_down)
             r, relative_velocity = tp-up, tv-uv
             distance = float(np.linalg.norm(r))
             if distance < max(.01, .1*self.capture_radius):
@@ -270,21 +301,23 @@ class P7SpatialGuidance:
             self.margin_rate = (0. if self.previous_margin is None else
                                 (margin-self.previous_margin)/image_dt)
             self.previous_margin, self.last_image_stamp = margin, image.stamp
-        closing = float(np.clip(config.closing_gain*(xy-(0. if capture else 4.5)),
-                                -config.maximum_closing_speed, config.maximum_closing_speed))
+        near_velocity = (config.closing_gain*(r[:2]-entry[:2]) if capture else
+                         config.closing_gain*(xy-4.5)*direction_xy)
+        near_velocity = _limit(near_velocity, config.maximum_closing_speed)
         # Continuous alignment reduction; no abrupt reversal from a center-pixel threshold.
-        closing *= min(1., config.alignment_limit/max(abs(math.atan(eu)), 1e-9))
+        near_velocity *= min(1., config.alignment_limit/max(abs(math.atan(eu)), 1e-9))
         forecast = margin+min(0., self.margin_rate)/config.velocity_gain
         view_scale = float(np.clip(forecast/.1, 0., 1.))
-        if capture and closing > 0:
-            closing *= view_scale
+        if capture and near_velocity@direction_xy > 0:
+            near_velocity *= view_scale
+        closing = float(near_velocity@direction_xy)
         # Near-field matching is smoothly blended across the existing 1 m boundary.
         blend = float(np.clip((xy-.75)/.5, 0., 1.))
         blend = blend*blend*(3.-2.*blend)
         pn_xy = self.desired_direction[:2]
         norm_xy = float(np.linalg.norm(pn_xy))
         pn_xy = pn_xy/norm_xy if norm_xy > 1e-8 else direction_xy
-        desired_xy = tv[:2]+closing*((1.-blend)*direction_xy+blend*pn_xy)
+        desired_xy = tv[:2]+(1.-blend)*near_velocity+blend*closing*pn_xy
         if not capture:
             goal = float(up[2])
         reference_vz = config.velocity_gain*(goal-up[2])
@@ -335,4 +368,5 @@ class P7SpatialGuidance:
             error_u=eu, error_v=ev, vertical_velocity=desired_vz, distance_3d=distance,
             closing_request=closing, desired_direction=tuple(self.desired_direction),
             los_direction=tuple(los), omega_los=tuple(omega), new_observation=new,
-            geometry_reason=geometry_reason, goal_z=goal, view_margin=margin, depth_down=down)
+            geometry_reason=geometry_reason, goal_z=goal, view_margin=margin, depth_down=down,
+            entry_relative=tuple(entry))
