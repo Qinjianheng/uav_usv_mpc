@@ -1,6 +1,7 @@
 """P7 camera/profile consistency and the actual sole-Tracker spatial path."""
 
 import importlib.util
+import json
 import math
 from pathlib import Path
 import sys
@@ -18,13 +19,14 @@ from uav_control.guidance.camera_visibility import (
 
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT/'scripts'))
+CANDIDATE = ROOT/'src/uav_usv_bringup/config/p7_spatial_candidate.yaml'
 
 
 def test_effective_p7_geometry_rejects_radius_or_height_mismatch(tmp_path):
     from p7_follow_sitl import prepare, validate_p7_geometry
-    config = yaml.safe_load((ROOT/'src/uav_usv_bringup/config/p7_guidance.yaml').read_text())
+    config = yaml.safe_load(CANDIDATE.read_text())
     validate_p7_geometry(config)
-    prepare(tmp_path/'run', 'f2', 'figure_eight', capture=True)
+    prepare(tmp_path/'run', 'f2', 'figure_eight', capture=True, config_file=CANDIDATE)
     flight = yaml.safe_load((tmp_path/'run/config/flight.yaml').read_text())
     research = yaml.safe_load((tmp_path/'run/config/research.yaml').read_text())
     assert flight['trajectory_tracker_node']['ros__parameters']['flight_altitude'] == -3.
@@ -44,14 +46,53 @@ def test_session_camera_uses_config_pitch_and_preserves_all_translation_and_body
     original = ET.parse(model/'model.sdf')
     pose = original.find(".//link[@name='front_camera_link']/pose")
     source = [float(v) for v in pose.text.split()]
-    assert source[4] == pytest.approx(math.radians(42.))
-    # A baseline session retains its own 28-degree calibration even though P7 defaults changed.
-    module.prepare(model, tmp_path/'baseline', front_camera_pitch_down=math.radians(28.))
-    prepared = ET.parse(tmp_path/'baseline/model.sdf')
+    assert source[4] == pytest.approx(math.radians(28.))
+    # The unqualified candidate is isolated in a session copy, never the source default.
+    module.prepare(model, tmp_path/'candidate', front_camera_pitch_down=math.radians(42.))
+    prepared = ET.parse(tmp_path/'candidate/model.sdf')
     actual_pose = prepared.find(".//link[@name='front_camera_link']/pose")
     actual = [float(v) for v in actual_pose.text.split()]
     assert actual[:4] == source[:4] and actual[5] == source[5]
-    assert actual[4] == pytest.approx(math.radians(28.))
+    assert actual[4] == pytest.approx(math.radians(42.))
+
+
+def test_failed_candidate_cannot_replace_default_follow_or_capture_criterion(tmp_path):
+    from p7_follow_sitl import prepare
+    prepare(tmp_path/'default', 'f2', capture=True)
+    prepare(tmp_path/'candidate', 'f2', capture=True, config_file=CANDIDATE)
+    for name, pitch, altitude, spatial in (
+            ('default', 28., -5., False), ('candidate', 42., -3., True)):
+        config = yaml.safe_load((tmp_path/name/'config/flight.yaml').read_text())
+        tracker = config['trajectory_tracker_node']['ros__parameters']
+        assert tracker.get('p7_spatial_enabled', False) is spatial
+        assert tracker.get('p7_follow_geometry_enabled', False) is spatial
+        assert tracker['flight_altitude'] == altitude
+        assert config['rgbd_target_localizer']['ros__parameters'][
+            'camera_pitch_down'] == pytest.approx(math.radians(pitch))
+        evaluator = config['intercept_evaluator_node']['ros__parameters']
+        assert evaluator['evaluation_capture_radius'] == evaluator['planned_capture_radius'] == .25
+
+
+def test_f2_qualification_cannot_cross_between_default_and_candidate_profiles(tmp_path):
+    import p7_follow_sitl as entry
+    summary = tmp_path/'summary.json'
+    summary.write_text(json.dumps(dict(
+        healthy=True, completed=True, f3_eligible=True,
+        source_fingerprint=entry.source_fingerprint())))
+    (tmp_path/'condition.json').write_text(json.dumps(dict(
+        config_sources={str(entry.CONFIG): entry.harness.sha(entry.CONFIG)})))
+    entry.require_f2(summary)
+    with pytest.raises(ValueError, match='CURRENT_HEALTHY_F2_REQUIRED'):
+        entry.require_f2(summary, config_file=CANDIDATE)
+
+
+def test_automated_spatial_capture_requires_qualified_a_before_creating_run(tmp_path, monkeypatch):
+    import p7_follow_sitl as entry
+    monkeypatch.setattr(entry, 'WORKSPACE', tmp_path)
+    output = tmp_path/'data/experiments/no_flight'
+    with pytest.raises(ValueError, match='CURRENT_HEALTHY_F2_REQUIRED'):
+        entry.run(output, 'f2', guidance='d', capture=True, config_file=CANDIDATE)
+    assert not output.exists()
 
 
 @pytest.mark.parametrize('pitch,roll,heave', [(0., 0., 0.), (-12., 12., -.15), (12., -12., .15)])

@@ -43,9 +43,14 @@ def source_fingerprint():
     return hashlib.sha256(json.dumps(hashes, sort_keys=True).encode()).hexdigest()
 
 
-def require_f2(path):
+def require_f2(path, config_file=None):
     """A new source or failed F2 cannot inherit permission for F3."""
     summary = json.loads(Path(path).read_text())
+    config_file = CONFIG if config_file is None else Path(config_file).resolve()
+    condition_path = Path(path).parent/'condition.json'
+    condition = json.loads(condition_path.read_text()) if condition_path.exists() else {}
+    same_profile = condition.get('config_sources', {}).get(str(config_file)) == harness.sha(
+        config_file)
     same_source = summary.get('source_fingerprint') == source_fingerprint()
     snapshot = Path(path).parent/'source_snapshot.json'
     if not same_source and snapshot.exists():
@@ -63,7 +68,7 @@ def require_f2(path):
                 previous_runtime[key] = previous[key]
         same_source = previous_runtime == runtime_hashes()
     if not (summary.get('healthy') and summary.get('completed') and summary.get('f3_eligible')
-            and same_source):
+            and same_source and same_profile):
         raise ValueError('CURRENT_HEALTHY_F2_REQUIRED')
 
 
@@ -146,13 +151,14 @@ def validate_p7_geometry(flight):
         raise ValueError('P7_FOLLOW_HEIGHT_CONFIG_MISMATCH')
 
 
-def prepare(output, scene, motion=None, capture=False):
+def prepare(output, scene, motion=None, capture=False, config_file=None):
     """Copy scene geometry and current P7 constant speed into an exclusive run."""
     if scene not in ('f2', 'f3'):
         raise ValueError('P7_F2_OR_F3_REQUIRED')
-    flight = yaml.safe_load(CONFIG.read_text())
+    config_file = CONFIG if config_file is None else Path(config_file).resolve()
+    flight = yaml.safe_load(config_file.read_text())
     constant_speed = flight['moving_target']['ros__parameters']['horizontal_speed']
-    sources = [CONFIG]
+    sources = [config_file]
     if scene == 'f3':
         source = R11/f'{scene}_h16_01/config/flight.yaml'
         original = yaml.safe_load(source.read_text())
@@ -210,14 +216,14 @@ def clean_shutdown(cleanup):
     return not (cleanup['errors'] or cleanup['survivors'] or late['errors'] or late['survivors'])
 
 
-def manual(output, motion=None, capture=False):
+def manual(output, motion=None, capture=False, config_file=None):
     """A bounded, isolated native X/Y console using the same P7 configs and sole Tracker."""
     if not output.is_relative_to(WORKSPACE/'data/experiments'):
         raise ValueError('OUTPUT_MUST_BE_EXPERIMENT_DIRECTORY')
     check = preflight()
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as port:
         port.bind(('127.0.0.1', 14550))
-    prepare(output, 'f2', motion, capture)
+    prepare(output, 'f2', motion, capture, config_file)
     started = time.time()
     env = dict(os.environ, UAV_USV_WS=str(WORKSPACE),
                UAV_USV_RESEARCH_DIRECTORY=str(output),
@@ -274,16 +280,19 @@ def manual(output, motion=None, capture=False):
     return 0 if clean_shutdown(cleanup) else 1
 
 
-def run(output, scene, prior_f2=None, guidance=None, motion=None, capture=False):
+def run(output, scene, prior_f2=None, guidance=None, motion=None, capture=False, config_file=None):
     """Retain original admission warmup and strict health/lease checks, without P6 gates."""
     if not output.is_relative_to(WORKSPACE/'data/experiments'):
         raise ValueError('OUTPUT_MUST_BE_EXPERIMENT_DIRECTORY')
-    if scene == 'f3':
+    source_config = CONFIG if config_file is None else Path(config_file)
+    spatial_capture = bool(capture and guidance and yaml.safe_load(source_config.read_text())[
+        'trajectory_tracker_node']['ros__parameters'].get('p7_spatial_enabled', False))
+    if scene == 'f3' or spatial_capture:
         if prior_f2 is None:
             raise ValueError('CURRENT_HEALTHY_F2_REQUIRED')
-        require_f2(prior_f2)
+        require_f2(prior_f2, config_file)
     preflight()
-    prepare(output, scene, motion, capture)
+    prepare(output, scene, motion, capture, config_file)
     condition = json.loads((output/'condition.json').read_text())
     if guidance:
         condition.update(guidance_experiment=guidance,
@@ -468,6 +477,8 @@ if __name__ == '__main__':
     parser.add_argument('output', type=Path)
     parser.add_argument('--scene', choices=('f2', 'f3'), default='f2')
     parser.add_argument('--prior-f2', type=Path)
+    parser.add_argument('--config', type=Path,
+                        help='Explicit P7 profile; the default keeps the established geometry')
     parser.add_argument('--guidance', choices=('c', 'd'))
     parser.add_argument('--manual', action='store_true')
     parser.add_argument('--capture', action='store_true',
@@ -479,6 +490,6 @@ if __name__ == '__main__':
     if args.capture and not (args.manual or args.guidance):
         parser.error('--capture requires --guidance or --manual')
     if args.manual:
-        raise SystemExit(manual(args.output.resolve(), args.motion, args.capture))
+        raise SystemExit(manual(args.output.resolve(), args.motion, args.capture, args.config))
     raise SystemExit(run(args.output.resolve(), args.scene, args.prior_f2,
-                         args.guidance, args.motion, args.capture))
+                         args.guidance, args.motion, args.capture, args.config))
