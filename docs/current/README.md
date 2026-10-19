@@ -6,6 +6,7 @@ P7 配置已实现 X 后 KF/BCTRA/MINCO FOLLOW、Y 后 IBVS/PNG 安全接近，�
 
 | 文档 | 用途 |
 |---|---|
+| [相机/高度与同刻水平参考复验](p7_angle_height_retest_20261019.md) | 38°/5 m 两次 FOLLOW 均 100% 实际 MINCO；两次捕获仍失败，仅与原 28° 对比，保留不可达窗口与恢复交接边界 |
 | [P7.3 三维导引与 0.25 m 验证](p7_025_ibvs_png_upgrade.md) | 代码候选、相位可达性、两次 A 失败归因；B/C 未执行，默认配置已回退 |
 | [0.25 m 原失败实验归因](p7_025_failure_diagnosis.md) | 原生最近 0.360932 m、首次下缘离场与恢复时序 |
 | [P7 使用与实际验证](p7_progress.md) | 专用启动、X/Y 控制权、FOLLOW/制导曲线、当前边界与阶段提交 |
