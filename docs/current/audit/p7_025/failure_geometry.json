@@ -1,0 +1,433 @@
+{
+  "run": "/home/qin/data/uav_usv_mpc/data/experiments/p7_manual_20261019_112340_740393470_984611",
+  "snapshot_head": "943ef42f289529f70fae2e344828f90157c33705",
+  "capture_radius": 0.25,
+  "summary_outcome": "ABORTED",
+  "y": 1792380309.3616426,
+  "native_sample_count": 1857,
+  "native_minimum": {
+    "kind": "EVALUATED",
+    "stamp": 1792380322.9515326,
+    "native_stamp": 94.54,
+    "decision_stamp": 1792380322.9538784,
+    "uav_position": [
+      7.803432330157291,
+      2.720922853164102,
+      -0.29991170398474526
+    ],
+    "target_position": [
+      8.090292748821305,
+      2.6800614872442594,
+      -0.08470674981693377
+    ],
+    "velocity_valid": true,
+    "segment_valid": true,
+    "maximum_bracket": 0.0,
+    "uav_clock_bracket": [
+      94.54,
+      94.54,
+      1792380322.9515326,
+      1792380322.9515326
+    ],
+    "target_clock_bracket": [
+      94.54,
+      94.54,
+      1792380322.9515326,
+      1792380322.9515326
+    ],
+    "distance": 0.3609317432968438,
+    "event": null,
+    "terminal_reason": "",
+    "seconds": 13.589890003204346,
+    "dxy": 0.2897560198182756,
+    "dz": 0.2152049541678115,
+    "uav_height": 0.29991170398474526,
+    "target_height": 0.08470674981693377,
+    "body_clearance": 0.06991170398474525,
+    "preceding_diagnostic": {
+      "kind": "diagnostic",
+      "receipt": 1792380322.9312098,
+      "stamp": 1792380322.9276683,
+      "mission": 1,
+      "plan": 0,
+      "status": "P7_GUIDANCE",
+      "compute": 0.0013929010019637644,
+      "locked": true,
+      "visible": true,
+      "search": "TRACKING",
+      "yaw_owner": "IBVS"
+    }
+  },
+  "legal_segment_minimum": {
+    "distance": 0.3603523556903985,
+    "fraction": 0.774691690942157,
+    "stamp": 1792380322.9470294,
+    "left_native": 94.52,
+    "right_native": 94.54
+  },
+  "csv_minimum": {
+    "intercept_elapsed_time": "23.292229890823364",
+    "distance": "0.48098647156851454",
+    "horizontal_distance": "0.19969663391509443",
+    "vertical_error": "0.4375719829181368",
+    "controller_status": "P7_BRAKING",
+    "sea_safety_state": "WARNING",
+    "sea_safety_margin": "0.11162604689598082"
+  },
+  "csv_near_native_minimum": {
+    "intercept_elapsed_time": "13.592235803604126",
+    "distance": "0.530408874547863",
+    "horizontal_distance": "0.4758346489766189",
+    "vertical_error": "0.23433941416763093",
+    "controller_status": "P7_GUIDANCE",
+    "sea_safety_state": "WARNING",
+    "sea_safety_margin": "0.11880268454551696"
+  },
+  "first_invalid": {
+    "kind": "observation",
+    "receipt": 1792380332.5903802,
+    "stamp": 1792380332.5635169,
+    "received": 1792380332.5850346,
+    "processed": 1792380332.5896928,
+    "published": 1792380332.5896928,
+    "valid": false,
+    "reason": "IMAGE_INVALID"
+  },
+  "first_braking": {
+    "kind": "diagnostic",
+    "receipt": 1792380332.62969,
+    "stamp": 1792380332.6274865,
+    "mission": 1,
+    "plan": 0,
+    "status": "P7_BRAKING",
+    "compute": 0.0007975419866852462,
+    "locked": false,
+    "visible": false,
+    "search": "SAFE_RECOVERY",
+    "yaw_owner": "P7_WAIT"
+  },
+  "first_invalid_vision": {
+    "measurement_stamp": "1792380332.5635169",
+    "rgb_raw_stamp": "104.152",
+    "depth_raw_stamp": "104.152",
+    "receipt_stamp": "1792380332.5850346",
+    "published_stamp": "1792380332.5896928",
+    "observation_age": "0.02151775360107422",
+    "rgb_depth_acquisition_skew": "0.0",
+    "position_history_end_stamp": "1792380332.5635169",
+    "attitude_history_end_stamp": "1792380332.5635169",
+    "rejection_reason": "IMAGE_INVALID",
+    "red_pixel_count": "0"
+  },
+  "last_p7": {
+    "kind": "p7_guidance",
+    "receipt": 1792380332.579238,
+    "valid": true,
+    "mode": "CAPTURE_MATCH",
+    "velocity": [
+      2.506338480171993,
+      -2.201446601805439,
+      -0.018952058553695694
+    ],
+    "acceleration": [
+      1.0232206689013588,
+      1.7184351785077772
+    ],
+    "yaw_rate": -0.5999977111816407,
+    "distance": 0.05497987612752263,
+    "los_rate": -7.287930224498931,
+    "closing_speed": 1.2377496014949472,
+    "lateral_acceleration": -0.1505712582057226,
+    "error_u": -0.24089990340981604,
+    "error_v": 2.8329073777683567,
+    "stamp": 1792380332.5776756,
+    "image_stamp": 1792380332.5115204,
+    "dt": 0.050090789794921875,
+    "capture_enabled": true,
+    "approach_distance": 0.3
+  },
+  "transitions": [
+    {
+      "seconds": 0.01590561866760254,
+      "kind": "diagnostic",
+      "receipt": 1792380309.3801296,
+      "stamp": 1792380309.3775482,
+      "mission": 1,
+      "plan": 0,
+      "status": "P7_GUIDANCE",
+      "compute": 0.0011643570032902062,
+      "locked": true,
+      "visible": true,
+      "search": "TRACKING",
+      "yaw_owner": "IBVS"
+    },
+    {
+      "seconds": 23.265843868255615,
+      "kind": "diagnostic",
+      "receipt": 1792380332.62969,
+      "stamp": 1792380332.6274865,
+      "mission": 1,
+      "plan": 0,
+      "status": "P7_BRAKING",
+      "compute": 0.0007975419866852462,
+      "locked": false,
+      "visible": false,
+      "search": "SAFE_RECOVERY",
+      "yaw_owner": "P7_WAIT"
+    },
+    {
+      "seconds": 23.315979719161987,
+      "kind": "diagnostic",
+      "receipt": 1792380332.6799803,
+      "stamp": 1792380332.6776223,
+      "mission": 1,
+      "plan": 0,
+      "status": "SAFE_RECOVERY",
+      "compute": 0.000743534998036921,
+      "locked": false,
+      "visible": false,
+      "search": "SAFE_RECOVERY",
+      "yaw_owner": "HOLD"
+    },
+    {
+      "seconds": 24.815998554229736,
+      "kind": "diagnostic",
+      "receipt": 1792380334.1795638,
+      "stamp": 1792380334.1776412,
+      "mission": 1,
+      "plan": 0,
+      "status": "VISUAL_BRAKING",
+      "compute": 0.0007325859623961151,
+      "locked": false,
+      "visible": false,
+      "search": "REACQUIRE",
+      "yaw_owner": "SEARCH"
+    },
+    {
+      "seconds": 25.415910243988037,
+      "kind": "diagnostic",
+      "receipt": 1792380334.77953,
+      "stamp": 1792380334.7775528,
+      "mission": 1,
+      "plan": 0,
+      "status": "REACQUIRE",
+      "compute": 0.0006169939879328012,
+      "locked": false,
+      "visible": false,
+      "search": "REACQUIRE",
+      "yaw_owner": "SEARCH"
+    },
+    {
+      "seconds": 26.8659405708313,
+      "kind": "diagnostic",
+      "receipt": 1792380336.2298224,
+      "stamp": 1792380336.2275832,
+      "mission": 1,
+      "plan": 0,
+      "status": "SAFE_WAIT",
+      "compute": 0.0010480969795025885,
+      "locked": false,
+      "visible": false,
+      "search": "SAFE_WAIT",
+      "yaw_owner": "HOLD"
+    },
+    {
+      "seconds": 37.11592245101929,
+      "kind": "diagnostic",
+      "receipt": 1792380346.4798903,
+      "stamp": 1792380346.477565,
+      "mission": 1,
+      "plan": 0,
+      "status": "ABORTED",
+      "compute": 0.000619216007180512,
+      "locked": false,
+      "visible": false,
+      "search": "SAFE_WAIT",
+      "yaw_owner": "HOLD"
+    }
+  ],
+  "pre_y_seconds_by_diagnostic_hold": {
+    "FOLLOW": 27.11400318145752,
+    "MINCO_FOLLOW": 13.670050382614136
+  },
+  "capture_guidance_count": 465,
+  "image_age_p50_p95_max": [
+    0.06585478782653809,
+    0.06617474555969238,
+    0.1140892505645752
+  ],
+  "callback_seconds_p50_p95_max": [
+    0.001296460977755487,
+    0.0024318023701198374,
+    0.003869383013807237
+  ],
+  "geometry_classification": "PHASE_DEPENDENT",
+  "sea_phase_table": [
+    {
+      "target_height": -0.15,
+      "uav_origin_height": 0.33,
+      "dz": 0.48,
+      "horizontal_allowed": null,
+      "fixed_standoff_distance": 0.5660388679233962,
+      "body_clearance": 0.1
+    },
+    {
+      "target_height": -0.1,
+      "uav_origin_height": 0.33,
+      "dz": 0.43000000000000005,
+      "horizontal_allowed": null,
+      "fixed_standoff_distance": 0.5243090691567331,
+      "body_clearance": 0.1
+    },
+    {
+      "target_height": 0.0,
+      "uav_origin_height": 0.33,
+      "dz": 0.33,
+      "horizontal_allowed": null,
+      "fixed_standoff_distance": 0.4459820624195552,
+      "body_clearance": 0.1
+    },
+    {
+      "target_height": 0.08,
+      "uav_origin_height": 0.33,
+      "dz": 0.25,
+      "horizontal_allowed": null,
+      "fixed_standoff_distance": 0.3905124837953327,
+      "body_clearance": 0.1
+    },
+    {
+      "target_height": 0.1,
+      "uav_origin_height": 0.33,
+      "dz": 0.23,
+      "horizontal_allowed": 0.09797958971132711,
+      "fixed_standoff_distance": 0.378021163428716,
+      "body_clearance": 0.1
+    },
+    {
+      "target_height": 0.15,
+      "uav_origin_height": 0.33,
+      "dz": 0.18000000000000002,
+      "horizontal_allowed": 0.1734935157289747,
+      "fixed_standoff_distance": 0.34985711369071804,
+      "body_clearance": 0.1
+    }
+  ],
+  "no_fixed_03_terminal_point_inside_025": true,
+  "recovery_window_file": "first_loss_window.jsonl",
+  "native_camera_file": "native_camera.json",
+  "native_camera_samples": 587,
+  "center_visible_fraction": 0.9676320272572402,
+  "whole_safe_fraction": 0.8262350936967632,
+  "near_first_invalid": [
+    {
+      "stamp": 1792380332.4915261,
+      "native": 104.08,
+      "seconds": 23.129883527755737,
+      "camera_ray": [
+        0.19025695399396655,
+        -0.036079908684609606,
+        -0.3517521177146409
+      ],
+      "camera_sphere_distance": 0.40153333693541143,
+      "camera_inside_sphere": false,
+      "center_visible": false,
+      "whole_safe": false,
+      "reasons": [
+        "TARGET_CROSSES_CAMERA_PLANE",
+        "BELOW_MINIMUM_DISTANCE"
+      ],
+      "vertical_center_angle": 1.0749791983730679,
+      "lower_edge_rad": 0.7267008566948965,
+      "upper_limb_rad": 0.3996655965843058,
+      "entirely_below": false
+    },
+    {
+      "stamp": 1792380332.531532,
+      "native": 104.12,
+      "seconds": 23.169889450073242,
+      "camera_ray": [
+        0.07394726454315528,
+        0.099558194007183,
+        -0.39252486756478616
+      ],
+      "camera_sphere_distance": 0.4116500984867369,
+      "camera_inside_sphere": false,
+      "center_visible": false,
+      "whole_safe": false,
+      "reasons": [
+        "TARGET_CROSSES_CAMERA_PLANE",
+        "BELOW_MINIMUM_DISTANCE"
+      ],
+      "vertical_center_angle": 1.3845899604835317,
+      "lower_edge_rad": 0.7267008566948965,
+      "upper_limb_rad": 0.7083144694057811,
+      "entirely_below": false
+    },
+    {
+      "stamp": 1792380332.5715482,
+      "native": 104.16,
+      "seconds": 23.20990562438965,
+      "camera_ray": [
+        0.04769980339833363,
+        0.05791034767637421,
+        -0.40359595810496746
+      ],
+      "camera_sphere_distance": 0.41051014239712136,
+      "camera_inside_sphere": false,
+      "center_visible": false,
+      "whole_safe": false,
+      "reasons": [
+        "TARGET_CROSSES_CAMERA_PLANE",
+        "BELOW_MINIMUM_DISTANCE"
+      ],
+      "vertical_center_angle": 1.4531550263797746,
+      "lower_edge_rad": 0.7267008566948965,
+      "upper_limb_rad": 0.7905787984419601,
+      "entirely_below": true
+    },
+    {
+      "stamp": 1792380332.6115127,
+      "native": 104.2,
+      "seconds": 23.24987006187439,
+      "camera_ray": [
+        0.022180044433576768,
+        0.013952012539209031,
+        -0.4126888456470012
+      ],
+      "camera_sphere_distance": 0.4135198862768562,
+      "camera_inside_sphere": false,
+      "center_visible": false,
+      "whole_safe": false,
+      "reasons": [
+        "TARGET_CROSSES_CAMERA_PLANE",
+        "BELOW_MINIMUM_DISTANCE"
+      ],
+      "vertical_center_angle": 1.5171027860704924,
+      "lower_edge_rad": 0.7267008566948965,
+      "upper_limb_rad": 0.8674496354616883,
+      "entirely_below": true
+    },
+    {
+      "stamp": 1792380332.6515253,
+      "native": 104.24,
+      "seconds": 23.28988265991211,
+      "camera_ray": [
+        -0.005732231070573385,
+        -0.024743699043801658,
+        -0.42095249815454944
+      ],
+      "camera_sphere_distance": 0.4217180513304744,
+      "camera_inside_sphere": false,
+      "center_visible": false,
+      "whole_safe": false,
+      "reasons": [
+        "TARGET_BEHIND_CAMERA",
+        "BELOW_MINIMUM_DISTANCE"
+      ],
+      "vertical_center_angle": 1.5844127724150976,
+      "lower_edge_rad": 0.7267008566948965,
+      "upper_limb_rad": 0.9485943774714501,
+      "entirely_below": true
+    }
+  ]
+}
