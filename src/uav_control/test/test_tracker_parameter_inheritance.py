@@ -26,6 +26,7 @@ def test_legacy_follow_limit_is_inherited_unless_explicitly_overridden(
         return SimpleNamespace(value=values[name])
 
     monkeypatch.setattr(Node, 'declare_parameter', declare)
+    monkeypatch.setattr(Node, 'has_parameter', lambda self, name: name in values)
     monkeypatch.setattr(Node, 'get_parameter',
                         lambda self, name: SimpleNamespace(value=values[name]))
     monkeypatch.setattr(Node, 'resolve_topic_name', lambda self, name: name)

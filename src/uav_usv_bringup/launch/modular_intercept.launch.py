@@ -4,11 +4,33 @@ import os
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, SetEnvironmentVariable
-from launch.conditions import IfCondition
+from launch.actions import DeclareLaunchArgument, OpaqueFunction, SetEnvironmentVariable
+from launch.conditions import IfCondition, UnlessCondition
 from launch.substitutions import LaunchConfiguration, PythonExpression
 from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterValue
+
+
+def audit_p76(context):
+    """Reject inconsistent or unqualified P76 before starting any flight node."""
+    if LaunchConfiguration('p76_enabled').perform(context) != 'true':
+        return []
+    import sys
+    from pathlib import Path
+    workspace = Path(os.environ.get('UAV_USV_WS', '/home/qin/data/uav_usv_mpc'))
+    sys.path.insert(0, str(workspace/'scripts'))
+    from p76_config_audit import audit
+    from uav_control.common.p76_contract import load_contract
+    contract = Path(LaunchConfiguration('p76_contract').perform(context))
+    profile = Path(LaunchConfiguration('config_file').perform(context))
+    values = load_contract(contract)
+    if LaunchConfiguration('p76_runtime_python').perform(context) != values['detector'][
+            'runtime_python']:
+        raise ValueError('P76_DETECTOR_RUNTIME_MISMATCH')
+    if LaunchConfiguration('prediction_model').perform(context) != 'bctra':
+        raise ValueError('P76_BCTRA_REQUIRED')
+    audit(contract, profile, Path(os.environ.get('UAV_USV_P76_MODEL_ROOT', '')), True)
+    return []
 
 
 def generate_launch_description():
@@ -47,6 +69,11 @@ def generate_launch_description():
         ),
         DeclareLaunchArgument('enable_follow_minco', default_value='true',
                               choices=['true', 'false']),
+        DeclareLaunchArgument('p76_enabled', default_value='false', choices=['true', 'false']),
+        DeclareLaunchArgument('p76_contract', default_value=os.path.join(
+            package_share, 'config/p76_contract.yaml')),
+        DeclareLaunchArgument('p76_runtime_python', default_value=os.path.join(
+            workspace, 'data/experiments/20261020_p76_runtime_01/venv/bin/python')),
         DeclareLaunchArgument('enable_follow_planner', default_value='true',
                               choices=['true', 'false']),
         DeclareLaunchArgument('enable_intercept_planner', default_value='true',
@@ -83,6 +110,7 @@ def generate_launch_description():
             default_value=os.path.join(package_share, 'config', 'front_tof_simulation.yaml'),
             description='Explicit functional ToF range/noise test assumptions.',
         ),
+        OpaqueFunction(function=audit_p76),
         Node(package='uav_control', executable='p4_follow_planner_node',
              name='p4_follow_planner_node', output='screen',
              condition=IfCondition(PythonExpression([
@@ -152,7 +180,19 @@ def generate_launch_description():
             name='target_kalman_filter',
             output='screen',
             parameters=[config_file],
+            condition=UnlessCondition(LaunchConfiguration('p76_enabled')),
         ),
+        Node(package='uav_control', executable='yolo_target_detector',
+             name='yolo_target_detector', output='screen', parameters=[config_file],
+             prefix=LaunchConfiguration('p76_runtime_python'),
+             additional_env={'PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION': 'python'},
+             condition=IfCondition(LaunchConfiguration('p76_enabled'))),
+        Node(package='uav_control', executable='spatial_dkf_node',
+             name='spatial_dkf_node', output='screen', parameters=[config_file],
+             condition=IfCondition(LaunchConfiguration('p76_enabled'))),
+        Node(package='uav_control', executable='image_dkf_node',
+             name='image_dkf_node', output='screen', parameters=[config_file],
+             condition=IfCondition(LaunchConfiguration('p76_enabled'))),
         Node(
             package='ros_gz_image',
             executable='image_bridge',
@@ -208,7 +248,9 @@ def generate_launch_description():
             parameters=[config_file, {'depth_input_ros': PythonExpression([
                 "'", front_depth_model, "' == 'tof'",
             ])}],
-            condition=IfCondition(enable_shadow_perception),
+            condition=IfCondition(PythonExpression([
+                "'", enable_shadow_perception, "' == 'true' or '",
+                LaunchConfiguration('p76_enabled'), "' == 'true'"])),
         ),
         Node(
             package='uav_control',

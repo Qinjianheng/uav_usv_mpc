@@ -1082,6 +1082,8 @@ class RgbdTargetLocalizer(Node):
     def __init__(self):
         """Configure image, vehicle-state, and observation interfaces."""
         super().__init__('rgbd_target_localizer')
+        from .yolo_consumers import install_localizer_detection
+        install_localizer_detection(self)
         self.declare_parameter('color_topic', '/camera/front/image_raw')
         self.declare_parameter(
             'depth_topic',
@@ -1378,6 +1380,9 @@ class RgbdTargetLocalizer(Node):
             source_is_ros_time=self.px4_timestamp_is_ros_time,
         )
         self._image_clock_reset_pending = False
+        if getattr(self, 'detection_source', 'color') == 'yolo':
+            from uav_control.common.p76_native import install_odometry_relay
+            install_odometry_relay(self)
         # Wake the ROS executor when data becomes ready. Keep decoding out of
         # DDS and Gazebo transport callbacks; the timer remains a timeout retry.
         self.localization_guard = self.create_guard_condition(self.timed_localize)
@@ -1657,6 +1662,7 @@ class RgbdTargetLocalizer(Node):
             return True
         fields = (('xy_reset_counter', 'z_reset_counter', 'heading_reset_counter',
                    'vxy_reset_counter', 'vz_reset_counter') if stream == 'POSITION'
+                  else ('reset_counter',) if stream == 'ODOMETRY'
                   else ('quat_reset_counter',))
         counters = tuple((name, int(getattr(message, name))) for name in fields
                          if hasattr(message, name))
@@ -2011,6 +2017,10 @@ class RgbdTargetLocalizer(Node):
     def timed_localize(self):
         """Measure one rate-limited localization pass, including failures."""
         started = time.perf_counter()
+        if getattr(self, 'p76_phase', 'FOLLOW_ACTIVE') != 'FOLLOW_ACTIVE':
+            self.pending_image_pairs.clear()
+            self.waiting_image_pair = None
+            return
         try:
             self.localize()
         finally:
@@ -2105,6 +2115,24 @@ class RgbdTargetLocalizer(Node):
                 'INVALID_IMAGE_TIMESTAMP'
             )
         measurement_stamp = rgb_mapped_stamp
+        yolo_packet = None
+        if getattr(self, 'detection_source', 'color') == 'yolo':
+            from .yolo_detection_contract import detection_mask, stamp_seconds
+            yolo_packet = self.yolo_cache.get(color_frame.raw_stamp)
+            if yolo_packet is None and now-received_stamp <= .125:
+                self.waiting_image_pair = (color_frame, depth_frame)
+                return
+            try:
+                if yolo_packet is None:
+                    raise ValueError('YOLO_DETECTION_TIMEOUT')
+                detection_mask(yolo_packet, now, self.yolo_cache.expected_sha)
+            except ValueError as exception:
+                self.waiting_image_pair = None
+                self.publish_invalid_observation(str(exception), received_stamp=received_stamp)
+                return
+            # One detector maps this original frame once. All consumers use
+            # that canonical epoch, with the unchanged causal pose wait below.
+            measurement_stamp = rgb_mapped_stamp = stamp_seconds(yolo_packet.stamp)
         image_offset = (
             measurement_stamp - color_frame.raw_stamp
             if measurement_stamp is not None else math.nan
@@ -2294,13 +2322,16 @@ class RgbdTargetLocalizer(Node):
             )
             return
         self.waiting_image_pair = None
-        self.color_mask = red_pixel_mask(
-            color_message.data,
-            color_message.width,
-            color_message.height,
-            color_message.step,
-            color_message.encoding.lower(),
-        )
+        if yolo_packet is not None:
+            self.color_mask = detection_mask(yolo_packet, now, self.yolo_cache.expected_sha)
+        else:
+            self.color_mask = red_pixel_mask(
+                color_message.data,
+                color_message.width,
+                color_message.height,
+                color_message.step,
+                color_message.encoding.lower(),
+            )
         if depth_message.encoding.lower() not in ('32fc1', '32fc'):
             self.depth = None
         else:

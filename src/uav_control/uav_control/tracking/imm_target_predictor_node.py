@@ -391,6 +391,8 @@ class ImmTargetPredictorNode(Node):
             TargetPrediction, str(parameter('prediction_topic')), sensor_qos)
         self.diagnostics_pub = self.create_publisher(
             String, str(parameter('diagnostics_topic')), sensor_qos)
+        from uav_control.common.p76_phase import install_phase_gate
+        install_phase_gate(self)
         self.timer = self.create_timer(1. / rate, self.timer_callback)
         install_navigation_frame_guard(self, self.navigation_frame_failed)
         self.get_logger().info(
@@ -403,6 +405,9 @@ class ImmTargetPredictorNode(Node):
         self.timer_callback(force=True)
 
     def observation_callback(self, message):
+        from uav_control.common.p76_phase import follow_active
+        if not follow_active(self):
+            return
         if getattr(self, 'navigation_frame_fault', ''):
             return
         started = time.perf_counter()
@@ -419,6 +424,9 @@ class ImmTargetPredictorNode(Node):
         self.mission_id = mission_id
 
     def timer_callback(self, force=False, observation_compute_time=0.):
+        from uav_control.common.p76_phase import follow_active
+        if not follow_active(self):
+            return
         started = time.perf_counter()
         if getattr(self, 'navigation_frame_fault', ''):
             self.engine.invalidate(self.navigation_frame_fault)

@@ -59,6 +59,9 @@ def main():
     pitch = hfov = None
     if args.flight_config is not None:
         config = yaml.safe_load(args.flight_config.read_text())
+        if config.get('trajectory_tracker_node', {}).get('ros__parameters', {}).get(
+                'p76_enabled', False):
+            raise ValueError('P76_REQUIRES_FULL_COMPOSITE_MODEL_PREPARATION')
         pitch = config['rgbd_target_localizer']['ros__parameters']['camera_pitch_down']
         hfov = config['rgbd_target_localizer']['ros__parameters']['horizontal_fov']
     prepare(args.source, args.output,

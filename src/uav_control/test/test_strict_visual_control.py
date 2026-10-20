@@ -86,10 +86,14 @@ def test_optional_evaluator_and_shadow_nodes_cannot_disable_online_inputs():
             nodes[keywords['name'].value] = keywords
     for name in (
         'trajectory_tracker_node', 'mission_manager_node',
-        'target_kalman_filter', 'dual_tof_image_bridge',
+        'dual_tof_image_bridge',
         'target_bearing_node', 'rgbd_target_localizer',
     ):
         assert 'condition' not in nodes[name]
+    assert ast.unparse(nodes['target_kalman_filter']['condition']) == (
+        "UnlessCondition(LaunchConfiguration('p76_enabled'))")
+    assert ast.unparse(nodes['spatial_dkf_node']['condition']) == (
+        "IfCondition(LaunchConfiguration('p76_enabled'))")
     # P7 omits the unused legacy planner through its own switch. Evaluator
     # and perception diagnostics must never gate that switch or online inputs.
     assert ast.unparse(nodes['intercept_planner_node']['condition']) == (

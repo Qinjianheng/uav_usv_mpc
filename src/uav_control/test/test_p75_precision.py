@@ -309,7 +309,7 @@ def test_explicit_wide_camera_corridor_uses_calibrated_intrinsics():
     from uav_control.guidance.camera_visibility import CameraIntrinsics
     intr = CameraIntrinsics.from_horizontal_fov(640, 480, 2.3)
     control = spatial.P7SpatialGuidance(camera_pitch_down=math.radians(45.),
-                                       camera_horizontal_fov=2.3)
+                                        camera_horizontal_fov=2.3)
     assert control.intrinsics == intr
     assert spatial.precision_corridor(
         (8., 0., 0.), (0., 0., 0.), (0., 0., 0.), np.eye(3),

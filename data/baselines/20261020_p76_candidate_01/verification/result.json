@@ -1,0 +1,19 @@
+{
+  "status": "CANDIDATE_UNQUALIFIED",
+  "pytest": {
+    "passed": 2354,
+    "skipped": 2,
+    "warnings": 3,
+    "excluded_modules": [
+      "test_p6_sitl_driver.py",
+      "test_p6_turn_case_config.py"
+    ],
+    "exclusion_reason": "Historical R11 config/flight.yaml and config/research.yaml missing; no fabricated replacements"
+  },
+  "build": "passed",
+  "flake8": "passed",
+  "shell_syntax": "passed",
+  "diff_check": "passed",
+  "native_capture": "NOT_RUN",
+  "px4_bodyrate_qualification": "NOT_RUN"
+}

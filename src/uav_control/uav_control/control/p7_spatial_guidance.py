@@ -58,14 +58,18 @@ def configure_p7_follow_geometry(node, model):
         return
     for key, default in (('p7_camera_pitch_down', math.radians(42.)),
                          ('p7_camera_horizontal_fov', 1.74),
+                         ('p7_camera_translation_flu', [.18, 0., .39]),
+                         ('follow_distance', model.config.follow_distance),
                          ('flight_altitude', model.config.flight_altitude)):
         if not node.has_parameter(key):
             node.declare_parameter(key, default)
     model.config = replace(model.config, flight_altitude=float(
-        node.get_parameter('flight_altitude').value))
+        node.get_parameter('flight_altitude').value), follow_distance=float(
+            node.get_parameter('follow_distance').value))
     model.config.validate()
     model.extrinsics = CameraExtrinsics.from_sdf_pose(
-        (.18, 0., .39), 0., float(node.get_parameter('p7_camera_pitch_down').value), 0.)
+        tuple(node.get_parameter('p7_camera_translation_flu').value), 0.,
+        float(node.get_parameter('p7_camera_pitch_down').value), 0.)
     model.intrinsics = CameraIntrinsics.from_horizontal_fov(
         640, 480, float(node.get_parameter('p7_camera_horizontal_fov').value))
 
@@ -483,7 +487,8 @@ def precision_corridor(relative, uav_velocity, target_velocity, rotation, comman
 
 
 def precision_endpoint_preview(endpoint, target_velocity, target_acceleration, rotation,
-                               target_z, *, camera_pitch_down, capture_interior, horizon=.3, intrinsics=None):
+                               target_z, *, camera_pitch_down, capture_interior, horizon=.3,
+                               intrinsics=None):
     """Test a bounded matching endpoint trajectory, not a world-frozen point."""
     tv, ta = np.asarray(target_velocity), np.asarray(target_acceleration)
     # Exact first-order response integral at the finite preview endpoint. This

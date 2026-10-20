@@ -225,6 +225,10 @@ class FrontTofMonitor(Node):
 
     def __init__(self):
         super().__init__('front_tof_monitor')
+        from .yolo_consumers import detection_source, YoloDepthMonitor
+        if detection_source(self) == 'yolo':
+            self.yolo_consumer = YoloDepthMonitor(self)
+            return
         self.declare_parameter('camera_name', 'front')
         self.declare_parameter('diagnostic_prefix', '/perception/front')
         self.declare_parameter(

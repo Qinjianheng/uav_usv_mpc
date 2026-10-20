@@ -193,11 +193,19 @@ LAB_SESSION_DIR="$(mktemp -d "${TMPDIR:-/tmp}/uav_usv_lab.XXXXXX")"
 LAB_RESTART_MARKER="${LAB_SESSION_DIR}/restarting"
 LAB_GZ_SERVER_CONFIG="${LAB_SESSION_DIR}/magnetometer_enu.config"
 LAB_CAMERA_MODELS="${LAB_SESSION_DIR}/models"
-python3 "${WS_ROOT}/scripts/prepare_gz_camera_model.py" \
+if [[ "${EXPERIMENT_LAUNCH}" == "p76_yan_paper.launch.py" ]]; then
+    P76_CONTRACT="${UAV_USV_P76_CONTRACT:-${WS_ROOT}/src/uav_usv_bringup/config/p76_contract.yaml}"
+    python3 "${WS_ROOT}/scripts/p76_config_audit.py" \
+        --contract "${P76_CONTRACT}" --profile "${EXPERIMENT_CONFIG_FILE}" \
+        --prepare-model "${LAB_CAMERA_MODELS}" --require-flight
+    export UAV_USV_P76_MODEL_ROOT="${LAB_CAMERA_MODELS}"
+else
+    python3 "${WS_ROOT}/scripts/prepare_gz_camera_model.py" \
     --source "${CUSTOM_GZ_MODELS}/x500_mono_cam" \
     --output "${LAB_CAMERA_MODELS}/x500_mono_cam" \
     --enable-down-camera "${EXPERIMENT_ENABLE_DOWN}" \
     --flight-config "${EXPERIMENT_CONFIG_FILE:-${WS_ROOT}/src/uav_usv_bringup/config/baseline.yaml}"
+fi
 export GZ_SIM_RESOURCE_PATH="${LAB_CAMERA_MODELS}:${CUSTOM_GZ_MODELS}:${GZ_SIM_RESOURCE_PATH:-}"
 export PX4_GZ_MODELS="${LAB_CAMERA_MODELS}"
 echo "Down camera enabled: ${EXPERIMENT_ENABLE_DOWN}"

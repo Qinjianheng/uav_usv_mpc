@@ -1,0 +1,76 @@
+src/uav_control/uav_control/perception/front_tof_monitor.py:262:        self.declare_parameter('maximum_depth', 25.0)
+src/uav_control/uav_control/perception/front_tof_monitor.py:263:        self.declare_parameter('evaluation_window_seconds', 5.0)
+src/uav_control/uav_control/perception/front_tof_monitor.py:639:                ))) / 255.0
+src/uav_control/uav_control/perception/rgbd_target_localizer.py:993:    camera_translation_flu,
+src/uav_control/uav_control/perception/rgbd_target_localizer.py:1000:        camera_translation_flu,
+src/uav_control/uav_control/perception/rgbd_target_localizer.py:1017:    camera_translation_flu,
+src/uav_control/uav_control/perception/rgbd_target_localizer.py:1022:    translation = np.asarray(camera_translation_flu, dtype=float)
+src/uav_control/uav_control/perception/rgbd_target_localizer.py:1047:    camera_translation_flu,
+src/uav_control/uav_control/perception/rgbd_target_localizer.py:1053:    translation = np.asarray(camera_translation_flu, dtype=float)
+src/uav_control/uav_control/perception/rgbd_target_localizer.py:1104:        self.declare_parameter('maximum_depth', 25.0)
+src/uav_control/uav_control/perception/rgbd_target_localizer.py:1124:            'camera_translation_x', DEFAULT_CAMERA_TRANSLATION_FLU[0],
+src/uav_control/uav_control/perception/rgbd_target_localizer.py:1127:            'camera_translation_y', DEFAULT_CAMERA_TRANSLATION_FLU[1],
+src/uav_control/uav_control/perception/rgbd_target_localizer.py:1130:            'camera_translation_z', DEFAULT_CAMERA_TRANSLATION_FLU[2],
+src/uav_control/uav_control/perception/rgbd_target_localizer.py:1214:        self.camera_translation_flu = tuple(
+src/uav_control/uav_control/perception/rgbd_target_localizer.py:1217:                'camera_translation_x',
+src/uav_control/uav_control/perception/rgbd_target_localizer.py:1218:                'camera_translation_y',
+src/uav_control/uav_control/perception/rgbd_target_localizer.py:1219:                'camera_translation_z',
+src/uav_control/uav_control/perception/rgbd_target_localizer.py:1938:            (message.camera_translation_x, message.camera_translation_y,
+src/uav_control/uav_control/perception/rgbd_target_localizer.py:1939:             message.camera_translation_z) = self.camera_translation_flu
+src/uav_control/uav_control/perception/rgbd_target_localizer.py:2418:                self.camera_translation_flu,
+src/uav_control/uav_control/perception/rgbd_target_localizer.py:2425:                self.camera_translation_flu,
+src/uav_control/uav_control/perception/rgbd_target_localizer.py:2502:                observation.camera_translation_x,
+src/uav_control/uav_control/perception/rgbd_target_localizer.py:2503:                observation.camera_translation_y,
+src/uav_control/uav_control/perception/rgbd_target_localizer.py:2504:                observation.camera_translation_z,
+src/uav_control/uav_control/perception/rgbd_target_localizer.py:2505:            ) = self.camera_translation_flu
+src/uav_control/uav_control/mission/target_visibility.py:20:    maximum_search_yaw_rate: float = 0.6
+src/uav_control/uav_control/control/flight_guidance.py:46:        flight_altitude=-5.0,
+src/uav_control/uav_control/control/flight_guidance.py:54:        follow_distance=5.0,
+src/uav_control/uav_control/control/flight_guidance.py:61:        sea_surface_z=0.0,
+src/uav_control/uav_control/control/flight_guidance.py:102:        self.sea_surface_z = float(sea_surface_z)
+src/uav_control/uav_control/control/flight_guidance.py:110:            self.sea_surface_z - self.flight_altitude
+src/uav_control/uav_control/control/flight_guidance.py:232:            sea_surface_z=self.sea_surface_z,
+src/uav_control/uav_control/control/flight_guidance.py:322:        contact_z = self.sea_surface_z - self.approach_contact_clearance
+src/uav_control/uav_control/control/flight_guidance.py:359:                self.sea_surface_z - self.approach_preparation_clearance,
+src/uav_control/uav_control/control/flight_guidance.py:447:                self.sea_surface_z - self.approach_preparation_clearance
+src/uav_control/uav_control/control/p7_visual_guidance.py:17:def ibvs_yaw_rate(error_u, gain=1., deadband=.03, maximum=.6):
+src/uav_control/uav_control/control/p7_visual_guidance.py:98:                      sea_surface_z=0., contact_clearance=.33, maximum_descent_speed=.6):
+src/uav_control/uav_control/control/p7_visual_guidance.py:109:                sea_surface_z, contact_clearance, maximum_descent_speed))
+src/uav_control/uav_control/control/p7_visual_guidance.py:110:            or contact_clearance < .33 or not 0 < maximum_descent_speed <= .6):
+src/uav_control/uav_control/control/p7_visual_guidance.py:118:    goal_z = sea_surface_z-contact_clearance
+src/uav_control/uav_control/control/trajectory_tracker_node.py:175:def anchored_search_hold(anchor, position, sea_surface_z, search_height):
+src/uav_control/uav_control/control/trajectory_tracker_node.py:180:            min(float(position[2]), float(sea_surface_z) - search_height))
+src/uav_control/uav_control/control/trajectory_tracker_node.py:453:        self.declare_parameter('sea_surface_z', 0.0)
+src/uav_control/uav_control/control/trajectory_tracker_node.py:472:            self.declare_parameter('flight_altitude', -5.0)
+src/uav_control/uav_control/control/trajectory_tracker_node.py:482:            self.declare_parameter('follow_distance', 5.0)
+src/uav_control/uav_control/control/trajectory_tracker_node.py:581:            sea_surface_z=self.get_parameter('sea_surface_z').value,
+src/uav_control/uav_control/control/trajectory_tracker_node.py:643:            sea_surface_z=self.get_parameter('sea_surface_z').value,
+src/uav_control/uav_control/control/trajectory_tracker_node.py:862:                    sea_surface_z=self.flight_guidance.sea_surface_z,
+src/uav_control/uav_control/control/trajectory_tracker_node.py:1514:                    self.tracker.sea_surface_z
+src/uav_control/uav_control/control/trajectory_tracker_node.py:1988:        height = self.tracker.sea_surface_z - current.position[2]
+src/uav_control/uav_control/control/trajectory_tracker_node.py:2031:        height = self.tracker.sea_surface_z - current.position[2]
+src/uav_control/uav_control/control/trajectory_tracker_node.py:2059:                None, current.position, self.tracker.sea_surface_z, search_height,
+src/uav_control/uav_control/control/trajectory_tracker_node.py:2148:        height = self.tracker.sea_surface_z - current.position[2]
+src/uav_control/uav_control/control/trajectory_tracker_node.py:2298:                sea_surface_z=self.flight_guidance.sea_surface_z,
+src/uav_control/uav_control/control/p7_spatial_guidance.py:61:                         ('p7_camera_translation_flu', [.18, 0., .39]),
+src/uav_control/uav_control/control/p7_spatial_guidance.py:71:        tuple(node.get_parameter('p7_camera_translation_flu').value), 0.,
+src/uav_control/uav_control/control/p7_spatial_guidance.py:147:                            camera_translation_flu=(.18, 0., .39), target_radius=.25,
+src/uav_control/uav_control/control/p7_spatial_guidance.py:156:    offset = rotation@_FLU_FRD@np.asarray(camera_translation_flu)
+src/uav_control/uav_control/control/p7_spatial_guidance.py:236:                              camera_translation_flu=(.18, 0., .39), target_radius=.25,
+src/uav_control/uav_control/control/p7_spatial_guidance.py:237:                              visual_height=.42, capture_radius=.25, sea_surface_z=0.,
+src/uav_control/uav_control/control/p7_spatial_guidance.py:256:                sea_surface_z, contact_clearance, response_delay, minimum_center_depth))
+src/uav_control/uav_control/control/p7_spatial_guidance.py:260:    camera_offset = rotation@_FLU_FRD@np.asarray(camera_translation_flu)
+src/uav_control/uav_control/control/p7_spatial_guidance.py:272:        camera_translation_flu=camera_translation_flu, target_radius=target_radius,
+src/uav_control/uav_control/control/p7_spatial_guidance.py:286:    floor = sea_surface_z-contact_clearance
+src/uav_control/uav_control/control/p7_spatial_guidance.py:498:    command = (*_limit(request[:2], 6.2), float(np.clip(request[2], -.6, .6)))
+src/uav_control/uav_control/control/p7_spatial_guidance.py:585:                 capture_radius=.25, sea_surface_z=0., contact_clearance=.33,
+src/uav_control/uav_control/control/p7_spatial_guidance.py:595:        self.sea_surface_z = sea_surface_z
+src/uav_control/uav_control/control/p7_spatial_guidance.py:660:                sea_surface_z=self.sea_surface_z, contact_clearance=self.contact_clearance,
+src/uav_control/uav_control/control/p7_spatial_guidance.py:759:        desired_vz = float(np.clip(reference_vz+image_vz+png_vz, -.6, .6))
+src/uav_control/uav_control/control/p7_spatial_guidance.py:762:            desired_vz = min(desired_vz, float(np.clip((goal-up[2])/.15, -.6, .6)))
+src/uav_control/uav_control/control/p7_spatial_guidance.py:770:        # the legacy 1.2/0.6 pair is underdamped and passes an unready target.
+src/uav_control/uav_control/control/p7_spatial_guidance.py:855:                self.sea_surface_z-self.contact_clearance-image.uav_position[2]), -.6, .6))
+src/uav_control/uav_control/control/p7_spatial_guidance.py:908:            sea_surface_z=self.sea_surface_z, contact_clearance=self.contact_clearance,
+src/uav_control/uav_control/control/p7_spatial_guidance.py:1044:        vertical = float(np.clip(config.velocity_gain*(goal-up[2]), -.6, .6))
+src/uav_control/uav_control/control/p7_spatial_guidance.py:1045:        vertical = min(vertical, float(np.clip((goal-up[2])/.15, -.6, .6)))
+src/uav_control/uav_control/control/p7_spatial_guidance.py:1052:            vertical = float(np.clip(tv[2]+relative_descent, -.6, .6))

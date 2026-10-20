@@ -24,6 +24,9 @@ setup(
     },
     entry_points={
         'console_scripts': [
+            'yolo_target_detector = uav_control.perception.yolo_target_detector:main',
+            'spatial_dkf_node = uav_control.tracking.spatial_dkf_node:main',
+            'image_dkf_node = uav_control.tracking.image_dkf_node:main',
             'p4_follow_planner_node = uav_control.controllers.p4_follow_planner_node:main',
             'moving_target = uav_control.moving_target:main',
             'target_kalman_filter = '

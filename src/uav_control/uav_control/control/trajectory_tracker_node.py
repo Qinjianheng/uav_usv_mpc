@@ -339,6 +339,8 @@ class TrajectoryTrackerNode(Node):
 
     def __init__(self):
         super().__init__('trajectory_tracker_node')
+        self.declare_parameter('p76_enabled', False)
+        self.p76 = None
         self.declare_parameter('p7_guidance_enabled', False)
         self.p7_guidance_enabled = bool(self.get_parameter('p7_guidance_enabled').value)
         self.declare_parameter('follow_minco_enabled', True)
@@ -476,7 +478,8 @@ class TrajectoryTrackerNode(Node):
         self.declare_parameter('takeoff_horizontal_start_height', 0.5)
         self.declare_parameter('takeoff_horizontal_full_height', 1.5)
         self.declare_parameter('takeoff_visual_tracking', False)
-        self.declare_parameter('follow_distance', 5.0)
+        if not self.has_parameter('follow_distance'):
+            self.declare_parameter('follow_distance', 5.0)
         self.declare_parameter('follow_position_gain', 0.8)
         self.declare_parameter('bearing_approach_enabled', True)
         self.declare_parameter('bearing_approach_speed', 6.0)
@@ -870,6 +873,9 @@ class TrajectoryTrackerNode(Node):
                 self.p7_controller = P7VisualGuidance(config)
             self.p7_diagnostic_pub = self.create_publisher(String, '/control/p7_guidance', 10)
         install_navigation_frame_guard(self, self.navigation_frame_failed)
+        if self.get_parameter('p76_enabled').value:
+            from .p76_tracker_runtime import P76TrackerRuntime
+            self.p76 = P76TrackerRuntime(self)
         self.get_logger().info(
             'Trajectory tracker ready | rate='
             f'{control_rate:.1f} Hz | plan age<='
@@ -1472,6 +1478,16 @@ class TrajectoryTrackerNode(Node):
             self.mission_state_name = 'ABORTED'
         if self.mission_state in self.TERMINAL_STATES:
             self.intercept_requested = False
+        if getattr(self, 'p76', None) is not None:
+            if self.mission_state == MissionState.CAPTURE:
+                self.p76.mode.captured()
+                self.p76.publish_phase()
+            elif self.mission_state in self.TERMINAL_STATES:
+                self.p76.mode.fail(self.mission_state_name)
+                self.p76.publish_phase()
+            elif (self.intercept_requested and self.mission_state == MissionState.FAR_GUIDANCE
+                  and self.p76.mode.phase == 'FOLLOW_ACTIVE'):
+                self.p76.accept_y(self._ros_seconds())
         if (getattr(self, 'p7_guidance_enabled', False)
                 and self.mission_state == MissionState.FAR_GUIDANCE
                 and previous_state != MissionState.FAR_GUIDANCE):
@@ -1817,12 +1833,22 @@ class TrajectoryTrackerNode(Node):
             and not getattr(self, 'safe_recovery_latched', False)
         )
         message.search_state = getattr(self, 'search_state', 'SAFE_WAIT')
-        message.search_direction = decision.search_direction if decision else 0
         message.last_valid_observation_age = (
             measurement_age(now, visibility.last_valid_observation_stamp)
             if visibility and visibility.last_valid_observation_stamp is not None
             else math.inf
         )
+        p76 = getattr(self, 'p76', None)
+        if p76 is not None and p76.mode.phase != 'FOLLOW_ACTIVE':
+            fresh_image = p76._image_valid(now)
+            message.target_locked = fresh_image
+            message.target_visible = fresh_image
+            message.last_valid_observation_age = (
+                now-_stamp_seconds(p76.image.source_stamp) if p76.image else math.inf)
+            message.prediction_age = message.last_valid_observation_age
+            message.search_state = ('FAR_GUIDANCE' if p76.mode.phase in (
+                'Y_HANDOVER', 'PAPER_INTERCEPT_ACTIVE') else p76.mode.phase)
+        message.search_direction = decision.search_direction if decision else 0
         message.last_valid_image_bearing = (
             visibility.last_valid_image_bearing if visibility else math.nan
         )
@@ -2311,6 +2337,8 @@ class TrajectoryTrackerNode(Node):
         return command
 
     def timer_callback(self):
+        if getattr(self, 'p76', None) is not None and self.p76.mode.phase != 'FOLLOW_ACTIVE':
+            return
         started = time.perf_counter()
         now = self._ros_seconds()
         if getattr(self, 'navigation_frame_fault', ''):

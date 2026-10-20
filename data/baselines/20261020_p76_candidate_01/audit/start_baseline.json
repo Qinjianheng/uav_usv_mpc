@@ -1,0 +1,27 @@
+{
+  "start": "944c684ef36389743e856bad19cdabb7868b4655",
+  "branch": "codex/p76-paper-faithful-yolo-dkf",
+  "master": "52e7aabc92fca0621cf66b91f38fcf1c10e183f8",
+  "p75": "944c684ef36389743e856bad19cdabb7868b4655",
+  "remotes": "github\thttps://github.com/Qinjianheng/uav_usv_mpc.git (fetch)\ngithub\thttps://github.com/Qinjianheng/uav_usv_mpc.git (push)\norigin\thttps://github.com/Qinjianheng/uav_usv_mpc.git (fetch)\norigin\thttps://github.com/Qinjianheng/uav_usv_mpc.git (push)",
+  "clean_before_p76": true,
+  "files": {
+    "src/uav_usv_bringup/config/p7_guidance.yaml": "768fe2e3e9ebedb59e56e0bb31791889661bf2a0d313471c6a3e95af5aa4c1dc",
+    "src/uav_usv_bringup/config/p7_spatial_candidate.yaml": "05ae8c469be5a9812b0d387d67f6b0c7f55ffb47d71a4d056ba97d15039a76c9",
+    "src/uav_usv_bringup/config/p75_spatial_65_candidate.yaml": "ed15401a93d05a4c6f055c051209eb7aac11db3e187281c2faecade06172613c",
+    "src/uav_usv_bringup/models/x500_mono_cam/model.sdf": "6bb23418b15dcd127f57d9d08d2fbf178b5ad88e09e18432eed149539de8d4e2"
+  },
+  "papers": {
+    "/home/qin/snap/zotero-snap/common/Zotero/storage/ULZPEYKT/Yan \u7b49 - 2025 - Precise Interception Flight Targets by Image-based Visual Servoing of Multicopter.pdf": "3439d323bb19e0e7c79e4ba34dc44af356aff32866f44ed641a0bfe4727e8b1f",
+    "/home/qin/snap/zotero-snap/common/Zotero/storage/D3ZVLZQP/Yang \u7b49 - 2025 - High-Speed Interception Multicopter Control by Image-based Visual Servoing.pdf": "74272b5f199975469922d86f006b8eeba2eaeded8f8f4a661331537dbeed6197"
+  },
+  "dependencies": {
+    "torch": false,
+    "torchvision": false,
+    "ultralytics": false,
+    "onnx": false,
+    "onnxruntime": false,
+    "openvino": false,
+    "cv2": true
+  }
+}

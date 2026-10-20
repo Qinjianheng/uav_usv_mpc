@@ -1,0 +1,17 @@
+[
+  {
+    "path": "/home/qin/data/uav_usv_mpc/data/experiments/20261020_p76_dataset_01/test_session61/manifest.json",
+    "sha256": "a9856e5424b645409f79d58f8a92c469f2ba1217925e9f97072502d9c3818ea5",
+    "split": "test"
+  },
+  {
+    "path": "/home/qin/data/uav_usv_mpc/data/experiments/20261020_p76_dataset_01/train_session31/manifest.json",
+    "sha256": "55c72cc84bdaf6b409d71168704e5800c1d0490af735384e5eebb4a58e36d49c",
+    "split": "train"
+  },
+  {
+    "path": "/home/qin/data/uav_usv_mpc/data/experiments/20261020_p76_dataset_01/val_session47/manifest.json",
+    "sha256": "004ce5d19b57747e3f29427ef0ac4fc999234684fbcfdc202784bdcaa5750c01",
+    "split": "val"
+  }
+]
