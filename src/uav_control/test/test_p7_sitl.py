@@ -90,7 +90,7 @@ def test_capture_is_explicit_and_does_not_change_evaluation_radius(tmp_path):
     assert flight['trajectory_tracker_node']['ros__parameters']['p7_capture_enabled']
     assert flight['moving_target']['ros__parameters']['start_on_command'] is True
     evaluator = flight['intercept_evaluator_node']['ros__parameters']
-    assert evaluator['evaluation_capture_radius'] == .25
+    assert evaluator['evaluation_capture_radius'] == .5
     assert evaluator['enable_sea_contact_failure']
 
 

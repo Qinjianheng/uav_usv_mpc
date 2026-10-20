@@ -2,7 +2,7 @@
 
 P7 专用配置已完成视觉/KF → BCTRA → MINCO FOLLOW，以及 Y 后的 IBVS＋PNG 安全接近；Tracker 是唯一 PX4 指令发布者。运行、真实飞行曲线和边界见 [P7 使用与验证](docs/current/p7_progress.md)。原 baseline/IMM 研究入口保留；MPC 尚未作为在线控制器接管。
 
-当前捕获判据为 **0.25 m**，尚未完成首次捕获验证。三维导引候选在 A 的 FOLLOW 几何门槛失败，默认保留原 28°／5 m 与旧 P7；结果、实验配置及回退见 [P7.3 修复报告](docs/current/p7_025_ibvs_png_upgrade.md)。历史 0.50 m 成功不替代当前资格。
+当前捕获判据为 **0.25 m**，尚未完成首次捕获验证。默认使用 28°／5 m 与旧 P7；2026-10-20 显式三维实验配置也恢复为 28°／5 m，仍须独立重新验证。此前 38°／5 m 跟随通过、捕获失败，结果见[相机/高度复验](docs/current/p7_angle_height_retest_20261019.md)。历史 0.50 m 成功不替代当前资格。
 
 历史[P53同配置F2/F3验收](docs/current/p53_comprehensive_validation.md)作为成功对照保留；本轮 P7 独立恢复与飞行结果见上述入口。普通 baseline、P53 与 P7 配置分别保留，不混称同一轮验证。
 

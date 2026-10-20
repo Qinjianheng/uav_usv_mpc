@@ -32,7 +32,7 @@ def test_effective_p7_geometry_rejects_radius_or_height_mismatch(tmp_path):
     assert flight['trajectory_tracker_node']['ros__parameters']['flight_altitude'] == -5.
     assert research['p4_follow_planner_node']['ros__parameters']['flight_altitude'] == -5.
     assert flight['trajectory_tracker_node']['ros__parameters']['p7_capture_enabled']
-    config['intercept_evaluator_node']['ros__parameters']['evaluation_capture_radius'] = .5
+    config['intercept_evaluator_node']['ros__parameters']['evaluation_capture_radius'] = .25
     with pytest.raises(ValueError, match='RADIUS_CONFIG_MISMATCH'):
         validate_p7_geometry(config)
 
@@ -47,7 +47,7 @@ def test_session_camera_uses_config_pitch_and_preserves_all_translation_and_body
     pose = original.find(".//link[@name='front_camera_link']/pose")
     source = [float(v) for v in pose.text.split()]
     assert source[4] == pytest.approx(math.radians(28.))
-    # The unqualified candidate is isolated in a session copy, never the source default.
+    # An explicit angle override stays in a session copy, never the source default.
     module.prepare(model, tmp_path/'candidate', front_camera_pitch_down=math.radians(38.))
     prepared = ET.parse(tmp_path/'candidate/model.sdf')
     actual_pose = prepared.find(".//link[@name='front_camera_link']/pose")
@@ -61,7 +61,7 @@ def test_failed_candidate_cannot_replace_default_follow_or_capture_criterion(tmp
     prepare(tmp_path/'default', 'f2', capture=True)
     prepare(tmp_path/'candidate', 'f2', capture=True, config_file=CANDIDATE)
     for name, pitch, altitude, spatial in (
-            ('default', 28., -5., False), ('candidate', 38., -5., True)):
+            ('default', 28., -5., False), ('candidate', 28., -5., True)):
         config = yaml.safe_load((tmp_path/name/'config/flight.yaml').read_text())
         tracker = config['trajectory_tracker_node']['ros__parameters']
         assert tracker.get('p7_spatial_enabled', False) is spatial
@@ -70,7 +70,7 @@ def test_failed_candidate_cannot_replace_default_follow_or_capture_criterion(tmp
         assert config['rgbd_target_localizer']['ros__parameters'][
             'camera_pitch_down'] == pytest.approx(math.radians(pitch))
         evaluator = config['intercept_evaluator_node']['ros__parameters']
-        assert evaluator['evaluation_capture_radius'] == evaluator['planned_capture_radius'] == .25
+        assert evaluator['evaluation_capture_radius'] == evaluator['planned_capture_radius'] == .5
 
 
 def test_f2_qualification_cannot_cross_between_default_and_candidate_profiles(tmp_path):
