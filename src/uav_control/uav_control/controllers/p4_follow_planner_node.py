@@ -397,6 +397,8 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
         """Publish a distinct proposal topic; ACK is subscribed only, never synthesized."""
         super().__init__()
         from std_msgs.msg import String
+        from uav_control.control.p7_spatial_guidance import configure_p7_follow_geometry
+        configure_p7_follow_geometry(self, self.runner.solver.model)
         from uav_control.guidance.p6_follow import configure_p6
         self.p6_runtime = configure_p6(self, self.runner.solver.model)
         factory = self.runner.request_factory

@@ -1,0 +1,758 @@
+{
+  "scope": "Two individual runs; no capture-rate or optimality claim. Native capture and vision ideal-truth errors use distinct references.",
+  "runs": {
+    "28deg_5m": {
+      "run": "/home/qin/data/uav_usv_mpc/data/experiments/p7_manual_20261019_112340_740393470_984611",
+      "y": 1792380309.3616426,
+      "outcome": "ABORTED",
+      "native_samples": 1857,
+      "native_minimum": {
+        "kind": "EVALUATED",
+        "stamp": 1792380322.9515326,
+        "native_stamp": 94.54,
+        "decision_stamp": 1792380322.9538784,
+        "uav_position": [
+          7.803432330157291,
+          2.720922853164102,
+          -0.29991170398474526
+        ],
+        "target_position": [
+          8.090292748821305,
+          2.6800614872442594,
+          -0.08470674981693377
+        ],
+        "velocity_valid": true,
+        "segment_valid": true,
+        "maximum_bracket": 0.0,
+        "uav_clock_bracket": [
+          94.54,
+          94.54,
+          1792380322.9515326,
+          1792380322.9515326
+        ],
+        "target_clock_bracket": [
+          94.54,
+          94.54,
+          1792380322.9515326,
+          1792380322.9515326
+        ],
+        "distance": 0.3609317432968438,
+        "event": null,
+        "terminal_reason": "",
+        "seconds": 13.589890003204346,
+        "dxy": 0.2897560198182756,
+        "dz": 0.2152049541678115
+      },
+      "first_invalid": {
+        "kind": "observation",
+        "receipt": 1792380332.5903802,
+        "stamp": 1792380332.5635169,
+        "received": 1792380332.5850346,
+        "processed": 1792380332.5896928,
+        "published": 1792380332.5896928,
+        "valid": false,
+        "reason": "IMAGE_INVALID"
+      },
+      "first_braking": {
+        "kind": "diagnostic",
+        "receipt": 1792380332.62969,
+        "stamp": 1792380332.6274865,
+        "mission": 1,
+        "plan": 0,
+        "status": "P7_BRAKING",
+        "compute": 0.0007975419866852462,
+        "locked": false,
+        "visible": false,
+        "search": "SAFE_RECOVERY",
+        "yaw_owner": "P7_WAIT"
+      },
+      "transitions": [
+        {
+          "seconds": 0.01590561866760254,
+          "status": "P7_GUIDANCE",
+          "locked": true,
+          "visible": true,
+          "search": "TRACKING"
+        },
+        {
+          "seconds": 23.265843868255615,
+          "status": "P7_BRAKING",
+          "locked": false,
+          "visible": false,
+          "search": "SAFE_RECOVERY"
+        },
+        {
+          "seconds": 23.315979719161987,
+          "status": "SAFE_RECOVERY",
+          "locked": false,
+          "visible": false,
+          "search": "SAFE_RECOVERY"
+        },
+        {
+          "seconds": 24.815998554229736,
+          "status": "VISUAL_BRAKING",
+          "locked": false,
+          "visible": false,
+          "search": "REACQUIRE"
+        },
+        {
+          "seconds": 25.415910243988037,
+          "status": "REACQUIRE",
+          "locked": false,
+          "visible": false,
+          "search": "REACQUIRE"
+        },
+        {
+          "seconds": 26.8659405708313,
+          "status": "SAFE_WAIT",
+          "locked": false,
+          "visible": false,
+          "search": "SAFE_WAIT"
+        }
+      ],
+      "guide_modes": {
+        "STANDOFF": 102,
+        "CLOSING": 114,
+        "PNG": 194,
+        "CAPTURE_MATCH": 55
+      },
+      "geometry_reasons": {
+        "null": 465
+      },
+      "common_epoch_age": {
+        "n": 0
+      },
+      "vision_error_bins": {
+        "range_0_1m": {
+          "position_3d_error": {
+            "n": 62,
+            "rmse": 0.15740083141388725,
+            "p50": 0.13810048921345175,
+            "p95": 0.21624985030533247,
+            "maximum": 0.3456666577340303
+          },
+          "vision_to_entity_3d": {
+            "n": 0
+          },
+          "camera_center_error_3d": {
+            "n": 0
+          }
+        },
+        "range_1_3m": {
+          "position_3d_error": {
+            "n": 227,
+            "rmse": 0.12996890061882302,
+            "p50": 0.11632916526175388,
+            "p95": 0.1921825200049959,
+            "maximum": 0.34208005770999733
+          },
+          "vision_to_entity_3d": {
+            "n": 0
+          },
+          "camera_center_error_3d": {
+            "n": 0
+          }
+        },
+        "range_3_10m": {
+          "position_3d_error": {
+            "n": 175,
+            "rmse": 0.14564306825288328,
+            "p50": 0.14014553787538336,
+            "p95": 0.16974903738380023,
+            "maximum": 0.33071672800298524
+          },
+          "vision_to_entity_3d": {
+            "n": 0
+          },
+          "camera_center_error_3d": {
+            "n": 0
+          }
+        },
+        "range_10_30m": {
+          "position_3d_error": {
+            "n": 0
+          },
+          "vision_to_entity_3d": {
+            "n": 0
+          },
+          "camera_center_error_3d": {
+            "n": 0
+          }
+        }
+      },
+      "sea_states": {
+        "SAFE": 558,
+        "WARNING": 188
+      },
+      "native_visibility": {
+        "n": 928,
+        "center_fraction": 0.6120689655172413,
+        "whole_fraction": 0.5226293103448276,
+        "minimum_camera_sphere_distance": 0.2881162668712347
+      },
+      "first_invalid_seconds": 23.201874256134033,
+      "first_native_near_seconds": 12.86990237236023
+    },
+    "38deg_5m_repaired": {
+      "run": "/home/qin/data/uav_usv_mpc/data/experiments/20261019_p7_angle_capture_02",
+      "y": 1792408707.1860142,
+      "outcome": "ABORTED",
+      "native_samples": 2213,
+      "native_minimum": {
+        "kind": "EVALUATED",
+        "stamp": 1792408722.9966338,
+        "native_stamp": 66.732,
+        "decision_stamp": 1792408723.0164587,
+        "uav_position": [
+          36.6804397693361,
+          -10.786497441775436,
+          -0.41998020889493093
+        ],
+        "target_position": [
+          36.53089496023018,
+          -10.987541911546241,
+          -0.07311255945983247
+        ],
+        "velocity_valid": true,
+        "segment_valid": true,
+        "maximum_bracket": 0.0,
+        "uav_clock_bracket": [
+          66.732,
+          66.732,
+          1792408722.9966338,
+          1792408722.9966338
+        ],
+        "target_clock_bracket": [
+          66.732,
+          66.732,
+          1792408722.9966338,
+          1792408722.9966338
+        ],
+        "distance": 0.42790150149372014,
+        "event": null,
+        "terminal_reason": "",
+        "seconds": 15.810619592666626,
+        "dxy": 0.25056442037118876,
+        "dz": 0.34686764943509846
+      },
+      "first_invalid": {
+        "kind": "observation",
+        "receipt": 1792408748.2446635,
+        "stamp": 1792408748.2165587,
+        "received": 1792408748.2428486,
+        "processed": 1792408748.244079,
+        "published": 1792408748.244079,
+        "valid": false,
+        "reason": "IMAGE_INVALID"
+      },
+      "first_braking": {
+        "kind": "diagnostic",
+        "receipt": 1792408748.2809868,
+        "stamp": 1792408748.2746286,
+        "mission": 1,
+        "plan": 0,
+        "status": "P7_BRAKING",
+        "compute": 0.0016011029947549105,
+        "locked": false,
+        "visible": false,
+        "search": "SAFE_RECOVERY",
+        "yaw_owner": "P7_WAIT"
+      },
+      "transitions": [
+        {
+          "seconds": 0.037783145904541016,
+          "status": "P7_GUIDANCE",
+          "locked": true,
+          "visible": true,
+          "search": "TRACKING"
+        },
+        {
+          "seconds": 41.08861446380615,
+          "status": "P7_BRAKING",
+          "locked": false,
+          "visible": false,
+          "search": "SAFE_RECOVERY"
+        },
+        {
+          "seconds": 41.1378436088562,
+          "status": "SAFE_RECOVERY",
+          "locked": false,
+          "visible": false,
+          "search": "SAFE_RECOVERY"
+        },
+        {
+          "seconds": 41.48901128768921,
+          "status": "SAFE_RECOVERY",
+          "locked": false,
+          "visible": true,
+          "search": "SAFE_RECOVERY"
+        },
+        {
+          "seconds": 42.63774347305298,
+          "status": "VISUAL_BRAKING",
+          "locked": false,
+          "visible": true,
+          "search": "REACQUIRE"
+        },
+        {
+          "seconds": 42.98794889450073,
+          "status": "REACQUIRE",
+          "locked": false,
+          "visible": true,
+          "search": "REACQUIRE"
+        }
+      ],
+      "guide_modes": {
+        "GEOMETRY_WAIT": 786,
+        "PNG": 20,
+        "CAPTURE_MATCH": 15
+      },
+      "geometry_reasons": {
+        "CAPTURE_CORRIDOR_ATTITUDE_ENTRY_WAIT_SEA_PHASE_WAIT_NO_CAPTURE_INTERSECTION": 265,
+        "CAPTURE_CORRIDOR_SEA_PHASE_WAIT_NO_CAPTURE_INTERSECTION": 342,
+        "CAPTURE_CORRIDOR_NO_CAPTURE_INTERSECTION": 39,
+        "CAPTURE_CORRIDOR_ATTITUDE_ENTRY_WAIT_NO_CAPTURE_INTERSECTION": 128,
+        "CAPTURE_CORRIDOR": 22,
+        "CAPTURE_CORRIDOR_SEA_PHASE_WAIT": 13,
+        "CAMERA_CORRIDOR_SEA_PHASE_WAIT_NO_CAPTURE_INTERSECTION": 12
+      },
+      "common_epoch_age": {
+        "n": 821,
+        "rmse": 0.03184440362457996,
+        "p50": 0.030681848526000977,
+        "p95": 0.040908098220825195,
+        "maximum": 0.041855812072753906
+      },
+      "vision_error_bins": {
+        "range_0_1m": {
+          "position_3d_error": {
+            "n": 329,
+            "rmse": 0.11238046209186425,
+            "p50": 0.10028131619149593,
+            "p95": 0.15738616255290847,
+            "maximum": 0.33078938195142654
+          },
+          "vision_to_entity_3d": {
+            "n": 329,
+            "rmse": 0.05615585488043543,
+            "p50": 0.04737156618871233,
+            "p95": 0.10791561418220255,
+            "maximum": 0.11983162727742472
+          },
+          "camera_center_error_3d": {
+            "n": 329,
+            "rmse": 0.05615585488043543,
+            "p50": 0.047371566188711196,
+            "p95": 0.10791561418220358,
+            "maximum": 0.11983162727742427
+          }
+        },
+        "range_1_3m": {
+          "position_3d_error": {
+            "n": 391,
+            "rmse": 0.10308200401170399,
+            "p50": 0.08871926199840734,
+            "p95": 0.14681977308728353,
+            "maximum": 0.3701019578699267
+          },
+          "vision_to_entity_3d": {
+            "n": 391,
+            "rmse": 0.08849396326471475,
+            "p50": 0.08593745758081459,
+            "p95": 0.12443255413526697,
+            "maximum": 0.13341566340914118
+          },
+          "camera_center_error_3d": {
+            "n": 391,
+            "rmse": 0.08849396326471456,
+            "p50": 0.08593745758081449,
+            "p95": 0.12443255413526644,
+            "maximum": 0.13341566340914096
+          }
+        },
+        "range_3_10m": {
+          "position_3d_error": {
+            "n": 153,
+            "rmse": 0.10426797415658999,
+            "p50": 0.10882239978374446,
+            "p95": 0.13741612325549504,
+            "maximum": 0.22275307197437638
+          },
+          "vision_to_entity_3d": {
+            "n": 153,
+            "rmse": 0.07892901658709517,
+            "p50": 0.0636053946087279,
+            "p95": 0.1319264529392391,
+            "maximum": 0.13427889673590288
+          },
+          "camera_center_error_3d": {
+            "n": 153,
+            "rmse": 0.07892901658709502,
+            "p50": 0.06360539460872731,
+            "p95": 0.13192645293923863,
+            "maximum": 0.13427889673590296
+          }
+        },
+        "range_10_30m": {
+          "position_3d_error": {
+            "n": 0
+          },
+          "vision_to_entity_3d": {
+            "n": 0
+          },
+          "camera_center_error_3d": {
+            "n": 0
+          }
+        }
+      },
+      "sea_states": {
+        "SAFE": 616,
+        "WARNING": 270
+      },
+      "native_visibility": {
+        "n": 1107,
+        "center_fraction": 0.8979223125564589,
+        "whole_fraction": 0.48509485094850946,
+        "minimum_camera_sphere_distance": 0.3192639413865782
+      },
+      "first_invalid_seconds": 41.03054451942444,
+      "first_native_near_seconds": 4.910547494888306,
+      "execution_summary": {
+        "reason": "HEALTH_INPUT_LOST",
+        "completed": false,
+        "healthy": false,
+        "single_tracker": true,
+        "single_bctra": true,
+        "velocity_only_interface": true,
+        "retired_authority_events": 0,
+        "actual_speed_max_mps": 5.9171082311486405,
+        "actual_acceleration_max_mps2": 3.1537401222181556,
+        "command_acceleration_max_mps2": 6.975057891567135,
+        "minimum_height_m": 0.311922550201416,
+        "maximum_vertical_speed_mps": 1.2593094110488892,
+        "freeze": {
+          "verified": false,
+          "world_verified": false,
+          "native_pose_verified": false
+        },
+        "cleanup": {
+          "errors": [],
+          "survivors": [],
+          "late_components": {
+            "events": [],
+            "errors": [],
+            "survivors": []
+          }
+        }
+      },
+      "inner_stop_reason": "TARGET_LOCK_LOST_FOR_2S",
+      "capture_reference_feasible_windows": [
+        {
+          "start_seconds": 3.3894460201263428,
+          "seconds": 0.29966044425964355
+        },
+        {
+          "start_seconds": 7.189084768295288,
+          "seconds": 0.2991483211517334
+        },
+        {
+          "start_seconds": 11.388508558273315,
+          "seconds": 0.2492353916168213
+        },
+        {
+          "start_seconds": 15.337823867797852,
+          "seconds": 0.1999971866607666
+        },
+        {
+          "start_seconds": 23.138315200805664,
+          "seconds": 0.39940714836120605
+        },
+        {
+          "start_seconds": 26.688897371292114,
+          "seconds": 0.3000364303588867
+        }
+      ],
+      "capture_reference_feasible_fraction": 0.04263093788063337,
+      "maximum_feedback_navigation_bracket_s": 0.02482771873474121,
+      "maximum_feedback_source_age_s": 0.11107730865478516
+    },
+    "38deg_5m_before_wait_repair": {
+      "run": "/home/qin/data/uav_usv_mpc/data/experiments/20261019_p7_angle_capture_01",
+      "y": 1792408221.7822256,
+      "outcome": "ABORTED",
+      "native_samples": 544,
+      "native_minimum": {
+        "kind": "EVALUATED",
+        "stamp": 1792408230.1023688,
+        "native_stamp": 51.824,
+        "decision_stamp": 1792408230.1103864,
+        "uav_position": [
+          83.51923447141775,
+          16.621223204918103,
+          -0.4045672477807991
+        ],
+        "target_position": [
+          83.31608377758359,
+          16.5829186894964,
+          0.14578967953275085
+        ],
+        "velocity_valid": true,
+        "segment_valid": true,
+        "maximum_bracket": 0.0,
+        "uav_clock_bracket": [
+          51.824,
+          51.824,
+          1792408230.1023688,
+          1792408230.1023688
+        ],
+        "target_clock_bracket": [
+          51.824,
+          51.824,
+          1792408230.1023688,
+          1792408230.1023688
+        ],
+        "distance": 0.5879032129092379,
+        "event": null,
+        "terminal_reason": "",
+        "seconds": 8.320143222808838,
+        "dxy": 0.2067303565202567,
+        "dz": 0.55035692731355
+      },
+      "first_invalid": {
+        "kind": "observation",
+        "receipt": 1792408230.155891,
+        "stamp": 1792408230.1303606,
+        "received": 1792408230.1509068,
+        "processed": 1792408230.154643,
+        "published": 1792408230.154643,
+        "valid": false,
+        "reason": "IMAGE_INVALID"
+      },
+      "first_braking": {
+        "kind": "diagnostic",
+        "receipt": 1792408230.2056007,
+        "stamp": 1792408230.2021902,
+        "mission": 1,
+        "plan": 0,
+        "status": "P7_BRAKING",
+        "compute": 0.0007095430046319962,
+        "locked": false,
+        "visible": false,
+        "search": "SAFE_RECOVERY",
+        "yaw_owner": "P7_WAIT"
+      },
+      "transitions": [
+        {
+          "seconds": 0.0205230712890625,
+          "status": "P7_GUIDANCE",
+          "locked": true,
+          "visible": true,
+          "search": "TRACKING"
+        },
+        {
+          "seconds": 8.41996455192566,
+          "status": "P7_BRAKING",
+          "locked": false,
+          "visible": false,
+          "search": "SAFE_RECOVERY"
+        },
+        {
+          "seconds": 8.47002649307251,
+          "status": "SAFE_RECOVERY",
+          "locked": false,
+          "visible": false,
+          "search": "SAFE_RECOVERY"
+        },
+        {
+          "seconds": 9.919494867324829,
+          "status": "VISUAL_BRAKING",
+          "locked": false,
+          "visible": false,
+          "search": "REACQUIRE"
+        }
+      ],
+      "guide_modes": {
+        "PNG": 156,
+        "GEOMETRY_WAIT": 12
+      },
+      "geometry_reasons": {
+        "CAPTURE_CORRIDOR_SEA_PHASE_WAIT_NO_CAPTURE_INTERSECTION": 80,
+        "CAPTURE_CORRIDOR_ATTITUDE_ENTRY_WAIT_SEA_PHASE_WAIT_NO_CAPTURE_INTERSECTION": 22,
+        "CAPTURE_CORRIDOR_ATTITUDE_ENTRY_WAIT_NO_CAPTURE_INTERSECTION": 48,
+        "CAPTURE_CORRIDOR_NO_CAPTURE_INTERSECTION": 17,
+        "CAMERA_CORRIDOR_SEA_PHASE_WAIT_NO_CAPTURE_INTERSECTION": 1
+      },
+      "common_epoch_age": {
+        "n": 168,
+        "rmse": 0.043252091545340016,
+        "p50": 0.04242885112762451,
+        "p95": 0.05107541084289551,
+        "maximum": 0.05262422561645508
+      },
+      "vision_error_bins": {
+        "range_0_1m": {
+          "position_3d_error": {
+            "n": 10,
+            "rmse": 0.15707984030885022,
+            "p50": 0.13298181809899523,
+            "p95": 0.23239409593934615,
+            "maximum": 0.3047522627393805
+          },
+          "vision_to_entity_3d": {
+            "n": 10,
+            "rmse": 0.030459602448500815,
+            "p50": 0.02951851422536985,
+            "p95": 0.037889455555156396,
+            "maximum": 0.03863835175804091
+          },
+          "camera_center_error_3d": {
+            "n": 10,
+            "rmse": 0.030459602448501242,
+            "p50": 0.029518514225369136,
+            "p95": 0.03788945555515774,
+            "maximum": 0.03863835175804236
+          }
+        },
+        "range_1_3m": {
+          "position_3d_error": {
+            "n": 47,
+            "rmse": 0.09424728526792928,
+            "p50": 0.09072324646020118,
+            "p95": 0.11898467963895566,
+            "maximum": 0.12576609769506913
+          },
+          "vision_to_entity_3d": {
+            "n": 47,
+            "rmse": 0.058205492524089665,
+            "p50": 0.055716105108919604,
+            "p95": 0.07384147914112729,
+            "maximum": 0.07555843687251183
+          },
+          "camera_center_error_3d": {
+            "n": 47,
+            "rmse": 0.05820549252408974,
+            "p50": 0.05571610510892001,
+            "p95": 0.07384147914112614,
+            "maximum": 0.07555843687251584
+          }
+        },
+        "range_3_10m": {
+          "position_3d_error": {
+            "n": 109,
+            "rmse": 0.08853920248154647,
+            "p50": 0.05601761966736982,
+            "p95": 0.14288461209129685,
+            "maximum": 0.2590341761290238
+          },
+          "vision_to_entity_3d": {
+            "n": 109,
+            "rmse": 0.11318798911883221,
+            "p50": 0.1165693302960047,
+            "p95": 0.14612869810646517,
+            "maximum": 0.14693647074202948
+          },
+          "camera_center_error_3d": {
+            "n": 109,
+            "rmse": 0.11318798911883195,
+            "p50": 0.11656933029600659,
+            "p95": 0.1461286981064641,
+            "maximum": 0.14693647074202784
+          }
+        },
+        "range_10_30m": {
+          "position_3d_error": {
+            "n": 0
+          },
+          "vision_to_entity_3d": {
+            "n": 0
+          },
+          "camera_center_error_3d": {
+            "n": 0
+          }
+        }
+      },
+      "sea_states": {
+        "SAFE": 221
+      },
+      "native_visibility": {
+        "n": 272,
+        "center_fraction": 0.7573529411764706,
+        "whole_fraction": 0.7389705882352942,
+        "minimum_camera_sphere_distance": 0.5720968482618265
+      },
+      "first_invalid_seconds": 8.348134994506836,
+      "first_native_near_seconds": 7.800150632858276,
+      "execution_summary": {
+        "reason": "P7_TARGET_LOST_FOR_2S",
+        "completed": false,
+        "healthy": false,
+        "single_tracker": true,
+        "single_bctra": true,
+        "velocity_only_interface": true,
+        "retired_authority_events": 0,
+        "actual_speed_max_mps": 6.145508374153855,
+        "actual_acceleration_max_mps2": 3.389109163588949,
+        "command_acceleration_max_mps2": 25.40512381647639,
+        "minimum_height_m": 0.40327078104019165,
+        "maximum_vertical_speed_mps": 1.8265793323516846,
+        "freeze": {
+          "verified": false,
+          "world_verified": false,
+          "native_pose_verified": false
+        },
+        "cleanup": {
+          "errors": [],
+          "survivors": [],
+          "late_components": {
+            "events": [],
+            "errors": [],
+            "survivors": []
+          }
+        }
+      },
+      "inner_stop_reason": "WATCHDOG"
+    }
+  },
+  "follow_qualification": [
+    {
+      "run": "/home/qin/data/uav_usv_mpc/data/experiments/20261019_p7_angle_follow_01",
+      "completed": true,
+      "healthy": true,
+      "reason": "MINCO_OBSERVATION_COMPLETE",
+      "minco_fraction": 1.0,
+      "longest_minco_seconds": 24.950018882751465,
+      "diagnostic_coverage": 1.0,
+      "f3_eligible": true,
+      "source_fingerprint": "eda221773a6b5814e45ae16262e5a3fa291c16afe2336d5742bd3885a8d8a8c5",
+      "cleanup": {
+        "errors": [],
+        "survivors": [],
+        "late_components": {
+          "events": [],
+          "errors": [],
+          "survivors": []
+        }
+      }
+    },
+    {
+      "run": "/home/qin/data/uav_usv_mpc/data/experiments/20261019_p7_angle_follow_02",
+      "completed": true,
+      "healthy": true,
+      "reason": "MINCO_OBSERVATION_COMPLETE",
+      "minco_fraction": 1.0,
+      "longest_minco_seconds": 24.94784188270569,
+      "diagnostic_coverage": 1.0,
+      "f3_eligible": true,
+      "source_fingerprint": "1cc96928599a9dc5184486517580da51cbf9f72fcc6e4bbf62deea62478c64ce",
+      "cleanup": {
+        "errors": [],
+        "survivors": [],
+        "late_components": {
+          "events": [],
+          "errors": [],
+          "survivors": []
+        }
+      }
+    }
+  ]
+}

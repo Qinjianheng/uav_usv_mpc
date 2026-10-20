@@ -1,0 +1,111 @@
+{
+  "head": "3e0d6490499a49d00e47296b3170b757876fcd68",
+  "current_sources": {
+    "src/uav_control/uav_control/control/p7_spatial_guidance.py": "2d862bb4d46400e270e21373662c193ffee982771779349110d53026414213d4",
+    "src/uav_control/uav_control/control/trajectory_tracker_node.py": "9d9883437467d2793a70ba5a649f668d9aa4400f05525848062ebc607699ef41",
+    "src/uav_usv_bringup/config/p7_spatial_candidate.yaml": "3c57701d1af331b1289ec5da72f1a0d241c4719426ab524503a2716cbabc765c",
+    "src/uav_control/test/test_p7_epoch_reference.py": "6e42c39a41551944842abe9bf5aa02c2a61dcb77f52abace54d47459f16fbce2",
+    "src/uav_control/test/test_p7_spatial_integration.py": "fc80e61574eaddcd0b7404377cf157aec579703db9ed0f2a250eb93686e33b11"
+  },
+  "protected_sources": [
+    {
+      "path": "src/uav_control/uav_control/tracking/target_kalman_filter.py",
+      "sha256": "1de51efba98ea8b740780bff474e1948302ba48536f5177664ae884be1ec00a5",
+      "unchanged": true
+    },
+    {
+      "path": "src/uav_control/uav_control/tracking/constant_velocity_kalman.py",
+      "sha256": "36cf136350e35ca1e503a307131d2b003b36c17d30f6db05871875b6d6b6dac4",
+      "unchanged": true
+    },
+    {
+      "path": "src/uav_control/uav_control/tracking/maneuvering_target_predictor.py",
+      "sha256": "33abd90600d85bda1c1622a49d6c777da42f32f5c540df90aba0f56ffc5a4328",
+      "unchanged": true
+    },
+    {
+      "path": "src/uav_control/uav_control/controllers/follow_guided_feasible.py",
+      "sha256": "8f8843c779ec230acb667697448e13c3fd86d2ca237faea5d1eb0caaebc59da2",
+      "unchanged": true
+    },
+    {
+      "path": "src/uav_control/uav_control/controllers/direct_reference_minco.py",
+      "sha256": "1ee31f2db1489a65bf8f9601cf8504771760d7097183e2ef06890cc53d37c513",
+      "unchanged": true
+    },
+    {
+      "path": "src/uav_control/uav_control/controllers/p44_follow_solver.py",
+      "sha256": "937b24188c075bad53c8208f55936db76f28aa74959d72b1b3f5a575080813f3",
+      "unchanged": true
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/follow_contract.py",
+      "sha256": "561db04b8ed6a51e45be38eef96b3efbe8cc5800d8bd46194b2c576f67412d88",
+      "unchanged": true
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/follow_minco_execution.py",
+      "sha256": "ea47d84c708af78a92a18e668b119114be474e0908aae243c5ab4e0e711e0675",
+      "unchanged": true
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/p6_follow.py",
+      "sha256": "d2cc1ee198bb9d5ab0b7c86a063e1b15375637469ddc80386d36e2e5ed669a77",
+      "unchanged": true
+    },
+    {
+      "path": "src/uav_control/uav_control/guidance/robust_visibility.py",
+      "sha256": "3e6b4a758f0e42d5073f1193feae63a701908292a25fec95948af5d939b0e8e9",
+      "unchanged": true
+    },
+    {
+      "path": "src/uav_control/uav_control/common/sea_safety.py",
+      "sha256": "522dbcc5afe28f0a03a6acca28dda5d74bcb411a2626d2df2f2cec95117e235c",
+      "unchanged": true
+    },
+    {
+      "path": "src/uav_control/uav_control/evaluation/intercept_evaluator.py",
+      "sha256": "65db048918a907bc58e2199af803742137f7f70f40d71b459554da081caadf3f",
+      "unchanged": true
+    },
+    {
+      "path": "src/uav_control/uav_control/evaluation/gazebo_capture_geometry.py",
+      "sha256": "d4b187cf481817628a153ce8cef7043c41cbf4b19265bbb24e77d6d0135a14ac",
+      "unchanged": true
+    },
+    {
+      "path": "src/uav_control/uav_control/moving_target.py",
+      "sha256": "55c0ffbcf509437878582fa7975b5f5ae1cd431c25b729d2aff976e40f47322e",
+      "unchanged": true
+    },
+    {
+      "path": "src/uav_control/uav_control/usv_motion_profiles.py",
+      "sha256": "5e80f769734caaf11cd2ba0d6bcb3a5bc1ce55dff90cd5f5d5edcf521fb1751e",
+      "unchanged": true
+    }
+  ],
+  "pytest": {
+    "passed": 2268,
+    "skipped": 2,
+    "warnings": 3,
+    "seconds": 33.9,
+    "excluded": [
+      "test/test_p6_sitl_driver.py",
+      "test/test_p6_turn_case_config.py"
+    ],
+    "exclusion_reason": "Unavailable unchanged historical input: data/experiments/20261013_p53_closed_loop_11/f3_h16_01/config/flight.yaml"
+  },
+  "targeted_passed": 135,
+  "build": {
+    "packages": [
+      "uav_control",
+      "uav_usv_bringup"
+    ],
+    "seconds": 31.2,
+    "success": true
+  },
+  "flake8": "passed",
+  "shell_syntax": "5 scripts passed",
+  "ros2_pkg_prefix": "/home/qin/data/uav_usv_mpc/install/uav_control",
+  "scope": "Experimental P7 candidate only; no promotion, no online truth correction, 0.25 m capture criterion unchanged."
+}

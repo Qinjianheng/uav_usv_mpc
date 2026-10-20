@@ -4,13 +4,46 @@
 import argparse
 import bisect
 import json
+import math
 from pathlib import Path
 
 import numpy as np
+import yaml
 
 from p4_follow_analysis import read
 from p5_minco_sitl import sha
 from p7_follow_analysis import guidance_metrics
+
+
+def configured_capture_radius(run):
+    """Read this run's evaluator snapshot; never reinterpret historical captures."""
+    flight = run/'config/flight.yaml'
+    if flight.exists():
+        config = yaml.safe_load(flight.read_text())
+        parameters = config.get('intercept_evaluator_node', {}).get('ros__parameters', {})
+    else:
+        snapshots = sorted((run/'evaluator').glob('*_config.yaml'))
+        if not snapshots:
+            return None
+        if len(snapshots) != 1:
+            raise ValueError('CAPTURE_RADIUS_REQUIRES_SINGLE_EPISODE')
+        parameters = yaml.safe_load(snapshots[0].read_text())
+    radius = parameters.get('evaluation_capture_radius')
+    planned = parameters.get('planned_capture_radius', radius)
+    if (not isinstance(radius, (int, float)) or isinstance(radius, bool)
+            or not math.isfinite(radius) or radius <= 0
+            or not isinstance(planned, (int, float)) or not math.isfinite(planned)
+            or not math.isclose(radius, planned, abs_tol=1e-9, rel_tol=0.)):
+        raise ValueError('CAPTURE_RADIUS_CONFIG_MISMATCH')
+    return float(radius)
+
+
+def radius_result_valid(result, radius):
+    """Require the result's radius and measured minimum to match the saved criterion."""
+    return bool(radius is not None and result
+                and math.isclose(result.get('radius', math.nan), radius,
+                                 rel_tol=0., abs_tol=1e-9)
+                and 0 <= result.get('minimum_distance', math.inf) <= radius)
 
 
 def native_reference_distances(rows, start, end, marker_height):
@@ -90,6 +123,7 @@ def capture_metrics(run, reason):
     rows, malformed = read(run/'offline_evidence.jsonl')
     results = [r for r in rows if r['kind'] == 'capture_result']
     result = results[-1] if results else None
+    radius = configured_capture_radius(run)
     summary = guidance_metrics(run, reason, stop=result['stamp'] if result else None)
     frozen = (freeze_metrics(rows, result['receipt']) if result else
               dict(verified=False, world_verified=False, native_pose_verified=False))
@@ -109,8 +143,8 @@ def capture_metrics(run, reason):
              and r['status'] == 'MINCO_FOLLOW' and r['stamp'] < start]
     complete = bool(reason == 'P7_CAPTURE_COMPLETE' and result and result['success'])
     healthy = bool(complete and 'guidance_start' in summary
-                   and not malformed and result['radius'] == .5
-                   and result['minimum_distance'] <= .5 and frozen['world_verified']
+                   and not malformed and radius_result_valid(result, radius)
+                   and frozen['world_verified']
                    and summary['single_tracker'] and summary['single_bctra']
                    and summary['velocity_only_interface']
                    and not summary['retired_authority_events']
@@ -120,6 +154,7 @@ def capture_metrics(run, reason):
                    and height_min is not None and height_min >= .23
                    and maximum_vz is not None and maximum_vz <= 4.)
     summary.update(completed=complete, healthy=healthy, capture_result=result, freeze=frozen,
+                   configured_capture_radius=radius,
                    minimum_height_m=height_min, maximum_vertical_speed_mps=maximum_vz,
                    minco_before_y_seconds=max(minco)-min(minco) if minco else 0.,
                    observed_target_speed_min_mps=min(target_speeds, default=None),
@@ -178,7 +213,10 @@ def analyze(run, output):
         axes[0, 1].plot(actual[:, 0]-start, actual[:, 3], label='Gazebo model height')
         np.savetxt(output/'native_distance.csv', actual, delimiter=',',
                    header='ros_epoch,native_sim_seconds,distance_3d_m,model_height_m', comments='')
-    axes[0, 0].axhline(.5, color='gray', linestyle='--', label='capture radius')
+    radius = summary['configured_capture_radius']
+    if radius is not None:
+        axes[0, 0].axhline(radius, color='gray', linestyle='--',
+                           label=f'configured capture radius {radius:g} m')
     axes[0, 0].set(ylabel='Distance (m)')
     axes[0, 1].plot(nt-start, -p[:, 2], label='PX4 estimated height')
     axes[0, 1].axhline(.33, color='gray', linestyle='--', label='terminal clearance request')

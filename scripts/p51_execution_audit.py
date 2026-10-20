@@ -12,7 +12,7 @@ CHECKS = ('reference_height', 'entry_recovery', 'execution_gates',
           'evidence_coverage', 'switching', 'handovers')
 
 
-def audit_rows(rows, first_minco, scene, config=None):
+def audit_rows(rows, first_minco, scene, config=None, flight_altitude=-5.):
     """Correlate actual diagnostics, receiver debug, wire curves and ACKs by plan/time."""
     checks = dict.fromkeys(CHECKS, True)
     errors, fallbacks, heights, vertical_speeds, steps = [], [], [], [], []
@@ -49,7 +49,7 @@ def audit_rows(rows, first_minco, scene, config=None):
         if len(reference) != 11 or not all(math.isfinite(v) for v in reference):
             fail('reference_height', 'INVALID_REFERENCE', r)
             continue
-        heights.append(abs(reference[2]+5.))
+        heights.append(abs(reference[2]-flight_altitude))
         vertical_speeds.append(reference[5])
         if heights[-1] >= 1.:
             fail('reference_height', 'METER_LEVEL_REFERENCE_HEIGHT_ERROR', r)
@@ -152,7 +152,7 @@ def audit(output, rows, first_minco, scene):
     """Write only into the new actual run; preserve every recorded event."""
     import json
     from p5_live_health import geometry_config
-    _, _, config = geometry_config(output)
-    report = audit_rows(rows, first_minco, scene, config)
+    _, altitude, config = geometry_config(output)
+    report = audit_rows(rows, first_minco, scene, config, flight_altitude=altitude)
     (output/'p51_execution_audit.json').write_text(json.dumps(report, indent=2)+'\n')
     return report

@@ -196,7 +196,8 @@ LAB_CAMERA_MODELS="${LAB_SESSION_DIR}/models"
 python3 "${WS_ROOT}/scripts/prepare_gz_camera_model.py" \
     --source "${CUSTOM_GZ_MODELS}/x500_mono_cam" \
     --output "${LAB_CAMERA_MODELS}/x500_mono_cam" \
-    --enable-down-camera "${EXPERIMENT_ENABLE_DOWN}"
+    --enable-down-camera "${EXPERIMENT_ENABLE_DOWN}" \
+    --flight-config "${EXPERIMENT_CONFIG_FILE:-${WS_ROOT}/src/uav_usv_bringup/config/baseline.yaml}"
 export GZ_SIM_RESOURCE_PATH="${LAB_CAMERA_MODELS}:${CUSTOM_GZ_MODELS}:${GZ_SIM_RESOURCE_PATH:-}"
 export PX4_GZ_MODELS="${LAB_CAMERA_MODELS}"
 echo "Down camera enabled: ${EXPERIMENT_ENABLE_DOWN}"
@@ -531,7 +532,7 @@ echo
 echo "Two-stage control is ready; PX4 is disarmed in OFFBOARD ground hold."
 echo "  X: start UAV takeoff and USV motion simultaneously"
 if [[ "${UAV_USV_P7_CAPTURE:-false}" == true ]]; then
-    echo "  Y: IBVS/PNG radius capture; evaluator pauses Gazebo at 0.50 m"
+    echo "  Y: IBVS/PNG radius capture; evaluator pauses Gazebo at the configured capture radius"
 elif [[ "${UAV_USV_P7_MODE:-false}" == true ]]; then
     echo "  Y: switch locked FOLLOW to safe IBVS/PNG approach"
 else

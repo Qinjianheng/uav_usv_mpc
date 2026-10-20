@@ -108,7 +108,11 @@ def safety_reason(health, now, planning_required=True, maximum_observer_input_ag
         return 'INVALID_PHYSICAL_STATE'
     if capture_height and not .25 <= -position[2] <= 6.:
         return 'CAPTURE_HEIGHT_OUTSIDE_ENVELOPE'
-    if not capture_height and abs(position[2]+5.) > 1.:
+    # Only P7 supplies this explicit per-run goal; historical observers retain -5 m.
+    expected_altitude = health.get('follow_reference_altitude', -5.)
+    if not math.isfinite(expected_altitude):
+        return 'INVALID_FOLLOW_ALTITUDE_POLICY'
+    if not capture_height and abs(position[2]-expected_altitude) > 1.:
         return 'HEIGHT_ERROR_OVER_1M'
     if sum(x*x for x in velocity) > 8.5**2:
         return 'VELOCITY_DIVERGENCE'

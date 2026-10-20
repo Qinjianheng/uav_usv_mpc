@@ -30,6 +30,8 @@ def runtime_hashes():
     paths = list((WORKSPACE/'src/uav_control/uav_control').rglob('*.py'))
     for directory, pattern in (('launch', '*.py'), ('config', '*.yaml')):
         paths.extend((WORKSPACE/'src/uav_usv_bringup'/directory).glob(pattern))
+    paths.extend((WORKSPACE/'src/uav_usv_bringup/models/x500_mono_cam/model.sdf',
+                  WORKSPACE/'scripts/prepare_gz_camera_model.py'))
     return {str(p.relative_to(WORKSPACE)): hashlib.sha256(p.read_bytes()).hexdigest()
             for p in sorted(paths)}
 
@@ -41,9 +43,14 @@ def source_fingerprint():
     return hashlib.sha256(json.dumps(hashes, sort_keys=True).encode()).hexdigest()
 
 
-def require_f2(path):
+def require_f2(path, config_file=None):
     """A new source or failed F2 cannot inherit permission for F3."""
     summary = json.loads(Path(path).read_text())
+    config_file = CONFIG if config_file is None else Path(config_file).resolve()
+    condition_path = Path(path).parent/'condition.json'
+    condition = json.loads(condition_path.read_text()) if condition_path.exists() else {}
+    same_profile = condition.get('config_sources', {}).get(str(config_file)) == harness.sha(
+        config_file)
     same_source = summary.get('source_fingerprint') == source_fingerprint()
     snapshot = Path(path).parent/'source_snapshot.json'
     if not same_source and snapshot.exists():
@@ -55,21 +62,27 @@ def require_f2(path):
             if (k.startswith('src/uav_control/uav_control/') and k.endswith('.py'))
             or (k.startswith('src/uav_usv_bringup/launch/') and k.endswith('.py'))
             or (k.startswith('src/uav_usv_bringup/config/') and k.endswith('.yaml'))}
+        for key in ('src/uav_usv_bringup/models/x500_mono_cam/model.sdf',
+                    'scripts/prepare_gz_camera_model.py'):
+            if key in previous:
+                previous_runtime[key] = previous[key]
         same_source = previous_runtime == runtime_hashes()
     if not (summary.get('healthy') and summary.get('completed') and summary.get('f3_eligible')
-            and same_source):
+            and same_source and same_profile):
         raise ValueError('CURRENT_HEALTHY_F2_REQUIRED')
 
 
 class P7FollowHealthGuard(FollowHealthGuard):
     """Observe the controller's existing input-wait window separately from visual loss."""
 
-    def __init__(self, initial_acquisition=False):
+    def __init__(self, initial_acquisition=False, flight_altitude=-5.):
         super().__init__(initial_acquisition)
+        self.flight_altitude = float(flight_altitude)
         self.input_wait_since = None
         self.prediction_response_since = None
 
     def __call__(self, health, now):
+        health['follow_reference_altitude'] = self.flight_altitude
         control = health.get('control', {})
         prediction = health.get('prediction', {})
         if (control.get('status') == 'MINCO_FOLLOW' and not prediction.get('valid')
@@ -111,23 +124,57 @@ class P7FollowHealthGuard(FollowHealthGuard):
         return 'FOLLOW_INPUT_WAIT_TIMEOUT' if not 0 <= elapsed <= limit else None
 
 
-def prepare(output, scene, motion=None, capture=False):
+def validate_p7_geometry(flight):
+    """Reject inconsistent P7 source geometry before creating an experiment directory."""
+    tracker = flight['trajectory_tracker_node']['ros__parameters']
+    if not tracker.get('p7_spatial_enabled', False):
+        return
+    evaluator = flight['intercept_evaluator_node']['ros__parameters']
+    radius = tracker['p7_capture_radius']
+    if not radius == evaluator['evaluation_capture_radius'] == evaluator['planned_capture_radius']:
+        raise ValueError('P7_CAPTURE_RADIUS_CONFIG_MISMATCH')
+    camera = flight['rgbd_target_localizer']['ros__parameters']
+    if (not camera.get('geometry_diagnostics_enabled', False)
+            or any(flight[node]['ros__parameters']['camera_pitch_down']
+                   != tracker['p7_camera_pitch_down'] for node in (
+                       'rgbd_target_localizer', 'target_bearing_node', 'front_tof_monitor'))
+            or tuple(camera['camera_translation_'+axis] for axis in 'xyz') != (.18, 0., .39)
+            or camera['target_radius'] != .25 or camera['target_reference_z_offset'] != .42):
+        raise ValueError('P7_CAMERA_CONFIG_MISMATCH')
+    planner = flight['p4_follow_planner_node']['ros__parameters']
+    if (not tracker.get('p7_follow_geometry_enabled')
+            or not planner.get('p7_follow_geometry_enabled')
+            or planner.get('p7_camera_pitch_down') != tracker['p7_camera_pitch_down']):
+        raise ValueError('P7_FOLLOW_CAMERA_CONFIG_MISMATCH')
+    if tracker['flight_altitude'] != flight['p4_follow_planner_node']['ros__parameters'][
+            'flight_altitude']:
+        raise ValueError('P7_FOLLOW_HEIGHT_CONFIG_MISMATCH')
+
+
+def prepare(output, scene, motion=None, capture=False, config_file=None):
     """Copy scene geometry and current P7 constant speed into an exclusive run."""
     if scene not in ('f2', 'f3'):
         raise ValueError('P7_F2_OR_F3_REQUIRED')
-    flight = yaml.safe_load(CONFIG.read_text())
+    config_file = CONFIG if config_file is None else Path(config_file).resolve()
+    flight = yaml.safe_load(config_file.read_text())
     constant_speed = flight['moving_target']['ros__parameters']['horizontal_speed']
-    source = R11/f'{scene}_h16_01/config/flight.yaml'
-    original = yaml.safe_load(source.read_text())
-    flight['moving_target'] = original['moving_target']
-    # Historical scene files supply geometry, not the current UI speed setting.
-    flight['moving_target']['ros__parameters']['horizontal_speed'] = constant_speed
+    sources = [config_file]
+    if scene == 'f3':
+        source = R11/f'{scene}_h16_01/config/flight.yaml'
+        original = yaml.safe_load(source.read_text())
+        flight['moving_target'] = original['moving_target']
+        sources.append(source)
+        # F3 retains its explicit historical geometry, never invented defaults.
+        flight['moving_target']['ros__parameters']['horizontal_speed'] = constant_speed
+    # F2 uses the current P7 source. Its target block was verified identical to
+    # the recorded manual F2; startup must not depend on a deleted old experiment.
     if motion is not None:
         mode = normalize_motion_mode(motion)
         flight['moving_target']['ros__parameters']['trajectory_type'] = mode
     if capture:
         flight['trajectory_tracker_node']['ros__parameters']['p7_capture_enabled'] = True
         flight['intercept_evaluator_node']['ros__parameters']['maximum_duration'] = 60.
+    validate_p7_geometry(flight)
     planner = flight.pop('p4_follow_planner_node')
     output.mkdir(exist_ok=False)
     (output/'COLCON_IGNORE').touch()
@@ -142,7 +189,7 @@ def prepare(output, scene, motion=None, capture=False):
         motion_mode=flight['moving_target']['ros__parameters']['trajectory_type'],
         capture_enabled=capture,
         source_fingerprint=source_fingerprint(),
-        config_sources={str(p): harness.sha(p) for p in (CONFIG, source)},
+        config_sources={str(p): harness.sha(p) for p in sources},
         observation_seconds=25. if scene == 'f2' else 60.), indent=2)+'\n')
 
 
@@ -169,14 +216,14 @@ def clean_shutdown(cleanup):
     return not (cleanup['errors'] or cleanup['survivors'] or late['errors'] or late['survivors'])
 
 
-def manual(output, motion=None, capture=False):
+def manual(output, motion=None, capture=False, config_file=None):
     """A bounded, isolated native X/Y console using the same P7 configs and sole Tracker."""
     if not output.is_relative_to(WORKSPACE/'data/experiments'):
         raise ValueError('OUTPUT_MUST_BE_EXPERIMENT_DIRECTORY')
     check = preflight()
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as port:
         port.bind(('127.0.0.1', 14550))
-    prepare(output, 'f2', motion, capture)
+    prepare(output, 'f2', motion, capture, config_file)
     started = time.time()
     env = dict(os.environ, UAV_USV_WS=str(WORKSPACE),
                UAV_USV_RESEARCH_DIRECTORY=str(output),
@@ -233,16 +280,19 @@ def manual(output, motion=None, capture=False):
     return 0 if clean_shutdown(cleanup) else 1
 
 
-def run(output, scene, prior_f2=None, guidance=None, motion=None, capture=False):
+def run(output, scene, prior_f2=None, guidance=None, motion=None, capture=False, config_file=None):
     """Retain original admission warmup and strict health/lease checks, without P6 gates."""
     if not output.is_relative_to(WORKSPACE/'data/experiments'):
         raise ValueError('OUTPUT_MUST_BE_EXPERIMENT_DIRECTORY')
-    if scene == 'f3':
+    source_config = CONFIG if config_file is None else Path(config_file)
+    spatial_capture = bool(capture and guidance and yaml.safe_load(source_config.read_text())[
+        'trajectory_tracker_node']['ros__parameters'].get('p7_spatial_enabled', False))
+    if scene == 'f3' or spatial_capture:
         if prior_f2 is None:
             raise ValueError('CURRENT_HEALTHY_F2_REQUIRED')
-        require_f2(prior_f2)
+        require_f2(prior_f2, config_file)
     preflight()
-    prepare(output, scene, motion, capture)
+    prepare(output, scene, motion, capture, config_file)
     condition = json.loads((output/'condition.json').read_text())
     if guidance:
         condition.update(guidance_experiment=guidance,
@@ -259,7 +309,10 @@ def run(output, scene, prior_f2=None, guidance=None, motion=None, capture=False)
     health_started = None
     y_sent = guidance_started = target_lost_since = None
     capture_seen = None
-    check = P7FollowHealthGuard(initial_acquisition=True)
+    tracker_config = yaml.safe_load((output/'config/flight.yaml').read_text())[
+        'trajectory_tracker_node']['ros__parameters']
+    check = P7FollowHealthGuard(initial_acquisition=True,
+                                flight_altitude=tracker_config['flight_altitude'])
     monitor_check = GroundStartupHealth(output)
     reason = 'SESSION_ENDED_BEFORE_OBSERVATION'
     try:
@@ -333,7 +386,8 @@ def run(output, scene, prior_f2=None, guidance=None, motion=None, capture=False)
                 ready_for_y = (guidance == 'c' and health['control'].get('locked')
                                and 8. <= distance <= 20.)
                 ready_for_y |= (guidance == 'd' and first_minco is not None
-                                and now-first_minco >= 5. and health['control'].get('locked'))
+                                and now-first_minco >= 5. and status == 'MINCO_FOLLOW'
+                                and health['control'].get('locked'))
                 if ready_for_y:
                     y, owned = harness.shell_process([
                         'timeout', '8s', 'ros2', 'topic', 'pub', '--times', '3', '--rate', '10',
@@ -423,10 +477,12 @@ if __name__ == '__main__':
     parser.add_argument('output', type=Path)
     parser.add_argument('--scene', choices=('f2', 'f3'), default='f2')
     parser.add_argument('--prior-f2', type=Path)
+    parser.add_argument('--config', type=Path,
+                        help='Explicit P7 profile; the default keeps the established geometry')
     parser.add_argument('--guidance', choices=('c', 'd'))
     parser.add_argument('--manual', action='store_true')
     parser.add_argument('--capture', action='store_true',
-                        help='Opt in to 0.50 m 3-D capture and evaluator-driven world pause')
+                        help='Use the configured 3-D capture radius and evaluator world pause')
     parser.add_argument('--motion', choices=tuple(MOTION_MODES.values()))
     args = parser.parse_args()
     if args.manual and (args.guidance or args.prior_f2):
@@ -434,6 +490,6 @@ if __name__ == '__main__':
     if args.capture and not (args.manual or args.guidance):
         parser.error('--capture requires --guidance or --manual')
     if args.manual:
-        raise SystemExit(manual(args.output.resolve(), args.motion, args.capture))
+        raise SystemExit(manual(args.output.resolve(), args.motion, args.capture, args.config))
     raise SystemExit(run(args.output.resolve(), args.scene, args.prior_f2,
-                         args.guidance, args.motion, args.capture))
+                         args.guidance, args.motion, args.capture, args.config))

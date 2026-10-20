@@ -395,13 +395,18 @@ class TrajectoryTrackerNode(Node):
                     and self.follow_admission.config.target_observation_age
                     != self.follow_time_contract.observation_age):
                 raise ValueError('FOLLOW_ADMISSION_TARGET_TIME_MISMATCH')
-            self.follow_receiver = FollowReceiver(
-                limits=constraint_snapshot(FollowMpcSeed(research)))
+            initial_model = FollowMpcSeed(research)
+            if self.p7_guidance_enabled:
+                from .p7_spatial_guidance import configure_p7_follow_geometry
+                configure_p7_follow_geometry(self, initial_model)
+            self.follow_receiver = FollowReceiver(limits=constraint_snapshot(initial_model))
             if self.follow_minco_requested:
                 from uav_control.guidance.follow_math_runtime import configure_numerical_threads
                 self.follow_math_runtime = configure_numerical_threads(1)
                 from uav_control.guidance.follow_minco_execution import NominalFollowReceiver
                 self.follow_model = FollowMpcSeed(research)
+                if self.p7_guidance_enabled:
+                    configure_p7_follow_geometry(self, self.follow_model)
                 from uav_control.guidance.p6_follow import configure_p6
                 self.p6_runtime = configure_p6(self, self.follow_model)
                 self.p6_diagnostic_sub = self.create_subscription(
@@ -461,7 +466,8 @@ class TrajectoryTrackerNode(Node):
         self.declare_parameter('offboard_prestream_time', 2.0)
         self.declare_parameter('px4_command_retry_time', 1.0)
         self.declare_parameter('vehicle_status_timeout', 2.0)
-        self.declare_parameter('flight_altitude', -5.0)
+        if not (self.p7_guidance_enabled and self.has_parameter('flight_altitude')):
+            self.declare_parameter('flight_altitude', -5.0)
         self.declare_parameter('takeoff_tolerance', 0.5)
         self.declare_parameter('takeoff_settle_time', 1.0)
         self.declare_parameter('takeoff_maximum_vertical_speed', 1.5)
@@ -815,6 +821,7 @@ class TrajectoryTrackerNode(Node):
         self.terminal_hold_position = None
         self.terminal_mode_latched = False
         self.p7_image = self.p7_result = None
+        self.p7_spatial_image = None
         self.declare_parameter('p7_capture_enabled', False)
         self.p7_capture_enabled = bool(self.get_parameter('p7_capture_enabled').value)
         if self.p7_guidance_enabled:
@@ -829,7 +836,29 @@ class TrajectoryTrackerNode(Node):
                     > self.flight_guidance.maximum_horizontal_acceleration
                     or config.maximum_yaw_rate > self.max_observation_yaw_rate):
                 raise ValueError('P7_LIMIT_EXCEEDS_EXISTING_PHYSICAL_LIMIT')
-            self.p7_controller = P7VisualGuidance(config)
+            self.declare_parameter('p7_spatial_enabled', False)
+            if not self.has_parameter('p7_camera_pitch_down'):
+                self.declare_parameter('p7_camera_pitch_down', math.radians(42.))
+            self.declare_parameter('p7_capture_radius', .25)
+            self.declare_parameter('p7_common_epoch_enabled', False)
+            self.declare_parameter('p7_project_capture_reference', False)
+            self.declare_parameter('p7_minimum_camera_center_depth', .02)
+            self.p7_common_epoch_enabled = bool(
+                self.get_parameter('p7_common_epoch_enabled').value)
+            self.p7_spatial_enabled = bool(self.get_parameter('p7_spatial_enabled').value)
+            if self.p7_spatial_enabled and self.p7_capture_enabled:
+                from .p7_spatial_guidance import P7SpatialGuidance
+                self.p7_controller = P7SpatialGuidance(
+                    config, camera_pitch_down=self.get_parameter('p7_camera_pitch_down').value,
+                    capture_radius=self.get_parameter('p7_capture_radius').value,
+                    sea_surface_z=self.flight_guidance.sea_surface_z,
+                    contact_clearance=max(.33, self.flight_guidance.approach_contact_clearance),
+                    project_capture_reference=bool(
+                        self.get_parameter('p7_project_capture_reference').value),
+                    minimum_center_depth=float(
+                        self.get_parameter('p7_minimum_camera_center_depth').value))
+            else:
+                self.p7_controller = P7VisualGuidance(config)
             self.p7_diagnostic_pub = self.create_publisher(String, '/control/p7_guidance', 10)
         install_navigation_frame_guard(self, self.navigation_frame_failed)
         self.get_logger().info(
@@ -856,6 +885,7 @@ class TrajectoryTrackerNode(Node):
         self.latest_kf_message = self.pending_trajectory = self.terminal_execution = None
         self.terminal_hold_position = self.search_hold_position = None
         self.p7_image = self.p7_result = None
+        self.p7_spatial_image = None
         for name in ('follow_navigation_history', 'follow_tracking_history'):
             history = getattr(self, name, None)
             if history is not None:
@@ -1364,6 +1394,14 @@ class TrajectoryTrackerNode(Node):
         if getattr(self, 'p7_guidance_enabled', False):
             from .p7_visual_guidance import image_errors
             self.p7_image = (stamp, *image_errors(ray)) if trusted else None
+            self.p7_spatial_image = None
+            if trusted and getattr(message, 'geometry_diagnostics_enabled', False):
+                from .p7_spatial_guidance import ImageSample
+                self.p7_spatial_image = ImageSample(
+                    stamp, ray,
+                    tuple(float(getattr(message, 'interpolated_attitude_'+a)) for a in 'wxyz'),
+                    tuple(float(getattr(message, 'interpolated_uav_'+a)) for a in 'xyz'),
+                    tuple(float(getattr(message.position, a)) for a in 'xyz'))
 
     def prediction_callback(self, message):
         if getattr(self, 'navigation_frame_fault', ''):
@@ -1395,6 +1433,7 @@ class TrajectoryTrackerNode(Node):
             if getattr(self, 'p7_guidance_enabled', False):
                 self.p7_controller.reset()
                 self.p7_image = self.p7_result = None
+                self.p7_spatial_image = None
             self.terminal_execution = None
             self.tracker.reset()
             self.flight_guidance.reset()
@@ -2198,27 +2237,57 @@ class TrajectoryTrackerNode(Node):
         if self.p7_controller.previous is None:
             self.p7_controller.reset(previous, getattr(self, 'search_yaw_rate_command', 0.))
         capture = getattr(self, 'p7_capture_enabled', False)
+        spatial = capture and getattr(self, 'p7_spatial_enabled', False)
+        feedback_position, feedback_velocity = current.position, current.velocity
+        feedback_epoch = current.stamp
+        feedback_source_stamp = _stamp_seconds(self.latest_kf_message.source_stamp)
+        feedback_bracket = None
+        if spatial and getattr(self, 'p7_common_epoch_enabled', False):
+            from .p7_spatial_guidance import common_epoch_feedback
+            pair = common_epoch_feedback(
+                self.follow_navigation_history, self.follow_target_history, now)
+            if pair is None:
+                self.p7_controller.reset()
+                return self._search_or_recovery_command(current, dt)
+            feedback_position, feedback_velocity = pair['p'], pair['v']
+            target = FlightKinematicState(pair['target_p'], pair['target_v'])
+            feedback_epoch, feedback_bracket = pair['epoch'], pair['navigation_bracket']
+            feedback_source_stamp = pair['source_stamp']
         approach_distance = None
         desired_z = self.flight_guidance.altitude_velocity_gain*(
             self.flight_guidance.flight_altitude-current.position[2])
-        if capture:
+        if capture and not spatial:
             from .p7_visual_guidance import capture_reference
             approach_distance, desired_z = capture_reference(
                 current.position, target.position, target.velocity,
                 sea_surface_z=self.flight_guidance.sea_surface_z,
                 contact_clearance=max(.33, self.flight_guidance.approach_contact_clearance))
-        result = self.p7_controller.step(
-            now, self.p7_actual_dt, current.position[:2], current.velocity[:2],
-            target.position[:2], target.velocity[:2], *image, approach_distance=approach_distance)
+        if spatial:
+            result = self.p7_controller.step(
+                now, self.p7_actual_dt, feedback_position, feedback_velocity,
+                target.position, target.velocity, getattr(self, 'p7_spatial_image', None),
+                capture=True)
+            desired_z = result.vertical_velocity
+        else:
+            result = self.p7_controller.step(
+                now, self.p7_actual_dt, current.position[:2], current.velocity[:2],
+                target.position[:2], target.velocity[:2], *image,
+                approach_distance=approach_distance)
         if not result.valid:
             return self._search_or_recovery_command(current, dt)
         self.flight_guidance.previous_velocity = previous
         command = self.flight_guidance._velocity_command(
             FlightKinematicState(current.position, current.velocity),
-            (*result.velocity, desired_z), dt, True, True)
+            (*result.velocity[:2], desired_z), dt, True, True)
         self.p7_result = result
         self.p7_diagnostic_pub.publish(String(data=json.dumps(dict(
             vars(result), stamp=now, image_stamp=image[0], dt=self.p7_actual_dt,
+            navigation_stamp=current.stamp, target_source_stamp=(
+                _stamp_seconds(self.latest_kf_message.source_stamp)),
+            feedback_epoch=feedback_epoch, feedback_navigation_bracket=feedback_bracket,
+            feedback_source_stamp=feedback_source_stamp,
+            feedback_uav_position=list(feedback_position),
+            feedback_target_position=list(target.position),
             capture_enabled=capture, approach_distance=approach_distance,
             velocity=list(command.velocity)))))
         return command

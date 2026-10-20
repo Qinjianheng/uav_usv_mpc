@@ -1,0 +1,348 @@
+{
+  "scope": "Two individual, phase-unmatched runs. Threshold change is not evidence of improved control accuracy. Current run is censored by capture/pause.",
+  "runs": {
+    "28deg_025m_original": {
+      "run": "/home/qin/data/uav_usv_mpc/data/experiments/p7_manual_20261019_112340_740393470_984611",
+      "y": 1792380309.3616426,
+      "configured_radius": 0.25,
+      "outcome": "ABORTED",
+      "native_samples": 1857,
+      "native_minimum": {
+        "kind": "EVALUATED",
+        "stamp": 1792380322.9515326,
+        "native_stamp": 94.54,
+        "decision_stamp": 1792380322.9538784,
+        "uav_position": [
+          7.803432330157291,
+          2.720922853164102,
+          -0.29991170398474526
+        ],
+        "target_position": [
+          8.090292748821305,
+          2.6800614872442594,
+          -0.08470674981693377
+        ],
+        "velocity_valid": true,
+        "segment_valid": true,
+        "maximum_bracket": 0.0,
+        "uav_clock_bracket": [
+          94.54,
+          94.54,
+          1792380322.9515326,
+          1792380322.9515326
+        ],
+        "target_clock_bracket": [
+          94.54,
+          94.54,
+          1792380322.9515326,
+          1792380322.9515326
+        ],
+        "distance": 0.3609317432968438,
+        "event": null,
+        "terminal_reason": "",
+        "seconds_after_y": 13.589890003204346,
+        "horizontal": 0.2897560198182756,
+        "vertical": 0.2152049541678115
+      },
+      "threshold_replay": {
+        "0.25": null,
+        "0.5": {
+          "stamp": 1792380322.6220014,
+          "source": "HELD_TARGET_SEGMENT",
+          "distance": 0.5,
+          "left_native": 94.2,
+          "right_native": 94.22,
+          "fraction": 0.5230419156304875,
+          "seconds_after_y": 13.260358810424805
+        }
+      },
+      "first_invalid": {
+        "kind": "observation",
+        "receipt": 1792380332.5903802,
+        "stamp": 1792380332.5635169,
+        "received": 1792380332.5850346,
+        "processed": 1792380332.5896928,
+        "published": 1792380332.5896928,
+        "valid": false,
+        "reason": "IMAGE_INVALID"
+      },
+      "first_invalid_seconds": 23.201874256134033,
+      "observation_valid_fraction": 0.6261808367071525,
+      "diagnostic_status_seconds": {
+        "P7_GUIDANCE": 23.249938249588013,
+        "P7_BRAKING": 0.05013585090637207,
+        "SAFE_RECOVERY": 1.500018835067749,
+        "VISUAL_BRAKING": 0.5999116897583008,
+        "REACQUIRE": 1.4500303268432617,
+        "SAFE_WAIT": 10.150450944900513
+      },
+      "minimum_native_height": 0.2727116277280338,
+      "summary": null,
+      "native_horizontal_near_changes": [
+        {
+          "seconds_after_y": 12.86990237236023,
+          "inside": true
+        },
+        {
+          "seconds_after_y": 14.929881572723389,
+          "inside": false
+        },
+        {
+          "seconds_after_y": 14.94991397857666,
+          "inside": true
+        },
+        {
+          "seconds_after_y": 14.989891052246094,
+          "inside": false
+        },
+        {
+          "seconds_after_y": 22.569887161254883,
+          "inside": true
+        },
+        {
+          "seconds_after_y": 22.58989119529724,
+          "inside": false
+        },
+        {
+          "seconds_after_y": 22.609909296035767,
+          "inside": true
+        },
+        {
+          "seconds_after_y": 24.38187527656555,
+          "inside": false
+        },
+        {
+          "seconds_after_y": 24.40187954902649,
+          "inside": true
+        },
+        {
+          "seconds_after_y": 24.437888383865356,
+          "inside": false
+        }
+      ]
+    },
+    "28deg_050m_current": {
+      "run": "/home/qin/data/uav_usv_mpc/data/experiments/20261020_p7_radius05_capture_01",
+      "y": 1792479232.2463696,
+      "configured_radius": 0.5,
+      "outcome": "SUCCESS",
+      "native_samples": 733,
+      "native_minimum": {
+        "kind": "EVALUATED",
+        "stamp": 1792479246.7250834,
+        "native_stamp": 62.456,
+        "decision_stamp": 1792479246.7575157,
+        "uav_position": [
+          63.04098009334388,
+          14.446420220470875,
+          -0.31593915378461335
+        ],
+        "target_position": [
+          63.14767211636557,
+          14.01951644326856,
+          -0.11264812834124455
+        ],
+        "velocity_valid": true,
+        "segment_valid": true,
+        "maximum_bracket": 0.0,
+        "uav_clock_bracket": [
+          62.456,
+          62.456,
+          1792479246.7250834,
+          1792479246.7250834
+        ],
+        "target_clock_bracket": [
+          62.456,
+          62.456,
+          1792479246.7250834,
+          1792479246.7250834
+        ],
+        "distance": 0.48472390470439947,
+        "event": {
+          "source": "CAPTURE_SEGMENT",
+          "fraction": 0.6948401723894756,
+          "left_stamp": 1792479246.705092,
+          "right_stamp": 1792479246.7250834,
+          "event_stamp": 1792479246.7189827,
+          "decision_stamp": 1792479246.7575157,
+          "left_native_stamp": 62.436,
+          "right_native_stamp": 62.456,
+          "event_native_stamp": 62.44989680344779
+        },
+        "terminal_reason": "CAPTURE_RADIUS_REACHED",
+        "seconds_after_y": 14.478713750839233,
+        "horizontal": 0.44003411545704424,
+        "vertical": 0.2032910254433688
+      },
+      "threshold_replay": {
+        "0.25": null,
+        "0.5": {
+          "stamp": 1792479246.7189827,
+          "source": "HELD_TARGET_SEGMENT",
+          "distance": 0.5,
+          "left_native": 62.436,
+          "right_native": 62.456,
+          "fraction": 0.6948401723894756,
+          "seconds_after_y": 14.472613096237183
+        }
+      },
+      "first_invalid": null,
+      "first_invalid_seconds": null,
+      "observation_valid_fraction": 1.0,
+      "diagnostic_status_seconds": {
+        "P7_GUIDANCE": 14.399677515029907
+      },
+      "minimum_native_height": 0.31593915378461335,
+      "summary": {
+        "completed": true,
+        "healthy": true,
+        "reason": "P7_CAPTURE_COMPLETE",
+        "f3_eligible": false,
+        "guidance_start": 1792479232.2793717,
+        "guidance_samples": 289,
+        "guidance_fraction": 1.0,
+        "visible_fraction": 1.0,
+        "final_distance_stamp": 1792479246.721075,
+        "maximum_height_error_m": 4.668789505958557,
+        "actual_speed_max_mps": 5.7937271494150275,
+        "actual_acceleration_max_mps2": 2.08221405142209,
+        "single_tracker": true,
+        "single_bctra": true,
+        "velocity_only_interface": true,
+        "retired_authority_events": 0,
+        "y_velocity_step_mps": 0.10113335468871651,
+        "command_acceleration_max_mps2": 2.014745617966932,
+        "image_error_u_max": 0.7521557710245057,
+        "image_error_v_max": 0.7274929299149672,
+        "yaw_rate_max_radps": 0.6,
+        "lateral_acceleration_max_mps2": 1.9996364157876925,
+        "png_samples": 154,
+        "physical_window_end": 1792479246.7250834,
+        "capture_result": {
+          "kind": "capture_result",
+          "receipt": 1792479246.7584748,
+          "stamp": 1792479246.7250834,
+          "success": true,
+          "outcome": "SUCCESS",
+          "reason": "CAPTURE_RADIUS_REACHED",
+          "radius": 0.5,
+          "minimum_distance": 0.48472390470439947,
+          "elapsed": 14.478713750839233,
+          "relative_speed": 4.590813836849193
+        },
+        "freeze": {
+          "verified": false,
+          "world_verified": true,
+          "native_pose_verified": false,
+          "pause_samples": 50,
+          "paused_seconds": 4.944357872009277,
+          "clock_span_s": 0.0,
+          "target_position_span_m": 0.0,
+          "target_velocity_zero": true,
+          "native_pose_span_m": {},
+          "native_pose_continuity_error_m": {}
+        },
+        "configured_capture_radius": 0.5,
+        "minimum_height_m": 0.33121049404144287,
+        "maximum_vertical_speed_mps": 0.6226317286491394,
+        "minco_before_y_seconds": 6.50703239440918,
+        "observed_target_speed_min_mps": 3.999999999999999,
+        "observed_target_speed_max_mps": 4.000000000000001,
+        "motion_mode": "figure_eight",
+        "capture_window_end": 1792479246.7250834,
+        "initial_horizontal_distance_m": 5.6089569833101,
+        "final_horizontal_distance_m": 0.4758151171365,
+        "minimum_horizontal_distance_m": 0.4758151171365,
+        "final_2s_median_horizontal_distance_m": 1.6894320420042999,
+        "source_fingerprint": "c9a9a62838b99e51ab2625f256534f5e607af8b6645e75634814773312e375ec",
+        "cleanup": {
+          "errors": [],
+          "survivors": [],
+          "late_components": {
+            "events": [],
+            "errors": [],
+            "survivors": []
+          }
+        }
+      },
+      "native_horizontal_near_changes": [
+        {
+          "seconds_after_y": 8.958712100982666,
+          "inside": true
+        },
+        {
+          "seconds_after_y": 8.978720664978027,
+          "inside": false
+        },
+        {
+          "seconds_after_y": 14.002720594406128,
+          "inside": true
+        }
+      ]
+    }
+  },
+  "nominal_geometry": [
+    {
+      "target_height": -0.15,
+      "uav_height": 0.33,
+      "vertical": 0.48,
+      "default_reference_distance": 0.5660388679233962,
+      "allowed_horizontal_025": null,
+      "allowed_horizontal_050": 0.14
+    },
+    {
+      "target_height": 0.0,
+      "uav_height": 0.33,
+      "vertical": 0.33,
+      "default_reference_distance": 0.4459820624195552,
+      "allowed_horizontal_025": null,
+      "allowed_horizontal_050": 0.375632799419859
+    },
+    {
+      "target_height": 0.08,
+      "uav_height": 0.33,
+      "vertical": 0.25,
+      "default_reference_distance": 0.3905124837953327,
+      "allowed_horizontal_025": 0.0,
+      "allowed_horizontal_050": 0.4330127018922193
+    },
+    {
+      "target_height": 0.1,
+      "uav_height": 0.33,
+      "vertical": 0.23,
+      "default_reference_distance": 0.378021163428716,
+      "allowed_horizontal_025": 0.09797958971132711,
+      "allowed_horizontal_050": 0.4439594576084623
+    },
+    {
+      "target_height": 0.15,
+      "uav_height": 0.33,
+      "vertical": 0.18000000000000002,
+      "default_reference_distance": 0.34985711369071804,
+      "allowed_horizontal_025": 0.1734935157289747,
+      "allowed_horizontal_050": 0.466476151587624
+    }
+  ],
+  "level_camera_corridor": [
+    {
+      "angle": 28.0,
+      "minimum_center_depth": 0.01,
+      "entry": [
+        0.06215912298969192,
+        0.0,
+        0.2729270007748036
+      ],
+      "entry_distance": 0.2799158879427484
+    },
+    {
+      "angle": 28.0,
+      "minimum_center_depth": 0.02,
+      "entry": [
+        0.07124986496392771,
+        0.0,
+        0.2771303464361187
+      ],
+      "entry_distance": 0.2861429226333951
+    }
+  ]
+}

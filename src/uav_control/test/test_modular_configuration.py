@@ -177,19 +177,28 @@ def test_front_camera_preserves_close_contact_surfaces():
 
 @pytest.mark.parametrize('name', [
     'baseline.yaml', 'visual_geometry_diagnostics.yaml', 'follow_low_dynamic_diagnostics.yaml',
+    'p7_guidance.yaml',
 ])
-def test_camera_calibration_projects_the_physical_optical_axis_to_image_center(name):
-    """Changing the SDF mount without its calibration must cause a regression."""
+def test_camera_calibration_projects_the_physical_optical_axis_to_image_center(name, tmp_path):
+    """Each prepared physical mount must match that session's source calibration."""
     import math
+    import importlib.util
     import xml.etree.ElementTree as ET
     from uav_control.perception.rgbd_target_localizer import local_ned_target_to_camera_flu
 
     model = CONFIG_FILE.parent.parent / 'models/x500_mono_cam/model.sdf'
-    mount = ET.parse(model).find(".//link[@name='front_camera_link']/pose")
-    physical_pose = tuple(float(value) for value in mount.text.split())
-    physical_pitch = physical_pose[4]
     config = yaml.safe_load((CONFIG_FILE.parent / name).read_text())
     localizer = parameters(config, 'rgbd_target_localizer')
+    script = CONFIG_FILE.parents[3]/'scripts/prepare_gz_camera_model.py'
+    spec = importlib.util.spec_from_file_location('configuration_camera', script)
+    preparer = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(preparer)
+    preparer.prepare(model.parent, tmp_path/'session_camera',
+                     front_camera_pitch_down=localizer['camera_pitch_down'])
+    mount = ET.parse(tmp_path/'session_camera/model.sdf').find(
+        ".//link[@name='front_camera_link']/pose")
+    physical_pose = tuple(float(value) for value in mount.text.split())
+    physical_pitch = physical_pose[4]
     translation = tuple(localizer['camera_translation_' + a] for a in 'xyz')
     # The merged x500_base places base_link 0.24 m above the PX4 model origin.
     physical_translation = (*physical_pose[:2], physical_pose[2] + .24)
