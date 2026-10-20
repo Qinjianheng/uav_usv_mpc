@@ -1,0 +1,38 @@
+{
+  "head_now": "3b823a04ffbc026e65146b04f6eb7c12543c1d40",
+  "run_snapshot_head": "3d41c339117a1c3c5132e4417520746321359668",
+  "runtime_matches_run": true,
+  "pytest": {
+    "passed": 2268,
+    "skipped": 2,
+    "warnings": 3,
+    "seconds": 35.38,
+    "excluded": [
+      "test/test_p6_sitl_driver.py",
+      "test/test_p6_turn_case_config.py"
+    ],
+    "exclusion_reason": "Missing unchanged historical F3 config; no synthesized replacement"
+  },
+  "targeted": {
+    "passed": 113,
+    "seconds": 4.67
+  },
+  "build": {
+    "packages": [
+      "uav_control",
+      "uav_usv_bringup"
+    ],
+    "success": true,
+    "seconds": 1.79
+  },
+  "flake8": "passed",
+  "shell_syntax": "5 scripts passed",
+  "ros2_pkg_prefix": "/home/qin/data/uav_usv_mpc/install/uav_control",
+  "test_log_sha256": {
+    "data/experiments/20261020_p7_radius05_analysis_01/red.txt": "5966ca52879870cf64517b6508c909ffe63d1da9a192bce53abafaa228175e56",
+    "data/experiments/20261020_p7_radius05_analysis_01/targeted.txt": "31d939b10c3d0f904c70bba5162c2bfa0c96272b4b8b895a242cf02b2d78ccfa",
+    "data/experiments/20261020_p7_radius05_analysis_01/full.txt": "474fd6f7f4d7602e8ac082da04676b173f2a12b9405d1164a1f62dd0355bf6bf",
+    "data/experiments/20261020_p7_radius05_analysis_01/build.txt": "67c3f241be58b0a24c5861a5f64374ed267fe1f4e0da2dc9a142dd1f216e9d03",
+    "data/experiments/20261020_p7_radius05_analysis_01/flake8.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}
