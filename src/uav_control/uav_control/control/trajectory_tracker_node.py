@@ -843,6 +843,7 @@ class TrajectoryTrackerNode(Node):
             self.declare_parameter('p7_common_epoch_enabled', False)
             self.declare_parameter('p7_project_capture_reference', False)
             self.declare_parameter('p7_minimum_camera_center_depth', .02)
+            self.declare_parameter('p7_fast_capture_enabled', False)
             self.p7_common_epoch_enabled = bool(
                 self.get_parameter('p7_common_epoch_enabled').value)
             self.p7_spatial_enabled = bool(self.get_parameter('p7_spatial_enabled').value)
@@ -856,7 +857,9 @@ class TrajectoryTrackerNode(Node):
                     project_capture_reference=bool(
                         self.get_parameter('p7_project_capture_reference').value),
                     minimum_center_depth=float(
-                        self.get_parameter('p7_minimum_camera_center_depth').value))
+                        self.get_parameter('p7_minimum_camera_center_depth').value),
+                    fast_capture_enabled=bool(
+                        self.get_parameter('p7_fast_capture_enabled').value))
             else:
                 self.p7_controller = P7VisualGuidance(config)
             self.p7_diagnostic_pub = self.create_publisher(String, '/control/p7_guidance', 10)
@@ -2266,7 +2269,7 @@ class TrajectoryTrackerNode(Node):
             result = self.p7_controller.step(
                 now, self.p7_actual_dt, feedback_position, feedback_velocity,
                 target.position, target.velocity, getattr(self, 'p7_spatial_image', None),
-                capture=True)
+                capture=True, feedback_stamp=feedback_epoch)
             desired_z = result.vertical_velocity
         else:
             result = self.p7_controller.step(

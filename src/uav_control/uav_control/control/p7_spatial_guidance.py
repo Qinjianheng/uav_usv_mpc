@@ -230,7 +230,7 @@ def spatial_capture_reference(uav_position, target_position, rotation, *,
                               visual_height=.42, capture_radius=.25, sea_surface_z=0.,
                               contact_clearance=.33, relative_velocity=(0., 0., 0.),
                               target_velocity=(0., 0., 0.), response_delay=.15,
-                              minimum_center_depth=.02):
+                              minimum_center_depth=.02, include_entry_floor=True):
     """
     Origin capture corridor with a camera-surface barrier, using measured states.
 
@@ -264,7 +264,7 @@ def spatial_capture_reference(uav_position, target_position, rotation, *,
         rotation, camera_pitch_down=camera_pitch_down,
         camera_translation_flu=camera_translation_flu, target_radius=target_radius,
         visual_height=visual_height, minimum_center_depth=minimum_center_depth)
-    gap = max(float(entry[2]), surface_gap)
+    gap = max(float(entry[2]), surface_gap) if include_entry_floor else surface_gap
     reason = 'CAMERA_CORRIDOR' if surface_gap >= entry[2] else 'CAPTURE_CORRIDOR'
     if np.linalg.norm(entry) >= capture_radius:
         reason += '_ATTITUDE_ENTRY_WAIT'
@@ -280,6 +280,100 @@ def spatial_capture_reference(uav_position, target_position, rotation, *,
     if goal > floor:
         reason += '_SEA_PHASE_WAIT'
     return min(goal, floor), reason
+
+
+def capture_endpoint_reference(rotation, target_z, relative, *, camera_pitch_down,
+                               capture_radius=.25, minimum_center_depth=.01):
+    """Joint sea-safe endpoint with a 1 cm interior capture margin, or None."""
+    relative = np.asarray(relative, dtype=float)
+    if relative.shape != (3,) or not np.isfinite(relative).all() or not math.isfinite(target_z):
+        raise ValueError('INVALID_CAPTURE_ENDPOINT')
+    interior = capture_radius-.01
+    lower = max(.001, target_z+.33)
+    if lower >= interior:
+        return None
+    points = []
+    for gap in np.linspace(lower, interior-1e-8, 13):
+        xy = horizontal_capture_reference(
+            float(gap), rotation, camera_pitch_down=camera_pitch_down,
+            capture_radius=interior, preferred_xy=relative[:2],
+            minimum_center_depth=minimum_center_depth)
+        if xy is not None:
+            points.append(np.array((*xy, gap)))
+    return min(points, key=lambda p: float((p-relative)@(p-relative))) if points else None
+
+
+def visibility_reference(relative_z, rotation, direction, *, camera_pitch_down):
+    """Nearest sea-phase waiting point whose center stays inside the inset frustum."""
+    direction = _unit((*direction, 0.))
+    rotation = np.asarray(rotation, dtype=float)
+    center = rotation@np.array((.18, 0., -.39))+np.array((0., 0., .42))
+    camera = _mount(camera_pitch_down).T@_FLU_FRD@rotation.T
+    a = camera@direction
+    b = camera@(np.array((0., 0., relative_z))-center)
+    lower, upper = 0., 100.
+    # 0.1 rad center inset for waiting; terminal partial-sphere geometry is separate.
+    normals = [(np.array((1., 0., 0.)), .01)]
+    for axis, half in ((1, .87-.1), (2, .7267008566948965-.1)):
+        for sign in (-1., 1.):
+            normal = np.zeros(3)
+            normal[0], normal[axis] = math.tan(half), sign
+            normals.append((normal, 0.))
+    for normal, limit in normals:
+        slope, offset = float(normal@a), float(normal@b)-limit
+        if abs(slope) < 1e-10:
+            if offset < 0:
+                return None
+        elif slope > 0:
+            lower = max(lower, -offset/slope)
+        else:
+            upper = min(upper, -offset/slope)
+    if lower > upper:
+        return None
+    aa, bb, cc = float(a@a), float(2*a@b), float(b@b-.27**2)
+    disc = bb*bb-4*aa*cc
+    if disc > 0 and np.linalg.norm(a*lower+b) < .27:
+        lower = max(lower, (-bb+math.sqrt(disc))/(2*aa))
+    return tuple((lower*direction)[:2]) if lower <= upper else None
+
+
+def stopping_closure(distance, measured_closure, command_closure, target_acceleration,
+                     response_time=.15):
+    """Measured-speed stopping envelope; response bound is not a timestamp correction."""
+    values = (distance, measured_closure, command_closure, target_acceleration, response_time)
+    if not all(math.isfinite(v) for v in values):
+        raise ValueError('INVALID_STOPPING_INPUT')
+    available = max(0., distance)
+    acceleration = max(0., 2.-abs(target_acceleration))
+    if acceleration <= 1e-8:
+        return 0., measured_closure > 0
+    closure = max(0., measured_closure)
+    lag = max(0., measured_closure-command_closure)/2.
+    response = response_time+lag
+    limit = min(2., math.sqrt((acceleration*response)**2
+                              + 2*acceleration*available)-acceleration*response)
+    braking = closure*response+closure**2/(2*acceleration) > available
+    return (0. if braking else limit), braking
+
+
+def braking_visibility_reference(relative_z, rotation, direction, *, camera_pitch_down,
+                                 maximum_acceleration):
+    """
+    Return the waiting boundary at the bounded horizontal braking thrust attitude.
+
+    This is a constraint preview, not a replacement or extrapolation of image pose.
+    The current full-pose constraint is also applied by the caller. Gravity and the
+    existing acceleration limit set the tilt; no fitted camera-angle offset is used.
+    """
+    direction = _unit((*direction, 0.))
+    vertical = _unit((*((maximum_acceleration*direction)[:2]), 9.81))
+    forward = np.asarray(rotation)[:, 0].copy()
+    forward[2] = 0.
+    forward -= vertical*float(forward@vertical)
+    forward = _unit(forward)
+    braking_rotation = np.column_stack((forward, np.cross(vertical, forward), vertical))
+    return visibility_reference(relative_z, braking_rotation, direction[:2],
+                                camera_pitch_down=camera_pitch_down)
 
 
 @dataclass(frozen=True)
@@ -311,6 +405,10 @@ class SpatialOutput(GuidanceOutput):
     horizontal_reference: tuple = (0., 0.)
     capture_horizontal_endpoint: tuple = (0., 0.)
     capture_reference_feasible: bool = False
+    braking_active: bool = False
+    closing_limit: float = 0.
+    reference_rate: tuple = (0., 0.)
+    matching_velocity: tuple = (0., 0., 0.)
 
 
 class P7SpatialGuidance:
@@ -318,7 +416,8 @@ class P7SpatialGuidance:
 
     def __init__(self, config=GuidanceConfig(), *, camera_pitch_down=math.radians(42.),
                  capture_radius=.25, sea_surface_z=0., contact_clearance=.33,
-                 project_capture_reference=False, minimum_center_depth=.02):
+                 project_capture_reference=False, minimum_center_depth=.02,
+                 fast_capture_enabled=False):
         self.config = config
         self.camera_pitch_down = camera_pitch_down
         self.capture_radius = capture_radius
@@ -326,6 +425,7 @@ class P7SpatialGuidance:
         self.contact_clearance = contact_clearance
         self.project_capture_reference = project_capture_reference
         self.minimum_center_depth = minimum_center_depth
+        self.fast_capture_enabled = fast_capture_enabled
         self.reset()
 
     def reset(self, velocity=None, yaw_rate=0.):
@@ -344,9 +444,12 @@ class P7SpatialGuidance:
         self.previous_margin = None
         self.margin_rate = 0.
         self.approach_origin = None
+        self.fast_reference = self.fast_relative_velocity = None
+        self.fast_target_acceleration = np.zeros(2)
+        self.previous_target_stamp = None
 
     def step(self, now, dt, uav_position, uav_velocity, target_position, target_velocity,
-             image, capture=False):
+             image, capture=False, feedback_stamp=None):
         config = self.config
         try:
             up, uv, tp, tv = [np.asarray(v, dtype=float) for v in (
@@ -414,6 +517,10 @@ class P7SpatialGuidance:
             self.margin_rate = (0. if self.previous_margin is None else
                                 (margin-self.previous_margin)/image_dt)
             self.previous_margin, self.last_image_stamp = margin, image.stamp
+        if capture and self.fast_capture_enabled:
+            return self._fast_step(now, dt, up, uv, tp, tv, image, rotation, r,
+                                   los, omega, eu, ev, margin, down, gain_up, entry, new,
+                                   now if feedback_stamp is None else feedback_stamp)
         horizontal = entry[:2]
         feasible = True
         if capture and self.project_capture_reference:
@@ -517,3 +624,151 @@ class P7SpatialGuidance:
             entry_relative=tuple(entry), horizontal_reference=tuple(horizontal),
             capture_horizontal_endpoint=endpoint,
             capture_reference_feasible=feasible)
+
+    def _fast_step(self, now, dt, up, uv, tp, tv, image, rotation, r,
+                   los, omega, eu, ev, margin, down, gain_up, entry, new, epoch):
+        if not math.isfinite(epoch) or not 0 <= now-epoch <= self.config.maximum_input_age:
+            self.reset()
+            return SpatialOutput()
+        config = self.config
+        image_relative = np.subtract(image.target_position, image.uav_position)
+        endpoint = capture_endpoint_reference(
+            rotation, image.target_position[2], image_relative,
+            camera_pitch_down=self.camera_pitch_down, capture_radius=self.capture_radius,
+            minimum_center_depth=self.minimum_center_depth)
+        direction = r[:2]
+        if np.linalg.norm(direction) < 1e-8:
+            direction = (rotation@np.array((1., 0., 0.)))[:2]
+        visible = visibility_reference(float(image_relative[2]), rotation, direction,
+                                       camera_pitch_down=self.camera_pitch_down)
+        # A deceleration pitches the camera up before relative speed has stopped.
+        # Reserve that frustum before slewing the tracking reference toward it.
+        if image_relative[2] > self.capture_radius+.1:
+            braking_visible = braking_visibility_reference(
+                float(image_relative[2]), rotation, direction,
+                camera_pitch_down=self.camera_pitch_down,
+                maximum_acceleration=config.maximum_acceleration)
+            if braking_visible is None:
+                visible = None
+            elif visible is not None and np.linalg.norm(braking_visible) > np.linalg.norm(visible):
+                visible = braking_visible
+        if (visible is None and endpoint is not None
+                and image_relative[2] <= self.capture_radius+.1):
+            # A valid partial-sphere capture need not put its center in the image.
+            visible = tuple(endpoint[:2])
+        partial_hold = visible is None
+        if visible is None:
+            # Valid RGB-D can survive outside the center-only waiting frustum.
+            # Match target velocity and retain safety, without inventing visual loss.
+            visible = tuple(image_relative[:2])
+        desired_reference = np.asarray(visible)
+        terminal_blend = 0.
+        if endpoint is not None:
+            progress = float(np.clip((image_relative[2]-endpoint[2])/.5, 0., 1.))
+            progress = progress*progress*(3.-2.*progress)
+            terminal_blend = 1.-progress
+            desired_reference = endpoint[:2]+progress*(desired_reference-endpoint[:2])
+        if self.fast_reference is None:
+            self.fast_reference = r[:2].copy()
+        reference_delta = _limit(desired_reference-self.fast_reference,
+                                 config.maximum_closing_speed*dt)
+        self.fast_reference += reference_delta
+        reference_rate = reference_delta/dt
+        goal, reason = spatial_capture_reference(
+            image.uav_position, image.target_position, rotation,
+            camera_pitch_down=self.camera_pitch_down, capture_radius=self.capture_radius,
+            sea_surface_z=self.sea_surface_z, contact_clearance=self.contact_clearance,
+            relative_velocity=tv-uv, target_velocity=tv,
+            minimum_center_depth=self.minimum_center_depth, include_entry_floor=False)
+        if endpoint is not None:
+            goal = min(goal, float(image.target_position[2]-endpoint[2]))
+        error = r[:2]-self.fast_reference
+        distance = float(np.linalg.norm(error))
+        error_direction = error/distance if distance > 1e-8 else np.zeros(2)
+        if (self.previous_target_stamp is not None and epoch > self.previous_target_stamp
+                and epoch-self.previous_target_stamp <= .125):
+            interval = epoch-self.previous_target_stamp
+            acceleration = (tv[:2]-self.previous_target_velocity[:2])/interval
+            self.fast_target_acceleration += interval/(interval+.15)*(
+                acceleration-self.fast_target_acceleration)
+        if self.previous_target_stamp is None or epoch > self.previous_target_stamp:
+            self.previous_target_stamp = epoch
+            self.previous_target_velocity = tv.copy()
+        radial = direction/float(np.linalg.norm(direction))
+        measured = float((uv[:2]-tv[:2])@radial)
+        commanded = float((self.previous[:2]-tv[:2])@radial)
+        boundary_distance = max(0., float(np.linalg.norm(r[:2])-np.linalg.norm(desired_reference)))
+        limit, braking = stopping_closure(
+            boundary_distance, measured, commanded,
+            float(np.linalg.norm(self.fast_target_acceleration)),
+            response_time=.15+max(0., now-image.stamp, now-epoch))
+        # Depth adaptation damps extra approach, never the target's 4 m/s matching part.
+        reserve_speed = math.sqrt(2*config.maximum_acceleration*.01)
+        limit = min(limit, reserve_speed+down*config.maximum_closing_speed)
+        forecast = margin+min(0., self.margin_rate)*(.15+max(0., now-image.stamp))
+        limit *= float(np.clip(forecast/.1, 0., 1.))
+        if partial_hold:
+            limit, braking = 0., True
+        blend = float(np.clip((distance-1.)/2., 0., 1.))
+        pn = self.desired_direction[:2]
+        pn = pn/max(float(np.linalg.norm(pn)), 1e-8)
+        approach = (1.-blend)*error_direction+blend*pn
+        norm = float(np.linalg.norm(approach))
+        approach = approach/max(norm, 1e-8)
+        relative_request = _limit(limit*approach-reference_rate, config.maximum_closing_speed)
+        relative_request -= max(0., float(relative_request@radial)-limit)*radial
+        if partial_hold:
+            relative_request = np.zeros(2)
+            reason += '_PARTIAL_VIEW_HOLD'
+        if braking:
+            relative_request -= max(0., float(relative_request@radial))*radial
+        if self.fast_relative_velocity is None:
+            self.fast_relative_velocity = self.previous[:2]-tv[:2]
+        alpha = dt/(dt+.05*gain_up)
+        self.fast_relative_velocity += alpha*(relative_request-self.fast_relative_velocity)
+        if partial_hold:
+            self.fast_relative_velocity[:] = 0.
+        if braking:
+            self.fast_relative_velocity -= max(0., float(
+                self.fast_relative_velocity@radial))*radial
+        self.fast_relative_velocity -= max(
+            0., float(self.fast_relative_velocity@radial)-limit)*radial
+        desired_xy = _limit(tv[:2]+self.fast_relative_velocity, config.maximum_speed)
+        velocity_xy = self.previous[:2]+_limit(desired_xy-self.previous[:2],
+                                               config.maximum_acceleration*dt)
+        vertical = float(np.clip(config.velocity_gain*(goal-up[2]), -.6, .6))
+        vertical = min(vertical, float(np.clip((goal-up[2])/.15, -.6, .6)))
+        center = rotation@np.array((.18, 0., -.39))+np.array((0., 0., .42))
+        reference_ray = _mount(self.camera_pitch_down).T@_FLU_FRD@rotation.T@(
+            np.array((*self.fast_reference, image_relative[2]))-center)
+        desired_error = (terminal_blend*(-reference_ray[1]/reference_ray[0])
+                         if reference_ray[0] > 1e-8 else 0.)
+        yaw_request = config.yaw_gain*(math.atan(shape_image_error(eu))
+                                       - math.atan(shape_image_error(desired_error)))+omega[2]
+        self.yaw_rate += float(np.clip(yaw_request-self.yaw_rate,
+                                       -config.maximum_yaw_acceleration*dt,
+                                       config.maximum_yaw_acceleration*dt))
+        self.yaw_rate = float(np.clip(self.yaw_rate, -config.maximum_yaw_rate,
+                                      config.maximum_yaw_rate))
+        relative_emitted = np.array((*velocity_xy, vertical))-tv
+        if np.linalg.norm(relative_emitted) < .2:
+            self.desired_direction = los.copy()
+        else:
+            self.desired_direction = _unit(relative_emitted)
+        emitted = (velocity_xy-self.previous[:2])/dt
+        velocity = (*velocity_xy, vertical)
+        self.previous, self.last_stamp = np.array(velocity), now
+        return SpatialOutput(
+            valid=True, mode='GEOMETRY_WAIT' if endpoint is None else 'CAPTURE_MATCH',
+            velocity=velocity, acceleration=tuple(emitted), yaw_rate=self.yaw_rate,
+            distance=float(np.linalg.norm(r[:2])), closing_speed=measured,
+            error_u=eu, error_v=ev, vertical_velocity=vertical,
+            distance_3d=float(np.linalg.norm(r)),
+            closing_request=float(relative_request@radial), geometry_reason=reason,
+            goal_z=goal, view_margin=margin, depth_down=down, entry_relative=tuple(entry),
+            desired_direction=tuple(self.desired_direction), los_direction=tuple(los),
+            omega_los=tuple(omega), new_observation=new,
+            horizontal_reference=tuple(self.fast_reference),
+            capture_horizontal_endpoint=tuple(endpoint[:2]) if endpoint is not None else (0., 0.),
+            capture_reference_feasible=endpoint is not None, braking_active=braking,
+            closing_limit=limit, reference_rate=tuple(reference_rate), matching_velocity=tuple(tv))
