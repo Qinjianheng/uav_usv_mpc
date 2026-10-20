@@ -839,11 +839,14 @@ class TrajectoryTrackerNode(Node):
             self.declare_parameter('p7_spatial_enabled', False)
             if not self.has_parameter('p7_camera_pitch_down'):
                 self.declare_parameter('p7_camera_pitch_down', math.radians(42.))
+            if not self.has_parameter('p7_camera_horizontal_fov'):
+                self.declare_parameter('p7_camera_horizontal_fov', 1.74)
             self.declare_parameter('p7_capture_radius', .25)
             self.declare_parameter('p7_common_epoch_enabled', False)
             self.declare_parameter('p7_project_capture_reference', False)
             self.declare_parameter('p7_minimum_camera_center_depth', .02)
             self.declare_parameter('p7_fast_capture_enabled', False)
+            self.declare_parameter('p7_precision_capture_enabled', False)
             self.p7_common_epoch_enabled = bool(
                 self.get_parameter('p7_common_epoch_enabled').value)
             self.p7_spatial_enabled = bool(self.get_parameter('p7_spatial_enabled').value)
@@ -851,6 +854,7 @@ class TrajectoryTrackerNode(Node):
                 from .p7_spatial_guidance import P7SpatialGuidance
                 self.p7_controller = P7SpatialGuidance(
                     config, camera_pitch_down=self.get_parameter('p7_camera_pitch_down').value,
+                    camera_horizontal_fov=self.get_parameter('p7_camera_horizontal_fov').value,
                     capture_radius=self.get_parameter('p7_capture_radius').value,
                     sea_surface_z=self.flight_guidance.sea_surface_z,
                     contact_clearance=max(.33, self.flight_guidance.approach_contact_clearance),
@@ -859,7 +863,9 @@ class TrajectoryTrackerNode(Node):
                     minimum_center_depth=float(
                         self.get_parameter('p7_minimum_camera_center_depth').value),
                     fast_capture_enabled=bool(
-                        self.get_parameter('p7_fast_capture_enabled').value))
+                        self.get_parameter('p7_fast_capture_enabled').value),
+                    precision_capture_enabled=bool(
+                        self.get_parameter('p7_precision_capture_enabled').value))
             else:
                 self.p7_controller = P7VisualGuidance(config)
             self.p7_diagnostic_pub = self.create_publisher(String, '/control/p7_guidance', 10)
@@ -2277,6 +2283,12 @@ class TrajectoryTrackerNode(Node):
                 target.position[:2], target.velocity[:2], *image,
                 approach_distance=approach_distance)
         if not result.valid:
+            if getattr(self.p7_controller, 'precision_capture_enabled', False):
+                self.p7_diagnostic_pub.publish(String(data=json.dumps(dict(
+                    vars(result), stamp=now, image_stamp=image[0],
+                    feedback_epoch=feedback_epoch, diagnostic_only=True,
+                    controller_velocity=list(result.velocity), velocity=list(previous),
+                    last_emitted_velocity=list(previous), command_emitted=False))))
             return self._search_or_recovery_command(current, dt)
         self.flight_guidance.previous_velocity = previous
         command = self.flight_guidance._velocity_command(
@@ -2291,6 +2303,9 @@ class TrajectoryTrackerNode(Node):
             feedback_source_stamp=feedback_source_stamp,
             feedback_uav_position=list(feedback_position),
             feedback_target_position=list(target.position),
+            feedback_uav_velocity=list(feedback_velocity),
+            feedback_target_velocity=list(target.velocity),
+            controller_velocity=list(result.velocity),
             capture_enabled=capture, approach_distance=approach_distance,
             velocity=list(command.velocity)))))
         return command

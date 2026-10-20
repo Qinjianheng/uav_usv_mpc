@@ -2,7 +2,7 @@
 
 P7 专用配置已完成视觉/KF → BCTRA → MINCO FOLLOW，以及 Y 后的 IBVS＋PNG 安全接近；Tracker 是唯一 PX4 指令发布者。运行、真实飞行曲线和边界见 [P7 使用与验证](docs/current/p7_progress.md)。原 baseline/IMM 研究入口保留；MPC 尚未作为在线控制器接管。
 
-当前捕获判据按用户要求恢复为 **0.5 m**，默认使用 28°／5 m 与旧 P7。2026-10-20 单次恒速八字在 Y 后约 14.48 s 捕获并暂停世界；独立原生模型冻结复核记录缺失，完整边界与 0.25 m 失败原因见[本次验证](docs/current/p7_radius05_validation_20261020.md)。显式三维候选也同步为 28°／5 m／0.5 m，但未由本轮验收。
+当前默认捕获判据为 **0.5 m**，使用 28°／5 m 与旧 P7。2026-10-20 单次恒速八字在 Y 后约 14.48 s 捕获并暂停世界；独立原生模型冻结复核记录缺失，边界见[本次验证](docs/current/p7_radius05_validation_20261020.md)。显式 P7.5 三维候选为 28°／5 m／0.25 m，仍有捕获几何阻断，未获飞行资格，不由一键脚本启用，见[P7.5 报告](docs/current/p75_variable_s_fast_precision_validation.md)。
 
 历史[P53同配置F2/F3验收](docs/current/p53_comprehensive_validation.md)作为成功对照保留；本轮 P7 独立恢复与飞行结果见上述入口。普通 baseline、P53 与 P7 配置分别保留，不混称同一轮验证。
 

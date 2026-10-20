@@ -1,6 +1,6 @@
-# P7.4 EXPERIMENTAL: 28-degree/5m, strict 0.25 m; current-source qualification required.
-# NOT FLIGHT QUALIFIED: reproducible near-field RGB-D failure remains.
-# Opt-in only. See docs/current/p74_fast_capture025_validation.md.
+# P7.5 EXPERIMENTAL: 28-degree/5m, strict 0.25 m; current-source qualification required.
+# NOT FLIGHT QUALIFIED: no executable dynamic 0.25 m capture corridor yet.
+# Opt-in only. See docs/current/p75_variable_s_fast_precision_validation.md.
 # P7: X -> KF/BCTRA + R11 MINCO FOLLOW; Y -> bounded IBVS/PNG.
 # P7 spatial capture: 28-degree front camera, -5 m FOLLOW; legacy P7 remains selectable.
 trajectory_impact_sim:
@@ -310,6 +310,7 @@ trajectory_tracker_node:
     p7_guidance_enabled: true
     p7_spatial_enabled: true
     p7_fast_capture_enabled: true
+    p7_precision_capture_enabled: true
     p7_common_epoch_enabled: true
     p7_project_capture_reference: true
     p7_minimum_camera_center_depth: 0.01

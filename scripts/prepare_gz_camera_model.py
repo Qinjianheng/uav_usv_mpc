@@ -10,7 +10,8 @@ import xml.etree.ElementTree as ET
 import yaml
 
 
-def prepare(source, output, *, enable_down_camera=False, front_camera_pitch_down=None):
+def prepare(source, output, *, enable_down_camera=False, front_camera_pitch_down=None,
+            front_camera_horizontal_fov=None):
     """Keep body geometry and front optics; optionally omit the down sensor."""
     source, output = Path(source).resolve(), Path(output).resolve()
     if output == source or source in output.parents:
@@ -32,10 +33,17 @@ def prepare(source, output, *, enable_down_camera=False, front_camera_pitch_down
         values = pose.text.split()
         values[4] = repr(float(front_camera_pitch_down))
         pose.text = ' '.join(values)
+    if front_camera_horizontal_fov is not None:
+        if (not math.isfinite(front_camera_horizontal_fov)
+                or not 0 < front_camera_horizontal_fov < math.pi):
+            raise ValueError('invalid front camera horizontal FOV')
+        camera = tree.find(".//sensor[@name='front_tof_camera']/camera/horizontal_fov")
+        camera.text = repr(float(front_camera_horizontal_fov))
     shutil.copytree(source, output)
     if not enable_down_camera:
         down.remove(sensor)
-    if not enable_down_camera or front_camera_pitch_down is not None:
+    if (not enable_down_camera or front_camera_pitch_down is not None
+            or front_camera_horizontal_fov is not None):
         tree.write(output / 'model.sdf', encoding='utf-8', xml_declaration=True)
 
 
@@ -48,12 +56,14 @@ def main():
                         default='false')
     parser.add_argument('--flight-config', type=Path)
     args = parser.parse_args()
-    pitch = None
+    pitch = hfov = None
     if args.flight_config is not None:
         config = yaml.safe_load(args.flight_config.read_text())
         pitch = config['rgbd_target_localizer']['ros__parameters']['camera_pitch_down']
+        hfov = config['rgbd_target_localizer']['ros__parameters']['horizontal_fov']
     prepare(args.source, args.output,
-            enable_down_camera=args.enable_down_camera == 'true', front_camera_pitch_down=pitch)
+            enable_down_camera=args.enable_down_camera == 'true', front_camera_pitch_down=pitch,
+            front_camera_horizontal_fov=hfov)
 
 
 if __name__ == '__main__':

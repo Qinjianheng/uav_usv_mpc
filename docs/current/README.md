@@ -6,6 +6,7 @@ P7 配置已实现 X 后 KF/BCTRA/MINCO FOLLOW、Y 后 IBVS/PNG 安全接近，�
 
 | 文档 | 用途 |
 |---|---|
+| [P7.5 变速 S 候选与几何阻断](p75_variable_s_fast_precision_validation.md) | 两相位离线保持视觉 40 s，最近约 0.471/0.477 m；28° 正常匹配姿态捕获几何冲突，未放行 SITL |
 | [P7.4 快速 0.25 m 候选与阻断](p74_fast_capture025_validation.md) | 静态内缩点存在；动态近场 RGB-D 仍失效，未获飞行资格，A/B/C 未执行；默认 0.50 m 未改 |
 | [恢复 0.5 m 与单次恒速八字](p7_radius05_validation_20261020.md) | 28°/5 m、14.48 s 捕获与世界暂停；区分判据放宽和控制精度，解释 0.25 m 参考/安全/可见性不一致 |
 | [相机/高度与同刻水平参考复验](p7_angle_height_retest_20261019.md) | 38°/5 m 两次 FOLLOW 均 100% 实际 MINCO；两次捕获仍失败，仅与原 28° 对比，保留不可达窗口与恢复交接边界 |
