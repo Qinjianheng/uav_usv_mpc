@@ -1,0 +1,146 @@
+{
+  "errors": [],
+  "survivors": [],
+  "late_components": {
+    "events": [
+      {
+        "identity": {
+          "pid": 86758,
+          "pgid": 86758,
+          "start": "7953230"
+        },
+        "signal": 2
+      },
+      {
+        "identity": {
+          "pid": 86767,
+          "pgid": 86758,
+          "start": "7953232"
+        },
+        "signal": 2
+      },
+      {
+        "identity": {
+          "pid": 86794,
+          "pgid": 86794,
+          "start": "7953442"
+        },
+        "signal": 2
+      },
+      {
+        "identity": {
+          "pid": 86804,
+          "pgid": 86794,
+          "start": "7953444"
+        },
+        "signal": 2
+      },
+      {
+        "identity": {
+          "pid": 86861,
+          "pgid": 86794,
+          "start": "7953450"
+        },
+        "signal": 2
+      },
+      {
+        "identity": {
+          "pid": 86862,
+          "pgid": 86794,
+          "start": "7953450"
+        },
+        "signal": 2
+      },
+      {
+        "identity": {
+          "pid": 86869,
+          "pgid": 86794,
+          "start": "7953451"
+        },
+        "signal": 2
+      },
+      {
+        "identity": {
+          "pid": 86870,
+          "pgid": 86794,
+          "start": "7953458"
+        },
+        "signal": 2
+      },
+      {
+        "identity": {
+          "pid": 86871,
+          "pgid": 86794,
+          "start": "7953458"
+        },
+        "signal": 2
+      },
+      {
+        "identity": {
+          "pid": 86872,
+          "pgid": 86794,
+          "start": "7953459"
+        },
+        "signal": 2
+      },
+      {
+        "identity": {
+          "pid": 87229,
+          "pgid": 87229,
+          "start": "7953966"
+        },
+        "signal": 2
+      },
+      {
+        "identity": {
+          "pid": 87236,
+          "pgid": 87229,
+          "start": "7953968"
+        },
+        "signal": 2
+      },
+      {
+        "identity": {
+          "pid": 87413,
+          "pgid": 87413,
+          "start": "7954470"
+        },
+        "signal": 2
+      },
+      {
+        "identity": {
+          "pid": 87448,
+          "pgid": 87413,
+          "start": "7954500"
+        },
+        "signal": 2
+      },
+      {
+        "identity": {
+          "pid": 87449,
+          "pgid": 87413,
+          "start": "7954521"
+        },
+        "signal": 2
+      },
+      {
+        "identity": {
+          "pid": 86758,
+          "pgid": 86758,
+          "start": "7953230"
+        },
+        "signal": 15
+      },
+      {
+        "identity": {
+          "pid": 87413,
+          "pgid": 87413,
+          "start": "7954470"
+        },
+        "signal": 15
+      }
+    ],
+    "errors": [],
+    "survivors": []
+  }
+}

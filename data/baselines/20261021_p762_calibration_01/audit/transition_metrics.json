@@ -1,0 +1,10 @@
+{
+  "reset_epoch": 1792558220.3797169,
+  "first_executed_collective_below_095": 1792558220.6198344,
+  "native_collective_withdrawal_delay": 0.24011754989624023,
+  "first_failure_raw_line": 35919,
+  "implementation_commit": "a4779cd28e7dce53ade41f0dc9492aa70ad1547c",
+  "A2_run": false,
+  "A_manifest_generated": false,
+  "B_allowed": false
+}

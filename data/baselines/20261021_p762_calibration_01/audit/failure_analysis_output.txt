@@ -1,0 +1,67 @@
+{
+  "first_failure": {
+    "kind": "failure",
+    "phase": "RESET",
+    "phase_elapsed": 0.21887850761413574,
+    "reason": "CALIBRATION_MOTION_ENVELOPE"
+  },
+  "failure_epoch": 1792558220.5985954,
+  "control_source": {
+    "kind": "paired_state",
+    "phase": "RESET",
+    "phase_elapsed": 0.21211934089660645,
+    "stamp": 1792558220.5918362,
+    "receipt": 1792558220.5985055,
+    "age": 0.006673097610473633,
+    "pose_stamp": 1792558220.5918362,
+    "ref_alt": 0.13209600746631622
+  },
+  "paired_state": {
+    "kind": "state",
+    "phase": "RESET",
+    "phase_elapsed": 0.21211934089660645,
+    "stamp": 1792558220.5918362,
+    "p": [
+      0.02829611673951149,
+      -0.008458385244011879,
+      -9.646602630615234
+    ],
+    "v": [
+      0.16136029362678528,
+      -0.0037004384212195873,
+      -7.405069351196289
+    ],
+    "a": [
+      0.6502640247344971,
+      0.007802628446370363,
+      -17.86073112487793
+    ],
+    "age": 0.005345582962036133,
+    "px4_timestamp_sample": 1792558220592064,
+    "native_timestamp_sample": 44664000
+  },
+  "speed_norm": 7.406828129073231,
+  "tilt_projection": 0.023173401793335636,
+  "horizontal_from_first_state": 0.018564930007625262,
+  "paired_age": {
+    "count": 6767,
+    "p50": 0.0185699462890625,
+    "p95": 0.03087608814239502,
+    "max": 0.12188267707824707
+  },
+  "native_pose_bracket_failures": 0,
+  "minimum_active_calibration_clearance": 6.69937272905623,
+  "context_rows": 2322,
+  "scope": "Offline analysis of immutable actual A1_03, no qualification"
+}
+-1.9061009883880615 {'kind': 'mode', 'phase': 'RESET', 'phase_elapsed': 1.5279290676116943, 'flags': {'offboard': True, 'rates': True, 'position': False, 'velocity': True, 'attitude': True, 'altitude': True, 'climb_rate': True}}
+-1.4012951850891113 {'kind': 'mode', 'phase': 'RESET', 'phase_elapsed': 2.0327348709106445, 'flags': {'offboard': True, 'rates': True, 'position': False, 'velocity': True, 'attitude': True, 'altitude': True, 'climb_rate': True}}
+-1.0996613502502441 {'kind': 'phase', 'phase': 'BODY_PREP', 'phase_elapsed': 0.0, 'stamp': 1792558219.498934, 'target': 'BODY_PREP'}
+-0.8983175754547119 {'kind': 'mode', 'phase': 'BODY_PREP', 'phase_elapsed': 0.20134377479553223, 'flags': {'offboard': True, 'rates': True, 'position': False, 'velocity': False, 'attitude': False, 'altitude': False, 'climb_rate': False}}
+-0.44457435607910156 {'kind': 'phase', 'phase': 'THRUST_1.000', 'phase_elapsed': 0.0, 'stamp': 1792558220.154021, 'target': 'THRUST_1.000'}
+-0.3937399387359619 {'kind': 'mode', 'phase': 'THRUST_1.000', 'phase_elapsed': 0.05083441734313965, 'flags': {'offboard': True, 'rates': True, 'position': False, 'velocity': False, 'attitude': False, 'altitude': False, 'climb_rate': False}}
+-0.21887850761413574 {'kind': 'phase', 'phase': 'RESET', 'phase_elapsed': 0.0, 'stamp': 1792558220.3797169, 'target': 'RESET'}
+0.0 {'kind': 'failure', 'phase': 'RESET', 'phase_elapsed': 0.21887850761413574, 'reason': 'CALIBRATION_MOTION_ENVELOPE'}
+1.2636184692382812e-05 {'kind': 'phase', 'phase': 'LAND', 'phase_elapsed': 0.0, 'stamp': 1792558220.598608, 'target': 'LAND'}
+0.01376795768737793 {'kind': 'mode', 'phase': 'LAND', 'phase_elapsed': 0.013755321502685547, 'flags': {'offboard': True, 'rates': True, 'position': False, 'velocity': True, 'attitude': True, 'altitude': True, 'climb_rate': True}}
+0.025870323181152344 {'kind': 'mode', 'phase': 'LAND', 'phase_elapsed': 0.02585768699645996, 'flags': {'offboard': False, 'rates': True, 'position': True, 'velocity': True, 'attitude': True, 'altitude': True, 'climb_rate': True}}
