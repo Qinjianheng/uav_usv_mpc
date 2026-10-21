@@ -82,9 +82,37 @@ class NativePoseHistory:
         raise ValueError('P76_NATIVE_POSE_BRACKET')
 
 
+class NativeReferenceHistory:
+    """Retain PX4's actual altitude datum; no sea truth lookup or state extrapolation."""
+
+    def __init__(self):
+        self.samples = deque(maxlen=256)
+
+    def add(self, stamp, ref_alt):
+        """Save strictly ordered, native-mapped local-frame datum samples."""
+        if not all(math.isfinite(v) for v in (stamp, ref_alt)) or stamp <= 0:
+            raise ValueError('P76_LOCAL_REFERENCE_INVALID')
+        if not self.samples or stamp > self.samples[-1][0]:
+            self.samples.append((stamp, ref_alt))
+
+    def at(self, stamp):
+        """Require an exact epoch or <=50 ms bracket with an unchanged frame datum."""
+        for source, ref_alt in self.samples:
+            if abs(source-stamp) < 1e-9:
+                return ref_alt
+        for left, right in zip(self.samples, list(self.samples)[1:]):
+            if left[0] < stamp < right[0] and right[0]-left[0] <= .05+1e-9:
+                if abs(left[1]-right[1]) > 1e-6:
+                    raise ValueError('P76_LOCAL_REFERENCE_CHANGED')
+                return left[1]
+        raise ValueError('P76_LOCAL_REFERENCE_BRACKET')
+
+
 def install_odometry_relay(node):
     """Reuse the localizer's causal clock map without replacing native sample epochs."""
-    from px4_msgs.msg import VehicleControlMode, VehicleOdometry, VehicleThrustSetpoint
+    from px4_msgs.msg import (
+        VehicleControlMode, VehicleLocalPosition, VehicleOdometry, VehicleThrustSetpoint,
+    )
     from rclpy.qos import qos_profile_sensor_data
     from copy import copy
     from uav_usv_interfaces.msg import NativeAttitude
@@ -123,6 +151,24 @@ def install_odometry_relay(node):
         VehicleOdometry, '/fmu/out/vehicle_odometry', receive, native_qos)
     node.native_thrust_pub = node.create_publisher(String, '/navigation/native_thrust', 10)
     node.native_mode_pub = node.create_publisher(String, '/navigation/px4_control_mode', 10)
+    node.native_reference_pub = node.create_publisher(
+        String, '/navigation/native_local_reference', 10)
+
+    def reference(message):
+        if (getattr(node, 'navigation_frame_fault', '') or not message.z_global
+                or not message.z_valid or not math.isfinite(message.ref_alt)):
+            return
+        wire = int(message.timestamp_sample)
+        now = node._ros_seconds()
+        mapped, raw, _ = node._map_px4_pose_stamp(wire*1e-6, now)
+        if wire <= 0 or mapped is None or not 0 <= now-mapped <= .125:
+            return
+        node.native_reference_pub.publish(String(data=json.dumps(dict(
+            stamp=mapped, native_timestamp=round(raw*1e6), px4_timestamp=wire,
+            ref_alt=float(message.ref_alt), reference='base_link'))))
+
+    node.native_reference_sub = node.create_subscription(
+        VehicleLocalPosition, '/fmu/out/vehicle_local_position_v1', reference, native_qos)
 
     def relay(message, is_thrust):
         if getattr(node, 'navigation_frame_fault', ''):

@@ -193,11 +193,16 @@ LAB_SESSION_DIR="$(mktemp -d "${TMPDIR:-/tmp}/uav_usv_lab.XXXXXX")"
 LAB_RESTART_MARKER="${LAB_SESSION_DIR}/restarting"
 LAB_GZ_SERVER_CONFIG="${LAB_SESSION_DIR}/magnetometer_enu.config"
 LAB_CAMERA_MODELS="${LAB_SESSION_DIR}/models"
-if [[ "${EXPERIMENT_LAUNCH}" == "p76_yan_paper.launch.py" ]]; then
+if [[ "${EXPERIMENT_LAUNCH}" == "p76_yan_paper.launch.py" \
+   || "${EXPERIMENT_LAUNCH}" == "p76_px4_probe.launch.py" ]]; then
     P76_CONTRACT="${UAV_USV_P76_CONTRACT:-${WS_ROOT}/src/uav_usv_bringup/config/p76_contract.yaml}"
+    p76_qualification_args=()
+    if [[ "${EXPERIMENT_LAUNCH}" == "p76_yan_paper.launch.py" ]]; then
+        p76_qualification_args+=(--require-flight)
+    fi
     python3 "${WS_ROOT}/scripts/p76_config_audit.py" \
         --contract "${P76_CONTRACT}" --profile "${EXPERIMENT_CONFIG_FILE}" \
-        --prepare-model "${LAB_CAMERA_MODELS}" --require-flight
+        --prepare-model "${LAB_CAMERA_MODELS}" "${p76_qualification_args[@]}"
     export UAV_USV_P76_MODEL_ROOT="${LAB_CAMERA_MODELS}"
 else
     python3 "${WS_ROOT}/scripts/prepare_gz_camera_model.py" \

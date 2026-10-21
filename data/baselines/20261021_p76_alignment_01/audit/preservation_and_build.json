@@ -1,0 +1,17 @@
+{
+  "px4_existing_sources_unchanged": {
+    "ROMFS/px4fmu_common/init.d-posix/CMakeLists.txt": true,
+    "ROMFS/px4fmu_common/init.d-posix/rcS": true,
+    "src/modules/simulation/gz_bridge/GZBridge.cpp": true,
+    "ROMFS/px4fmu_common/init.d-posix/px4-rc.gzgnss": true,
+    "ROMFS/px4fmu_common/init.d-posix/px4-rc.gzmag_enu": true,
+    "src/modules/simulation/gz_bridge/GzMagneticField.hpp": true
+  },
+  "default_p7_sha256": "768fe2e3e9ebedb59e56e0bb31791889661bf2a0d313471c6a3e95af5aa4c1dc",
+  "px4_binary_sha256": "dcf54c971b27a065a1e2bc210e45b88f7fd545b3dc1953ad5ef680f294628ef2",
+  "px4_dds_sha256": "72dd5264c31592dd2c7e5c580eaa8732a2d8d3f03542be9a7522c4656f7952f3",
+  "px4_head": "de8158101c96ad6b04170dc91f087148104c58eb",
+  "remotes": "github\thttps://github.com/Qinjianheng/uav_usv_mpc.git (fetch)\ngithub\thttps://github.com/Qinjianheng/uav_usv_mpc.git (push)\norigin\thttps://github.com/Qinjianheng/uav_usv_mpc.git (fetch)\norigin\thttps://github.com/Qinjianheng/uav_usv_mpc.git (push)\n",
+  "branch": "codex/p76-paper-faithful-yolo-dkf",
+  "before_head": "0bb5f4909967c7c4fb285bed1b269a96fac551e5"
+}

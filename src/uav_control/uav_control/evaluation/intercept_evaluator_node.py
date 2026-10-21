@@ -159,6 +159,18 @@ class InterceptEvaluatorNode(Node):
         self.declare_parameter('sea_surface_z', 0.0)
         self.declare_parameter('enable_sea_contact_failure', True)
         self.declare_parameter('body_lower_extent', 0.23)
+        self.declare_parameter('p76_body_geometry_enabled', False)
+        self.declare_parameter('p76_contract_file', '')
+        self.p76_body_geometry = None
+        if self.get_parameter('p76_body_geometry_enabled').value:
+            import os
+            from uav_control.common.p76_contract import load_contract
+            from uav_control.common.p76_model import verify_model
+            from uav_control.common.p76_body_geometry import collision_envelope
+            contract = load_contract(self.get_parameter('p76_contract_file').value)
+            model_root = os.environ.get('UAV_USV_P76_MODEL_ROOT', '')
+            verify_model(model_root, contract)
+            self.p76_body_geometry = collision_envelope(model_root)
         self.declare_parameter('maximum_duration', 30.0)
         self.declare_parameter('detailed_diagnostics_enabled', False)
         self.declare_parameter('visual_evaluation_enabled', True)
@@ -1334,6 +1346,7 @@ class InterceptEvaluatorNode(Node):
             self.performance_values[str(name)] = value
 
     def _config_snapshot(self):
+        physical = getattr(self, 'p76_body_geometry', None)
         return {
             'capture_geometry_source': self.capture_geometry_source,
             'evaluation_capture_radius': self.evaluation_capture_radius,
@@ -1342,10 +1355,11 @@ class InterceptEvaluatorNode(Node):
             'enable_sea_contact_failure': (
                 self.evaluator.enable_sea_contact_failure
             ),
-            # Body-water contact is tested body_lower_extent below the PX4
-            # reference point, independently of any control-barrier state.
-            'body_lower_extent': self.evaluator.body_lower_extent,
-            'body_contact_z': self.evaluator.body_contact_z,
+            'body_contact_geometry': ('SDF_MODEL_ORIGIN_FULL_ATTITUDE' if physical
+                                      else 'LEGACY_REFERENCE_LOWER_EXTENT'),
+            'body_collision_envelope': physical,
+            'body_lower_extent': None if physical else self.evaluator.body_lower_extent,
+            'body_contact_z': None if physical else self.evaluator.body_contact_z,
             'maximum_duration': self.evaluator.maximum_duration,
             'truth_topic': self.truth_topic,
             'truth_role': self.truth_role,
@@ -1826,6 +1840,8 @@ class InterceptEvaluatorNode(Node):
         }
         sample = getattr(self, 'last_native_capture_sample', None)
         summary['capture_geometry_source'] = self.capture_geometry_source
+        if getattr(self, 'p76_body_geometry', None) is not None:
+            summary['body_contact_geometry'] = 'SDF_MODEL_ORIGIN_FULL_ATTITUDE'
         if sample is not None:
             summary['native_capture_sample'] = dict(
                 stamp=sample.stamp, native_stamp=sample.native_stamp,
@@ -1980,9 +1996,23 @@ class InterceptEvaluatorNode(Node):
                 continue
             self.last_synchronized_stamp = now
             if native:
-                result = self.evaluator.update(now, uav, truth,
-                                               capture_segment=sample.segment_valid,
-                                               sea_segment=sample.velocity_valid)
+                physical = getattr(self, 'p76_body_geometry', None)
+                body_lowest = None
+                if physical is not None:
+                    from uav_control.common.p76_body_geometry import lowest_world_z
+                    from .pose_frame_diagnostics import gazebo_model_rotation_ned_frd
+                    quaternion = sample.uav_quaternion_enu_flu
+                    if (len(quaternion) != 4 or not all(map(math.isfinite, quaternion))
+                            or abs(sum(q*q for q in quaternion)-1.) > 1e-5):
+                        # Invalid physical pose cannot silently use a level-body assumption.
+                        continue
+                    body_lowest = lowest_world_z(
+                        physical['vertices_frd'], uav.position,
+                        gazebo_model_rotation_ned_frd(quaternion))
+                result = self.evaluator.update(
+                    now, uav, truth, capture_segment=sample.segment_valid and physical is None,
+                    sea_segment=sample.velocity_valid and physical is None,
+                    body_lowest_z=body_lowest)
             else:
                 result = self.evaluator.update(now, uav, truth)
             if native:
@@ -2002,6 +2032,7 @@ class InterceptEvaluatorNode(Node):
                     kind='EVALUATED', stamp=now, native_stamp=sample.native_stamp,
                     decision_stamp=run_now, uav_position=uav.position,
                     target_position=truth.position,
+                    body_lowest_z=body_lowest,
                     velocity_valid=sample.velocity_valid, segment_valid=sample.segment_valid,
                     maximum_bracket=sample.maximum_bracket,
                     uav_clock_bracket=sample.uav_clock_bracket,

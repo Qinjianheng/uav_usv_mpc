@@ -316,7 +316,7 @@ trajectory_tracker_node:
     p7_project_capture_reference: true
     p7_minimum_camera_center_depth: 0.01
     p7_follow_geometry_enabled: true
-    p7_camera_pitch_down: 1.1344640137963142
+    p7_camera_pitch_down: 0.5585053606381855
     p7_capture_radius: 0.25
     p7_navigation_constant: 3.0
     p7_standoff_distance: 4.5
@@ -340,7 +340,7 @@ trajectory_tracker_node:
     p7_camera_translation_flu:
     - -0.25
     - 0.0
-    - 0.55
+    - 0.31000000000000005
     p76_png_ky: 3.0
     p76_png_kz: 3.0
     p76_ibvs_kp: 0.03
@@ -358,7 +358,8 @@ trajectory_tracker_node:
     p76_maximum_body_angular_acceleration: 3.0
     p76_capture_radius: 0.25
     p76_sea_surface_z: 0.0
-    p76_minimum_origin_height: 0.33
+    p76_sea_altitude_msl: 0.0
+    p76_minimum_body_clearance: 0.02
     p76_angular_rate_calibration_required: true
     p76_bodyrate_calibration_manifest: ''
     p76_follow_qualification_manifest: ''
@@ -401,6 +402,8 @@ intercept_evaluator_node:
     gazebo_pause_timeout_ms: 250
     gazebo_pause_maximum_attempts: 2
     gazebo_pause_retry_delay: 0.05
+    p76_body_geometry_enabled: true
+    p76_contract_file: /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/p76_contract.yaml
 target_kalman_filter:
   ros__parameters:
     frame_id: local_ned
@@ -441,10 +444,10 @@ rgbd_target_localizer:
     image_pair_buffer_size: 8
     time_pair_diagnostics_enabled: false
     localization_rate_hz: 20.0
-    camera_pitch_down: 1.1344640137963142
+    camera_pitch_down: 0.5585053606381855
     camera_translation_x: -0.25
     camera_translation_y: 0.0
-    camera_translation_z: 0.55
+    camera_translation_z: 0.31000000000000005
     target_radius: 0.25
     target_reference_z_offset: 0.42
     geometry_diagnostics_enabled: true
@@ -473,7 +476,7 @@ front_tof_monitor:
     minimum_depth: 0.05
     maximum_depth: 25.0
     evaluation_window_seconds: 5.0
-    camera_pitch_down: 1.1344640137963142
+    camera_pitch_down: 0.5585053606381855
     target_visual_height_offset: 0.42
     analysis_rate_hz: 5.0
     gazebo_world_name: default
@@ -489,7 +492,7 @@ dual_tof_selector:
     selection_rate_hz: 10.0
 target_bearing_node:
   ros__parameters:
-    camera_pitch_down: 1.1344640137963142
+    camera_pitch_down: 0.5585053606381855
     color_topic: /camera/front/image_raw
     bearing_topic: /perception/front/target_bearing
     horizontal_fov: 1.74
@@ -533,7 +536,7 @@ target_predictor_node:
 p4_follow_planner_node:
   ros__parameters:
     p7_follow_geometry_enabled: true
-    p7_camera_pitch_down: 1.1344640137963142
+    p7_camera_pitch_down: 0.5585053606381855
     use_sim_time: false
     shadow_rate_hz: 5.0
     gazebo_world_name: default
@@ -588,7 +591,7 @@ p4_follow_planner_node:
     p7_camera_translation_flu:
     - -0.25
     - 0.0
-    - 0.55
+    - 0.31000000000000005
     p7_camera_horizontal_fov: 1.74
     p76_mode_topic: /control/p76_mode
 yolo_target_detector:

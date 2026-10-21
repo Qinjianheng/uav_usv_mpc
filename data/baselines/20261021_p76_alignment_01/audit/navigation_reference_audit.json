@@ -1,0 +1,16 @@
+{
+  "scope": "Offline disarmed frame diagnosis only; no online truth correction",
+  "source": "/home/qin/Projects/PX4-Autopilot/build/px4_sitl_default/rootfs/log/2026-10-20/23_49_53.ulg",
+  "sha256": "319f29eccccffcc8f86757557a7f9017a2a169371ff408d3ac23fc0bccaf5947",
+  "frame_adapter": "SDF model->base_link; local sea NED Z = PX4 ref_alt - known sea MSL altitude",
+  "samples": {
+    "vehicle_local_position": {
+      "z": 0.0012804940342903137,
+      "ref_alt": 0.23427601158618927
+    },
+    "vehicle_local_position_groundtruth": {
+      "z": 0.013000174425542355,
+      "ref_alt": 0.2258351743221283
+    }
+  }
+}

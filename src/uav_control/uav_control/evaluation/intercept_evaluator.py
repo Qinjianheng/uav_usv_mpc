@@ -685,6 +685,7 @@ class InterceptEvaluatorCore:
         self.previous_time = None
         self.previous_uav = None
         self.previous_target = None
+        self.previous_body_lowest_z = None
         self.detail = ''
         self.minimum_distance = math.inf
         self.closest_horizontal_distance = math.inf
@@ -760,7 +761,7 @@ class InterceptEvaluatorCore:
         valid = [value for value in candidates if 0.0 <= value <= 1.0]
         return min(valid) if valid else None
 
-    def _sea_fraction(self, start_z, end_z):
+    def _sea_fraction(self, start_z, end_z, contact_z=None):
         """
         Return where the body first reaches the water inside the interval.
 
@@ -771,7 +772,7 @@ class InterceptEvaluatorCore:
         """
         if not self.enable_sea_contact_failure:
             return None
-        contact_z = self.body_contact_z
+        contact_z = self.body_contact_z if contact_z is None else contact_z
         if start_z >= contact_z:
             return 0.0
         delta = end_z - start_z
@@ -845,11 +846,20 @@ class InterceptEvaluatorCore:
         )
         return self.result
 
-    def update(self, now, uav, target, *, capture_segment=True, sea_segment=True):
+    def update(self, now, uav, target, *, capture_segment=True, sea_segment=True,
+               body_lowest_z=None):
         """Consume synchronized truth and return a terminal event."""
         if self.started_at is None or self.result is not None:
             return self.result
         now = float(now)
+        physical = body_lowest_z is not None
+        if physical and not math.isfinite(body_lowest_z):
+            raise ValueError('INVALID_BODY_LOWEST_POINT')
+        contact_z = self.sea_surface_z if physical else self.body_contact_z
+        current_z = float(body_lowest_z) if physical else uav.position[2]
+        previous_z = (self.previous_body_lowest_z if physical
+                      else self.previous_uav.position[2] if self.previous_uav else None)
+        sea_segment = sea_segment and (not physical or previous_z is not None)
         relative = self._relative(uav, target)
         self._update_closest(relative)
         self.maximum_horizontal_speed = max(
@@ -875,13 +885,14 @@ class InterceptEvaluatorCore:
             else:
                 capture_fraction = 1. if _norm(relative) <= self.capture_radius else None
             if sea_segment:
-                sea_fraction = self._sea_fraction(self.previous_uav.position[2], uav.position[2])
+                sea_fraction = self._sea_fraction(previous_z, current_z, contact_z)
             else:
                 sea_fraction = (1. if self.enable_sea_contact_failure and
-                                uav.position[2] >= self.body_contact_z else None)
+                                current_z >= contact_z else None)
             if capture_fraction is not None and (
                 sea_fraction is None or capture_fraction < sea_fraction or
-                (capture_fraction == sea_fraction and capture_segment and sea_segment)
+                (capture_fraction == sea_fraction and capture_segment and sea_segment
+                 and not physical)
             ):
                 event = True, 'CAPTURE_RADIUS_REACHED'
                 event_fraction = capture_fraction
@@ -911,7 +922,7 @@ class InterceptEvaluatorCore:
                 )
         else:
             if (not sea_segment and self.enable_sea_contact_failure and
-                    uav.position[2] >= self.body_contact_z):
+                    current_z >= contact_z):
                 self.detail = self._sea_contact_detail(uav.position[2])
                 event = False, 'SEA_CONTACT'
                 event_source = 'SEA_POSITION'
@@ -920,7 +931,7 @@ class InterceptEvaluatorCore:
                 event_source = 'CAPTURE_POSITION'
             elif (
                 self.enable_sea_contact_failure
-                and uav.position[2] >= self.body_contact_z
+                and current_z >= contact_z
             ):
                 self.detail = self._sea_contact_detail(uav.position[2])
                 event = False, 'SEA_CONTACT'
@@ -929,6 +940,7 @@ class InterceptEvaluatorCore:
         self.previous_time = now
         self.previous_uav = uav
         self.previous_target = target
+        self.previous_body_lowest_z = float(body_lowest_z) if physical else None
         if event is not None:
             segment = event_source.endswith('SEGMENT') and interval_start is not None
             self.event_provenance = dict(

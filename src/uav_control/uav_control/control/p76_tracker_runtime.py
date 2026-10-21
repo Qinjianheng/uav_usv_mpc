@@ -9,7 +9,8 @@ from std_msgs.msg import String
 from uav_usv_interfaces.msg import NativeAttitude, TargetImageState
 
 from uav_control.common.p76_contract import load_contract, parameter_bindings
-from uav_control.common.p76_native import NativePoseHistory
+from uav_control.common.p76_body_geometry import collision_envelope, navigation_vertices
+from uav_control.common.p76_native import NativePoseHistory, NativeReferenceHistory
 from uav_control.common.p76_phase import phase_qos
 from uav_control.common.p76_readiness import validate_calibration, validate_follow_qualification
 from uav_control.perception.yolo_detection_contract import stamp_seconds
@@ -40,13 +41,14 @@ class P76TrackerRuntime:
         self.map = CalibratedThrustMap(calibration['force_newtons'], calibration['normalized'],
                                        qualified=True)
         barrier = BodyrateSeaBarrier(
-            calibration['collision_points_frd'],
-            self.contract['candidate']['minimum_origin_height'], calibration['response_seconds'],
+            navigation_vertices(collision_envelope(model_root), model_root),
+            self.contract['candidate']['minimum_body_clearance'], calibration['response_seconds'],
             calibration['braking_acceleration'], self.contract['candidate']['sea_surface_z'])
         self.controller = PaperController(self.contract, calibration['mass'],
                                           calibration['maximum_thrust'], self.map, barrier)
         self.mode = ModeCoordinator(self.contract['timing']['handover_timeout'])
         self.history = NativePoseHistory(self.contract['timing']['maximum_pose_bracket'])
+        self.references = NativeReferenceHistory()
         self.image, self.spatial_ack, self.px4_mode = None, None, None
         self.last_tick, self.last_report, self.initialized = None, 0., False
         self.thrust_hold = None
@@ -65,6 +67,8 @@ class P76TrackerRuntime:
                                                     self.control_mode, 10)
         self.thrust_sub = node.create_subscription(String, '/navigation/native_thrust',
                                                    self.receive_thrust, 10)
+        self.reference_sub = node.create_subscription(
+            String, '/navigation/native_local_reference', self.receive_reference, 16)
         self.timer = node.create_timer(
             1/self.contract['paper']['paper_controller_target_rate_hz'], self.tick)
         self.publish_phase()
@@ -121,6 +125,18 @@ class P76TrackerRuntime:
                     and values.shape == (3,) and np.isfinite(values).all()
                     and -1 <= values[2] < 0 and np.max(np.abs(values[:2])) < 1e-6):
                 self.executed_thrust = stamp, values.copy()
+        except (ValueError, KeyError, TypeError):
+            return
+
+    def receive_reference(self, message):
+        """Use PX4's native local datum, independently of the target and truth evaluator."""
+        try:
+            packet = json.loads(message.data)
+            stamp = float(packet['stamp'])
+            if (packet['reference'] == 'base_link' and packet['px4_timestamp'] > 0
+                    and packet['native_timestamp'] > 0
+                    and 0 <= self.node._ros_seconds()-stamp <= .125):
+                self.references.add(stamp, float(packet['ref_alt']))
         except (ValueError, KeyError, TypeError):
             return
 
@@ -201,12 +217,20 @@ class P76TrackerRuntime:
         self.mode.timeout(now)
         try:
             valid = self._image_valid(now)
+            if (self.mode.phase == 'Y_HANDOVER' and self.initialized and not valid):
+                # Once body-rate prestream begins, stale imagery must latch recovery.
+                # Never silently resume velocity output while awaiting its PX4 ACK.
+                raise ValueError('P76_HANDOVER_IMAGE_SOURCE_STALE')
             if self.mode.phase == 'PAPER_INTERCEPT_ACTIVE' and not valid:
                 raise ValueError('P76_IMAGE_SOURCE_STALE')
             if self.mode.phase in ('Y_HANDOVER', 'PAPER_INTERCEPT_ACTIVE') and valid:
                 stamp = stamp_seconds(self.image.pose_stamp)
                 pose = self.history.at(stamp)
                 position, velocity = self._paired_navigation(stamp)
+                # The SDF collision envelope is now about base_link. The sea plane
+                # must likewise use this PX4 local frame, not Gazebo's world Z=0.
+                self.controller.barrier.sea = (
+                    self.references.at(stamp)-self.contract['candidate']['sea_altitude_msl'])
                 ack = self.spatial_ack
                 inactive = bool(ack and not ack['active'] and 0 <= now-ack['stamp'] <= .125)
                 ready = self.mode.ready(now, inactive, stamp_seconds(self.image.source_stamp),

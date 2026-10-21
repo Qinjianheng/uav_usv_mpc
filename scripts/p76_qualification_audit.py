@@ -32,6 +32,8 @@ def assess(contract_path, model_root, geometry_summaries, output):
         a_reasons.append(str(error))
     geometries = [json.loads(path.read_text()) for path in geometry_summaries]
     geometry_failed = any(g['completely_occluded_follow'] > 0 for g in geometries)
+    layout = {key: contract[key] for key in ('camera', 'follow')}
+    geometry_mismatch = any(g.get('geometry_layout') != layout for g in geometries)
     result = dict(
         scope='Preflight eligibility only. No PX4/Gazebo flight was launched by this audit.',
         contract_sha256=sha256(contract_path), sources=source_fingerprint(ROOT),
@@ -39,8 +41,10 @@ def assess(contract_path, model_root, geometry_summaries, output):
         geometry_sources={str(path): sha256(path) for path in geometry_summaries},
         stages=dict(A=dict(state='NOT_RUN', eligible=False, reasons=a_reasons),
                     B=dict(state='NOT_RUN', eligible=False, reasons=[
-                        'A_NOT_QUALIFIED']+(['BOTH_ALLOWED_LAYOUTS_HAVE_AIRFRAME_OCCLUSION']
-                                            if geometry_failed else [])),
+                        'A_NOT_QUALIFIED']+(['CURRENT_LAYOUT_HAS_AIRFRAME_OCCLUSION']
+                                            if geometry_failed else [])+([
+                                                'GEOMETRY_LAYOUT_IDENTITY_MISMATCH']
+                                            if geometry_mismatch else [])),
                     C=dict(state='NOT_RUN', eligible=False, reasons=[
                         'CURRENT_A_AND_25S_B_REQUIRED', 'NO_NATIVE_025_CAPTURE_EVIDENCE']),
                     D=dict(state='NOT_RUN', eligible=False, reasons=['CURRENT_C_REQUIRED'])),

@@ -17,9 +17,10 @@ def test_optical_right_down_forward_maps_to_frd_right_down_forward():
         np.array((1., 0., 1.))/math.sqrt(2))
 
 
-def test_mount_and_full_pose_rotate_the_optical_los():
+@pytest.mark.parametrize('degrees', (32., 65.))
+def test_mount_and_full_pose_rotate_the_optical_los(degrees):
     rotation = Rotation.from_euler('xyz', (.2, -.3, 1.1)).as_matrix()
-    pitch = math.radians(65.)
+    pitch = math.radians(degrees)
     expected = rotation@np.array((math.cos(pitch), 0., math.sin(pitch)))
     assert camera_los((320., 240.), (320., 240., 300., 300.), rotation, pitch) == pytest.approx(
         expected)

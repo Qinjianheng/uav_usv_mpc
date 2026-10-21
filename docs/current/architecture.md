@@ -1,5 +1,7 @@
 # 当前架构与控制边界
 
+2026-10-21：本分支新增的显式 P76 候选采用 32° 相机和论文式二维 DKF/PNG/IBVS Body-rate 路径。原点 0.33 m 门槛已由真实碰撞净空/制动保护替代；PX4 未解锁 DDS/模式接口实测通过，但实际动力学、FOLLOW 与捕获尚未取得资格。默认 P7 未切换，详见 [P76 当前修订](p76_32deg_physical_clearance_px4.md)。
+
 2026-10-18：P7 专用配置以 KF/BCTRA → P47/C MINCO 执行 FOLLOW，Y 后撤销 FOLLOW 并由同一 Tracker 执行 IBVS/PNG。一键入口现已默认传入 `--manual --capture`，启用下降并在 0.50 m 三维接触半径内由评价器暂停仿真；底层 P7 入口省略 `--capture` 时仍保持安全高度与 4.5 m 水平间距。P7 启动时不再创建闲置的旧截击 Planner，原研究配置保留。启动和当前实测见 [P7 入口](p7_progress.md)、[捕获](p7_capture.md)与[按需启动](startup_profile.md)；下文 P53 内容保留其阶段上下文。
 
 P5.3最新实际状态见 [全面修复与最终验收](p53_comprehensive_validation.md)：同配置R11的F2/F3均完成，实际MINCO占比100%、零回退；后文P4/P5/P5.1段落保留各阶段时点。控制链仍为BCTRA/MINCO/唯一Tracker速度控制，MPC尚未实现。

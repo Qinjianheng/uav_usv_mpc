@@ -16,7 +16,7 @@ def test_integrated_candidate_respects_dt_force_and_rate_slew():
     contract = deepcopy(load_contract(root/'src/uav_usv_bringup/config/p76_contract.yaml'))
     # Analytic fixture; these samples do not qualify the real PX4 thrust curve.
     mapping = CalibratedThrustMap([0., 20., 60.], [0., .5, 1.], qualified=True)
-    barrier = BodyrateSeaBarrier([[0., 0., .1]], .33, .1, 4.)
+    barrier = BodyrateSeaBarrier([[0., 0., .1]], .02, .1, 4.)
     control = PaperController(contract, 2., 60., mapping, barrier)
     image, rotation, velocity = np.zeros(4), np.eye(3), np.array([3., 0., 0.])
     control.initialize(image, rotation, velocity, 1., [0., 0., 0.])

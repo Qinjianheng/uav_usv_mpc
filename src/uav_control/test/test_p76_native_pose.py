@@ -4,7 +4,9 @@ from types import SimpleNamespace as Packet
 import numpy as np
 import pytest
 
-from uav_control.common.p76_native import NativePoseHistory, odometry_values
+from uav_control.common.p76_native import (
+    NativePoseHistory, NativeReferenceHistory, odometry_values,
+)
 
 
 def test_odometry_requires_sample_epoch_and_real_variances():
@@ -32,3 +34,15 @@ def test_native_pose_brackets_and_rejects_extrapolation():
     history.add(1.12, [1., 0., 0., 0.], [0., 0., 0.], [.01]*3)
     with pytest.raises(ValueError, match='BRACKET'):
         history.at(1.08)
+
+
+def test_sea_datum_uses_native_reference_brackets_and_rejects_frame_change():
+    history = NativeReferenceHistory()
+    history.add(1., 4.)
+    history.add(1.04, 4.)
+    assert history.at(1.02) == 4.
+    with pytest.raises(ValueError, match='BRACKET'):
+        history.at(1.041)
+    history.add(1.08, 4.2)
+    with pytest.raises(ValueError, match='CHANGED'):
+        history.at(1.06)

@@ -41,11 +41,13 @@ def validate_calibration(contract, model_root, workspace):
     if not logs or any(not Path(p).is_file() or sha256(p) != h for p, h in logs.items()):
         raise ValueError('P76_CALIBRATION_RAW_EVIDENCE_MISSING')
     required = ('hover', 'thrust_curve', 'rates_response', 'acceleration_5mps2',
-                'descent_2mps_braking', 'exclusive_px4_bodyrate', 'fault_recovery')
+                'descent_2mps_braking', 'exclusive_px4_bodyrate', 'fault_recovery',
+                'navigation_reference_and_sea_datum')
     if any(data.get('checks', {}).get(key) is not True for key in required):
         raise ValueError('P76_BODYRATE_QUALIFICATION_FAILED')
     if (data.get('response_seconds', 0) <= 0 or data.get('braking_acceleration', 0) <= 0
-            or data.get('mass') != manifest['total_mass']):
+            or data.get('mass') != manifest['total_mass']
+            or data.get('collision_envelope') != manifest['collision_envelope']):
         raise ValueError('P76_CALIBRATED_DYNAMICS_REQUIRED')
     return data
 

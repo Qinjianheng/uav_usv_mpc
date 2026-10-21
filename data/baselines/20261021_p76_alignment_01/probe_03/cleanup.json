@@ -1,0 +1,106 @@
+{
+  "errors": [],
+  "survivors": [],
+  "late_components": {
+    "events": [
+      {
+        "identity": {
+          "pid": 63502,
+          "pgid": 63502,
+          "start": "6154507"
+        },
+        "signal": 2
+      },
+      {
+        "identity": {
+          "pid": 63511,
+          "pgid": 63502,
+          "start": "6154509"
+        },
+        "signal": 2
+      },
+      {
+        "identity": {
+          "pid": 63529,
+          "pgid": 63529,
+          "start": "6154718"
+        },
+        "signal": 2
+      },
+      {
+        "identity": {
+          "pid": 63549,
+          "pgid": 63529,
+          "start": "6154720"
+        },
+        "signal": 2
+      },
+      {
+        "identity": {
+          "pid": 63612,
+          "pgid": 63529,
+          "start": "6154728"
+        },
+        "signal": 2
+      },
+      {
+        "identity": {
+          "pid": 63613,
+          "pgid": 63529,
+          "start": "6154728"
+        },
+        "signal": 2
+      },
+      {
+        "identity": {
+          "pid": 63614,
+          "pgid": 63529,
+          "start": "6154729"
+        },
+        "signal": 2
+      },
+      {
+        "identity": {
+          "pid": 63615,
+          "pgid": 63529,
+          "start": "6154738"
+        },
+        "signal": 2
+      },
+      {
+        "identity": {
+          "pid": 63616,
+          "pgid": 63529,
+          "start": "6154738"
+        },
+        "signal": 2
+      },
+      {
+        "identity": {
+          "pid": 63617,
+          "pgid": 63529,
+          "start": "6154738"
+        },
+        "signal": 2
+      },
+      {
+        "identity": {
+          "pid": 63996,
+          "pgid": 63996,
+          "start": "6155240"
+        },
+        "signal": 2
+      },
+      {
+        "identity": {
+          "pid": 64003,
+          "pgid": 63996,
+          "start": "6155241"
+        },
+        "signal": 2
+      }
+    ],
+    "errors": [],
+    "survivors": []
+  }
+}

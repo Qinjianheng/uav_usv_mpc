@@ -16,8 +16,8 @@ paper:
   paper_thrust_to_weight_target: 3.0
   paper_maneuver_acceleration_target: 5.0
 camera:
-  layout: primary
-  pitch_down_degrees: 65.0
+  layout: revision32
+  pitch_down_degrees: 32.0
   translation_flu: [-0.25, 0.0, 0.55]
   width: 640
   height: 480
@@ -39,7 +39,10 @@ candidate:
   maximum_body_angular_acceleration: 3.0
   capture_radius: 0.25
   sea_surface_z: 0.0
-  minimum_origin_height: 0.33
+  # Known ocean-world geodetic surface altitude. PX4 local sea Z = ref_alt - this value.
+  sea_altitude_msl: 0.0
+  # Engineering sea adapter: clearance from actual lowest collision point, not origin altitude.
+  minimum_body_clearance: 0.02
   angular_rate_calibration_required: true
   bodyrate_calibration_manifest: ''
   follow_qualification_manifest: ''

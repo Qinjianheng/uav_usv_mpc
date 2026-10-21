@@ -5,6 +5,8 @@ from pathlib import Path
 
 import yaml
 
+from .p76_body_geometry import navigation_camera_translation
+
 
 def load_contract(path):
     """Read a contract and bind its absolute path without changing the file."""
@@ -22,10 +24,12 @@ def _validate(c):
         raise ValueError('P76_SOURCE_AGE')
     if c['timing']['maximum_pose_bracket'] != .05:
         raise ValueError('P76_POSE_BRACKET')
-    if c['candidate']['capture_radius'] != .25 or c['candidate']['minimum_origin_height'] < .33:
+    if (c['candidate']['capture_radius'] != .25
+            or 'minimum_origin_height' in c['candidate']
+            or c['candidate']['minimum_body_clearance'] != .02):
         raise ValueError('P76_CAPTURE_SEA_BOUNDARY')
     camera, follow = c['camera'], c['follow']
-    layouts = dict(primary=(65., 5., 4.), backup=(60., 5.5, 4.5))
+    layouts = dict(revision32=(32., 5., 4.))
     if ((camera['pitch_down_degrees'], follow['distance'], follow['height'])
             != layouts.get(camera['layout']) or camera['translation_flu'] != [-.25, 0., .55]):
         raise ValueError('P76_UNAPPROVED_LAYOUT')
@@ -48,11 +52,12 @@ def parameter_bindings(contract):
     camera, f, paper, candidate, timing, detector = (
         c[name] for name in ('camera', 'follow', 'paper', 'candidate', 'timing', 'detector'))
     pitch = math.radians(camera['pitch_down_degrees'])
+    navigation_translation = navigation_camera_translation(c)
     shared = dict(detection_source='yolo', detection_topic='/perception/target_detection',
                   detection_model_sha256=detector['model_sha256'],
                   camera_pitch_down=pitch, horizontal_fov=camera['horizontal_fov'])
     localizer = dict(shared, **{'camera_translation_'+a: v for a, v in zip(
-        'xyz', camera['translation_flu'])}, target_radius=camera['marker_radius'],
+        'xyz', navigation_translation)}, target_radius=camera['marker_radius'],
         target_reference_z_offset=camera['marker_reference_z_offset'],
         minimum_red_pixels=camera['minimum_pixels'], minimum_depth=camera['depth_clip'][0],
         maximum_depth=camera['depth_clip'][1], minimum_depth_ratio=camera['minimum_depth_ratio'],
@@ -61,7 +66,7 @@ def parameter_bindings(contract):
                    p76_controller_target_rate_hz=paper['paper_controller_target_rate_hz'],
                    p7_guidance_enabled=True, p7_capture_enabled=False,
                    p7_camera_pitch_down=pitch, p7_camera_horizontal_fov=camera['horizontal_fov'],
-                   p7_camera_translation_flu=camera['translation_flu'],
+                   p7_camera_translation_flu=navigation_translation,
                    flight_altitude=-f['height'], follow_distance=f['distance'],
                    maximum_horizontal_speed=candidate['maximum_horizontal_speed'],
                    guidance_maximum_horizontal_speed=candidate['maximum_horizontal_speed'])
@@ -84,7 +89,7 @@ def parameter_bindings(contract):
         'trajectory_tracker_node': tracker,
         'trajectory_impact_sim': dict(flight_altitude=-f['height']),
         'p4_follow_planner_node': dict(p7_camera_pitch_down=pitch,
-                                       p7_camera_translation_flu=camera['translation_flu'],
+                                       p7_camera_translation_flu=navigation_translation,
                                        p7_camera_horizontal_fov=camera['horizontal_fov'],
                                        flight_altitude=-f['height'], follow_distance=f['distance'],
                                        p76_mode_topic='/control/p76_mode'),
@@ -103,7 +108,9 @@ def parameter_bindings(contract):
         'intercept_evaluator_node': dict(evaluation_capture_radius=candidate['capture_radius'],
                                          planned_capture_radius=candidate['capture_radius'],
                                          capture_geometry_source='gazebo_native',
-                                         sea_surface_z=candidate['sea_surface_z']),
+                                         sea_surface_z=candidate['sea_surface_z'],
+                                         p76_body_geometry_enabled=True,
+                                         p76_contract_file=c['_path']),
         'moving_target': dict(trajectory_type=c['motion']['mode'],
                               variable_speed_min=c['motion']['minimum_speed'],
                               variable_speed_max=c['motion']['maximum_speed'],

@@ -23,12 +23,16 @@ def test_contract_drives_every_effective_sensor_and_controller_stage():
     assert tracker['follow_distance'] == planner['follow_distance'] == 5.
     assert tracker['p76_capture_vertical_speed_limit'] == 2.
     assert tracker['p76_controller_target_rate_hz'] == 200.
+    assert 'p76_minimum_origin_height' not in tracker
+    assert tracker['p76_minimum_body_clearance'] == .02
     for node in ('rgbd_target_localizer', 'target_bearing_node', 'front_tof_monitor'):
         params = profile[node]['ros__parameters']
         assert params['detection_source'] == 'yolo'
-        assert params['camera_pitch_down'] == pytest.approx(math.radians(65.))
+        assert params['camera_pitch_down'] == pytest.approx(math.radians(32.))
     localizer = profile['rgbd_target_localizer']['ros__parameters']
-    assert [localizer['camera_translation_'+a] for a in 'xyz'] == [-.25, 0., .55]
+    assert [localizer['camera_translation_'+a] for a in 'xyz'] == pytest.approx([-.25, 0., .31])
+    assert tracker['p7_camera_translation_flu'] == planner['p7_camera_translation_flu']
+    assert tracker['p7_camera_translation_flu'] == pytest.approx([-.25, 0., .31])
     assert profile['intercept_evaluator_node']['ros__parameters'][
         'evaluation_capture_radius'] == .25
     assert profile['spatial_dkf_node']['ros__parameters']['maximum_source_age'] == .125
@@ -38,7 +42,7 @@ def test_contract_drives_every_effective_sensor_and_controller_stage():
 def test_manually_drifted_profile_fails_before_launch():
     contract = load_contract(CONTRACT)
     profile = ros_parameters(contract, ROOT/'src/uav_usv_bringup/config/p7_spatial_candidate.yaml')
-    for node, key, wrong in (('rgbd_target_localizer', 'camera_translation_z', .31),
+    for node, key, wrong in (('rgbd_target_localizer', 'camera_translation_z', .55),
                              ('trajectory_tracker_node', 'p76_capture_vertical_speed_limit', .6),
                              ('p4_follow_planner_node', 'flight_altitude', -5.),
                              ('intercept_evaluator_node', 'evaluation_capture_radius', .5)):
@@ -65,7 +69,8 @@ def test_session_model_uses_model_origin_mount_and_derived_twr_without_editing_s
     (px/'x500_base/model.sdf').write_text(
         '<sdf version="1.9"><model name="x500_base"><pose>0 0 0.24 0 0 0</pose>'
         '<link name="base_link"><inertial><mass>2</mass></inertial>'
-        '</link></model></sdf>')
+        '<collision name="body"><geometry><box><size>.3 .3 .05</size></box></geometry>'
+        '</collision></link></model></sdf>')
     plugins = ''.join('<plugin name="motor"><motorConstant>0.00001</motorConstant>'
                       '<maxRotVelocity>1000</maxRotVelocity></plugin>' for _ in range(4))
     (px/'x500/model.sdf').write_text('<sdf version="1.9"><model name="x500">'
@@ -78,7 +83,7 @@ def test_session_model_uses_model_origin_mount_and_derived_twr_without_editing_s
     pose = camera.find(".//link[@name='front_camera_link']/pose")
     values = [float(v) for v in pose.text.split()]
     assert values[:3] == pytest.approx((-.25, 0., .31))
-    assert values[4] == pytest.approx(math.radians(65.))
+    assert values[4] == pytest.approx(math.radians(32.))
     assert metadata['static_model_twr'] == pytest.approx(3.)
     assert verify_model(tmp_path/'models', contract)['consistent']
     assert hashlib.sha256((source/'model.sdf').read_bytes()).hexdigest() == before

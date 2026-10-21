@@ -1,0 +1,5 @@
+{
+  "flight_qualified": false,
+  "reason": "P76_ACTUAL_BODYRATE_CALIBRATION_MISSING",
+  "scope": "Expected fail-closed formal launch audit"
+}

@@ -9,6 +9,8 @@ import xml.etree.ElementTree as ET
 import numpy as np
 from scipy.spatial.transform import Rotation
 
+from .p76_body_geometry import collision_envelope
+
 
 def _sha(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
@@ -82,6 +84,7 @@ def prepare_model(source_camera, px_models, output, contract):
                     static_model_twr=twr, derived_motor_constant=coefficient,
                     camera_model_translation=contract['camera']['translation_flu'],
                     camera_base_translation=list(relative_translation),
+                    collision_envelope=collision_envelope(output),
                     source_sha256={str(p): _sha(p) for p in source_files},
                     files={str(p.relative_to(output)): _sha(p)
                            for p in sorted(output.rglob('*')) if p.is_file()})
@@ -93,6 +96,11 @@ def verify_model(output, contract):
     """Read actual model files and reject altered calibration, propulsion or file provenance."""
     output = Path(output)
     metadata = json.loads((output/'p76_model_manifest.json').read_text())
+    if any(not Path(name).is_file() or _sha(name) != sha
+           for name, sha in metadata['source_sha256'].items()):
+        raise ValueError('P76_MODEL_SOURCE_DRIFT')
+    if metadata.get('collision_envelope') != collision_envelope(output):
+        raise ValueError('P76_MODEL_COLLISION_ENVELOPE')
     if any(not (output/name).is_file() or _sha(output/name) != sha
            for name, sha in metadata['files'].items()):
         raise ValueError('P76_MODEL_FILE_HASH')

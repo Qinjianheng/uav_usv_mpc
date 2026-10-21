@@ -118,6 +118,23 @@ def test_rejected_history_gap_does_not_prevent_fresh_inside_position_hit():
     node.now = 10.08
     InterceptEvaluatorNode.timer_callback(node)
     assert len(node.results) == 1 and node.results[0].success
+
+
+@pytest.mark.parametrize('lower,success', ((-.01, True), (.1, False)))
+def test_p76_native_model_envelope_replaces_legacy_extent_and_keeps_sea_failure(lower, success):
+    node = native_node()
+    node.evaluator.capture_radius = node.evaluation_capture_radius = .25
+    node.p76_body_geometry = {'vertices_frd': [[0., 0., lower]]}
+    for tracker, height in ((node.gazebo_uav_tracker, .05),
+                            (node.gazebo_capture_target_tracker, .42)):
+        tracker.history.add(1.04, 10.04, (0., 0., height, 1., 0., 0., 0.),
+                            source_bracket=(1.04, 1.04, 10.04, 10.04))
+        tracker.last_mapped_stamp = 10.04
+    InterceptEvaluatorNode.timer_callback(node)
+    assert len(node.results) == 1
+    assert node.results[0].success == success
+    assert node.results[0].reason == ('CAPTURE_RADIUS_REACHED' if success else 'SEA_CONTACT')
+    assert len(node.pauses) == int(success)
     assert not node.last_native_capture_sample.velocity_valid
 
 

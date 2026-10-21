@@ -49,14 +49,14 @@ def polygon_label(mask):
 
 
 def geometry_cases(contract):
-    """Finite primary/backup FOLLOW and terminal samples, with actual mount and heave."""
+    """Finite current-contract FOLLOW and terminal samples, with actual mount and heave."""
     follow = contract['follow']
     mount = Rotation.from_euler('y', math.radians(contract['camera']['pitch_down_degrees']))
     for heave in (-.15, 0., .15):
         settings = [(follow['distance'], follow['height'], roll, pitch, 'FOLLOW')
                     for roll, pitch in ((0., 0.), (.25, 0.), (-.25, 0.), (0., .25), (0., -.25))]
         settings += [(distance, height, 0., 0., 'TERMINAL') for distance, height in (
-            (3., 2.), (1., 1.), (.5, .5), (.25, .33), (.1, .33), (0., .33))]
+            (3., 2.), (1., 1.), (.5, .5), (.25, .2), (.1, .1), (0., .05))]
         for distance, height, roll, pitch, phase in settings:
             rotation = Rotation.from_euler('xyz', (roll, pitch, 0.))
             origin = np.array((-distance, 0., height))

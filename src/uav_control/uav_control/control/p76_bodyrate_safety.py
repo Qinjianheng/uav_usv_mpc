@@ -3,19 +3,22 @@ import math
 
 import numpy as np
 
+from uav_control.common.p76_body_geometry import lowest_world_z
+
 
 class BodyrateSeaBarrier:
-    """Compare actual lower-frame clearance and 0.33m policy against physical braking."""
+    """Compare physical body clearance, including attitude, against calibrated braking."""
 
-    def __init__(self, collision_points_frd, minimum_origin_height, response_seconds,
+    def __init__(self, collision_points_frd, minimum_body_clearance, response_seconds,
                  braking_acceleration, sea_surface_z=0.):
         self.points = np.asarray(collision_points_frd, dtype=float)
         if (self.points.ndim != 2 or self.points.shape[1] != 3 or not len(self.points)
-                or not np.isfinite(self.points).all() or minimum_origin_height < .33
+                or not np.isfinite(self.points).all() or not math.isfinite(minimum_body_clearance)
+                or minimum_body_clearance < 0
                 or not math.isfinite(response_seconds) or response_seconds <= 0
                 or not math.isfinite(braking_acceleration) or braking_acceleration <= 0):
             raise ValueError('P76_SEA_CALIBRATION_REQUIRED')
-        self.minimum_origin_height = float(minimum_origin_height)
+        self.minimum_body_clearance = float(minimum_body_clearance)
         self.delay, self.braking = float(response_seconds), float(braking_acceleration)
         self.sea = float(sea_surface_z)
 
@@ -27,8 +30,11 @@ class BodyrateSeaBarrier:
                 or not all(np.isfinite(v).all() for v in (position, velocity, rotation))
                 or not np.allclose(rotation.T@rotation, np.eye(3), atol=1e-6)):
             return 'UNRECOVERABLE'
-        lower = float(np.max((rotation@self.points.T)[2]))
-        margin = self.sea-position[2]-max(lower, self.minimum_origin_height)
+        try:
+            lower = lowest_world_z(self.points, position, rotation)
+        except ValueError:
+            return 'UNRECOVERABLE'
+        margin = self.sea-lower-self.minimum_body_clearance
         if margin <= 0:
             return 'UNRECOVERABLE'
         down = max(0., float(velocity[2]))
