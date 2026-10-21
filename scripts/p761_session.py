@@ -25,8 +25,47 @@ def launcher_process(arguments, env, path):
     return process, identity(process.pid)
 
 
-def run(output, stage, prior=None):
+def validate_offline_gates(path):
+    """An offline logic pass cannot masquerade as high-pulse capability or real coverage."""
+    from uav_control.common.p76_readiness import source_fingerprint, sha256
+    if path is None:
+        raise ValueError('P763_OFFLINE_GATES_REQUIRED')
+    gates = json.loads(Path(path).read_text())
+    if (gates.get('schema_version') != 2
+            or gates.get('architecture') != 'parallel_dkf_unified_bodyrate'
+            or gates.get('sources') != source_fingerprint(WORKSPACE)
+            or gates.get('contract_sha256') != sha256(
+                WORKSPACE/'src/uav_usv_bringup/config/p76_contract.yaml')
+            or not all(gates.get('gates', {}).get(k) is True for k in ('E0', 'E1', 'E2'))
+            or gates.get('high_pulse_admissible') is not True):
+        raise ValueError('P763_OFFLINE_GATES_NOT_CURRENT_OR_NOT_SAFE')
+    evidence = gates.get('raw_evidence', {})
+    if not evidence or any(not Path(p).is_file() or sha256(p) != digest
+                           for p, digest in evidence.items()):
+        raise ValueError('P763_OFFLINE_GATES_EVIDENCE_INVALID')
+    typed = gates.get('stage_evidence', {})
+    if set(typed) != {'E0', 'E1', 'E2'} or any(str(Path(p).resolve()) not in evidence
+                                               for p in typed.values()):
+        raise ValueError('P763_TYPED_OFFLINE_EVIDENCE_REQUIRED')
+    e0, e1, e2 = (json.loads(Path(typed[k]).read_text()) for k in ('E0', 'E1', 'E2'))
+    from p763_exit_replay import replay
+    actual_e0 = replay(Path(e0['source_session']))
+    if (e0 != actual_e0 or e0.get('passed') is not True
+            or e0.get('guarded', {}).get('admission', {}).get('admitted') is not True
+            or e1.get('e1_matched_real_replay_passed') is not True
+            or e1.get('coverage', {}).get('matched_real_replay_qualified') is not True
+            or e1.get('fixture', {}).get('tracker_scheduling_qualified') is not True
+            or e2.get('schema_version') != 2 or e2.get('logic_passed') is not True
+            or e2.get('recorded_replay', {}).get('output_bounds_and_continuity') is not True):
+        raise ValueError('P763_TYPED_OFFLINE_EVIDENCE_NOT_QUALIFIED')
+
+
+def run(output, stage, prior=None, *, authorized_stage=None, offline_gates=None):
     """No session starts without a free isolated simulator and a remaining budget slot."""
+    if authorized_stage != stage:
+        raise ValueError('P763_SEPARATE_STAGE_AUTHORIZATION_REQUIRED')
+    if stage == 'A1':
+        validate_offline_gates(offline_gates)
     output = output.resolve()
     task = WORKSPACE/'data/experiments/20261021_p761_01'
     if not output.is_relative_to(task):
@@ -95,7 +134,7 @@ with (root/(title.replace(' ', '_')+'.txt')).open('x') as log:
                 domain=check['domain'],
                 partition=env['GZ_PARTITION'],
                 preflight_clear=True,
-                authorization='User authorized P761 measured and staged isolated SITL')))
+                authorization='Separate operator authorization for P763 '+stage)))
     grant.chmod(0o600)
     env['UAV_USV_SITL_GRANT'] = str(grant)
     (output/'environment.json').write_text(json.dumps(
@@ -158,8 +197,13 @@ def main():
     parser.add_argument('--output', required=True, type=Path)
     parser.add_argument('--stage', choices=('A1', 'A2', 'B', 'C', 'D'), required=True)
     parser.add_argument('--prior-a1', type=Path)
+    parser.add_argument('--authorize-stage', choices=('A1', 'A2', 'B', 'C', 'D'), required=True,
+                        help='Separate explicit authorization for exactly this bounded stage')
+    parser.add_argument('--offline-gates', type=Path,
+                        help='Frozen current E0/E1/E2 evidence manifest required before A1')
     args = parser.parse_args()
-    result = run(args.output, args.stage, args.prior_a1)
+    result = run(args.output, args.stage, args.prior_a1,
+                 authorized_stage=args.authorize_stage, offline_gates=args.offline_gates)
     print(json.dumps(result, indent=2))
     return stage_exit_code(result)
 

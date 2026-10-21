@@ -2017,7 +2017,8 @@ class RgbdTargetLocalizer(Node):
     def timed_localize(self):
         """Measure one rate-limited localization pass, including failures."""
         started = time.perf_counter()
-        if getattr(self, 'p76_phase', 'FOLLOW_ACTIVE') != 'FOLLOW_ACTIVE':
+        from uav_control.common.p76_phase import estimator_active
+        if not estimator_active(self):
             self.pending_image_pairs.clear()
             self.waiting_image_pair = None
             return

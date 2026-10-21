@@ -2,15 +2,15 @@
 from uav_control.control.p76_mode_coordinator import ModeCoordinator
 
 
-def test_handover_requires_inactive_spatial_fresh_image_and_px4_ack():
+def test_handover_requires_revoked_follow_warm_image_and_existing_bodyrate_ack():
     mode = ModeCoordinator(.5)
     mode.accept_y(10., qualified=True)
     assert mode.phase == 'Y_HANDOVER'
-    assert not mode.ready(10.05, spatial_inactive=True, image_source=9.99, native_fresh=True)
-    assert mode.ready(10.05, spatial_inactive=True, image_source=10.01, native_fresh=True)
+    assert not mode.ready(10.05, follow_revoked=False, image_source=9.99, native_fresh=True)
+    assert mode.ready(10.05, follow_revoked=True, image_source=10.01, native_fresh=True)
     mode.request_bodyrate(10.05)
-    assert not mode.confirm(10.06, ack_stamp=10.04, exclusive=True)
-    assert mode.confirm(10.07, ack_stamp=10.06, exclusive=True)
+    assert not mode.confirm(10.06, ack_stamp=10.04, exclusive=False)
+    assert mode.confirm(10.07, ack_stamp=9.99, exclusive=True)
     assert mode.phase == 'PAPER_INTERCEPT_ACTIVE'
     mode.fail('IMAGE_STALE')
     assert mode.phase == 'SAFE_RECOVERY'
@@ -46,7 +46,8 @@ def test_image_loss_after_bodyrate_prestream_latches_recovery_before_velocity_ou
     from types import SimpleNamespace
     from uav_control.control.p76_tracker_runtime import P76TrackerRuntime
     runtime = P76TrackerRuntime.__new__(P76TrackerRuntime)
-    runtime.node = SimpleNamespace(_ros_seconds=lambda: 10.1, navigation_frame_fault='')
+    runtime.node = SimpleNamespace(_ros_seconds=lambda: 10.1, navigation_frame_fault='',
+                                   vehicle_armed=True)
     runtime.mode = ModeCoordinator(.5)
     runtime.mode.accept_y(10., qualified=True)
     runtime.mode.request_bodyrate(10.05)
@@ -54,10 +55,19 @@ def test_image_loss_after_bodyrate_prestream_latches_recovery_before_velocity_ou
     runtime.contract = {'paper': {'paper_controller_target_rate_hz': 200.}}
     runtime.last_tick, runtime.last_report = 10.095, 10.1
     runtime.fatal_dispatched = False
+    runtime.outer = SimpleNamespace(limiter=SimpleNamespace(thrust=-.5))
+    runtime.controller = SimpleNamespace(barrier=SimpleNamespace(sea=0.))
+    runtime._snapshot = lambda now: (10.09, [0, 0, -4], [0, 0, 0], None, 0.)
     runtime._image_valid = lambda now: False
-    recoveries = []
-    runtime._recovery = lambda now, dt: recoveries.append(runtime.mode.phase)
+    recoveries, outputs = [], []
+
+    def recover(now, dt, snapshot=None):
+        recoveries.append(runtime.mode.phase)
+        return dict(rates=[0., 0., 0.], thrust=-.5)
+    runtime._recovery = recover
+    runtime._emit_rates = lambda rates, thrust, now: outputs.append(thrust)
     runtime.tick()
     assert runtime.mode.reason == 'P76_HANDOVER_IMAGE_SOURCE_STALE'
     assert recoveries == ['SAFE_RECOVERY']
+    assert outputs == [-.5]
     assert not runtime.mode.confirm(10.11, 10.1, exclusive=True)

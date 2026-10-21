@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 provenance:
   paper: Yan et al., TIE 2025, doi:10.1109/TIE.2025.3559951
   delayed_filter_reference: Yang et al., TCST 2025, doi:10.1109/TCST.2024.3451293
@@ -18,12 +18,19 @@ paper:
 camera:
   layout: revision32
   pitch_down_degrees: 32.0
-  translation_flu: [0.35, 0.0, 0.55]
+  translation_flu:
+  - 0.35
+  - 0.0
+  - 0.55
   width: 640
   height: 480
   horizontal_fov: 1.74
-  rgb_clip: [0.05, 60.0]
-  depth_clip: [0.05, 25.0]
+  rgb_clip:
+  - 0.05
+  - 60.0
+  depth_clip:
+  - 0.05
+  - 25.0
   marker_radius: 0.25
   marker_reference_z_offset: 0.42
   minimum_pixels: 3
@@ -32,12 +39,21 @@ follow:
   distance: 5.0
   height: 4.0
 mechanics:
-  support_root_flu: [0.0, 0.0, 0.272]
+  support_root_flu:
+  - 0.0
+  - 0.0
+  - 0.272
   support_outer_width: 0.012
-  support_inner_width: 0.010
+  support_inner_width: 0.01
   support_density: 1600.0
-  housing_size: [0.04, 0.05, 0.04]
-  housing_center_camera_flu: [-0.025, 0.0, 0.0]
+  housing_size:
+  - 0.04
+  - 0.05
+  - 0.04
+  housing_center_camera_flu:
+  - -0.025
+  - 0.0
+  - 0.0
 candidate:
   capture_vertical_speed_limit: 2.0
   maximum_horizontal_speed: 7.0
@@ -46,9 +62,7 @@ candidate:
   maximum_body_angular_acceleration: 3.0
   capture_radius: 0.25
   sea_surface_z: 0.0
-  # Known ocean-world geodetic surface altitude. PX4 local sea Z = ref_alt - this value.
   sea_altitude_msl: 0.0
-  # Engineering sea adapter: clearance from actual lowest collision point, not origin altitude.
   minimum_body_clearance: 0.02
   angular_rate_calibration_required: true
   bodyrate_calibration_manifest: /home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/qualifications/A.json
@@ -58,6 +72,7 @@ timing:
   maximum_pose_bracket: 0.05
   history_seconds: 1.0
   handover_timeout: 0.5
+  mode_feedback_max_age: 0.65
 motion:
   mode: variable_speed_s
   minimum_speed: 2.0
@@ -88,3 +103,14 @@ dynamics:
   gravity: 9.8
   px4_model_root: /home/qin/Projects/PX4-Autopilot/Tools/simulation/gz/models
   source_camera_model: /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/models/x500_mono_cam
+architecture: parallel_dkf_unified_bodyrate
+qualification_schema_version: 2
+bodyrate_follow:
+  kp: 1.0
+  kv: 2.0
+  attitude_gain: 4.0
+  maximum_acceleration: 5.0
+  maximum_jerk: 3.0
+  maximum_tilt: 0.45
+  maximum_thrust_slew: 2.0
+  qualification: OFFLINE_CANDIDATE_NOT_FLIGHT_QUALIFIED

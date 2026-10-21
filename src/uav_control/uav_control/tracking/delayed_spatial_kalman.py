@@ -33,7 +33,7 @@ class DelayedSpatialKalman:
         self.reset()
 
     def reset(self):
-        """Remove every prior, covariance and epoch at a mode/clock reset."""
+        """Remove every prior and covariance after a clock/frame discontinuity."""
         self.anchor = None
         self.measurements = []
         self.checkpoints = []

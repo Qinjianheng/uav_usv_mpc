@@ -1,6 +1,7 @@
 """Sole Tracker's opt-in body-rate path; no second PX4 controller or truth subscription."""
 import json
 import os
+from collections import deque
 
 import numpy as np
 from px4_msgs.msg import OffboardControlMode, VehicleRatesSetpoint
@@ -17,10 +18,12 @@ from .p76_bodyrate_safety import BodyrateSeaBarrier
 from .p76_mode_coordinator import ModeCoordinator
 from .p76_paper_controller import PaperController
 from .p76_paper_thrust import CalibratedThrustMap
+from .p76_minco_bodyrate_tracker import BodyrateTracker, WaypointReference, sample_reference
+from .p76_recovery import BodyrateRecovery
 
 
 class P76TrackerRuntime:
-    """FOLLOW uses the existing 20Hz path; Y owns the exclusive target-200Hz timer."""
+    """The 20Hz callback supervises admission; only this 200Hz runtime emits PX4 commands."""
 
     def __init__(self, node):
         self.node = node
@@ -45,6 +48,18 @@ class P76TrackerRuntime:
             calibration['braking_acceleration'], self.contract['candidate']['sea_surface_z'])
         self.controller = PaperController(self.contract, calibration['mass'],
                                           calibration['maximum_thrust'], self.map, barrier)
+        if self.contract.get('architecture') != 'parallel_dkf_unified_bodyrate':
+            raise ValueError('P763_ARCHITECTURE_REQUIRED')
+        self.outer = BodyrateTracker(self.contract, calibration['mass'],
+                                     calibration['maximum_thrust'], self.map)
+        self.recovery = BodyrateRecovery(calibration['formal_recovery']['braking_request'],
+                                         max(.24, calibration['response_seconds']))
+        self.recovery_phase = None
+        self.image_ack = None
+        self.follow_revoked = False
+        self.waypoint, self.waypoint_state = None, None
+        self.mode_wait_started = None
+        self.land_observation = {}
         self.mode = ModeCoordinator(self.contract['timing']['handover_timeout'])
         self.history = NativePoseHistory(self.contract['timing']['maximum_pose_bracket'])
         self.references = NativeReferenceHistory()
@@ -68,6 +83,7 @@ class P76TrackerRuntime:
                                                    self.receive_thrust, 10)
         self.reference_sub = node.create_subscription(
             String, '/navigation/native_local_reference', self.receive_reference, 16)
+        self._install_landing_observers()
         self.timer = node.create_timer(
             1/self.contract['paper']['paper_controller_target_rate_hz'], self.tick)
         self.publish_phase()
@@ -75,7 +91,9 @@ class P76TrackerRuntime:
     def publish_phase(self):
         """Expose unique control ownership; mode epoch never changes on detector loss."""
         self.mode_pub.publish(String(data=json.dumps(dict(
-            phase=self.mode.phase, epoch=self.mode.epoch, y_stamp=self.mode.y_stamp,
+            schema_version=2, phase=self.mode.phase, epoch=self.mode.epoch,
+            guidance_owner=self.mode.guidance_owner, px4_interface='BODY_RATE',
+            y_stamp=self.mode.y_stamp,
             mission_id=self.node.mission_id, reason=self.mode.reason))))
 
     def receive_image(self, message):
@@ -93,11 +111,14 @@ class P76TrackerRuntime:
                 self.mode.fail('NATIVE_ATTITUDE_INVALID')
 
     def ack(self, message):
-        """Track an actual spatial-node freeze acknowledgement in the current epoch."""
+        """Track continuous estimator readiness and separate guidance authorization."""
         try:
             data = json.loads(message.data)
-            if data['epoch'] == self.mode.epoch and data['estimator'] == 'spatial':
-                self.spatial_ack = data
+            if data.get('schema_version') == 2 and data['epoch'] == self.mode.epoch:
+                if data['estimator'] == 'spatial':
+                    self.spatial_ack = data
+                elif data['estimator'] == 'image':
+                    self.image_ack = data
         except (ValueError, KeyError, TypeError):
             return
 
@@ -140,15 +161,16 @@ class P76TrackerRuntime:
             return
 
     def accept_y(self, now):
-        """Revoke MINCO after the mission manager accepts Y and before freezing inputs."""
+        """Withdraw the MINCO lease; retain both estimators and the physical Body-rate mode."""
         qualified = os.environ.get('UAV_USV_P761_STAGE') != 'B'
         try:
             validate_follow_qualification(self.contract, self.workspace)
         except (ValueError, OSError):
             qualified = False
-        self.node._revoke_nominal_follow('P76_Y_HANDOVER')
+        self.node._revoke_nominal_follow('P763_Y_AUTHORITY_HANDOVER')
         self.node.pending_trajectory = self.node.tracker.active_trajectory = None
         self.node.terminal_execution = None
+        self.follow_revoked = True
         self.mode.accept_y(now, qualified)
         self.publish_phase()
 
@@ -157,8 +179,7 @@ class P76TrackerRuntime:
         return bool(image is not None and image.valid and image.mode_epoch == self.mode.epoch
                     and image.model_sha256 == self.contract['detector']['model_sha256']
                     and 0 <= now-stamp_seconds(image.stamp) <= .125
-                    and 0 <= now-stamp_seconds(image.source_stamp) <= .125
-                    and stamp_seconds(image.source_stamp) > self.mode.y_stamp)
+                    and 0 <= now-stamp_seconds(image.source_stamp) <= .125)
 
     def _paired_navigation(self, stamp):
         rows = self.node.follow_navigation_history
@@ -172,6 +193,19 @@ class P76TrackerRuntime:
                              for k in ('p', 'v'))
         raise ValueError('P76_NATIVE_NAVIGATION_BRACKET')
 
+    def _snapshot(self, now):
+        for row in reversed(self.node.follow_navigation_history):
+            stamp = row['stamp']
+            if not 0 <= now-stamp <= .125:
+                continue
+            try:
+                pose = self.history.at(stamp)
+                sea = self.references.at(stamp)-self.contract['candidate']['sea_altitude_msl']
+                return stamp, np.asarray(row['p']), np.asarray(row['v']), pose, sea
+            except ValueError:
+                continue
+        raise ValueError('P763_COMPLETE_NATIVE_PAIR_UNAVAILABLE')
+
     def _emit_rates(self, rates, thrust, now):
         heartbeat = OffboardControlMode(timestamp=self.node._timestamp_us(), body_rate=True)
         self.node.offboard_pub.publish(heartbeat)
@@ -180,111 +214,220 @@ class P76TrackerRuntime:
         message.thrust_body = [0., 0., float(thrust)]
         self.rates_pub.publish(message)
         self.last_emitted = dict(stamp=now, rates=list(map(float, rates)), thrust=float(thrust))
+        if not hasattr(self, 'output_history'):
+            self.output_history = deque(maxlen=128)
+        self.output_history.append(dict(self.last_emitted,
+                                        reference=getattr(self, 'emission_reference', None)))
 
-    def _recovery(self, now, dt):
-        """Switch once to controlled velocity braking; retain heartbeat, never zero thrust."""
-        state = self.node.latest_state
-        if state is None or not 0 <= now-state.stamp <= .125:
-            # Stopping heartbeat invokes PX4's configured offboard-loss failsafe.
-            return
-        from .trajectory_tracker_node import command_to_setpoint
-        from .p76_recovery import VelocityRecovery
-        if (not hasattr(self, 'recovery_velocity')
-                or getattr(self, 'recovery_phase', None) != self.mode.phase):
-            self.recovery_velocity = VelocityRecovery()
+    def _bodyrate_confirmed(self, now):
+        if self.px4_mode is None:
+            return False
+        stamp, flags = self.px4_mode
+        return bool(0 <= now-stamp <= self.contract['timing']['mode_feedback_max_age']
+                    and flags['offboard'] and flags['rates']
+                    and not any(flags[k] for k in (
+                        'velocity', 'position', 'attitude', 'altitude', 'climb_rate')))
+
+    def _install_landing_observers(self):
+        from px4_msgs.msg import VehicleLandDetected, VehicleStatus
+        from rclpy.qos import qos_profile_sensor_data
+
+        def status(message):
+            self.land_observation.update(status_receipt=self.node._ros_seconds(),
+                                         status_native_wire=int(message.timestamp),
+                                         nav_state=int(message.nav_state),
+                                         disarmed=message.arming_state == 1)
+
+        def landed(message):
+            self.land_observation.update(land_receipt=self.node._ros_seconds(),
+                                         land_native_wire=int(message.timestamp),
+                                         landed=bool(message.landed))
+        self.land_subscriptions = []
+        for name, cls, callback in (('vehicle_status', VehicleStatus, status),
+                                    ('vehicle_land_detected', VehicleLandDetected, landed)):
+            version = getattr(cls, 'MESSAGE_VERSION', 0)
+            topic = '/fmu/out/'+name+(f'_v{version}' if version else '')
+            self.land_subscriptions.append(self.node.create_subscription(
+                cls, topic, callback, qos_profile_sensor_data))
+
+    def _land(self, reason, now):
+        """One latched native LAND; no alternating control interfaces or false completion timer."""
+        self.mode.fail(reason)
+        self.node._revoke_nominal_follow(reason)
+        self.follow_revoked = True
+        if not self.fatal_dispatched and self.node.vehicle_armed:
+            from px4_msgs.msg import VehicleCommand
+            self.node._publish_vehicle_command(VehicleCommand.VEHICLE_CMD_NAV_LAND, 0.)
+            self.fatal_dispatched, self.land_requested = True, now
+
+    def _follow_output(self, now, dt, stamp, position, velocity, pose):
+        state = self.node.mission_state_name
+        if not self._bodyrate_confirmed(now):
+            self.mode_wait_started = self.mode_wait_started or now
+            if now-self.mode_wait_started > self.contract['timing']['mode_feedback_max_age']:
+                raise ValueError('P763_BODYRATE_MODE_UNCONFIRMED')
+        else:
+            self.mode_wait_started = None
+        if state == 'FOLLOW':
+            context = self.node._follow_context()
+            if not (context.following and context.visible and context.navigation_fresh
+                    and context.target_fresh and context.prediction_fresh
+                    and context.observation_fresh and not context.recovering):
+                raise ValueError('P763_FOLLOW_CONTEXT_LOST')
+            receiver = self.node.follow_receiver
+            curve = receiver.active
+            if curve is not None:
+                if self.follow_revoked or curve.mission_id != self.node.mission_id:
+                    raise ValueError('P763_FOLLOW_AUTHORITY_REVOKED')
+                reference = sample_reference(curve, now, receiver.deadline)
+                feedback = sample_reference(curve, stamp, receiver.deadline)
+                self.emission_reference = dict(stamp=stamp, position=feedback[:3].tolist(),
+                                               velocity=feedback[3:6].tolist(),
+                                               acceleration=feedback[6:9].tolist())
+                return self.outer.step(reference, position, velocity, pose.rotation,
+                                       dt, pose.omega, feedback_reference=feedback), 'MINCO_FOLLOW'
+        if self.waypoint is None or self.waypoint_state != state:
+            goal = position.copy()
+            if state not in ('INIT', 'GROUND_HOLD'):
+                goal[2] = self.node.flight_guidance.flight_altitude
+            duration = max(2., 2.5*float(np.linalg.norm(goal-position)))
+            self.waypoint = WaypointReference(stamp, position, velocity, goal, duration,
+                                              self.node.current_heading)
+            self.waypoint_state = state
+        reference = self.waypoint.sample(now)
+        feedback = self.waypoint.sample(stamp)
+        return self.outer.step(reference, position, velocity, pose.rotation,
+                               dt, pose.omega, feedback_reference=feedback), (
+                                   'HOLD' if state == 'FOLLOW' else 'SETUP')
+
+    def _paper_output(self, now, dt):
+        valid = self._image_valid(now)
+        if self.mode.phase == 'PAPER_INTERCEPT_ACTIVE' and not valid:
+            raise ValueError('P76_IMAGE_SOURCE_STALE')
+        if not valid:
+            if self.initialized:
+                raise ValueError('P76_HANDOVER_IMAGE_SOURCE_STALE')
+            return None
+        stamp = stamp_seconds(self.image.pose_stamp)
+        pose = self.history.at(stamp)
+        position, velocity = self._paired_navigation(stamp)
+        self.controller.barrier.sea = (
+            self.references.at(stamp)-self.contract['candidate']['sea_altitude_msl'])
+        if self.mode.phase == 'Y_HANDOVER':
+            ack = self.image_ack
+            image_ready = bool(ack and ack.get('schema_version') == 2 and ack['active']
+                               and ack['ready'] and ack['control_authorized']
+                               and ack['epoch'] == self.mode.epoch
+                               and 0 <= now-ack['stamp'] <= .125)
+            receiver = self.node.follow_receiver
+            revoked = self.follow_revoked and receiver.active is None and receiver.pending is None
+            ready = self.mode.ready(now, revoked, stamp_seconds(self.image.source_stamp),
+                                    0 <= now-stamp <= .125, image_ready)
+            if not ready:
+                return None
+            if self.executed_thrust is None or not 0 <= now-self.executed_thrust[0] <= .125:
+                raise ValueError('P76_EXECUTED_THRUST_FEEDBACK_UNAVAILABLE')
+            if not self.initialized:
+                self.controller.initialize(self.image.state, pose.rotation, velocity, stamp,
+                                           pose.omega)
+                self.initialized = True
+                self.mode.request_bodyrate(now)
+            output = self.outer.limit_output(dict(rates=pose.omega,
+                                                  thrust=float(self.executed_thrust[1][2]),
+                                                  acceleration=np.zeros(3)), dt)
+            if self._bodyrate_confirmed(now):
+                self.mode.confirm(now, self.px4_mode[0], True,
+                                  self.contract['timing']['mode_feedback_max_age'])
+            return output
+        if not self._bodyrate_confirmed(now):
+            raise ValueError('P763_BODYRATE_MODE_LOST')
+        output = self.controller.step(self.image.state, pose.rotation, position, velocity,
+                                      stamp, dt, navigation_age=now-stamp)
+        return self.outer.limit_output(output, dt)
+
+    def _recovery(self, now, dt, snapshot=None):
+        """Only calibrated target-independent body braking may retain external control."""
+        if snapshot is None:
+            snapshot = self._snapshot(now)
+        stamp, position, velocity, pose, sea = snapshot
+        self.controller.barrier.sea = sea
+        if not self._bodyrate_confirmed(now):
+            raise ValueError('P763_RECOVERY_BODYRATE_UNCONFIRMED')
+        if getattr(self, 'recovery_phase', None) != self.mode.phase:
+            self.recovery.reset()
             self.recovery_phase = self.mode.phase
-        velocity = np.asarray(state.velocity)
-        braking = self.controller.barrier.braking
-        command = self.recovery_velocity.setpoint(state.position, velocity, now, braking)
-        self.node._publish_offboard_mode(self.node._timestamp_us(), velocity_control=True)
-        self.node.setpoint_pub.publish(command_to_setpoint(
-            command, self.node._timestamp_us(), velocity_mode=True))
+        return self.recovery.step(self.outer, position, velocity, pose.rotation, pose.omega,
+                                  now, dt, now-stamp, self.controller.barrier)
 
     def tick(self):
-        """Only this callback emits setpoints outside FOLLOW; the old timer returns early."""
-        if self.mode.phase == 'FOLLOW_ACTIVE':
-            return
+        """Sole physical outlet during ground prestream, X, Y and bounded recovery."""
         now = self.node._ros_seconds()
-        dt = 1/self.contract['paper']['paper_controller_target_rate_hz']
-        if self.last_tick is not None:
-            dt = now-self.last_tick
+        dt = (now-self.last_tick if self.last_tick is not None else
+              1/self.contract['paper']['paper_controller_target_rate_hz'])
         self.last_tick = now
-        if dt <= 0 or dt > .125:
-            self.mode.fail('P76_CONTROL_CLOCK_OR_DEADLINE')
+        self.emission_reference = None
+        owner = 'NONE'
         if getattr(self.node, 'navigation_frame_fault', ''):
-            self.mode.fail('P76_NAVIGATION_FRAME_FAULT')
-            self.publish_phase()
-            return
-        self.mode.timeout(now)
+            self._land('P76_NAVIGATION_FRAME_FAULT', now)
         try:
-            valid = self._image_valid(now)
-            if (self.mode.phase == 'Y_HANDOVER' and self.initialized and not valid):
-                # Once body-rate prestream begins, stale imagery must latch recovery.
-                # Never silently resume velocity output while awaiting its PX4 ACK.
-                raise ValueError('P76_HANDOVER_IMAGE_SOURCE_STALE')
-            if self.mode.phase == 'PAPER_INTERCEPT_ACTIVE' and not valid:
-                raise ValueError('P76_IMAGE_SOURCE_STALE')
-            if self.mode.phase in ('Y_HANDOVER', 'PAPER_INTERCEPT_ACTIVE') and valid:
-                stamp = stamp_seconds(self.image.pose_stamp)
-                pose = self.history.at(stamp)
-                position, velocity = self._paired_navigation(stamp)
-                # The SDF collision envelope is now about base_link. The sea plane
-                # must likewise use this PX4 local frame, not Gazebo's world Z=0.
-                self.controller.barrier.sea = (
-                    self.references.at(stamp)-self.contract['candidate']['sea_altitude_msl'])
-                ack = self.spatial_ack
-                inactive = bool(ack and not ack['active'] and 0 <= now-ack['stamp'] <= .125)
-                ready = self.mode.ready(now, inactive, stamp_seconds(self.image.source_stamp),
-                                        0 <= now-stamp <= .125)
-                if ready and not self.initialized:
-                    if (self.executed_thrust is None
-                            or now-self.executed_thrust[0] > .125):
-                        raise ValueError('P76_EXECUTED_THRUST_FEEDBACK_UNAVAILABLE')
-                    limits = self.contract['candidate']
-                    bound = np.array((limits['maximum_body_roll_pitch_rate'],)*2
-                                     + (limits['maximum_body_yaw_rate'],))
-                    if np.any(np.abs(pose.omega) > bound):
-                        raise ValueError('P76_HANDOVER_RATE_OUTSIDE_CALIBRATION')
-                    self.controller.initialize(self.image.state, pose.rotation, velocity,
-                                               stamp, pose.omega)
-                    self.thrust_hold = float(self.executed_thrust[1][2])
-                    self.initialized = True
-                if self.initialized and self.mode.phase == 'Y_HANDOVER':
-                    self.mode.request_bodyrate(now)
-                    self._emit_rates(pose.omega, self.thrust_hold, now)
-                    if self.px4_mode:
-                        received, flags = self.px4_mode
-                        exclusive = (flags['offboard'] and flags['rates']
-                                     and not any(flags[key] for key in (
-                                         'velocity', 'position', 'attitude', 'altitude',
-                                         'climb_rate')))
-                        self.mode.confirm(now, received, exclusive)
-                elif self.mode.phase == 'PAPER_INTERCEPT_ACTIVE':
-                    output = self.controller.step(self.image.state, pose.rotation, position,
-                                                  velocity, stamp, dt, navigation_age=now-stamp)
-                    safety = self.controller.barrier.check(
-                        position, velocity, pose.rotation, output['acceleration'], now-stamp, dt)
+            if not 0 < dt <= .125:
+                raise ValueError('P76_CONTROL_CLOCK_OR_DEADLINE')
+            self.mode.timeout(now)
+            if not self.fatal_dispatched and self.mode.phase != 'CAPTURED':
+                if not self.node.vehicle_armed:
+                    # Native callbacks arrive asynchronously after the timer starts. Disarmed
+                    # zero prestream grants no flight readiness and cannot latch a flight fault.
+                    self.outer.initialize(np.zeros(3), 0.)
+                    self._emit_rates(np.zeros(3), 0., now)
+                    owner = 'DISARMED_PRESTREAM'
+                else:
+                    snapshot = self._snapshot(now)
+                    stamp, position, velocity, pose, sea = snapshot
+                    self.controller.barrier.sea = sea
+                    if self.outer.limiter.thrust is None:
+                        if self.executed_thrust is None or now-self.executed_thrust[0] > .125:
+                            raise ValueError('P763_EXECUTED_SEED_UNAVAILABLE')
+                        self.outer.initialize(pose.omega, float(self.executed_thrust[1][2]))
+                    if self.mode.phase == 'FOLLOW_ACTIVE':
+                        output, owner = self._follow_output(
+                            now, dt, stamp, position, velocity, pose)
+                    elif self.mode.phase in ('Y_HANDOVER', 'PAPER_INTERCEPT_ACTIVE'):
+                        output = self._paper_output(now, dt)
+                        owner = ('PAPER' if self.mode.phase == 'PAPER_INTERCEPT_ACTIVE'
+                                 else 'HANDOVER')
+                        if output is None:
+                            # Guidance has no owner while awaiting warm estimator labels. Bounded
+                            # native braking replaces target feedback without a PX4 mode change.
+                            output = self._recovery(now, dt, snapshot)
+                    else:
+                        output, owner = self._recovery(now, dt, snapshot), 'BODYRATE_RECOVERY'
+                    safety = self.recovery.check_margin(
+                        self.outer, position, velocity, pose.rotation, output['acceleration'],
+                        now-stamp, dt, self.controller.barrier)
                     if safety != 'CLEAR':
                         raise ValueError('P76_SEA_'+safety)
-                    output['safety'] = safety
                     self._emit_rates(output['rates'], output['thrust'], now)
-            elif self.mode.phase == 'Y_HANDOVER':
-                self._recovery(now, max(.001, min(dt, .05)))
         except (ValueError, TypeError, np.linalg.LinAlgError) as error:
             self.mode.fail(str(error))
-            if 'UNRECOVERABLE' in str(error) and not self.fatal_dispatched:
-                from px4_msgs.msg import VehicleCommand
-                self.node._publish_vehicle_command(VehicleCommand.VEHICLE_CMD_NAV_LAND, 0.)
-                self.fatal_dispatched = True
-        if self.mode.phase in ('SAFE_RECOVERY', 'CAPTURED') and not self.fatal_dispatched:
-            self._recovery(now, max(.001, min(dt, .05)))
+            if self.node.vehicle_armed and not self.fatal_dispatched:
+                try:
+                    output = self._recovery(now, min(.125, max(.001, dt)))
+                    self._emit_rates(output['rates'], output['thrust'], now)
+                    owner = 'BODYRATE_RECOVERY'
+                except (ValueError, TypeError, np.linalg.LinAlgError):
+                    self._land(str(error), now)
         if now-self.last_report >= .05:
             self.last_report = now
             self.publish_phase()
-            self.node.search_state = ('PAPER_ACTIVE' if self.mode.phase
-                                      == 'PAPER_INTERCEPT_ACTIVE' else self.mode.phase)
-            self.node._publish_diagnostic(now, None, self.mode.phase, 0.)
+            status = 'MINCO_FOLLOW' if owner == 'MINCO_FOLLOW' else self.mode.phase
+            self.node._publish_diagnostic(now, None, status, 0.)
             self.diagnostic_pub.publish(String(data=json.dumps(dict(
-                phase=self.mode.phase, epoch=self.mode.epoch, reason=self.mode.reason,
+                schema_version=2, stamp=now, phase=self.mode.phase,
+                guidance_owner=owner, px4_interface='BODY_RATE', reason=self.mode.reason,
                 source_stamp=stamp_seconds(self.image.source_stamp) if self.image else 0.,
-                output=getattr(self, 'last_emitted', None), actual_dt=dt))))
+                output=getattr(self, 'last_emitted', None), actual_dt=dt,
+                output_history=list(getattr(self, 'output_history', ())),
+                land=dict(self.land_observation,
+                          requested=getattr(self, 'land_requested', None))))))
+            if hasattr(self, 'output_history'):
+                self.output_history.clear()

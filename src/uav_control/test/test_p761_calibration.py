@@ -78,14 +78,23 @@ def test_stopped_diagnostics_cannot_qualify_live_minco_follow():
     control = Row(stamp=stamp(10.), status='MINCO_FOLLOW', plan_id=3,
                   remaining_time=.2, source_age=.02, last_valid_observation_age=.02)
     target = Row(valid=True, stamp=stamp(10.), source_stamp=stamp(9.98))
-    acks = {name: dict(active=active, epoch=0, phase='FOLLOW_ACTIVE', stamp=10.,
-                       ready=active, source_stamp=9.98)
-            for name, active in (('spatial', True), ('image', False))}
+    acks = {name: dict(schema_version=2, active=True, epoch=0, phase='FOLLOW_ACTIVE', stamp=10.,
+                       ready=True, source_stamp=9.98, control_authorized=authorized)
+            for name, authorized in (('spatial', True), ('image', False))}
     mode = dict(phase='FOLLOW_ACTIVE', epoch=0)
-    assert validation.follow_authority_fresh(10.02, control, target, acks, [10.], mode)
-    assert not validation.follow_authority_fresh(10.2, control, target, acks, [10.], mode)
+    runtime = dict(schema_version=2, phase='FOLLOW_ACTIVE', guidance_owner='MINCO_FOLLOW',
+                   px4_interface='BODY_RATE', stamp=10.,
+                   output=dict(stamp=10., rates=[0., 0., 0.], thrust=-.5))
+    native = dict(stamp=10., flags=dict(
+        offboard=True, rates=True, position=False, velocity=False, attitude=False,
+        altitude=False, climb_rate=False))
+    assert validation.follow_authority_fresh(
+        10.02, control, target, acks, [10.], mode, runtime, native)
+    assert not validation.follow_authority_fresh(
+        10.2, control, target, acks, [10.], mode, runtime, native)
     acks['spatial']['epoch'] = 1
-    assert not validation.follow_authority_fresh(10.02, control, target, acks, [10.], mode)
+    assert not validation.follow_authority_fresh(
+        10.02, control, target, acks, [10.], mode, runtime, native)
 
 
 def test_real_px4_float32_thrust_relay_preserves_sample_epoch():

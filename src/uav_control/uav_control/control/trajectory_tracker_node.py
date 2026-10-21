@@ -748,11 +748,15 @@ class TrajectoryTrackerNode(Node):
             '/fmu/in/offboard_control_mode',
             10,
         )
-        self.setpoint_pub = self.create_publisher(
-            TrajectorySetpoint,
-            '/fmu/in/trajectory_setpoint',
-            10,
-        )
+        if self.get_parameter('p76_enabled').value:
+            from .p76_minco_bodyrate_tracker import SupervisorSink
+            self.setpoint_pub = SupervisorSink()
+        else:
+            self.setpoint_pub = self.create_publisher(
+                TrajectorySetpoint,
+                '/fmu/in/trajectory_setpoint',
+                10,
+            )
         self.vehicle_command_pub = self.create_publisher(
             VehicleCommand,
             '/fmu/in/vehicle_command',
@@ -1707,6 +1711,8 @@ class TrajectoryTrackerNode(Node):
         )
 
     def _publish_offboard_mode(self, timestamp_us, velocity_control=False):
+        if getattr(self, 'p76', None) is not None:
+            return  # P763 sole 200Hz runtime owns the Body-rate heartbeat.
         message = OffboardControlMode()
         message.timestamp = int(timestamp_us)
         message.position = not bool(velocity_control)
@@ -1720,6 +1726,8 @@ class TrajectoryTrackerNode(Node):
 
     def _remember_emitted_velocity(self, setpoint, now):
         """Share actual velocity-command history across guidance/tracker owners."""
+        if getattr(self, 'p76', None) is not None:
+            return  # A discarded supervisor reference is not an actually emitted velocity.
         velocity = tuple(float(value) for value in setpoint.velocity)
         if len(velocity) == 3 and all(math.isfinite(value) for value in velocity):
             self.tracker.previous_command_velocity = velocity

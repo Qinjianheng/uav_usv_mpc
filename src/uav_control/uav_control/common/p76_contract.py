@@ -12,7 +12,7 @@ def load_contract(path):
     """Read a contract and bind its absolute path without changing the file."""
     path = Path(path).resolve()
     contract = yaml.safe_load(path.read_text())
-    if not isinstance(contract, dict) or contract.get('schema_version') != 1:
+    if not isinstance(contract, dict) or contract.get('schema_version') not in (1, 2):
         raise ValueError('P76_CONTRACT_SCHEMA')
     contract['_path'] = str(path)
     _validate(contract)
@@ -20,6 +20,19 @@ def load_contract(path):
 
 
 def _validate(c):
+    if c.get('schema_version') == 2 and (
+            c.get('architecture') != 'parallel_dkf_unified_bodyrate'
+            or c.get('qualification_schema_version') != 2):
+        raise ValueError('P763_ARCHITECTURE_SCHEMA')
+    if c.get('schema_version') == 2:
+        outer = c['bodyrate_follow']
+        limits = dict(kp=2., kv=3., attitude_gain=4., maximum_acceleration=5.,
+                      maximum_jerk=3., maximum_tilt=.45, maximum_thrust_slew=2.)
+        if (any(type(outer.get(k)) not in (int, float)
+                or not math.isfinite(outer[k]) or not 0 < outer[k] <= limit
+                for k, limit in limits.items())
+                or outer.get('qualification') != 'OFFLINE_CANDIDATE_NOT_FLIGHT_QUALIFIED'):
+            raise ValueError('P763_FOLLOW_CANDIDATE_BOUNDS')
     if c['timing']['maximum_source_age'] != .125:
         raise ValueError('P76_SOURCE_AGE')
     if c['timing']['maximum_pose_bracket'] != .05:
@@ -71,6 +84,8 @@ def parameter_bindings(contract):
                    flight_altitude=-f['height'], follow_distance=f['distance'],
                    maximum_horizontal_speed=candidate['maximum_horizontal_speed'],
                    guidance_maximum_horizontal_speed=candidate['maximum_horizontal_speed'])
+    if c.get('schema_version') == 2:
+        tracker.update({'p763_follow_'+k: v for k, v in c['bodyrate_follow'].items()})
     for source in (paper, candidate, timing):
         tracker.update({'p76_'+k: v for k, v in source.items()})
     filters = c['filters']

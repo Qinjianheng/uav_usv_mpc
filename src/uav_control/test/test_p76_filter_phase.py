@@ -5,6 +5,7 @@ import numpy as np
 
 from uav_control.tracking.delayed_image_kalman import DelayedImageKalman
 from uav_control.tracking.image_dkf_node import ImageDkfNode
+from uav_control.common.p76_native import NativePoseHistory
 
 
 def test_image_filter_does_not_reset_when_handover_becomes_active():
@@ -16,6 +17,8 @@ def test_image_filter_does_not_reset_when_handover_becomes_active():
     node.mode_changed()
     assert node.filter.filter.source_stamp == 10.02
     node.cached = deque(['cached-only'], maxlen=12)
+    node.pending, node.seen_detections = deque(), deque()
+    node.history = NativePoseHistory()
     node.p76_phase = 'SAFE_RECOVERY'
     node.mode_changed()
     assert node.filter.filter.source_stamp == 0.

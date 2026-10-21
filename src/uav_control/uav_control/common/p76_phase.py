@@ -39,13 +39,23 @@ def install_phase_gate(node, on_change=None):
 
 
 def follow_active(node):
-    """Keep legacy nodes active and freeze an explicit P76 non-FOLLOW phase."""
+    """Authorize FOLLOW consumers only; this does not describe estimator activity."""
     return getattr(node, 'p76_phase', 'FOLLOW_ACTIVE') == 'FOLLOW_ACTIVE'
 
 
+def estimator_active(node):
+    """Run both DKFs throughout normal guidance and its Y authority handover."""
+    return getattr(node, 'p76_phase', 'FOLLOW_ACTIVE') in (
+        'FOLLOW_ACTIVE', 'Y_HANDOVER', 'PAPER_INTERCEPT_ACTIVE')
+
+
 def publish_ack(node, estimator, active, ready=False, source_stamp=0., reason=''):
-    """Expose estimator activity and original measurement authority per mode epoch."""
+    """Separate live estimation, source freshness and phase-specific consumption rights."""
+    permitted = (follow_active(node) if estimator == 'spatial' else
+                 node.p76_phase in ('Y_HANDOVER', 'PAPER_INTERCEPT_ACTIVE'))
     node.ack_pub.publish(String(data=json.dumps(dict(
+        schema_version=2,
         estimator=estimator, phase=node.p76_phase, epoch=node.p76_epoch,
         stamp=node.get_clock().now().nanoseconds*1e-9, active=active, ready=ready,
-        source_stamp=source_stamp, reason=reason))))
+        source_stamp=source_stamp, reason=reason,
+        control_authorized=bool(active and ready and permitted)))))

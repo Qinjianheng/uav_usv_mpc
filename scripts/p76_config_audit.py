@@ -15,7 +15,9 @@ from uav_control.common.p76_contract import (  # noqa: E402
     dump_ros_parameters, load_contract, parameter_bindings, ros_parameters, validate_profile,
 )
 from uav_control.common.p76_model import prepare_model, verify_model  # noqa: E402
-from uav_control.common.p76_readiness import validate_calibration  # noqa: E402
+from uav_control.common.p76_readiness import (  # noqa: E402
+    validate_calibration, validate_follow_qualification, source_fingerprint, sha256,
+)
 
 
 def dependency_inventory(workspace):
@@ -76,11 +78,18 @@ def audit(contract_path, profile_path, model_root=None, require_flight=False,
             raise ValueError('P76_ACTUAL_SESSION_MODEL_REQUIRED')
         validate_calibration(contract, model_root, ROOT)
     if require_flight:
+        validate_follow_qualification(contract, ROOT)
         qualification = Path(contract['detector']['qualification_manifest'])
         if not qualification.is_file():
             raise ValueError('P76_ROS_DETECTOR_QUALIFICATION_MISSING')
         detector_data = json.loads(qualification.read_text())
-        if (detector_data.get('qualified') is not True
+        logs = detector_data.get('raw_evidence', {})
+        if (detector_data.get('schema_version') != 2
+                or detector_data.get('architecture') != 'parallel_dkf_unified_bodyrate'
+                or detector_data.get('sources') != source_fingerprint(ROOT)
+                or not logs or any(not Path(p).is_file() or sha256(p) != h
+                                   for p, h in logs.items())
+                or detector_data.get('qualified') is not True
                 or detector_data.get('model_sha256') != contract['detector']['model_sha256']
                 or detector_data.get('contract_sha256') != result['contract_sha256']):
             raise ValueError('P76_ROS_DETECTOR_QUALIFICATION_INVALID')

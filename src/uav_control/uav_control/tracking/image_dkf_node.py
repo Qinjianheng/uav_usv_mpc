@@ -1,4 +1,4 @@
-"""Y-only delayed pixel filter using shared YOLO and native acquisition-pose brackets."""
+"""Continuous delayed pixel filter using shared YOLO and native acquisition-pose brackets."""
 from collections import deque
 import math
 
@@ -12,13 +12,13 @@ from uav_usv_interfaces.msg import NativeAttitude, TargetImageDetection, TargetI
 from uav_control.common.navigation_frame import install_navigation_frame_guard
 from uav_control.common.p76_contract import load_contract
 from uav_control.common.p76_native import NativePoseHistory
-from uav_control.common.p76_phase import install_phase_gate, publish_ack
-from uav_control.perception.yolo_detection_contract import detection_mask, stamp_seconds
+from uav_control.common.p76_phase import estimator_active, install_phase_gate, publish_ack
+from uav_control.perception.yolo_detection_contract import detection_mask, raw_key, stamp_seconds
 from .delayed_image_kalman import DelayedImageKalman
 
 
 class ImageDkfNode(Node):
-    """FOLLOW caches packets only; a fresh post-Y image is mandatory for authority."""
+    """Warm in FOLLOW, preserve the posterior at Y and authorize only image guidance."""
 
     def __init__(self):
         super().__init__('image_dkf_node')
@@ -39,6 +39,7 @@ class ImageDkfNode(Node):
             timing['maximum_source_age'])
         self.history = NativePoseHistory(timing['maximum_pose_bracket'])
         self.pending, self.cached = deque(maxlen=12), deque(maxlen=12)
+        self.seen_detections = deque(maxlen=256)
         self.latest_packet, self.last_now, self.last_reason = None, None, 'UNINITIALIZED'
         self.filter_epoch = 0
         self.navigation_stamp = 0.
@@ -61,27 +62,40 @@ class ImageDkfNode(Node):
         self.filter.reset()
         self.pending.clear()
         self.cached.clear()
+        self.seen_detections.clear()
         self.latest_packet, self.last_reason = None, str(reason)
         self.navigation_stamp = 0.
 
     def mode_changed(self):
-        """Warm-start only from legal recent detections; no FOLLOW image estimation."""
-        if self.p76_phase == 'PAPER_INTERCEPT_ACTIVE' and self.filter_epoch == self.p76_epoch:
-            return
-        self.filter.reset()
-        self.latest_packet = None
-        self.pending = deque(self.cached if self.p76_phase == 'Y_HANDOVER' else (), maxlen=12)
+        """Relabel normal authority epochs without resetting any state, covariance or history."""
+        if not estimator_active(self):
+            self.frame_failed('IMAGE_DKF_PHASE_INACTIVE')
         self.filter_epoch = self.p76_epoch
 
+    def check_clock(self, now):
+        """Clear histories before any callback admits data after a clock rollback."""
+        if self.last_now is not None and now < self.last_now:
+            self.frame_failed('IMAGE_DKF_CLOCK_RESET')
+        self.last_now = now
+
     def receive(self, message):
-        """Cache the unique detector's original acquisition identity."""
+        """Consume each original detector frame once, including across Y relabelling."""
+        self.check_clock(self.get_clock().now().nanoseconds*1e-9)
+        if not estimator_active(self) or getattr(self, 'navigation_frame_fault', ''):
+            return
+        identity = (raw_key(message.raw_stamp), int(message.frame_sequence))
+        if any(identity[0] == raw or identity[1] == frame
+               for raw, frame in self.seen_detections):
+            self.last_reason = 'IMAGE_DKF_DUPLICATE_DETECTION'
+            return
+        self.seen_detections.append(identity)
         self.cached.append(message)
-        if self.p76_phase in ('Y_HANDOVER', 'PAPER_INTERCEPT_ACTIVE'):
-            self.pending.append(message)
-            self.tick()
+        self.pending.append(message)
+        self.tick()
 
     def pose(self, message):
         """Store native attitudes independently of the 3D target filter."""
+        self.check_clock(self.get_clock().now().nanoseconds*1e-9)
         if not message.valid or getattr(self, 'navigation_frame_fault', ''):
             return
         try:
@@ -93,25 +107,26 @@ class ImageDkfNode(Node):
     def navigation(self, message):
         """Bound projection by actual navigation availability, without reading any 3D target."""
         from uav_control.common.navigation_state import navigation_components
+        now = self.get_clock().now().nanoseconds*1e-9
+        self.check_clock(now)
+        if getattr(self, 'navigation_frame_fault', ''):
+            return
         try:
-            stamp, _, _, _ = navigation_components(
-                message, self.get_clock().now().nanoseconds*1e-9)
+            stamp, _, _, _ = navigation_components(message, now)
             self.navigation_stamp = max(self.navigation_stamp, stamp)
         except ValueError:
             return
 
     def tick(self):
         """Replay historical updates and project at a real delivered pose, never ROS-now pose."""
-        active = self.p76_phase in ('Y_HANDOVER', 'PAPER_INTERCEPT_ACTIVE')
+        now = self.get_clock().now().nanoseconds*1e-9
+        self.check_clock(now)
+        active = estimator_active(self)
         if getattr(self, 'navigation_frame_fault', ''):
             active = False
         if not active:
             publish_ack(self, 'image', False)
             return
-        now = self.get_clock().now().nanoseconds*1e-9
-        if self.last_now is not None and now < self.last_now:
-            self.frame_failed('IMAGE_DKF_CLOCK_RESET')
-        self.last_now = now
         remaining = deque(maxlen=12)
         for packet in self.pending:
             try:
@@ -157,9 +172,9 @@ class ImageDkfNode(Node):
                 map(float, pose.quaternion[1:]))
             result.frame_sequence = self.latest_packet.frame_sequence
             result.model_sha256 = self.latest_packet.model_sha256
-            result.valid = bool(estimate.valid and source > self.p76_y_stamp)
+            result.valid = bool(estimate.valid)
             ready = result.valid
-            result.rejection_reason = '' if ready else 'POST_Y_IMAGE_REQUIRED'
+            result.rejection_reason = '' if ready else estimate.reason
         except ValueError as error:
             result.rejection_reason = str(error)
         self.state_pub.publish(result)

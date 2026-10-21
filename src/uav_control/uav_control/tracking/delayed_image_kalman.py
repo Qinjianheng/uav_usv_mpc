@@ -24,7 +24,7 @@ class DelayedImageKalman:
         self.anchor_rotation = None
 
     def reset(self):
-        """Start a new Y/clock epoch without inheriting a FOLLOW image estimate."""
+        """Discard the chart and posterior after a clock/frame discontinuity."""
         self.filter.reset()
         self.anchor_rotation = None
 

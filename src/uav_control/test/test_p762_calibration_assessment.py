@@ -14,17 +14,18 @@ def test_completed_unqualified_stage_is_not_success():
 def test_qualification_requires_actual_landing_and_current_complete_evidence():
     analysis = script('p76_calibration_analysis')
     checks = {key: True for key in analysis.A1_REQUIRED}
-    outcome = {'A1_passed': True, 'checks': checks}
+    version = dict(schema_version=2, architecture='parallel_dkf_unified_bodyrate')
+    outcome = dict(version, A1_passed=True, checks=checks)
     rows = [dict(kind='wire', phase='MANEUVER', topic='vehicle_status',
                  values={'arming_state': 2}),
             dict(kind='wire', phase='LAND', topic='vehicle_status', values={'arming_state': 1}),
             dict(kind='wire', phase='LAND', topic='vehicle_land_detected',
                  values={'landed': True})]
-    good = analysis.stage_verdict('A1', {'completed': True}, outcome, rows, True, True)
+    good = analysis.stage_verdict('A1', dict(version, completed=True), outcome, rows, True, True)
     assert good['success'] and good['qualified']
-    assert not analysis.stage_verdict('A1', {'completed': True}, outcome, rows[:-1],
+    assert not analysis.stage_verdict('A1', dict(version, completed=True), outcome, rows[:-1],
                                       True, True)['success']
-    assert not analysis.stage_verdict('A1', {'completed': True}, outcome, rows,
+    assert not analysis.stage_verdict('A1', dict(version, completed=True), outcome, rows,
                                       False, True)['success']
 
 
