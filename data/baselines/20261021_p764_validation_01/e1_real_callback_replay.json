@@ -1,0 +1,157 @@
+{
+  "evidence_class": "REAL_MATCHED_CALLBACK_REPLAY",
+  "source": "data/experiments/p764_offline_validation/nonflight_01/actual_callback_inputs.jsonl.gz",
+  "sha256": "e197ea9a801f7e7a258807ae8fa05bfbc4252188c8893750af1b9a83a36ab273",
+  "events": 8324,
+  "original_receipt_epochs_preserved": true,
+  "original_acquisition_epochs_preserved": true,
+  "parallel": {
+    "callback_seconds": {
+      "ImageDkfNode.tick": {
+        "count": 1500,
+        "p50": 5.010900349589065e-05,
+        "p95": 0.0008064706977165769,
+        "p99": 0.0008782673177483957,
+        "maximum": 0.0009988670062739402
+      },
+      "SpatialDkfNode.tick": {
+        "count": 1497,
+        "p50": 5.06490032421425e-05,
+        "p95": 6.195400201249867e-05,
+        "p99": 7.209439703728996e-05,
+        "maximum": 0.00012701700325123966
+      },
+      "SpatialDkfNode.receive": {
+        "count": 362,
+        "p50": 4.283007001504302e-06,
+        "p95": 5.95064484514296e-06,
+        "p99": 8.069912291830403e-06,
+        "maximum": 8.967006579041481e-06
+      },
+      "ImageDkfNode.receive": {
+        "count": 586,
+        "p50": 7.347350037889555e-05,
+        "p95": 0.0022756510006729513,
+        "p99": 0.002434801606432302,
+        "maximum": 0.002690398003323935
+      },
+      "ImageDkfNode.navigation": {
+        "count": 1460,
+        "p50": 7.994502084329724e-06,
+        "p95": 1.0576310887699946e-05,
+        "p99": 1.1697676090989266e-05,
+        "maximum": 0.00017969800683204085
+      },
+      "ImageDkfNode.pose": {
+        "count": 2915,
+        "p50": 1.9623999833129346e-05,
+        "p95": 2.7569505618885156e-05,
+        "p99": 3.160227905027572e-05,
+        "maximum": 5.821500963065773e-05
+      },
+      "ImageDkfNode.mode_changed": {
+        "count": 2,
+        "p50": 1.959502696990967e-06,
+        "p95": 2.5593588361516593e-06,
+        "p99": 2.612679381854832e-06,
+        "maximum": 2.6260095182806253e-06
+      },
+      "SpatialDkfNode.mode_changed": {
+        "count": 2,
+        "p50": 8.300048648379743e-07,
+        "p95": 8.579074346926063e-07,
+        "p99": 8.603876631241292e-07,
+        "maximum": 8.610077202320099e-07
+      }
+    },
+    "cpu_seconds": 1.361800734,
+    "states_observed": 8324,
+    "valid_states": 1356,
+    "transitions": [
+      {
+        "phase": "Y_HANDOVER",
+        "valid_before": false,
+        "filter_source": 1792577431.3233051
+      },
+      {
+        "phase": "PAPER_INTERCEPT_ACTIVE",
+        "valid_before": false,
+        "filter_source": 1792577431.3233051
+      }
+    ],
+    "spatial_distinct_updates_after_y": 0,
+    "illegal_authorizations": 0
+  },
+  "legacy": {
+    "callback_seconds": {
+      "ImageDkfNode.tick": {
+        "count": 1500,
+        "p50": 2.3912500182632357e-05,
+        "p95": 4.545825868262909e-05,
+        "p99": 0.00011869936177390627,
+        "maximum": 0.00018384799477644265
+      },
+      "SpatialDkfNode.tick": {
+        "count": 1497,
+        "p50": 1.2834003427997231e-05,
+        "p95": 4.8173006507568065e-05,
+        "p99": 5.5493912077508855e-05,
+        "maximum": 9.664800018072128e-05
+      },
+      "SpatialDkfNode.receive": {
+        "count": 362,
+        "p50": 1.6905032680369914e-06,
+        "p95": 2.499290712876245e-06,
+        "p99": 7.825268112355732e-06,
+        "maximum": 2.355199831072241e-05
+      },
+      "ImageDkfNode.receive": {
+        "count": 586,
+        "p50": 2.6211506337858737e-05,
+        "p95": 4.8881247494136915e-05,
+        "p99": 6.718595541315015e-05,
+        "maximum": 0.002154863002942875
+      },
+      "ImageDkfNode.navigation": {
+        "count": 1460,
+        "p50": 6.613990990445018e-06,
+        "p95": 7.609806925756856e-06,
+        "p99": 9.078016009880232e-06,
+        "maximum": 2.310400304850191e-05
+      },
+      "ImageDkfNode.pose": {
+        "count": 2915,
+        "p50": 1.599399547558278e-05,
+        "p95": 1.8995501159224658e-05,
+        "p99": 2.137374307494611e-05,
+        "maximum": 5.6266013416461647e-05
+      },
+      "ImageDkfNode.mode_changed": {
+        "count": 2,
+        "p50": 5.255998985376209e-06,
+        "p95": 9.198001498589292e-06,
+        "p99": 9.548401721986011e-06,
+        "maximum": 9.63600177783519e-06
+      }
+    },
+    "cpu_seconds": 0.6699607299999999,
+    "states_observed": 5819,
+    "valid_states": 4,
+    "transitions": [
+      {
+        "phase": "Y_HANDOVER",
+        "valid_before": false,
+        "filter_source": 0.0
+      },
+      {
+        "phase": "PAPER_INTERCEPT_ACTIVE",
+        "valid_before": false,
+        "filter_source": 0.0
+      }
+    ],
+    "spatial_distinct_updates_after_y": 0,
+    "illegal_authorizations": 0
+  },
+  "flight_qualified": false,
+  "scope": "Exact real callback inputs with mock transport; executor timing separate"
+}

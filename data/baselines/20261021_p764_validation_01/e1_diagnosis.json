@@ -1,0 +1,41 @@
+{
+  "status": "E1_FAIL_NO_GO",
+  "actual_sessions": 1,
+  "actual_flight_sessions": 0,
+  "reason_counts": {
+    "image": {
+      "IMAGE_DKF_WAITING_NATIVE_POSE_OR_IMAGE": 57,
+      "": 424,
+      "IMAGE_DKF_STALE": 1604
+    },
+    "observation": {
+      "YOLO_DETECTION_TIMEOUT": 121,
+      "POSITION_HISTORY_EMPTY": 5,
+      "POSITION_TIMESTAMP_BEFORE_HISTORY": 1,
+      "TARGET_VECTOR_INVALID": 140,
+      "YOLO_YOLO_SOURCE_STALE_AFTER_INFERENCE": 92,
+      "YOLO_SOURCE_STALE_OR_INVALID": 3
+    },
+    "detection": {
+      "IMAGE_BEFORE_CLOCK_REFERENCE": 1,
+      "VALID": 164,
+      "YOLO_SOURCE_STALE_AFTER_INFERENCE": 421
+    }
+  },
+  "original_collector_coverage_preserved": true,
+  "final_graph_unique_detector": true,
+  "original_one_yolo_false_reason": "Startup discovery can have zero publishers; original all-graphs criterion counted it as false. No duplicate detector observed in final graph.",
+  "complete_graph_history_recorded": false,
+  "valid_spatial_observations": 0,
+  "performance_confounder": "Diagnostic wrapper closed its temporary child stdin pipe on exit; PX4 console repeatedly read EOF and spun. Post-collection source fix inherits launcher-held stdin; regression red/green verifies lifetime.",
+  "causal_impact_scope": "Busy-spin is observed; its exact contribution to inference/DDS latency cannot be isolated by this single session.",
+  "geometry_root_cause": "TARGET_VECTOR_INVALID observed 140 times; full depth pixel arrays were not retained, so geometric sub-cause remains unproven.",
+  "image_data_scope": "Exact RGB/depth headers, full detector mask/box/center and original invalid observations retained; image pixel arrays not retained.",
+  "next_minimum_diagnostic": "After separate authorization, one corrected unarmed capture with bounded raw RGB-D/ROI storage and CPU/50Hz/200Hz timing, same scene/model; no A1 first.",
+  "source_inputs": {
+    "data/experiments/p764_offline_validation/nonflight_01/synchronized_packets.jsonl.gz": "38d041d35c0e175d04ff8f999a75bb93af42d876358d8ac49ef561dacaaad0ec",
+    "data/experiments/p764_offline_validation/nonflight_01/actual_callback_inputs.jsonl.gz": "e197ea9a801f7e7a258807ae8fa05bfbc4252188c8893750af1b9a83a36ab273",
+    "data/experiments/p764_offline_validation/nonflight_01/result.json": "3417da89a0c67fbbd429163ac7eced7bf49bb8ec9f866df98c5b8c1f382d7783",
+    "data/experiments/p764_offline_validation/nonflight_01/cleanup.json": "7aa3e12f4c121a7330377594ba5e648643d59ded260dd96278cfb0a781e4c9f0"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "evidence_kind": "SYNTHETIC_NATIVE_EPOCH_REVIEW_REPLAY",
+  "passed": true,
+  "flight_qualified": false,
+  "prestream": {
+    "state": "DISARMED_PRESTREAM",
+    "output_count": 100,
+    "limiter_thrust": null
+  },
+  "first_armed_output": {
+    "state": "BODYRATE_READY",
+    "initialization_count": 1,
+    "output": {
+      "rates": [
+        0.1,
+        0.0,
+        0.0
+      ],
+      "thrust": -0.49,
+      "stamp": 10.505000000000079
+    }
+  },
+  "next_state": "FLIGHT_ACTIVE",
+  "review_cases": 3,
+  "source_inputs": {
+    "src/uav_control/uav_control/control/p76_tracker_runtime.py": "2d1a78e138c38375478a5ac781162632ec48a62be8d50644260680d8d690ce90",
+    "src/uav_control/uav_control/control/p76_minco_bodyrate_tracker.py": "d825a8deba064dfd9a7b18c60358f8500624f496e602924aa39c9a41607f5933",
+    "src/uav_control/test/test_p764_initialization.py": "361b0a207e8dbb143fadd866253e1c17231e9ec9edf13a2fdcd93c57f86c0d05",
+    "src/uav_control/test/test_p764_review_regressions.py": "d893239da41972ad132f728c43c911ff1e6df4a047b0ffeec90b9d6558ebb979"
+  }
+}

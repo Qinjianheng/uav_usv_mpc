@@ -1,0 +1,71 @@
+{
+  "evidence_class": "REAL_SYNCHRONIZED_UNARMED_SESSION",
+  "counts": {
+    "spatial": 1497,
+    "image": 2085,
+    "ack": 3582,
+    "rgb_frame": 598,
+    "depth_frame": 598,
+    "observation": 362,
+    "detection": 586,
+    "yolo": 586,
+    "status": 59,
+    "navigation": 1460,
+    "thrust": 5829,
+    "reference": 1457,
+    "pose": 2915
+  },
+  "valid_detections": 164,
+  "same_rgb_depth_detection_observation_frames": 0,
+  "causal_native_pose_navigation_brackets": 0,
+  "image_valid_before_y": 423,
+  "image_valid_after_y": 1,
+  "spatial_valid_after_y": 0,
+  "illegal_authorizations": 0,
+  "valid_detection_age_seconds": {
+    "count": 164,
+    "p50": 0.09043359756469727,
+    "p95": 0.12676748037338256,
+    "p99": 0.1282817792892456,
+    "maximum": 0.13126802444458008
+  },
+  "one_yolo": false,
+  "no_px4_command_publishers": true,
+  "qualified": false,
+  "unarmed": true,
+  "flight_qualified": false,
+  "limits": {
+    "source_age": 0.125,
+    "pose_bracket": 0.05
+  },
+  "scope": "Stationary ground scene and shadow labels; no flight or capture",
+  "posterior_and_covariance_preserved": true,
+  "transitions": [
+    {
+      "phase": "Y_HANDOVER",
+      "epoch": 1,
+      "before": "04c9a65ca4a23e0527151c588644326feb13ed4e2267435266236ec914a927f3",
+      "after": "04c9a65ca4a23e0527151c588644326feb13ed4e2267435266236ec914a927f3"
+    },
+    {
+      "phase": "PAPER_INTERCEPT_ACTIVE",
+      "epoch": 1,
+      "before": "04c9a65ca4a23e0527151c588644326feb13ed4e2267435266236ec914a927f3",
+      "after": "04c9a65ca4a23e0527151c588644326feb13ed4e2267435266236ec914a927f3"
+    },
+    {
+      "phase": "Y_HANDOVER",
+      "epoch": 1,
+      "before": "f8e6be41f6fe69c27edebd2381fef121e79af9f2e80aa5560794ed0fb7e59ec1",
+      "after": "f8e6be41f6fe69c27edebd2381fef121e79af9f2e80aa5560794ed0fb7e59ec1"
+    },
+    {
+      "phase": "PAPER_INTERCEPT_ACTIVE",
+      "epoch": 1,
+      "before": "f8e6be41f6fe69c27edebd2381fef121e79af9f2e80aa5560794ed0fb7e59ec1",
+      "after": "f8e6be41f6fe69c27edebd2381fef121e79af9f2e80aa5560794ed0fb7e59ec1"
+    }
+  ],
+  "failure": "",
+  "source": "/home/qin/data/uav_usv_mpc/data/experiments/p764_offline_validation/nonflight_01/synchronized_packets.jsonl.gz"
+}

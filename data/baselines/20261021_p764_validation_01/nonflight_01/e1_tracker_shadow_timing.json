@@ -1,0 +1,28 @@
+{
+  "evidence_class": "ACTUAL_ROS_EXECUTOR_DISCONNECTED_SHADOW",
+  "period_seconds": 0.005,
+  "interval_seconds": {
+    "count": 5926,
+    "p50": 0.004987157495634165,
+    "p95": 0.006118803754361579,
+    "p99": 0.008984919997601537,
+    "maximum": 0.056745745008811355
+  },
+  "compute_seconds": {
+    "count": 5927,
+    "p50": 0.0005699060129700229,
+    "p95": 0.0009756193991051987,
+    "p99": 0.0011000910963048227,
+    "maximum": 0.0015223380032693967
+  },
+  "missed_cycles": 157,
+  "compute_deadline_misses": 0,
+  "successful_native_computations": 5768,
+  "rejections": {
+    "NATIVE_PAIR_NOT_AVAILABLE": 159
+  },
+  "qualified": false,
+  "workload": "Real BodyrateTracker, native hold PVA; no admitted MINCO or PNG",
+  "px4_outputs": false,
+  "flight_qualified": false
+}

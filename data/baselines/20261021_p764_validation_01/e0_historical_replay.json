@@ -1,0 +1,104 @@
+{
+  "schema_version": 2,
+  "stage": "E0",
+  "evidence_kind": "historical_fault_regression",
+  "historical_unsafe_pulse_rejected": true,
+  "outcome": "SAFE_REFUSAL",
+  "passed": true,
+  "qualified": false,
+  "scope": "Offline conservative admission/command logic only; no actual motor validation",
+  "source_session": "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/session_A1_03",
+  "raw_sha256": "51312b1147da4394602274eb68908fc2e7d2ff6b239bbf3b8c78efef34a47a44",
+  "raw_evidence": {
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/session_A1_03/calibration.jsonl": "51312b1147da4394602274eb68908fc2e7d2ff6b239bbf3b8c78efef34a47a44",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/session_A1_03/identity.json": "30dde601cf7c3e6e744eadcac57de2fd296e2bd4f98594031b2faafe6c4d5664",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/session_A1_03/analysis.json": "cdd44e1308909616845927619bf79468d928822a8d95c243643764c77171960f",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/session_A1_03/run_result.json": "66ee789b3223cc5f1a22712793b08a8090b6ff9fdda4d7631c00a3f5456b33f9"
+  },
+  "geometry": {
+    "source": "/home/qin/Projects/PX4-Autopilot/Tools/simulation/gz/models/x500_base/model.sdf",
+    "sha256": "e807dca3406f7cd5cb3d545898601c3ec17e0e5242e25cf467a69df1812cf436",
+    "native_full_attitude": true,
+    "native_reference_datum": true
+  },
+  "old": {
+    "pulse_requested": 1.0,
+    "pulse_duration_nominal": 0.22,
+    "pulse_duration_observed": 0.22569584846496582,
+    "exit_native_upward_speed": 3.8320014476776123,
+    "exit_native_timestamp_sample": 44464000,
+    "exit_native_sample_after_command": 0.012118101119995117,
+    "measured_collective_response_delay": 0.24011754989624023,
+    "first_exceed_speed": 7.406828129073231,
+    "first_exceed_native_timestamp_sample": 44664000,
+    "limit": 7.0
+  },
+  "guarded": {
+    "admission": {
+      "admitted": false,
+      "reasons": [
+        "PREDICTED_SPEED_LIMIT",
+        "PREDICTED_UPPER_ALTITUDE"
+      ],
+      "speed_limit": 7.0,
+      "worst_response_delay": 0.24,
+      "sample_age": 0.005145072937011719,
+      "duration": 0.22,
+      "horizon": 0.4651450729370117,
+      "predicted_peak_speed": 9.121275140149168,
+      "maximum_upward_acceleration": 19.599999999999998,
+      "maximum_downward_acceleration": 9.8,
+      "maximum_lateral_acceleration": 0.004631919551890439,
+      "upward_stopping_distance": 12.522024361963929,
+      "downward_stopping_distance": 3.6575647667254554,
+      "upward_room": 4.006680046916008,
+      "clearance": 8.006273434947442,
+      "speed_margin": -2.1212751401491676,
+      "upper_altitude_margin": -8.51534431504792,
+      "lower_clearance_margin": 2.3487086682219864,
+      "scope": "Conservative logic bound; no physical response qualification"
+    },
+    "late_exit": {
+      "admitted": false,
+      "reasons": [
+        "PREDICTED_SPEED_LIMIT",
+        "PREDICTED_UPPER_ALTITUDE"
+      ],
+      "speed_limit": 7.0,
+      "worst_response_delay": 0.24,
+      "sample_age": 0.00557398796081543,
+      "duration": 0.0,
+      "horizon": 0.24557398796081542,
+      "predicted_peak_speed": 8.646997108017269,
+      "maximum_upward_acceleration": 19.599999999999998,
+      "maximum_downward_acceleration": 9.8,
+      "maximum_lateral_acceleration": 0.5362082372411809,
+      "upward_stopping_distance": 10.874591325015917,
+      "downward_stopping_distance": 1.0194827951321555,
+      "upward_room": 3.590184723734856,
+      "clearance": 8.420451809494528,
+      "speed_margin": -1.6469971080172687,
+      "upper_altitude_margin": -7.284406601281061,
+      "lower_clearance_margin": 5.4009690143623725,
+      "scope": "Conservative logic bound; no physical response qualification"
+    },
+    "explicit_body_brake_thrust": 0.3426368436481146,
+    "explicit_body_brake_rates": [
+      0.0004899101637865211,
+      -0.028011456521699687,
+      -0.0007443504384271654
+    ],
+    "maximum_pulse_executed": false,
+    "explanation": "Reject before pulse; .24s worst delay makes late exit unsafe"
+  },
+  "dynamics": {
+    "static_model_twr": 3.0,
+    "short_window_effective_twr": 2.817589317117044,
+    "qualification_threshold": 2.85,
+    "steady_state_maximum": "UNKNOWN"
+  },
+  "blockers": [
+    "Fixed .22s maximum pulse cannot be guaranteed inside original envelope",
+    "Actual Body-rate brake/hold and motor response remain unqualified"
+  ]
+}

@@ -1,0 +1,178 @@
+{
+  "errors": [],
+  "survivors": [],
+  "late_components": {
+    "events": [
+      {
+        "identity": {
+          "pid": 110280,
+          "pgid": 110280,
+          "start": "9876661"
+        },
+        "signal": 2
+      },
+      {
+        "identity": {
+          "pid": 110289,
+          "pgid": 110280,
+          "start": "9876662"
+        },
+        "signal": 2
+      },
+      {
+        "identity": {
+          "pid": 110316,
+          "pgid": 110316,
+          "start": "9876873"
+        },
+        "signal": 2
+      },
+      {
+        "identity": {
+          "pid": 110326,
+          "pgid": 110316,
+          "start": "9876874"
+        },
+        "signal": 2
+      },
+      {
+        "identity": {
+          "pid": 110383,
+          "pgid": 110316,
+          "start": "9876880"
+        },
+        "signal": 2
+      },
+      {
+        "identity": {
+          "pid": 110384,
+          "pgid": 110316,
+          "start": "9876880"
+        },
+        "signal": 2
+      },
+      {
+        "identity": {
+          "pid": 110391,
+          "pgid": 110316,
+          "start": "9876881"
+        },
+        "signal": 2
+      },
+      {
+        "identity": {
+          "pid": 110392,
+          "pgid": 110316,
+          "start": "9876888"
+        },
+        "signal": 2
+      },
+      {
+        "identity": {
+          "pid": 110393,
+          "pgid": 110316,
+          "start": "9876888"
+        },
+        "signal": 2
+      },
+      {
+        "identity": {
+          "pid": 110394,
+          "pgid": 110316,
+          "start": "9876889"
+        },
+        "signal": 2
+      },
+      {
+        "identity": {
+          "pid": 110753,
+          "pgid": 110753,
+          "start": "9877395"
+        },
+        "signal": 2
+      },
+      {
+        "identity": {
+          "pid": 110760,
+          "pgid": 110753,
+          "start": "9877397"
+        },
+        "signal": 2
+      },
+      {
+        "identity": {
+          "pid": 110948,
+          "pgid": 110948,
+          "start": "9877898"
+        },
+        "signal": 2
+      },
+      {
+        "identity": {
+          "pid": 110983,
+          "pgid": 110948,
+          "start": "9877928"
+        },
+        "signal": 2
+      },
+      {
+        "identity": {
+          "pid": 110984,
+          "pgid": 110948,
+          "start": "9877953"
+        },
+        "signal": 2
+      },
+      {
+        "identity": {
+          "pid": 110986,
+          "pgid": 110948,
+          "start": "9877953"
+        },
+        "signal": 2
+      },
+      {
+        "identity": {
+          "pid": 110988,
+          "pgid": 110948,
+          "start": "9877953"
+        },
+        "signal": 2
+      },
+      {
+        "identity": {
+          "pid": 110990,
+          "pgid": 110948,
+          "start": "9877953"
+        },
+        "signal": 2
+      },
+      {
+        "identity": {
+          "pid": 110280,
+          "pgid": 110280,
+          "start": "9876661"
+        },
+        "signal": 15
+      },
+      {
+        "identity": {
+          "pid": 110289,
+          "pgid": 110280,
+          "start": "9876662"
+        },
+        "signal": 15
+      },
+      {
+        "identity": {
+          "pid": 110289,
+          "pgid": 110280,
+          "start": "9876662"
+        },
+        "signal": 9
+      }
+    ],
+    "errors": [],
+    "survivors": []
+  }
+}
