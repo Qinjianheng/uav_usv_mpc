@@ -1,0 +1,7 @@
+{
+  "completed": false,
+  "failure": "STARTUP_NATIVE_NAVIGATION_STALE",
+  "stage": "A1",
+  "elapsed": 20.0093438509939,
+  "scope": "Actual isolated PX4/Gazebo calibration; not a target capture"
+}

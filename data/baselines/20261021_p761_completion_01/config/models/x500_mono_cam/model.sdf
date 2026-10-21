@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='utf-8'?>
+<sdf version="1.9">
+  
+  <model name="x500_mono_cam">
+    <include merge="true">
+      <uri>x500</uri>
+    </include>
+
+    <link name="front_camera_link">
+      
+      <pose relative_to="base_link">0.35 0.0 0.31000000000000005 0.0 0.5585053606381853 0.0</pose>
+      <inertial>
+        <mass>0.05</mass>
+        <inertia>
+          <ixx>1.7083333333333336e-05</ixx>
+          <iyy>1.3333333333333332e-05</iyy>
+          <izz>1.7083333333333336e-05</izz>
+        </inertia>
+      <pose>-0.025 0.0 0.0 0.0 0.0 0.0</pose></inertial>
+      <visual name="housing">
+        <geometry>
+          <box><size>0.04 0.05 0.04</size></box>
+        </geometry>
+        <material>
+          <ambient>0.12 0.12 0.14 1</ambient>
+          <diffuse>0.18 0.18 0.20 1</diffuse>
+        </material>
+      <pose>-0.025 0.0 0.0 0.0 0.0 0.0</pose></visual>
+      <sensor name="front_tof_camera" type="rgbd_camera">
+        <topic>/uav/camera/front</topic>
+        <camera>
+          <optical_frame_id>front_camera_optical_frame</optical_frame_id>
+          <horizontal_fov>1.74</horizontal_fov>
+          <image>
+            <format>R8G8B8</format>
+            <width>640</width>
+            <height>480</height>
+          </image>
+          <clip>
+            <near>0.05</near>
+            
+            <far>60.0</far>
+          </clip>
+          <depth_camera>
+            <output>depths</output>
+            <clip>
+              <near>0.05</near>
+              <far>25.0</far>
+            </clip>
+          </depth_camera>
+        </camera>
+        <always_on>true</always_on>
+        <update_rate>20.0</update_rate>
+        
+        <visualize>false</visualize>
+        <enable_metrics>true</enable_metrics>
+      </sensor>
+    <collision name="p761_camera_housing"><pose>-0.025 0.0 0.0 0.0 0.0 0.0</pose><geometry>
+          <box><size>0.04 0.05 0.04</size></box>
+        </geometry>
+        </collision></link>
+    <joint name="front_camera_joint" type="fixed">
+      <parent>base_link</parent>
+      <child>front_camera_link</child>
+    </joint>
+
+    <link name="down_camera_link">
+      
+      <pose relative_to="base_link">0.05 0 -0.12 0 1.57079632679 0</pose>
+      <inertial>
+        <mass>0.05</mass>
+        <inertia>
+          <ixx>0.00004</ixx>
+          <iyy>0.00004</iyy>
+          <izz>0.00004</izz>
+        </inertia>
+      </inertial>
+      <visual name="housing">
+        <geometry>
+          <box><size>0.03 0.05 0.04</size></box>
+        </geometry>
+        <material>
+          <ambient>0.12 0.12 0.14 1</ambient>
+          <diffuse>0.18 0.18 0.20 1</diffuse>
+        </material>
+      </visual>
+      </link>
+    <joint name="down_camera_joint" type="fixed">
+      <parent>base_link</parent>
+      <child>down_camera_link</child>
+    </joint>
+
+  <link name="p761_camera_support"><pose relative_to="base_link">0.1559189178364804 0.0 0.18292318344524716 0.0 -0.7691184774424242 0.0</pose><inertial><mass>0.03055344305643792</mass><inertia><ixx>1.2425066842951421e-06</ixx><iyy>0.00048019335319804765</iyy><izz>0.00048019335319804765</izz><ixy>0.0</ixy><ixz>0.0</ixz><iyz>0.0</iyz></inertia></inertial><visual name="p761_support_visual"><geometry><box><size>0.43399777068803863 0.012 0.012</size></box></geometry></visual><collision name="p761_support_collision"><geometry><box><size>0.43399777068803863 0.012 0.012</size></box></geometry></collision></link><joint name="p761_camera_support_joint" type="fixed"><parent>base_link</parent><child>p761_camera_support</child></joint></model>
+</sdf>

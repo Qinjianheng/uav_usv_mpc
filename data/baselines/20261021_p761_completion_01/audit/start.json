@@ -1,0 +1,10 @@
+{
+  "head": "8ad7fa604122cf029164f1aca4d2af28289f2ba2",
+  "branch": "codex/p76-paper-faithful-yolo-dkf",
+  "hashes": {
+    "/home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/p76_contract.yaml": "48f0c10aec3a77062c233b8062c85f72587e4c724d7b849beda34fbaf4611944",
+    "/home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/p7_guidance.yaml": "768fe2e3e9ebedb59e56e0bb31791889661bf2a0d313471c6a3e95af5aa4c1dc",
+    "/home/qin/Projects/PX4-Autopilot/src/modules/uxrce_dds_client/dds_topics.yaml": "72dd5264c31592dd2c7e5c580eaa8732a2d8d3f03542be9a7522c4656f7952f3",
+    "/home/qin/Projects/PX4-Autopilot/build/px4_sitl_default/bin/px4": "dcf54c971b27a065a1e2bc210e45b88f7fd545b3dc1953ad5ef680f294628ef2"
+  }
+}

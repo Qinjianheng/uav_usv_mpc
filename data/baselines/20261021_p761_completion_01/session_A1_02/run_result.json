@@ -1,0 +1,7 @@
+{
+  "completed": false,
+  "failure": "P76_NATIVE_POSE_BRACKET",
+  "stage": "A1",
+  "elapsed": 13.969041246004053,
+  "scope": "Actual isolated PX4/Gazebo calibration; not a target capture"
+}

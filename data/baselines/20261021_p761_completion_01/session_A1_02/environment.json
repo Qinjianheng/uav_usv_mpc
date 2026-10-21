@@ -1,0 +1,20 @@
+{
+  "ROS_VERSION": "2",
+  "ROS_PYTHON_VERSION": "3",
+  "ROS_LOCALHOST_ONLY": "0",
+  "ROS_DISTRO": "humble",
+  "UAV_USV_WS": "/home/qin/data/uav_usv_mpc",
+  "UAV_USV_RESEARCH_DIRECTORY": "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/session_A1_02",
+  "UAV_USV_EXPERIMENT_LAUNCH": "p761_calibration.launch.py",
+  "UAV_USV_P761_STAGE": "A1",
+  "UAV_USV_P76_CONTRACT": "/home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/p76_contract.yaml",
+  "UAV_USV_EXPERIMENT_CONFIG_FILE": "/home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/p76_yan_paper.yaml",
+  "UAV_USV_START_QGC": "false",
+  "UAV_USV_HEADLESS_GCS": "true",
+  "UAV_USV_GZ_SERVER_ONLY": "1",
+  "ROS_DOMAIN_ID": "43",
+  "GZ_PARTITION": "p761_75278",
+  "ROS_LOG_DIR": "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/session_A1_02/ros_logs",
+  "UAV_USV_TERMINAL_LOG_ROOT": "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/session_A1_02",
+  "UAV_USV_SITL_GRANT": "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/session_A1_02/sitl_execution_grant.json"
+}

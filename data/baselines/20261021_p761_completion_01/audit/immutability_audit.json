@@ -1,0 +1,8 @@
+{
+  "/home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/p7_guidance.yaml": true,
+  "/home/qin/Projects/PX4-Autopilot/src/modules/uxrce_dds_client/dds_topics.yaml": true,
+  "/home/qin/Projects/PX4-Autopilot/build/px4_sitl_default/bin/px4": true,
+  "p76_paper_png.py": true,
+  "p76_paper_ibvs.py": true,
+  "p76_paper_attitude.py": true
+}

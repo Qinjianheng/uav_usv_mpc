@@ -1,0 +1,104 @@
+schema_version: 1
+provenance:
+  paper: Yan et al., TIE 2025, doi:10.1109/TIE.2025.3559951
+  delayed_filter_reference: Yang et al., TCST 2025, doi:10.1109/TCST.2024.3451293
+  base_commit: 944c684ef36389743e856bad19cdabb7868b4655
+  equation14_interpretation: acceleration_limited_velocity_increment_dt
+paper:
+  png_ky: 3.0
+  png_kz: 3.0
+  ibvs_kp: 0.03
+  ibvs_kd: 0.01
+  paper_ka: 2.0
+  camera_rate_hz: 20.0
+  dkf_rate_hz: 50.0
+  paper_controller_target_rate_hz: 200.0
+  paper_thrust_to_weight_target: 3.0
+  paper_maneuver_acceleration_target: 5.0
+camera:
+  layout: revision32
+  pitch_down_degrees: 32.0
+  translation_flu:
+  - 0.45
+  - 0.0
+  - 0.55
+  width: 640
+  height: 480
+  horizontal_fov: 1.74
+  rgb_clip:
+  - 0.05
+  - 60.0
+  depth_clip:
+  - 0.05
+  - 25.0
+  marker_radius: 0.25
+  marker_reference_z_offset: 0.42
+  minimum_pixels: 3
+  minimum_depth_ratio: 0.5
+follow:
+  distance: 5.0
+  height: 4.0
+mechanics:
+  support_root_flu:
+  - 0.0
+  - 0.0
+  - 0.272
+  support_outer_width: 0.012
+  support_inner_width: 0.01
+  support_density: 1600.0
+  housing_size:
+  - 0.04
+  - 0.05
+  - 0.04
+  housing_center_camera_flu:
+  - -0.025
+  - 0.0
+  - 0.0
+candidate:
+  capture_vertical_speed_limit: 2.0
+  maximum_horizontal_speed: 7.0
+  maximum_body_yaw_rate: 1.2
+  maximum_body_roll_pitch_rate: 1.5
+  maximum_body_angular_acceleration: 3.0
+  capture_radius: 0.25
+  sea_surface_z: 0.0
+  sea_altitude_msl: 0.0
+  minimum_body_clearance: 0.02
+  angular_rate_calibration_required: true
+  bodyrate_calibration_manifest: ''
+  follow_qualification_manifest: ''
+timing:
+  maximum_source_age: 0.125
+  maximum_pose_bracket: 0.05
+  history_seconds: 1.0
+  handover_timeout: 0.5
+motion:
+  mode: variable_speed_s
+  minimum_speed: 2.0
+  maximum_speed: 4.0
+  speed_period: 24.0
+  startup_duration: 8.0
+  vertical_amplitude: 0.15
+  vertical_frequency: 0.25
+detector:
+  model_architecture: yolo11n-seg
+  class_name: red_ball
+  input_size: 416
+  backend: onnxruntime
+  model_file: /home/qin/data/uav_usv_mpc/data/experiments/20261020_p76_export_01/red_ball_yolo11n_seg.onnx
+  model_sha256: 4fb70adc8fc0989eea52831bfbd62550f48cb21cfb39dd07a4f7f68035c65ef8
+  qualification_manifest: ''
+  confidence_threshold: 0.5
+  nms_iou: 0.45
+  cpu_threads: 1
+  runtime_python: /home/qin/data/uav_usv_mpc/data/experiments/20261020_p76_runtime_01/venv/bin/python
+filters:
+  spatial_acceleration_std: 0.5
+  spatial_initial_velocity_std: 5.0
+  image_acceleration_std: 30.0
+  image_initial_velocity_std: 100.0
+  image_measurement_std: 1.5
+dynamics:
+  gravity: 9.8
+  px4_model_root: /home/qin/Projects/PX4-Autopilot/Tools/simulation/gz/models
+  source_camera_model: /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/models/x500_mono_cam

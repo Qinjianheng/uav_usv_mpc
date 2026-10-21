@@ -1,0 +1,77 @@
+FFF                                                                      [100%]
+=================================== FAILURES ===================================
+___ test_measured_force_curve_does_not_require_an_invented_zero_force_anchor ___
+
+    def test_measured_force_curve_does_not_require_an_invented_zero_force_anchor():
+        from uav_control.control.p76_paper_thrust import CalibratedThrustMap
+>       curve = CalibratedThrustMap([4., 20., 60.], [.25, .57, 1.], qualified=True)
+
+test/test_p761_calibration.py:19: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <uav_control.control.p76_paper_thrust.CalibratedThrustMap object at 0x7a9fc4583610>
+force_newtons = [4.0, 20.0, 60.0], normalized = [0.25, 0.57, 1.0]
+
+    def __init__(self, force_newtons, normalized, *, qualified=False):
+        self.force, self.normalized = np.asarray(force_newtons), np.asarray(normalized)
+        if (self.force.ndim != 1 or len(self.force) < 3
+                or self.force.shape != self.normalized.shape
+                or not np.isfinite(self.force).all() or not np.isfinite(self.normalized).all()
+                or np.any(np.diff(self.force) <= 0) or np.any(np.diff(self.normalized) <= 0)
+                or self.force[0] != 0 or self.normalized[0] != 0
+                or self.normalized[-1] > 1):
+>           raise ValueError('THRUST_CALIBRATION')
+E           ValueError: THRUST_CALIBRATION
+
+uav_control/control/p76_paper_thrust.py:27: ValueError
+_______ test_empty_or_command_only_log_cannot_qualify_measured_dynamics ________
+
+    def test_empty_or_command_only_log_cannot_qualify_measured_dynamics():
+>       analysis = script('p76_calibration_analysis')
+
+test/test_p761_calibration.py:26: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+test/test_p761_calibration.py:13: in script
+    spec.loader.exec_module(module)
+<frozen importlib._bootstrap_external>:879: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1016: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x7a9fc1d9ffd0>
+path = '/home/qin/data/uav_usv_mpc/scripts/p76_calibration_analysis.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/home/qin/data/uav_usv_mpc/scripts/p76_calibration_analysis.py'
+
+<frozen importlib._bootstrap_external>:1073: FileNotFoundError
+___________ test_manifest_rejects_a_stage_without_real_raw_evidence ____________
+
+tmp_path = PosixPath('/tmp/pytest-of-qin/pytest-49/test_manifest_rejects_a_stage_0')
+
+    def test_manifest_rejects_a_stage_without_real_raw_evidence(tmp_path):
+>       manifest = script('p76_calibration_manifest')
+
+test/test_p761_calibration.py:34: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+test/test_p761_calibration.py:13: in script
+    spec.loader.exec_module(module)
+<frozen importlib._bootstrap_external>:879: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1016: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x7a9fc1df06a0>
+path = '/home/qin/data/uav_usv_mpc/scripts/p76_calibration_manifest.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/home/qin/data/uav_usv_mpc/scripts/p76_calibration_manifest.py'
+
+<frozen importlib._bootstrap_external>:1073: FileNotFoundError
+=========================== short test summary info ============================
+FAILED test/test_p761_calibration.py::test_measured_force_curve_does_not_require_an_invented_zero_force_anchor
+FAILED test/test_p761_calibration.py::test_empty_or_command_only_log_cannot_qualify_measured_dynamics
+FAILED test/test_p761_calibration.py::test_manifest_rejects_a_stage_without_real_raw_evidence
+3 failed in 0.10s

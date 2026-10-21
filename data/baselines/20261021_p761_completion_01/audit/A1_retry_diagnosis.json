@@ -1,0 +1,98 @@
+{
+  "failure": {
+    "kind": "failure",
+    "phase": "TAKEOFF",
+    "phase_elapsed": 0.014853715896606445,
+    "reason": "P76_NATIVE_POSE_BRACKET"
+  },
+  "latest_navigation": {
+    "kind": "state",
+    "phase": "TAKEOFF",
+    "phase_elapsed": 0.008751392364501953,
+    "stamp": 1792548710.2947264,
+    "p": [
+      0.02006182260811329,
+      0.038167569786310196,
+      0.07293760776519775
+    ],
+    "v": [
+      -0.007353678811341524,
+      0.020715627819299698,
+      0.008144722320139408
+    ],
+    "a": [
+      -0.007935507223010063,
+      0.011551259085536003,
+      -0.001914799096994102
+    ],
+    "age": 0.005716800689697266,
+    "px4_timestamp_sample": 1792548710295009,
+    "native_timestamp_sample": 12900000
+  },
+  "latest_pose": {
+    "kind": "pose",
+    "phase": "TAKEOFF",
+    "phase_elapsed": 0.0007464885711669922,
+    "stamp": 1792548710.2867215,
+    "q": [
+      0.999971423063856,
+      0.0003550457674722409,
+      0.00021662447555442354,
+      0.007548514554963212
+    ],
+    "omega": [
+      0.00026786309899762273,
+      6.219050555955619e-05,
+      0.000248361291596666
+    ],
+    "px4_timestamp_sample": 1792548710287009,
+    "native_timestamp_sample": 12892000
+  },
+  "latest_reference": {
+    "kind": "reference",
+    "phase": "PRESTREAM",
+    "phase_elapsed": 2.205047607421875,
+    "stamp": 1792548710.270725,
+    "native_timestamp": 12876000,
+    "px4_timestamp": 1792548710271009,
+    "ref_alt": 0.25555574893951416,
+    "reference": "base_link"
+  },
+  "navigation_ahead_pose_seconds": 0.008004903793334961,
+  "subsequent_pose_epoch_seconds": 0.0,
+  "prior_fresh_navigation": {
+    "kind": "state",
+    "phase": "PRESTREAM",
+    "phase_elapsed": 2.205047607421875,
+    "stamp": 1792548710.270725,
+    "p": [
+      0.01991659216582775,
+      0.038376111537218094,
+      0.07288211584091187
+    ],
+    "v": [
+      -0.007181123830378056,
+      0.0210447758436203,
+      0.008313018828630447
+    ],
+    "a": [
+      -0.005042453296482563,
+      0.006182174198329449,
+      -0.0010658985702320933
+    ],
+    "age": 0.011108160018920898,
+    "px4_timestamp_sample": 1792548710271009,
+    "native_timestamp_sample": 12876000
+  },
+  "armed_status_count": 25,
+  "final_arming_state": 1,
+  "entered_land": {
+    "kind": "phase",
+    "phase": "LAND",
+    "phase_elapsed": 0.0,
+    "stamp": 1792548710.3008528,
+    "target": "LAND"
+  },
+  "same_stage_retry_limit_reached": true,
+  "dependent_stages_executed": false
+}

@@ -6,6 +6,7 @@ P7 配置已实现 X 后 KF/BCTRA/MINCO FOLLOW、Y 后 IBVS/PNG 安全接近，�
 
 | 文档 | 用途 |
 |---|---|
+| [P7.6.1：安装修复、校准流程与阻断](p761_paper_architecture_completion.md) | A 前置安装真实渲染 0/15 全遮挡；两次 A1 失败并停止后续，因果配对候选未再飞；2380 项当前回归通过，尚无 0.25 m 捕获资格 |
 | [P7.6：32°、物理净空与 PX4](p76_32deg_physical_clearance_px4.md) | 当前分支候选；删除固定 0.33 m 原点门槛，PX4 编译和未解锁模式接口通过；仍有遮挡及动力学校准阻断，未验证 0.25 m 捕获 |
 | [P7.5 变速 S 候选与几何阻断](p75_variable_s_fast_precision_validation.md) | 两相位离线保持视觉 40 s，最近约 0.471/0.477 m；28° 正常匹配姿态捕获几何冲突，未放行 SITL |
 | [P7.4 快速 0.25 m 候选与阻断](p74_fast_capture025_validation.md) | 静态内缩点存在；动态近场 RGB-D 仍失效，未获飞行资格，A/B/C 未执行；默认 0.50 m 未改 |

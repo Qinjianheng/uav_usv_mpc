@@ -1,0 +1,7 @@
+{
+  "definition": "YOLO box centre minus visible red-pixel box centre, pixels",
+  "count": 33,
+  "median": 0.7313831880618051,
+  "p95": 1.9387191747864647,
+  "maximum": 3.321939080040868
+}
