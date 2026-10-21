@@ -184,7 +184,7 @@ def install_odometry_relay(node):
         if is_thrust:
             if not all(math.isfinite(value) for value in message.xyz):
                 return
-            packet['xyz'] = list(message.xyz)
+            packet['xyz'] = [float(value) for value in message.xyz]
         else:
             packet['flags'] = {key: bool(getattr(message, 'flag_control_'+key+'_enabled'))
                                for key in ('offboard', 'rates', 'position', 'velocity',

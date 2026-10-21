@@ -22,7 +22,7 @@ class CalibratedThrustMap:
                 or self.force.shape != self.normalized.shape
                 or not np.isfinite(self.force).all() or not np.isfinite(self.normalized).all()
                 or np.any(np.diff(self.force) <= 0) or np.any(np.diff(self.normalized) <= 0)
-                or self.force[0] != 0 or self.normalized[0] != 0
+                or self.force[0] < 0 or self.normalized[0] < 0
                 or self.normalized[-1] > 1):
             raise ValueError('THRUST_CALIBRATION')
         self.qualified = bool(qualified)
@@ -31,4 +31,6 @@ class CalibratedThrustMap:
         """Return negative FRD-z normalized collective; reject absent actual qualification."""
         if not math.isfinite(force_newtons) or require_qualified and not self.qualified:
             raise ValueError('THRUST_MAPPING_UNQUALIFIED')
+        if force_newtons < self.force[0]:
+            raise ValueError('THRUST_BELOW_CALIBRATED_RANGE')
         return -float(np.interp(force_newtons, self.force, self.normalized))

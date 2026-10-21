@@ -194,16 +194,34 @@ LAB_RESTART_MARKER="${LAB_SESSION_DIR}/restarting"
 LAB_GZ_SERVER_CONFIG="${LAB_SESSION_DIR}/magnetometer_enu.config"
 LAB_CAMERA_MODELS="${LAB_SESSION_DIR}/models"
 if [[ "${EXPERIMENT_LAUNCH}" == "p76_yan_paper.launch.py" \
-   || "${EXPERIMENT_LAUNCH}" == "p76_px4_probe.launch.py" ]]; then
+   || "${EXPERIMENT_LAUNCH}" == "p76_px4_probe.launch.py" \
+   || "${EXPERIMENT_LAUNCH}" == "p761_calibration.launch.py" ]]; then
     P76_CONTRACT="${UAV_USV_P76_CONTRACT:-${WS_ROOT}/src/uav_usv_bringup/config/p76_contract.yaml}"
     p76_qualification_args=()
     if [[ "${EXPERIMENT_LAUNCH}" == "p76_yan_paper.launch.py" ]]; then
-        p76_qualification_args+=(--require-flight)
+        if [[ "${UAV_USV_P761_STAGE:-}" == B ]]; then
+            p76_qualification_args+=(--require-calibration)
+        else
+            p76_qualification_args+=(--require-flight)
+        fi
     fi
     python3 "${WS_ROOT}/scripts/p76_config_audit.py" \
         --contract "${P76_CONTRACT}" --profile "${EXPERIMENT_CONFIG_FILE}" \
         --prepare-model "${LAB_CAMERA_MODELS}" "${p76_qualification_args[@]}"
     export UAV_USV_P76_MODEL_ROOT="${LAB_CAMERA_MODELS}"
+    if [[ -n "${UAV_USV_RESEARCH_DIRECTORY:-}" ]]; then
+        python3 - <<'P76_SESSION_MODEL'
+import hashlib
+import json
+import os
+from pathlib import Path
+model = Path(os.environ['UAV_USV_P76_MODEL_ROOT'])
+manifest = model / 'p76_model_manifest.json'
+path = Path(os.environ['UAV_USV_RESEARCH_DIRECTORY']) / 'p76_session_model.json'
+path.write_text(json.dumps(dict(model_root=str(model),
+    manifest_sha256=hashlib.sha256(manifest.read_bytes()).hexdigest()), indent=2)+'\n')
+P76_SESSION_MODEL
+    fi
 else
     python3 "${WS_ROOT}/scripts/prepare_gz_camera_model.py" \
     --source "${CUSTOM_GZ_MODELS}/x500_mono_cam" \
@@ -516,6 +534,19 @@ if ! ${flight_ready}; then
         "${FLIGHT_READY_TIMEOUT} seconds." >&2
     echo "Inspect the UAV-USV experiment and PX4 terminals." >&2
     exit 1
+fi
+
+if [[ -n "${UAV_USV_P761_STAGE:-}" ]]; then
+    echo "Task-owned P761 stage ${UAV_USV_P761_STAGE}; bounded automation owns X/Y."
+    p761_wait_deadline=$((SECONDS + 210))
+    while [[ ! -f "${UAV_USV_RESEARCH_DIRECTORY}/run_result.json" ]]; do
+        if ((SECONDS >= p761_wait_deadline)); then
+            echo "P761 result watchdog expired." >&2
+            exit 1
+        fi
+        sleep 0.2
+    done
+    exit 0
 fi
 
 publish_command()

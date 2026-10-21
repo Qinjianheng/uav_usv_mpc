@@ -60,11 +60,6 @@ class PaperController:
         acceleration = (desired-velocity)/dt
         if np.linalg.norm(acceleration) > paper['paper_maneuver_acceleration_target']+1e-6:
             raise ValueError('P76_DYNAMIC_LIMIT')
-        safety = self.barrier.check(position, velocity, rotation, acceleration, navigation_age, dt)
-        if safety == 'UNRECOVERABLE':
-            raise ValueError('P76_SEA_UNRECOVERABLE')
-        if safety == 'BRAKE':
-            acceleration = np.array((0., 0., -self.barrier.braking))
         yaw = image_yaw_rate(image_state[0], image_state[2], paper['ibvs_kp'], paper['ibvs_kd'])
         rates = attitude_rates(rotation, acceleration, yaw, gravity)
         limits = np.array((candidate['maximum_body_roll_pitch_rate'],)*2
@@ -77,6 +72,6 @@ class PaperController:
         force = physical_thrust(self.mass, rotation, acceleration, gravity, self.maximum_thrust)
         thrust = self.thrust_map.to_body_z(force)
         return dict(rates=rates, thrust=thrust, force_newtons=force,
-                    acceleration=acceleration, los=los, safety=safety, ka=ka,
+                    acceleration=acceleration, los=los, ka=ka,
                     fov_bound=fov_vertical_excursion_bound(q_delta, ka, gravity,
                                                            self.calibration[3]))

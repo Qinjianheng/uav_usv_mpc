@@ -52,7 +52,8 @@ def generate(contract_path, profile_path):
                             + dump_ros_parameters(profile))
 
 
-def audit(contract_path, profile_path, model_root=None, require_flight=False):
+def audit(contract_path, profile_path, model_root=None, require_flight=False,
+          require_calibration=False):
     """Check all declared bindings; later qualification gates also require actual artifacts."""
     contract = load_contract(contract_path)
     profile = yaml.safe_load(profile_path.read_text())
@@ -70,10 +71,11 @@ def audit(contract_path, profile_path, model_root=None, require_flight=False):
                 != detector['model_sha256']):
             raise ValueError('P76_REAL_YOLO_MODEL_REQUIRED')
         result['weight_sha256_verified'] = True
-    if require_flight:
+    if require_flight or require_calibration:
         if model_root is None:
             raise ValueError('P76_ACTUAL_SESSION_MODEL_REQUIRED')
         validate_calibration(contract, model_root, ROOT)
+    if require_flight:
         qualification = Path(contract['detector']['qualification_manifest'])
         if not qualification.is_file():
             raise ValueError('P76_ROS_DETECTOR_QUALIFICATION_MISSING')
@@ -97,6 +99,7 @@ def main():
     parser.add_argument('--model-root', type=Path)
     parser.add_argument('--prepare-model', type=Path)
     parser.add_argument('--require-flight', action='store_true')
+    parser.add_argument('--require-calibration', action='store_true')
     options = parser.parse_args()
     if options.generate:
         generate(options.contract, options.profile)
@@ -105,7 +108,8 @@ def main():
         prepare_model(contract['dynamics']['source_camera_model'],
                       contract['dynamics']['px4_model_root'], options.prepare_model, contract)
         options.model_root = options.prepare_model
-    result = audit(options.contract, options.profile, options.model_root, options.require_flight)
+    result = audit(options.contract, options.profile, options.model_root, options.require_flight,
+                   options.require_calibration)
     if options.inventory:
         options.inventory.mkdir(parents=True, exist_ok=False)
         (options.inventory/'dependencies.json').write_text(json.dumps(

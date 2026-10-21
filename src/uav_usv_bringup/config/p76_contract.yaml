@@ -18,7 +18,7 @@ paper:
 camera:
   layout: revision32
   pitch_down_degrees: 32.0
-  translation_flu: [-0.25, 0.0, 0.55]
+  translation_flu: [0.35, 0.0, 0.55]
   width: 640
   height: 480
   horizontal_fov: 1.74
@@ -31,6 +31,13 @@ camera:
 follow:
   distance: 5.0
   height: 4.0
+mechanics:
+  support_root_flu: [0.0, 0.0, 0.272]
+  support_outer_width: 0.012
+  support_inner_width: 0.010
+  support_density: 1600.0
+  housing_size: [0.04, 0.05, 0.04]
+  housing_center_camera_flu: [-0.025, 0.0, 0.0]
 candidate:
   capture_vertical_speed_limit: 2.0
   maximum_horizontal_speed: 7.0
@@ -44,8 +51,8 @@ candidate:
   # Engineering sea adapter: clearance from actual lowest collision point, not origin altitude.
   minimum_body_clearance: 0.02
   angular_rate_calibration_required: true
-  bodyrate_calibration_manifest: ''
-  follow_qualification_manifest: ''
+  bodyrate_calibration_manifest: /home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/qualifications/A.json
+  follow_qualification_manifest: /home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/qualifications/B.json
 timing:
   maximum_source_age: 0.125
   maximum_pose_bracket: 0.05
@@ -66,7 +73,7 @@ detector:
   backend: onnxruntime
   model_file: /home/qin/data/uav_usv_mpc/data/experiments/20261020_p76_export_01/red_ball_yolo11n_seg.onnx
   model_sha256: 4fb70adc8fc0989eea52831bfbd62550f48cb21cfb39dd07a4f7f68035c65ef8
-  qualification_manifest: ''
+  qualification_manifest: /home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/qualifications/detector.json
   confidence_threshold: 0.5
   nms_iou: 0.45
   cpu_threads: 1

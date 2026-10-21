@@ -29,7 +29,9 @@ def audit_p76(context):
         raise ValueError('P76_DETECTOR_RUNTIME_MISMATCH')
     if LaunchConfiguration('prediction_model').perform(context) != 'bctra':
         raise ValueError('P76_BCTRA_REQUIRED')
-    audit(contract, profile, Path(os.environ.get('UAV_USV_P76_MODEL_ROOT', '')), True)
+    qualifying_follow = os.environ.get('UAV_USV_P761_STAGE') == 'B'
+    audit(contract, profile, Path(os.environ.get('UAV_USV_P76_MODEL_ROOT', '')),
+          require_flight=not qualifying_follow, require_calibration=qualifying_follow)
     return []
 
 

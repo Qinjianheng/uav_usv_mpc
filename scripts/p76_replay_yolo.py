@@ -36,6 +36,12 @@ def replay(session, manifest_path, output):
         if result.valid and truth_positive:
             mask = decode_mask(result.mask_counts, 640, 480)
             expected = np.load(session/'masks'/(image.stem+'.npz'))['mask']
+            yy, xx = np.nonzero(expected)
+            visible_center = np.array([(xx.min()+xx.max()+1)/2, (yy.min()+yy.max()+1)/2])
+            row['detected_center_uv'] = list(result.center_uv)
+            row['visible_bbox_center_uv'] = visible_center.tolist()
+            row['visible_bbox_center_error_pixels'] = float(np.linalg.norm(
+                np.asarray(result.center_uv)-visible_center))
             row['visible_mask_iou'] = float(np.count_nonzero(mask & expected)
                                             / max(1, np.count_nonzero(mask | expected)))
             frame = metadata[image.stem]

@@ -13,8 +13,9 @@ def generate_launch_description():
     share = get_package_share_directory('uav_usv_bringup')
     defaults = dict(config_file=os.path.join(share, 'config/p76_yan_paper.yaml'),
                     p76_contract=os.path.join(share, 'config/p76_contract.yaml'),
-                    log_directory=os.path.join(os.environ.get(
-                        'UAV_USV_WS', '/home/qin/data/uav_usv_mpc'), 'data/experiments/p76_current'))
+                    log_directory=os.environ.get('UAV_USV_RESEARCH_DIRECTORY', os.path.join(
+                        os.environ.get('UAV_USV_WS', '/home/qin/data/uav_usv_mpc'),
+                        'data/experiments/p76_current')))
     return LaunchDescription([
         *(DeclareLaunchArgument(key, default_value=value) for key, value in defaults.items()),
         IncludeLaunchDescription(PythonLaunchDescriptionSource(os.path.join(

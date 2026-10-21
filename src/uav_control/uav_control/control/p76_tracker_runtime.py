@@ -1,7 +1,6 @@
 """Sole Tracker's opt-in body-rate path; no second PX4 controller or truth subscription."""
 import json
 import os
-from types import SimpleNamespace
 
 import numpy as np
 from px4_msgs.msg import OffboardControlMode, VehicleRatesSetpoint
@@ -142,7 +141,7 @@ class P76TrackerRuntime:
 
     def accept_y(self, now):
         """Revoke MINCO after the mission manager accepts Y and before freezing inputs."""
-        qualified = True
+        qualified = os.environ.get('UAV_USV_P761_STAGE') != 'B'
         try:
             validate_follow_qualification(self.contract, self.workspace)
         except (ValueError, OSError):
@@ -189,12 +188,14 @@ class P76TrackerRuntime:
             # Stopping heartbeat invokes PX4's configured offboard-loss failsafe.
             return
         from .trajectory_tracker_node import command_to_setpoint
+        from .p76_recovery import VelocityRecovery
+        if (not hasattr(self, 'recovery_velocity')
+                or getattr(self, 'recovery_phase', None) != self.mode.phase):
+            self.recovery_velocity = VelocityRecovery()
+            self.recovery_phase = self.mode.phase
         velocity = np.asarray(state.velocity)
         braking = self.controller.barrier.braking
-        delta = min(1., braking*dt/max(np.linalg.norm(velocity), 1e-9))
-        desired = velocity*(1-delta)
-        command = SimpleNamespace(position=state.position, velocity=desired,
-                                  acceleration=(desired-velocity)/dt)
+        command = self.recovery_velocity.setpoint(state.position, velocity, now, braking)
         self.node._publish_offboard_mode(self.node._timestamp_us(), velocity_control=True)
         self.node.setpoint_pub.publish(command_to_setpoint(
             command, self.node._timestamp_us(), velocity_mode=True))
@@ -261,6 +262,11 @@ class P76TrackerRuntime:
                 elif self.mode.phase == 'PAPER_INTERCEPT_ACTIVE':
                     output = self.controller.step(self.image.state, pose.rotation, position,
                                                   velocity, stamp, dt, navigation_age=now-stamp)
+                    safety = self.controller.barrier.check(
+                        position, velocity, pose.rotation, output['acceleration'], now-stamp, dt)
+                    if safety != 'CLEAR':
+                        raise ValueError('P76_SEA_'+safety)
+                    output['safety'] = safety
                     self._emit_rates(output['rates'], output['thrust'], now)
             elif self.mode.phase == 'Y_HANDOVER':
                 self._recovery(now, max(.001, min(dt, .05)))

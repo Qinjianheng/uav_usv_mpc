@@ -338,7 +338,7 @@ trajectory_tracker_node:
     p7_capture_enabled: false
     p7_camera_horizontal_fov: 1.74
     p7_camera_translation_flu:
-    - -0.25
+    - 0.35
     - 0.0
     - 0.31000000000000005
     p76_png_ky: 3.0
@@ -361,8 +361,8 @@ trajectory_tracker_node:
     p76_sea_altitude_msl: 0.0
     p76_minimum_body_clearance: 0.02
     p76_angular_rate_calibration_required: true
-    p76_bodyrate_calibration_manifest: ''
-    p76_follow_qualification_manifest: ''
+    p76_bodyrate_calibration_manifest: /home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/qualifications/A.json
+    p76_follow_qualification_manifest: /home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/qualifications/B.json
     p76_maximum_source_age: 0.125
     p76_maximum_pose_bracket: 0.05
     p76_history_seconds: 1.0
@@ -445,7 +445,7 @@ rgbd_target_localizer:
     time_pair_diagnostics_enabled: false
     localization_rate_hz: 20.0
     camera_pitch_down: 0.5585053606381855
-    camera_translation_x: -0.25
+    camera_translation_x: 0.35
     camera_translation_y: 0.0
     camera_translation_z: 0.31000000000000005
     target_radius: 0.25
@@ -589,7 +589,7 @@ p4_follow_planner_node:
     p6_visibility_mode: nominal
     p6_adaptive_viewpoint: false
     p7_camera_translation_flu:
-    - -0.25
+    - 0.35
     - 0.0
     - 0.31000000000000005
     p7_camera_horizontal_fov: 1.74
@@ -603,7 +603,7 @@ yolo_target_detector:
     backend: onnxruntime
     model_file: /home/qin/data/uav_usv_mpc/data/experiments/20261020_p76_export_01/red_ball_yolo11n_seg.onnx
     model_sha256: 4fb70adc8fc0989eea52831bfbd62550f48cb21cfb39dd07a4f7f68035c65ef8
-    qualification_manifest: ''
+    qualification_manifest: /home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/qualifications/detector.json
     confidence_threshold: 0.5
     nms_iou: 0.45
     cpu_threads: 1

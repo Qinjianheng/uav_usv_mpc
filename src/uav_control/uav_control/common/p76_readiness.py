@@ -18,7 +18,9 @@ def source_fingerprint(workspace):
     paths += list((root/'src/uav_usv_bringup/launch').glob('*.py'))
     paths += list((root/'src/uav_usv_interfaces/msg').glob('*.msg'))
     paths += [root/'scripts'/name for name in (
-        'start_px4_ros2.sh', 'p76_config_audit.py', 'prepare_gz_camera_model.py')]
+        'start_px4_ros2.sh', 'p76_config_audit.py', 'prepare_gz_camera_model.py',
+        'p76_bodyrate_calibration.py', 'p76_calibration_analysis.py',
+        'p76_calibration_manifest.py', 'p761_session.py', 'p761_validation.py')]
     return {str(p.relative_to(root)): sha256(p) for p in sorted(paths)}
 
 
@@ -30,12 +32,16 @@ def validate_calibration(contract, model_root, workspace):
     data = json.loads(Path(path).read_text())
     verify_model(model_root, contract)
     manifest = json.loads((Path(model_root)/'p76_model_manifest.json').read_text())
+    px4 = Path(contract['dynamics']['px4_model_root']).parents[3]
+    px4_identity = dict(binary_sha256=sha256(px4/'build/px4_sitl_default/bin/px4'),
+                        dds_sha256=sha256(px4/'src/modules/uxrce_dds_client/dds_topics.yaml'))
     if (data.get('schema_version') != 1 or data.get('qualified') is not True
             or data.get('kind') != 'PX4_GAZEBO_BODYRATE_CALIBRATION'
             or data.get('sources') != source_fingerprint(workspace)
             or data.get('model_files') != manifest['files']
             or data.get('contract_sha256') != sha256(contract['_path'])
-            or data.get('detector_sha256') != contract['detector']['model_sha256']):
+            or data.get('detector_sha256') != contract['detector']['model_sha256']
+            or data.get('px4') != px4_identity):
         raise ValueError('P76_CALIBRATION_IDENTITY_MISMATCH')
     logs = data.get('raw_evidence', {})
     if not logs or any(not Path(p).is_file() or sha256(p) != h for p, h in logs.items()):
@@ -63,4 +69,7 @@ def validate_follow_qualification(contract, workspace):
             or data.get('contract_sha256') != sha256(contract['_path'])
             or not data.get('actual_minco_ownership_verified')):
         raise ValueError('P76_CURRENT_FOLLOW_QUALIFICATION_INVALID')
+    logs = data.get('raw_evidence', {})
+    if not logs or any(not Path(p).is_file() or sha256(p) != h for p, h in logs.items()):
+        raise ValueError('P76_FOLLOW_RAW_EVIDENCE_MISSING')
     return data

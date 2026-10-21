@@ -31,7 +31,8 @@ def _validate(c):
     camera, follow = c['camera'], c['follow']
     layouts = dict(revision32=(32., 5., 4.))
     if ((camera['pitch_down_degrees'], follow['distance'], follow['height'])
-            != layouts.get(camera['layout']) or camera['translation_flu'] != [-.25, 0., .55]):
+            != layouts.get(camera['layout']) or camera['translation_flu'] not in (
+                [-.25, 0., .55], [.35, 0., .55], [.45, 0., .55], [.55, 0., .55])):
         raise ValueError('P76_UNAPPROVED_LAYOUT')
     if c['motion'] != dict(mode='variable_speed_s', minimum_speed=2., maximum_speed=4.,
                            speed_period=24., startup_duration=8., vertical_amplitude=.15,

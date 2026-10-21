@@ -21,6 +21,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT/'src/uav_control'))
 from uav_control.common.p76_contract import load_contract  # noqa: E402
 from uav_control.common.p76_model import prepare_model, verify_model  # noqa: E402
+from uav_control.common.p761_geometry import geometry_cases as mechanical_cases  # noqa: E402
 from uav_control.gazebo_target_visualizer import red_sphere_sdf  # noqa: E402
 
 
@@ -50,22 +51,7 @@ def polygon_label(mask):
 
 def geometry_cases(contract):
     """Finite current-contract FOLLOW and terminal samples, with actual mount and heave."""
-    follow = contract['follow']
-    mount = Rotation.from_euler('y', math.radians(contract['camera']['pitch_down_degrees']))
-    for heave in (-.15, 0., .15):
-        settings = [(follow['distance'], follow['height'], roll, pitch, 'FOLLOW')
-                    for roll, pitch in ((0., 0.), (.25, 0.), (-.25, 0.), (0., .25), (0., -.25))]
-        settings += [(distance, height, 0., 0., 'TERMINAL') for distance, height in (
-            (3., 2.), (1., 1.), (.5, .5), (.25, .2), (.1, .1), (0., .05))]
-        for distance, height, roll, pitch, phase in settings:
-            rotation = Rotation.from_euler('xyz', (roll, pitch, 0.))
-            origin = np.array((-distance, 0., height))
-            ball = np.array((0., 0., .42+heave))
-            delta = ball-origin-rotation.apply(contract['camera']['translation_flu'])
-            center = mount.inv().apply(rotation.inv().apply(delta))
-            yield dict(origin=origin, ball=ball, rotation=rotation, center=center,
-                       case=dict(phase=phase, heave=heave, roll=roll, pitch=pitch,
-                                 origin_distance=float(np.linalg.norm(origin-(0., 0., heave)))))
+    yield from mechanical_cases(contract)
 
 
 def collect(output, contract_path, samples, seed, split, geometry=False, live_yolo=False,

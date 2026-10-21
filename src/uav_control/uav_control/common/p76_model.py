@@ -5,6 +5,7 @@ import math
 from pathlib import Path
 import shutil
 import xml.etree.ElementTree as ET
+from copy import deepcopy
 
 import numpy as np
 from scipy.spatial.transform import Rotation
@@ -31,6 +32,66 @@ def _base_pose(tree):
     rotation = Rotation.from_euler('xyz', parent[3:])
     return np.r_[parent[:3]+rotation.apply(child[:3]),
                  (rotation*Rotation.from_euler('xyz', child[3:])).as_euler('xyz')]
+
+
+def _install_mount(tree, camera, contract, body, body_rotation, camera_rotation):
+    """Add a connected carbon tube and a rear housing, with actual inertia and collisions."""
+    mechanical = contract['mechanics']
+    size = np.asarray(mechanical['housing_size'])
+    center = np.asarray(mechanical['housing_center_camera_flu'])
+    visual = camera.find('visual')
+    visual.find('geometry/box/size').text = ' '.join(map(str, size))
+    pose = visual.find('pose')
+    if pose is None:
+        pose = ET.SubElement(visual, 'pose')
+    pose.text = ' '.join(map(str, (*center, 0., 0., 0.)))
+    housing = ET.SubElement(camera, 'collision', name='p761_camera_housing')
+    ET.SubElement(housing, 'pose').text = pose.text
+    housing.append(deepcopy(visual.find('geometry')))
+    camera_inertial = camera.find('inertial')
+    inertial_pose = camera_inertial.find('pose')
+    if inertial_pose is None:
+        inertial_pose = ET.SubElement(camera_inertial, 'pose')
+    inertial_pose.text = pose.text
+    camera_mass = float(camera_inertial.findtext('mass'))
+    for index, axis in enumerate(('ixx', 'iyy', 'izz')):
+        camera_inertial.find('inertia/'+axis).text = repr(float(
+            camera_mass*(np.dot(size, size)-size[index]**2)/12))
+    start = np.asarray(mechanical['support_root_flu'])
+    end = np.asarray(contract['camera']['translation_flu'])+camera_rotation@(
+        center-np.array([size[0]/2, 0., 0.]))
+    direction = end-start
+    length = float(np.linalg.norm(direction))
+    outer, inner = mechanical['support_outer_width'], mechanical['support_inner_width']
+    if not 0 < inner < outer or length <= outer:
+        raise ValueError('P761_CAMERA_SUPPORT_DIMENSIONS')
+    mass = mechanical['support_density']*(outer**2-inner**2)*length
+    rotation = Rotation.from_euler('xyz', (0., -math.atan2(direction[2],
+                                                           np.linalg.norm(direction[:2])),
+                                           math.atan2(direction[1], direction[0]))).as_matrix()
+    angles = Rotation.from_matrix(body_rotation.T@rotation).as_euler('xyz')
+    position = body_rotation.T@((start+end)/2-body[:3])
+    link = ET.SubElement(tree.find('model'), 'link', name='p761_camera_support')
+    ET.SubElement(link, 'pose', relative_to='base_link').text = ' '.join(
+        repr(float(v)) for v in (*position, *angles))
+    inertial = ET.SubElement(link, 'inertial')
+    ET.SubElement(inertial, 'mass').text = repr(mass)
+    inertia = ET.SubElement(inertial, 'inertia')
+    # Hollow square tube, local X along its length.
+    axial = mass*(outer**2+inner**2)/6
+    transverse = mass*(length**2+outer**2+inner**2)/12
+    for name, value in zip(('ixx', 'iyy', 'izz', 'ixy', 'ixz', 'iyz'),
+                           (axial, transverse, transverse, 0., 0., 0.)):
+        ET.SubElement(inertia, name).text = repr(value)
+    for tag in ('visual', 'collision'):
+        item = ET.SubElement(link, tag, name='p761_support_'+tag)
+        geometry = ET.SubElement(item, 'geometry')
+        box = ET.SubElement(geometry, 'box')
+        ET.SubElement(box, 'size').text = f'{length} {outer} {outer}'
+    joint = ET.SubElement(tree.find('model'), 'joint',
+                          name='p761_camera_support_joint', type='fixed')
+    ET.SubElement(joint, 'parent').text = 'base_link'
+    ET.SubElement(joint, 'child').text = 'p761_camera_support'
 
 
 def prepare_model(source_camera, px_models, output, contract):
@@ -65,6 +126,7 @@ def prepare_model(source_camera, px_models, output, contract):
     down = camera_tree.find(".//sensor[@name='down_tof_camera']")
     if down is not None:
         camera_tree.find(".//link[@name='down_camera_link']").remove(down)
+    _install_mount(camera_tree, camera, contract, body, body_rotation, desired_rotation)
     camera_tree.write(output/'x500_mono_cam/model.sdf', encoding='utf-8', xml_declaration=True)
     mass = sum(float(m.text) for name in ('x500_mono_cam', 'x500', 'x500_base')
                for m in ET.parse(output/name/'model.sdf').findall('.//link/inertial/mass'))

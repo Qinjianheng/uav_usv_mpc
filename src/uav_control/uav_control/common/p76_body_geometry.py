@@ -53,10 +53,10 @@ def collision_envelope(root):
 
     Revolute rotor boxes use a circumscribed 16-sided swept disk, so unknown
     motor yaw cannot shrink the envelope. Unsupported geometry/frames fail closed.
-    Camera visual housings have no collision SDF and are not invented as collisions.
+    Only actual collision tags enter the envelope, including P761's physical mount.
     """
     root = Path(root)
-    frames, pending, provenance, points = {}, {}, [], []
+    frames, pending, provenance, points, boxes = {}, {}, [], [], []
     models = []
     for name in ('x500_base', 'x500', 'x500_mono_cam'):
         path = root/name/'model.sdf'
@@ -115,11 +115,15 @@ def collision_envelope(root):
                                       for z in (-size[2]/2, size[2]/2)])
                 flu = local@transform[:3, :3].T+transform[:3, 3]
                 points.extend((flu*np.array([1., -1., -1.])).tolist())
+                bound = [2*radius, 2*radius, size[2]] if swept else size.tolist()
+                boxes.append(dict(link=link.get('name'), size=bound,
+                                  center_flu=transform[:3, 3].tolist(),
+                                  rotation_flu=transform[:3, :3].tolist(), swept_rotor=swept))
                 provenance.append(dict(file=str(path.relative_to(root)), link=link.get('name'),
                                        collision=collision.get('name'), swept_rotor=swept))
     if not points:
         raise ValueError('P76_COLLISION_EMPTY')
-    return dict(frame='MODEL_ORIGIN_FRD', vertices_frd=points, collisions=provenance,
+    return dict(frame='MODEL_ORIGIN_FRD', vertices_frd=points, collisions=provenance, boxes=boxes,
                 source_sha256={str(p.relative_to(root)): hashlib.sha256(p.read_bytes()).hexdigest()
                                for p, _ in models})
 

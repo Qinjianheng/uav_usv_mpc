@@ -30,9 +30,9 @@ def test_contract_drives_every_effective_sensor_and_controller_stage():
         assert params['detection_source'] == 'yolo'
         assert params['camera_pitch_down'] == pytest.approx(math.radians(32.))
     localizer = profile['rgbd_target_localizer']['ros__parameters']
-    assert [localizer['camera_translation_'+a] for a in 'xyz'] == pytest.approx([-.25, 0., .31])
+    assert [localizer['camera_translation_'+a] for a in 'xyz'] == pytest.approx([.35, 0., .31])
     assert tracker['p7_camera_translation_flu'] == planner['p7_camera_translation_flu']
-    assert tracker['p7_camera_translation_flu'] == pytest.approx([-.25, 0., .31])
+    assert tracker['p7_camera_translation_flu'] == pytest.approx([.35, 0., .31])
     assert profile['intercept_evaluator_node']['ros__parameters'][
         'evaluation_capture_radius'] == .25
     assert profile['spatial_dkf_node']['ros__parameters']['maximum_source_age'] == .125
@@ -82,7 +82,7 @@ def test_session_model_uses_model_origin_mount_and_derived_twr_without_editing_s
     camera = ET.parse(tmp_path/'models/x500_mono_cam/model.sdf')
     pose = camera.find(".//link[@name='front_camera_link']/pose")
     values = [float(v) for v in pose.text.split()]
-    assert values[:3] == pytest.approx((-.25, 0., .31))
+    assert values[:3] == pytest.approx((.35, 0., .31))
     assert values[4] == pytest.approx(math.radians(32.))
     assert metadata['static_model_twr'] == pytest.approx(3.)
     assert verify_model(tmp_path/'models', contract)['consistent']
