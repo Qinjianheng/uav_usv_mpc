@@ -23,9 +23,9 @@
   {
     "source": "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p762_01/assessment_red.txt",
     "source_sha256": "569de9e5d1798e941cfede48af8b9fca47e3297a031e1195aea646bcc5603d18",
-    "saved": "audit/assessment_red.txt",
-    "saved_sha256": "569de9e5d1798e941cfede48af8b9fca47e3297a031e1195aea646bcc5603d18",
-    "encoding": "identity"
+    "saved": "audit/assessment_red.txt.gz",
+    "saved_sha256": "fd79931184afe64f7f19d3483526d6ff36545bf4248d8642c7a39b3a8675f047",
+    "encoding": "gzip"
   },
   {
     "source": "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p762_01/targeted_preflight.txt",
