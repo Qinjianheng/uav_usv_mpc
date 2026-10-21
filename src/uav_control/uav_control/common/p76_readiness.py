@@ -1,6 +1,7 @@
 """Bind physical qualification to exact current source, model and acquisition contracts."""
 import hashlib
 import json
+import os
 from pathlib import Path
 
 from .p76_model import verify_model
@@ -21,7 +22,9 @@ def source_fingerprint(workspace):
         'start_px4_ros2.sh', 'p76_config_audit.py', 'prepare_gz_camera_model.py',
         'p76_bodyrate_calibration.py', 'p76_calibration_analysis.py',
         'p76_calibration_manifest.py', 'p761_session.py', 'p761_validation.py',
-        'p763_exit_replay.py', 'p763_dkf_replay.py', 'p763_control_replay.py')]
+        'p763_exit_replay.py', 'p763_dkf_replay.py', 'p763_control_replay.py',
+        'p764_diagnostic_collect.py', 'p764_nonflight_session.py', 'p764_real_replay.py',
+        'p764_handover_replay.py', 'p764_qualification_audit.py')]
     return {str(p.relative_to(root)): sha256(p) for p in sorted(paths)}
 
 
@@ -78,7 +81,23 @@ def validate_calibration(contract, model_root, workspace):
     return data
 
 
-def validate_follow_qualification(contract, workspace):
+def follow_physical_identity(contract, workspace, model_root=None):
+    """Bind B to current measured A and the actual model/PX4/DDS/detector bytes."""
+    model_root = model_root or os.environ.get('UAV_USV_P76_MODEL_ROOT', '')
+    if not model_root:
+        raise ValueError('P764_FOLLOW_CURRENT_MODEL_REQUIRED')
+    calibration = validate_calibration(contract, model_root, workspace)
+    detector_hash = sha256(contract['detector']['model_file'])
+    if detector_hash != contract['detector']['model_sha256']:
+        raise ValueError('P764_FOLLOW_DETECTOR_IDENTITY_MISMATCH')
+    return dict(
+        calibration_sha256=sha256(contract['candidate']['bodyrate_calibration_manifest']),
+        model_manifest_sha256=sha256(Path(model_root)/'p76_model_manifest.json'),
+        model_files=calibration['model_files'], px4=calibration['px4'],
+        detector_sha256=detector_hash)
+
+
+def validate_follow_qualification(contract, workspace, model_root=None):
     """C cannot inherit P75 or another model's nominal planner feasibility."""
     path = contract['candidate'].get('follow_qualification_manifest', '')
     if not path or not Path(path).is_file():
@@ -102,4 +121,19 @@ def validate_follow_qualification(contract, workspace):
     logs = data.get('raw_evidence', {})
     if not logs or any(not Path(p).is_file() or sha256(p) != h for p, h in logs.items()):
         raise ValueError('P76_FOLLOW_RAW_EVIDENCE_MISSING')
+    identity = data.get('physical_identity', {})
+    required = {'calibration_sha256', 'model_manifest_sha256', 'model_files', 'px4',
+                'detector_sha256'}
+    if set(identity) != required:
+        raise ValueError('P764_FOLLOW_CURRENT_IDENTITY_REQUIRED')
+    if identity != follow_physical_identity(contract, workspace, model_root):
+        raise ValueError('P764_FOLLOW_PHYSICAL_IDENTITY_MISMATCH')
+    identity_path = data.get('validation_identity_file', '')
+    if not identity_path or str(Path(identity_path).resolve()) not in logs:
+        raise ValueError('P764_FOLLOW_VALIDATION_IDENTITY_EVIDENCE_REQUIRED')
+    saved = json.loads(Path(identity_path).read_text())
+    if (saved.get('physical_identity') != identity
+            or saved.get('sources') != data['sources']
+            or saved.get('contract_sha256') != data['contract_sha256']):
+        raise ValueError('P764_FOLLOW_VALIDATION_IDENTITY_MISMATCH')
     return data

@@ -179,9 +179,27 @@ def test_session_requires_separate_stage_authorization_before_simulator_or_budge
 
 
 def test_sequence_keeps_all_actions_and_resets_on_the_body_interface():
+    import hashlib
     calibration = script('p76_bodyrate_calibration')
     node = calibration.Calibration.__new__(calibration.Calibration)
     node.stage, node.steps = 'A1', []
+    # Virtual low-TWR fixture tests sequence construction only. It is never used
+    # as real identification evidence or inherited by the default A1 constructor.
+    admitted = control().pulse_admission(
+        velocity=[0., 0., 0.], acceleration=[0., 0., 0.], sample_age=0., duration=.22,
+        mass=2., maximum_thrust=30., gravity=9.8, upward_room=4., clearance=8.,
+        upward_braking=4., downward_braking=4.)
+    assert admitted['admitted']
+    virtual_steps = []
+    for value in (.3, .4, .5, .6, .7, .85, 1.):
+        virtual_steps += [('BODY_PREP', .65), (f'THRUST_{value:.3f}', .22),
+                          ('BODY_BRAKE', 3.), ('BODY_HOLD', 3.)]
+    node.protocol = dict(
+        new_protocol_admissible=True, qualified=False,
+        scope='UNIT TEST virtual low-TWR safety admission; no identification qualification',
+        new_protocol_source_sha256=hashlib.sha256(
+            json.dumps(admitted, sort_keys=True).encode()).hexdigest(),
+        executable_steps=virtual_steps)
     node.make_steps()
     assert [name for name, _ in node.steps if name.startswith('THRUST_')] == [
         'THRUST_0.300', 'THRUST_0.400', 'THRUST_0.500', 'THRUST_0.600',

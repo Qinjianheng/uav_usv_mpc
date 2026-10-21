@@ -78,7 +78,7 @@ def audit(contract_path, profile_path, model_root=None, require_flight=False,
             raise ValueError('P76_ACTUAL_SESSION_MODEL_REQUIRED')
         validate_calibration(contract, model_root, ROOT)
     if require_flight:
-        validate_follow_qualification(contract, ROOT)
+        validate_follow_qualification(contract, ROOT, model_root)
         qualification = Path(contract['detector']['qualification_manifest'])
         if not qualification.is_file():
             raise ValueError('P76_ROS_DETECTOR_QUALIFICATION_MISSING')

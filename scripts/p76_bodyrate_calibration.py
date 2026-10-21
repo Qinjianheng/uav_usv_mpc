@@ -89,6 +89,14 @@ class Calibration(Node):
         bootstrap = (Path(os.environ['UAV_USV_WS'])
                      / 'data/experiments/20261021_p761_01/session_A1_03')
         self.bootstrap = load_bootstrap(bootstrap, self.identity)
+        self.protocol = None
+        if stage == 'A1':
+            from p763_exit_replay import new_protocol
+            self.protocol = new_protocol(bootstrap)
+            (output/'a1_protocol_analysis.json').write_text(
+                json.dumps(self.protocol, indent=2)+'\n')
+            if not self.protocol['new_protocol_admissible']:
+                raise ValueError('P764_A1_PROTOCOL_BLOCKED: '+self.protocol['reason'])
         (output/'bootstrap_physical_map.json').write_text(json.dumps(dict(
             qualified=False, source=str(bootstrap), model=model, px4=self.identity['px4'],
             raw_sha256=sha256(bootstrap/'calibration.jsonl'),
@@ -381,9 +389,13 @@ class Calibration(Node):
 
     def make_steps(self):
         if self.stage == 'A1':
-            for value in (.3, .4, .5, .6, .7, .85, 1.):
-                self.steps += [('BODY_PREP', .65), (f'THRUST_{value:.3f}', .22),
-                               ('BODY_BRAKE', 3.), ('BODY_HOLD', 3.)]
+            protocol = getattr(self, 'protocol', None)
+            if (not isinstance(protocol, dict)
+                    or protocol.get('new_protocol_admissible') is not True
+                    or not protocol.get('new_protocol_source_sha256')
+                    or not protocol.get('executable_steps')):
+                raise ValueError('P764_A1_PROTOCOL_BLOCKED')
+            self.steps += [tuple(step) for step in protocol['executable_steps']]
             for axis in range(3):
                 self.steps += [('BODY_PREP', .65), (f'RATE_{axis}', .65),
                                ('BODY_BRAKE', 3.), ('BODY_HOLD', 3.)]
@@ -563,15 +575,21 @@ class Calibration(Node):
                 thrust = float(self.phase.split('_')[1])
                 guarded = any(r['kind'] == 'pulse_guard'
                               and r.get('phase_begin') == self.phase_ros for r in self.rows)
-                if thrust > self.hover and not guarded:
+                if not guarded:
+                    mode = self.control_mode
                     guard = pulse_admission(
                         velocity=velocity, acceleration=acceleration,
-                        sample_age=self.now()-stamp, duration=.22, mass=self.mass,
+                        sample_age=self.now()-stamp,
+                        duration=self.steps[self.step_index][1], mass=self.mass,
                         maximum_thrust=self.model_maximum_thrust, gravity=self.gravity,
                         upward_room=position[2]-(self.home[2]-4.),
                         clearance=sea-lowest_world_z(self.points, position, pose.rotation),
-                        upward_braking=self.gravity-self.bootstrap.force[0]/self.mass,
-                        downward_braking=self.bootstrap.force[-1]/self.mass-self.gravity)
+                        upward_braking=min(4., self.gravity-self.bootstrap.force[0]/self.mass),
+                        downward_braking=min(4., self.bootstrap.force[-1]/self.mass-self.gravity),
+                        rotation=pose.rotation,
+                        control_mode_confirmed=(mode is not None
+                                                and mode.flag_control_rates_enabled
+                                                and not mode.flag_control_velocity_enabled))
                     self.log('pulse_guard', phase_begin=self.phase_ros, **guard)
                     if not guard['admitted']:
                         raise ValueError('P763_HIGH_PULSE_UNSAFE_REFUSED')

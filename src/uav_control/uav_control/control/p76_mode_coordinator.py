@@ -38,7 +38,7 @@ class ModeCoordinator:
             self.bodyrate_requested = float(now)
 
     def confirm(self, now, ack_stamp, exclusive, maximum_mode_age=.65):
-        """An unchanged Body-rate mode can have a valid native ACK preceding Y."""
+        """Accept an unchanged Body-rate mode with a fresh native ACK preceding Y."""
         self.timeout(now)
         if (self.phase == 'Y_HANDOVER' and self.bodyrate_requested is not None
                 and 0 < ack_stamp <= now and now-ack_stamp <= maximum_mode_age and exclusive):
@@ -53,7 +53,7 @@ class ModeCoordinator:
             self.fail('P76_HANDOVER_TIMEOUT')
 
     def fail(self, reason):
-        """A safety transition never renews either target guidance authority."""
+        """Revoke both target guidance authorities on a safety transition."""
         if self.phase != 'CAPTURED':
             self.phase, self.reason = 'SAFE_RECOVERY', str(reason)
 

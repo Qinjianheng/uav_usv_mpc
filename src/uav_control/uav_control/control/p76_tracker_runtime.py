@@ -1,5 +1,6 @@
 """Sole Tracker's opt-in body-rate path; no second PX4 controller or truth subscription."""
 import json
+import math
 import os
 from collections import deque
 
@@ -68,6 +69,7 @@ class P76TrackerRuntime:
         self.thrust_hold = None
         self.executed_thrust = None
         self.fatal_dispatched = False
+        self._reset_initialization()
         self.mode_pub = node.create_publisher(String, '/control/p76_mode', phase_qos())
         self.diagnostic_pub = node.create_publisher(String, '/control/p76_paper', 10)
         self.rates_pub = node.create_publisher(VehicleRatesSetpoint,
@@ -93,6 +95,7 @@ class P76TrackerRuntime:
         self.mode_pub.publish(String(data=json.dumps(dict(
             schema_version=2, phase=self.mode.phase, epoch=self.mode.epoch,
             guidance_owner=self.mode.guidance_owner, px4_interface='BODY_RATE',
+            control_state=self.control_state,
             y_stamp=self.mode.y_stamp,
             mission_id=self.node.mission_id, reason=self.mode.reason))))
 
@@ -128,7 +131,9 @@ class P76TrackerRuntime:
             packet = json.loads(message.data)
             stamp = float(packet['stamp'])
             flags = packet['flags']
-            if (0 < stamp <= self.node._ros_seconds() and self.node._ros_seconds()-stamp <= .125
+            if (packet['native_timestamp'] > 0 and packet['px4_timestamp'] > 0
+                    and 0 < stamp <= self.node._ros_seconds()
+                    and self.node._ros_seconds()-stamp <= .125
                     and all(type(flags[key]) is bool for key in (
                         'offboard', 'rates', 'position', 'velocity', 'attitude',
                         'altitude', 'climb_rate'))):
@@ -141,10 +146,15 @@ class P76TrackerRuntime:
         try:
             packet = json.loads(message.data)
             stamp, values = float(packet['stamp']), np.asarray(packet['xyz'])
-            if (0 < stamp <= self.node._ros_seconds() and self.node._ros_seconds()-stamp <= .125
+            if (packet['native_timestamp'] > 0 and packet['px4_timestamp'] > 0
+                    and 0 < stamp <= self.node._ros_seconds()
+                    and self.node._ros_seconds()-stamp <= .125
                     and values.shape == (3,) and np.isfinite(values).all()
                     and -1 <= values[2] < 0 and np.max(np.abs(values[:2])) < 1e-6):
                 self.executed_thrust = stamp, values.copy()
+                self.executed_thrust_identity = dict(
+                    native_timestamp=int(packet['native_timestamp']),
+                    px4_timestamp=int(packet['px4_timestamp']))
         except (ValueError, KeyError, TypeError):
             return
 
@@ -162,6 +172,8 @@ class P76TrackerRuntime:
 
     def accept_y(self, now):
         """Withdraw the MINCO lease; retain both estimators and the physical Body-rate mode."""
+        if self.mode.phase != 'FOLLOW_ACTIVE':
+            return
         qualified = os.environ.get('UAV_USV_P761_STAGE') != 'B'
         try:
             validate_follow_qualification(self.contract, self.workspace)
@@ -228,6 +240,64 @@ class P76TrackerRuntime:
                     and not any(flags[k] for k in (
                         'velocity', 'position', 'attitude', 'altitude', 'climb_rate')))
 
+    def _reset_initialization(self):
+        """Begin with no qualified executed output, even if PX4 is armed."""
+        self.control_state, self.previous_armed = 'DISARMED_PRESTREAM', False
+        self.armed_at, self.initialization_count, self.native_arm_epoch = None, 0, 0
+        self.initialization_reason, self.initialization_margin = '', None
+
+    def _observe_armed_edge(self, now):
+        """Repeated status messages cannot reseed; disarm explicitly revokes the old seed."""
+        armed = bool(self.node.vehicle_armed)
+        native_epoch = int(getattr(self, 'land_observation', {}).get('armed_time_native', 0))
+        if (armed != self.previous_armed or armed and native_epoch > 0
+                and native_epoch != getattr(self, 'native_arm_epoch', 0)):
+            self.outer.reset()
+            self.initialization_margin = None
+            self.waypoint, self.waypoint_state = None, None
+            self.previous_armed = armed
+            self.armed_at = now if armed else None
+            self.native_arm_epoch = native_epoch if armed else 0
+            self.control_state = ('ARMED_WAIT_NATIVE_FEEDBACK' if armed
+                                  else 'DISARMED_PRESTREAM')
+            if not armed:
+                self.fatal_dispatched = False
+        return armed
+
+    def _initialize_armed(self, now, dt):
+        """Confirm all native inputs before granting one real first output to this arm edge."""
+        maximum_wait = self.contract['timing']['mode_feedback_max_age']
+        if now-self.armed_at > maximum_wait:
+            raise ValueError('P764_ARMED_NATIVE_FEEDBACK_TIMEOUT:'+self.initialization_reason)
+        if not self._bodyrate_confirmed(now):
+            self.initialization_reason = 'P764_BODYRATE_MODE_UNCONFIRMED'
+            # No native hold qualification exists in this architecture. Without fresh mode
+            # confirmation even a no-output wait cannot prove who is controlling the motors.
+            raise ValueError(self.initialization_reason)
+        # A confirmed Body-rate mode already owns the actuator. Missing feedback cannot be
+        # bridged by an armed zero packet, an inferred hover value, or a fabricated rate seed.
+        native = self.land_observation
+        arm_epoch = int(native.get('armed_time_native', 0))
+        identity = getattr(self, 'executed_thrust_identity', {})
+        if (self.executed_thrust is None or arm_epoch <= 0
+                or identity.get('native_timestamp', 0) < arm_epoch
+                or not 0 < self.executed_thrust[0] <= now
+                or now-self.executed_thrust[0] > .125):
+            raise ValueError('P764_EXECUTED_THRUST_SEED_UNAVAILABLE')
+        if (native.get('disarmed', True) or native.get('status_native_wire', 0) <= 0
+                or not 0 <= now-native.get('status_receipt', -math.inf) <= maximum_wait):
+            raise ValueError('P764_NATIVE_ARMED_CONFIRMATION_UNAVAILABLE')
+        stamp, position, velocity, pose, sea = self._snapshot(now)
+        self.controller.barrier.sea = sea
+        thrust = float(self.executed_thrust[1][2])
+        self.initialization_margin = self.outer.hover_initialization_margin(
+            position, velocity, pose.rotation, thrust, now-stamp, dt, self.controller.barrier)
+        self.outer.initialize(pose.omega, thrust)
+        self.initialization_count += 1
+        self.initialization_reason = ''
+        self.control_state = 'BODYRATE_READY'
+        return dict(rates=pose.omega, thrust=thrust, acceleration=np.zeros(3))
+
     def _install_landing_observers(self):
         from px4_msgs.msg import VehicleLandDetected, VehicleStatus
         from rclpy.qos import qos_profile_sensor_data
@@ -235,6 +305,7 @@ class P76TrackerRuntime:
         def status(message):
             self.land_observation.update(status_receipt=self.node._ros_seconds(),
                                          status_native_wire=int(message.timestamp),
+                                         armed_time_native=int(message.armed_time),
                                          nav_state=int(message.nav_state),
                                          disarmed=message.arming_state == 1)
 
@@ -253,6 +324,7 @@ class P76TrackerRuntime:
     def _land(self, reason, now):
         """One latched native LAND; no alternating control interfaces or false completion timer."""
         self.mode.fail(reason)
+        self.control_state = 'LAND_REQUESTED'
         self.node._revoke_nominal_follow(reason)
         self.follow_revoked = True
         if not self.fatal_dispatched and self.node.vehicle_armed:
@@ -263,11 +335,7 @@ class P76TrackerRuntime:
     def _follow_output(self, now, dt, stamp, position, velocity, pose):
         state = self.node.mission_state_name
         if not self._bodyrate_confirmed(now):
-            self.mode_wait_started = self.mode_wait_started or now
-            if now-self.mode_wait_started > self.contract['timing']['mode_feedback_max_age']:
-                raise ValueError('P763_BODYRATE_MODE_UNCONFIRMED')
-        else:
-            self.mode_wait_started = None
+            raise ValueError('P763_BODYRATE_MODE_UNCONFIRMED')
         if state == 'FOLLOW':
             context = self.node._follow_context()
             if not (context.following and context.visible and context.navigation_fresh
@@ -362,32 +430,48 @@ class P76TrackerRuntime:
     def tick(self):
         """Sole physical outlet during ground prestream, X, Y and bounded recovery."""
         now = self.node._ros_seconds()
+        if not hasattr(self, 'control_state'):
+            self._reset_initialization()
         dt = (now-self.last_tick if self.last_tick is not None else
               1/self.contract['paper']['paper_controller_target_rate_hz'])
         self.last_tick = now
         self.emission_reference = None
         owner = 'NONE'
+        armed = self._observe_armed_edge(now)
         if getattr(self.node, 'navigation_frame_fault', ''):
             self._land('P76_NAVIGATION_FRAME_FAULT', now)
         try:
-            if not 0 < dt <= .125:
+            if not math.isfinite(now) or not 0 < dt <= .125:
+                self.outer.reset()
                 raise ValueError('P76_CONTROL_CLOCK_OR_DEADLINE')
             self.mode.timeout(now)
             if not self.fatal_dispatched and self.mode.phase != 'CAPTURED':
-                if not self.node.vehicle_armed:
+                if not armed:
                     # Native callbacks arrive asynchronously after the timer starts. Disarmed
                     # zero prestream grants no flight readiness and cannot latch a flight fault.
-                    self.outer.initialize(np.zeros(3), 0.)
                     self._emit_rates(np.zeros(3), 0., now)
                     owner = 'DISARMED_PRESTREAM'
+                elif self.control_state == 'ARMED_WAIT_NATIVE_FEEDBACK':
+                    output = self._initialize_armed(now, dt)
+                    owner = self.control_state
+                    if output is not None:
+                        self._emit_rates(output['rates'], output['thrust'], now)
                 else:
+                    if not self._bodyrate_confirmed(now):
+                        raise ValueError('P763_BODYRATE_MODE_LOST')
                     snapshot = self._snapshot(now)
                     stamp, position, velocity, pose, sea = snapshot
                     self.controller.barrier.sea = sea
+                    speed = float(np.linalg.norm(velocity))
+                    if (not math.isfinite(speed)
+                            or speed > self.contract['candidate']['maximum_horizontal_speed']):
+                        reason = ('P764_NATIVE_SPEED_LIMIT_EXCEEDED' if math.isfinite(speed)
+                                  else 'P764_NATIVE_SPEED_STATE_INVALID')
+                        self.node._revoke_nominal_follow(reason)
+                        self.follow_revoked = True
+                        raise ValueError(reason)
                     if self.outer.limiter.thrust is None:
-                        if self.executed_thrust is None or now-self.executed_thrust[0] > .125:
-                            raise ValueError('P763_EXECUTED_SEED_UNAVAILABLE')
-                        self.outer.initialize(pose.omega, float(self.executed_thrust[1][2]))
+                        raise ValueError('P764_QUALIFIED_OUTPUT_SEED_REQUIRED')
                     if self.mode.phase == 'FOLLOW_ACTIVE':
                         output, owner = self._follow_output(
                             now, dt, stamp, position, velocity, pose)
@@ -407,15 +491,22 @@ class P76TrackerRuntime:
                     if safety != 'CLEAR':
                         raise ValueError('P76_SEA_'+safety)
                     self._emit_rates(output['rates'], output['thrust'], now)
+                    self.control_state = ('SAFE_RECOVERY' if self.mode.phase == 'SAFE_RECOVERY'
+                                          else 'FLIGHT_ACTIVE')
         except (ValueError, TypeError, np.linalg.LinAlgError) as error:
             self.mode.fail(str(error))
-            if self.node.vehicle_armed and not self.fatal_dispatched:
-                try:
-                    output = self._recovery(now, min(.125, max(.001, dt)))
-                    self._emit_rates(output['rates'], output['thrust'], now)
-                    owner = 'BODYRATE_RECOVERY'
-                except (ValueError, TypeError, np.linalg.LinAlgError):
+            if armed and not self.fatal_dispatched:
+                if (self.control_state == 'ARMED_WAIT_NATIVE_FEEDBACK'
+                        or str(error) == 'P76_CONTROL_CLOCK_OR_DEADLINE'):
                     self._land(str(error), now)
+                else:
+                    self.control_state = 'SAFE_RECOVERY'
+                    try:
+                        output = self._recovery(now, min(.125, max(.001, dt)))
+                        self._emit_rates(output['rates'], output['thrust'], now)
+                        owner = 'BODYRATE_RECOVERY'
+                    except (ValueError, TypeError, np.linalg.LinAlgError):
+                        self._land(str(error), now)
         if now-self.last_report >= .05:
             self.last_report = now
             self.publish_phase()
@@ -424,6 +515,10 @@ class P76TrackerRuntime:
             self.diagnostic_pub.publish(String(data=json.dumps(dict(
                 schema_version=2, stamp=now, phase=self.mode.phase,
                 guidance_owner=owner, px4_interface='BODY_RATE', reason=self.mode.reason,
+                control_state=self.control_state,
+                initialization_count=self.initialization_count,
+                initialization_reason=self.initialization_reason,
+                initialization_margin=self.initialization_margin,
                 source_stamp=stamp_seconds(self.image.source_stamp) if self.image else 0.,
                 output=getattr(self, 'last_emitted', None), actual_dt=dt,
                 output_history=list(getattr(self, 'output_history', ())),

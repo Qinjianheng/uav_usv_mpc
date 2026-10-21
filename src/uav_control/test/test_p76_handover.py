@@ -52,13 +52,17 @@ def test_image_loss_after_bodyrate_prestream_latches_recovery_before_velocity_ou
     runtime.mode.accept_y(10., qualified=True)
     runtime.mode.request_bodyrate(10.05)
     runtime.initialized = True
-    runtime.contract = {'paper': {'paper_controller_target_rate_hz': 200.}}
+    runtime.control_state, runtime.previous_armed = 'FLIGHT_ACTIVE', True
+    runtime.armed_at, runtime.initialization_count = 10., 1
+    runtime.contract = {'paper': {'paper_controller_target_rate_hz': 200.},
+                        'candidate': {'maximum_horizontal_speed': 7.}}
     runtime.last_tick, runtime.last_report = 10.095, 10.1
     runtime.fatal_dispatched = False
     runtime.outer = SimpleNamespace(limiter=SimpleNamespace(thrust=-.5))
     runtime.controller = SimpleNamespace(barrier=SimpleNamespace(sea=0.))
     runtime._snapshot = lambda now: (10.09, [0, 0, -4], [0, 0, 0], None, 0.)
     runtime._image_valid = lambda now: False
+    runtime._bodyrate_confirmed = lambda now: True
     recoveries, outputs = [], []
 
     def recover(now, dt, snapshot=None):

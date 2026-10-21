@@ -11,6 +11,7 @@ import time
 
 from p4_sitl_session import WORKSPACE, identity, preflight
 from p5_minco_sitl import shell_process, stop_late_components, stop_owned
+from p763_exit_replay import new_protocol, replay
 
 
 def launcher_process(arguments, env, path):
@@ -25,6 +26,54 @@ def launcher_process(arguments, env, path):
     return process, identity(process.pid)
 
 
+def validate_e0_evidence(historical, proposed):
+    """A refused historical accident and an independently admissible action are distinct."""
+    if not isinstance(proposed, dict):
+        raise ValueError('P764_NEW_PROTOCOL_REQUIRED')
+    if (not isinstance(historical, dict)
+            or historical.get('evidence_kind') != 'historical_fault_regression'
+            or historical != replay(Path(historical['source_session']))
+            or historical.get('historical_unsafe_pulse_rejected') is not True
+            or historical.get('passed') is not True):
+        raise ValueError('P764_HISTORICAL_UNSAFE_PULSE_REGRESSION_REQUIRED')
+    if (proposed.get('evidence_kind') != 'independent_proposed_protocol_analysis'
+            or proposed.get('source_session') != historical.get('source_session')
+            or proposed != new_protocol(Path(proposed['source_session']),
+                                        proposed.get('physical_identity', {}).get(
+                                            'actual_model_root'))):
+        raise ValueError('P764_NEW_PROTOCOL_EVIDENCE_INVALID')
+    if (proposed.get('new_protocol_defined') is not True
+            or proposed.get('new_protocol_admissible') is not True
+            or not proposed.get('new_protocol_source_sha256')
+            or not proposed.get('executable_steps')):
+        raise ValueError('P764_A1_PROTOCOL_BLOCKED')
+
+
+def validate_e1_evidence(e1):
+    """Require real synchronized inputs and actual executor timing, never a synthetic fixture."""
+    from uav_control.common.p76_readiness import source_fingerprint, sha256
+    coverage, timing, replayed = (e1.get(k, {}) for k in ('coverage', 'tracker_shadow', 'replay'))
+    logs = e1.get('raw_evidence', {})
+    if (e1.get('evidence_kind') != 'P764_REAL_SYNC_DKF_EXECUTOR'
+            or e1.get('sources') != source_fingerprint(WORKSPACE)
+            or not logs or any(not Path(p).is_file() or sha256(p) != h for p, h in logs.items())
+            or coverage.get('evidence_class') != 'REAL_SYNCHRONIZED_UNARMED_SESSION'
+            or coverage.get('qualified') is not True
+            or coverage.get('causal_native_pose_navigation_brackets', 0) < 50
+            or coverage.get('posterior_and_covariance_preserved') is not True
+            or coverage.get('unarmed') is not True
+            or timing.get('evidence_class') != 'ACTUAL_ROS_EXECUTOR_DISCONNECTED_SHADOW'
+            or timing.get('qualified') is not True
+            or timing.get('missed_cycles', 1) != 0
+            or timing.get('compute_deadline_misses', 1) != 0
+            or replayed.get('evidence_class') != 'REAL_MATCHED_CALLBACK_REPLAY'
+            or replayed.get('original_acquisition_epochs_preserved') is not True
+            or replayed.get('original_receipt_epochs_preserved') is not True
+            or replayed.get('parallel', {}).get('spatial_distinct_updates_after_y', 0) <= 0
+            or replayed.get('parallel', {}).get('illegal_authorizations', 1) != 0):
+        raise ValueError('P764_REAL_E1_INPUT_OR_EXECUTOR_NOT_QUALIFIED')
+
+
 def validate_offline_gates(path):
     """An offline logic pass cannot masquerade as high-pulse capability or real coverage."""
     from uav_control.common.p76_readiness import source_fingerprint, sha256
@@ -36,26 +85,21 @@ def validate_offline_gates(path):
             or gates.get('sources') != source_fingerprint(WORKSPACE)
             or gates.get('contract_sha256') != sha256(
                 WORKSPACE/'src/uav_usv_bringup/config/p76_contract.yaml')
-            or not all(gates.get('gates', {}).get(k) is True for k in ('E0', 'E1', 'E2'))
-            or gates.get('high_pulse_admissible') is not True):
+            or not all(gates.get('gates', {}).get(k) is True for k in ('E0', 'E1', 'E2'))):
         raise ValueError('P763_OFFLINE_GATES_NOT_CURRENT_OR_NOT_SAFE')
     evidence = gates.get('raw_evidence', {})
     if not evidence or any(not Path(p).is_file() or sha256(p) != digest
                            for p, digest in evidence.items()):
         raise ValueError('P763_OFFLINE_GATES_EVIDENCE_INVALID')
     typed = gates.get('stage_evidence', {})
-    if set(typed) != {'E0', 'E1', 'E2'} or any(str(Path(p).resolve()) not in evidence
-                                               for p in typed.values()):
+    if set(typed) != {'E0', 'E0_NEW_PROTOCOL', 'E1', 'E2'} or any(
+            str(Path(p).resolve()) not in evidence for p in typed.values()):
         raise ValueError('P763_TYPED_OFFLINE_EVIDENCE_REQUIRED')
-    e0, e1, e2 = (json.loads(Path(typed[k]).read_text()) for k in ('E0', 'E1', 'E2'))
-    from p763_exit_replay import replay
-    actual_e0 = replay(Path(e0['source_session']))
-    if (e0 != actual_e0 or e0.get('passed') is not True
-            or e0.get('guarded', {}).get('admission', {}).get('admitted') is not True
-            or e1.get('e1_matched_real_replay_passed') is not True
-            or e1.get('coverage', {}).get('matched_real_replay_qualified') is not True
-            or e1.get('fixture', {}).get('tracker_scheduling_qualified') is not True
-            or e2.get('schema_version') != 2 or e2.get('logic_passed') is not True
+    e0, proposed, e1, e2 = (json.loads(Path(typed[k]).read_text()) for k in (
+        'E0', 'E0_NEW_PROTOCOL', 'E1', 'E2'))
+    validate_e0_evidence(e0, proposed)
+    validate_e1_evidence(e1)
+    if (e2.get('schema_version') != 2 or e2.get('logic_passed') is not True
             or e2.get('recorded_replay', {}).get('output_bounds_and_continuity') is not True):
         raise ValueError('P763_TYPED_OFFLINE_EVIDENCE_NOT_QUALIFIED')
 

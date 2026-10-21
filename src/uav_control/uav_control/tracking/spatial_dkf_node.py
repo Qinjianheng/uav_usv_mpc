@@ -41,7 +41,7 @@ class SpatialDkfNode(Node):
         self.filter.reset()
 
     def mode_changed(self):
-        """Normal phase/authority epoch labels never change the estimation history."""
+        """Keep estimation history unchanged across normal phase and authority labels."""
         if not estimator_active(self):
             self.filter.reset()
 

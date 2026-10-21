@@ -17,7 +17,7 @@ from uav_usv_interfaces.msg import (ControllerDiagnostic, InterceptResult, Nativ
 
 from uav_control.common.p76_contract import load_contract
 from uav_control.common.p76_phase import phase_qos
-from uav_control.common.p76_readiness import source_fingerprint, sha256
+from uav_control.common.p76_readiness import follow_physical_identity, source_fingerprint, sha256
 from uav_control.common.p76_native import NativePoseHistory
 
 
@@ -301,11 +301,13 @@ class Validation(Node):
                                             limits['maximum_body_yaw_rate']))
         self.ack_receipts = {}
         self.x_times, self.y_times = [], []
+        self.physical_identity = follow_physical_identity(
+            self.contract, Path(__file__).resolve().parents[1],
+            os.environ['UAV_USV_P76_MODEL_ROOT'])
         atomic_json(output/'validation_identity.json', dict(
             sources=source_fingerprint(Path(__file__).resolve().parents[1]),
             contract_sha256=sha256(self.contract['_path']),
-            model_manifest_sha256=sha256(
-                Path(os.environ['UAV_USV_P76_MODEL_ROOT'])/'p76_model_manifest.json')))
+            physical_identity=self.physical_identity))
         self.follow_since, self.first_follow, self.y_sent = None, None, None
         self.last_graph, self.done, self.success, self.reason = 0., False, False, ''
         self.publisher = self.create_publisher(String, '/simulation/impact/command', 10)
@@ -492,7 +494,9 @@ class Validation(Node):
             atomic_json(self.output/'run_result.json', result)
             return
         sources = source_fingerprint(Path(__file__).resolve().parents[1])
-        raw = {str(self.output/'validation.jsonl'): sha256(self.output/'validation.jsonl')}
+        identity_path = (self.output/'validation_identity.json').resolve()
+        raw = {str(path): sha256(path) for path in (
+            (self.output/'validation.jsonl').resolve(), identity_path)}
         data = dict(schema_version=2, architecture='parallel_dkf_unified_bodyrate',
                     px4_interface='BODY_RATE', qualified=detector_ok, valid_follow_seconds=25.,
                     body_rate_output_verified=True, native_body_rate_mode_verified=True,
@@ -500,7 +504,9 @@ class Validation(Node):
                     physical_acceptance=self.physics.metrics(),
                     both_estimators_active_fresh=True, image_follow_control_authorized=False,
                     actual_minco_ownership_verified=True, sources=sources,
-                    contract_sha256=sha256(self.contract['_path']), raw_evidence=raw)
+                    contract_sha256=sha256(self.contract['_path']), raw_evidence=raw,
+                    physical_identity=self.physical_identity,
+                    validation_identity_file=str(identity_path))
         path = Path(self.contract['candidate']['follow_qualification_manifest'])
         path.parent.mkdir(parents=True, exist_ok=True)
         if path.exists():

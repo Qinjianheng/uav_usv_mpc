@@ -105,6 +105,67 @@ class BodyrateTracker:
         """Keep a single executed output state through all authorized guidance owners."""
         self.limiter.initialize(rates, thrust)
 
+    def reset(self):
+        """Discard flight qualification; a disarmed prestream packet is never a seed."""
+        self.limiter.rates, self.limiter.thrust = np.zeros(3), None
+        self.previous_acceleration = np.zeros(3)
+
+    def hover_initialization_margin(self, position, velocity, rotation, thrust, age, dt,
+                                    barrier):
+        """
+        Bound descent while a real collective ramps to hover and calibrated braking.
+
+        The current downward acceleration is conservatively retained throughout response,
+        collective slew and braking-jerk buildup. Ground contact is not credited as support.
+        This is an admission bound, not a replacement for the actual A1/A2 qualification.
+        """
+        from uav_control.common.p76_body_geometry import lowest_world_z
+        p, v, r = map(np.asarray, (position, velocity, rotation))
+        if (p.shape != (3,) or v.shape != (3,) or r.shape != (3, 3)
+                or not all(np.isfinite(x).all() for x in (p, v, r))
+                or not np.allclose(r.T@r, np.eye(3), atol=1e-6) or np.linalg.det(r) < 0
+                or not 0 <= age <= .125 or not 0 < dt <= .125 or not -1 <= thrust < 0
+                or not self.map.normalized[0] <= -thrust <= self.map.normalized[-1]):
+            raise ValueError('P764_HOVER_INITIALIZATION_INPUT')
+        gravity, vertical = self.c['dynamics']['gravity'], float(r[2, 2])
+        speed_limit = self.c['candidate']['maximum_horizontal_speed']
+        if vertical <= 0 or np.linalg.norm(v) > speed_limit:
+            raise ValueError('P764_HOVER_INITIALIZATION_ENVELOPE')
+        required = self.mass*gravity/vertical
+        brake_force = self.mass*(gravity+barrier.braking)/vertical
+        if max(required, brake_force) > min(self.maximum_thrust, self.map.force[-1]):
+            raise ValueError('P764_HOVER_THRUST_UNAVAILABLE')
+        hover = -self.map.to_body_z(required)
+        brake = -self.map.to_body_z(brake_force)
+        force = float(np.interp(-thrust, self.map.normalized, self.map.force))
+        upward = max(0., force*vertical/self.mass-gravity)
+        reduction = abs(hover+thrust)/self.settings['maximum_thrust_slew']
+        upper_speed = max(0., -float(v[2]))+upward*(barrier.delay+age+dt+reduction)
+        if upper_speed > speed_limit:
+            raise ValueError('P764_HOVER_RAMP_SPEED_INFEASIBLE')
+        downward = max(0., gravity-force*vertical/self.mass)
+        ramp = max(0., hover+thrust)/self.settings['maximum_thrust_slew']
+        brake_ramp = max(0., brake+thrust)/self.settings['maximum_thrust_slew']
+        delay = (barrier.delay+age+dt+brake_ramp
+                 + (downward+barrier.braking)/self.settings['maximum_jerk'])
+        speed = max(0., float(v[2]))+downward*delay
+        combined_speed = math.hypot(float(np.linalg.norm(v[:2])), max(upper_speed, speed))
+        distance = (max(0., float(v[2]))*delay+.5*downward*delay**2
+                    + speed**2/(2*barrier.braking))
+        clearance = barrier.sea-lowest_world_z(barrier.points, p, r)
+        margin = clearance-barrier.minimum_body_clearance-distance
+        result = dict(hover_collective=hover, native_collective=-float(thrust),
+                      ramp_seconds=ramp, response_and_braking_bound=delay,
+                      upper_speed_bound=upper_speed,
+                      total_speed_bound=combined_speed,
+                      downward_acceleration_bound=downward, descent_distance_bound=distance,
+                      lower_clearance_margin=margin)
+        if margin <= 0:
+            raise ValueError('P764_HOVER_RAMP_INFEASIBLE:'+str(result))
+        if combined_speed > speed_limit:
+            raise ValueError('P764_HOVER_RAMP_SPEED_INFEASIBLE')
+        return result
+
     def limit_output(self, output, dt):
         """Apply physical interface limits without changing the paper's requested guidance law."""
         output = dict(output)
@@ -115,7 +176,7 @@ class BodyrateTracker:
 
     def step(self, reference, position, velocity, rotation, dt, angular_rates,
              feedback_reference=None):
-        """Execution PVA feedforward and native-epoch P/V errors, without extrapolation."""
+        """Apply execution PVA feedforward and native-epoch P/V errors without extrapolation."""
         ref, p, v, r, omega = map(lambda x: np.asarray(x, dtype=float),
                                   (reference, position, velocity, rotation, angular_rates))
         feedback = ref if feedback_reference is None else np.asarray(
