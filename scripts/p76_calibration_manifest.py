@@ -23,6 +23,9 @@ def validate_stage_evidence(session, result):
         raise ValueError('P761_RECOMPUTED_ANALYSIS_MISMATCH')
     if not json.loads(required[2].read_text()).get('completed'):
         raise ValueError('P761_INCOMPLETE_CALIBRATION_RUN')
+    from p76_calibration_analysis import assess_stage
+    if not assess_stage(session)['qualified']:
+        raise ValueError('P762_STAGE_NOT_QUALIFIED')
     return identity, {str(p): sha256(p) for p in required}
 
 
@@ -64,6 +67,9 @@ def generate(a1, a2, output):
         collision_envelope=identity['model']['collision_envelope'],
         mass=identity['model']['total_mass'],
         maximum_thrust=first['maximum_effective_thrust'],
+        measured_twr=first['measured_twr'],
+        hover_normalized=first['hover_normalized'],
+        rate_tracking=first['rate_tracking'],
         force_newtons=[
             p['force'] for p in first['measured_curve']],
         normalized=[
@@ -77,7 +83,8 @@ def generate(a1, a2, output):
                 a2) for p in (
                 s/'calibration.jsonl',
                 s/'identity.json',
-                s/'run_result.json')})
+                s/'run_result.json',
+                s/'stage_assessment.json')})
     output.parent.mkdir(parents=True, exist_ok=True)
     if output.exists():
         raise ValueError('P761_NEVER_OVERWRITE_QUALIFICATION')

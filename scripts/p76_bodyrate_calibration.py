@@ -15,6 +15,7 @@ from rclpy.node import Node
 from rclpy.qos import qos_profile_sensor_data
 from px4_msgs.msg import (ActuatorMotors, OffboardControlMode, TrajectorySetpoint,
                           VehicleAcceleration, VehicleCommand, VehicleControlMode,
+                          VehicleLandDetected,
                           VehicleRatesSetpoint, VehicleStatus)
 from std_msgs.msg import Bool, String
 from uav_usv_interfaces.msg import NativeAttitude, UavState
@@ -28,7 +29,17 @@ from uav_control.common.p76_native import NativePoseHistory, NativeReferenceHist
 from uav_control.common.p76_readiness import sha256, source_fingerprint
 from uav_control.guidance.follow_sitl_gate import require_isolated_sitl
 from uav_control.control.p76_recovery import VelocityRecovery
-from p76_calibration_analysis import analyze_rows
+from p76_calibration_analysis import analyze_rows, stage_verdict
+
+
+def check_native_epoch(now, previous, states, poses, references):
+    """Revoke the entire native acquisition epoch on a backward control clock jump."""
+    if now < previous:
+        states.clear()
+        poses.clear()
+        references.samples.clear()
+        raise ValueError('P762_NATIVE_CLOCK_RESET')
+    return now
 
 
 def paired_native_state(states, poses, references, now):
@@ -71,11 +82,13 @@ class Calibration(Node):
         self.raw = (output/'calibration.jsonl').open('x')
         self.history, self.references = NativePoseHistory(), NativeReferenceHistory()
         self.state, self.status, self.control_mode = None, None, None
+        self.landed, self.landing_seen = False, False
         self.native_states = deque(maxlen=32)
         self.thrust, self.hover, self.home = None, None, None
         self.phase, self.phase_wall, self.phase_ros = '', 0., 0.
         self.started = time.monotonic()
         self.last_tick, self.last_command, self.settled = self.started, 0., None
+        self.last_ros_time = self.now()
         self.steps, self.step_index, self.rate_command = [], -1, np.zeros(3)
         self.done, self.completed, self.failure = False, False, ''
         self.landing_started, self.trial = None, None
@@ -106,6 +119,7 @@ class Calibration(Node):
                                               self.reference, 16)]
         for name, cls in (('vehicle_status', VehicleStatus),
                           ('vehicle_control_mode', VehicleControlMode),
+                          ('vehicle_land_detected', VehicleLandDetected),
                           ('vehicle_acceleration', VehicleAcceleration),
                           ('actuator_motors', ActuatorMotors)):
             version = getattr(cls, 'MESSAGE_VERSION', 0)
@@ -185,6 +199,9 @@ class Calibration(Node):
         self.log('wire', topic=name, values=row)
         if name == 'vehicle_status':
             self.status = message
+        elif name == 'vehicle_land_detected':
+            self.landed = bool(message.landed)
+            self.landing_seen = self.landing_seen or (self.phase == 'LAND' and self.landed)
         elif name == 'vehicle_control_mode':
             self.control_mode = message
             self.log('mode', flags={key: bool(getattr(message, 'flag_control_'+key+'_enabled'))
@@ -264,15 +281,23 @@ class Calibration(Node):
             self.abort('CALIBRATION_WATCHDOG')
         if self.phase == 'LAND':
             if (self.status is not None and self.status.arming_state == 1
-                    or wall-self.landing_started > 20):
+                    and self.landing_seen and self.landed):
+                self.done = True
+            elif wall-self.landing_started > 20:
+                self.failure = self.failure or 'LANDING_DISARM_TIMEOUT'
+                self.log('failure', reason=self.failure)
                 self.done = True
             return
         try:
+            self.last_ros_time = check_native_epoch(
+                self.now(), self.last_ros_time, self.native_states, self.history, self.references)
             if self.state is None or not 0 <= self.now()-self.state[0] <= .125:
                 raise ValueError('NATIVE_NAVIGATION_STALE')
             paired, pose, reference = paired_native_state(
                 self.native_states, self.history, self.references, self.now())
             stamp, position, velocity, acceleration = paired
+            self.log('paired_state', stamp=stamp, receipt=self.now(), age=self.now()-stamp,
+                     pose_stamp=pose.stamp, ref_alt=reference)
             sea = reference-self.contract['candidate']['sea_altitude_msl']
             if self.home is None:
                 self.home = position.copy()
@@ -340,7 +365,8 @@ class Calibration(Node):
                 self.emit_velocity(desired)
                 if velocity[2] >= .95*speed or elapsed > 2.5:
                     self.trial = dict(start=self.now(), initial_speed=float(velocity[2]),
-                                      response_seconds=None, decelerations=[], previous=paired)
+                                      response_seconds=None, decelerations=[], previous=paired,
+                                      initial_z=float(position[2]))
                     self.next_step()
                 return
             if self.phase == 'FAULT_ACCEL':
@@ -413,6 +439,8 @@ class Calibration(Node):
                     self.log('brake_trial', initial_speed=trial['initial_speed'],
                              stopped=bool(velocity[2] <= .1),
                              response_seconds=trial['response_seconds'] or 0.,
+                             maximum_downward_displacement=float(
+                                 max(0., position[2]-trial['initial_z'])),
                              reliable_deceleration=float(np.percentile(positive, 10))
                              if positive else 0.)
                     self.next_step()
@@ -449,7 +477,11 @@ def main():
         node.raw.close()
         node.destroy_node()
         rclpy.shutdown()
-    return 0 if node.completed and not node.failure else 2
+    outcome = stage_verdict(
+        args.stage, dict(completed=node.completed, failure=node.failure), analysis, node.rows,
+        node.identity['sources'] == source_fingerprint(Path(os.environ['UAV_USV_WS'])),
+        True, node.prior is not None or args.stage == 'A1')
+    return 0 if outcome['success'] else 2
 
 
 if __name__ == '__main__':

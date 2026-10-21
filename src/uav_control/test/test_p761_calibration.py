@@ -1,5 +1,6 @@
 """Measured calibration cannot be replaced by ideal points or successful DDS commands."""
 import importlib.util
+import sys
 from pathlib import Path
 
 import pytest
@@ -10,7 +11,12 @@ ROOT = Path(__file__).resolve().parents[3]
 def script(name):
     spec = importlib.util.spec_from_file_location(name, ROOT/'scripts'/(name+'.py'))
     module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
+    previous = list(sys.path)
+    sys.path.insert(0, str(ROOT/'scripts'))
+    try:
+        spec.loader.exec_module(module)
+    finally:
+        sys.path[:] = previous
     return module
 
 

@@ -8,6 +8,83 @@ import numpy as np
 from scipy.spatial.transform import Rotation, Slerp
 
 
+A1_REQUIRED = ('hover', 'thrust_curve', 'rates_response', 'acceleration_5mps2',
+               'exclusive_px4_bodyrate', 'navigation_reference_and_sea_datum')
+A2_REQUIRED = ('descent_2mps_braking', 'fault_recovery', 'exclusive_px4_bodyrate',
+               'navigation_reference_and_sea_datum')
+
+
+def stage_verdict(stage, run, analysis, rows, identity_valid, raw_complete,
+                  prior_qualified=True):
+    """Process completion, fixed measured criteria and task success are distinct facts."""
+    statuses = [r for r in rows if r['kind'] == 'wire' and r['topic'] == 'vehicle_status']
+    landed = any(r['kind'] == 'wire' and r['topic'] == 'vehicle_land_detected'
+                 and r['phase'] == 'LAND' and r['values'].get('landed') for r in rows)
+    disarmed = bool(statuses and statuses[-1]['phase'] == 'LAND'
+                    and statuses[-1]['values'].get('arming_state') == 1
+                    and any(r['values'].get('arming_state') == 2 for r in statuses))
+    required = A1_REQUIRED if stage == 'A1' else A2_REQUIRED
+    checks = {key: analysis.get('checks', {}).get(key) is True for key in required}
+    checks.update(identity_current=bool(identity_valid), raw_complete=bool(raw_complete),
+                  landed=bool(landed), disarmed=disarmed,
+                  no_fault=(not run.get('failure')
+                            and not any(r['kind'] == 'failure' for r in rows)))
+    if stage == 'A1':
+        checks['A1_passed'] = analysis.get('A1_passed') is True
+    else:
+        checks['prior_A1_qualified'] = bool(prior_qualified)
+        checks['measured_braking'] = (analysis.get('braking_acceleration', 0) > 0
+                                      and analysis.get('response_seconds', 0) > 0)
+    completed = run.get('completed') is True
+    qualified = completed and all(checks.values())
+    return dict(stage=stage, completed=completed, qualified=qualified, success=qualified,
+                checks=checks, failed_checks=[key for key, value in checks.items() if not value])
+
+
+def assess_stage(session):
+    """Recompute immutable raw evidence; publish only a new assessment, never rewrite a result."""
+    from uav_control.common.p76_readiness import sha256, source_fingerprint
+    from uav_control.common.p76_contract import load_contract
+    from uav_control.common.p76_model import verify_model
+    root = Path(__file__).resolve().parents[1]
+    run = json.loads((session/'run_result.json').read_text())
+    identity = json.loads((session/'identity.json').read_text())
+    rows = [json.loads(line) for line in (session/'calibration.jsonl').read_text().splitlines()]
+    analysis = analyze_rows(rows, identity['model']['total_mass'], identity['model']['gravity'])
+    saved_analysis = json.loads((session/'analysis.json').read_text())
+    current = False
+    try:
+        contract = load_contract(identity['contract_file'])
+        model_root = Path(json.loads((session/'p76_session_model.json').read_text())['model_root'])
+        verify_model(model_root, contract)
+        actual_model = json.loads((model_root/'p76_model_manifest.json').read_text())
+        px4 = Path(contract['dynamics']['px4_model_root']).parents[3]
+        current = (identity['sources'] == source_fingerprint(root)
+                   and identity['contract_sha256'] == sha256(contract['_path'])
+                   and identity['detector_sha256'] == sha256(contract['detector']['model_file'])
+                   and identity['model'] == actual_model
+                   and identity['px4'] == dict(
+                       binary_sha256=sha256(px4/'build/px4_sitl_default/bin/px4'),
+                       dds_sha256=sha256(px4/'src/modules/uxrce_dds_client/dds_topics.yaml')))
+    except (OSError, ValueError, KeyError):
+        pass
+    prior_ok = run['stage'] == 'A1'
+    if run['stage'] == 'A2':
+        environment = json.loads((session/'environment.json').read_text())
+        prior = Path(environment['UAV_USV_P761_PRIOR_A1'])
+        prior_ok = (assess_stage(prior)['qualified'] and
+                    json.loads((prior/'identity.json').read_text()) == identity)
+    result = stage_verdict(run['stage'], run, analysis, rows, current,
+                           saved_analysis == analysis and bool(rows), prior_ok)
+    result['raw_evidence'] = {str(session/name): sha256(session/name) for name in (
+        'calibration.jsonl', 'identity.json', 'analysis.json', 'run_result.json')}
+    target = session/'stage_assessment.json'
+    temporary = target.with_suffix('.json.tmp')
+    temporary.write_text(json.dumps(result, indent=2)+'\n')
+    temporary.replace(target)
+    return result
+
+
 def native_force_samples(rows, mass, gravity):
     """Pair full native poses within 50ms with physical navigation acceleration samples."""
     poses = sorted((r for r in rows if r['kind'] == 'pose'), key=lambda r: r['stamp'])
@@ -84,7 +161,11 @@ def analyze_rows(rows, mass, gravity=9.8):
     checks = {key: bool(value) for key, value in checks.items()}
     if not monotone:
         reasons.append('INSUFFICIENT_OR_NONMONOTONE_MEASURED_FORCE_CURVE')
-    return dict(scope='Motion-derived effective lift; includes aerodynamic-model uncertainty',
+    hover_u = [-r['xyz'][2] for r in rows
+               if r['kind'] == 'executed_collective' and r['phase'] == 'HOVER']
+    return dict(hover_normalized=float(np.median(hover_u)) if hover_u else None,
+                hover_samples=len(hover),
+                scope='Motion-derived effective lift; includes aerodynamic-model uncertainty',
                 A1_passed=all(checks[k] for k in checks if k not in (
                     'descent_2mps_braking', 'fault_recovery')), checks=checks, reasons=reasons,
                 native_force_samples=len(samples), measured_curve=[dict(normalized=u, force=f)

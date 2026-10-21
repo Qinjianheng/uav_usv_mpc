@@ -131,6 +131,9 @@ with (root/(title.replace(' ', '_')+'.txt')).open('x') as log:
                 result = json.loads((output/'run_result.json').read_text())
                 if observer is not None and observer.wait(timeout=5) != 0:
                     result.update(success=False, reason='OBSERVER_EXIT_FAILED')
+                if stage.startswith('A'):
+                    from p76_calibration_analysis import assess_stage
+                    result = assess_stage(output)
                 return result
             if processes[1][0].poll() is not None:
                 break
@@ -145,6 +148,11 @@ with (root/(title.replace(' ', '_')+'.txt')).open('x') as log:
         (output/'cleanup.json').write_text(json.dumps(cleanup, indent=2)+'\n')
 
 
+def stage_exit_code(result):
+    """A calibration process that finishes without qualified dynamics still fails."""
+    return 0 if result.get('success') is True else 2
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', required=True, type=Path)
@@ -153,7 +161,7 @@ def main():
     args = parser.parse_args()
     result = run(args.output, args.stage, args.prior_a1)
     print(json.dumps(result, indent=2))
-    return 0 if result.get('completed', result.get('success', False)) else 2
+    return stage_exit_code(result)
 
 
 if __name__ == '__main__':
