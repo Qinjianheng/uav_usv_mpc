@@ -35,6 +35,7 @@ camera:
   marker_reference_z_offset: 0.42
   minimum_pixels: 3
   minimum_depth_ratio: 0.5
+  sphere_depth_component_enabled: true
 follow:
   distance: 5.0
   height: 4.0

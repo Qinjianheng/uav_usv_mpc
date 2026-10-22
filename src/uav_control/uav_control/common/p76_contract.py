@@ -75,6 +75,7 @@ def parameter_bindings(contract):
         target_reference_z_offset=camera['marker_reference_z_offset'],
         minimum_red_pixels=camera['minimum_pixels'], minimum_depth=camera['depth_clip'][0],
         maximum_depth=camera['depth_clip'][1], minimum_depth_ratio=camera['minimum_depth_ratio'],
+        sphere_depth_component_enabled=camera.get('sphere_depth_component_enabled', False),
         localization_rate_hz=paper['camera_rate_hz'], p76_mode_topic='/control/p76_mode')
     tracker = dict(p76_enabled=True, p76_contract_file=c['_path'],
                    p76_controller_target_rate_hz=paper['paper_controller_target_rate_hz'],

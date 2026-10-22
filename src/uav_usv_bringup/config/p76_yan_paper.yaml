@@ -437,6 +437,7 @@ rgbd_target_localizer:
     minimum_depth: 0.05
     maximum_depth: 25.0
     minimum_depth_ratio: 0.5
+    sphere_depth_component_enabled: true
     maximum_depth_mad: 0.25
     maximum_rgb_depth_skew: 0.001
     data_timeout: 0.5

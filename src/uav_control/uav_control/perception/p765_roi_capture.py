@@ -37,14 +37,16 @@ def image_array(message):
 def runtime_identity():
     """Fingerprint code objects actually imported, separately from mutable disk bytes."""
     from .rgbd_target_localizer import (
-        RgbdTargetLocalizer, target_geometry_from_rgbd, validation_sphere_center,
+        RgbdTargetLocalizer, nearest_sphere_depth_component, target_geometry_from_rgbd,
+        validation_sphere_center,
     )
     from .front_tof_monitor import decode_float32_depth
     from .tof_sphere_localization import fit_tof_sphere
     from .yolo_detection_contract import detection_mask
     from .yolo_inference import YoloInference, decode_segmentation, encode_mask, letterbox_rgb
     loaded = {}
-    for function in (target_geometry_from_rgbd, validation_sphere_center, fit_tof_sphere,
+    for function in (target_geometry_from_rgbd, nearest_sphere_depth_component,
+                     validation_sphere_center, fit_tof_sphere,
                      RgbdTargetLocalizer.localize, decode_float32_depth, YoloInference.infer,
                      decode_segmentation, encode_mask, decode_mask, letterbox_rgb, detection_mask):
         path = Path(inspect.getfile(function)).resolve()

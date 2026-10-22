@@ -897,6 +897,34 @@ def validation_sphere_center(points, radius, diagnostics=None):
     return tuple(float(value) for value in center)
 
 
+def nearest_sphere_depth_component(depths, mask_count, radius, minimum_ratio, diagnostics):
+    """Select a supported nearest layer using the known sphere's physical diameter.
+
+    Never search farther layers after a nearer layer fails. A minority foreground,
+    equal competing layers, or a chain spanning more than a diameter stays invalid.
+    This association is for the ideal validation sphere, not general USV geometry.
+    """
+    diameter = 2.0 * radius
+    ordered = np.sort(depths)
+    boundaries = np.flatnonzero(np.diff(ordered) > diameter) + 1
+    end = int(boundaries[0]) if boundaries.size else len(ordered)
+    selected = (depths >= ordered[0]) & (depths <= ordered[end-1])
+    count = int(np.count_nonzero(selected))
+    ratio = count / mask_count
+    diagnostics.update(
+        association_policy='nearest_depth_component_diameter_v1',
+        depth_component_count=int(boundaries.size+1), fit_input_count=count,
+        fit_input_ratio=ratio, excluded_valid_depth_count=int(len(depths)-count),
+        fit_depth_min=float(ordered[0]), fit_depth_max=float(ordered[end-1]))
+    if count < 12 or ratio <= .5 or ratio < minimum_ratio:
+        diagnostics['explicit_fit_rejection_reason'] = 'DEPTH_COMPONENT_SUPPORT_LOW_OR_AMBIGUOUS'
+        return None
+    if ordered[end-1]-ordered[0] > diameter:
+        diagnostics['explicit_fit_rejection_reason'] = 'DEPTH_COMPONENT_SPAN_EXCEEDS_DIAMETER'
+        return None
+    return selected
+
+
 def target_geometry_from_rgbd(
     target_mask,
     depth,
@@ -909,6 +937,8 @@ def target_geometry_from_rgbd(
     sphere_noise_std=.01,
     sphere_range_noise_scale=.001,
     diagnostics=None,
+    sphere_depth_component_enabled=False,
+    minimum_depth_ratio=.5,
 ):
     """
     Return the current estimator inputs and intermediate camera vectors.
@@ -979,6 +1009,19 @@ def target_geometry_from_rgbd(
         -(columns - cx) * valid_depths / fx,
         -(rows - cy) * valid_depths / fy,
     ))
+    detail.update(association_policy='all_valid_depth', fit_input_count=len(points),
+                  fit_input_ratio=float(len(points)/mask_columns.size),
+                  excluded_valid_depth_count=0)
+    if sphere_depth_component_enabled:
+        if (sphere_fit_mode != 'ideal' or not require_valid_sphere
+                or not math.isfinite(target_radius) or target_radius <= 0
+                or not math.isfinite(minimum_depth_ratio) or not 0 <= minimum_depth_ratio <= 1):
+            return reject('DEPTH_COMPONENT_CONTRACT_INVALID')
+        selected = nearest_sphere_depth_component(
+            valid_depths, mask_columns.size, target_radius, minimum_depth_ratio, detail)
+        if selected is None:
+            return None
+        points = points[selected]
     fit_position_std = 0.0
     if sphere_fit_mode == 'tof' and target_radius > 0:
         from .tof_sphere_localization import fit_tof_sphere
@@ -1163,6 +1206,7 @@ class RgbdTargetLocalizer(Node):
         )
         self.declare_parameter('target_radius', 0.25)
         self.declare_parameter('sphere_fit_mode', 'ideal')
+        self.declare_parameter('sphere_depth_component_enabled', False)
         self.declare_parameter('sphere_noise_std', .01)
         self.declare_parameter('sphere_range_noise_scale', .001)
         self.declare_parameter('target_reference_z_offset', 0.42)
@@ -1257,11 +1301,15 @@ class RgbdTargetLocalizer(Node):
             0.0,
         )
         self.sphere_fit_mode = str(self.get_parameter('sphere_fit_mode').value)
+        self.sphere_depth_component_enabled = bool(
+            self.get_parameter('sphere_depth_component_enabled').value)
         self.sphere_noise_std = float(self.get_parameter('sphere_noise_std').value)
         self.sphere_range_noise_scale = float(
             self.get_parameter('sphere_range_noise_scale').value,
         )
         if (self.sphere_fit_mode not in ('ideal', 'tof')
+                or (self.sphere_depth_component_enabled and (
+                    self.sphere_fit_mode != 'ideal' or self.target_radius <= 0))
                 or (self.sphere_fit_mode == 'tof' and self.target_radius <= 0)
                 or not math.isfinite(self.sphere_noise_std) or self.sphere_noise_std <= 0
                 or not math.isfinite(self.sphere_range_noise_scale)
@@ -1950,7 +1998,8 @@ class RgbdTargetLocalizer(Node):
         packet['geometry_contract'] = {
             name: getattr(self, name, None) for name in (
                 'horizontal_fov', 'minimum_depth', 'maximum_depth', 'target_radius',
-                'sphere_fit_mode', 'sphere_noise_std', 'sphere_range_noise_scale')}
+                'sphere_fit_mode', 'sphere_noise_std', 'sphere_range_noise_scale',
+                'sphere_depth_component_enabled', 'minimum_depth_ratio')}
         packet['geometry_contract']['require_valid_sphere'] = True
         publisher.publish(String(data=json.dumps(json_finite(packet), allow_nan=False)))
 
@@ -2475,6 +2524,8 @@ class RgbdTargetLocalizer(Node):
             sphere_fit_mode=getattr(self, 'sphere_fit_mode', 'ideal'),
             sphere_noise_std=getattr(self, 'sphere_noise_std', .01),
             sphere_range_noise_scale=getattr(self, 'sphere_range_noise_scale', .001),
+            sphere_depth_component_enabled=getattr(self, 'sphere_depth_component_enabled', False),
+            minimum_depth_ratio=self.minimum_depth_ratio,
             diagnostics=fit_details,
         )
         if geometry is None:
