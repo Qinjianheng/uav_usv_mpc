@@ -1,0 +1,12 @@
+{
+  "model_file": "/home/qin/data/uav_usv_mpc/data/experiments/20261020_p76_export_01/red_ball_yolo11n_seg.onnx",
+  "model_sha256": "4fb70adc8fc0989eea52831bfbd62550f48cb21cfb39dd07a4f7f68035c65ef8",
+  "input_size": 416,
+  "architecture": "yolo11n-seg",
+  "classes": [
+    "red_ball"
+  ],
+  "source_weight_sha256": "3510c31977bd289c6d4e5ea1bcf98db9e331e1760fee7fa7571034af1152e9ef",
+  "qualified": false,
+  "qualification_reason": "HELD_OUT_REPLAY_TIMING_REQUIRED"
+}

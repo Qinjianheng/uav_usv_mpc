@@ -1,0 +1,56 @@
+.......F                                                                 [100%]
+=================================== FAILURES ===================================
+_ test_calibration_pairs_native_state_causally_without_extrapolating_latest_pose _
+
+    def test_calibration_pairs_native_state_causally_without_extrapolating_latest_pose():
+        import numpy as np
+        from uav_control.common.p76_native import NativePoseHistory, NativeReferenceHistory
+>       calibration = script('p76_bodyrate_calibration')
+
+test/test_p761_calibration.py:109: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+test/test_p761_calibration.py:13: in script
+    spec.loader.exec_module(module)
+<frozen importlib._bootstrap_external>:883: in exec_module
+    ???
+<frozen importlib._bootstrap>:241: in _call_with_frames_removed
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    #!/usr/bin/env python3
+    """Task-owned, bounded physical calibration controller; never instantiate the formal Tracker."""
+    import argparse
+    from collections import deque
+    import json
+    import math
+    import os
+    from pathlib import Path
+    import time
+    
+    import numpy as np
+    from scipy.spatial.transform import Rotation
+    import rclpy
+    from rclpy.node import Node
+    from rclpy.qos import qos_profile_sensor_data
+    from px4_msgs.msg import (ActuatorMotors, OffboardControlMode, TrajectorySetpoint,
+                              VehicleAcceleration, VehicleCommand, VehicleControlMode,
+                              VehicleRatesSetpoint, VehicleStatus)
+    from std_msgs.msg import Bool, String
+    from uav_usv_interfaces.msg import NativeAttitude, UavState
+    
+    from uav_control.common.navigation_state import navigation_components
+    from uav_control.common.p76_body_geometry import (
+        base_reference_flu, navigation_vertices, lowest_world_z,
+    )
+    from uav_control.common.p76_contract import load_contract
+    from uav_control.common.p76_native import NativePoseHistory, NativeReferenceHistory
+    from uav_control.common.p76_readiness import sha256, source_fingerprint
+    from uav_control.guidance.follow_sitl_gate import require_isolated_sitl
+    from uav_control.control.p76_recovery import VelocityRecovery
+>   from p76_calibration_analysis import analyze_rows
+E   ModuleNotFoundError: No module named 'p76_calibration_analysis'
+
+../../scripts/p76_bodyrate_calibration.py:31: ModuleNotFoundError
+=========================== short test summary info ============================
+FAILED test/test_p761_calibration.py::test_calibration_pairs_native_state_causally_without_extrapolating_latest_pose
+1 failed, 7 passed in 0.40s

@@ -1,0 +1,42 @@
+{
+  "scope": "Motion-derived effective lift; includes aerodynamic-model uncertainty",
+  "A1_passed": false,
+  "checks": {
+    "hover": false,
+    "thrust_curve": false,
+    "rates_response": false,
+    "acceleration_5mps2": false,
+    "exclusive_px4_bodyrate": false,
+    "navigation_reference_and_sea_datum": false,
+    "descent_2mps_braking": false,
+    "fault_recovery": false
+  },
+  "reasons": [
+    "NO_NATIVE_FORCE_SAMPLES",
+    "INSUFFICIENT_OR_NONMONOTONE_MEASURED_FORCE_CURVE"
+  ],
+  "native_force_samples": 0,
+  "measured_curve": [],
+  "maximum_effective_thrust": 0.0,
+  "measured_twr": 0.0,
+  "hover_relative_error": null,
+  "rate_tracking": [
+    {
+      "axis": 0,
+      "count": 0,
+      "rmse": null
+    },
+    {
+      "axis": 1,
+      "count": 0,
+      "rmse": null
+    },
+    {
+      "axis": 2,
+      "count": 0,
+      "rmse": null
+    }
+  ],
+  "response_seconds": 0.0,
+  "braking_acceleration": 0.0
+}

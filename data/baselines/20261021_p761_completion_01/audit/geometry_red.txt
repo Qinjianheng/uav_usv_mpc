@@ -1,0 +1,20 @@
+FF                                                                       [100%]
+=================================== FAILURES ===================================
+_______ test_obstacle_entry_is_in_front_of_sphere_and_parallel_rays_miss _______
+
+    def test_obstacle_entry_is_in_front_of_sphere_and_parallel_rays_miss():
+>       from uav_control.common import p761_geometry
+E       ImportError: cannot import name 'p761_geometry' from 'uav_control.common' (/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/common/__init__.py)
+
+test/test_p761_geometry.py:7: ImportError
+_ test_terminal_path_has_native_capture_and_positive_body_clearance_at_all_heaves _
+
+    def test_terminal_path_has_native_capture_and_positive_body_clearance_at_all_heaves():
+>       from uav_control.common import p761_geometry
+E       ImportError: cannot import name 'p761_geometry' from 'uav_control.common' (/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/common/__init__.py)
+
+test/test_p761_geometry.py:15: ImportError
+=========================== short test summary info ============================
+FAILED test/test_p761_geometry.py::test_obstacle_entry_is_in_front_of_sphere_and_parallel_rays_miss
+FAILED test/test_p761_geometry.py::test_terminal_path_has_native_capture_and_positive_body_clearance_at_all_heaves
+2 failed in 0.09s

@@ -58,10 +58,28 @@ def test_legacy_intercept_planner_can_be_disabled_without_removing_follow(
     assert condition is not None, 'legacy planner still starts unconditionally'
     assert condition.evaluate(context) == (enabled == 'true')
     assert nodes['p4_follow_planner_node'].condition.evaluate(context)
-    for name in ('trajectory_tracker_node', 'mission_manager_node', 'target_kalman_filter',
+    for name in ('trajectory_tracker_node', 'mission_manager_node',
                  'target_bearing_node', 'rgbd_target_localizer'):
         assert nodes[name].condition is None
+    assert nodes['target_kalman_filter'].condition.evaluate(context)
+    assert not nodes['spatial_dkf_node'].condition.evaluate(context)
     assert nodes['intercept_evaluator_node'].condition.evaluate(context)
+
+
+@pytest.mark.parametrize('p76', ['true', 'false'])
+def test_p76_replaces_the_main_filter_and_enables_one_shared_detector(p76, tmp_path, monkeypatch):
+    from launch_ros.actions import Node
+    description, context = graph('modular_intercept.launch.py', tmp_path, monkeypatch,
+                                 {'p76_enabled': p76})
+    nodes = [n for n in description.entities if isinstance(n, Node)]
+    enabled = {n.node_executable for n in nodes
+               if n.condition is None or n.condition.evaluate(context)}
+    assert ('target_kalman_filter' in enabled) == (p76 == 'false')
+    assert ('spatial_dkf_node' in enabled) == (p76 == 'true')
+    assert ('image_dkf_node' in enabled) == (p76 == 'true')
+    assert ('yolo_target_detector' in enabled) == (p76 == 'true')
+    assert sum(n.node_executable == 'yolo_target_detector' for n in nodes) == 1
+    assert 'trajectory_tracker_node' in enabled
 
 
 @pytest.mark.parametrize('filename,p7,expected', [

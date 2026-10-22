@@ -1,0 +1,32 @@
+
+==================================== ERRORS ====================================
+________________________ ERROR collecting test session _________________________
+/usr/lib/python3/dist-packages/pluggy/hooks.py:286: in __call__
+    return self._hookexec(self, self.get_hookimpls(), kwargs)
+/usr/lib/python3/dist-packages/pluggy/manager.py:92: in _hookexec
+    return self._inner_hookexec(hook, methods, kwargs)
+/usr/lib/python3/dist-packages/pluggy/manager.py:83: in <lambda>
+    self._inner_hookexec = lambda hook, methods, kwargs: hook.multicall(
+/usr/lib/python3/dist-packages/_pytest/python.py:200: in pytest_collect_file
+    module: Module = ihook.pytest_pycollect_makemodule(path=path, parent=parent)
+/usr/lib/python3/dist-packages/pluggy/hooks.py:286: in __call__
+    return self._hookexec(self, self.get_hookimpls(), kwargs)
+/usr/lib/python3/dist-packages/pluggy/manager.py:92: in _hookexec
+    return self._inner_hookexec(hook, methods, kwargs)
+/usr/lib/python3/dist-packages/pluggy/manager.py:83: in <lambda>
+    self._inner_hookexec = lambda hook, methods, kwargs: hook.multicall(
+/opt/ros/humble/lib/python3.10/site-packages/launch_testing/pytest/hooks.py:193: in pytest_pycollect_makemodule
+    entrypoint = find_launch_test_entrypoint(path)
+/opt/ros/humble/lib/python3.10/site-packages/launch_testing/pytest/hooks.py:186: in find_launch_test_entrypoint
+    module = path.pyimport()
+/usr/lib/python3/dist-packages/py/_path/local.py:704: in pyimport
+    __import__(modname)
+/usr/lib/python3/dist-packages/_pytest/assertion/rewrite.py:170: in exec_module
+    exec(co, module.__dict__)
+test/test_p76_physical_clearance.py:7: in <module>
+    from uav_control.common.p76_body_geometry import collision_envelope
+E   ModuleNotFoundError: No module named 'uav_control.common.p76_body_geometry'
+=========================== short test summary info ============================
+ERROR ../.. - ModuleNotFoundError: No module named 'uav_control.common.p76_bo...
+!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+1 error in 0.14s

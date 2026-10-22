@@ -1,0 +1,563 @@
+[
+  {
+    "name": "00000",
+    "case": {
+      "phase": "FOLLOW",
+      "heave": -0.15,
+      "roll": 0.0,
+      "pitch": 0.0,
+      "origin_distance": 6.497884271053156
+    },
+    "ideal_pixels": 431,
+    "visible_pixels": 110,
+    "visible_fraction": 0.2552204176334107,
+    "expected_center_uv": [
+      320.0,
+      109.42385679537682
+    ]
+  },
+  {
+    "name": "00001",
+    "case": {
+      "phase": "FOLLOW",
+      "heave": -0.15,
+      "roll": 0.25,
+      "pitch": 0.0,
+      "origin_distance": 6.497884271053156
+    },
+    "ideal_pixels": 452,
+    "visible_pixels": 450,
+    "visible_fraction": 0.995575221238938,
+    "expected_center_uv": [
+      361.57278247993634,
+      104.92627042526519
+    ]
+  },
+  {
+    "name": "00002",
+    "case": {
+      "phase": "FOLLOW",
+      "heave": -0.15,
+      "roll": -0.25,
+      "pitch": 0.0,
+      "origin_distance": 6.497884271053156
+    },
+    "ideal_pixels": 452,
+    "visible_pixels": 450,
+    "visible_fraction": 0.995575221238938,
+    "expected_center_uv": [
+      278.42721752006366,
+      104.92627042526519
+    ]
+  },
+  {
+    "name": "00003",
+    "case": {
+      "phase": "FOLLOW",
+      "heave": -0.15,
+      "roll": 0.0,
+      "pitch": 0.25,
+      "origin_distance": 6.497884271053156
+    },
+    "ideal_pixels": 682,
+    "visible_pixels": 682,
+    "visible_fraction": 1.0,
+    "expected_center_uv": [
+      320.0,
+      20.912461029886003
+    ]
+  },
+  {
+    "name": "00004",
+    "case": {
+      "phase": "FOLLOW",
+      "heave": -0.15,
+      "roll": 0.0,
+      "pitch": -0.25,
+      "origin_distance": 6.497884271053156
+    },
+    "ideal_pixels": 333,
+    "visible_pixels": 0,
+    "visible_fraction": 0.0,
+    "expected_center_uv": [
+      320.0,
+      179.24787016311743
+    ]
+  },
+  {
+    "name": "00005",
+    "case": {
+      "phase": "TERMINAL",
+      "heave": -0.15,
+      "roll": 0.0,
+      "pitch": 0.0,
+      "origin_distance": 3.690867106792115
+    },
+    "ideal_pixels": 1406,
+    "visible_pixels": 1270,
+    "visible_fraction": 0.903271692745377,
+    "expected_center_uv": [
+      320.0,
+      84.45489471403553
+    ]
+  },
+  {
+    "name": "00006",
+    "case": {
+      "phase": "TERMINAL",
+      "heave": -0.15,
+      "roll": 0.0,
+      "pitch": 0.0,
+      "origin_distance": 1.523975065412817
+    },
+    "ideal_pixels": 5454,
+    "visible_pixels": 292,
+    "visible_fraction": 0.05353868720205354,
+    "expected_center_uv": [
+      320.0,
+      145.34931896957184
+    ]
+  },
+  {
+    "name": "00007",
+    "case": {
+      "phase": "TERMINAL",
+      "heave": -0.15,
+      "roll": 0.0,
+      "pitch": 0.0,
+      "origin_distance": 0.8200609733428363
+    },
+    "ideal_pixels": 15374,
+    "visible_pixels": 5183,
+    "visible_fraction": 0.33712761805645897,
+    "expected_center_uv": [
+      320.0,
+      147.6918833082666
+    ]
+  },
+  {
+    "name": "00008",
+    "case": {
+      "phase": "TERMINAL",
+      "heave": -0.15,
+      "roll": 0.0,
+      "pitch": 0.0,
+      "origin_distance": 0.5412023651093923
+    },
+    "ideal_pixels": 28440,
+    "visible_pixels": 14754,
+    "visible_fraction": 0.5187763713080169,
+    "expected_center_uv": [
+      320.0,
+      170.98261706846583
+    ]
+  },
+  {
+    "name": "00009",
+    "case": {
+      "phase": "TERMINAL",
+      "heave": -0.15,
+      "roll": 0.0,
+      "pitch": 0.0,
+      "origin_distance": 0.4903060268852505
+    },
+    "ideal_pixels": 33521,
+    "visible_pixels": 19352,
+    "visible_fraction": 0.5773097461292921,
+    "expected_center_uv": [
+      320.0,
+      217.11217368963102
+    ]
+  },
+  {
+    "name": "00010",
+    "case": {
+      "phase": "TERMINAL",
+      "heave": -0.15,
+      "roll": 0.0,
+      "pitch": 0.0,
+      "origin_distance": 0.48
+    },
+    "ideal_pixels": 38585,
+    "visible_pixels": 25949,
+    "visible_fraction": 0.6725152261241415,
+    "expected_center_uv": [
+      320.0,
+      252.79943681852163
+    ]
+  },
+  {
+    "name": "00011",
+    "case": {
+      "phase": "FOLLOW",
+      "heave": 0.0,
+      "roll": 0.0,
+      "pitch": 0.0,
+      "origin_distance": 6.4031242374328485
+    },
+    "ideal_pixels": 456,
+    "visible_pixels": 184,
+    "visible_fraction": 0.40350877192982454,
+    "expected_center_uv": [
+      320.0,
+      103.57572932581138
+    ]
+  },
+  {
+    "name": "00012",
+    "case": {
+      "phase": "FOLLOW",
+      "heave": 0.0,
+      "roll": 0.25,
+      "pitch": 0.0,
+      "origin_distance": 6.4031242374328485
+    },
+    "ideal_pixels": 475,
+    "visible_pixels": 473,
+    "visible_fraction": 0.9957894736842106,
+    "expected_center_uv": [
+      360.79769815862784,
+      99.06135025559357
+    ]
+  },
+  {
+    "name": "00013",
+    "case": {
+      "phase": "FOLLOW",
+      "heave": 0.0,
+      "roll": -0.25,
+      "pitch": 0.0,
+      "origin_distance": 6.4031242374328485
+    },
+    "ideal_pixels": 475,
+    "visible_pixels": 473,
+    "visible_fraction": 0.9957894736842106,
+    "expected_center_uv": [
+      279.20230184137216,
+      99.06135025559357
+    ]
+  },
+  {
+    "name": "00014",
+    "case": {
+      "phase": "FOLLOW",
+      "heave": 0.0,
+      "roll": 0.0,
+      "pitch": 0.25,
+      "origin_distance": 6.4031242374328485
+    },
+    "ideal_pixels": 684,
+    "visible_pixels": 666,
+    "visible_fraction": 0.9736842105263158,
+    "expected_center_uv": [
+      320.0,
+      13.029570036365897
+    ]
+  },
+  {
+    "name": "00015",
+    "case": {
+      "phase": "FOLLOW",
+      "heave": 0.0,
+      "roll": 0.0,
+      "pitch": -0.25,
+      "origin_distance": 6.4031242374328485
+    },
+    "ideal_pixels": 345,
+    "visible_pixels": 0,
+    "visible_fraction": 0.0,
+    "expected_center_uv": [
+      320.0,
+      174.24768294360445
+    ]
+  },
+  {
+    "name": "00016",
+    "case": {
+      "phase": "TERMINAL",
+      "heave": 0.0,
+      "roll": 0.0,
+      "pitch": 0.0,
+      "origin_distance": 3.605551275463989
+    },
+    "ideal_pixels": 1553,
+    "visible_pixels": 1540,
+    "visible_fraction": 0.9916291049581455,
+    "expected_center_uv": [
+      320.0,
+      72.87486403848965
+    ]
+  },
+  {
+    "name": "00017",
+    "case": {
+      "phase": "TERMINAL",
+      "heave": 0.0,
+      "roll": 0.0,
+      "pitch": 0.0,
+      "origin_distance": 1.4142135623730951
+    },
+    "ideal_pixels": 6633,
+    "visible_pixels": 2325,
+    "visible_fraction": 0.35052012663952964,
+    "expected_center_uv": [
+      320.0,
+      126.03637901354924
+    ]
+  },
+  {
+    "name": "00018",
+    "case": {
+      "phase": "TERMINAL",
+      "heave": 0.0,
+      "roll": 0.0,
+      "pitch": 0.0,
+      "origin_distance": 0.7071067811865476
+    },
+    "ideal_pixels": 21906,
+    "visible_pixels": 13329,
+    "visible_fraction": 0.6084634346754314,
+    "expected_center_uv": [
+      320.0,
+      114.28530454518622
+    ]
+  },
+  {
+    "name": "00019",
+    "case": {
+      "phase": "TERMINAL",
+      "heave": 0.0,
+      "roll": 0.0,
+      "pitch": 0.0,
+      "origin_distance": 0.41400483088968904
+    },
+    "ideal_pixels": 45527,
+    "visible_pixels": 32323,
+    "visible_fraction": 0.709974300964263,
+    "expected_center_uv": [
+      320.0,
+      128.804617088134
+    ]
+  },
+  {
+    "name": "00020",
+    "case": {
+      "phase": "TERMINAL",
+      "heave": 0.0,
+      "roll": 0.0,
+      "pitch": 0.0,
+      "origin_distance": 0.34481879299133333
+    },
+    "ideal_pixels": 57425,
+    "visible_pixels": 54472,
+    "visible_fraction": 0.9485764040052242,
+    "expected_center_uv": [
+      320.0,
+      181.30323005893382
+    ]
+  },
+  {
+    "name": "00021",
+    "case": {
+      "phase": "TERMINAL",
+      "heave": 0.0,
+      "roll": 0.0,
+      "pitch": 0.0,
+      "origin_distance": 0.33
+    },
+    "ideal_pixels": 68118,
+    "visible_pixels": 63461,
+    "visible_fraction": 0.9316333421415779,
+    "expected_center_uv": [
+      320.0,
+      223.37869727979137
+    ]
+  },
+  {
+    "name": "00022",
+    "case": {
+      "phase": "FOLLOW",
+      "heave": 0.15,
+      "roll": 0.0,
+      "pitch": 0.0,
+      "origin_distance": 6.310507111159927
+    },
+    "ideal_pixels": 480,
+    "visible_pixels": 306,
+    "visible_fraction": 0.6375,
+    "expected_center_uv": [
+      320.0,
+      97.45466987154558
+    ]
+  },
+  {
+    "name": "00023",
+    "case": {
+      "phase": "FOLLOW",
+      "heave": 0.15,
+      "roll": 0.25,
+      "pitch": 0.0,
+      "origin_distance": 6.310507111159927
+    },
+    "ideal_pixels": 497,
+    "visible_pixels": 503,
+    "visible_fraction": 1.012072434607646,
+    "expected_center_uv": [
+      359.986974006687,
+      92.92675005786217
+    ]
+  },
+  {
+    "name": "00024",
+    "case": {
+      "phase": "FOLLOW",
+      "heave": 0.15,
+      "roll": -0.25,
+      "pitch": 0.0,
+      "origin_distance": 6.310507111159927
+    },
+    "ideal_pixels": 497,
+    "visible_pixels": 503,
+    "visible_fraction": 1.012072434607646,
+    "expected_center_uv": [
+      280.013025993313,
+      92.92675005786217
+    ]
+  },
+  {
+    "name": "00025",
+    "case": {
+      "phase": "FOLLOW",
+      "heave": 0.15,
+      "roll": 0.0,
+      "pitch": 0.25,
+      "origin_distance": 6.310507111159927
+    },
+    "ideal_pixels": 519,
+    "visible_pixels": 508,
+    "visible_fraction": 0.9788053949903661,
+    "expected_center_uv": [
+      320.0,
+      4.672506974648286
+    ]
+  },
+  {
+    "name": "00026",
+    "case": {
+      "phase": "FOLLOW",
+      "heave": 0.15,
+      "roll": 0.0,
+      "pitch": -0.25,
+      "origin_distance": 6.310507111159927
+    },
+    "ideal_pixels": 361,
+    "visible_pixels": 0,
+    "visible_fraction": 0.0,
+    "expected_center_uv": [
+      320.0,
+      169.06691604169814
+    ]
+  },
+  {
+    "name": "00027",
+    "case": {
+      "phase": "TERMINAL",
+      "heave": 0.15,
+      "roll": 0.0,
+      "pitch": 0.0,
+      "origin_distance": 3.5245567097154216
+    },
+    "ideal_pixels": 1729,
+    "visible_pixels": 1706,
+    "visible_fraction": 0.9866975130133024,
+    "expected_center_uv": [
+      320.0,
+      60.30098146393732
+    ]
+  },
+  {
+    "name": "00028",
+    "case": {
+      "phase": "TERMINAL",
+      "heave": 0.15,
+      "roll": 0.0,
+      "pitch": 0.0,
+      "origin_distance": 1.3124404748406686
+    },
+    "ideal_pixels": 8291,
+    "visible_pixels": 5329,
+    "visible_fraction": 0.6427451453383186,
+    "expected_center_uv": [
+      320.0,
+      103.01626701933796
+    ]
+  },
+  {
+    "name": "00029",
+    "case": {
+      "phase": "TERMINAL",
+      "heave": 0.15,
+      "roll": 0.0,
+      "pitch": 0.0,
+      "origin_distance": 0.6103277807866851
+    },
+    "ideal_pixels": 26017,
+    "visible_pixels": 19955,
+    "visible_fraction": 0.7669985009801283,
+    "expected_center_uv": [
+      320.0,
+      68.80014040241392
+    ]
+  },
+  {
+    "name": "00030",
+    "case": {
+      "phase": "TERMINAL",
+      "heave": 0.15,
+      "roll": 0.0,
+      "pitch": 0.0,
+      "origin_distance": 0.3080584360149873
+    },
+    "ideal_pixels": 50750,
+    "visible_pixels": 45579,
+    "visible_fraction": 0.8981083743842364,
+    "expected_center_uv": [
+      320.0,
+      63.33045436954029
+    ]
+  },
+  {
+    "name": "00031",
+    "case": {
+      "phase": "TERMINAL",
+      "heave": 0.15,
+      "roll": 0.0,
+      "pitch": 0.0,
+      "origin_distance": 0.20591260281974003
+    },
+    "ideal_pixels": 90861,
+    "visible_pixels": 90206,
+    "visible_fraction": 0.9927911865376784,
+    "expected_center_uv": [
+      320.0,
+      122.79245056376573
+    ]
+  },
+  {
+    "name": "00032",
+    "case": {
+      "phase": "TERMINAL",
+      "heave": 0.15,
+      "roll": 0.0,
+      "pitch": 0.0,
+      "origin_distance": 0.18000000000000002
+    },
+    "ideal_pixels": 141316,
+    "visible_pixels": 140498,
+    "visible_fraction": 0.994211554247219,
+    "expected_center_uv": [
+      320.0,
+      173.26714780550066
+    ]
+  }
+]

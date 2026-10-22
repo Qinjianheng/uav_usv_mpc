@@ -1,0 +1,16 @@
+{
+  "samples": 10,
+  "reasons": {
+    "FITTED_RADIUS_MISMATCH": 407
+  },
+  "actual_3d": 0,
+  "old_valid": 164,
+  "new_valid": 454,
+  "missed": 567,
+  "overlap": {
+    "missed_intervals": 439,
+    "with_image_callback_overlap": 423,
+    "missed_cycles_with_image_callback_overlap": 551,
+    "caveat": "Temporal overlap in the same executor, not independent CPU causal attribution; nested callbacks counted once."
+  }
+}

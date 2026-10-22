@@ -19,6 +19,7 @@ class NativeCaptureSample:
     segment_valid: bool = False
     uav_clock_bracket: tuple = ()
     target_clock_bracket: tuple = ()
+    uav_quaternion_enu_flu: tuple = ()
 
 
 def _clock_width(bracket, raw, mapped):
@@ -106,6 +107,7 @@ class NativeCaptureStream:
                     uav_clock_bracket=uav_bracket, target_clock_bracket=target_bracket))
                 self.previous = None
                 continue
+            quaternion = tuple(up[3:7])
             up = gazebo_enu_to_ned(up[:3])
             marker = gazebo_enu_to_ned(tp[:3])
             tp = (*marker[:2], marker[2]+visual_height_offset)
@@ -127,7 +129,7 @@ class NativeCaptureStream:
             sample = NativeCaptureSample(stamp, raw, KinematicState(up, uv),
                                          KinematicState(tp, tv), max(widths),
                                          velocity_valid, segment_valid,
-                                         uav_bracket, target_bracket)
+                                         uav_bracket, target_bracket, quaternion)
             self.previous = sample
             self.counters['ACCEPTED_EXACT_PAIRS'] += 1
             if not velocity_valid:

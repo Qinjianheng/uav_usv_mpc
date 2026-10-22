@@ -1,0 +1,14 @@
+..F                                                                      [100%]
+=================================== FAILURES ===================================
+_______ test_recovery_feedforward_is_bounded_and_uses_command_derivative _______
+
+    def test_recovery_feedforward_is_bounded_and_uses_command_derivative():
+        from uav_control.control.p76_recovery import VelocityRecovery
+        recovery = VelocityRecovery()
+>       recovery.setpoint([0., 0., -8.], [0., 0., 2.], 10., 4.)
+E       AttributeError: 'VelocityRecovery' object has no attribute 'setpoint'
+
+test/test_p761_safety_separation.py:38: AttributeError
+=========================== short test summary info ============================
+FAILED test/test_p761_safety_separation.py::test_recovery_feedforward_is_bounded_and_uses_command_derivative
+1 failed, 2 passed in 0.12s

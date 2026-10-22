@@ -1,0 +1,56 @@
+{
+  "scope": "Static actual composite Gazebo render, not closed-loop flight",
+  "qualified": false,
+  "cases": 33,
+  "follow_cases": 15,
+  "geometry_layout": {
+    "camera": {
+      "layout": "revision32",
+      "pitch_down_degrees": 32.0,
+      "translation_flu": [
+        -0.25,
+        0.0,
+        0.55
+      ],
+      "width": 640,
+      "height": 480,
+      "horizontal_fov": 1.74,
+      "rgb_clip": [
+        0.05,
+        60.0
+      ],
+      "depth_clip": [
+        0.05,
+        25.0
+      ],
+      "marker_radius": 0.25,
+      "marker_reference_z_offset": 0.42,
+      "minimum_pixels": 3,
+      "minimum_depth_ratio": 0.5
+    },
+    "follow": {
+      "distance": 5.0,
+      "height": 4.0
+    }
+  },
+  "source_contract_sha256": "36c930148800ee175b38f9b7763a1805574b87cac3a9e18d09e0753abea03334",
+  "completely_occluded_follow": 3,
+  "minimum_follow_visible_fraction": 0.0,
+  "level_follow_visible_fraction": [
+    0.21671826625386997,
+    0.35365853658536583,
+    0.6107784431137725
+  ],
+  "native_capture_geometry": {
+    "level_body_minimum_height": 0.00700000000000001,
+    "minimum_body_clearance": 0.02,
+    "capture_radius": 0.25,
+    "level_only_vertical_distance_lower_bound": {
+      "-0.15": 0.157,
+      "0.0": 0.00700000000000001,
+      "0.15": 0.0
+    }
+  },
+  "reason": "STATIC_VISIBILITY_AND_LEVEL_GEOMETRY_ONLY",
+  "source_frames_sha256": "3704cc9f2f7606e6d20df7827941d0051a68ef499419cff147d7f89c4e44b91a"
+}

@@ -1,0 +1,19 @@
+{
+  "parameter_contract_valid": true,
+  "flight_qualified": false,
+  "qualification_reason": "MODEL_DYNAMICS_AND_RUNTIME_QUALIFICATION_REQUIRED",
+  "contract_sha256": "c760ba14ef15e03b1162ff578d99768394ebd2053d5ea167c9707f36bddf7b94",
+  "profile_sha256": "f47522b1e4c0be7c8bae9f1074740a6dacb4b6db9db55e9cfe6db41213e7f024",
+  "actual_model": {
+    "consistent": true,
+    "flight_qualified": false,
+    "total_mass": 2.1948611353641296,
+    "static_model_twr": 2.9999999999999996,
+    "camera_model_translation": [
+      0.35,
+      0.0,
+      0.55
+    ]
+  },
+  "weight_sha256_verified": true
+}

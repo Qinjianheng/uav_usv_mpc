@@ -1,0 +1,91 @@
+{
+  "events": 3,
+  "files": {
+    "events.jsonl": "ff3c2bf686a38a3213406234449c144f5687edab1999b1577a0f00ab4a2e7b39",
+    "roi_0000_100000000007.json": "fe53529f50c18cf0d057a790274e4de92390a668135cf77998b45f701eaf8ed9",
+    "roi_0000_100000000007.npz": "c32b20fc03d90f8e6d259aabf28b219a7ff2d76c0818ca6d5f755d3404b1787f",
+    "roi_0001_101000000007.json": "40c934b84591f2c69b1cd877c971955bad75ce0b2335e0289961dc74624fc686",
+    "roi_0001_101000000007.npz": "d2b4cceed8f1c9904bd1e937386ad415698acc83871447bf300d6952eeb8ce60",
+    "roi_0002_102000000007.json": "d097c3d2cf8f8971764337fb19c5ff61bfb3dbff05f63ed059b94295d4503150",
+    "roi_0002_102000000007.npz": "a582e7bab1e373bd6d0ab0c147f71234491aedb7c13dc1f8fad42679ddc9834b"
+  },
+  "limits": {
+    "events": 10000,
+    "payload_bytes": 67108864,
+    "per_stratum": 10,
+    "samples": 60
+  },
+  "payload_bytes": 16147,
+  "runtime_identity": {
+    "driver_sha256": "ff66180c0190d750b42ab728e3ce80dbe0c58c109d9d7b524b05b305fa21dabc",
+    "executable": "/usr/bin/python3",
+    "independent_ray_sphere_generator_sha256": "26806f92217576c1f54faf798b9bbd7b2777043b5c1203c01b5efda01a9ec617",
+    "loaded_code": {
+      "decode_float32_depth": {
+        "code_sha256": "ce0124106d008bc0997a0f055b34dafcf484fe4cfa93370d6d5e053f745d54f2",
+        "source_path": "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/perception/front_tof_monitor.py",
+        "source_sha256": "820b38482cb24f5df02ce923cfea76160ff220cf554c675c84f5ec72d43eac8e"
+      },
+      "decode_mask": {
+        "code_sha256": "bd6777c62f615efaec563fbb6a56faae683284738fa2619bdf562bdc7d0de65f",
+        "source_path": "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/perception/yolo_inference.py",
+        "source_sha256": "ae79cd886dd4e0323e0cff1bab2b4d088a38f5372b224f5510e51b5549c946ac"
+      },
+      "decode_segmentation": {
+        "code_sha256": "60d222b53ceb01c56544ec322ad615809f15705efb830110397e5f580ae2063f",
+        "source_path": "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/perception/yolo_inference.py",
+        "source_sha256": "ae79cd886dd4e0323e0cff1bab2b4d088a38f5372b224f5510e51b5549c946ac"
+      },
+      "detection_mask": {
+        "code_sha256": "ae6bcd937613997480f6869eac0be16006785f8a17d2d29fee3c5cb76f2e7676",
+        "source_path": "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/perception/yolo_detection_contract.py",
+        "source_sha256": "1f963db881f1c724a08cd2714df140042d04c9cbde8f6d77980f92cebd5737e5"
+      },
+      "encode_mask": {
+        "code_sha256": "037cd65f35a0f22ec2c795fb73050e1a9826c48eea8f73f136b1a59d3cb0f600",
+        "source_path": "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/perception/yolo_inference.py",
+        "source_sha256": "ae79cd886dd4e0323e0cff1bab2b4d088a38f5372b224f5510e51b5549c946ac"
+      },
+      "fit_tof_sphere": {
+        "code_sha256": "437e7801047ac012210c5cb73a157014e0f9f41dda18ec4b0d7522ec58358668",
+        "source_path": "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/perception/tof_sphere_localization.py",
+        "source_sha256": "2a7636d1c6c83a574d9b4640ab54dfa61671a3b9c01225d850ff5350fce273fd"
+      },
+      "infer": {
+        "code_sha256": "7b6163b18f75a515aa949ea4bd09d255b5fa4dfbe53b3549e23cd572656511ac",
+        "source_path": "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/perception/yolo_inference.py",
+        "source_sha256": "ae79cd886dd4e0323e0cff1bab2b4d088a38f5372b224f5510e51b5549c946ac"
+      },
+      "letterbox_rgb": {
+        "code_sha256": "63f99b9ddf57cade75ae7d075b1c2f101af0fb89ce14e4a9c3ce03a933807ca9",
+        "source_path": "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/perception/yolo_inference.py",
+        "source_sha256": "ae79cd886dd4e0323e0cff1bab2b4d088a38f5372b224f5510e51b5549c946ac"
+      },
+      "localize": {
+        "code_sha256": "ff0e3b1522426614aba4d61839a74254b0d895869b740d985068521527f62766",
+        "source_path": "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/perception/rgbd_target_localizer.py",
+        "source_sha256": "5f7747a8ee670f30fe18d4983e9118dd767830fc22b938e5aae24d0130b51b47"
+      },
+      "target_geometry_from_rgbd": {
+        "code_sha256": "add9646805e0af0acd5b5fbe7f6089b5c5ff1b2cbea2b05609e7dca04ef586fc",
+        "source_path": "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/perception/rgbd_target_localizer.py",
+        "source_sha256": "5f7747a8ee670f30fe18d4983e9118dd767830fc22b938e5aae24d0130b51b47"
+      },
+      "validation_sphere_center": {
+        "code_sha256": "0bd4d8a93a7209052740271498cc3ecbc883c0e86428b1978d03a1f676d30667",
+        "source_path": "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/perception/rgbd_target_localizer.py",
+        "source_sha256": "5f7747a8ee670f30fe18d4983e9118dd767830fc22b938e5aae24d0130b51b47"
+      }
+    },
+    "numpy": "1.24.4",
+    "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.35",
+    "python": "3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]"
+  },
+  "sample_strata": {
+    "failure:TARGET_VECTOR_INVALID": 1,
+    "success": 2
+  },
+  "saved_samples": 3,
+  "schema_version": 1,
+  "scope": "ROI pixels only; full original mask and source stamps retained."
+}

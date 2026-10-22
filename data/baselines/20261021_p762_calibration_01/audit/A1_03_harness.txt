@@ -1,0 +1,35 @@
+{
+  "stage": "A1",
+  "completed": false,
+  "qualified": false,
+  "success": false,
+  "checks": {
+    "hover": true,
+    "thrust_curve": false,
+    "rates_response": false,
+    "acceleration_5mps2": false,
+    "exclusive_px4_bodyrate": true,
+    "navigation_reference_and_sea_datum": true,
+    "identity_current": true,
+    "raw_complete": true,
+    "landed": false,
+    "disarmed": false,
+    "no_fault": false,
+    "A1_passed": false
+  },
+  "failed_checks": [
+    "thrust_curve",
+    "rates_response",
+    "acceleration_5mps2",
+    "landed",
+    "disarmed",
+    "no_fault",
+    "A1_passed"
+  ],
+  "raw_evidence": {
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/session_A1_03/calibration.jsonl": "51312b1147da4394602274eb68908fc2e7d2ff6b239bbf3b8c78efef34a47a44",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/session_A1_03/identity.json": "30dde601cf7c3e6e744eadcac57de2fd296e2bd4f98594031b2faafe6c4d5664",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/session_A1_03/analysis.json": "cdd44e1308909616845927619bf79468d928822a8d95c243643764c77171960f",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/session_A1_03/run_result.json": "66ee789b3223cc5f1a22712793b08a8090b6ff9fdda4d7631c00a3f5456b33f9"
+  }
+}

@@ -16,6 +16,9 @@
   <depend>uav_usv_interfaces</depend>
   <exec_depend>python3-numpy</exec_depend>
   <exec_depend>python3-scipy</exec_depend>
+  <exec_depend>python3-yaml</exec_depend>
+  <exec_depend>python3-opencv</exec_depend>
+  <!-- P76 ONNX Runtime is pinned in its isolated CPU runtime; import is lazy. -->
   <exec_depend>python3-gz-msgs10</exec_depend>
   <exec_depend>python3-gz-transport13</exec_depend>
 

@@ -1,0 +1,228 @@
+{
+  "schema_version": 1,
+  "source_head": "f5c83386ac48962a832b13665b9eb3a90e4b98b0",
+  "actual_new_sessions": 1,
+  "flight_sessions": 0,
+  "captured_seconds": 30.00261740098358,
+  "roi_pairs": 10,
+  "roi_unique_pixel_payloads": 1,
+  "unarmed_status_count": 59,
+  "command_publishers": 0,
+  "detector_publishers": 1,
+  "actual_valid_3d": 0,
+  "observation_count": 483,
+  "geometry_failure_observations": 406,
+  "geometry_diagnostics": 407,
+  "geometry_rejection": "FITTED_RADIUS_MISMATCH",
+  "background_points": 5,
+  "foreground_points": 263,
+  "original_fitted_radius": 10.864055024052396,
+  "offline_counterfactual_fitted_radius": 0.24833417847132683,
+  "actual_shadow_missed_cycles": 567,
+  "independent_e1": {
+    "qualified": false,
+    "reason": "P765_E1_RECOMPUTED_NOT_QUALIFIED"
+  },
+  "decision": {
+    "E0": "BLOCKED",
+    "E1": "FAIL",
+    "E2": "FAIL",
+    "A1": "NO-GO",
+    "production_source_changed": false,
+    "second_session_authorized": false
+  },
+  "cleanup": {
+    "errors": [],
+    "survivors": [],
+    "late_components": {
+      "events": [
+        {
+          "identity": {
+            "pid": 210583,
+            "pgid": 210583,
+            "start": "15587592"
+          },
+          "signal": 2
+        },
+        {
+          "identity": {
+            "pid": 210597,
+            "pgid": 210583,
+            "start": "15587594"
+          },
+          "signal": 2
+        },
+        {
+          "identity": {
+            "pid": 210837,
+            "pgid": 210837,
+            "start": "15587804"
+          },
+          "signal": 2
+        },
+        {
+          "identity": {
+            "pid": 210847,
+            "pgid": 210837,
+            "start": "15587806"
+          },
+          "signal": 2
+        },
+        {
+          "identity": {
+            "pid": 210928,
+            "pgid": 210837,
+            "start": "15587815"
+          },
+          "signal": 2
+        },
+        {
+          "identity": {
+            "pid": 210929,
+            "pgid": 210837,
+            "start": "15587815"
+          },
+          "signal": 2
+        },
+        {
+          "identity": {
+            "pid": 210930,
+            "pgid": 210837,
+            "start": "15587815"
+          },
+          "signal": 2
+        },
+        {
+          "identity": {
+            "pid": 210931,
+            "pgid": 210837,
+            "start": "15587824"
+          },
+          "signal": 2
+        },
+        {
+          "identity": {
+            "pid": 210932,
+            "pgid": 210837,
+            "start": "15587824"
+          },
+          "signal": 2
+        },
+        {
+          "identity": {
+            "pid": 210933,
+            "pgid": 210837,
+            "start": "15587824"
+          },
+          "signal": 2
+        },
+        {
+          "identity": {
+            "pid": 211790,
+            "pgid": 211790,
+            "start": "15588328"
+          },
+          "signal": 2
+        },
+        {
+          "identity": {
+            "pid": 211797,
+            "pgid": 211790,
+            "start": "15588331"
+          },
+          "signal": 2
+        },
+        {
+          "identity": {
+            "pid": 212466,
+            "pgid": 212466,
+            "start": "15588831"
+          },
+          "signal": 2
+        },
+        {
+          "identity": {
+            "pid": 212532,
+            "pgid": 212466,
+            "start": "15588866"
+          },
+          "signal": 2
+        },
+        {
+          "identity": {
+            "pid": 212569,
+            "pgid": 212466,
+            "start": "15588902"
+          },
+          "signal": 2
+        },
+        {
+          "identity": {
+            "pid": 212571,
+            "pgid": 212466,
+            "start": "15588902"
+          },
+          "signal": 2
+        },
+        {
+          "identity": {
+            "pid": 212573,
+            "pgid": 212466,
+            "start": "15588902"
+          },
+          "signal": 2
+        },
+        {
+          "identity": {
+            "pid": 212575,
+            "pgid": 212466,
+            "start": "15588902"
+          },
+          "signal": 2
+        },
+        {
+          "identity": {
+            "pid": 212577,
+            "pgid": 212466,
+            "start": "15588903"
+          },
+          "signal": 2
+        },
+        {
+          "identity": {
+            "pid": 212581,
+            "pgid": 212466,
+            "start": "15588903"
+          },
+          "signal": 2
+        },
+        {
+          "identity": {
+            "pid": 210583,
+            "pgid": 210583,
+            "start": "15587592"
+          },
+          "signal": 15
+        },
+        {
+          "identity": {
+            "pid": 212466,
+            "pgid": 212466,
+            "start": "15588831"
+          },
+          "signal": 15
+        }
+      ],
+      "errors": [],
+      "survivors": []
+    }
+  },
+  "final_preflight": {
+    "processes": [],
+    "hardware_serial": [],
+    "udp8888_free": true,
+    "domain": 43
+  },
+  "production_changes": false,
+  "second_session_started": false
+}

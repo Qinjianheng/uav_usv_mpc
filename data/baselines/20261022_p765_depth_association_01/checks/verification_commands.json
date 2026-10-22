@@ -1,0 +1,12 @@
+{
+  "full_regression": "cd src/uav_control; python3 -m pytest -q --ignore=test/test_p6_sitl_driver.py --ignore=test/test_p6_turn_case_config.py",
+  "excluded_reason": "Historical R11 input archives are absent; these modules cannot collect and are not counted as passed.",
+  "build": "colcon build --symlink-install --packages-select uav_control uav_usv_bringup",
+  "roi_replay": "python3 scripts/p765_depth_association_analysis.py --output NEW_OUTPUT.json",
+  "no_new_simulation": true,
+  "no_push": true,
+  "focused": "ROS_LOG_DIR=/tmp/p765_depth_merge_ros_logs ROS_DOMAIN_ID=191 ROS_LOCALHOST_ONLY=1 python3 -m pytest -q test/test_p765_depth_association.py test/test_navigation_frame_fault.py test/test_pep257.py test/test_flake8.py",
+  "full_result": "2583 passed, 2 failed, 2 skipped, 3 warnings in 49.87s",
+  "focused_result": "33 passed, 2 warnings in 6.19s",
+  "directed_result": "158 passed in 3.89s"
+}

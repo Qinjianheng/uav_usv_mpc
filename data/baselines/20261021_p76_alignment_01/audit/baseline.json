@@ -1,0 +1,17 @@
+{
+  "workspace_head": "0bb5f4909967c7c4fb285bed1b269a96fac551e5",
+  "px4_head": "de8158101c96ad6b04170dc91f087148104c58eb",
+  "hashes": {
+    "/home/qin/Projects/PX4-Autopilot/src/modules/uxrce_dds_client/dds_topics.yaml": "01b21d9d8a9773dbfcce1ce4127ee2cb72b6cad9aa8cedeefcf76f7c4f242120",
+    "src/uav_usv_bringup/config/p76_contract.yaml": "f3f41bd2a99ae14a1082a2d31fc08ae2d87bf2c84192e1806e1a241728e65432",
+    "src/uav_usv_bringup/config/p7_guidance.yaml": "768fe2e3e9ebedb59e56e0bb31791889661bf2a0d313471c6a3e95af5aa4c1dc"
+  },
+  "px4_existing_local_files": {
+    "ROMFS/px4fmu_common/init.d-posix/CMakeLists.txt": "85d6d10aeabbedfcb33ee02e9d367ef45b0b487db422a666e32e75179d87c003",
+    "ROMFS/px4fmu_common/init.d-posix/rcS": "f54174a855768d358cc3f883333704de50dd4b59bb9c5fc7fd3960d3cbb8bd60",
+    "src/modules/simulation/gz_bridge/GZBridge.cpp": "a6adaaf7162b748f28a44fa67a9d1d6aa7a94d92695b082240792a835d8e6ee3",
+    "ROMFS/px4fmu_common/init.d-posix/px4-rc.gzgnss": "090ffe7714fd3c9127f7c0735c04b5173fb9489272f1e79216b9bf2ec759973c",
+    "ROMFS/px4fmu_common/init.d-posix/px4-rc.gzmag_enu": "d2862dd1a899770fb81231ef3fe30e2b18d8f2068e887ab2373790a08dd46fd1",
+    "src/modules/simulation/gz_bridge/GzMagneticField.hpp": "3eee70eaa9044026c8329e6270037c9a43593e31a9ab3e780acca2884bedaeef"
+  }
+}

@@ -1,0 +1,988 @@
+{
+  "archive_sha256": "3e1d82addb49d060b6f318c0a21d260f1b6f17c163c9f5a8d8d7ab0b051b72de",
+  "candidate_accepted": 10,
+  "original_accepted": 0,
+  "qualification": "OFFLINE_COUNTERFACTUAL_NO_NEW_REAL_OBSERVATIONS",
+  "runtime_identity": {
+    "executable": "/usr/bin/python3",
+    "loaded_code": {
+      "decode_float32_depth": {
+        "code_sha256": "ce0124106d008bc0997a0f055b34dafcf484fe4cfa93370d6d5e053f745d54f2",
+        "source_path": "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/perception/front_tof_monitor.py",
+        "source_sha256": "820b38482cb24f5df02ce923cfea76160ff220cf554c675c84f5ec72d43eac8e"
+      },
+      "decode_mask": {
+        "code_sha256": "bd6777c62f615efaec563fbb6a56faae683284738fa2619bdf562bdc7d0de65f",
+        "source_path": "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/perception/yolo_inference.py",
+        "source_sha256": "ae79cd886dd4e0323e0cff1bab2b4d088a38f5372b224f5510e51b5549c946ac"
+      },
+      "decode_segmentation": {
+        "code_sha256": "60d222b53ceb01c56544ec322ad615809f15705efb830110397e5f580ae2063f",
+        "source_path": "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/perception/yolo_inference.py",
+        "source_sha256": "ae79cd886dd4e0323e0cff1bab2b4d088a38f5372b224f5510e51b5549c946ac"
+      },
+      "detection_mask": {
+        "code_sha256": "ae6bcd937613997480f6869eac0be16006785f8a17d2d29fee3c5cb76f2e7676",
+        "source_path": "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/perception/yolo_detection_contract.py",
+        "source_sha256": "1f963db881f1c724a08cd2714df140042d04c9cbde8f6d77980f92cebd5737e5"
+      },
+      "encode_mask": {
+        "code_sha256": "037cd65f35a0f22ec2c795fb73050e1a9826c48eea8f73f136b1a59d3cb0f600",
+        "source_path": "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/perception/yolo_inference.py",
+        "source_sha256": "ae79cd886dd4e0323e0cff1bab2b4d088a38f5372b224f5510e51b5549c946ac"
+      },
+      "fit_tof_sphere": {
+        "code_sha256": "437e7801047ac012210c5cb73a157014e0f9f41dda18ec4b0d7522ec58358668",
+        "source_path": "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/perception/tof_sphere_localization.py",
+        "source_sha256": "2a7636d1c6c83a574d9b4640ab54dfa61671a3b9c01225d850ff5350fce273fd"
+      },
+      "infer": {
+        "code_sha256": "7b6163b18f75a515aa949ea4bd09d255b5fa4dfbe53b3549e23cd572656511ac",
+        "source_path": "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/perception/yolo_inference.py",
+        "source_sha256": "ae79cd886dd4e0323e0cff1bab2b4d088a38f5372b224f5510e51b5549c946ac"
+      },
+      "letterbox_rgb": {
+        "code_sha256": "63f99b9ddf57cade75ae7d075b1c2f101af0fb89ce14e4a9c3ce03a933807ca9",
+        "source_path": "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/perception/yolo_inference.py",
+        "source_sha256": "ae79cd886dd4e0323e0cff1bab2b4d088a38f5372b224f5510e51b5549c946ac"
+      },
+      "localize": {
+        "code_sha256": "0edac0008dc01345be4a8940bb00d319fa0fbca1b3499c64533d5052c85ff853",
+        "source_path": "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/perception/rgbd_target_localizer.py",
+        "source_sha256": "1fb3e13b31fd851b7fe742978f03e80c968751574dbca2a0a5abad08323c8409"
+      },
+      "nearest_sphere_depth_component": {
+        "code_sha256": "c66781fcca7c9fee1e6ce428a8cbf67e816ff37a8f3b3b2e38170a09f5f5c386",
+        "source_path": "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/perception/rgbd_target_localizer.py",
+        "source_sha256": "1fb3e13b31fd851b7fe742978f03e80c968751574dbca2a0a5abad08323c8409"
+      },
+      "target_geometry_from_rgbd": {
+        "code_sha256": "eed11273b197ccf32a70c0f91a1285430eddb774c1a459aea483b700e2c2c0bb",
+        "source_path": "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/perception/rgbd_target_localizer.py",
+        "source_sha256": "1fb3e13b31fd851b7fe742978f03e80c968751574dbca2a0a5abad08323c8409"
+      },
+      "validation_sphere_center": {
+        "code_sha256": "0bd4d8a93a7209052740271498cc3ecbc883c0e86428b1978d03a1f676d30667",
+        "source_path": "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/perception/rgbd_target_localizer.py",
+        "source_sha256": "1fb3e13b31fd851b7fe742978f03e80c968751574dbca2a0a5abad08323c8409"
+      }
+    },
+    "numpy": "1.24.4",
+    "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.35",
+    "python": "3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]"
+  },
+  "sample_count": 10,
+  "samples": [
+    {
+      "archive_metadata": "nonflight_01/roi/roi_0000_10900000000.json",
+      "candidate": {
+        "accepted": true,
+        "center_camera_flu": [
+          6.548266432429839,
+          0.011816839917774935,
+          3.9658411475533253
+        ],
+        "diagnostics": {
+          "association_policy": "nearest_depth_component_diameter_v1",
+          "depth_component_count": 5,
+          "depth_mad": 0.0481410026550293,
+          "depth_median": 6.370656967163086,
+          "depth_min": 6.3003997802734375,
+          "depth_ratio": 0.9178082191780822,
+          "excluded_valid_depth_count": 5,
+          "explicit_fit_rejection_reason": "",
+          "fit_condition": 3233.4049138550045,
+          "fit_depth_max": 6.540210247039795,
+          "fit_depth_min": 6.3003997802734375,
+          "fit_input_count": 263,
+          "fit_input_ratio": 0.9006849315068494,
+          "fit_mode": "ideal",
+          "fit_position_std": null,
+          "fit_rank": 4,
+          "fit_sample_count": 263,
+          "fitted_radius": 0.24833417847132683,
+          "radius_residual": 0.0019466700762107547,
+          "valid_depth_count": 268
+        }
+      },
+      "candidate_contract": {
+        "horizontal_fov": 1.74,
+        "maximum_depth": 25.0,
+        "minimum_depth": 0.05,
+        "minimum_depth_ratio": 0.5,
+        "require_valid_sphere": true,
+        "sphere_depth_component_enabled": true,
+        "sphere_fit_mode": "ideal",
+        "sphere_noise_std": 0.01,
+        "sphere_range_noise_scale": 0.001,
+        "target_radius": 0.25
+      },
+      "depth_raw_stamp": {
+        "nanosec": 900000000,
+        "sec": 10
+      },
+      "metadata_sha256": "f9e4c1dbe83c144756ae0d6c7f816d3d988268f3318db692822c30c62b491cfa",
+      "original": {
+        "center_camera_flu": null,
+        "diagnostics": {
+          "association_policy": "all_valid_depth",
+          "depth_mad": 0.0481410026550293,
+          "depth_median": 6.370656967163086,
+          "depth_min": 6.3003997802734375,
+          "depth_ratio": 0.9178082191780822,
+          "excluded_valid_depth_count": 0,
+          "explicit_fit_rejection_reason": "FITTED_RADIUS_MISMATCH",
+          "fit_condition": 101.85772661944227,
+          "fit_input_count": 268,
+          "fit_input_ratio": 0.9178082191780822,
+          "fit_mode": "ideal",
+          "fit_position_std": null,
+          "fit_rank": 4,
+          "fit_sample_count": 268,
+          "fitted_radius": 10.864055024052396,
+          "radius_residual": 10.685355077176512,
+          "valid_depth_count": 268
+        },
+        "fit_position_std": null,
+        "original_localization_reason": "TARGET_VECTOR_INVALID",
+        "qualification": "OFFLINE_ONLY_NO_NEW_REAL_OBSERVATIONS",
+        "source_data_sha256": "48ed95525576f79f1472dc0f11a500986fab463a2747dfb60dba946503e6df3d",
+        "valid_sphere": false
+      },
+      "original_contract": {
+        "horizontal_fov": 1.74,
+        "maximum_depth": 25.0,
+        "minimum_depth": 0.05,
+        "require_valid_sphere": true,
+        "sphere_fit_mode": "ideal",
+        "sphere_noise_std": 0.01,
+        "sphere_range_noise_scale": 0.001,
+        "target_radius": 0.25
+      },
+      "rgb_raw_stamp": {
+        "nanosec": 900000000,
+        "sec": 10
+      }
+    },
+    {
+      "archive_metadata": "nonflight_01/roi/roi_0001_10952000000.json",
+      "candidate": {
+        "accepted": true,
+        "center_camera_flu": [
+          6.548266432429839,
+          0.011816839917774935,
+          3.9658411475533253
+        ],
+        "diagnostics": {
+          "association_policy": "nearest_depth_component_diameter_v1",
+          "depth_component_count": 5,
+          "depth_mad": 0.0481410026550293,
+          "depth_median": 6.370656967163086,
+          "depth_min": 6.3003997802734375,
+          "depth_ratio": 0.9178082191780822,
+          "excluded_valid_depth_count": 5,
+          "explicit_fit_rejection_reason": "",
+          "fit_condition": 3233.4049138550045,
+          "fit_depth_max": 6.540210247039795,
+          "fit_depth_min": 6.3003997802734375,
+          "fit_input_count": 263,
+          "fit_input_ratio": 0.9006849315068494,
+          "fit_mode": "ideal",
+          "fit_position_std": null,
+          "fit_rank": 4,
+          "fit_sample_count": 263,
+          "fitted_radius": 0.24833417847132683,
+          "radius_residual": 0.0019466700762107547,
+          "valid_depth_count": 268
+        }
+      },
+      "candidate_contract": {
+        "horizontal_fov": 1.74,
+        "maximum_depth": 25.0,
+        "minimum_depth": 0.05,
+        "minimum_depth_ratio": 0.5,
+        "require_valid_sphere": true,
+        "sphere_depth_component_enabled": true,
+        "sphere_fit_mode": "ideal",
+        "sphere_noise_std": 0.01,
+        "sphere_range_noise_scale": 0.001,
+        "target_radius": 0.25
+      },
+      "depth_raw_stamp": {
+        "nanosec": 952000000,
+        "sec": 10
+      },
+      "metadata_sha256": "e9754c2c4e6ccc9f8c36fbd2bbdd09bc16da8b8a5d107080f4f92db212334815",
+      "original": {
+        "center_camera_flu": null,
+        "diagnostics": {
+          "association_policy": "all_valid_depth",
+          "depth_mad": 0.0481410026550293,
+          "depth_median": 6.370656967163086,
+          "depth_min": 6.3003997802734375,
+          "depth_ratio": 0.9178082191780822,
+          "excluded_valid_depth_count": 0,
+          "explicit_fit_rejection_reason": "FITTED_RADIUS_MISMATCH",
+          "fit_condition": 101.85772661944227,
+          "fit_input_count": 268,
+          "fit_input_ratio": 0.9178082191780822,
+          "fit_mode": "ideal",
+          "fit_position_std": null,
+          "fit_rank": 4,
+          "fit_sample_count": 268,
+          "fitted_radius": 10.864055024052396,
+          "radius_residual": 10.685355077176512,
+          "valid_depth_count": 268
+        },
+        "fit_position_std": null,
+        "original_localization_reason": "TARGET_VECTOR_INVALID",
+        "qualification": "OFFLINE_ONLY_NO_NEW_REAL_OBSERVATIONS",
+        "source_data_sha256": "48ed95525576f79f1472dc0f11a500986fab463a2747dfb60dba946503e6df3d",
+        "valid_sphere": false
+      },
+      "original_contract": {
+        "horizontal_fov": 1.74,
+        "maximum_depth": 25.0,
+        "minimum_depth": 0.05,
+        "require_valid_sphere": true,
+        "sphere_fit_mode": "ideal",
+        "sphere_noise_std": 0.01,
+        "sphere_range_noise_scale": 0.001,
+        "target_radius": 0.25
+      },
+      "rgb_raw_stamp": {
+        "nanosec": 952000000,
+        "sec": 10
+      }
+    },
+    {
+      "archive_metadata": "nonflight_01/roi/roi_0002_11100000000.json",
+      "candidate": {
+        "accepted": true,
+        "center_camera_flu": [
+          6.548266432429839,
+          0.011816839917774935,
+          3.9658411475533253
+        ],
+        "diagnostics": {
+          "association_policy": "nearest_depth_component_diameter_v1",
+          "depth_component_count": 5,
+          "depth_mad": 0.0481410026550293,
+          "depth_median": 6.370656967163086,
+          "depth_min": 6.3003997802734375,
+          "depth_ratio": 0.9178082191780822,
+          "excluded_valid_depth_count": 5,
+          "explicit_fit_rejection_reason": "",
+          "fit_condition": 3233.4049138550045,
+          "fit_depth_max": 6.540210247039795,
+          "fit_depth_min": 6.3003997802734375,
+          "fit_input_count": 263,
+          "fit_input_ratio": 0.9006849315068494,
+          "fit_mode": "ideal",
+          "fit_position_std": null,
+          "fit_rank": 4,
+          "fit_sample_count": 263,
+          "fitted_radius": 0.24833417847132683,
+          "radius_residual": 0.0019466700762107547,
+          "valid_depth_count": 268
+        }
+      },
+      "candidate_contract": {
+        "horizontal_fov": 1.74,
+        "maximum_depth": 25.0,
+        "minimum_depth": 0.05,
+        "minimum_depth_ratio": 0.5,
+        "require_valid_sphere": true,
+        "sphere_depth_component_enabled": true,
+        "sphere_fit_mode": "ideal",
+        "sphere_noise_std": 0.01,
+        "sphere_range_noise_scale": 0.001,
+        "target_radius": 0.25
+      },
+      "depth_raw_stamp": {
+        "nanosec": 100000000,
+        "sec": 11
+      },
+      "metadata_sha256": "f18d431d8d704d37d05ee732cbb3e50df4b072c77fd16a5d27ca9d4b9f944fcf",
+      "original": {
+        "center_camera_flu": null,
+        "diagnostics": {
+          "association_policy": "all_valid_depth",
+          "depth_mad": 0.0481410026550293,
+          "depth_median": 6.370656967163086,
+          "depth_min": 6.3003997802734375,
+          "depth_ratio": 0.9178082191780822,
+          "excluded_valid_depth_count": 0,
+          "explicit_fit_rejection_reason": "FITTED_RADIUS_MISMATCH",
+          "fit_condition": 101.85772661944227,
+          "fit_input_count": 268,
+          "fit_input_ratio": 0.9178082191780822,
+          "fit_mode": "ideal",
+          "fit_position_std": null,
+          "fit_rank": 4,
+          "fit_sample_count": 268,
+          "fitted_radius": 10.864055024052396,
+          "radius_residual": 10.685355077176512,
+          "valid_depth_count": 268
+        },
+        "fit_position_std": null,
+        "original_localization_reason": "TARGET_VECTOR_INVALID",
+        "qualification": "OFFLINE_ONLY_NO_NEW_REAL_OBSERVATIONS",
+        "source_data_sha256": "48ed95525576f79f1472dc0f11a500986fab463a2747dfb60dba946503e6df3d",
+        "valid_sphere": false
+      },
+      "original_contract": {
+        "horizontal_fov": 1.74,
+        "maximum_depth": 25.0,
+        "minimum_depth": 0.05,
+        "require_valid_sphere": true,
+        "sphere_fit_mode": "ideal",
+        "sphere_noise_std": 0.01,
+        "sphere_range_noise_scale": 0.001,
+        "target_radius": 0.25
+      },
+      "rgb_raw_stamp": {
+        "nanosec": 100000000,
+        "sec": 11
+      }
+    },
+    {
+      "archive_metadata": "nonflight_01/roi/roi_0003_11152000000.json",
+      "candidate": {
+        "accepted": true,
+        "center_camera_flu": [
+          6.548266432429839,
+          0.011816839917774935,
+          3.9658411475533253
+        ],
+        "diagnostics": {
+          "association_policy": "nearest_depth_component_diameter_v1",
+          "depth_component_count": 5,
+          "depth_mad": 0.0481410026550293,
+          "depth_median": 6.370656967163086,
+          "depth_min": 6.3003997802734375,
+          "depth_ratio": 0.9178082191780822,
+          "excluded_valid_depth_count": 5,
+          "explicit_fit_rejection_reason": "",
+          "fit_condition": 3233.4049138550045,
+          "fit_depth_max": 6.540210247039795,
+          "fit_depth_min": 6.3003997802734375,
+          "fit_input_count": 263,
+          "fit_input_ratio": 0.9006849315068494,
+          "fit_mode": "ideal",
+          "fit_position_std": null,
+          "fit_rank": 4,
+          "fit_sample_count": 263,
+          "fitted_radius": 0.24833417847132683,
+          "radius_residual": 0.0019466700762107547,
+          "valid_depth_count": 268
+        }
+      },
+      "candidate_contract": {
+        "horizontal_fov": 1.74,
+        "maximum_depth": 25.0,
+        "minimum_depth": 0.05,
+        "minimum_depth_ratio": 0.5,
+        "require_valid_sphere": true,
+        "sphere_depth_component_enabled": true,
+        "sphere_fit_mode": "ideal",
+        "sphere_noise_std": 0.01,
+        "sphere_range_noise_scale": 0.001,
+        "target_radius": 0.25
+      },
+      "depth_raw_stamp": {
+        "nanosec": 152000000,
+        "sec": 11
+      },
+      "metadata_sha256": "3ae6fba9d9e1d62d76950bb00574c2f44abf0dea3e71da707adf5564a08949a5",
+      "original": {
+        "center_camera_flu": null,
+        "diagnostics": {
+          "association_policy": "all_valid_depth",
+          "depth_mad": 0.0481410026550293,
+          "depth_median": 6.370656967163086,
+          "depth_min": 6.3003997802734375,
+          "depth_ratio": 0.9178082191780822,
+          "excluded_valid_depth_count": 0,
+          "explicit_fit_rejection_reason": "FITTED_RADIUS_MISMATCH",
+          "fit_condition": 101.85772661944227,
+          "fit_input_count": 268,
+          "fit_input_ratio": 0.9178082191780822,
+          "fit_mode": "ideal",
+          "fit_position_std": null,
+          "fit_rank": 4,
+          "fit_sample_count": 268,
+          "fitted_radius": 10.864055024052396,
+          "radius_residual": 10.685355077176512,
+          "valid_depth_count": 268
+        },
+        "fit_position_std": null,
+        "original_localization_reason": "TARGET_VECTOR_INVALID",
+        "qualification": "OFFLINE_ONLY_NO_NEW_REAL_OBSERVATIONS",
+        "source_data_sha256": "48ed95525576f79f1472dc0f11a500986fab463a2747dfb60dba946503e6df3d",
+        "valid_sphere": false
+      },
+      "original_contract": {
+        "horizontal_fov": 1.74,
+        "maximum_depth": 25.0,
+        "minimum_depth": 0.05,
+        "require_valid_sphere": true,
+        "sphere_fit_mode": "ideal",
+        "sphere_noise_std": 0.01,
+        "sphere_range_noise_scale": 0.001,
+        "target_radius": 0.25
+      },
+      "rgb_raw_stamp": {
+        "nanosec": 152000000,
+        "sec": 11
+      }
+    },
+    {
+      "archive_metadata": "nonflight_01/roi/roi_0004_11200000000.json",
+      "candidate": {
+        "accepted": true,
+        "center_camera_flu": [
+          6.548266432429839,
+          0.011816839917774935,
+          3.9658411475533253
+        ],
+        "diagnostics": {
+          "association_policy": "nearest_depth_component_diameter_v1",
+          "depth_component_count": 5,
+          "depth_mad": 0.0481410026550293,
+          "depth_median": 6.370656967163086,
+          "depth_min": 6.3003997802734375,
+          "depth_ratio": 0.9178082191780822,
+          "excluded_valid_depth_count": 5,
+          "explicit_fit_rejection_reason": "",
+          "fit_condition": 3233.4049138550045,
+          "fit_depth_max": 6.540210247039795,
+          "fit_depth_min": 6.3003997802734375,
+          "fit_input_count": 263,
+          "fit_input_ratio": 0.9006849315068494,
+          "fit_mode": "ideal",
+          "fit_position_std": null,
+          "fit_rank": 4,
+          "fit_sample_count": 263,
+          "fitted_radius": 0.24833417847132683,
+          "radius_residual": 0.0019466700762107547,
+          "valid_depth_count": 268
+        }
+      },
+      "candidate_contract": {
+        "horizontal_fov": 1.74,
+        "maximum_depth": 25.0,
+        "minimum_depth": 0.05,
+        "minimum_depth_ratio": 0.5,
+        "require_valid_sphere": true,
+        "sphere_depth_component_enabled": true,
+        "sphere_fit_mode": "ideal",
+        "sphere_noise_std": 0.01,
+        "sphere_range_noise_scale": 0.001,
+        "target_radius": 0.25
+      },
+      "depth_raw_stamp": {
+        "nanosec": 200000000,
+        "sec": 11
+      },
+      "metadata_sha256": "1e929a6ee09bcdaf0844fd154ca2a19366e582875df8f01213a269bb4e4c7e24",
+      "original": {
+        "center_camera_flu": null,
+        "diagnostics": {
+          "association_policy": "all_valid_depth",
+          "depth_mad": 0.0481410026550293,
+          "depth_median": 6.370656967163086,
+          "depth_min": 6.3003997802734375,
+          "depth_ratio": 0.9178082191780822,
+          "excluded_valid_depth_count": 0,
+          "explicit_fit_rejection_reason": "FITTED_RADIUS_MISMATCH",
+          "fit_condition": 101.85772661944227,
+          "fit_input_count": 268,
+          "fit_input_ratio": 0.9178082191780822,
+          "fit_mode": "ideal",
+          "fit_position_std": null,
+          "fit_rank": 4,
+          "fit_sample_count": 268,
+          "fitted_radius": 10.864055024052396,
+          "radius_residual": 10.685355077176512,
+          "valid_depth_count": 268
+        },
+        "fit_position_std": null,
+        "original_localization_reason": "TARGET_VECTOR_INVALID",
+        "qualification": "OFFLINE_ONLY_NO_NEW_REAL_OBSERVATIONS",
+        "source_data_sha256": "48ed95525576f79f1472dc0f11a500986fab463a2747dfb60dba946503e6df3d",
+        "valid_sphere": false
+      },
+      "original_contract": {
+        "horizontal_fov": 1.74,
+        "maximum_depth": 25.0,
+        "minimum_depth": 0.05,
+        "require_valid_sphere": true,
+        "sphere_fit_mode": "ideal",
+        "sphere_noise_std": 0.01,
+        "sphere_range_noise_scale": 0.001,
+        "target_radius": 0.25
+      },
+      "rgb_raw_stamp": {
+        "nanosec": 200000000,
+        "sec": 11
+      }
+    },
+    {
+      "archive_metadata": "nonflight_01/roi/roi_0005_11252000000.json",
+      "candidate": {
+        "accepted": true,
+        "center_camera_flu": [
+          6.548266432429839,
+          0.011816839917774935,
+          3.9658411475533253
+        ],
+        "diagnostics": {
+          "association_policy": "nearest_depth_component_diameter_v1",
+          "depth_component_count": 5,
+          "depth_mad": 0.0481410026550293,
+          "depth_median": 6.370656967163086,
+          "depth_min": 6.3003997802734375,
+          "depth_ratio": 0.9178082191780822,
+          "excluded_valid_depth_count": 5,
+          "explicit_fit_rejection_reason": "",
+          "fit_condition": 3233.4049138550045,
+          "fit_depth_max": 6.540210247039795,
+          "fit_depth_min": 6.3003997802734375,
+          "fit_input_count": 263,
+          "fit_input_ratio": 0.9006849315068494,
+          "fit_mode": "ideal",
+          "fit_position_std": null,
+          "fit_rank": 4,
+          "fit_sample_count": 263,
+          "fitted_radius": 0.24833417847132683,
+          "radius_residual": 0.0019466700762107547,
+          "valid_depth_count": 268
+        }
+      },
+      "candidate_contract": {
+        "horizontal_fov": 1.74,
+        "maximum_depth": 25.0,
+        "minimum_depth": 0.05,
+        "minimum_depth_ratio": 0.5,
+        "require_valid_sphere": true,
+        "sphere_depth_component_enabled": true,
+        "sphere_fit_mode": "ideal",
+        "sphere_noise_std": 0.01,
+        "sphere_range_noise_scale": 0.001,
+        "target_radius": 0.25
+      },
+      "depth_raw_stamp": {
+        "nanosec": 252000000,
+        "sec": 11
+      },
+      "metadata_sha256": "cc69e1ba097656e18b512893c41c3ea66663b55daa7d675d46d3d706f9a6a00a",
+      "original": {
+        "center_camera_flu": null,
+        "diagnostics": {
+          "association_policy": "all_valid_depth",
+          "depth_mad": 0.0481410026550293,
+          "depth_median": 6.370656967163086,
+          "depth_min": 6.3003997802734375,
+          "depth_ratio": 0.9178082191780822,
+          "excluded_valid_depth_count": 0,
+          "explicit_fit_rejection_reason": "FITTED_RADIUS_MISMATCH",
+          "fit_condition": 101.85772661944227,
+          "fit_input_count": 268,
+          "fit_input_ratio": 0.9178082191780822,
+          "fit_mode": "ideal",
+          "fit_position_std": null,
+          "fit_rank": 4,
+          "fit_sample_count": 268,
+          "fitted_radius": 10.864055024052396,
+          "radius_residual": 10.685355077176512,
+          "valid_depth_count": 268
+        },
+        "fit_position_std": null,
+        "original_localization_reason": "TARGET_VECTOR_INVALID",
+        "qualification": "OFFLINE_ONLY_NO_NEW_REAL_OBSERVATIONS",
+        "source_data_sha256": "48ed95525576f79f1472dc0f11a500986fab463a2747dfb60dba946503e6df3d",
+        "valid_sphere": false
+      },
+      "original_contract": {
+        "horizontal_fov": 1.74,
+        "maximum_depth": 25.0,
+        "minimum_depth": 0.05,
+        "require_valid_sphere": true,
+        "sphere_fit_mode": "ideal",
+        "sphere_noise_std": 0.01,
+        "sphere_range_noise_scale": 0.001,
+        "target_radius": 0.25
+      },
+      "rgb_raw_stamp": {
+        "nanosec": 252000000,
+        "sec": 11
+      }
+    },
+    {
+      "archive_metadata": "nonflight_01/roi/roi_0006_11452000000.json",
+      "candidate": {
+        "accepted": true,
+        "center_camera_flu": [
+          6.548266432429839,
+          0.011816839917774935,
+          3.9658411475533253
+        ],
+        "diagnostics": {
+          "association_policy": "nearest_depth_component_diameter_v1",
+          "depth_component_count": 5,
+          "depth_mad": 0.0481410026550293,
+          "depth_median": 6.370656967163086,
+          "depth_min": 6.3003997802734375,
+          "depth_ratio": 0.9178082191780822,
+          "excluded_valid_depth_count": 5,
+          "explicit_fit_rejection_reason": "",
+          "fit_condition": 3233.4049138550045,
+          "fit_depth_max": 6.540210247039795,
+          "fit_depth_min": 6.3003997802734375,
+          "fit_input_count": 263,
+          "fit_input_ratio": 0.9006849315068494,
+          "fit_mode": "ideal",
+          "fit_position_std": null,
+          "fit_rank": 4,
+          "fit_sample_count": 263,
+          "fitted_radius": 0.24833417847132683,
+          "radius_residual": 0.0019466700762107547,
+          "valid_depth_count": 268
+        }
+      },
+      "candidate_contract": {
+        "horizontal_fov": 1.74,
+        "maximum_depth": 25.0,
+        "minimum_depth": 0.05,
+        "minimum_depth_ratio": 0.5,
+        "require_valid_sphere": true,
+        "sphere_depth_component_enabled": true,
+        "sphere_fit_mode": "ideal",
+        "sphere_noise_std": 0.01,
+        "sphere_range_noise_scale": 0.001,
+        "target_radius": 0.25
+      },
+      "depth_raw_stamp": {
+        "nanosec": 452000000,
+        "sec": 11
+      },
+      "metadata_sha256": "0edb7a14e000db021125807e564c037235ad4a9855823afb6a9130735c1fbb13",
+      "original": {
+        "center_camera_flu": null,
+        "diagnostics": {
+          "association_policy": "all_valid_depth",
+          "depth_mad": 0.0481410026550293,
+          "depth_median": 6.370656967163086,
+          "depth_min": 6.3003997802734375,
+          "depth_ratio": 0.9178082191780822,
+          "excluded_valid_depth_count": 0,
+          "explicit_fit_rejection_reason": "FITTED_RADIUS_MISMATCH",
+          "fit_condition": 101.85772661944227,
+          "fit_input_count": 268,
+          "fit_input_ratio": 0.9178082191780822,
+          "fit_mode": "ideal",
+          "fit_position_std": null,
+          "fit_rank": 4,
+          "fit_sample_count": 268,
+          "fitted_radius": 10.864055024052396,
+          "radius_residual": 10.685355077176512,
+          "valid_depth_count": 268
+        },
+        "fit_position_std": null,
+        "original_localization_reason": "TARGET_VECTOR_INVALID",
+        "qualification": "OFFLINE_ONLY_NO_NEW_REAL_OBSERVATIONS",
+        "source_data_sha256": "48ed95525576f79f1472dc0f11a500986fab463a2747dfb60dba946503e6df3d",
+        "valid_sphere": false
+      },
+      "original_contract": {
+        "horizontal_fov": 1.74,
+        "maximum_depth": 25.0,
+        "minimum_depth": 0.05,
+        "require_valid_sphere": true,
+        "sphere_fit_mode": "ideal",
+        "sphere_noise_std": 0.01,
+        "sphere_range_noise_scale": 0.001,
+        "target_radius": 0.25
+      },
+      "rgb_raw_stamp": {
+        "nanosec": 452000000,
+        "sec": 11
+      }
+    },
+    {
+      "archive_metadata": "nonflight_01/roi/roi_0007_11500000000.json",
+      "candidate": {
+        "accepted": true,
+        "center_camera_flu": [
+          6.548266432429839,
+          0.011816839917774935,
+          3.9658411475533253
+        ],
+        "diagnostics": {
+          "association_policy": "nearest_depth_component_diameter_v1",
+          "depth_component_count": 5,
+          "depth_mad": 0.0481410026550293,
+          "depth_median": 6.370656967163086,
+          "depth_min": 6.3003997802734375,
+          "depth_ratio": 0.9178082191780822,
+          "excluded_valid_depth_count": 5,
+          "explicit_fit_rejection_reason": "",
+          "fit_condition": 3233.4049138550045,
+          "fit_depth_max": 6.540210247039795,
+          "fit_depth_min": 6.3003997802734375,
+          "fit_input_count": 263,
+          "fit_input_ratio": 0.9006849315068494,
+          "fit_mode": "ideal",
+          "fit_position_std": null,
+          "fit_rank": 4,
+          "fit_sample_count": 263,
+          "fitted_radius": 0.24833417847132683,
+          "radius_residual": 0.0019466700762107547,
+          "valid_depth_count": 268
+        }
+      },
+      "candidate_contract": {
+        "horizontal_fov": 1.74,
+        "maximum_depth": 25.0,
+        "minimum_depth": 0.05,
+        "minimum_depth_ratio": 0.5,
+        "require_valid_sphere": true,
+        "sphere_depth_component_enabled": true,
+        "sphere_fit_mode": "ideal",
+        "sphere_noise_std": 0.01,
+        "sphere_range_noise_scale": 0.001,
+        "target_radius": 0.25
+      },
+      "depth_raw_stamp": {
+        "nanosec": 500000000,
+        "sec": 11
+      },
+      "metadata_sha256": "8c755b5963995ec8c6f1988f524f881267ef10e0b7636be7422e305c828082f0",
+      "original": {
+        "center_camera_flu": null,
+        "diagnostics": {
+          "association_policy": "all_valid_depth",
+          "depth_mad": 0.0481410026550293,
+          "depth_median": 6.370656967163086,
+          "depth_min": 6.3003997802734375,
+          "depth_ratio": 0.9178082191780822,
+          "excluded_valid_depth_count": 0,
+          "explicit_fit_rejection_reason": "FITTED_RADIUS_MISMATCH",
+          "fit_condition": 101.85772661944227,
+          "fit_input_count": 268,
+          "fit_input_ratio": 0.9178082191780822,
+          "fit_mode": "ideal",
+          "fit_position_std": null,
+          "fit_rank": 4,
+          "fit_sample_count": 268,
+          "fitted_radius": 10.864055024052396,
+          "radius_residual": 10.685355077176512,
+          "valid_depth_count": 268
+        },
+        "fit_position_std": null,
+        "original_localization_reason": "TARGET_VECTOR_INVALID",
+        "qualification": "OFFLINE_ONLY_NO_NEW_REAL_OBSERVATIONS",
+        "source_data_sha256": "48ed95525576f79f1472dc0f11a500986fab463a2747dfb60dba946503e6df3d",
+        "valid_sphere": false
+      },
+      "original_contract": {
+        "horizontal_fov": 1.74,
+        "maximum_depth": 25.0,
+        "minimum_depth": 0.05,
+        "require_valid_sphere": true,
+        "sphere_fit_mode": "ideal",
+        "sphere_noise_std": 0.01,
+        "sphere_range_noise_scale": 0.001,
+        "target_radius": 0.25
+      },
+      "rgb_raw_stamp": {
+        "nanosec": 500000000,
+        "sec": 11
+      }
+    },
+    {
+      "archive_metadata": "nonflight_01/roi/roi_0008_11600000000.json",
+      "candidate": {
+        "accepted": true,
+        "center_camera_flu": [
+          6.548266432429839,
+          0.011816839917774935,
+          3.9658411475533253
+        ],
+        "diagnostics": {
+          "association_policy": "nearest_depth_component_diameter_v1",
+          "depth_component_count": 5,
+          "depth_mad": 0.0481410026550293,
+          "depth_median": 6.370656967163086,
+          "depth_min": 6.3003997802734375,
+          "depth_ratio": 0.9178082191780822,
+          "excluded_valid_depth_count": 5,
+          "explicit_fit_rejection_reason": "",
+          "fit_condition": 3233.4049138550045,
+          "fit_depth_max": 6.540210247039795,
+          "fit_depth_min": 6.3003997802734375,
+          "fit_input_count": 263,
+          "fit_input_ratio": 0.9006849315068494,
+          "fit_mode": "ideal",
+          "fit_position_std": null,
+          "fit_rank": 4,
+          "fit_sample_count": 263,
+          "fitted_radius": 0.24833417847132683,
+          "radius_residual": 0.0019466700762107547,
+          "valid_depth_count": 268
+        }
+      },
+      "candidate_contract": {
+        "horizontal_fov": 1.74,
+        "maximum_depth": 25.0,
+        "minimum_depth": 0.05,
+        "minimum_depth_ratio": 0.5,
+        "require_valid_sphere": true,
+        "sphere_depth_component_enabled": true,
+        "sphere_fit_mode": "ideal",
+        "sphere_noise_std": 0.01,
+        "sphere_range_noise_scale": 0.001,
+        "target_radius": 0.25
+      },
+      "depth_raw_stamp": {
+        "nanosec": 600000000,
+        "sec": 11
+      },
+      "metadata_sha256": "623267067150cc3f713d859ed281104fa8cecf259161a732317d7eeae112b2ff",
+      "original": {
+        "center_camera_flu": null,
+        "diagnostics": {
+          "association_policy": "all_valid_depth",
+          "depth_mad": 0.0481410026550293,
+          "depth_median": 6.370656967163086,
+          "depth_min": 6.3003997802734375,
+          "depth_ratio": 0.9178082191780822,
+          "excluded_valid_depth_count": 0,
+          "explicit_fit_rejection_reason": "FITTED_RADIUS_MISMATCH",
+          "fit_condition": 101.85772661944227,
+          "fit_input_count": 268,
+          "fit_input_ratio": 0.9178082191780822,
+          "fit_mode": "ideal",
+          "fit_position_std": null,
+          "fit_rank": 4,
+          "fit_sample_count": 268,
+          "fitted_radius": 10.864055024052396,
+          "radius_residual": 10.685355077176512,
+          "valid_depth_count": 268
+        },
+        "fit_position_std": null,
+        "original_localization_reason": "TARGET_VECTOR_INVALID",
+        "qualification": "OFFLINE_ONLY_NO_NEW_REAL_OBSERVATIONS",
+        "source_data_sha256": "48ed95525576f79f1472dc0f11a500986fab463a2747dfb60dba946503e6df3d",
+        "valid_sphere": false
+      },
+      "original_contract": {
+        "horizontal_fov": 1.74,
+        "maximum_depth": 25.0,
+        "minimum_depth": 0.05,
+        "require_valid_sphere": true,
+        "sphere_fit_mode": "ideal",
+        "sphere_noise_std": 0.01,
+        "sphere_range_noise_scale": 0.001,
+        "target_radius": 0.25
+      },
+      "rgb_raw_stamp": {
+        "nanosec": 600000000,
+        "sec": 11
+      }
+    },
+    {
+      "archive_metadata": "nonflight_01/roi/roi_0009_11652000000.json",
+      "candidate": {
+        "accepted": true,
+        "center_camera_flu": [
+          6.548266432429839,
+          0.011816839917774935,
+          3.9658411475533253
+        ],
+        "diagnostics": {
+          "association_policy": "nearest_depth_component_diameter_v1",
+          "depth_component_count": 5,
+          "depth_mad": 0.0481410026550293,
+          "depth_median": 6.370656967163086,
+          "depth_min": 6.3003997802734375,
+          "depth_ratio": 0.9178082191780822,
+          "excluded_valid_depth_count": 5,
+          "explicit_fit_rejection_reason": "",
+          "fit_condition": 3233.4049138550045,
+          "fit_depth_max": 6.540210247039795,
+          "fit_depth_min": 6.3003997802734375,
+          "fit_input_count": 263,
+          "fit_input_ratio": 0.9006849315068494,
+          "fit_mode": "ideal",
+          "fit_position_std": null,
+          "fit_rank": 4,
+          "fit_sample_count": 263,
+          "fitted_radius": 0.24833417847132683,
+          "radius_residual": 0.0019466700762107547,
+          "valid_depth_count": 268
+        }
+      },
+      "candidate_contract": {
+        "horizontal_fov": 1.74,
+        "maximum_depth": 25.0,
+        "minimum_depth": 0.05,
+        "minimum_depth_ratio": 0.5,
+        "require_valid_sphere": true,
+        "sphere_depth_component_enabled": true,
+        "sphere_fit_mode": "ideal",
+        "sphere_noise_std": 0.01,
+        "sphere_range_noise_scale": 0.001,
+        "target_radius": 0.25
+      },
+      "depth_raw_stamp": {
+        "nanosec": 652000000,
+        "sec": 11
+      },
+      "metadata_sha256": "57c569c8cdb633f05cc5414b905c59b963b75dd30912704d582fc6dc543b2a06",
+      "original": {
+        "center_camera_flu": null,
+        "diagnostics": {
+          "association_policy": "all_valid_depth",
+          "depth_mad": 0.0481410026550293,
+          "depth_median": 6.370656967163086,
+          "depth_min": 6.3003997802734375,
+          "depth_ratio": 0.9178082191780822,
+          "excluded_valid_depth_count": 0,
+          "explicit_fit_rejection_reason": "FITTED_RADIUS_MISMATCH",
+          "fit_condition": 101.85772661944227,
+          "fit_input_count": 268,
+          "fit_input_ratio": 0.9178082191780822,
+          "fit_mode": "ideal",
+          "fit_position_std": null,
+          "fit_rank": 4,
+          "fit_sample_count": 268,
+          "fitted_radius": 10.864055024052396,
+          "radius_residual": 10.685355077176512,
+          "valid_depth_count": 268
+        },
+        "fit_position_std": null,
+        "original_localization_reason": "TARGET_VECTOR_INVALID",
+        "qualification": "OFFLINE_ONLY_NO_NEW_REAL_OBSERVATIONS",
+        "source_data_sha256": "48ed95525576f79f1472dc0f11a500986fab463a2747dfb60dba946503e6df3d",
+        "valid_sphere": false
+      },
+      "original_contract": {
+        "horizontal_fov": 1.74,
+        "maximum_depth": 25.0,
+        "minimum_depth": 0.05,
+        "require_valid_sphere": true,
+        "sphere_fit_mode": "ideal",
+        "sphere_noise_std": 0.01,
+        "sphere_range_noise_scale": 0.001,
+        "target_radius": 0.25
+      },
+      "rgb_raw_stamp": {
+        "nanosec": 652000000,
+        "sec": 11
+      }
+    }
+  ],
+  "unique_depth_mask_payloads": 1
+}

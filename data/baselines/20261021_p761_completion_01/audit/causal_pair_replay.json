@@ -1,0 +1,10 @@
+{
+  "scope": "Offline replay at recorded navigation receipt, not 200Hz flight/control qualification",
+  "paired_callbacks": 658,
+  "waiting_callbacks": 4,
+  "newest_state_not_yet_complete_count": 658,
+  "maximum_complete_source_age": 0.12378644943237305,
+  "maximum_backtrack": 0.07999873161315918,
+  "no_extrapolation": true,
+  "uncertainty_scope": "Logged poses use zero variance in this pairing-only replay"
+}

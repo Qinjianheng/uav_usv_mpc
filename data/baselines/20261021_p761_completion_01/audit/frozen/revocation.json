@@ -1,0 +1,7 @@
+{
+  "reason": "A1 real float32 JSON relay crash",
+  "old_qualifications_generated": false,
+  "source_changed": "common/p76_native.py",
+  "original_fingerprint": "identity.json",
+  "active_fingerprint": "identity_after_relay_repair.json"
+}

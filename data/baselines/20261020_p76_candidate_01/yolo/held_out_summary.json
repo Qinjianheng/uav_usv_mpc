@@ -1,0 +1,17 @@
+{
+  "scope": "Held-out static-pose Gazebo images; no actual ROS end-to-end age or flight.",
+  "images": 72,
+  "positive": 43,
+  "negative": 29,
+  "recall": 0.9534883720930233,
+  "false_positives": 0,
+  "seconds_median": 0.04366973800097185,
+  "seconds_p95": 0.044344770252246236,
+  "seconds_max": 0.04533102800269262,
+  "visible_mask_iou_median": 0.9380234505862647,
+  "projected_sphere_center_error_median": 13.618572363377707,
+  "projected_sphere_center_error_p95": 215.9881015047163,
+  "model_sha256": "4fb70adc8fc0989eea52831bfbd62550f48cb21cfb39dd07a4f7f68035c65ef8",
+  "qualified": false,
+  "reason": "ROS_TIMING_NEAR_CENTER_GEOMETRY_AND_FLIGHT_QUALIFICATION_REQUIRED"
+}

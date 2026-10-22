@@ -1,0 +1,22 @@
+{
+  "PX4_SITL.txt": {
+    "sha256": "06c7cc03ec1cda1455b4ace44d182227de3ccfd7c3434a1dfff7780dec7dfdba",
+    "uncompressed_bytes": 426139812
+  },
+  "Gazebo_Ocean.txt": {
+    "sha256": "84b98d86592fc37acad11161c9f0e347d7f2c4f8b27967d6fe6f39f54a72809a",
+    "uncompressed_bytes": 1237
+  },
+  "UAV-USV_experiment.txt": {
+    "sha256": "9f79a5c23df52bee86600fb67008498966521578de0162b2fef33be6606212e4",
+    "uncompressed_bytes": 3651
+  },
+  "launcher.txt": {
+    "sha256": "4f47684a43e7b2117bc888a7858cfd571ce5bb7d05539acab642d4ed63dc2767",
+    "uncompressed_bytes": 1496
+  },
+  "gcs.txt": {
+    "sha256": "09b4e4dac2c107f6354e9a8bef25dc1efb96435a68460c149dfe3784ba79990b",
+    "uncompressed_bytes": 575
+  }
+}

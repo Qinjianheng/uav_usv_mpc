@@ -1,0 +1,130 @@
+FFFF                                                                     [100%]
+=================================== FAILURES ===================================
+_ test_front_candidate_extrinsics_keep_physical_model_and_px4_reference_separate[0.35] _
+
+x = 0.35
+
+    @pytest.mark.parametrize('x', (.35, .45, .55))
+    def test_front_candidate_extrinsics_keep_physical_model_and_px4_reference_separate(x):
+        contract = deepcopy(load_contract(ROOT/'src/uav_usv_bringup/config/p76_contract.yaml'))
+        contract['camera']['translation_flu'] = [x, 0., .55]
+>       bindings = parameter_bindings(contract)
+
+test/test_p761_mechanical_mount.py:19: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+uav_control/common/p76_contract.py:50: in parameter_bindings
+    _validate(contract)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+c = {'_path': '/home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/p76_contract.yaml', 'camera': {'depth_clip': [0.05, 2...tector': {'backend': 'onnxruntime', 'class_name': 'red_ball', 'confidence_threshold': 0.5, 'cpu_threads': 1, ...}, ...}
+
+    def _validate(c):
+        if c['timing']['maximum_source_age'] != .125:
+            raise ValueError('P76_SOURCE_AGE')
+        if c['timing']['maximum_pose_bracket'] != .05:
+            raise ValueError('P76_POSE_BRACKET')
+        if (c['candidate']['capture_radius'] != .25
+                or 'minimum_origin_height' in c['candidate']
+                or c['candidate']['minimum_body_clearance'] != .02):
+            raise ValueError('P76_CAPTURE_SEA_BOUNDARY')
+        camera, follow = c['camera'], c['follow']
+        layouts = dict(revision32=(32., 5., 4.))
+        if ((camera['pitch_down_degrees'], follow['distance'], follow['height'])
+                != layouts.get(camera['layout']) or camera['translation_flu'] != [-.25, 0., .55]):
+>           raise ValueError('P76_UNAPPROVED_LAYOUT')
+E           ValueError: P76_UNAPPROVED_LAYOUT
+
+uav_control/common/p76_contract.py:35: ValueError
+_ test_front_candidate_extrinsics_keep_physical_model_and_px4_reference_separate[0.45] _
+
+x = 0.45
+
+    @pytest.mark.parametrize('x', (.35, .45, .55))
+    def test_front_candidate_extrinsics_keep_physical_model_and_px4_reference_separate(x):
+        contract = deepcopy(load_contract(ROOT/'src/uav_usv_bringup/config/p76_contract.yaml'))
+        contract['camera']['translation_flu'] = [x, 0., .55]
+>       bindings = parameter_bindings(contract)
+
+test/test_p761_mechanical_mount.py:19: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+uav_control/common/p76_contract.py:50: in parameter_bindings
+    _validate(contract)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+c = {'_path': '/home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/p76_contract.yaml', 'camera': {'depth_clip': [0.05, 2...tector': {'backend': 'onnxruntime', 'class_name': 'red_ball', 'confidence_threshold': 0.5, 'cpu_threads': 1, ...}, ...}
+
+    def _validate(c):
+        if c['timing']['maximum_source_age'] != .125:
+            raise ValueError('P76_SOURCE_AGE')
+        if c['timing']['maximum_pose_bracket'] != .05:
+            raise ValueError('P76_POSE_BRACKET')
+        if (c['candidate']['capture_radius'] != .25
+                or 'minimum_origin_height' in c['candidate']
+                or c['candidate']['minimum_body_clearance'] != .02):
+            raise ValueError('P76_CAPTURE_SEA_BOUNDARY')
+        camera, follow = c['camera'], c['follow']
+        layouts = dict(revision32=(32., 5., 4.))
+        if ((camera['pitch_down_degrees'], follow['distance'], follow['height'])
+                != layouts.get(camera['layout']) or camera['translation_flu'] != [-.25, 0., .55]):
+>           raise ValueError('P76_UNAPPROVED_LAYOUT')
+E           ValueError: P76_UNAPPROVED_LAYOUT
+
+uav_control/common/p76_contract.py:35: ValueError
+_ test_front_candidate_extrinsics_keep_physical_model_and_px4_reference_separate[0.55] _
+
+x = 0.55
+
+    @pytest.mark.parametrize('x', (.35, .45, .55))
+    def test_front_candidate_extrinsics_keep_physical_model_and_px4_reference_separate(x):
+        contract = deepcopy(load_contract(ROOT/'src/uav_usv_bringup/config/p76_contract.yaml'))
+        contract['camera']['translation_flu'] = [x, 0., .55]
+>       bindings = parameter_bindings(contract)
+
+test/test_p761_mechanical_mount.py:19: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+uav_control/common/p76_contract.py:50: in parameter_bindings
+    _validate(contract)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+c = {'_path': '/home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/p76_contract.yaml', 'camera': {'depth_clip': [0.05, 2...tector': {'backend': 'onnxruntime', 'class_name': 'red_ball', 'confidence_threshold': 0.5, 'cpu_threads': 1, ...}, ...}
+
+    def _validate(c):
+        if c['timing']['maximum_source_age'] != .125:
+            raise ValueError('P76_SOURCE_AGE')
+        if c['timing']['maximum_pose_bracket'] != .05:
+            raise ValueError('P76_POSE_BRACKET')
+        if (c['candidate']['capture_radius'] != .25
+                or 'minimum_origin_height' in c['candidate']
+                or c['candidate']['minimum_body_clearance'] != .02):
+            raise ValueError('P76_CAPTURE_SEA_BOUNDARY')
+        camera, follow = c['camera'], c['follow']
+        layouts = dict(revision32=(32., 5., 4.))
+        if ((camera['pitch_down_degrees'], follow['distance'], follow['height'])
+                != layouts.get(camera['layout']) or camera['translation_flu'] != [-.25, 0., .55]):
+>           raise ValueError('P76_UNAPPROVED_LAYOUT')
+E           ValueError: P76_UNAPPROVED_LAYOUT
+
+uav_control/common/p76_contract.py:35: ValueError
+_ test_session_model_has_connected_massive_camera_support_and_housing_collision _
+
+tmp_path = PosixPath('/tmp/pytest-of-qin/pytest-46/test_session_model_has_connect0')
+
+    def test_session_model_has_connected_massive_camera_support_and_housing_collision(tmp_path):
+        contract = load_contract(ROOT/'src/uav_usv_bringup/config/p76_contract.yaml')
+        metadata = prepare_model(contract['dynamics']['source_camera_model'],
+                                 contract['dynamics']['px4_model_root'], tmp_path/'models', contract)
+        tree = ET.parse(tmp_path/'models/x500_mono_cam/model.sdf')
+        camera = tree.find(".//link[@name='front_camera_link']")
+        support = tree.find(".//link[@name='p761_camera_support']")
+>       assert camera.find('collision/geometry/box/size') is not None
+E       AssertionError: assert None is not None
+E        +  where None = <built-in method find of xml.etree.ElementTree.Element object at 0x7c6f6b7f6110>('collision/geometry/box/size')
+E        +    where <built-in method find of xml.etree.ElementTree.Element object at 0x7c6f6b7f6110> = <Element 'link' at 0x7c6f6b7f6110>.find
+
+test/test_p761_mechanical_mount.py:31: AssertionError
+=========================== short test summary info ============================
+FAILED test/test_p761_mechanical_mount.py::test_front_candidate_extrinsics_keep_physical_model_and_px4_reference_separate[0.35]
+FAILED test/test_p761_mechanical_mount.py::test_front_candidate_extrinsics_keep_physical_model_and_px4_reference_separate[0.45]
+FAILED test/test_p761_mechanical_mount.py::test_front_candidate_extrinsics_keep_physical_model_and_px4_reference_separate[0.55]
+FAILED test/test_p761_mechanical_mount.py::test_session_model_has_connected_massive_camera_support_and_housing_collision
+4 failed in 0.19s

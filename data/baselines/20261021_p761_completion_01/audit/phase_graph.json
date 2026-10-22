@@ -1,0 +1,50 @@
+{
+  "scope": "Actual ROS wiring with synthetic observations; not estimator accuracy or flight qualification",
+  "passed": true,
+  "phases": [
+    {
+      "phase": "FOLLOW_ACTIVE",
+      "active": {
+        "spatial": true,
+        "image": false
+      },
+      "output_counts": {
+        "spatial": 207,
+        "image": 0
+      }
+    },
+    {
+      "phase": "Y_HANDOVER",
+      "active": {
+        "spatial": false,
+        "image": true
+      },
+      "output_counts": {
+        "spatial": 207,
+        "image": 45
+      }
+    },
+    {
+      "phase": "PAPER_INTERCEPT_ACTIVE",
+      "active": {
+        "spatial": false,
+        "image": true
+      },
+      "output_counts": {
+        "spatial": 207,
+        "image": 90
+      }
+    },
+    {
+      "phase": "SAFE_RECOVERY",
+      "active": {
+        "spatial": false,
+        "image": false
+      },
+      "output_counts": {
+        "spatial": 207,
+        "image": 91
+      }
+    }
+  ]
+}

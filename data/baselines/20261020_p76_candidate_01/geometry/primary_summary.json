@@ -1,0 +1,23 @@
+{
+  "scope": "Static actual composite Gazebo render, not closed-loop flight",
+  "qualified": false,
+  "cases": 33,
+  "follow_cases": 15,
+  "completely_occluded_follow": 3,
+  "minimum_follow_visible_fraction": 0.0,
+  "level_follow_visible_fraction": [
+    0.2552204176334107,
+    0.40350877192982454,
+    0.6375
+  ],
+  "native_capture_geometry": {
+    "minimum_origin_height": 0.33,
+    "capture_radius": 0.25,
+    "minimum_target_height_for_any_hit": 0.08,
+    "low_heave_minimum_distance": 0.48,
+    "zero_heave_minimum_distance": 0.33,
+    "high_heave_minimum_distance": 0.18
+  },
+  "reason": "AIRFRAME_OCCLUSION_AND_PHASE_DEPENDENT_CAPTURE_REACHABILITY",
+  "source_frames_sha256": "c0d253c65cfa6a1e0dcccc9f749f06d4212901449088309758f12e442034d54a"
+}

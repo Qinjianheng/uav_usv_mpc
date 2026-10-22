@@ -157,6 +157,8 @@ def prepare(output, scene, motion=None, capture=False, config_file=None):
         raise ValueError('P7_F2_OR_F3_REQUIRED')
     config_file = CONFIG if config_file is None else Path(config_file).resolve()
     flight = yaml.safe_load(config_file.read_text())
+    if flight['trajectory_tracker_node']['ros__parameters'].get('p76_enabled', False):
+        raise ValueError('P76_REQUIRES_BODYRATE_QUALIFICATION_RUNNER')
     constant_speed = flight['moving_target']['ros__parameters']['horizontal_speed']
     sources = [config_file]
     if scene == 'f3':

@@ -1,0 +1,6 @@
+make: 进入目录“/data/PX4-Autopilot”
+[1/4] Generating XRCE-DDS topic bridge
+[2/4] Building CXX object src/modules/uxrce_dds_client/CMakeFiles/modules__uxrce_dds_client.dir/uxrce_dds_client.cpp.o
+[3/4] Linking CXX static library src/modules/uxrce_dds_client/libmodules__uxrce_dds_client.a
+[4/4] Linking CXX executable bin/px4
+make: 离开目录“/data/PX4-Autopilot”

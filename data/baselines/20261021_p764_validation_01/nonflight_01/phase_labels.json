@@ -1,0 +1,2711 @@
+[
+  {
+    "stamp": 1792577420.4627602,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577420.5648968,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577420.663107,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577420.7629461,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577420.863157,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577420.9630466,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577421.0632274,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577421.1631627,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577421.26362,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577421.364666,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577421.4638784,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577421.5642505,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577421.6633666,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577421.7633245,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577421.86357,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577421.9685435,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577422.0660193,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577422.163361,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577422.2632854,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577422.3632746,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577422.4632754,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577422.5633428,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577422.6633291,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577422.7661939,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577422.8632348,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577422.9634607,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577423.063432,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577423.1633143,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577423.2633495,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577423.3633802,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577423.4634914,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577423.564453,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577423.6657188,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577423.7637854,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577423.8633528,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577423.964174,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577424.0634017,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577424.1633677,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577424.2634258,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577424.3633833,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577424.463342,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577424.56349,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577424.6665466,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577424.7645001,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577424.8633435,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577424.9638638,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577425.0633597,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577425.163392,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577425.2644718,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577425.3636615,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577425.4664102,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577425.5634139,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577425.6635218,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577425.7633543,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577425.865426,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577425.9659443,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577426.06362,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577426.1634862,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577426.2633488,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577426.3634865,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577426.463788,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577426.5646002,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577426.6639018,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577426.763938,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577426.8653016,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577426.9640827,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577427.0635552,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577427.1700146,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577427.264574,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577427.3633327,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577427.46423,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577427.563362,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577427.66335,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577427.7633483,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577427.8642669,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577427.964348,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577428.0635316,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577428.1647594,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577428.2634935,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577428.363357,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577428.463432,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577428.563383,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577428.6635575,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577428.7633233,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577428.863395,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577428.9634504,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577429.0634377,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577429.1633644,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577429.2638538,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577429.3640935,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577429.4633906,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577429.5633695,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577429.663405,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577429.763387,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577429.8633785,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577429.9634051,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577430.0633838,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577430.1633842,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577430.2633424,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577430.3642547,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577430.4633067,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577430.5633798,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577430.6635282,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577430.7635508,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577430.863357,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577430.9634762,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577431.0637922,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577431.1635463,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577431.2639725,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577431.3640711,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577431.4633827,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577431.5634727,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577431.6638353,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577431.763484,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577431.863411,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577431.9640112,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577432.0638187,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577432.1642294,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577432.2633636,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577432.3639705,
+    "schema_version": 2,
+    "phase": "FOLLOW_ACTIVE",
+    "epoch": 0,
+    "y_stamp": 0.0,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577432.4634151,
+    "schema_version": 2,
+    "phase": "Y_HANDOVER",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577432.5635285,
+    "schema_version": 2,
+    "phase": "Y_HANDOVER",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577432.6637688,
+    "schema_version": 2,
+    "phase": "Y_HANDOVER",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577432.7640214,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577432.8639123,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577432.9633641,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577433.0636666,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577433.1644592,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577433.2642992,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577433.3633943,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577433.4635372,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577433.5634303,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577433.663351,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577433.7633865,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577433.8634903,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577433.9634025,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577434.063465,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577434.1644366,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577434.2641282,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577434.3634298,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577434.4634252,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577434.5634608,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577434.6635492,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577434.7638333,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577434.863484,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577434.9635298,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577435.063449,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577435.163423,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577435.263507,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577435.3635764,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577435.4636168,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577435.563449,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577435.6634686,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577435.7636297,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577435.8633928,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577435.9637256,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577436.0636463,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577436.1642754,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577436.2640917,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577436.3640733,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577436.4634013,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577436.5634902,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577436.6635103,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577436.7634642,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577436.8640804,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577436.963385,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577437.0634296,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577437.1634676,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577437.2635114,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577437.363725,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577437.4634109,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577437.563364,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577437.6633754,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577437.7634172,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577437.8633516,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577437.9633768,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577438.0634594,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577438.1634467,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577438.2634242,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577438.3635228,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577438.4634504,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577438.5635397,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577438.6635518,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577438.7636282,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577438.8636036,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577438.963559,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577439.0635202,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577439.163815,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577439.2633722,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577439.3634295,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577439.4634852,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577439.5634103,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577439.663944,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577439.7633846,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577439.8640928,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577439.963445,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577440.0634277,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577440.1643684,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577440.26424,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577440.363986,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577440.4644923,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577440.5634315,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577440.6636646,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577440.7633858,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577440.863645,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577440.9641829,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577441.0633729,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577441.1633694,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577441.2649786,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577441.3640149,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577441.4633818,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577441.5636806,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577441.664094,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577441.7643156,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577441.8633497,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577441.964082,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577442.0641768,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577442.1633542,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577442.263402,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577442.363412,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577442.4635427,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577442.5635498,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577442.6636157,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577442.7633839,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577442.8636975,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577442.9634562,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577443.063531,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577443.1638682,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577443.2637942,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577443.363861,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577443.4633727,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577443.5645475,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577443.6647832,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577443.763846,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577443.8633997,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577443.964337,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577444.115165,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577444.1644156,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577444.263479,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577444.3644366,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577444.464383,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577444.5644958,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577444.6634467,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577444.7634656,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577444.8642483,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577444.964265,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577445.0634165,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577445.1645367,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577445.2637262,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577445.363394,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577445.4633553,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577445.5658827,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577445.6633685,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577445.7634444,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577445.8634393,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577445.9634304,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577446.0634453,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577446.1646843,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577446.263514,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577446.3645349,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577446.463379,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577446.5636213,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577446.6633928,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577446.7634652,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577446.8636706,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577446.9633799,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577447.0633726,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577447.1639738,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577447.26531,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577447.3634765,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577447.4634926,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577447.5634887,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577447.663412,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577447.7634969,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577447.8634257,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577447.9634473,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577448.0633965,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577448.163771,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577448.2634103,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577448.3645039,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577448.4645956,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577448.5639162,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577448.6644835,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577448.7654421,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577448.863507,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577448.96353,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577449.063333,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577449.163546,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577449.2633538,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577449.3653347,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577449.463391,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577449.564111,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577449.6633668,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577449.7635303,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577449.8634849,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577449.9634352,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577450.0636547,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577450.1634784,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577450.2635126,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577450.3650086,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  },
+  {
+    "stamp": 1792577450.4646494,
+    "schema_version": 2,
+    "phase": "PAPER_INTERCEPT_ACTIVE",
+    "epoch": 1,
+    "y_stamp": 1792577432.4634085,
+    "diagnostic_only": true,
+    "physical_guidance_owner": "NONE"
+  }
+]

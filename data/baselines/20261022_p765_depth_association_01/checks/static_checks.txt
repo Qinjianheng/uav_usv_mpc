@@ -1,0 +1,7 @@
+['python3', '-m', 'flake8', 'src/uav_control/uav_control', 'src/uav_control/test', 'scripts', '--max-line-length=99']: exit=0
+['bash', '-n', 'scripts/build_workspace.sh']: exit=0
+['bash', '-n', 'scripts/start_px4_ros2.sh']: exit=0
+['bash', '-n', 'scripts/sync_github.sh']: exit=0
+['bash', '-n', 'scripts/test_research_planners.sh']: exit=0
+['bash', '-n', 'scripts/uav_lab.sh']: exit=0
+['git', 'diff', '--check']: exit=0

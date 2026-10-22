@@ -1,0 +1,7 @@
+Starting >>> uav_control
+[Processing: uav_control]
+Finished <<< uav_control [30.5s]
+Starting >>> uav_usv_bringup
+Finished <<< uav_usv_bringup [0.08s]
+
+Summary: 2 packages finished [30.7s]

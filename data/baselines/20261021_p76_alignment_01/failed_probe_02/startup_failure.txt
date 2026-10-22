@@ -1,0 +1,12 @@
+[INFO] [launch]: All log files can be found below /home/qin/data/uav_usv_mpc/data/experiments/20261021_p76_px4_probe_02/ros_logs/2026-10-21-07-48-44-893565-qin-GLO-FX6-62479
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [python3-1]: process started with pid [62480]
+[python3-1] Traceback (most recent call last):
+[python3-1]   File "/home/qin/data/uav_usv_mpc/scripts/p76_px4_probe.py", line 157, in <module>
+[python3-1]     raise SystemExit(main())
+[python3-1]   File "/home/qin/data/uav_usv_mpc/scripts/p76_px4_probe.py", line 143, in main
+[python3-1]     node = DisarmedProbe(options.output)
+[python3-1]   File "/home/qin/data/uav_usv_mpc/scripts/p76_px4_probe.py", line 47, in __init__
+[python3-1]     version = message_type.MESSAGE_VERSION
+[python3-1] AttributeError: type object 'VehicleControlMode' has no attribute 'MESSAGE_VERSION'
+[ERROR] [python3-1]: process has died [pid 62480, exit code 1, cmd 'python3 /home/qin/data/uav_usv_mpc/scripts/p76_px4_probe.py --output /home/qin/data/uav_usv_mpc/data/experiments/20261021_p76_px4_probe_02'].

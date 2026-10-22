@@ -1,0 +1,496 @@
+Matplotlib created a temporary config/cache directory at /tmp/matplotlib-49gstlkn because the default path (/home/qin/.config/matplotlib) is not a writable directory; it is highly recommended to set the MPLCONFIGDIR environment variable to a writable directory, in particular to speed up the import of Matplotlib and to better support multiprocessing.
+........................................................................ [  2%]
+........................................................................ [  5%]
+......s................................................................. [  8%]
+........................................................................ [ 11%]
+........................................................................ [ 13%]
+........................................................................ [ 16%]
+........................................................................ [ 19%]
+........................................................................ [ 22%]
+........................................................................ [ 25%]
+........................................................................ [ 27%]
+.....................F.................................................. [ 30%]
+........................................................................ [ 33%]
+........................................................................ [ 36%]
+........................................................................ [ 38%]
+........................................................................ [ 41%]
+........................................................................ [ 44%]
+........................................................................ [ 47%]
+........................................................................ [ 50%]
+........................................................................ [ 52%]
+.......................................................................s [ 55%]
+........................................................................ [ 58%]
+........................................................................ [ 61%]
+........................................................................ [ 64%]
+........................................................................ [ 66%]
+........................................................................ [ 69%]
+........................................................................ [ 72%]
+........................................................................ [ 75%]
+........................................................................ [ 77%]
+................................................................F....... [ 80%]
+........................................................................ [ 83%]
+........................................................................ [ 86%]
+........................................................................ [ 89%]
+........................................................................ [ 91%]
+........................................................................ [ 94%]
+........................................................................ [ 97%]
+...................................................................      [100%]
+=================================== FAILURES ===================================
+__________ test_late_subscriber_receives_latched_fault_over_local_dds __________
+
+    def test_late_subscriber_receives_latched_fault_over_local_dds():
+        import time
+        import rclpy
+        from rclpy.context import Context
+        from rclpy.executors import SingleThreadedExecutor
+        from rclpy.node import Node
+        from uav_control.common.navigation_frame import (
+            FRAME_FAULT_TOPIC, install_navigation_frame_guard, navigation_frame_fault_qos)
+        context = Context()
+>       rclpy.init(context=context)
+
+test/test_navigation_frame_fault.py:143: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py:88: in init
+    context.init(args, domain_id=domain_id)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <rclpy.context.Context object at 0x76a340deb3d0>, args = None
+
+    def init(self,
+             args: Optional[List[str]] = None,
+             *,
+             initialize_logging: bool = True,
+             domain_id: Optional[int] = None):
+        """
+        Initialize ROS communications for a given context.
+    
+        :param args: List of command line arguments.
+        """
+        # imported locally to avoid loading extensions on module import
+        from rclpy.impl.implementation_singleton import rclpy_implementation as _rclpy
+    
+        global g_logging_ref_count
+        with self._lock:
+            if domain_id is not None and domain_id < 0:
+                raise RuntimeError(
+                    'Domain id ({}) should not be lower than zero.'
+                    .format(domain_id))
+    
+            if self.__context is not None:
+                raise RuntimeError('Context.init() must only be called once')
+    
+            self.__context = _rclpy.Context(
+                args if args is not None else sys.argv,
+                domain_id if domain_id is not None else _rclpy.RCL_DEFAULT_DOMAIN_ID)
+            if initialize_logging and not self._logging_initialized:
+                with g_logging_configure_lock:
+                    g_logging_ref_count += 1
+                    if g_logging_ref_count == 1:
+>                       _rclpy.rclpy_logging_configure(self.__context)
+E                       RuntimeError: Failed opening file /home/qin/.ros/log/python3_24_1792636589200.log for writing: Read-only file system
+
+/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/context.py:79: RuntimeError
+_________________________________ test_pep257 __________________________________
+
+    @pytest.mark.linter
+    @pytest.mark.pep257
+    def test_pep257():
+        package = str(Path(__file__).resolve().parents[1])
+        rc = main(argv=[package])
+>       assert rc == 0, 'Found code style errors / warnings'
+E       AssertionError: Found code style errors / warnings
+E       assert 1 == 0
+
+test/test_pep257.py:25: AssertionError
+----------------------------- Captured stdout call -----------------------------
+checking /home/qin/data/uav_usv_mpc/src/uav_control/setup.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/synthetic_sphere_fixture.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_approach_continuity.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_audit_analysis.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_audit_kf.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_audit_startup.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_audit_terminal.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_bearing_approach.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_camera_profile.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_camera_visibility.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_constant_velocity_kalman.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_continuous_follow.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_copyright.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_direct_reference_minco.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_dual_tof_selector.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_fast_follow_minco.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_fast_minco_planner.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_figure_eight_trajectory.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_finite_horizon_intercept_planner.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_flake8.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_flight_guidance.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_follow_attitude_bounds.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_follow_contract.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_follow_delivery_budget.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_follow_epoch.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_follow_failure_audit.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_follow_fast_validation.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_follow_limits.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_follow_math_runtime.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_follow_minco_experiment.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_follow_mpc_seed.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_follow_mpc_shadow_node.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_follow_profile.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_follow_research_algorithms.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_follow_research_runtime.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_follow_revalidation.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_follow_sitl_execution.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_follow_wait.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_front_tof_monitor.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_gazebo_entity_pose.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_gazebo_target_visualizer.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_gazebo_terminal.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_gz_gnss_initialization.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_gz_magnetic_initialization.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_gz_magnetometer_frame.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_hypothetical_follow.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_intercept_evaluator.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_intercept_evaluator_node.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_intercept_loss_braking.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_intercept_planner_messages.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_intercept_reachability.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_intercept_yaw_feedforward.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_kf_truth_frame.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_minco_trajectory.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_mission_manager.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_mission_manager_node.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_modular_configuration.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_modular_interfaces.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_modular_launch_contract.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_moving_target_timebase.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_mpc_seed_experiment.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_mpc_seed_replay.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_mpc_shadow_inputs.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_native_capture_geometry.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_native_capture_stream.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_navigation_frame_fault.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_navigation_sample_time.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_one_click_p7.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p43_follow_solver.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p43_objective.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p44_follow_solver.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p44_invariant_cache.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p45_analysis.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p45_isolation.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p46_follow_study.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p47_derivative_diagnosis.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p47_execution_timeline.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p47_follow_guided_solver.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p47_follow_rollout_fast.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p47_physical_diagnosis.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p47_sitl_plan.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p47_terminal_correction.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p4_receiver_node.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p4_session_safety.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p51_execution_audit.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p51_follow_admission.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p51_sitl.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p52_activation_wakeup.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p52_budget_scheduling.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p52_causal_admission.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p52_execution_chain.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p52_retry_freshness.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p52_sitl.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p53_acceleration_feedforward.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p53_cost_evidence.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p53_dispatch_budget.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p53_input_roles.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p53_observer_epoch.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p53_observer_tolerance.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p53_practical_admission.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p53_pre_x_sync.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p53_sitl.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p53_supply.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p53_wakeup_faults.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p5_release.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p5_sitl.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p61_diagnostic_demand.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p61_successor_replay.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p61_supply_analysis.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p61_visibility_batch.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p61_worker_timing.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p61r_imm_qualification.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p6_actual_analysis.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p6_adaptive_integration.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p6_adaptive_viewpoint.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p6_console.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p6_contract.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p6_critical_completion.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p6_imm_actual_validation.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p6_imm_node.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p6_imm_predictor.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p6_imm_study.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p6_input_aligned_dispatch.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p6_locked_delivery.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p6_motion_node.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p6_motion_profiles.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p6_navigation_delivery.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p6_planner_cooldown.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p6_receiver_delivery_deadline.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p6_revalidation_audit_order.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p6_risk_prefix_review.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p6_robust_visibility.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p6_sitl_driver.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p6_successor_delivery.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p6_takeoff_visual_follow.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p6_target_time_contract.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p6_turn_case_config.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p6_turn_reference.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p74_fast_capture.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p75_precision.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p761_calibration.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p761_geometry.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p761_mechanical_mount.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p761_safety_separation.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p762_calibration_assessment.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p763_b_physics.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p763_bodyrate_tracker.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p763_calibration_control.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p763_parallel_dkf.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p764_diagnostic.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p764_handover.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p764_initialization.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p764_protocol.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p764_review_regressions.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p765_depth_association.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p765_dynamics_analysis.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p765_e2_analysis.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p765_geometry.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p765_qualification.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p765_roi_capture.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p765_timing.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p76_bodyrate_safety.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p76_config_contract.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p76_dkf_mode.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p76_filter_phase.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p76_handover.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p76_native_pose.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p76_paper_attitude.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p76_paper_controller.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p76_paper_ibvs.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p76_paper_los.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p76_paper_png.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p76_physical_clearance.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p76_px4_dds.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p76_yolo_detection.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p7_capture.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p7_capture_completion.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p7_contact_height.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p7_epoch_reference.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p7_follow.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p7_follow_continuity.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p7_follow_repair.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p7_kf_dynamic_analysis.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p7_mission.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p7_nearfield_braking.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p7_px4_local_axis.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p7_sitl.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p7_spatial_guidance.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p7_spatial_integration.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p7_terminal_paper.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p7_visual_guidance.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p8_pose_time_audit.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_p8_visual_bias_analysis.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_pep257.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_planned_attitude.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_planner_pipeline.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_planner_prediction_cadence.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_polynomial_bounds.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_pose_frame_diagnostics.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_prediction_error_tracker.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_process_isolation.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_progress_follow.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_px4_navigation_audit.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_record_snapshot.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_rgbd_target_localizer.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_run_logging.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_runtime_performance.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_short_follow.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_startup_profile.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_strict_visual_control.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_target_bearing.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_target_kalman_filter.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_target_visibility.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_terminal_execution.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_terminal_visual_yaw.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_tof_depth_model.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_tof_sphere_localization.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_tracker_parameter_inheritance.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_tracking_progress.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_trajectory_tracker_node.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_trajectory_tracking.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_uav_heading_diagnostics.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_vision_p6_dynamic_acceptance.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_vision_p6_pose_history_analysis.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_visual_delivery_latency.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_workspace_discovery.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/test/test_y_position_audit.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/__init__.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/analysis/__init__.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/analysis/clock_budget.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/analysis/execution_timeline.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/analysis/frame_reference.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/analysis/imm_calibration.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/analysis/native_time.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/analysis/observation_pairing.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/analysis/offline_geometry.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/analysis/visual_bias.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/archive/__init__.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/common/__init__.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/common/navigation_frame.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/common/navigation_state.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/common/p761_geometry.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/common/p76_body_geometry.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/common/p76_contract.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/common/p76_model.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/common/p76_native.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/common/p76_phase.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/common/p76_readiness.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/common/record_snapshot.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/common/runtime_performance.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/common/sea_safety.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/control/__init__.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/control/flight_guidance.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/control/p763_calibration_control.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/control/p76_bodyrate_safety.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/control/p76_minco_bodyrate_tracker.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/control/p76_mode_coordinator.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/control/p76_paper_attitude.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/control/p76_paper_controller.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/control/p76_paper_ibvs.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/control/p76_paper_png.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/control/p76_paper_thrust.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/control/p76_recovery.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/control/p76_tracker_runtime.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/control/p7_spatial_guidance.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/control/p7_visual_guidance.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/control/trajectory_tracker_node.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/control/trajectory_tracking.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/controllers/__init__.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/controllers/direct_reference_minco.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/controllers/follow_guided_feasible.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/controllers/follow_mpc_seed.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/controllers/follow_mpc_shadow_node.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/controllers/follow_research_shadow_node.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/controllers/follow_research_solver.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/controllers/follow_transport.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/controllers/mpc_shadow_inputs.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/controllers/p43_follow_solver.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/controllers/p44_follow_solver.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/controllers/p4_follow_planner_node.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/controllers/pid.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/controllers/progress_follow_solver.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/controllers/realtime_follow_solver.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/controllers/short_follow_solver.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/evaluation/__init__.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/evaluation/gazebo_capture_geometry.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/evaluation/gazebo_entity_pose.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/evaluation/gazebo_terminal.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/evaluation/intercept_evaluator.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/evaluation/intercept_evaluator_node.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/evaluation/pose_frame_diagnostics.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/evaluation/run_metrics.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/evaluation/uav_heading_diagnostics.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/figure_eight_trajectory.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/gazebo_target_visualizer.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/__init__.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/adaptive_follow_initializer.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/adaptive_viewpoint.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/camera_visibility.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/camera_visibility_batch.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/fast_follow_minco.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/fast_minco_objective.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/fast_minco_planner.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/finite_horizon_intercept_planner.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/follow_admission.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/follow_attitude_bounds.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/follow_contract.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/follow_cost_evidence.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/follow_delivery_budget.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/follow_epoch.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/follow_fast_validation.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/follow_limits.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/follow_math_runtime.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/follow_minco_execution.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/follow_minco_optimizer.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/follow_problem.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/follow_profile.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/follow_reference.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/follow_revalidation.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/follow_rollout.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/follow_sitl_gate.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/follow_terminal_correction.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/follow_time_contract.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/greedy_follow_initializer.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/intercept_planner_node.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/intercept_reachability.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/minco_trajectory.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/p43_minco_objective.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/p44_invariant_cache.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/p6_follow.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/planned_attitude.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/planner_pipeline.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/polynomial_bounds.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/polynomial_extrema.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/rgbd_visibility.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/robust_visibility.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/start_jerk.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/successor_delivery.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/guidance/yaw_trajectory.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/mission/__init__.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/mission/mission_manager.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/mission/mission_manager_node.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/mission/target_visibility.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/motion_mode_client.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/moving_target.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/perception/__init__.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/perception/dual_tof_selector.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/perception/front_tof_monitor.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/perception/inference_worker.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/perception/p765_geometry.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/perception/p765_roi_capture.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/perception/rgbd_target_localizer.py
+/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/perception/rgbd_target_localizer.py:901 in public function `nearest_sphere_depth_component`: D213: Multi-line docstring summary should start at the second line
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/perception/target_bearing_node.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/perception/tof_depth_model.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/perception/tof_depth_node.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/perception/tof_sphere_localization.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/perception/yolo_consumers.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/perception/yolo_detection_contract.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/perception/yolo_inference.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/perception/yolo_target_detector.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/tracking/__init__.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/tracking/constant_velocity_kalman.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/tracking/delayed_image_kalman.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/tracking/delayed_spatial_kalman.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/tracking/image_dkf_node.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/tracking/imm_predictor.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/tracking/imm_target_predictor_node.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/tracking/maneuvering_target_predictor.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/tracking/prediction_error_tracker.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/tracking/ros_time.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/tracking/spatial_dkf_node.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/tracking/target_kalman_filter.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/tracking/target_prediction.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/tracking/target_predictor_node.py
+checking /home/qin/data/uav_usv_mpc/src/uav_control/uav_control/usv_motion_profiles.py
+1 errors
+=============================== warnings summary ===============================
+src/uav_control/test/test_flake8.py::test_flake8
+src/uav_control/test/test_flake8.py::test_flake8
+  Warning: SelectableGroups dict interface is deprecated. Use select.
+
+src/uav_control/test/test_p45_isolation.py::test_default_launch_resolves_log_directory_before_planner
+  Warning: Loggers have been already configured to output to log files below /tmp/pytest-of-qin/pytest-181/camera_launch_logs0/2026-10-22-10-36-22-179709-qin-GLO-FX6-24. Proceed at your own risk.
+
+-- Docs: https://docs.pytest.org/en/stable/warnings.html
+=========================== short test summary info ============================
+FAILED test/test_navigation_frame_fault.py::test_late_subscriber_receives_latched_fault_over_local_dds
+FAILED test/test_pep257.py::test_pep257 - AssertionError: Found code style er...
+2 failed, 2583 passed, 2 skipped, 3 warnings in 49.87s

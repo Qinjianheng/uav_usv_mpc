@@ -1,0 +1,9 @@
+{
+  "source": "/home/qin/Projects/PX4-Autopilot/build/px4_sitl_default/uORB/ucdr/vehicle_status.h",
+  "sha256": "9ad681f6a059ca2be1de5c008dc5a6bce4814d8abd3cc3983f3fbaff2368dd77",
+  "serialization": "timestamp adds time_offset; armed_time copied unchanged",
+  "historical_native_armed_time_us": 13028000,
+  "historical_wire_status_timestamp_us": 1792558188956100,
+  "actual_source": "data/experiments/20261021_p761_01/session_A1_03/calibration.jsonl",
+  "native_comparison": "native thrust timestamp >= native armed_time; ROS tick epoch is not an arming source"
+}

@@ -1,0 +1,56 @@
+{
+  "checks": [
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--cached",
+        "--check"
+      ],
+      "exit_code": 2,
+      "stdout": "data/baselines/20261021_p761_completion_01/audit/calibration_red.txt:9: trailing whitespace.\n+test/test_p761_calibration.py:19: \ndata/baselines/20261021_p761_completion_01/audit/calibration_red.txt:10: trailing whitespace.\n+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \ndata/baselines/20261021_p761_completion_01/audit/calibration_red.txt:32: trailing whitespace.\n+test/test_p761_calibration.py:26: \ndata/baselines/20261021_p761_completion_01/audit/calibration_red.txt:33: trailing whitespace.\n+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \ndata/baselines/20261021_p761_completion_01/audit/calibration_red.txt:40: trailing whitespace.\n+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \ndata/baselines/20261021_p761_completion_01/audit/calibration_red.txt:56: trailing whitespace.\n+test/test_p761_calibration.py:34: \ndata/baselines/20261021_p761_completion_01/audit/calibration_red.txt:57: trailing whitespace.\n+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \ndata/baselines/20261021_p761_completion_01/audit/calibration_red.txt:64: trailing whitespace.\n+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \ndata/baselines/20261021_p761_completion_01/audit/causal_pair_red.txt:10: trailing whitespace.\n+test/test_p761_calibration.py:109: \ndata/baselines/20261021_p761_completion_01/audit/causal_pair_red.txt:11: trailing whitespace.\n+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \ndata/baselines/20261021_p761_completion_01/audit/causal_pair_red.txt:18: trailing whitespace.\n+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \ndata/baselines/20261021_p761_completion_01/audit/causal_pair_red.txt:29: trailing whitespace.\n+    \ndata/baselines/20261021_p761_completion_01/audit/causal_pair_red.txt:40: trailing whitespace.\n+    \ndata/baselines/20261021_p761_completion_01/audit/mechanical_red.txt:13: trailing whitespace.\n+test/test_p761_mechanical_mount.py:19: \ndata/baselines/20261021_p761_completion_01/audit/mechanical_red.txt:14: trailing whitespace.\n+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \ndata/baselines/20261021_p761_completion_01/audit/mechanical_red.txt:17: trailing whitespace.\n+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \ndata/baselines/20261021_p761_completion_01/audit/mechanical_red.txt:48: trailing whitespace.\n+test/test_p761_mechanical_mount.py:19: \ndata/baselines/20261021_p761_completion_01/audit/mechanical_red.txt:49: trailing whitespace.\n+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \ndata/baselines/20261021_p761_completion_01/audit/mechanical_red.txt:52: trailing whitespace.\n+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \ndata/baselines/20261021_p761_completion_01/audit/mechanical_red.txt:83: trailing whitespace.\n+test/test_p761_mechanical_mount.py:19: \ndata/baselines/20261021_p761_completion_01/audit/mechanical_red.txt:84: trailing whitespace.\n+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \ndata/baselines/20261021_p761_completion_01/audit/mechanical_red.txt:87: trailing whitespace.\n+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \ndata/baselines/20261021_p761_completion_01/audit/relay_red.txt:21: trailing whitespace.\n+test/test_p761_calibration.py:99: \ndata/baselines/20261021_p761_completion_01/audit/relay_red.txt:22: trailing whitespace.\n+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \ndata/baselines/20261021_p761_completion_01/audit/relay_red.txt:33: trailing whitespace.\n+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \ndata/baselines/20261021_p761_completion_01/audit/relay_red.txt:41: trailing whitespace.\n+    \ndata/baselines/20261021_p761_completion_01/audit/relay_red.txt:44: trailing whitespace.\n+    \ndata/baselines/20261021_p761_completion_01/audit/relay_red.txt:54: trailing whitespace.\n+    \ndata/baselines/20261021_p761_completion_01/audit/safety_red.txt:19: trailing whitespace.\n+test/test_p761_safety_separation.py:23: \ndata/baselines/20261021_p761_completion_01/audit/safety_red.txt:20: trailing whitespace.\n+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \ndata/baselines/20261021_p761_completion_01/audit/safety_red.txt:23: trailing whitespace.\n+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \ndata/baselines/20261021_p761_completion_01/config/models/x500_mono_cam/model.sdf:3: trailing whitespace.\n+  \ndata/baselines/20261021_p761_completion_01/config/models/x500_mono_cam/model.sdf:10: trailing whitespace.\n+      \ndata/baselines/20261021_p761_completion_01/config/models/x500_mono_cam/model.sdf:41: trailing whitespace.\n+            \ndata/baselines/20261021_p761_completion_01/config/models/x500_mono_cam/model.sdf:54: trailing whitespace.\n+        \ndata/baselines/20261021_p761_completion_01/config/models/x500_mono_cam/model.sdf:68: trailing whitespace.\n+      \ndata/baselines/20261021_p76_alignment_01/config/models/x500_mono_cam/model.sdf:3: trailing whitespace.\n+  \ndata/baselines/20261021_p76_alignment_01/config/models/x500_mono_cam/model.sdf:10: trailing whitespace.\n+      \ndata/baselines/20261021_p76_alignment_01/config/models/x500_mono_cam/model.sdf:41: trailing whitespace.\n+            \ndata/baselines/20261021_p76_alignment_01/config/models/x500_mono_cam/model.sdf:54: trailing whitespace.\n+        \ndata/baselines/20261021_p76_alignment_01/config/models/x500_mono_cam/model.sdf:65: trailing whitespace.\n+      \ndata/baselines/20261022_p765_depth_association_01/checks/full_pytest.txt:52: trailing whitespace.\n+test/test_navigation_frame_fault.py:143: \ndata/baselines/20261022_p765_depth_association_01/checks/full_pytest.txt:53: trailing whitespace.\n+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \ndata/baselines/20261022_p765_depth_association_01/checks/full_pytest.txt:56: trailing whitespace.\n+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \ndata/baselines/20261022_p765_depth_association_01/checks/full_pytest.txt:67: trailing whitespace.\n+    \ndata/baselines/20261022_p765_depth_association_01/checks/full_pytest.txt:72: trailing whitespace.\n+    \ndata/baselines/20261022_p765_depth_association_01/checks/full_pytest.txt:79: trailing whitespace.\n+    \ndata/baselines/20261022_p765_depth_association_01/checks/full_pytest.txt:82: trailing whitespace.\n+    \npatches/px4/0004-p76-bodyrate-feedback-dds.patch:6: trailing whitespace.\n+ \npatches/px4/0004-p76-bodyrate-feedback-dds.patch:31: trailing whitespace.\n+ \npatches/px4/0004-p76-bodyrate-feedback-dds.patch:31: new blank line at EOF.\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--cached",
+        "--check",
+        "--",
+        ".",
+        ":!data/baselines",
+        ":!patches/px4/*.patch"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--cached",
+        "--check",
+        "cd3189a",
+        "--",
+        ".",
+        ":!data/baselines"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "exception": "Historical frozen bytes and raw patches preserved; editable source and new changes pass."
+}

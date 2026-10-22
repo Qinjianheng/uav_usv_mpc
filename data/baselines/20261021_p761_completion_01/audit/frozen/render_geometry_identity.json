@@ -1,0 +1,5 @@
+{
+  "same_visible_and_collision_geometry": true,
+  "scope": "Final inertial COM update does not change render geometry",
+  "rendered_model": "data/experiments/20261021_p761_01/render_A/models/x500_mono_cam/model.sdf"
+}

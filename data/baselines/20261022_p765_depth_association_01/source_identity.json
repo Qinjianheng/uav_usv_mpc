@@ -1,0 +1,13 @@
+{
+  "base_head": "951fd108b323fbaee98313d7a63d545c1d88aed4",
+  "master_before": "52e7aabc92fca0621cf66b91f38fcf1c10e183f8",
+  "sources": {
+    "scripts/p765_depth_association_analysis.py": "d16ac1161abc54b3f110f81760c06843900e3a10aaf9f7fe06d74be87e3dec41",
+    "src/uav_control/test/test_p765_depth_association.py": "bc47558aa8b3a56ece046d3156b4d05e6191d20bd8af4c1a9b2fdc286ed1169f",
+    "src/uav_control/uav_control/common/p76_contract.py": "4255d7454f4ab6e3122528ee833d756da00b58a83b641e2212dcb3364b1d1de6",
+    "src/uav_control/uav_control/perception/p765_roi_capture.py": "15c7a663a7afa1c195bab7b00e8d4b664d798aa41112809783c62b62cabbc9db",
+    "src/uav_control/uav_control/perception/rgbd_target_localizer.py": "5dd89f24a71cf01cb5e462075fe39e7eeef478eb1737addd3801afe54483fad4",
+    "src/uav_usv_bringup/config/p76_contract.yaml": "7ba022c9967cef0f11e281b14d682da6b2cb7643eb93597beda5f4b2c397df07",
+    "src/uav_usv_bringup/config/p76_yan_paper.yaml": "11b472849df69279a1e0da01e743557a0e2f92d7502137dbe98ded266bc63d62"
+  }
+}

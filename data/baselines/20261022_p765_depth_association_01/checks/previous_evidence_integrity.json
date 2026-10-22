@@ -1,0 +1,30 @@
+[
+  {
+    "package": "20261021_p762_calibration_01",
+    "exit_code": 0,
+    "checked_files": 41,
+    "failures": [],
+    "stderr": ""
+  },
+  {
+    "package": "20261021_p764_validation_01",
+    "exit_code": 0,
+    "checked_files": 57,
+    "failures": [],
+    "stderr": ""
+  },
+  {
+    "package": "20261022_p765_validation_01",
+    "exit_code": 0,
+    "checked_files": 155,
+    "failures": [],
+    "stderr": ""
+  },
+  {
+    "package": "20261022_p765_unarmed_01",
+    "exit_code": 0,
+    "checked_files": 20,
+    "failures": [],
+    "stderr": ""
+  }
+]

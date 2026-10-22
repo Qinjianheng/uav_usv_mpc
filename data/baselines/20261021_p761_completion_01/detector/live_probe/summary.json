@@ -1,0 +1,30 @@
+{
+  "kind": "Actual live Gazebo RGB -> ROS bridge -> ONNX -> ROS subscriber",
+  "qualified": false,
+  "flight_qualification": false,
+  "packets": 236,
+  "valid": 98,
+  "acquisition_age_seconds": {
+    "median": 0.06932437419891357,
+    "p95": 0.07992857694625854,
+    "maximum": 0.18368744850158691
+  },
+  "inference_seconds": {
+    "median": 0.046071681994362734,
+    "p95": 0.04836855129979085,
+    "maximum": 0.0702766479953425
+  },
+  "maximum_unique_publishers": 1,
+  "observed_packets_per_second": 20.12097102211652,
+  "valid_packet_age_seconds": {
+    "median": 0.06987559795379639,
+    "p95": 0.07354010343551635,
+    "maximum": 0.08433055877685547
+  },
+  "valid_but_stale_at_receipt": 0,
+  "reasons": {
+    "NO_DETECTION": 136,
+    "VALID": 98,
+    "YOLO_SOURCE_STALE_AFTER_INFERENCE": 2
+  }
+}

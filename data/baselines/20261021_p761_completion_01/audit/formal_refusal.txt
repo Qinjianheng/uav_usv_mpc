@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/home/qin/data/uav_usv_mpc/scripts/p76_config_audit.py", line 122, in <module>
+    main()
+  File "/home/qin/data/uav_usv_mpc/scripts/p76_config_audit.py", line 111, in main
+    result = audit(options.contract, options.profile, options.model_root, options.require_flight,
+  File "/home/qin/data/uav_usv_mpc/scripts/p76_config_audit.py", line 77, in audit
+    validate_calibration(contract, model_root, ROOT)
+  File "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/common/p76_readiness.py", line 31, in validate_calibration
+    raise ValueError('P76_ACTUAL_BODYRATE_CALIBRATION_MISSING')
+ValueError: P76_ACTUAL_BODYRATE_CALIBRATION_MISSING

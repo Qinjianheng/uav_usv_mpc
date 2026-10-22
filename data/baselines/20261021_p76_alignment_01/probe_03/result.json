@@ -1,0 +1,19 @@
+{
+  "success": true,
+  "reason": "DISARMED_BODYRATE_AND_VELOCITY_ACK_VERIFIED",
+  "scope": "DISARMED_DDS_MODE_INTERFACE_ONLY",
+  "flight_qualified": false,
+  "thrust_curve_qualified": false,
+  "bodyrate_ack": true,
+  "velocity_ack": true,
+  "messages": {
+    "vehicle_angular_velocity": 175,
+    "vehicle_thrust_setpoint": 349,
+    "vehicle_rates_setpoint": 250,
+    "vehicle_status": 7,
+    "vehicle_control_mode": 7,
+    "actuator_motors": 175,
+    "vehicle_acceleration": 175
+  },
+  "elapsed": 2.824714506001328
+}

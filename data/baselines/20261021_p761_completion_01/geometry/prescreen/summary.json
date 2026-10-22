@@ -1,0 +1,44 @@
+[
+  {
+    "name": "A",
+    "translation_flu": [
+      0.35,
+      0.0,
+      0.55
+    ],
+    "conflicts": [],
+    "occluded_follow": 0,
+    "complete_slow_geometric_path": true,
+    "legal_capture_points": 3,
+    "scope": "Box-based analytical screening; not detector or flight qualification",
+    "eligible_for_render": true
+  },
+  {
+    "name": "B",
+    "translation_flu": [
+      0.45,
+      0.0,
+      0.55
+    ],
+    "conflicts": [],
+    "occluded_follow": 0,
+    "complete_slow_geometric_path": false,
+    "legal_capture_points": 0,
+    "scope": "Box-based analytical screening; not detector or flight qualification",
+    "eligible_for_render": false
+  },
+  {
+    "name": "C",
+    "translation_flu": [
+      0.55,
+      0.0,
+      0.55
+    ],
+    "conflicts": [],
+    "occluded_follow": 0,
+    "complete_slow_geometric_path": false,
+    "legal_capture_points": 0,
+    "scope": "Box-based analytical screening; not detector or flight qualification",
+    "eligible_for_render": false
+  }
+]

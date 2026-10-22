@@ -1,5 +1,6 @@
-# EXPERIMENTAL: restored 28-degree/5m profile; new FOLLOW qualification required.
-# Opt-in only. See docs/current/p7_025_ibvs_png_upgrade.md.
+# P7.5 EXPERIMENTAL: 28-degree/5m, strict 0.25 m; current-source qualification required.
+# NOT FLIGHT QUALIFIED: no executable dynamic 0.25 m capture corridor yet.
+# Opt-in only. See docs/current/p75_variable_s_fast_precision_validation.md.
 # P7: X -> KF/BCTRA + R11 MINCO FOLLOW; Y -> bounded IBVS/PNG.
 # P7 spatial capture: 28-degree front camera, -5 m FOLLOW; legacy P7 remains selectable.
 trajectory_impact_sim:
@@ -64,7 +65,7 @@ trajectory_impact_sim:
     front_camera_max_depression_angle: 0.85
     terminal_max_acceleration: 3.0
     terminal_max_vertical_acceleration: 3.0
-    impact_radius: 0.5
+    impact_radius: 0.25
     enable_sea_contact_failure: true
     sea_surface_z: 0.0
     max_sim_duration: 30.0
@@ -199,7 +200,7 @@ intercept_planner_node:
     maximum_vertical_acceleration: 3.0
     preferred_closing_speed: 1.5
     conservative_closing_speed: 1.2
-    planned_capture_radius: 0.5
+    planned_capture_radius: 0.25
     sea_surface_z: 0.0
     contact_clearance: 0.31
     preferred_clearance: 0.33
@@ -308,12 +309,14 @@ trajectory_tracker_node:
     p6_adaptive_viewpoint: false
     p7_guidance_enabled: true
     p7_spatial_enabled: true
+    p7_fast_capture_enabled: true
+    p7_precision_capture_enabled: true
     p7_common_epoch_enabled: true
     p7_project_capture_reference: true
     p7_minimum_camera_center_depth: 0.01
     p7_follow_geometry_enabled: true
     p7_camera_pitch_down: 0.4886921905584123
-    p7_capture_radius: 0.5
+    p7_capture_radius: 0.25
     p7_navigation_constant: 3.0
     p7_standoff_distance: 4.5
     p7_maximum_closing_speed: 2.0
@@ -341,8 +344,8 @@ intercept_evaluator_node:
   ros__parameters:
     capture_geometry_source: gazebo_native
     evaluation_rate_hz: 20.0
-    evaluation_capture_radius: 0.5
-    planned_capture_radius: 0.5
+    evaluation_capture_radius: 0.25
+    planned_capture_radius: 0.25
     sea_surface_z: 0.0
     enable_sea_contact_failure: true
     body_lower_extent: 0.23

@@ -6,6 +6,15 @@ P7 配置已实现 X 后 KF/BCTRA/MINCO FOLLOW、Y 后 IBVS/PNG 安全接近，�
 
 | 文档 | 用途 |
 |---|---|
+| [P7.6.5：前景深度修复与合并](p765_depth_association_merge.md) | 严格球面拟合前隔离远背景；冻结 ROI 由 0/10 至离线 10/10；本地 master 合并，实际资格仍阻断 |
+| [P7.6.5：授权未解锁采集](p765_authorized_unarmed_capture.md) | 原始深度证实mask远背景污染；ROI采集完整，三维0、影子567丢周期，E1仍FAIL |
+| [P7.6.5：离线修复与剩余阻断](p765_remaining_blockers.md) | 采集前的离线阶段、原始帧/运行代码身份与资格独立复算；E0 BLOCKED、E1/E2 FAIL、A1 NO-GO |
+| [P7.6.4：架构收敛与分级验证](p764_architecture_validation.md) | 初始化/准入修复；2493 项冻结回归通过；一次未解锁真实采集失败，E0 协议与 E2 长延迟仍阻断，A1 NO-GO |
+| [P7.6.2：A1 实测与交接阻断](p762_bodyrate_calibration_validation.md) | 因果配对实飞无旧故障；悬停通过，满推力退出约 240 ms 执行滞后导致上升越界；A1 未合格，A2/B 未运行 |
+| [P7.6.1：安装修复、校准流程与阻断](p761_paper_architecture_completion.md) | A 前置安装真实渲染 0/15 全遮挡；两次 A1 失败并停止后续，因果配对候选未再飞；2380 项当前回归通过，尚无 0.25 m 捕获资格 |
+| [P7.6：32°、物理净空与 PX4](p76_32deg_physical_clearance_px4.md) | 当前分支候选；删除固定 0.33 m 原点门槛，PX4 编译和未解锁模式接口通过；仍有遮挡及动力学校准阻断，未验证 0.25 m 捕获 |
+| [P7.5 变速 S 候选与几何阻断](p75_variable_s_fast_precision_validation.md) | 两相位离线保持视觉 40 s，最近约 0.471/0.477 m；28° 正常匹配姿态捕获几何冲突，未放行 SITL |
+| [P7.4 快速 0.25 m 候选与阻断](p74_fast_capture025_validation.md) | 静态内缩点存在；动态近场 RGB-D 仍失效，未获飞行资格，A/B/C 未执行；默认 0.50 m 未改 |
 | [恢复 0.5 m 与单次恒速八字](p7_radius05_validation_20261020.md) | 28°/5 m、14.48 s 捕获与世界暂停；区分判据放宽和控制精度，解释 0.25 m 参考/安全/可见性不一致 |
 | [相机/高度与同刻水平参考复验](p7_angle_height_retest_20261019.md) | 38°/5 m 两次 FOLLOW 均 100% 实际 MINCO；两次捕获仍失败，仅与原 28° 对比，保留不可达窗口与恢复交接边界 |
 | [P7.3 三维导引与 0.25 m 验证](p7_025_ibvs_png_upgrade.md) | 代码候选、相位可达性、两次 A 失败归因；B/C 未执行，默认配置已回退 |

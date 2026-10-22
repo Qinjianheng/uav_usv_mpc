@@ -1,0 +1,19 @@
+{
+  "ROS_VERSION": "2",
+  "ROS_PYTHON_VERSION": "3",
+  "ROS_LOCALHOST_ONLY": "0",
+  "ROS_DISTRO": "humble",
+  "UAV_USV_WS": "/home/qin/data/uav_usv_mpc",
+  "UAV_USV_RESEARCH_DIRECTORY": "/home/qin/data/uav_usv_mpc/data/experiments/p764_offline_validation/nonflight_01",
+  "UAV_USV_EXPERIMENT_LAUNCH": "p764_perception_probe.launch.py",
+  "UAV_USV_EXPERIMENT_CONFIG_FILE": "/home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/p76_yan_paper.yaml",
+  "UAV_USV_P76_CONTRACT": "/home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/p76_contract.yaml",
+  "UAV_USV_START_QGC": "false",
+  "UAV_USV_HEADLESS_GCS": "true",
+  "UAV_USV_GZ_SERVER_ONLY": "1",
+  "ROS_DOMAIN_ID": "43",
+  "GZ_PARTITION": "p764_unarmed_110180",
+  "ROS_LOG_DIR": "/home/qin/data/uav_usv_mpc/data/experiments/p764_offline_validation/nonflight_01/ros_logs",
+  "UAV_USV_TERMINAL_LOG_ROOT": "/home/qin/data/uav_usv_mpc/data/experiments/p764_offline_validation/nonflight_01",
+  "UAV_USV_SITL_GRANT": "/home/qin/data/uav_usv_mpc/data/experiments/p764_offline_validation/nonflight_01/sitl_execution_grant.json"
+}

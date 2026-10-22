@@ -1,0 +1,7 @@
+{
+  "completed": false,
+  "failure": "CALIBRATION_MOTION_ENVELOPE",
+  "stage": "A1",
+  "elapsed": 54.740313684989815,
+  "scope": "Actual isolated PX4/Gazebo calibration; not a target capture"
+}

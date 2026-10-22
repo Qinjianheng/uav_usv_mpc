@@ -32,12 +32,14 @@ def test_effective_p7_geometry_rejects_radius_or_height_mismatch(tmp_path):
     assert flight['trajectory_tracker_node']['ros__parameters']['flight_altitude'] == -5.
     assert research['p4_follow_planner_node']['ros__parameters']['flight_altitude'] == -5.
     assert flight['trajectory_tracker_node']['ros__parameters']['p7_capture_enabled']
-    config['intercept_evaluator_node']['ros__parameters']['evaluation_capture_radius'] = .25
+    config['intercept_evaluator_node']['ros__parameters']['evaluation_capture_radius'] = .5
     with pytest.raises(ValueError, match='RADIUS_CONFIG_MISMATCH'):
         validate_p7_geometry(config)
 
 
-def test_session_camera_uses_config_pitch_and_preserves_all_translation_and_body(tmp_path):
+@pytest.mark.parametrize('degrees,hfov', ((38., 1.74), (65., 1.74), (45., 2.3)))
+def test_session_camera_uses_config_pitch_and_preserves_all_translation_and_body(
+        tmp_path, degrees, hfov):
     spec = importlib.util.spec_from_file_location(
         'p73_prepare', ROOT/'scripts/prepare_gz_camera_model.py')
     module = importlib.util.module_from_spec(spec)
@@ -48,20 +50,25 @@ def test_session_camera_uses_config_pitch_and_preserves_all_translation_and_body
     source = [float(v) for v in pose.text.split()]
     assert source[4] == pytest.approx(math.radians(28.))
     # An explicit angle override stays in a session copy, never the source default.
-    module.prepare(model, tmp_path/'candidate', front_camera_pitch_down=math.radians(38.))
+    module.prepare(model, tmp_path/'candidate', front_camera_pitch_down=math.radians(degrees),
+                   front_camera_horizontal_fov=hfov)
     prepared = ET.parse(tmp_path/'candidate/model.sdf')
     actual_pose = prepared.find(".//link[@name='front_camera_link']/pose")
     actual = [float(v) for v in actual_pose.text.split()]
     assert actual[:4] == source[:4] and actual[5] == source[5]
-    assert actual[4] == pytest.approx(math.radians(38.))
+    assert actual[4] == pytest.approx(math.radians(degrees))
+    front = prepared.find(".//sensor[@name='front_tof_camera']/camera")
+    assert float(front.find('horizontal_fov').text) == hfov
+    assert float(front.find('clip/near').text) == .05
+    assert float(front.find('depth_camera/clip/near').text) == .05
 
 
 def test_failed_candidate_cannot_replace_default_follow_or_capture_criterion(tmp_path):
     from p7_follow_sitl import prepare
     prepare(tmp_path/'default', 'f2', capture=True)
     prepare(tmp_path/'candidate', 'f2', capture=True, config_file=CANDIDATE)
-    for name, pitch, altitude, spatial in (
-            ('default', 28., -5., False), ('candidate', 28., -5., True)):
+    for name, pitch, altitude, spatial, radius in (
+            ('default', 28., -5., False, .5), ('candidate', 28., -5., True, .25)):
         config = yaml.safe_load((tmp_path/name/'config/flight.yaml').read_text())
         tracker = config['trajectory_tracker_node']['ros__parameters']
         assert tracker.get('p7_spatial_enabled', False) is spatial
@@ -70,7 +77,8 @@ def test_failed_candidate_cannot_replace_default_follow_or_capture_criterion(tmp
         assert config['rgbd_target_localizer']['ros__parameters'][
             'camera_pitch_down'] == pytest.approx(math.radians(pitch))
         evaluator = config['intercept_evaluator_node']['ros__parameters']
-        assert evaluator['evaluation_capture_radius'] == evaluator['planned_capture_radius'] == .5
+        assert evaluator['evaluation_capture_radius'] == radius
+        assert evaluator['planned_capture_radius'] == radius
 
 
 def test_f2_qualification_cannot_cross_between_default_and_candidate_profiles(tmp_path):
@@ -127,7 +135,9 @@ def test_partial_near_field_rgbd_fit_is_valid_but_not_whole_sphere_visibility():
     assert not view.center_in_image and not view.whole_target_safe
 
 
-def test_spatial_capture_retains_one_velocity_publisher_and_final_sea_barrier():
+@pytest.mark.parametrize('fast_capture,precision', [(False, False), (True, False), (True, True)])
+def test_spatial_capture_retains_one_velocity_publisher_and_final_sea_barrier(
+        fast_capture, precision):
     from dataclasses import replace
     from test_follow_wait import runnable_follow_node, CapturedPublisher
     from test_strict_visual_control import target
@@ -136,7 +146,8 @@ def test_spatial_capture_retains_one_velocity_publisher_and_final_sea_barrier():
     node, _ = runnable_follow_node()
     node.p7_guidance_enabled = node.p7_capture_enabled = node.p7_spatial_enabled = True
     node.p7_common_epoch_enabled = True
-    node.p7_controller = P7SpatialGuidance()
+    node.p7_controller = P7SpatialGuidance(
+        fast_capture_enabled=fast_capture, precision_capture_enabled=precision)
     node.p7_controller.reset((2., 0., 0.))
     node.p7_image = (10.19, .1, .3)
     node.p7_spatial_image = ImageSample(
@@ -166,6 +177,7 @@ def test_spatial_capture_retains_one_velocity_publisher_and_final_sea_barrier():
     record = json.loads(node.p7_diagnostic_pub.messages[-1].data)
     assert record['feedback_epoch'] == 10.2
     assert record['feedback_navigation_bracket'] == [10.2, 10.2]
+    assert record['controller_velocity'] == list(node.p7_result.velocity)
     node._ros_seconds = lambda: 10.25
     node.latest_state = replace(node.latest_state, stamp=10.25, position=(0., 0., -.19),
                                 velocity=(2., 0., .6))
@@ -177,13 +189,14 @@ def test_spatial_capture_retains_one_velocity_publisher_and_final_sea_barrier():
     assert node.p7_result is None
 
 
-def test_p7_follow_sender_receiver_use_same_new_height_and_mount_contract():
+@pytest.mark.parametrize('hfov', (1.74, 2.3))
+def test_p7_follow_sender_receiver_use_same_new_height_and_mount_contract(hfov):
     from types import SimpleNamespace
     from uav_control.controllers.follow_mpc_seed import FollowMpcSeed
     from uav_control.guidance.follow_limits import ResearchConfig, constraint_snapshot
     from uav_control.control.p7_spatial_guidance import configure_p7_follow_geometry
     values = dict(p7_follow_geometry_enabled=True, flight_altitude=-3.,
-                  p7_camera_pitch_down=math.radians(42.))
+                  p7_camera_pitch_down=math.radians(42.), p7_camera_horizontal_fov=hfov)
     node = SimpleNamespace(has_parameter=lambda name: name in values,
                            declare_parameter=lambda name, value: values.setdefault(name, value),
                            get_parameter=lambda name: SimpleNamespace(value=values[name]))
@@ -194,6 +207,7 @@ def test_p7_follow_sender_receiver_use_same_new_height_and_mount_contract():
     assert receiver.config.flight_altitude == -3.
     assert constraint_snapshot(receiver).fingerprint == constraint_snapshot(planner).fingerprint
     assert receiver.extrinsics == planner.extrinsics
+    assert receiver.intrinsics == CameraIntrinsics.from_horizontal_fov(640, 480, hfov)
 
 
 def test_p7_height_health_uses_explicit_goal_without_changing_measured_position():

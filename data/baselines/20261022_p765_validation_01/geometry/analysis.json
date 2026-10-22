@@ -1,0 +1,99 @@
+{
+  "depth_convention": "Depth is camera X in metres; camera FLU image right=-Y/down=-Z.",
+  "evidence_scope": "Unarmed marked sphere; no flight/noncooperative-USV qualification.",
+  "failure_geometry_fields": "Rejected-fit fields are defaults, not measured zero depth/count.",
+  "lineage_file": {
+    "path": "/home/qin/data/uav_usv_mpc/data/experiments/p765_offline_validation/geometry/final/histlineage.jsonl",
+    "sha256": "94a8818ba7b77a67fc4434a3a515edfe5ade6e1da93173448d9f4df5042f0471"
+  },
+  "observation_count": 362,
+  "observation_lineage_counts": {
+    "EXACT_RGB_DEPTH_DETECTION": 146,
+    "UNPROVEN_EARLY_REJECTION_RAW_FIELDS": 216
+  },
+  "pixel_replay_possible": false,
+  "reason_counts": {
+    "POSITION_HISTORY_EMPTY": 5,
+    "POSITION_TIMESTAMP_BEFORE_HISTORY": 1,
+    "TARGET_VECTOR_INVALID": 140,
+    "YOLO_DETECTION_TIMEOUT": 121,
+    "YOLO_SOURCE_STALE_OR_INVALID": 3,
+    "YOLO_YOLO_SOURCE_STALE_AFTER_INFERENCE": 92
+  },
+  "schema_version": 1,
+  "source": {
+    "path": "/home/qin/data/uav_usv_mpc/data/baselines/20261021_p764_validation_01/nonflight_01/synchronized_packets.jsonl.gz",
+    "sha256": "38d041d35c0e175d04ff8f999a75bb93af42d876358d8ac49ef561dacaaad0ec"
+  },
+  "spatial_callback_binding": {
+    "match_rule": "Full original observation payload SHA256; no receipt-time nearest match.",
+    "matched_observations": 362,
+    "path": "/home/qin/data/uav_usv_mpc/data/baselines/20261021_p764_validation_01/nonflight_01/actual_callback_inputs.jsonl.gz",
+    "sha256": "e197ea9a801f7e7a258807ae8fa05bfbc4252188c8893750af1b9a83a36ab273"
+  },
+  "sphere_failure_image_statistics": {
+    "count": 140,
+    "detector_center_u": {
+      "count": 140,
+      "maximum": 319.23748309795667,
+      "minimum": 319.23748309795667,
+      "p50": 319.23748309795667,
+      "p95": 319.23748309795667
+    },
+    "detector_center_v": {
+      "count": 140,
+      "maximum": 76.31823026216946,
+      "minimum": 76.31823026216946,
+      "p50": 76.31823026216946,
+      "p95": 76.31823026216946
+    },
+    "interpretation": "Failure image coverage only; zero successes prevents risk comparison.",
+    "mask_bbox_height_px": {
+      "count": 140,
+      "maximum": 18,
+      "minimum": 18,
+      "p50": 18.0,
+      "p95": 18.0
+    },
+    "mask_bbox_width_px": {
+      "count": 140,
+      "maximum": 18,
+      "minimum": 18,
+      "p50": 18.0,
+      "p95": 18.0
+    },
+    "mask_centroid_u": {
+      "count": 140,
+      "maximum": 322.05479452054794,
+      "minimum": 322.05479452054794,
+      "p50": 322.05479452054794,
+      "p95": 322.05479452054794
+    },
+    "mask_centroid_v": {
+      "count": 140,
+      "maximum": 76.05479452054794,
+      "minimum": 76.05479452054794,
+      "p50": 76.05479452054794,
+      "p95": 76.05479452054794
+    },
+    "mask_pixel_count": {
+      "count": 140,
+      "maximum": 292,
+      "minimum": 292,
+      "p50": 292.0,
+      "p95": 292.0
+    },
+    "measured_range_count": 0,
+    "unique_raw_acquisitions": 140
+  },
+  "sphere_failure_subcause": "UNKNOWN_RAW_DEPTH_NOT_RETAINED",
+  "unknowns": [
+    "Rejected fits lack valid_depth_count/depth distribution/point cloud.",
+    "RLE extent is valid; alignment/background contamination need pixels.",
+    "range-dependent failure cannot be measured from invalid target_range or truth",
+    "fit rank/condition/radius/residual/covariance cannot be reconstructed",
+    "No evidence proves a depth/coordinate/numerical implementation defect."
+  ],
+  "valid_observations": 0,
+  "valid_spatial_outputs": 0
+}

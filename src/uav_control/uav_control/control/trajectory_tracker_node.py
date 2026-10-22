@@ -339,6 +339,8 @@ class TrajectoryTrackerNode(Node):
 
     def __init__(self):
         super().__init__('trajectory_tracker_node')
+        self.declare_parameter('p76_enabled', False)
+        self.p76 = None
         self.declare_parameter('p7_guidance_enabled', False)
         self.p7_guidance_enabled = bool(self.get_parameter('p7_guidance_enabled').value)
         self.declare_parameter('follow_minco_enabled', True)
@@ -476,7 +478,8 @@ class TrajectoryTrackerNode(Node):
         self.declare_parameter('takeoff_horizontal_start_height', 0.5)
         self.declare_parameter('takeoff_horizontal_full_height', 1.5)
         self.declare_parameter('takeoff_visual_tracking', False)
-        self.declare_parameter('follow_distance', 5.0)
+        if not self.has_parameter('follow_distance'):
+            self.declare_parameter('follow_distance', 5.0)
         self.declare_parameter('follow_position_gain', 0.8)
         self.declare_parameter('bearing_approach_enabled', True)
         self.declare_parameter('bearing_approach_speed', 6.0)
@@ -745,11 +748,15 @@ class TrajectoryTrackerNode(Node):
             '/fmu/in/offboard_control_mode',
             10,
         )
-        self.setpoint_pub = self.create_publisher(
-            TrajectorySetpoint,
-            '/fmu/in/trajectory_setpoint',
-            10,
-        )
+        if self.get_parameter('p76_enabled').value:
+            from .p76_minco_bodyrate_tracker import SupervisorSink
+            self.setpoint_pub = SupervisorSink()
+        else:
+            self.setpoint_pub = self.create_publisher(
+                TrajectorySetpoint,
+                '/fmu/in/trajectory_setpoint',
+                10,
+            )
         self.vehicle_command_pub = self.create_publisher(
             VehicleCommand,
             '/fmu/in/vehicle_command',
@@ -839,10 +846,14 @@ class TrajectoryTrackerNode(Node):
             self.declare_parameter('p7_spatial_enabled', False)
             if not self.has_parameter('p7_camera_pitch_down'):
                 self.declare_parameter('p7_camera_pitch_down', math.radians(42.))
+            if not self.has_parameter('p7_camera_horizontal_fov'):
+                self.declare_parameter('p7_camera_horizontal_fov', 1.74)
             self.declare_parameter('p7_capture_radius', .25)
             self.declare_parameter('p7_common_epoch_enabled', False)
             self.declare_parameter('p7_project_capture_reference', False)
             self.declare_parameter('p7_minimum_camera_center_depth', .02)
+            self.declare_parameter('p7_fast_capture_enabled', False)
+            self.declare_parameter('p7_precision_capture_enabled', False)
             self.p7_common_epoch_enabled = bool(
                 self.get_parameter('p7_common_epoch_enabled').value)
             self.p7_spatial_enabled = bool(self.get_parameter('p7_spatial_enabled').value)
@@ -850,17 +861,25 @@ class TrajectoryTrackerNode(Node):
                 from .p7_spatial_guidance import P7SpatialGuidance
                 self.p7_controller = P7SpatialGuidance(
                     config, camera_pitch_down=self.get_parameter('p7_camera_pitch_down').value,
+                    camera_horizontal_fov=self.get_parameter('p7_camera_horizontal_fov').value,
                     capture_radius=self.get_parameter('p7_capture_radius').value,
                     sea_surface_z=self.flight_guidance.sea_surface_z,
                     contact_clearance=max(.33, self.flight_guidance.approach_contact_clearance),
                     project_capture_reference=bool(
                         self.get_parameter('p7_project_capture_reference').value),
                     minimum_center_depth=float(
-                        self.get_parameter('p7_minimum_camera_center_depth').value))
+                        self.get_parameter('p7_minimum_camera_center_depth').value),
+                    fast_capture_enabled=bool(
+                        self.get_parameter('p7_fast_capture_enabled').value),
+                    precision_capture_enabled=bool(
+                        self.get_parameter('p7_precision_capture_enabled').value))
             else:
                 self.p7_controller = P7VisualGuidance(config)
             self.p7_diagnostic_pub = self.create_publisher(String, '/control/p7_guidance', 10)
         install_navigation_frame_guard(self, self.navigation_frame_failed)
+        if self.get_parameter('p76_enabled').value:
+            from .p76_tracker_runtime import P76TrackerRuntime
+            self.p76 = P76TrackerRuntime(self)
         self.get_logger().info(
             'Trajectory tracker ready | rate='
             f'{control_rate:.1f} Hz | plan age<='
@@ -1463,6 +1482,16 @@ class TrajectoryTrackerNode(Node):
             self.mission_state_name = 'ABORTED'
         if self.mission_state in self.TERMINAL_STATES:
             self.intercept_requested = False
+        if getattr(self, 'p76', None) is not None:
+            if self.mission_state == MissionState.CAPTURE:
+                self.p76.mode.captured()
+                self.p76.publish_phase()
+            elif self.mission_state in self.TERMINAL_STATES:
+                self.p76.mode.fail(self.mission_state_name)
+                self.p76.publish_phase()
+            elif (self.intercept_requested and self.mission_state == MissionState.FAR_GUIDANCE
+                  and self.p76.mode.phase == 'FOLLOW_ACTIVE'):
+                self.p76.accept_y(self._ros_seconds())
         if (getattr(self, 'p7_guidance_enabled', False)
                 and self.mission_state == MissionState.FAR_GUIDANCE
                 and previous_state != MissionState.FAR_GUIDANCE):
@@ -1682,6 +1711,8 @@ class TrajectoryTrackerNode(Node):
         )
 
     def _publish_offboard_mode(self, timestamp_us, velocity_control=False):
+        if getattr(self, 'p76', None) is not None:
+            return  # P763 sole 200Hz runtime owns the Body-rate heartbeat.
         message = OffboardControlMode()
         message.timestamp = int(timestamp_us)
         message.position = not bool(velocity_control)
@@ -1695,6 +1726,8 @@ class TrajectoryTrackerNode(Node):
 
     def _remember_emitted_velocity(self, setpoint, now):
         """Share actual velocity-command history across guidance/tracker owners."""
+        if getattr(self, 'p76', None) is not None:
+            return  # A discarded supervisor reference is not an actually emitted velocity.
         velocity = tuple(float(value) for value in setpoint.velocity)
         if len(velocity) == 3 and all(math.isfinite(value) for value in velocity):
             self.tracker.previous_command_velocity = velocity
@@ -1808,12 +1841,22 @@ class TrajectoryTrackerNode(Node):
             and not getattr(self, 'safe_recovery_latched', False)
         )
         message.search_state = getattr(self, 'search_state', 'SAFE_WAIT')
-        message.search_direction = decision.search_direction if decision else 0
         message.last_valid_observation_age = (
             measurement_age(now, visibility.last_valid_observation_stamp)
             if visibility and visibility.last_valid_observation_stamp is not None
             else math.inf
         )
+        p76 = getattr(self, 'p76', None)
+        if p76 is not None and p76.mode.phase != 'FOLLOW_ACTIVE':
+            fresh_image = p76._image_valid(now)
+            message.target_locked = fresh_image
+            message.target_visible = fresh_image
+            message.last_valid_observation_age = (
+                now-_stamp_seconds(p76.image.source_stamp) if p76.image else math.inf)
+            message.prediction_age = message.last_valid_observation_age
+            message.search_state = ('FAR_GUIDANCE' if p76.mode.phase in (
+                'Y_HANDOVER', 'PAPER_INTERCEPT_ACTIVE') else p76.mode.phase)
+        message.search_direction = decision.search_direction if decision else 0
         message.last_valid_image_bearing = (
             visibility.last_valid_image_bearing if visibility else math.nan
         )
@@ -2266,7 +2309,7 @@ class TrajectoryTrackerNode(Node):
             result = self.p7_controller.step(
                 now, self.p7_actual_dt, feedback_position, feedback_velocity,
                 target.position, target.velocity, getattr(self, 'p7_spatial_image', None),
-                capture=True)
+                capture=True, feedback_stamp=feedback_epoch)
             desired_z = result.vertical_velocity
         else:
             result = self.p7_controller.step(
@@ -2274,6 +2317,12 @@ class TrajectoryTrackerNode(Node):
                 target.position[:2], target.velocity[:2], *image,
                 approach_distance=approach_distance)
         if not result.valid:
+            if getattr(self.p7_controller, 'precision_capture_enabled', False):
+                self.p7_diagnostic_pub.publish(String(data=json.dumps(dict(
+                    vars(result), stamp=now, image_stamp=image[0],
+                    feedback_epoch=feedback_epoch, diagnostic_only=True,
+                    controller_velocity=list(result.velocity), velocity=list(previous),
+                    last_emitted_velocity=list(previous), command_emitted=False))))
             return self._search_or_recovery_command(current, dt)
         self.flight_guidance.previous_velocity = previous
         command = self.flight_guidance._velocity_command(
@@ -2288,11 +2337,16 @@ class TrajectoryTrackerNode(Node):
             feedback_source_stamp=feedback_source_stamp,
             feedback_uav_position=list(feedback_position),
             feedback_target_position=list(target.position),
+            feedback_uav_velocity=list(feedback_velocity),
+            feedback_target_velocity=list(target.velocity),
+            controller_velocity=list(result.velocity),
             capture_enabled=capture, approach_distance=approach_distance,
             velocity=list(command.velocity)))))
         return command
 
     def timer_callback(self):
+        if getattr(self, 'p76', None) is not None and self.p76.mode.phase != 'FOLLOW_ACTIVE':
+            return
         started = time.perf_counter()
         now = self._ros_seconds()
         if getattr(self, 'navigation_frame_fault', ''):

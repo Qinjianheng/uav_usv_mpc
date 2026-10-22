@@ -1,0 +1,416 @@
+{
+  "schema_version": 2,
+  "direction_cases": [
+    {
+      "feedback": "position",
+      "axis": "NED_x",
+      "sign": -1.0,
+      "acceleration": [
+        -0.015,
+        0.0,
+        0.0
+      ],
+      "rates": [
+        0.0,
+        0.0061224418078477715,
+        0.0
+      ],
+      "thrust": -0.5,
+      "passed": true
+    },
+    {
+      "feedback": "position",
+      "axis": "NED_x",
+      "sign": 1.0,
+      "acceleration": [
+        0.015,
+        0.0,
+        0.0
+      ],
+      "rates": [
+        0.0,
+        -0.0061224418078477715,
+        0.0
+      ],
+      "thrust": -0.5,
+      "passed": true
+    },
+    {
+      "feedback": "position",
+      "axis": "NED_y",
+      "sign": -1.0,
+      "acceleration": [
+        0.0,
+        -0.015,
+        0.0
+      ],
+      "rates": [
+        -0.0061224418078477715,
+        0.0,
+        0.0
+      ],
+      "thrust": -0.5,
+      "passed": true
+    },
+    {
+      "feedback": "position",
+      "axis": "NED_y",
+      "sign": 1.0,
+      "acceleration": [
+        0.0,
+        0.015,
+        0.0
+      ],
+      "rates": [
+        0.0061224418078477715,
+        0.0,
+        0.0
+      ],
+      "thrust": -0.5,
+      "passed": true
+    },
+    {
+      "feedback": "position",
+      "axis": "NED_z",
+      "sign": -1.0,
+      "acceleration": [
+        0.0,
+        0.0,
+        -0.015
+      ],
+      "rates": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "thrust": -0.5003712871287129,
+      "passed": true
+    },
+    {
+      "feedback": "position",
+      "axis": "NED_z",
+      "sign": 1.0,
+      "acceleration": [
+        0.0,
+        0.0,
+        0.015
+      ],
+      "rates": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "thrust": -0.499234693877551,
+      "passed": true
+    },
+    {
+      "feedback": "velocity",
+      "axis": "NED_x",
+      "sign": -1.0,
+      "acceleration": [
+        -0.015,
+        0.0,
+        0.0
+      ],
+      "rates": [
+        0.0,
+        0.0061224418078477715,
+        0.0
+      ],
+      "thrust": -0.5,
+      "passed": true
+    },
+    {
+      "feedback": "velocity",
+      "axis": "NED_x",
+      "sign": 1.0,
+      "acceleration": [
+        0.015,
+        0.0,
+        0.0
+      ],
+      "rates": [
+        0.0,
+        -0.0061224418078477715,
+        0.0
+      ],
+      "thrust": -0.5,
+      "passed": true
+    },
+    {
+      "feedback": "velocity",
+      "axis": "NED_y",
+      "sign": -1.0,
+      "acceleration": [
+        0.0,
+        -0.015,
+        0.0
+      ],
+      "rates": [
+        -0.0061224418078477715,
+        0.0,
+        0.0
+      ],
+      "thrust": -0.5,
+      "passed": true
+    },
+    {
+      "feedback": "velocity",
+      "axis": "NED_y",
+      "sign": 1.0,
+      "acceleration": [
+        0.0,
+        0.015,
+        0.0
+      ],
+      "rates": [
+        0.0061224418078477715,
+        0.0,
+        0.0
+      ],
+      "thrust": -0.5,
+      "passed": true
+    },
+    {
+      "feedback": "velocity",
+      "axis": "NED_z",
+      "sign": -1.0,
+      "acceleration": [
+        0.0,
+        0.0,
+        -0.015
+      ],
+      "rates": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "thrust": -0.5003712871287129,
+      "passed": true
+    },
+    {
+      "feedback": "velocity",
+      "axis": "NED_z",
+      "sign": 1.0,
+      "acceleration": [
+        0.0,
+        0.0,
+        0.015
+      ],
+      "rates": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "thrust": -0.499234693877551,
+      "passed": true
+    }
+  ],
+  "response_cases": [
+    {
+      "lag_seconds": 0.02,
+      "duration_seconds": 20.0,
+      "dt_seconds": 0.005,
+      "initial_error": 1.224744871391589,
+      "final_error": 1.4457539850299702e-06,
+      "final_speed": 1.020640305447361e-06,
+      "maximum_error": 1.2247448542048252,
+      "maximum_speed": 0.526354439298477,
+      "passed": true
+    },
+    {
+      "lag_seconds": 0.12,
+      "duration_seconds": 20.0,
+      "dt_seconds": 0.005,
+      "initial_error": 1.224744871391589,
+      "final_error": 1.3398091901359625e-06,
+      "final_speed": 9.572609135616145e-07,
+      "maximum_error": 1.2247448685271618,
+      "maximum_speed": 0.5730777670147452,
+      "passed": true
+    },
+    {
+      "lag_seconds": 0.24,
+      "duration_seconds": 20.0,
+      "dt_seconds": 0.005,
+      "initial_error": 1.224744871391589,
+      "final_error": 1.408832142852632e-06,
+      "final_speed": 9.316067481088331e-07,
+      "maximum_error": 1.224744869959377,
+      "maximum_speed": 0.657243345760118,
+      "passed": true
+    },
+    {
+      "lag_seconds": 0.5,
+      "duration_seconds": 20.0,
+      "dt_seconds": 0.005,
+      "initial_error": 1.224744871391589,
+      "final_error": 0.6581075651887996,
+      "final_speed": 0.5194314235329189,
+      "maximum_error": 1.2247448707041277,
+      "maximum_speed": 1.3627067625028886,
+      "passed": false
+    }
+  ],
+  "coordinate_transform_cases": [
+    {
+      "ned_axis": "x",
+      "sign": -1.0,
+      "heading": 1.5707963267948966,
+      "rates": [
+        0.0061224418078477715,
+        1.8744549950258959e-19,
+        -2.4492892946982144e-16
+      ],
+      "passed": true
+    },
+    {
+      "ned_axis": "x",
+      "sign": 1.0,
+      "heading": 1.5707963267948966,
+      "rates": [
+        -0.0061224418078477715,
+        -1.8744549950258959e-19,
+        -2.4492892946982144e-16
+      ],
+      "passed": true
+    },
+    {
+      "ned_axis": "y",
+      "sign": -1.0,
+      "heading": 1.5707963267948966,
+      "rates": [
+        -1.8744593864500302e-19,
+        0.0061224418078477715,
+        -2.4492950328291113e-16
+      ],
+      "passed": true
+    },
+    {
+      "ned_axis": "y",
+      "sign": 1.0,
+      "heading": 1.5707963267948966,
+      "rates": [
+        1.8744593864500302e-19,
+        -0.0061224418078477715,
+        -2.4492950328291113e-16
+      ],
+      "passed": true
+    }
+  ],
+  "same_epoch_pva_yaw_verified": true,
+  "constraints_passed": true,
+  "constraint_probe_outputs": 800,
+  "lease_expiry_rejected": true,
+  "invalid_reference_rejected": true,
+  "simplified_plant": "2 kg point mass; ideal calibrated piecewise thrust map; first-order force/rate actuator lag; no PX4/Gazebo",
+  "gains_fitted_to_history": false,
+  "flight_qualified": false,
+  "passed": false,
+  "recorded_counterfactual": {
+    "schema_version": 2,
+    "gain_analysis": {
+      "grid": [
+        {
+          "wn": 0.8,
+          "zeta": 0.9,
+          "kp": 0.6400000000000001,
+          "kv": 1.4400000000000002,
+          "worst_pole_real": -0.636033910624513,
+          "stable": true
+        },
+        {
+          "wn": 0.8,
+          "zeta": 1.0,
+          "kp": 0.6400000000000001,
+          "kv": 1.6,
+          "worst_pole_real": -0.5284001942267118,
+          "stable": true
+        },
+        {
+          "wn": 1.0,
+          "zeta": 0.9,
+          "kp": 1.0,
+          "kv": 1.8,
+          "worst_pole_real": -0.6243170423998929,
+          "stable": true
+        },
+        {
+          "wn": 1.0,
+          "zeta": 1.0,
+          "kp": 1.0,
+          "kv": 2.0,
+          "worst_pole_real": -0.6388969194713531,
+          "stable": true
+        },
+        {
+          "wn": 1.2,
+          "zeta": 0.9,
+          "kp": 1.44,
+          "kv": 2.16,
+          "worst_pole_real": -0.5687188306537044,
+          "stable": true
+        },
+        {
+          "wn": 1.2,
+          "zeta": 1.0,
+          "kp": 1.44,
+          "kv": 2.4,
+          "worst_pole_real": -0.6274201783309226,
+          "stable": true
+        }
+      ],
+      "candidate": {
+        "kp": 1.0,
+        "kv": 2.0,
+        "lag": 0.24
+      },
+      "step_final_error": 1.0750486921784486e-06,
+      "scope": "1D linear lag and bounded acceleration model",
+      "passed": true
+    },
+    "recorded_replay": {
+      "source": "/home/qin/data/uav_usv_mpc/data/experiments/20261020_p7_radius05_capture_01/offline_evidence.jsonl",
+      "source_sha256": "6703527df50ae36a4749d2234cfdf5b1f8e860db5a69a9269f87121c45136f1a",
+      "source_scene": "Historical P7 28deg/5m Velocity flight; not current P763 flight",
+      "consumed_kinds": [
+        "attitude",
+        "execution_debug",
+        "proposal",
+        "uav"
+      ],
+      "outputs": 1231,
+      "rejected": {
+        "REFERENCE_OUTSIDE": 69,
+        "P76_NATIVE_POSE_BRACKET": 1
+      },
+      "controller_seconds_p95": 0.00017384950479026884,
+      "controller_seconds_p99": 0.00018569770472822713,
+      "counterfactual_only": true,
+      "actual_control_qualified": false,
+      "attitude_uncertainty_scope": "Historical q only; zero omega/variance placeholders for mapping",
+      "output_bounds_and_continuity": true,
+      "passed": true
+    },
+    "logic_passed": true,
+    "flight_qualified": false,
+    "scope": "Offline engineering math/replay; no closed-loop PX4 stability qualification"
+  },
+  "source_inputs": {
+    "/home/qin/data/uav_usv_mpc/scripts/p764_handover_replay.py": "a2039b53292a2f8ed8815032678645f04e29bd41e0ae9065a77d2f13ed9c67ae",
+    "/home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/p76_contract.yaml": "9021ebe47129b2d5a46b8b0e98e442aad2d4829d987ce837bdea957ceac5f0e6",
+    "/home/qin/data/uav_usv_mpc/data/experiments/p764_offline_validation/e2_recorded_counterfactual/summary.json": "6b521390124e61e514e6addd7b1b1ee8054fa2774b561d4a2bbcd08127644c4f",
+    "/home/qin/data/uav_usv_mpc/scripts/p763_control_replay.py": "4292eb483406f24d1de4f7cac2d6c6e6d6c8fa255d1cdaf90fb720238922094c",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/frozen/models/p76_model_manifest.json": "3c64ac0b5761c25dbb51832de490c7a679e360619fa20dcf266d793fb66682cf",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/session_A1_03/identity.json": "30dde601cf7c3e6e744eadcac57de2fd296e2bd4f98594031b2faafe6c4d5664",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/session_A1_03/calibration.jsonl": "51312b1147da4394602274eb68908fc2e7d2ff6b239bbf3b8c78efef34a47a44",
+    "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/control/p76_tracker_runtime.py": "2d1a78e138c38375478a5ac781162632ec48a62be8d50644260680d8d690ce90",
+    "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/control/p76_mode_coordinator.py": "49ebe62c4bcd4db9733cf9a4f0fe12cc518b65040ef00e3a6e214aea8e26d992",
+    "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/control/p76_minco_bodyrate_tracker.py": "d825a8deba064dfd9a7b18c60358f8500624f496e602924aa39c9a41607f5933",
+    "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/control/p76_recovery.py": "88eb098be1e827e7e5d732d3bd9eaf11b2176aae390f908016c6f8e6904902c5",
+    "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/control/p76_paper_controller.py": "30ffa5b285ecb6a4534d91f450e3e38f5991d40eff09f5802e2b26a3f563ca2a",
+    "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/control/p76_paper_png.py": "df84fb87ea36d96d46d304b8115439d5020578d7e58809c7561521e4598832e5",
+    "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/control/p76_paper_thrust.py": "ef3c1a627769d550e59a40ff1971443d7a2a380db5dc1c83d4d8ac20ae240e61"
+  },
+  "logic_passed": false
+}

@@ -1,0 +1,15 @@
+{
+  "success": false,
+  "unarmed": true,
+  "flight_qualified": false,
+  "reason": "E1_COVERAGE_OR_TIMING_FAILED",
+  "graph": {
+    "/fmu/in/vehicle_command": [],
+    "/fmu/in/offboard_control_mode": [],
+    "/fmu/in/vehicle_rates_setpoint": [],
+    "/fmu/in/trajectory_setpoint": [],
+    "/perception/target_detection": [
+      "yolo_target_detector"
+    ]
+  }
+}

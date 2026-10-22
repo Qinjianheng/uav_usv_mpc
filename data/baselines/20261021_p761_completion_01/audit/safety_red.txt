@@ -1,0 +1,45 @@
+FF                                                                       [100%]
+=================================== FAILURES ===================================
+_____________ test_paper_step_does_not_query_or_modify_sea_safety ______________
+
+    def test_paper_step_does_not_query_or_modify_sea_safety():
+        class SeparateBarrier:
+            def check(self, *args):
+                raise AssertionError('Sea safety must be outside the paper guidance law')
+        contract = load_contract(Path(__file__).resolve().parents[3]/
+                                 'src/uav_usv_bringup/config/p76_contract.yaml')
+        control = PaperController(contract, 2., 60.,
+                                  CalibratedThrustMap([0., 20., 60.], [0., .5, 1.], qualified=True),
+                                  SeparateBarrier())
+        image, rotation, velocity = np.zeros(4), np.eye(3), np.array([3., 0., 0.])
+        control.initialize(image, rotation, velocity, 1., [0., 0., 0.])
+>       assert np.isfinite(control.step(image, rotation, [0., 0., -4.], velocity, 1.02, .005)[
+            'acceleration']).all()
+
+test/test_p761_safety_separation.py:23: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+uav_control/control/p76_paper_controller.py:63: in step
+    safety = self.barrier.check(position, velocity, rotation, acceleration, navigation_age, dt)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <test_p761_safety_separation.test_paper_step_does_not_query_or_modify_sea_safety.<locals>.SeparateBarrier object at 0x7cdb1ed8a0e0>
+args = ([0.0, 0.0, -4.0], array([3., 0., 0.]), array([[1., 0., 0.],
+       [0., 1., 0.],
+       [0., 0., 1.]]), array([2.00000000e+00, 3.68618687e-14, 0.00000000e+00]), 0.0, 0.005)
+
+    def check(self, *args):
+>       raise AssertionError('Sea safety must be outside the paper guidance law')
+E       AssertionError: Sea safety must be outside the paper guidance law
+
+test/test_p761_safety_separation.py:15: AssertionError
+_ test_recovery_velocity_decelerates_from_latched_entry_state_not_each_new_sample _
+
+    def test_recovery_velocity_decelerates_from_latched_entry_state_not_each_new_sample():
+>       from uav_control.control.p76_recovery import VelocityRecovery
+E       ModuleNotFoundError: No module named 'uav_control.control.p76_recovery'
+
+test/test_p761_safety_separation.py:28: ModuleNotFoundError
+=========================== short test summary info ============================
+FAILED test/test_p761_safety_separation.py::test_paper_step_does_not_query_or_modify_sea_safety
+FAILED test/test_p761_safety_separation.py::test_recovery_velocity_decelerates_from_latched_entry_state_not_each_new_sample
+2 failed in 0.13s

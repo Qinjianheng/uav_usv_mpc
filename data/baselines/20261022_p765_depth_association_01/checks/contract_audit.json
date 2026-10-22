@@ -1,0 +1,7 @@
+{
+  "parameter_contract_valid": true,
+  "flight_qualified": false,
+  "qualification_reason": "MODEL_DYNAMICS_AND_RUNTIME_QUALIFICATION_REQUIRED",
+  "contract_sha256": "7ba022c9967cef0f11e281b14d682da6b2cb7643eb93597beda5f4b2c397df07",
+  "profile_sha256": "11b472849df69279a1e0da01e743557a0e2f92d7502137dbe98ded266bc63d62"
+}

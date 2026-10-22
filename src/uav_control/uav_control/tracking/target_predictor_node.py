@@ -263,6 +263,8 @@ class TargetPredictorNode(Node):
             output_topic,
             sensor_qos,
         )
+        from uav_control.common.p76_phase import install_phase_gate
+        install_phase_gate(self)
         self.timer = self.create_timer(
             1.0 / update_rate_hz,
             self.timer_callback,
@@ -280,6 +282,9 @@ class TargetPredictorNode(Node):
         self.timer_callback()
 
     def state_callback(self, message):
+        from uav_control.common.p76_phase import follow_active
+        if not follow_active(self):
+            return
         if getattr(self, 'navigation_frame_fault', ''):
             return
         if not message.valid:
@@ -297,6 +302,9 @@ class TargetPredictorNode(Node):
         self.mission_id = int(message.mission_id)
 
     def timer_callback(self):
+        from uav_control.common.p76_phase import follow_active
+        if not follow_active(self):
+            return
         start = time.perf_counter()
         now_time = self.get_clock().now()
         now = now_time.nanoseconds * 1e-9

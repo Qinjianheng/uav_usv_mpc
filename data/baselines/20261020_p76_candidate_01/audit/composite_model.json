@@ -1,0 +1,161 @@
+{
+  "scope": "Source composite model; actual PX4 throttle/hover and rate response not yet calibrated.",
+  "source_sha256": {
+    "/home/qin/data/uav_usv_mpc/src/uav_usv_bringup/models/x500_mono_cam/model.sdf": "6bb23418b15dcd127f57d9d08d2fbf178b5ad88e09e18432eed149539de8d4e2",
+    "/home/qin/Projects/PX4-Autopilot/Tools/simulation/gz/models/x500/model.sdf": "cb76a4afd439f253a8c516b1fcd3528f80347619cfa46bebb620557054fbf125",
+    "/home/qin/Projects/PX4-Autopilot/Tools/simulation/gz/models/x500_base/model.sdf": "e807dca3406f7cd5cb3d545898601c3ec17e0e5242e25cf467a69df1812cf436"
+  },
+  "links": [
+    {
+      "file": "/home/qin/data/uav_usv_mpc/src/uav_usv_bringup/models/x500_mono_cam/model.sdf",
+      "name": "front_camera_link",
+      "mass": 0.05,
+      "pose": "0.18 0 0.15 0 0.4886921905584123 0",
+      "inertia": {
+        "ixx": 4e-05,
+        "iyy": 4e-05,
+        "izz": 4e-05
+      },
+      "collisions": []
+    },
+    {
+      "file": "/home/qin/data/uav_usv_mpc/src/uav_usv_bringup/models/x500_mono_cam/model.sdf",
+      "name": "down_camera_link",
+      "mass": 0.05,
+      "pose": "0.05 0 -0.12 0 1.57079632679 0",
+      "inertia": {
+        "ixx": 4e-05,
+        "iyy": 4e-05,
+        "izz": 4e-05
+      },
+      "collisions": []
+    },
+    {
+      "file": "/home/qin/Projects/PX4-Autopilot/Tools/simulation/gz/models/x500_base/model.sdf",
+      "name": "base_link",
+      "mass": 2.0,
+      "pose": null,
+      "inertia": {
+        "ixx": 0.02166666666666667,
+        "iyy": 0.02166666666666667,
+        "izz": 0.04000000000000001,
+        "ixy": 0.0,
+        "ixz": 0.0,
+        "iyz": 0.0
+      },
+      "collisions": [
+        "<collision name=\"base_link_collision_0\">\n        <pose>0 0 .007 0 0 0</pose>\n        <geometry>\n          <box>\n            <size>0.35355339059327373 0.35355339059327373 0.05</size>\n          </box>\n        </geometry>\n        <surface>\n          <contact>\n            <ode>\n              <min_depth>0.001</min_depth>\n              <max_vel>0</max_vel>\n            </ode>\n          </contact>\n          <friction>\n            <ode />\n          </friction>\n        </surface>\n      </collision>\n      ",
+        "<collision name=\"base_link_collision_1\">\n        <pose>0 -0.098 -.123 -0.35 0 0</pose>\n        <geometry>\n          <box>\n            <size>0.015 0.015 0.21</size>\n          </box>\n        </geometry>\n        <surface>\n          <contact>\n            <ode>\n              <min_depth>0.001</min_depth>\n              <max_vel>0</max_vel>\n            </ode>\n          </contact>\n          <friction>\n            <ode />\n          </friction>\n        </surface>\n      </collision>\n      ",
+        "<collision name=\"base_link_collision_2\">\n        <pose>0 0.098 -.123 0.35 0 0</pose>\n        <geometry>\n          <box>\n            <size>0.015 0.015 0.21</size>\n          </box>\n        </geometry>\n        <surface>\n          <contact>\n            <ode>\n              <min_depth>0.001</min_depth>\n              <max_vel>0</max_vel>\n            </ode>\n          </contact>\n          <friction>\n            <ode />\n          </friction>\n        </surface>\n      </collision>\n      ",
+        "<collision name=\"base_link_collision_3\">\n        <pose>0 -0.132 -.2195 0 0 0</pose>\n        <geometry>\n          <box>\n            <size>0.25 0.015 0.015</size>\n          </box>\n        </geometry>\n        <surface>\n          <contact>\n            <ode>\n              <min_depth>0.001</min_depth>\n              <max_vel>0</max_vel>\n            </ode>\n          </contact>\n          <friction>\n            <ode />\n          </friction>\n        </surface>\n      </collision>\n      ",
+        "<collision name=\"base_link_collision_4\">\n        <pose>0 0.132 -.2195 0 0 0</pose>\n        <geometry>\n          <box>\n            <size>0.25 0.015 0.015</size>\n          </box>\n        </geometry>\n        <surface>\n          <contact>\n            <ode>\n              <min_depth>0.001</min_depth>\n              <max_vel>0</max_vel>\n            </ode>\n          </contact>\n          <friction>\n            <ode />\n          </friction>\n        </surface>\n      </collision>\n      "
+      ]
+    },
+    {
+      "file": "/home/qin/Projects/PX4-Autopilot/Tools/simulation/gz/models/x500_base/model.sdf",
+      "name": "rotor_0",
+      "mass": 0.016076923076923075,
+      "pose": "0.174 -0.174 0.06 0 0 0",
+      "inertia": {
+        "ixx": 3.8464910483993325e-07,
+        "iyy": 2.6115851691700804e-05,
+        "izz": 2.649858234714004e-05
+      },
+      "collisions": [
+        "<collision name=\"rotor_0_collision\">\n        <pose>0 0 0 0 0 0 </pose>\n        <geometry>\n          <box>\n            <size>0.2792307692307692 0.016923076923076923 0.0008461538461538462</size>\n          </box>\n        </geometry>\n        <surface>\n          <contact>\n            <ode>\n              <min_depth>0.001</min_depth>\n              <max_vel>0</max_vel>\n            </ode>\n          </contact>\n          <friction>\n            <ode />\n          </friction>\n        </surface>\n      </collision>\n    "
+      ]
+    },
+    {
+      "file": "/home/qin/Projects/PX4-Autopilot/Tools/simulation/gz/models/x500_base/model.sdf",
+      "name": "rotor_1",
+      "mass": 0.016076923076923075,
+      "pose": "-0.174 0.174 0.06 0 0 0",
+      "inertia": {
+        "ixx": 3.8464910483993325e-07,
+        "iyy": 2.6115851691700804e-05,
+        "izz": 2.649858234714004e-05
+      },
+      "collisions": [
+        "<collision name=\"rotor_1_collision\">\n        <pose>0 0 0 0 0 0 </pose>\n        <geometry>\n          <box>\n            <size>0.2792307692307692 0.016923076923076923 0.0008461538461538462</size>\n          </box>\n        </geometry>\n        <surface>\n          <contact>\n            <ode>\n              <min_depth>0.001</min_depth>\n              <max_vel>0</max_vel>\n            </ode>\n          </contact>\n          <friction>\n            <ode />\n          </friction>\n        </surface>\n      </collision>\n    "
+      ]
+    },
+    {
+      "file": "/home/qin/Projects/PX4-Autopilot/Tools/simulation/gz/models/x500_base/model.sdf",
+      "name": "rotor_2",
+      "mass": 0.016076923076923075,
+      "pose": "0.174 0.174 0.06 0 0 0",
+      "inertia": {
+        "ixx": 3.8464910483993325e-07,
+        "iyy": 2.6115851691700804e-05,
+        "izz": 2.649858234714004e-05
+      },
+      "collisions": [
+        "<collision name=\"rotor_2_collision\">\n        <pose>0 0 0 0 0 0 </pose>\n        <geometry>\n          <box>\n            <size>0.2792307692307692 0.016923076923076923 0.0008461538461538462</size>\n          </box>\n        </geometry>\n        <surface>\n          <contact>\n            <ode>\n              <min_depth>0.001</min_depth>\n              <max_vel>0</max_vel>\n            </ode>\n          </contact>\n          <friction>\n            <ode />\n          </friction>\n        </surface>\n      </collision>\n    "
+      ]
+    },
+    {
+      "file": "/home/qin/Projects/PX4-Autopilot/Tools/simulation/gz/models/x500_base/model.sdf",
+      "name": "rotor_3",
+      "mass": 0.016076923076923075,
+      "pose": "-0.174 -0.174 0.06 0 0 0",
+      "inertia": {
+        "ixx": 3.8464910483993325e-07,
+        "iyy": 2.6115851691700804e-05,
+        "izz": 2.649858234714004e-05
+      },
+      "collisions": [
+        "<collision name=\"rotor_3_collision\">\n        <pose>0 0 0 0 0 0 </pose>\n        <geometry>\n          <box>\n            <size>0.2792307692307692 0.016923076923076923 0.0008461538461538462</size>\n          </box>\n        </geometry>\n        <surface>\n          <contact>\n            <ode>\n              <min_depth>0.001</min_depth>\n              <max_vel>0</max_vel>\n            </ode>\n          </contact>\n          <friction>\n            <ode />\n          </friction>\n        </surface>\n      </collision>\n    "
+      ]
+    }
+  ],
+  "motors": [
+    {
+      "motorConstant": 8.54858e-06,
+      "momentConstant": 0.016,
+      "maxRotVelocity": 1000.0,
+      "timeConstantUp": 0.0125,
+      "timeConstantDown": 0.025
+    },
+    {
+      "motorConstant": 8.54858e-06,
+      "momentConstant": 0.016,
+      "maxRotVelocity": 1000.0,
+      "timeConstantUp": 0.0125,
+      "timeConstantDown": 0.025
+    },
+    {
+      "motorConstant": 8.54858e-06,
+      "momentConstant": 0.016,
+      "maxRotVelocity": 1000.0,
+      "timeConstantUp": 0.0125,
+      "timeConstantDown": 0.025
+    },
+    {
+      "motorConstant": 8.54858e-06,
+      "momentConstant": 0.016,
+      "maxRotVelocity": 1000.0,
+      "timeConstantUp": 0.0125,
+      "timeConstantDown": 0.025
+    }
+  ],
+  "total_mass": 2.1643076923076916,
+  "static_model_maximum_thrust": 34.19432,
+  "static_model_twr": 1.6105194023379095,
+  "target_twr": 3.0,
+  "candidate_motor_constant": 1.5923893846153845e-05,
+  "base_link_pose_model_flu": [
+    0.0,
+    0.0,
+    0.24
+  ],
+  "requested_camera_model_flu": [
+    -0.25,
+    0.0,
+    0.55
+  ],
+  "required_camera_base_link_flu": [
+    -0.25,
+    0.0,
+    0.31
+  ]
+}

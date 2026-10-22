@@ -1,0 +1,283 @@
+{
+  "schema_version": 2,
+  "passed": true,
+  "flight_qualified": false,
+  "scope": "Actual runtime/controller dispatch using synthetic native feedback, memory publishers and injected positive Y authorization; no ROS executor",
+  "paper_step_calls_by_phase": {
+    "FOLLOW_ACTIVE": 0,
+    "Y_HANDOVER": 0,
+    "PAPER_INTERCEPT_ACTIVE": 5,
+    "SAFE_RECOVERY": 0
+  },
+  "paper_initialize_calls": 1,
+  "png_initialize_calls": 1,
+  "minco_revocations": 1,
+  "minco_polynomial_samples_by_phase": {
+    "FOLLOW_ACTIVE": 10,
+    "Y_HANDOVER": 0,
+    "PAPER_INTERCEPT_ACTIVE": 0,
+    "SAFE_RECOVERY": 0
+  },
+  "old_minco_explicit_reentry_rejected": true,
+  "recovery_target_guidance_calls": 0,
+  "first_y_output_continuous": true,
+  "target3d_reads": 0,
+  "bodyrate_only": true,
+  "single_memory_outlet_messages": 17,
+  "trace": [
+    {
+      "epoch": 10.0,
+      "phase": "FOLLOW_ACTIVE",
+      "output": {
+        "stamp": 10.0,
+        "rates": [
+          0.0,
+          0.0,
+          0.015
+        ],
+        "thrust": -0.5
+      },
+      "guidance_owner": "MINCO"
+    },
+    {
+      "epoch": 10.005,
+      "phase": "FOLLOW_ACTIVE",
+      "output": {
+        "stamp": 10.005,
+        "rates": [
+          0.0,
+          0.0,
+          0.030000000000002344
+        ],
+        "thrust": -0.5
+      },
+      "guidance_owner": "MINCO"
+    },
+    {
+      "epoch": 10.01,
+      "phase": "FOLLOW_ACTIVE",
+      "output": {
+        "stamp": 10.01,
+        "rates": [
+          0.0,
+          0.0,
+          0.04499999999999936
+        ],
+        "thrust": -0.5
+      },
+      "guidance_owner": "MINCO"
+    },
+    {
+      "epoch": 10.015,
+      "phase": "FOLLOW_ACTIVE",
+      "output": {
+        "stamp": 10.015,
+        "rates": [
+          0.0,
+          0.0,
+          0.060000000000001705
+        ],
+        "thrust": -0.5
+      },
+      "guidance_owner": "MINCO"
+    },
+    {
+      "epoch": 10.02,
+      "phase": "FOLLOW_ACTIVE",
+      "output": {
+        "stamp": 10.02,
+        "rates": [
+          0.0,
+          0.0,
+          0.07499999999999872
+        ],
+        "thrust": -0.5
+      },
+      "guidance_owner": "MINCO"
+    },
+    {
+      "epoch": 10.025,
+      "phase": "Y_HANDOVER",
+      "output": {
+        "stamp": 10.025,
+        "rates": [
+          0.0,
+          0.0012204287216941792,
+          0.06004973064672838
+        ],
+        "thrust": -0.5
+      },
+      "guidance_owner": "NONE"
+    },
+    {
+      "epoch": 10.03,
+      "phase": "Y_HANDOVER",
+      "output": {
+        "stamp": 10.03,
+        "rates": [
+          0.0,
+          0.003928982157094708,
+          0.04529629923951025
+        ],
+        "thrust": -0.5
+      },
+      "guidance_owner": "NONE"
+    },
+    {
+      "epoch": 10.035,
+      "phase": "PAPER_INTERCEPT_ACTIVE",
+      "output": {
+        "stamp": 10.035,
+        "rates": [
+          0.0,
+          0.0026327555042564618,
+          0.030352410974920536
+        ],
+        "thrust": -0.5
+      },
+      "guidance_owner": "PAPER"
+    },
+    {
+      "epoch": 10.04,
+      "phase": "PAPER_INTERCEPT_ACTIVE",
+      "output": {
+        "stamp": 10.04,
+        "rates": [
+          1.5738747022512563e-16,
+          -0.004902081338697271,
+          0.017382205357815712
+        ],
+        "thrust": -0.5
+      },
+      "guidance_owner": "PAPER"
+    },
+    {
+      "epoch": 10.045,
+      "phase": "PAPER_INTERCEPT_ACTIVE",
+      "output": {
+        "stamp": 10.045,
+        "rates": [
+          4.4198372429418964e-16,
+          -0.01723341806338089,
+          0.008841822779585423
+        ],
+        "thrust": -0.5
+      },
+      "guidance_owner": "PAPER"
+    },
+    {
+      "epoch": 10.05,
+      "phase": "PAPER_INTERCEPT_ACTIVE",
+      "output": {
+        "stamp": 10.05,
+        "rates": [
+          7.832391470337656e-16,
+          -0.03152626311350672,
+          0.004290495459652899
+        ],
+        "thrust": -0.5
+      },
+      "guidance_owner": "PAPER"
+    },
+    {
+      "epoch": 10.055,
+      "phase": "PAPER_INTERCEPT_ACTIVE",
+      "output": {
+        "stamp": 10.055,
+        "rates": [
+          1.14268008315507e-15,
+          -0.046358819910810846,
+          0.0020554878859168507
+        ],
+        "thrust": -0.5
+      },
+      "guidance_owner": "PAPER"
+    },
+    {
+      "epoch": 10.058,
+      "phase": "PAPER_INTERCEPT_ACTIVE",
+      "output": {
+        "stamp": 10.058,
+        "rates": [
+          1.4294756560645336e-15,
+          -0.05532195868774007,
+          0.0012417660258726656
+        ],
+        "thrust": -0.5
+      },
+      "guidance_owner": "PAPER"
+    },
+    {
+      "epoch": 10.06,
+      "phase": "SAFE_RECOVERY",
+      "output": {
+        "stamp": 10.06,
+        "rates": [
+          1.6846809433685917e-15,
+          -0.061321950290406824,
+          0.0012317277016836152
+        ],
+        "thrust": -0.5
+      },
+      "guidance_owner": "NONE"
+    },
+    {
+      "epoch": 10.065,
+      "phase": "SAFE_RECOVERY",
+      "output": {
+        "stamp": 10.065,
+        "rates": [
+          2.32579266164535e-15,
+          -0.07632192896446503,
+          0.0012064338741902313
+        ],
+        "thrust": -0.5
+      },
+      "guidance_owner": "NONE"
+    },
+    {
+      "epoch": 10.07,
+      "phase": "SAFE_RECOVERY",
+      "output": {
+        "stamp": 10.07,
+        "rates": [
+          2.970122061833454e-15,
+          -0.09132190729041952,
+          0.0011809344434891855
+        ],
+        "thrust": -0.5
+      },
+      "guidance_owner": "NONE"
+    },
+    {
+      "epoch": 10.075,
+      "phase": "SAFE_RECOVERY",
+      "output": {
+        "stamp": 10.075,
+        "rates": [
+          3.6177965566932114e-15,
+          -0.10632188525154042,
+          0.001155221299035813
+        ],
+        "thrust": -0.5
+      },
+      "guidance_owner": "NONE"
+    }
+  ],
+  "source_inputs": {
+    "/home/qin/data/uav_usv_mpc/scripts/p764_handover_replay.py": "a2039b53292a2f8ed8815032678645f04e29bd41e0ae9065a77d2f13ed9c67ae",
+    "/home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/p76_contract.yaml": "9021ebe47129b2d5a46b8b0e98e442aad2d4829d987ce837bdea957ceac5f0e6",
+    "/home/qin/data/uav_usv_mpc/data/experiments/p764_offline_validation/e2_recorded_counterfactual/summary.json": "6b521390124e61e514e6addd7b1b1ee8054fa2774b561d4a2bbcd08127644c4f",
+    "/home/qin/data/uav_usv_mpc/scripts/p763_control_replay.py": "4292eb483406f24d1de4f7cac2d6c6e6d6c8fa255d1cdaf90fb720238922094c",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/frozen/models/p76_model_manifest.json": "3c64ac0b5761c25dbb51832de490c7a679e360619fa20dcf266d793fb66682cf",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/session_A1_03/identity.json": "30dde601cf7c3e6e744eadcac57de2fd296e2bd4f98594031b2faafe6c4d5664",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/session_A1_03/calibration.jsonl": "51312b1147da4394602274eb68908fc2e7d2ff6b239bbf3b8c78efef34a47a44",
+    "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/control/p76_tracker_runtime.py": "2d1a78e138c38375478a5ac781162632ec48a62be8d50644260680d8d690ce90",
+    "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/control/p76_mode_coordinator.py": "49ebe62c4bcd4db9733cf9a4f0fe12cc518b65040ef00e3a6e214aea8e26d992",
+    "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/control/p76_minco_bodyrate_tracker.py": "d825a8deba064dfd9a7b18c60358f8500624f496e602924aa39c9a41607f5933",
+    "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/control/p76_recovery.py": "88eb098be1e827e7e5d732d3bd9eaf11b2176aae390f908016c6f8e6904902c5",
+    "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/control/p76_paper_controller.py": "30ffa5b285ecb6a4534d91f450e3e38f5991d40eff09f5802e2b26a3f563ca2a",
+    "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/control/p76_paper_png.py": "df84fb87ea36d96d46d304b8115439d5020578d7e58809c7561521e4598832e5",
+    "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/control/p76_paper_thrust.py": "ef3c1a627769d550e59a40ff1971443d7a2a380db5dc1c83d4d8ac20ae240e61"
+  }
+}

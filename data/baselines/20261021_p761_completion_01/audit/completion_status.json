@@ -1,0 +1,21 @@
+{
+  "implementation_commit": "6f44dfc4ff9f30e943356579501824348f479661",
+  "primary_sessions_used": 2,
+  "primary_session_limit": 5,
+  "render_sessions_used": 1,
+  "stages": {
+    "A1": "FAILED_AFTER_ONE_RETRY",
+    "A2": "NOT_RUN",
+    "B": "NOT_RUN",
+    "C": "NOT_RUN",
+    "D": "NOT_RUN"
+  },
+  "bodyrate_qualified": false,
+  "capture_validated": false,
+  "source_changes_after_last_flight": [
+    "scripts/p76_bodyrate_calibration.py"
+  ],
+  "qualifications_generated": [],
+  "final_candidate_identity": "audit/frozen/final_candidate_identity.json",
+  "final_candidate_requires_new_A1": true
+}

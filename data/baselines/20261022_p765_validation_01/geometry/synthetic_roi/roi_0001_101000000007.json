@@ -1,0 +1,123 @@
+{
+  "data_file": "roi_0001_101000000007.npz",
+  "data_sha256": "d2b4cceed8f1c9904bd1e937386ad415698acc83871447bf300d6952eeb8ce60",
+  "depth_dtype": "<f4",
+  "depth_raw_stamp": {
+    "nanosec": 7,
+    "sec": 101
+  },
+  "depth_receipt_ns": 201000000005,
+  "depth_unit": "metre_camera_forward_X",
+  "detection": {
+    "image_height": 480,
+    "image_width": 640,
+    "mask_counts": [
+      142438,
+      6,
+      632,
+      10,
+      629,
+      12,
+      627,
+      14,
+      625,
+      16,
+      624,
+      16,
+      624,
+      16,
+      624,
+      17,
+      623,
+      17,
+      623,
+      16,
+      624,
+      16,
+      624,
+      16,
+      625,
+      14,
+      626,
+      14,
+      627,
+      12,
+      629,
+      10,
+      633,
+      4,
+      154517
+    ],
+    "model_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "raw_stamp": {
+      "nanosec": 7,
+      "sec": 101
+    }
+  },
+  "detection_raw_stamp": {
+    "nanosec": 7,
+    "sec": 101
+  },
+  "diagnostic_receipt_ns": 201000000010,
+  "geometry": {
+    "depth_mad": 0.042987823486328125,
+    "depth_median": 7.8194663524627686,
+    "depth_min": 7.721111297607422,
+    "depth_ratio": 0.9911504424778761,
+    "explicit_fit_rejection_reason": "",
+    "fit_condition": 1.3396358370650099,
+    "fit_mode": "tof",
+    "fit_position_std": 0.00153772900602401,
+    "fit_rank": 3,
+    "fit_sample_count": 224,
+    "fitted_radius": 0.2503594604798483,
+    "missed_ray_normalized_cost_p95": 0.0,
+    "radial_normalized_residual_p95": 1.8994391751360518,
+    "radius_residual": 0.02502507624235464,
+    "sphere_vs_plane_cost_improvement": 730.2078813341789,
+    "valid_depth_count": 224
+  },
+  "geometry_contract": {
+    "horizontal_fov": 1.74,
+    "maximum_depth": 25.0,
+    "minimum_depth": 0.05,
+    "require_valid_sphere": true,
+    "sphere_fit_mode": "tof",
+    "sphere_noise_std": 0.01,
+    "sphere_range_noise_scale": 0.001,
+    "target_radius": 0.25
+  },
+  "known_center_flu": [
+    8.0,
+    -1.2,
+    0.3
+  ],
+  "localization_reason": "",
+  "mask_mapping": {
+    "order": "C",
+    "original_height": 480,
+    "original_width": 640,
+    "roi_origin_uv": [
+      353,
+      222
+    ],
+    "roi_scale_uv": [
+      1,
+      1
+    ]
+  },
+  "raw_key_ns": 101000000007,
+  "rgb_raw_stamp": {
+    "nanosec": 7,
+    "sec": 101
+  },
+  "rgb_receipt_ns": 201000000000,
+  "roi_xyxy_exclusive": [
+    353,
+    222,
+    370,
+    239
+  ],
+  "runtime_identity_sha256": "d99c9373753a1c8dad3292d7739655f35b0506ff694ab6238c6412c0e1c8f2ed",
+  "synthetic_only": true
+}

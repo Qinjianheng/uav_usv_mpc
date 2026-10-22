@@ -1,0 +1,140 @@
+{
+  "data_file": "roi_0002_102000000007.npz",
+  "data_sha256": "a582e7bab1e373bd6d0ab0c147f71234491aedb7c13dc1f8fad42679ddc9834b",
+  "depth_dtype": "<f4",
+  "depth_raw_stamp": {
+    "nanosec": 7,
+    "sec": 102
+  },
+  "depth_receipt_ns": 202000000005,
+  "depth_unit": "metre_camera_forward_X",
+  "detection": {
+    "image_height": 480,
+    "image_width": 640,
+    "mask_counts": [
+      145597,
+      7,
+      630,
+      13,
+      626,
+      15,
+      623,
+      19,
+      620,
+      21,
+      619,
+      21,
+      618,
+      23,
+      616,
+      25,
+      615,
+      25,
+      615,
+      25,
+      614,
+      27,
+      613,
+      27,
+      613,
+      27,
+      613,
+      27,
+      613,
+      27,
+      613,
+      27,
+      613,
+      27,
+      614,
+      25,
+      615,
+      25,
+      615,
+      25,
+      616,
+      23,
+      618,
+      21,
+      619,
+      21,
+      620,
+      19,
+      623,
+      15,
+      626,
+      13,
+      630,
+      7,
+      144956
+    ],
+    "model_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "raw_stamp": {
+      "nanosec": 7,
+      "sec": 102
+    }
+  },
+  "detection_raw_stamp": {
+    "nanosec": 7,
+    "sec": 102
+  },
+  "diagnostic_receipt_ns": 202000000010,
+  "geometry": {
+    "depth_mad": 0.0,
+    "depth_median": 4.75,
+    "depth_min": 4.75,
+    "depth_ratio": 1.0,
+    "explicit_fit_rejection_reason": "FIT_RANK_DEFICIENT",
+    "fit_condition": 5926321297228875.0,
+    "fit_mode": "ideal",
+    "fit_position_std": null,
+    "fit_rank": 3,
+    "fit_sample_count": 289,
+    "fitted_radius": null,
+    "radius_residual": null,
+    "valid_depth_count": 577
+  },
+  "geometry_contract": {
+    "horizontal_fov": 1.74,
+    "maximum_depth": 25.0,
+    "minimum_depth": 0.05,
+    "require_valid_sphere": true,
+    "sphere_fit_mode": "ideal",
+    "sphere_noise_std": 0.01,
+    "sphere_range_noise_scale": 0.001,
+    "target_radius": 0.25
+  },
+  "known_center_flu": [
+    5.0,
+    0.0,
+    0.0
+  ],
+  "localization_reason": "TARGET_VECTOR_INVALID",
+  "mask_mapping": {
+    "order": "C",
+    "original_height": 480,
+    "original_width": 640,
+    "roi_origin_uv": [
+      307,
+      227
+    ],
+    "roi_scale_uv": [
+      1,
+      1
+    ]
+  },
+  "raw_key_ns": 102000000007,
+  "rgb_raw_stamp": {
+    "nanosec": 7,
+    "sec": 102
+  },
+  "rgb_receipt_ns": 202000000000,
+  "roi_xyxy_exclusive": [
+    307,
+    227,
+    334,
+    254
+  ],
+  "runtime_identity_sha256": "d99c9373753a1c8dad3292d7739655f35b0506ff694ab6238c6412c0e1c8f2ed",
+  "synthetic_only": true
+}

@@ -1,0 +1,13 @@
+{
+  "architecture": "yolo11n-seg",
+  "classes": [
+    "red_ball"
+  ],
+  "input_size": 416,
+  "pretrained_sha256": "55ed65c56c91713d23e8402371c6c49a6fd84f257f7dce452e8d70e41dcbe152",
+  "model_file": "/home/qin/data/uav_usv_mpc/data/experiments/20261020_p76_train_01/training/weights/best.pt",
+  "sha256": "3510c31977bd289c6d4e5ea1bcf98db9e331e1760fee7fa7571034af1152e9ef",
+  "dataset_sha256": "231052987a8ea3d01a73dc59f467681f60b23d53c75658c9d95b853bf1427fc4",
+  "model_qualified": false,
+  "reason": "HELD_OUT_REPLAY_AND_TIMING_REQUIRED"
+}

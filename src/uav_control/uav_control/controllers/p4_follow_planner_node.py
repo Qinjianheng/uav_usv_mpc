@@ -433,7 +433,15 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
         self.receiver_epoch_sub = self.create_subscription(
             FollowReceiverState, '/control/follow_receiver_state', self.epoch_callback, epoch_qos)
         self.destroy_timer(self.timer)
-        self.timer = self.create_timer(.01, self.tick)
+        from uav_control.common.p76_phase import install_phase_gate
+        install_phase_gate(self)
+        self.timer = self.create_timer(.01, self.p76_gated_tick)
+
+    def p76_gated_tick(self):
+        """Stop new optimization at Y; revoke authority in the sole Tracker first."""
+        from uav_control.common.p76_phase import follow_active
+        if follow_active(self):
+            self.tick()
 
     def p6_diagnostic_callback(self, message):
         """Cache immutable model evidence; match epochs before attaching it."""
@@ -673,6 +681,9 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
 
     def _publish_typed_completion(self, request, result, record):
         """Use the original objects before copying large prediction/solver audit trees."""
+        from uav_control.common.p76_phase import follow_active
+        if not follow_active(self):
+            return dict(published=False, reason='P76_PHASE_INACTIVE')
         self._pending_revalidation_audit = None
         plan = getattr(request, 'delivery_plan', None)
         if plan is not None:
@@ -872,6 +883,9 @@ class P4FollowPlannerNode(FollowResearchShadowNode):
 
     @profiled('ros_publication')
     def _publish_wire_proposal(self, message):
+        from uav_control.common.p76_phase import follow_active
+        if not follow_active(self):
+            return
         if getattr(self, 'navigation_frame_fault', ''):
             return
         self.follow_proposal_pub.publish(message)

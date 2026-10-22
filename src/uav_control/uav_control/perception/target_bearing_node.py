@@ -201,6 +201,10 @@ def _time_message(seconds):
 class TargetBearingNode(Node):
     def __init__(self):
         super().__init__('target_bearing_node')
+        from .yolo_consumers import detection_source, YoloBearingConsumer
+        if detection_source(self) == 'yolo':
+            self.yolo_consumer = YoloBearingConsumer(self)
+            return
         defaults = {
             'color_topic': '/camera/front/image_raw',
             'bearing_topic': '/perception/front/target_bearing',

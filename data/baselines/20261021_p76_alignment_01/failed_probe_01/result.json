@@ -1,0 +1,18 @@
+{
+  "success": false,
+  "reason": "DISARMED_PROBE_TIMEOUT",
+  "scope": "DISARMED_DDS_MODE_INTERFACE_ONLY",
+  "flight_qualified": false,
+  "thrust_curve_qualified": false,
+  "bodyrate_ack": false,
+  "velocity_ack": false,
+  "messages": {
+    "vehicle_angular_velocity": 3391,
+    "vehicle_control_mode": 68,
+    "vehicle_thrust_setpoint": 6780,
+    "vehicle_rates_setpoint": 6780,
+    "actuator_motors": 3391,
+    "vehicle_acceleration": 3391
+  },
+  "elapsed": 35.00450732099853
+}

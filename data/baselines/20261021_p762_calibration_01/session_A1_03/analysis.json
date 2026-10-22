@@ -1,0 +1,70 @@
+{
+  "hover_normalized": 0.5028618574142456,
+  "hover_samples": 100,
+  "scope": "Motion-derived effective lift; includes aerodynamic-model uncertainty",
+  "A1_passed": false,
+  "checks": {
+    "hover": true,
+    "thrust_curve": false,
+    "rates_response": false,
+    "acceleration_5mps2": false,
+    "exclusive_px4_bodyrate": true,
+    "navigation_reference_and_sea_datum": true,
+    "descent_2mps_braking": false,
+    "fault_recovery": false
+  },
+  "reasons": [],
+  "native_force_samples": 2689,
+  "measured_curve": [
+    {
+      "normalized": 0.3,
+      "force": 10.645224636798469
+    },
+    {
+      "normalized": 0.4,
+      "force": 15.538861345531204
+    },
+    {
+      "normalized": 0.5,
+      "force": 21.362980545628055
+    },
+    {
+      "normalized": 0.6,
+      "force": 28.144252819600524
+    },
+    {
+      "normalized": 0.7,
+      "force": 35.84973012327146
+    },
+    {
+      "normalized": 0.85,
+      "force": 49.185668818419416
+    },
+    {
+      "normalized": 1.0,
+      "force": 60.60532941806211
+    }
+  ],
+  "maximum_effective_thrust": 60.60532941806211,
+  "measured_twr": 2.817589317117044,
+  "hover_relative_error": 0.001013849881543516,
+  "rate_tracking": [
+    {
+      "axis": 0,
+      "count": 0,
+      "rmse": null
+    },
+    {
+      "axis": 1,
+      "count": 0,
+      "rmse": null
+    },
+    {
+      "axis": 2,
+      "count": 0,
+      "rmse": null
+    }
+  ],
+  "response_seconds": 0.0,
+  "braking_acceleration": 0.0
+}
