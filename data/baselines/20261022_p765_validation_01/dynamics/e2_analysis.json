@@ -1,0 +1,2755 @@
+{
+  "schema_version": 1,
+  "stage": "E2_OFFLINE_DIAGNOSIS",
+  "declaration": {
+    "lag_time_constants_seconds": [
+      0.02,
+      0.12,
+      0.24,
+      0.4,
+      0.44,
+      0.5
+    ],
+    "candidates": [
+      "baseline",
+      "reference_governor_10s",
+      "cv_prediction_120ms"
+    ],
+    "no_gain_search": true,
+    "limits_unchanged": true,
+    "candidate_selection_from_results": false
+  },
+  "original_fixed_checks": {
+    "schema_version": 2,
+    "direction_cases": [
+      {
+        "feedback": "position",
+        "axis": "NED_x",
+        "sign": -1.0,
+        "acceleration": [
+          -0.015,
+          0.0,
+          0.0
+        ],
+        "rates": [
+          0.0,
+          0.0061224418078477715,
+          0.0
+        ],
+        "thrust": -0.5,
+        "passed": true
+      },
+      {
+        "feedback": "position",
+        "axis": "NED_x",
+        "sign": 1.0,
+        "acceleration": [
+          0.015,
+          0.0,
+          0.0
+        ],
+        "rates": [
+          0.0,
+          -0.0061224418078477715,
+          0.0
+        ],
+        "thrust": -0.5,
+        "passed": true
+      },
+      {
+        "feedback": "position",
+        "axis": "NED_y",
+        "sign": -1.0,
+        "acceleration": [
+          0.0,
+          -0.015,
+          0.0
+        ],
+        "rates": [
+          -0.0061224418078477715,
+          0.0,
+          0.0
+        ],
+        "thrust": -0.5,
+        "passed": true
+      },
+      {
+        "feedback": "position",
+        "axis": "NED_y",
+        "sign": 1.0,
+        "acceleration": [
+          0.0,
+          0.015,
+          0.0
+        ],
+        "rates": [
+          0.0061224418078477715,
+          0.0,
+          0.0
+        ],
+        "thrust": -0.5,
+        "passed": true
+      },
+      {
+        "feedback": "position",
+        "axis": "NED_z",
+        "sign": -1.0,
+        "acceleration": [
+          0.0,
+          0.0,
+          -0.015
+        ],
+        "rates": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "thrust": -0.5003712871287129,
+        "passed": true
+      },
+      {
+        "feedback": "position",
+        "axis": "NED_z",
+        "sign": 1.0,
+        "acceleration": [
+          0.0,
+          0.0,
+          0.015
+        ],
+        "rates": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "thrust": -0.499234693877551,
+        "passed": true
+      },
+      {
+        "feedback": "velocity",
+        "axis": "NED_x",
+        "sign": -1.0,
+        "acceleration": [
+          -0.015,
+          0.0,
+          0.0
+        ],
+        "rates": [
+          0.0,
+          0.0061224418078477715,
+          0.0
+        ],
+        "thrust": -0.5,
+        "passed": true
+      },
+      {
+        "feedback": "velocity",
+        "axis": "NED_x",
+        "sign": 1.0,
+        "acceleration": [
+          0.015,
+          0.0,
+          0.0
+        ],
+        "rates": [
+          0.0,
+          -0.0061224418078477715,
+          0.0
+        ],
+        "thrust": -0.5,
+        "passed": true
+      },
+      {
+        "feedback": "velocity",
+        "axis": "NED_y",
+        "sign": -1.0,
+        "acceleration": [
+          0.0,
+          -0.015,
+          0.0
+        ],
+        "rates": [
+          -0.0061224418078477715,
+          0.0,
+          0.0
+        ],
+        "thrust": -0.5,
+        "passed": true
+      },
+      {
+        "feedback": "velocity",
+        "axis": "NED_y",
+        "sign": 1.0,
+        "acceleration": [
+          0.0,
+          0.015,
+          0.0
+        ],
+        "rates": [
+          0.0061224418078477715,
+          0.0,
+          0.0
+        ],
+        "thrust": -0.5,
+        "passed": true
+      },
+      {
+        "feedback": "velocity",
+        "axis": "NED_z",
+        "sign": -1.0,
+        "acceleration": [
+          0.0,
+          0.0,
+          -0.015
+        ],
+        "rates": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "thrust": -0.5003712871287129,
+        "passed": true
+      },
+      {
+        "feedback": "velocity",
+        "axis": "NED_z",
+        "sign": 1.0,
+        "acceleration": [
+          0.0,
+          0.0,
+          0.015
+        ],
+        "rates": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "thrust": -0.499234693877551,
+        "passed": true
+      }
+    ],
+    "response_cases": [
+      {
+        "lag_seconds": 0.02,
+        "duration_seconds": 20.0,
+        "dt_seconds": 0.005,
+        "initial_error": 1.224744871391589,
+        "final_error": 1.4457539850299702e-06,
+        "final_speed": 1.020640305447361e-06,
+        "maximum_error": 1.2247448542048252,
+        "maximum_speed": 0.526354439298477,
+        "passed": true
+      },
+      {
+        "lag_seconds": 0.12,
+        "duration_seconds": 20.0,
+        "dt_seconds": 0.005,
+        "initial_error": 1.224744871391589,
+        "final_error": 1.3398091901359625e-06,
+        "final_speed": 9.572609135616145e-07,
+        "maximum_error": 1.2247448685271618,
+        "maximum_speed": 0.5730777670147452,
+        "passed": true
+      },
+      {
+        "lag_seconds": 0.24,
+        "duration_seconds": 20.0,
+        "dt_seconds": 0.005,
+        "initial_error": 1.224744871391589,
+        "final_error": 1.408832142852632e-06,
+        "final_speed": 9.316067481088331e-07,
+        "maximum_error": 1.224744869959377,
+        "maximum_speed": 0.657243345760118,
+        "passed": true
+      },
+      {
+        "lag_seconds": 0.5,
+        "duration_seconds": 20.0,
+        "dt_seconds": 0.005,
+        "initial_error": 1.224744871391589,
+        "final_error": 0.6581075651887996,
+        "final_speed": 0.5194314235329189,
+        "maximum_error": 1.2247448707041277,
+        "maximum_speed": 1.3627067625028886,
+        "passed": false
+      }
+    ],
+    "coordinate_transform_cases": [
+      {
+        "ned_axis": "x",
+        "sign": -1.0,
+        "heading": 1.5707963267948966,
+        "rates": [
+          0.0061224418078477715,
+          1.8744549950258959e-19,
+          -2.4492892946982144e-16
+        ],
+        "passed": true
+      },
+      {
+        "ned_axis": "x",
+        "sign": 1.0,
+        "heading": 1.5707963267948966,
+        "rates": [
+          -0.0061224418078477715,
+          -1.8744549950258959e-19,
+          -2.4492892946982144e-16
+        ],
+        "passed": true
+      },
+      {
+        "ned_axis": "y",
+        "sign": -1.0,
+        "heading": 1.5707963267948966,
+        "rates": [
+          -1.8744593864500302e-19,
+          0.0061224418078477715,
+          -2.4492950328291113e-16
+        ],
+        "passed": true
+      },
+      {
+        "ned_axis": "y",
+        "sign": 1.0,
+        "heading": 1.5707963267948966,
+        "rates": [
+          1.8744593864500302e-19,
+          -0.0061224418078477715,
+          -2.4492950328291113e-16
+        ],
+        "passed": true
+      }
+    ],
+    "same_epoch_pva_yaw_verified": true,
+    "constraints_passed": true,
+    "constraint_probe_outputs": 800,
+    "lease_expiry_rejected": true,
+    "invalid_reference_rejected": true,
+    "simplified_plant": "2 kg point mass; ideal calibrated piecewise thrust map; first-order force/rate actuator lag; no PX4/Gazebo",
+    "gains_fitted_to_history": false,
+    "flight_qualified": false,
+    "passed": false
+  },
+  "linear_stability": {
+    "strict_rate_time_constant_bound_seconds": 0.4375,
+    "characteristic_coefficients_at_500ms": [
+      0.5,
+      1.0,
+      4.0,
+      8.0,
+      4.0
+    ],
+    "poles": [
+      {
+        "rate_time_constant_seconds": 0.02,
+        "maximum_pole_real": -0.7056902821781089,
+        "stable": true,
+        "numerical_5ms_spectral_radius": 0.9964839774475948
+      },
+      {
+        "rate_time_constant_seconds": 0.12,
+        "maximum_pole_real": -0.7124577212518682,
+        "stable": true,
+        "numerical_5ms_spectral_radius": 0.9964505055102103
+      },
+      {
+        "rate_time_constant_seconds": 0.24,
+        "maximum_pole_real": -0.7017848207827913,
+        "stable": true,
+        "numerical_5ms_spectral_radius": 0.9964062398958211
+      },
+      {
+        "rate_time_constant_seconds": 0.4,
+        "maximum_pole_real": -0.07776691227451282,
+        "stable": true,
+        "numerical_5ms_spectral_radius": 0.9995662663065221
+      },
+      {
+        "rate_time_constant_seconds": 0.44,
+        "maximum_pole_real": 0.004676902592163357,
+        "stable": false,
+        "numerical_5ms_spectral_radius": 0.9999852793013982
+      },
+      {
+        "rate_time_constant_seconds": 0.5,
+        "maximum_pole_real": 0.10173493794551863,
+        "stable": false,
+        "numerical_5ms_spectral_radius": 1.0004781753106677
+      }
+    ],
+    "strict_bound_excludes_equality": true,
+    "scope": "Local continuous-time horizontal small signal; no constrained flight proof",
+    "physical_qualification": false
+  },
+  "baseline_cases": [
+    {
+      "candidate": "baseline",
+      "lag_seconds": 0.02,
+      "rate_lag": true,
+      "force_lag": true,
+      "lag_model": "FIRST_ORDER_TIME_CONSTANT_NOT_TRANSPORT_DELAY",
+      "duration_seconds": 20.0,
+      "dt_seconds": 0.005,
+      "initial_error": 1.224744871391589,
+      "final_error": 1.4457539850299702e-06,
+      "final_speed": 1.020640305447361e-06,
+      "final_horizontal_error": 1.4447659315000663e-06,
+      "final_vertical_error": 5.344144839714469e-08,
+      "maximum_error": 1.2247448542048252,
+      "maximum_speed": 0.526354439298477,
+      "passed": true,
+      "acceptance": {
+        "final_error_strictly_below_m": 0.15,
+        "unchanged": true
+      },
+      "output_bounds_passed": true,
+      "settings": {
+        "kp": 1.0,
+        "kv": 2.0,
+        "attitude_gain": 4.0,
+        "maximum_acceleration": 5.0,
+        "maximum_jerk": 3.0,
+        "maximum_tilt": 0.45,
+        "maximum_thrust_slew": 2.0,
+        "qualification": "OFFLINE_CANDIDATE_NOT_FLIGHT_QUALIFIED"
+      },
+      "diagnostics": {
+        "acceleration_limited_samples": 0,
+        "jerk_limited_samples": 71,
+        "rate_slew_boundary_samples": 0,
+        "thrust_slew_boundary_samples": 0,
+        "total_samples": 4000,
+        "maximum_rate_follow_error": 0.016578761429188432,
+        "maximum_force_follow_error_newtons": 0.037022639063248874,
+        "reference_feedback_epoch_mismatch_seconds": 0.0
+      },
+      "trace_1hz": [
+        {
+          "seconds": 1.0,
+          "error": 1.0259304029730671,
+          "horizontal_error": 0.9453738958591249,
+          "vertical_error": 0.3984989194121114,
+          "speed": 0.47166271580402536
+        },
+        {
+          "seconds": 2.0,
+          "error": 0.5370878912445232,
+          "horizontal_error": 0.4867725839219664,
+          "vertical_error": 0.22697104322670983,
+          "speed": 0.40519332389392854
+        },
+        {
+          "seconds": 3.0,
+          "error": 0.2540843181228476,
+          "horizontal_error": 0.22749590436088787,
+          "vertical_error": 0.11315676831270055,
+          "speed": 0.18514865002519584
+        },
+        {
+          "seconds": 4.0,
+          "error": 0.12458797045785831,
+          "horizontal_error": 0.11278769689414539,
+          "vertical_error": 0.05292539855421557,
+          "speed": 0.08848467293389783
+        },
+        {
+          "seconds": 5.0,
+          "error": 0.06100604008138181,
+          "horizontal_error": 0.056166366916736446,
+          "vertical_error": 0.02381336082508509,
+          "speed": 0.044063742741986496
+        },
+        {
+          "seconds": 6.0,
+          "error": 0.02963984401304926,
+          "horizontal_error": 0.027735866299946357,
+          "vertical_error": 0.010451893307405705,
+          "speed": 0.02146930177437816
+        },
+        {
+          "seconds": 7.0,
+          "error": 0.014426974395911061,
+          "horizontal_error": 0.01370320930057602,
+          "vertical_error": 0.004512166340559733,
+          "speed": 0.010398080488239921
+        },
+        {
+          "seconds": 8.0,
+          "error": 0.007044941887158789,
+          "horizontal_error": 0.006776605300347769,
+          "vertical_error": 0.001925831455954276,
+          "speed": 0.005057968170761199
+        },
+        {
+          "seconds": 9.0,
+          "error": 0.003448256390305923,
+          "horizontal_error": 0.0033504693029657233,
+          "vertical_error": 0.0008153695991205545,
+          "speed": 0.0024673241207372955
+        },
+        {
+          "seconds": 10.0,
+          "error": 0.0016915470172908552,
+          "horizontal_error": 0.0016563584596803419,
+          "vertical_error": 0.0003432316488189194,
+          "speed": 0.0012063862425239452
+        },
+        {
+          "seconds": 11.0,
+          "error": 0.0008314217262015855,
+          "horizontal_error": 0.0008188771693481875,
+          "vertical_error": 0.00014388282844149245,
+          "speed": 0.0005913557181643266
+        },
+        {
+          "seconds": 12.0,
+          "error": 0.0004092834834856712,
+          "horizontal_error": 0.0004048419867253044,
+          "vertical_error": 6.0132650352982954e-05,
+          "speed": 0.0002905014567798922
+        },
+        {
+          "seconds": 13.0,
+          "error": 0.00020171182932175714,
+          "horizontal_error": 0.0002001471890683468,
+          "vertical_error": 2.5075182878079474e-05,
+          "speed": 0.00014294482156306735
+        },
+        {
+          "seconds": 14.0,
+          "error": 9.94985769106341e-05,
+          "horizontal_error": 9.894943431708814e-05,
+          "vertical_error": 1.043916929499805e-05,
+          "speed": 7.042739272089764e-05
+        },
+        {
+          "seconds": 15.0,
+          "error": 4.911118854229518e-05,
+          "horizontal_error": 4.891898331455861e-05,
+          "vertical_error": 4.340727071217656e-06,
+          "speed": 3.4732082685812846e-05
+        },
+        {
+          "seconds": 16.0,
+          "error": 2.425188031620686e-05,
+          "horizontal_error": 2.4184742471485512e-05,
+          "vertical_error": 1.8033109713931186e-06,
+          "speed": 1.714056517974415e-05
+        },
+        {
+          "seconds": 17.0,
+          "error": 1.1979955019072101e-05,
+          "horizontal_error": 1.1956538531418783e-05,
+          "vertical_error": 7.486712267002172e-07,
+          "speed": 8.463316174594237e-06
+        },
+        {
+          "seconds": 18.0,
+          "error": 5.9192741729956586e-06,
+          "horizontal_error": 5.911115910313956e-06,
+          "vertical_error": 3.1066932569317905e-07,
+          "speed": 4.180373990943713e-06
+        },
+        {
+          "seconds": 19.0,
+          "error": 2.925198463895437e-06,
+          "horizontal_error": 2.922358453375792e-06,
+          "vertical_error": 1.2886862752150168e-07,
+          "speed": 2.0653966543324754e-06
+        },
+        {
+          "seconds": 20.0,
+          "error": 1.4457539850299702e-06,
+          "horizontal_error": 1.4447659315000663e-06,
+          "vertical_error": 5.344144839714469e-08,
+          "speed": 1.020640305447361e-06
+        }
+      ],
+      "minco_feasibility_proved": false,
+      "flight_qualified": false,
+      "continuous_local_rate_chain_maximum_pole_real": -0.7056902821781089,
+      "transient_acceptance_is_stability_proof": false
+    },
+    {
+      "candidate": "baseline",
+      "lag_seconds": 0.12,
+      "rate_lag": true,
+      "force_lag": true,
+      "lag_model": "FIRST_ORDER_TIME_CONSTANT_NOT_TRANSPORT_DELAY",
+      "duration_seconds": 20.0,
+      "dt_seconds": 0.005,
+      "initial_error": 1.224744871391589,
+      "final_error": 1.3398091901359625e-06,
+      "final_speed": 9.572609135616145e-07,
+      "final_horizontal_error": 1.3155799817445755e-06,
+      "final_vertical_error": 2.536493201365345e-07,
+      "maximum_error": 1.2247448685271618,
+      "maximum_speed": 0.5730777670147452,
+      "passed": true,
+      "acceptance": {
+        "final_error_strictly_below_m": 0.15,
+        "unchanged": true
+      },
+      "output_bounds_passed": true,
+      "settings": {
+        "kp": 1.0,
+        "kv": 2.0,
+        "attitude_gain": 4.0,
+        "maximum_acceleration": 5.0,
+        "maximum_jerk": 3.0,
+        "maximum_tilt": 0.45,
+        "maximum_thrust_slew": 2.0,
+        "qualification": "OFFLINE_CANDIDATE_NOT_FLIGHT_QUALIFIED"
+      },
+      "diagnostics": {
+        "acceleration_limited_samples": 0,
+        "jerk_limited_samples": 74,
+        "rate_slew_boundary_samples": 0,
+        "thrust_slew_boundary_samples": 0,
+        "total_samples": 4000,
+        "maximum_rate_follow_error": 0.11075046628076285,
+        "maximum_force_follow_error_newtons": 0.260074631006983,
+        "reference_feedback_epoch_mismatch_seconds": 0.0
+      },
+      "trace_1hz": [
+        {
+          "seconds": 1.0,
+          "error": 1.0397191420063214,
+          "horizontal_error": 0.9559015121351255,
+          "vertical_error": 0.4089843436516142,
+          "speed": 0.5059381478785998
+        },
+        {
+          "seconds": 2.0,
+          "error": 0.5275230480995609,
+          "horizontal_error": 0.47624781322514037,
+          "vertical_error": 0.2268668919752801,
+          "speed": 0.38804402654472947
+        },
+        {
+          "seconds": 3.0,
+          "error": 0.25920689588268736,
+          "horizontal_error": 0.23399508853370338,
+          "vertical_error": 0.1115101493822094,
+          "speed": 0.18365506345414148
+        },
+        {
+          "seconds": 4.0,
+          "error": 0.12656488932300028,
+          "horizontal_error": 0.11501910716945082,
+          "vertical_error": 0.052813598582994656,
+          "speed": 0.09141482548002337
+        },
+        {
+          "seconds": 5.0,
+          "error": 0.061642426328476,
+          "horizontal_error": 0.05647310012214884,
+          "vertical_error": 0.024709870219314055,
+          "speed": 0.044404668226948614
+        },
+        {
+          "seconds": 6.0,
+          "error": 0.030031487708231525,
+          "horizontal_error": 0.02773675115512606,
+          "vertical_error": 0.011513595847009495,
+          "speed": 0.02164231123591695
+        },
+        {
+          "seconds": 7.0,
+          "error": 0.014636316896375089,
+          "horizontal_error": 0.01362075160434572,
+          "vertical_error": 0.005356948573939125,
+          "speed": 0.010537083932421054
+        },
+        {
+          "seconds": 8.0,
+          "error": 0.007137739358382284,
+          "horizontal_error": 0.006688931689930768,
+          "vertical_error": 0.0024910873119261506,
+          "speed": 0.0051344008152085325
+        },
+        {
+          "seconds": 9.0,
+          "error": 0.003482963748819607,
+          "horizontal_error": 0.0032847683672294404,
+          "vertical_error": 0.001158159423067639,
+          "speed": 0.0025032376298879866
+        },
+        {
+          "seconds": 10.0,
+          "error": 0.0017005493640665193,
+          "horizontal_error": 0.0016130677432018468,
+          "vertical_error": 0.0005384056049752302,
+          "speed": 0.0012212219779664454
+        },
+        {
+          "seconds": 11.0,
+          "error": 0.0008307352184136183,
+          "horizontal_error": 0.000792135491228639,
+          "vertical_error": 0.00025028457133567986,
+          "speed": 0.0005961351895154674
+        },
+        {
+          "seconds": 12.0,
+          "error": 0.000406023312168579,
+          "horizontal_error": 0.00038899688047246074,
+          "vertical_error": 0.00011634585083722346,
+          "speed": 0.0002911630548541929
+        },
+        {
+          "seconds": 13.0,
+          "error": 0.0001985345507291705,
+          "horizontal_error": 0.00019102605263116742,
+          "vertical_error": 5.408340826342252e-05,
+          "speed": 0.00014228189421852924
+        },
+        {
+          "seconds": 14.0,
+          "error": 9.711825461022563e-05,
+          "horizontal_error": 9.38078157390126e-05,
+          "vertical_error": 2.5140586405493282e-05,
+          "speed": 6.956109085726185e-05
+        },
+        {
+          "seconds": 15.0,
+          "error": 4.7525777247009175e-05,
+          "horizontal_error": 4.6066520901178375e-05,
+          "vertical_error": 1.1686537339761145e-05,
+          "speed": 3.4022705992822655e-05
+        },
+        {
+          "seconds": 16.0,
+          "error": 2.326517305497075e-05,
+          "horizontal_error": 2.2622041276931127e-05,
+          "vertical_error": 5.432451172588775e-06,
+          "speed": 1.6647174998608708e-05
+        },
+        {
+          "seconds": 17.0,
+          "error": 1.1392480765016851e-05,
+          "horizontal_error": 1.1109081685203652e-05,
+          "vertical_error": 2.525256836987428e-06,
+          "speed": 8.148283610964448e-06
+        },
+        {
+          "seconds": 18.0,
+          "error": 5.580236988052433e-06,
+          "horizontal_error": 5.4553739650779616e-06,
+          "vertical_error": 1.1738567817148978e-06,
+          "speed": 3.989619437229872e-06
+        },
+        {
+          "seconds": 19.0,
+          "error": 2.733995044346035e-06,
+          "horizontal_error": 2.678988762942578e-06,
+          "vertical_error": 5.456630008861454e-07,
+          "speed": 1.9539953268093434e-06
+        },
+        {
+          "seconds": 20.0,
+          "error": 1.3398091901359625e-06,
+          "horizontal_error": 1.3155799817445755e-06,
+          "vertical_error": 2.536493201365345e-07,
+          "speed": 9.572609135616145e-07
+        }
+      ],
+      "minco_feasibility_proved": false,
+      "flight_qualified": false,
+      "continuous_local_rate_chain_maximum_pole_real": -0.7124577212518682,
+      "transient_acceptance_is_stability_proof": false
+    },
+    {
+      "candidate": "baseline",
+      "lag_seconds": 0.24,
+      "rate_lag": true,
+      "force_lag": true,
+      "lag_model": "FIRST_ORDER_TIME_CONSTANT_NOT_TRANSPORT_DELAY",
+      "duration_seconds": 20.0,
+      "dt_seconds": 0.005,
+      "initial_error": 1.224744871391589,
+      "final_error": 1.408832142852632e-06,
+      "final_speed": 9.316067481088331e-07,
+      "final_horizontal_error": 1.2313716723893399e-06,
+      "final_vertical_error": 6.844938357442083e-07,
+      "maximum_error": 1.224744869959377,
+      "maximum_speed": 0.657243345760118,
+      "passed": true,
+      "acceptance": {
+        "final_error_strictly_below_m": 0.15,
+        "unchanged": true
+      },
+      "output_bounds_passed": true,
+      "settings": {
+        "kp": 1.0,
+        "kv": 2.0,
+        "attitude_gain": 4.0,
+        "maximum_acceleration": 5.0,
+        "maximum_jerk": 3.0,
+        "maximum_tilt": 0.45,
+        "maximum_thrust_slew": 2.0,
+        "qualification": "OFFLINE_CANDIDATE_NOT_FLIGHT_QUALIFIED"
+      },
+      "diagnostics": {
+        "acceleration_limited_samples": 0,
+        "jerk_limited_samples": 76,
+        "rate_slew_boundary_samples": 0,
+        "thrust_slew_boundary_samples": 0,
+        "total_samples": 4000,
+        "maximum_rate_follow_error": 0.19951949090183702,
+        "maximum_force_follow_error_newtons": 0.44361775264101766,
+        "reference_feedback_epoch_mismatch_seconds": 0.0
+      },
+      "trace_1hz": [
+        {
+          "seconds": 1.0,
+          "error": 1.063272299799862,
+          "horizontal_error": 0.9756924439249193,
+          "vertical_error": 0.42257808555284326,
+          "speed": 0.5108491082688903
+        },
+        {
+          "seconds": 2.0,
+          "error": 0.5002439964125626,
+          "horizontal_error": 0.4455083947039368,
+          "vertical_error": 0.2275221444060624,
+          "speed": 0.36423733199169367
+        },
+        {
+          "seconds": 3.0,
+          "error": 0.2787726642229452,
+          "horizontal_error": 0.25546225168949455,
+          "vertical_error": 0.11159406919586852,
+          "speed": 0.19665638534974675
+        },
+        {
+          "seconds": 4.0,
+          "error": 0.12182394709758125,
+          "horizontal_error": 0.1085283858484415,
+          "vertical_error": 0.05534133673454298,
+          "speed": 0.08376588621925883
+        },
+        {
+          "seconds": 5.0,
+          "error": 0.06666526628673053,
+          "horizontal_error": 0.06069402485971487,
+          "vertical_error": 0.027577038916624164,
+          "speed": 0.05143748854110659
+        },
+        {
+          "seconds": 6.0,
+          "error": 0.02931758546653475,
+          "horizontal_error": 0.025962413451868803,
+          "vertical_error": 0.01361888047314431,
+          "speed": 0.018549313439706318
+        },
+        {
+          "seconds": 7.0,
+          "error": 0.015744124981960535,
+          "horizontal_error": 0.01423741793057583,
+          "vertical_error": 0.006721116136305911,
+          "speed": 0.013003425571082635
+        },
+        {
+          "seconds": 8.0,
+          "error": 0.007068755442314074,
+          "horizontal_error": 0.006243126287357224,
+          "vertical_error": 0.003315219097337919,
+          "speed": 0.004153110585787712
+        },
+        {
+          "seconds": 9.0,
+          "error": 0.003700425855754479,
+          "horizontal_error": 0.0033195364997403764,
+          "vertical_error": 0.0016351846809543188,
+          "speed": 0.003210015150081346
+        },
+        {
+          "seconds": 10.0,
+          "error": 0.001710450459654106,
+          "horizontal_error": 0.0015084973007345346,
+          "vertical_error": 0.0008062733212798038,
+          "speed": 0.0009571257287298874
+        },
+        {
+          "seconds": 11.0,
+          "error": 0.0008672701618753114,
+          "horizontal_error": 0.0007707845860024091,
+          "vertical_error": 0.00039755333687484473,
+          "speed": 0.0007743191866928259
+        },
+        {
+          "seconds": 12.0,
+          "error": 0.00041464873398404254,
+          "horizontal_error": 0.0003653926410493476,
+          "vertical_error": 0.00019601477102900163,
+          "speed": 0.0002278941969860723
+        },
+        {
+          "seconds": 13.0,
+          "error": 0.00020307521195866486,
+          "horizontal_error": 0.0001786036835356018,
+          "vertical_error": 9.66450512937484e-05,
+          "speed": 0.0001825700970904789
+        },
+        {
+          "seconds": 14.0,
+          "error": 0.00010051562478309461,
+          "horizontal_error": 8.850335094993634e-05,
+          "vertical_error": 4.765026438718116e-05,
+          "speed": 5.598487246749734e-05
+        },
+        {
+          "seconds": 15.0,
+          "error": 4.759875474200581e-05,
+          "horizontal_error": 4.1396740403655115e-05,
+          "vertical_error": 2.3493644607467966e-05,
+          "speed": 4.213312121676688e-05
+        },
+        {
+          "seconds": 16.0,
+          "error": 2.4322085190820024e-05,
+          "horizontal_error": 2.1386668009517058e-05,
+          "vertical_error": 1.1583361320454719e-05,
+          "speed": 1.410616775849229e-05
+        },
+        {
+          "seconds": 17.0,
+          "error": 1.118822953682978e-05,
+          "horizontal_error": 9.620810797618013e-06,
+          "vertical_error": 5.7110839396061195e-06,
+          "speed": 9.542533519612874e-06
+        },
+        {
+          "seconds": 18.0,
+          "error": 5.8661706529190304e-06,
+          "horizontal_error": 5.146184037923628e-06,
+          "vertical_error": 2.815803256086715e-06,
+          "speed": 3.613326627479555e-06
+        },
+        {
+          "seconds": 19.0,
+          "error": 2.641212465012034e-06,
+          "horizontal_error": 2.2469096459429537e-06,
+          "vertical_error": 1.3883084413427207e-06,
+          "speed": 2.1302404465209608e-06
+        },
+        {
+          "seconds": 20.0,
+          "error": 1.408832142852632e-06,
+          "horizontal_error": 1.2313716723893399e-06,
+          "vertical_error": 6.844938357442083e-07,
+          "speed": 9.316067481088331e-07
+        }
+      ],
+      "minco_feasibility_proved": false,
+      "flight_qualified": false,
+      "continuous_local_rate_chain_maximum_pole_real": -0.7017848207827913,
+      "transient_acceptance_is_stability_proof": false
+    },
+    {
+      "candidate": "baseline",
+      "lag_seconds": 0.4,
+      "rate_lag": true,
+      "force_lag": true,
+      "lag_model": "FIRST_ORDER_TIME_CONSTANT_NOT_TRANSPORT_DELAY",
+      "duration_seconds": 20.0,
+      "dt_seconds": 0.005,
+      "initial_error": 1.224744871391589,
+      "final_error": 0.007318301019144605,
+      "final_speed": 0.060006939523856884,
+      "final_horizontal_error": 0.006981642156870775,
+      "final_vertical_error": 0.0021941291211361657,
+      "maximum_error": 1.2247448705322623,
+      "maximum_speed": 0.7555636402688,
+      "passed": true,
+      "acceptance": {
+        "final_error_strictly_below_m": 0.15,
+        "unchanged": true
+      },
+      "output_bounds_passed": true,
+      "settings": {
+        "kp": 1.0,
+        "kv": 2.0,
+        "attitude_gain": 4.0,
+        "maximum_acceleration": 5.0,
+        "maximum_jerk": 3.0,
+        "maximum_tilt": 0.45,
+        "maximum_thrust_slew": 2.0,
+        "qualification": "OFFLINE_CANDIDATE_NOT_FLIGHT_QUALIFIED"
+      },
+      "diagnostics": {
+        "acceleration_limited_samples": 0,
+        "jerk_limited_samples": 77,
+        "rate_slew_boundary_samples": 0,
+        "thrust_slew_boundary_samples": 0,
+        "total_samples": 4000,
+        "maximum_rate_follow_error": 0.3132742295298108,
+        "maximum_force_follow_error_newtons": 0.5900704298778052,
+        "reference_feedback_epoch_mismatch_seconds": 0.0
+      },
+      "trace_1hz": [
+        {
+          "seconds": 1.0,
+          "error": 1.0924560712902125,
+          "horizontal_error": 1.0010679662719375,
+          "vertical_error": 0.43740506924704575,
+          "speed": 0.4657761296945592
+        },
+        {
+          "seconds": 2.0,
+          "error": 0.44837214388776836,
+          "horizontal_error": 0.383530549720416,
+          "vertical_error": 0.23225394904214042,
+          "speed": 0.4597164810620403
+        },
+        {
+          "seconds": 3.0,
+          "error": 0.3437087018568821,
+          "horizontal_error": 0.3233846290558394,
+          "vertical_error": 0.11643905454167948,
+          "speed": 0.06642356274160734
+        },
+        {
+          "seconds": 4.0,
+          "error": 0.09668014393495987,
+          "horizontal_error": 0.05718297779985568,
+          "vertical_error": 0.07795612407775139,
+          "speed": 0.27061050318953817
+        },
+        {
+          "seconds": 5.0,
+          "error": 0.1128787149351005,
+          "horizontal_error": 0.09871741700436348,
+          "vertical_error": 0.05474007549671708,
+          "speed": 0.16040285485753533
+        },
+        {
+          "seconds": 6.0,
+          "error": 0.03751185606810957,
+          "horizontal_error": 0.00476800355695976,
+          "vertical_error": 0.03720759986555688,
+          "speed": 0.22545932632659127
+        },
+        {
+          "seconds": 7.0,
+          "error": 0.033103006277829854,
+          "horizontal_error": 0.019173413920413326,
+          "vertical_error": 0.02698498143906242,
+          "speed": 0.18772941134290877
+        },
+        {
+          "seconds": 8.0,
+          "error": 0.025696097800984884,
+          "horizontal_error": 0.014841118872931075,
+          "vertical_error": 0.020976907131350638,
+          "speed": 0.1853743320262902
+        },
+        {
+          "seconds": 9.0,
+          "error": 0.02376792579772661,
+          "horizontal_error": 0.01708450029067701,
+          "vertical_error": 0.016523744930980244,
+          "speed": 0.1549075197442354
+        },
+        {
+          "seconds": 10.0,
+          "error": 0.03306017461543196,
+          "horizontal_error": 0.030289599329242838,
+          "vertical_error": 0.013248219430428516,
+          "speed": 0.13021350525461067
+        },
+        {
+          "seconds": 11.0,
+          "error": 0.03558340297215417,
+          "horizontal_error": 0.03390524203592622,
+          "vertical_error": 0.010798755926678389,
+          "speed": 0.09834503581576642
+        },
+        {
+          "seconds": 12.0,
+          "error": 0.03900481282077778,
+          "horizontal_error": 0.03797435175113414,
+          "vertical_error": 0.008906404003022011,
+          "speed": 0.06851499826625593
+        },
+        {
+          "seconds": 13.0,
+          "error": 0.03875631083370461,
+          "horizontal_error": 0.03804471400672408,
+          "vertical_error": 0.007392656192824187,
+          "speed": 0.03889410145414813
+        },
+        {
+          "seconds": 14.0,
+          "error": 0.037272739806482,
+          "horizontal_error": 0.0367578746156169,
+          "vertical_error": 0.0061737983789799,
+          "speed": 0.012497487232301815
+        },
+        {
+          "seconds": 15.0,
+          "error": 0.033838245429232215,
+          "horizontal_error": 0.03343953091740286,
+          "vertical_error": 0.005179249535696616,
+          "speed": 0.010709267352244346
+        },
+        {
+          "seconds": 16.0,
+          "error": 0.029375713415570603,
+          "horizontal_error": 0.02905066231796569,
+          "vertical_error": 0.0043579304218015055,
+          "speed": 0.0293823285004722
+        },
+        {
+          "seconds": 17.0,
+          "error": 0.024053380960055826,
+          "horizontal_error": 0.023771356365283085,
+          "vertical_error": 0.0036725675166416685,
+          "speed": 0.043611171344293806
+        },
+        {
+          "seconds": 18.0,
+          "error": 0.018389145307063873,
+          "horizontal_error": 0.018126629580764768,
+          "vertical_error": 0.003096120986985659,
+          "speed": 0.05326086531865581
+        },
+        {
+          "seconds": 19.0,
+          "error": 0.012690051583607278,
+          "horizontal_error": 0.012419103425186543,
+          "vertical_error": 0.0026083096651152255,
+          "speed": 0.05859508735343406
+        },
+        {
+          "seconds": 20.0,
+          "error": 0.007318301019144605,
+          "horizontal_error": 0.006981642156870775,
+          "vertical_error": 0.0021941291211361657,
+          "speed": 0.060006939523856884
+        }
+      ],
+      "minco_feasibility_proved": false,
+      "flight_qualified": false,
+      "continuous_local_rate_chain_maximum_pole_real": -0.07776691227451282,
+      "transient_acceptance_is_stability_proof": false
+    },
+    {
+      "candidate": "baseline",
+      "lag_seconds": 0.44,
+      "rate_lag": true,
+      "force_lag": true,
+      "lag_model": "FIRST_ORDER_TIME_CONSTANT_NOT_TRANSPORT_DELAY",
+      "duration_seconds": 20.0,
+      "dt_seconds": 0.005,
+      "initial_error": 1.224744871391589,
+      "final_error": 0.11344041301959486,
+      "final_speed": 0.08161702589379012,
+      "final_horizontal_error": 0.10756474053118655,
+      "final_vertical_error": 0.03603545338295026,
+      "maximum_error": 1.224744870610383,
+      "maximum_speed": 0.7766174276836635,
+      "passed": true,
+      "acceptance": {
+        "final_error_strictly_below_m": 0.15,
+        "unchanged": true
+      },
+      "output_bounds_passed": true,
+      "settings": {
+        "kp": 1.0,
+        "kv": 2.0,
+        "attitude_gain": 4.0,
+        "maximum_acceleration": 5.0,
+        "maximum_jerk": 3.0,
+        "maximum_tilt": 0.45,
+        "maximum_thrust_slew": 2.0,
+        "qualification": "OFFLINE_CANDIDATE_NOT_FLIGHT_QUALIFIED"
+      },
+      "diagnostics": {
+        "acceleration_limited_samples": 0,
+        "jerk_limited_samples": 77,
+        "rate_slew_boundary_samples": 0,
+        "thrust_slew_boundary_samples": 0,
+        "total_samples": 4000,
+        "maximum_rate_follow_error": 0.3602611980243646,
+        "maximum_force_follow_error_newtons": 0.615556679042399,
+        "reference_feedback_epoch_mismatch_seconds": 0.0
+      },
+      "trace_1hz": [
+        {
+          "seconds": 1.0,
+          "error": 1.0985977150753694,
+          "horizontal_error": 1.0064589760920433,
+          "vertical_error": 0.44040580038480215,
+          "speed": 0.4519689036676644
+        },
+        {
+          "seconds": 2.0,
+          "error": 0.4382039266984014,
+          "horizontal_error": 0.37025625550910146,
+          "vertical_error": 0.23437787146033418,
+          "speed": 0.5020418437680303
+        },
+        {
+          "seconds": 3.0,
+          "error": 0.35500925910275477,
+          "horizontal_error": 0.3349965165600978,
+          "vertical_error": 0.11751130984414643,
+          "speed": 0.0855527743244419
+        },
+        {
+          "seconds": 4.0,
+          "error": 0.10517416763356896,
+          "horizontal_error": 0.05729018083530364,
+          "vertical_error": 0.08820113784567787,
+          "speed": 0.3889987440005568
+        },
+        {
+          "seconds": 5.0,
+          "error": 0.10952582890409134,
+          "horizontal_error": 0.08299050592739107,
+          "vertical_error": 0.07147365334893659,
+          "speed": 0.29669533153696487
+        },
+        {
+          "seconds": 6.0,
+          "error": 0.06898686169411206,
+          "horizontal_error": 0.03941108888894301,
+          "vertical_error": 0.05662113703371186,
+          "speed": 0.3619568393946203
+        },
+        {
+          "seconds": 7.0,
+          "error": 0.05982780526805149,
+          "horizontal_error": 0.03482639975638581,
+          "vertical_error": 0.0486465637347624,
+          "speed": 0.3026767877013212
+        },
+        {
+          "seconds": 8.0,
+          "error": 0.09666424540315316,
+          "horizontal_error": 0.0853045630088634,
+          "vertical_error": 0.045465457978864254,
+          "speed": 0.25855312757372423
+        },
+        {
+          "seconds": 9.0,
+          "error": 0.10811878047802631,
+          "horizontal_error": 0.09916198798342589,
+          "vertical_error": 0.043087942991404726,
+          "speed": 0.16969887827010338
+        },
+        {
+          "seconds": 10.0,
+          "error": 0.12387144847581984,
+          "horizontal_error": 0.11669534145751728,
+          "vertical_error": 0.0415491640061643,
+          "speed": 0.07567285944709327
+        },
+        {
+          "seconds": 11.0,
+          "error": 0.12349750262998051,
+          "horizontal_error": 0.11657842621282634,
+          "vertical_error": 0.040756639920173095,
+          "speed": 0.029337770434337416
+        },
+        {
+          "seconds": 12.0,
+          "error": 0.11567479901900471,
+          "horizontal_error": 0.1083928432116666,
+          "vertical_error": 0.04039369590144225,
+          "speed": 0.1277837474305121
+        },
+        {
+          "seconds": 13.0,
+          "error": 0.09722653489986322,
+          "horizontal_error": 0.08854991972596986,
+          "vertical_error": 0.040148609006522416,
+          "speed": 0.21404360811743986
+        },
+        {
+          "seconds": 14.0,
+          "error": 0.07305093232666424,
+          "horizontal_error": 0.06121398726061071,
+          "vertical_error": 0.039865856035618596,
+          "speed": 0.2783804386240528
+        },
+        {
+          "seconds": 15.0,
+          "error": 0.04839782644094986,
+          "horizontal_error": 0.028061207177545112,
+          "vertical_error": 0.03943245181252614,
+          "speed": 0.31569248773442055
+        },
+        {
+          "seconds": 16.0,
+          "error": 0.039468219599843916,
+          "horizontal_error": 0.00719995520137409,
+          "vertical_error": 0.038805940311757804,
+          "speed": 0.3224225971219229
+        },
+        {
+          "seconds": 17.0,
+          "error": 0.05623935341525816,
+          "horizontal_error": 0.041424146492104685,
+          "vertical_error": 0.03803820395295972,
+          "speed": 0.29850627425651044
+        },
+        {
+          "seconds": 18.0,
+          "error": 0.08041385761468835,
+          "horizontal_error": 0.0712699843631505,
+          "vertical_error": 0.03724215119124638,
+          "speed": 0.24652423576906707
+        },
+        {
+          "seconds": 19.0,
+          "error": 0.1008678738999618,
+          "horizontal_error": 0.09401515970602976,
+          "vertical_error": 0.036544188738406966,
+          "speed": 0.1717843183958331
+        },
+        {
+          "seconds": 20.0,
+          "error": 0.11344041301959486,
+          "horizontal_error": 0.10756474053118655,
+          "vertical_error": 0.03603545338295026,
+          "speed": 0.08161702589379012
+        }
+      ],
+      "minco_feasibility_proved": false,
+      "flight_qualified": false,
+      "continuous_local_rate_chain_maximum_pole_real": 0.004676902592163357,
+      "transient_acceptance_is_stability_proof": false
+    },
+    {
+      "candidate": "baseline",
+      "lag_seconds": 0.5,
+      "rate_lag": true,
+      "force_lag": true,
+      "lag_model": "FIRST_ORDER_TIME_CONSTANT_NOT_TRANSPORT_DELAY",
+      "duration_seconds": 20.0,
+      "dt_seconds": 0.005,
+      "initial_error": 1.224744871391589,
+      "final_error": 0.6581075651887996,
+      "final_speed": 0.5194314235329189,
+      "final_horizontal_error": 0.6313561836471104,
+      "final_vertical_error": 0.1857281258433583,
+      "maximum_error": 1.2247448707041277,
+      "maximum_speed": 1.3627067625028886,
+      "passed": false,
+      "acceptance": {
+        "final_error_strictly_below_m": 0.15,
+        "unchanged": true
+      },
+      "output_bounds_passed": true,
+      "settings": {
+        "kp": 1.0,
+        "kv": 2.0,
+        "attitude_gain": 4.0,
+        "maximum_acceleration": 5.0,
+        "maximum_jerk": 3.0,
+        "maximum_tilt": 0.45,
+        "maximum_thrust_slew": 2.0,
+        "qualification": "OFFLINE_CANDIDATE_NOT_FLIGHT_QUALIFIED"
+      },
+      "diagnostics": {
+        "acceleration_limited_samples": 0,
+        "jerk_limited_samples": 2569,
+        "rate_slew_boundary_samples": 0,
+        "thrust_slew_boundary_samples": 0,
+        "total_samples": 4000,
+        "maximum_rate_follow_error": 0.7189933320536275,
+        "maximum_force_follow_error_newtons": 0.6495199957364299,
+        "reference_feedback_epoch_mismatch_seconds": 0.0
+      },
+      "trace_1hz": [
+        {
+          "seconds": 1.0,
+          "error": 1.1069735389528104,
+          "horizontal_error": 1.0138288727964895,
+          "vertical_error": 0.4444563337673441,
+          "speed": 0.43128681681379627
+        },
+        {
+          "seconds": 2.0,
+          "error": 0.4265942705442725,
+          "horizontal_error": 0.35389040267350347,
+          "vertical_error": 0.23821052570527934,
+          "speed": 0.5701649956545107
+        },
+        {
+          "seconds": 3.0,
+          "error": 0.3611008446149143,
+          "horizontal_error": 0.34106565943747236,
+          "vertical_error": 0.11860875150715727,
+          "speed": 0.20749860998637576
+        },
+        {
+          "seconds": 4.0,
+          "error": 0.13502204029451612,
+          "horizontal_error": 0.08439543616473501,
+          "vertical_error": 0.10539621302427367,
+          "speed": 0.5736973324730961
+        },
+        {
+          "seconds": 5.0,
+          "error": 0.10533914667484681,
+          "horizontal_error": 0.010611269301111337,
+          "vertical_error": 0.10480332430798263,
+          "speed": 0.47581371319873944
+        },
+        {
+          "seconds": 6.0,
+          "error": 0.1909778812202581,
+          "horizontal_error": 0.16166205707768505,
+          "vertical_error": 0.10167561367796268,
+          "speed": 0.4680196410086364
+        },
+        {
+          "seconds": 7.0,
+          "error": 0.22958573594524626,
+          "horizontal_error": 0.20272081261910405,
+          "vertical_error": 0.10776772374217827,
+          "speed": 0.2553140133776206
+        },
+        {
+          "seconds": 8.0,
+          "error": 0.3155433549209324,
+          "horizontal_error": 0.2894370003999427,
+          "vertical_error": 0.1256735120629684,
+          "speed": 0.056472347999231814
+        },
+        {
+          "seconds": 9.0,
+          "error": 0.3131476942501406,
+          "horizontal_error": 0.27497003889153976,
+          "vertical_error": 0.1498431050337808,
+          "speed": 0.528560978052481
+        },
+        {
+          "seconds": 10.0,
+          "error": 0.21096249021326152,
+          "horizontal_error": 0.11668628403456308,
+          "vertical_error": 0.17575404232957412,
+          "speed": 0.9370419952835117
+        },
+        {
+          "seconds": 11.0,
+          "error": 0.30177205205412383,
+          "horizontal_error": 0.23387015752608442,
+          "vertical_error": 0.19071214124874505,
+          "speed": 0.8967725414012042
+        },
+        {
+          "seconds": 12.0,
+          "error": 0.5772695484296684,
+          "horizontal_error": 0.5416247416617418,
+          "vertical_error": 0.1997067118652868,
+          "speed": 0.08123583850829996
+        },
+        {
+          "seconds": 13.0,
+          "error": 0.439998910772552,
+          "horizontal_error": 0.3807918908873144,
+          "vertical_error": 0.22044631390770822,
+          "speed": 1.0252722313803628
+        },
+        {
+          "seconds": 14.0,
+          "error": 0.34282415603578054,
+          "horizontal_error": 0.2665387676599414,
+          "vertical_error": 0.21560493337575787,
+          "speed": 1.1880106502915628
+        },
+        {
+          "seconds": 15.0,
+          "error": 0.7160694825725131,
+          "horizontal_error": 0.6869002126523162,
+          "vertical_error": 0.20229582726756742,
+          "speed": 0.03748888977088671
+        },
+        {
+          "seconds": 16.0,
+          "error": 0.34469982430285706,
+          "horizontal_error": 0.2699039266249735,
+          "vertical_error": 0.21440578179433842,
+          "speed": 1.2622705177510025
+        },
+        {
+          "seconds": 17.0,
+          "error": 0.5350861520435202,
+          "horizontal_error": 0.49754035131029517,
+          "vertical_error": 0.19690299369681824,
+          "speed": 0.9713529291345359
+        },
+        {
+          "seconds": 18.0,
+          "error": 0.6709665909693333,
+          "horizontal_error": 0.641870025214932,
+          "vertical_error": 0.1954457390878382,
+          "speed": 0.5484270217458659
+        },
+        {
+          "seconds": 19.0,
+          "error": 0.2039331301929235,
+          "horizontal_error": 0.012854644933246943,
+          "vertical_error": 0.20352758951533828,
+          "speed": 1.3492364455960326
+        },
+        {
+          "seconds": 20.0,
+          "error": 0.6581075651887996,
+          "horizontal_error": 0.6313561836471104,
+          "vertical_error": 0.1857281258433583,
+          "speed": 0.5194314235329189
+        }
+      ],
+      "minco_feasibility_proved": false,
+      "flight_qualified": false,
+      "continuous_local_rate_chain_maximum_pole_real": 0.10173493794551863,
+      "transient_acceptance_is_stability_proof": false
+    }
+  ],
+  "fixed_candidate_cases": [
+    {
+      "candidate": "reference_governor_10s",
+      "lag_seconds": 0.5,
+      "rate_lag": true,
+      "force_lag": true,
+      "lag_model": "FIRST_ORDER_TIME_CONSTANT_NOT_TRANSPORT_DELAY",
+      "duration_seconds": 20.0,
+      "dt_seconds": 0.005,
+      "initial_error": 1.224744871391589,
+      "final_error": 0.03141818635674345,
+      "final_speed": 0.0012021447261994216,
+      "final_horizontal_error": 0.031365850590454665,
+      "final_vertical_error": 0.0018126915579697728,
+      "maximum_error": 1.224744871391589,
+      "maximum_speed": 0.24305745577360205,
+      "passed": true,
+      "acceptance": {
+        "final_error_strictly_below_m": 0.15,
+        "unchanged": true
+      },
+      "output_bounds_passed": true,
+      "settings": {
+        "kp": 1.0,
+        "kv": 2.0,
+        "attitude_gain": 4.0,
+        "maximum_acceleration": 5.0,
+        "maximum_jerk": 3.0,
+        "maximum_tilt": 0.45,
+        "maximum_thrust_slew": 2.0,
+        "qualification": "OFFLINE_CANDIDATE_NOT_FLIGHT_QUALIFIED"
+      },
+      "diagnostics": {
+        "acceleration_limited_samples": 0,
+        "jerk_limited_samples": 0,
+        "rate_slew_boundary_samples": 0,
+        "thrust_slew_boundary_samples": 0,
+        "total_samples": 4000,
+        "maximum_rate_follow_error": 0.08662315671518248,
+        "maximum_force_follow_error_newtons": 0.02960675722643913,
+        "reference_feedback_epoch_mismatch_seconds": 0.0
+      },
+      "trace_1hz": [
+        {
+          "seconds": 1.0,
+          "error": 1.2207332057756606,
+          "horizontal_error": 1.1145573849965447,
+          "vertical_error": 0.49794718116782744,
+          "speed": 0.017293663970807095
+        },
+        {
+          "seconds": 2.0,
+          "error": 1.1621614709725352,
+          "horizontal_error": 1.0598319137893522,
+          "vertical_error": 0.4768391753271178,
+          "speed": 0.10563470094993614
+        },
+        {
+          "seconds": 3.0,
+          "error": 1.0246246848870104,
+          "horizontal_error": 0.9335627240695785,
+          "vertical_error": 0.4222752480404142,
+          "speed": 0.15996934947431402
+        },
+        {
+          "seconds": 4.0,
+          "error": 0.8377197141364353,
+          "horizontal_error": 0.7654074371744929,
+          "vertical_error": 0.34047874319963917,
+          "speed": 0.21990001878439142
+        },
+        {
+          "seconds": 5.0,
+          "error": 0.6007293670644855,
+          "horizontal_error": 0.5480226154923941,
+          "vertical_error": 0.2460629703197396,
+          "speed": 0.23450875934517454
+        },
+        {
+          "seconds": 6.0,
+          "error": 0.38522712398097375,
+          "horizontal_error": 0.35344975113410676,
+          "vertical_error": 0.1532096944513973,
+          "speed": 0.20453215811574296
+        },
+        {
+          "seconds": 7.0,
+          "error": 0.18779240481609596,
+          "horizontal_error": 0.1719085068287382,
+          "vertical_error": 0.07558738377881674,
+          "speed": 0.174996224247054
+        },
+        {
+          "seconds": 8.0,
+          "error": 0.06666375554955238,
+          "horizontal_error": 0.06211927022601228,
+          "vertical_error": 0.024191993935145983,
+          "speed": 0.07265421101475963
+        },
+        {
+          "seconds": 9.0,
+          "error": 0.011381049312576047,
+          "horizontal_error": 0.011137222579817294,
+          "vertical_error": 0.002343193688728167,
+          "speed": 0.044743412282391155
+        },
+        {
+          "seconds": 10.0,
+          "error": 0.0025670716953651194,
+          "horizontal_error": 0.0005292219725396232,
+          "vertical_error": 0.0025119277841781236,
+          "speed": 0.02668752025298141
+        },
+        {
+          "seconds": 11.0,
+          "error": 0.014713915573368984,
+          "horizontal_error": 0.013574081850436336,
+          "vertical_error": 0.005678346010757458,
+          "speed": 0.024055544131777906
+        },
+        {
+          "seconds": 12.0,
+          "error": 0.012704158800372636,
+          "horizontal_error": 0.012366950254213518,
+          "vertical_error": 0.002907609367658194,
+          "speed": 0.008650009794405264
+        },
+        {
+          "seconds": 13.0,
+          "error": 0.01677963879834391,
+          "horizontal_error": 0.016761944183986546,
+          "vertical_error": 0.00077039300088195,
+          "speed": 0.007639693303969357
+        },
+        {
+          "seconds": 14.0,
+          "error": 0.014560522817893263,
+          "horizontal_error": 0.014533385353950734,
+          "vertical_error": 0.0008885577549943919,
+          "speed": 0.027856675978992697
+        },
+        {
+          "seconds": 15.0,
+          "error": 0.011003473451611344,
+          "horizontal_error": 0.010945000117583032,
+          "vertical_error": 0.0011328726435143003,
+          "speed": 0.04528420429505212
+        },
+        {
+          "seconds": 16.0,
+          "error": 0.003572324266849535,
+          "horizontal_error": 0.003418363869484223,
+          "vertical_error": 0.001037443551874953,
+          "speed": 0.0579938072203223
+        },
+        {
+          "seconds": 17.0,
+          "error": 0.006007262245326,
+          "horizontal_error": 0.005911043072320356,
+          "vertical_error": 0.001070873233063888,
+          "speed": 0.06136580859773286
+        },
+        {
+          "seconds": 18.0,
+          "error": 0.016290561094141714,
+          "horizontal_error": 0.01624066891569323,
+          "vertical_error": 0.0012739913393737797,
+          "speed": 0.05326707228307804
+        },
+        {
+          "seconds": 19.0,
+          "error": 0.025415519328753165,
+          "horizontal_error": 0.0253702306000043,
+          "vertical_error": 0.0015165823593960449,
+          "speed": 0.03266287525368196
+        },
+        {
+          "seconds": 20.0,
+          "error": 0.03141818635674345,
+          "horizontal_error": 0.031365850590454665,
+          "vertical_error": 0.0018126915579697728,
+          "speed": 0.0012021447261994216
+        }
+      ],
+      "minco_feasibility_proved": false,
+      "flight_qualified": false,
+      "continuous_local_rate_chain_maximum_pole_real": 0.10173493794551863,
+      "transient_acceptance_is_stability_proof": false
+    },
+    {
+      "candidate": "cv_prediction_120ms",
+      "lag_seconds": 0.5,
+      "rate_lag": true,
+      "force_lag": true,
+      "lag_model": "FIRST_ORDER_TIME_CONSTANT_NOT_TRANSPORT_DELAY",
+      "duration_seconds": 20.0,
+      "dt_seconds": 0.005,
+      "initial_error": 1.224744871391589,
+      "final_error": 0.5405401506443015,
+      "final_speed": 1.9311005794302614,
+      "final_horizontal_error": 0.5052669471742608,
+      "final_vertical_error": 0.19206500605723822,
+      "maximum_error": 1.3042887284454268,
+      "maximum_speed": 2.04653864970174,
+      "passed": false,
+      "acceptance": {
+        "final_error_strictly_below_m": 0.15,
+        "unchanged": true
+      },
+      "output_bounds_passed": true,
+      "settings": {
+        "kp": 1.0,
+        "kv": 2.0,
+        "attitude_gain": 4.0,
+        "maximum_acceleration": 5.0,
+        "maximum_jerk": 3.0,
+        "maximum_tilt": 0.45,
+        "maximum_thrust_slew": 2.0,
+        "qualification": "OFFLINE_CANDIDATE_NOT_FLIGHT_QUALIFIED"
+      },
+      "diagnostics": {
+        "acceleration_limited_samples": 0,
+        "jerk_limited_samples": 3001,
+        "rate_slew_boundary_samples": 0,
+        "thrust_slew_boundary_samples": 0,
+        "total_samples": 4000,
+        "maximum_rate_follow_error": 0.7199337889501589,
+        "maximum_force_follow_error_newtons": 0.6464061793727396,
+        "reference_feedback_epoch_mismatch_seconds": 0.0
+      },
+      "trace_1hz": [
+        {
+          "seconds": 1.0,
+          "error": 1.1073613372053577,
+          "horizontal_error": 1.014083746113874,
+          "vertical_error": 0.44484074341823643,
+          "speed": 0.42873446782654423
+        },
+        {
+          "seconds": 2.0,
+          "error": 0.44729244161879766,
+          "horizontal_error": 0.3740217919833012,
+          "vertical_error": 0.24531250977254637,
+          "speed": 0.523091710428235
+        },
+        {
+          "seconds": 3.0,
+          "error": 0.41606457279179787,
+          "horizontal_error": 0.39304697319123033,
+          "vertical_error": 0.13646906461771294,
+          "speed": 0.18336623357159137
+        },
+        {
+          "seconds": 4.0,
+          "error": 0.144825072185962,
+          "horizontal_error": 0.07462365146958368,
+          "vertical_error": 0.12411934649769633,
+          "speed": 0.5971452986899274
+        },
+        {
+          "seconds": 5.0,
+          "error": 0.1431376078318811,
+          "horizontal_error": 0.07290081794941922,
+          "vertical_error": 0.1231821639610988,
+          "speed": 0.5595348577841827
+        },
+        {
+          "seconds": 6.0,
+          "error": 0.2040617700999903,
+          "horizontal_error": 0.16033261605629598,
+          "vertical_error": 0.12623255620039417,
+          "speed": 0.638687868756534
+        },
+        {
+          "seconds": 7.0,
+          "error": 0.30764858140419343,
+          "horizontal_error": 0.2732828223694551,
+          "vertical_error": 0.14129454567603622,
+          "speed": 0.3613043726215792
+        },
+        {
+          "seconds": 8.0,
+          "error": 0.4844102169569243,
+          "horizontal_error": 0.4528961729970762,
+          "vertical_error": 0.17186714280762602,
+          "speed": 0.3057339878078935
+        },
+        {
+          "seconds": 9.0,
+          "error": 0.32173668429460495,
+          "horizontal_error": 0.24599883459855704,
+          "vertical_error": 0.2073621648156627,
+          "speed": 1.1391983506521763
+        },
+        {
+          "seconds": 10.0,
+          "error": 0.44390222838864474,
+          "horizontal_error": 0.3906846903769737,
+          "vertical_error": 0.21074786137337848,
+          "speed": 1.0538480046448706
+        },
+        {
+          "seconds": 11.0,
+          "error": 0.8155204228243893,
+          "horizontal_error": 0.7867679473684124,
+          "vertical_error": 0.21463866622154934,
+          "speed": 0.5185080941670457
+        },
+        {
+          "seconds": 12.0,
+          "error": 0.2219895478969842,
+          "horizontal_error": 0.020405298163277453,
+          "vertical_error": 0.22104973011151852,
+          "speed": 1.6025449088236572
+        },
+        {
+          "seconds": 13.0,
+          "error": 0.9994210756451616,
+          "horizontal_error": 0.9812267160066901,
+          "vertical_error": 0.18983313261508955,
+          "speed": 0.16193383372619016
+        },
+        {
+          "seconds": 14.0,
+          "error": 0.3392289771684874,
+          "horizontal_error": 0.26901146911543256,
+          "vertical_error": 0.20666186981428097,
+          "speed": 1.6862017728375622
+        },
+        {
+          "seconds": 15.0,
+          "error": 1.0462922047177419,
+          "horizontal_error": 1.0313874728890182,
+          "vertical_error": 0.17597516421562945,
+          "speed": 0.5641911407880273
+        },
+        {
+          "seconds": 16.0,
+          "error": 0.4932752724975267,
+          "horizontal_error": 0.4517628390579396,
+          "vertical_error": 0.1980677452383889,
+          "speed": 1.6949280757552927
+        },
+        {
+          "seconds": 17.0,
+          "error": 1.0945305728974433,
+          "horizontal_error": 1.0821176161276294,
+          "vertical_error": 0.16437347679434766,
+          "speed": 0.7625228107654726
+        },
+        {
+          "seconds": 18.0,
+          "error": 0.5700850866187489,
+          "horizontal_error": 0.5371301253271332,
+          "vertical_error": 0.19101893741502304,
+          "speed": 1.7606581217738617
+        },
+        {
+          "seconds": 19.0,
+          "error": 1.2076540535837006,
+          "horizontal_error": 1.1965006562871459,
+          "vertical_error": 0.1637513134041159,
+          "speed": 0.7696918022365574
+        },
+        {
+          "seconds": 20.0,
+          "error": 0.5405401506443015,
+          "horizontal_error": 0.5052669471742608,
+          "vertical_error": 0.19206500605723822,
+          "speed": 1.9311005794302614
+        }
+      ],
+      "minco_feasibility_proved": false,
+      "flight_qualified": false,
+      "continuous_local_rate_chain_maximum_pole_real": 0.13869710491432882,
+      "transient_acceptance_is_stability_proof": false
+    }
+  ],
+  "actuator_ablations": [
+    {
+      "candidate": "baseline",
+      "lag_seconds": 0.5,
+      "rate_lag": true,
+      "force_lag": false,
+      "lag_model": "FIRST_ORDER_TIME_CONSTANT_NOT_TRANSPORT_DELAY",
+      "duration_seconds": 20.0,
+      "dt_seconds": 0.005,
+      "initial_error": 1.224744871391589,
+      "final_error": 0.3836664449390797,
+      "final_speed": 1.0779253825558957,
+      "final_horizontal_error": 0.31370988383998455,
+      "final_vertical_error": 0.22087564318705505,
+      "maximum_error": 1.224744808829097,
+      "maximum_speed": 1.2758232666057343,
+      "passed": false,
+      "acceptance": {
+        "final_error_strictly_below_m": 0.15,
+        "unchanged": true
+      },
+      "output_bounds_passed": true,
+      "settings": {
+        "kp": 1.0,
+        "kv": 2.0,
+        "attitude_gain": 4.0,
+        "maximum_acceleration": 5.0,
+        "maximum_jerk": 3.0,
+        "maximum_tilt": 0.45,
+        "maximum_thrust_slew": 2.0,
+        "qualification": "OFFLINE_CANDIDATE_NOT_FLIGHT_QUALIFIED"
+      },
+      "diagnostics": {
+        "acceleration_limited_samples": 0,
+        "jerk_limited_samples": 2553,
+        "rate_slew_boundary_samples": 0,
+        "thrust_slew_boundary_samples": 0,
+        "total_samples": 4000,
+        "maximum_rate_follow_error": 0.7202481414166509,
+        "maximum_force_follow_error_newtons": 0.0,
+        "reference_feedback_epoch_mismatch_seconds": 0.0
+      },
+      "trace_1hz": [
+        {
+          "seconds": 1.0,
+          "error": 1.087762461112101,
+          "horizontal_error": 1.012657877701166,
+          "vertical_error": 0.3971790459407761,
+          "speed": 0.4393320150283481
+        },
+        {
+          "seconds": 2.0,
+          "error": 0.4277266838217544,
+          "horizontal_error": 0.3531287202061728,
+          "vertical_error": 0.2413508297452188,
+          "speed": 0.5507851275462459
+        },
+        {
+          "seconds": 3.0,
+          "error": 0.37275818088443463,
+          "horizontal_error": 0.33994939871295926,
+          "vertical_error": 0.15291523053957168,
+          "speed": 0.21377644147447447
+        },
+        {
+          "seconds": 4.0,
+          "error": 0.13859465956601202,
+          "horizontal_error": 0.08540676515664405,
+          "vertical_error": 0.10915202300322528,
+          "speed": 0.5711320225722252
+        },
+        {
+          "seconds": 5.0,
+          "error": 0.09327997132366853,
+          "horizontal_error": 0.010339325592888197,
+          "vertical_error": 0.09270518538047734,
+          "speed": 0.47073549408909743
+        },
+        {
+          "seconds": 6.0,
+          "error": 0.18582806211992184,
+          "horizontal_error": 0.16170001807468817,
+          "vertical_error": 0.0915705893062344,
+          "speed": 0.4613149986336392
+        },
+        {
+          "seconds": 7.0,
+          "error": 0.22227811252693755,
+          "horizontal_error": 0.19982092405682836,
+          "vertical_error": 0.09736096557457274,
+          "speed": 0.24807962217515378
+        },
+        {
+          "seconds": 8.0,
+          "error": 0.3030341838943976,
+          "horizontal_error": 0.28141198144200374,
+          "vertical_error": 0.11241447108548329,
+          "speed": 0.05168854508710217
+        },
+        {
+          "seconds": 9.0,
+          "error": 0.30092102748713057,
+          "horizontal_error": 0.26697479771857724,
+          "vertical_error": 0.1388449572978261,
+          "speed": 0.4997709479327622
+        },
+        {
+          "seconds": 10.0,
+          "error": 0.21249770893774872,
+          "horizontal_error": 0.12417648857786483,
+          "vertical_error": 0.17243977496002358,
+          "speed": 0.8966216438969821
+        },
+        {
+          "seconds": 11.0,
+          "error": 0.2693899362978987,
+          "horizontal_error": 0.1955136526594986,
+          "vertical_error": 0.18532498321145713,
+          "speed": 0.8975600436476607
+        },
+        {
+          "seconds": 12.0,
+          "error": 0.528989371915846,
+          "horizontal_error": 0.4960111447585285,
+          "vertical_error": 0.1838551056545761,
+          "speed": 0.1991014421318956
+        },
+        {
+          "seconds": 13.0,
+          "error": 0.4703506938571037,
+          "horizontal_error": 0.4140146333500138,
+          "vertical_error": 0.22320765798671094,
+          "speed": 0.8559031166306831
+        },
+        {
+          "seconds": 14.0,
+          "error": 0.26914684452383236,
+          "horizontal_error": 0.13030223219798964,
+          "vertical_error": 0.23550234011864338,
+          "speed": 1.206517186393629
+        },
+        {
+          "seconds": 15.0,
+          "error": 0.6319166383640695,
+          "horizontal_error": 0.597979180836914,
+          "vertical_error": 0.2043025627028684,
+          "speed": 0.3201265506243773
+        },
+        {
+          "seconds": 16.0,
+          "error": 0.484706947836346,
+          "horizontal_error": 0.4225181863753918,
+          "vertical_error": 0.23752727730278872,
+          "speed": 0.960322246816475
+        },
+        {
+          "seconds": 17.0,
+          "error": 0.3277210151320687,
+          "horizontal_error": 0.2317145729935547,
+          "vertical_error": 0.23175292969368955,
+          "speed": 1.1892686127277348
+        },
+        {
+          "seconds": 18.0,
+          "error": 0.6553799172975054,
+          "horizontal_error": 0.6236298712508667,
+          "vertical_error": 0.2015158050389909,
+          "speed": 0.11205998800108624
+        },
+        {
+          "seconds": 19.0,
+          "error": 0.40129503351167384,
+          "horizontal_error": 0.3233534252022776,
+          "vertical_error": 0.23765577277038838,
+          "speed": 1.076377609243515
+        },
+        {
+          "seconds": 20.0,
+          "error": 0.3836664449390797,
+          "horizontal_error": 0.31370988383998455,
+          "vertical_error": 0.22087564318705505,
+          "speed": 1.0779253825558957
+        }
+      ],
+      "minco_feasibility_proved": false,
+      "flight_qualified": false,
+      "continuous_local_rate_chain_maximum_pole_real": 0.10173493794551863,
+      "transient_acceptance_is_stability_proof": false
+    },
+    {
+      "candidate": "baseline",
+      "lag_seconds": 0.5,
+      "rate_lag": false,
+      "force_lag": true,
+      "lag_model": "FIRST_ORDER_TIME_CONSTANT_NOT_TRANSPORT_DELAY",
+      "duration_seconds": 20.0,
+      "dt_seconds": 0.005,
+      "initial_error": 1.224744871391589,
+      "final_error": 2.506112678099832e-06,
+      "final_speed": 1.3998191867830081e-06,
+      "final_horizontal_error": 1.4745331107732541e-06,
+      "final_vertical_error": 2.02641379302601e-06,
+      "maximum_error": 1.2247448645204981,
+      "maximum_speed": 0.5424923631162752,
+      "passed": true,
+      "acceptance": {
+        "final_error_strictly_below_m": 0.15,
+        "unchanged": true
+      },
+      "output_bounds_passed": true,
+      "settings": {
+        "kp": 1.0,
+        "kv": 2.0,
+        "attitude_gain": 4.0,
+        "maximum_acceleration": 5.0,
+        "maximum_jerk": 3.0,
+        "maximum_tilt": 0.45,
+        "maximum_thrust_slew": 2.0,
+        "qualification": "OFFLINE_CANDIDATE_NOT_FLIGHT_QUALIFIED"
+      },
+      "diagnostics": {
+        "acceleration_limited_samples": 0,
+        "jerk_limited_samples": 72,
+        "rate_slew_boundary_samples": 0,
+        "thrust_slew_boundary_samples": 0,
+        "total_samples": 4000,
+        "maximum_rate_follow_error": 0.0,
+        "maximum_force_follow_error_newtons": 0.7199238955577165,
+        "reference_feedback_epoch_mismatch_seconds": 0.0
+      },
+      "trace_1hz": [
+        {
+          "seconds": 1.0,
+          "error": 1.0460655709493039,
+          "horizontal_error": 0.946981346464163,
+          "vertical_error": 0.4443866651626868,
+          "speed": 0.4592130359602886
+        },
+        {
+          "seconds": 2.0,
+          "error": 0.5374639170892382,
+          "horizontal_error": 0.4904933205006561,
+          "vertical_error": 0.21973567010649003,
+          "speed": 0.44082281159480796
+        },
+        {
+          "seconds": 3.0,
+          "error": 0.2396604226532484,
+          "horizontal_error": 0.22886070299961375,
+          "vertical_error": 0.07113295163885897,
+          "speed": 0.18150443628883778
+        },
+        {
+          "seconds": 4.0,
+          "error": 0.12161113901350086,
+          "horizontal_error": 0.1133171552609681,
+          "vertical_error": 0.04414172012645951,
+          "speed": 0.07863584155704992
+        },
+        {
+          "seconds": 5.0,
+          "error": 0.06603560560889592,
+          "horizontal_error": 0.05651516198659667,
+          "vertical_error": 0.03415754197483163,
+          "speed": 0.043206614341714564
+        },
+        {
+          "seconds": 6.0,
+          "error": 0.032017446047710965,
+          "horizontal_error": 0.027937643648754402,
+          "vertical_error": 0.015639850343698795,
+          "speed": 0.025453256937711714
+        },
+        {
+          "seconds": 7.0,
+          "error": 0.014931207481323728,
+          "horizontal_error": 0.013813516339064826,
+          "vertical_error": 0.0056681322497562385,
+          "speed": 0.010704261886310129
+        },
+        {
+          "seconds": 8.0,
+          "error": 0.007810169178366778,
+          "horizontal_error": 0.006837197352462979,
+          "vertical_error": 0.003775112575564288,
+          "speed": 0.004886183016962556
+        },
+        {
+          "seconds": 9.0,
+          "error": 0.0042670449726754595,
+          "horizontal_error": 0.003383552640626536,
+          "vertical_error": 0.002599854674197023,
+          "speed": 0.002848334276697733
+        },
+        {
+          "seconds": 10.0,
+          "error": 0.0020227601139374994,
+          "horizontal_error": 0.001674320740418697,
+          "vertical_error": 0.0011349927474394851,
+          "speed": 0.00163852636751236
+        },
+        {
+          "seconds": 11.0,
+          "error": 0.0009485465609509058,
+          "horizontal_error": 0.0008285597981236152,
+          "vertical_error": 0.00046176751642481776,
+          "speed": 0.0006538485663736991
+        },
+        {
+          "seconds": 12.0,
+          "error": 0.0005161617733610007,
+          "horizontal_error": 0.0004100201131297672,
+          "vertical_error": 0.0003135386469133046,
+          "speed": 0.0003045264471125661
+        },
+        {
+          "seconds": 13.0,
+          "error": 0.00028207143869057205,
+          "horizontal_error": 0.00020290098946117095,
+          "vertical_error": 0.00019594765882920603,
+          "speed": 0.00019488217515231288
+        },
+        {
+          "seconds": 14.0,
+          "error": 0.0001308073605131061,
+          "horizontal_error": 0.0001004074544956016,
+          "vertical_error": 8.38385868566462e-05,
+          "speed": 0.00010647561945402501
+        },
+        {
+          "seconds": 15.0,
+          "error": 6.249459391068418e-05,
+          "horizontal_error": 4.968758196371056e-05,
+          "vertical_error": 3.7904069262558994e-05,
+          "speed": 4.066995920896054e-05
+        },
+        {
+          "seconds": 16.0,
+          "error": 3.537754089402055e-05,
+          "horizontal_error": 2.4588326832708296e-05,
+          "vertical_error": 2.5435891635168083e-05,
+          "speed": 1.99600336550609e-05
+        },
+        {
+          "seconds": 17.0,
+          "error": 1.907934501159653e-05,
+          "horizontal_error": 1.216774879296632e-05,
+          "vertical_error": 1.4695825780907993e-05,
+          "speed": 1.3723018230661034e-05
+        },
+        {
+          "seconds": 18.0,
+          "error": 8.719362520709916e-06,
+          "horizontal_error": 6.021320133013195e-06,
+          "vertical_error": 6.306424234328889e-06,
+          "speed": 6.989839858333641e-06
+        },
+        {
+          "seconds": 19.0,
+          "error": 4.306138103970383e-06,
+          "horizontal_error": 2.9797041614506916e-06,
+          "vertical_error": 3.108727791347946e-06,
+          "speed": 2.610561272198551e-06
+        },
+        {
+          "seconds": 20.0,
+          "error": 2.506112678099832e-06,
+          "horizontal_error": 1.4745331107732541e-06,
+          "vertical_error": 2.02641379302601e-06,
+          "speed": 1.3998191867830081e-06
+        }
+      ],
+      "minco_feasibility_proved": false,
+      "flight_qualified": false,
+      "continuous_local_rate_chain_maximum_pole_real": null,
+      "transient_acceptance_is_stability_proof": false
+    },
+    {
+      "candidate": "baseline",
+      "lag_seconds": 0.5,
+      "rate_lag": false,
+      "force_lag": false,
+      "lag_model": "FIRST_ORDER_TIME_CONSTANT_NOT_TRANSPORT_DELAY",
+      "duration_seconds": 20.0,
+      "dt_seconds": 0.005,
+      "initial_error": 1.224744871391589,
+      "final_error": 1.4642026407892386e-06,
+      "final_speed": 1.0320523814885157e-06,
+      "final_horizontal_error": 1.4638205300751253e-06,
+      "final_vertical_error": 3.3448901697360666e-08,
+      "maximum_error": 1.2247448026416419,
+      "maximum_speed": 0.5220085616235832,
+      "passed": true,
+      "acceptance": {
+        "final_error_strictly_below_m": 0.15,
+        "unchanged": true
+      },
+      "output_bounds_passed": true,
+      "settings": {
+        "kp": 1.0,
+        "kv": 2.0,
+        "attitude_gain": 4.0,
+        "maximum_acceleration": 5.0,
+        "maximum_jerk": 3.0,
+        "maximum_tilt": 0.45,
+        "maximum_thrust_slew": 2.0,
+        "qualification": "OFFLINE_CANDIDATE_NOT_FLIGHT_QUALIFIED"
+      },
+      "diagnostics": {
+        "acceleration_limited_samples": 0,
+        "jerk_limited_samples": 70,
+        "rate_slew_boundary_samples": 0,
+        "thrust_slew_boundary_samples": 0,
+        "total_samples": 4000,
+        "maximum_rate_follow_error": 0.0,
+        "maximum_force_follow_error_newtons": 0.0,
+        "reference_feedback_epoch_mismatch_seconds": 0.0
+      },
+      "trace_1hz": [
+        {
+          "seconds": 1.0,
+          "error": 1.0243047981012057,
+          "horizontal_error": 0.9442192184801173,
+          "vertical_error": 0.39705212109488613,
+          "speed": 0.4671176966108717
+        },
+        {
+          "seconds": 2.0,
+          "error": 0.5379998845550763,
+          "horizontal_error": 0.4878020375535524,
+          "vertical_error": 0.22692079662269396,
+          "speed": 0.40646945563851433
+        },
+        {
+          "seconds": 3.0,
+          "error": 0.2534519770557562,
+          "horizontal_error": 0.22668309905899617,
+          "vertical_error": 0.11336964882401673,
+          "speed": 0.18576787450772253
+        },
+        {
+          "seconds": 4.0,
+          "error": 0.12416089601921668,
+          "horizontal_error": 0.11229915840895976,
+          "vertical_error": 0.05296061858526672,
+          "speed": 0.08797627682436106
+        },
+        {
+          "seconds": 5.0,
+          "error": 0.06090952104194802,
+          "horizontal_error": 0.056107650796120095,
+          "vertical_error": 0.023704456874186184,
+          "speed": 0.043946402630016465
+        },
+        {
+          "seconds": 6.0,
+          "error": 0.02958960054914524,
+          "horizontal_error": 0.027736864930858522,
+          "vertical_error": 0.010305861655644665,
+          "speed": 0.021460822614983152
+        },
+        {
+          "seconds": 7.0,
+          "error": 0.014395416118839634,
+          "horizontal_error": 0.01371003707229122,
+          "vertical_error": 0.0043889507528506585,
+          "speed": 0.010379513607547955
+        },
+        {
+          "seconds": 8.0,
+          "error": 0.007032006804752444,
+          "horizontal_error": 0.0067868329017021665,
+          "vertical_error": 0.0018406571833064465,
+          "speed": 0.005045634045115605
+        },
+        {
+          "seconds": 9.0,
+          "error": 0.0034445990406866715,
+          "horizontal_error": 0.003359046922018846,
+          "vertical_error": 0.0007629327144481711,
+          "speed": 0.0024622084080313978
+        },
+        {
+          "seconds": 10.0,
+          "error": 0.0016914388054564478,
+          "horizontal_error": 0.0016621629145305412,
+          "vertical_error": 0.00031333636584870327,
+          "speed": 0.0012045932235341336
+        },
+        {
+          "seconds": 11.0,
+          "error": 0.0008323884435596925,
+          "horizontal_error": 0.0008225269219012332,
+          "vertical_error": 0.0001277496916607242,
+          "speed": 0.0005909950903800782
+        },
+        {
+          "seconds": 12.0,
+          "error": 0.0004103194625139967,
+          "horizontal_error": 0.0004070394348818467,
+          "vertical_error": 5.17779853687062e-05,
+          "speed": 0.0002906716264630312
+        },
+        {
+          "seconds": 13.0,
+          "error": 0.0002025071949576603,
+          "horizontal_error": 0.00020142734622428978,
+          "vertical_error": 2.0885119167961012e-05,
+          "speed": 0.0001432229693157785
+        },
+        {
+          "seconds": 14.0,
+          "error": 0.00010003051990549587,
+          "horizontal_error": 9.967797846646786e-05,
+          "vertical_error": 8.39079980706099e-06,
+          "speed": 7.06642285953753e-05
+        },
+        {
+          "seconds": 15.0,
+          "error": 4.944084777669971e-05,
+          "horizontal_error": 4.932654418395469e-05,
+          "vertical_error": 3.359980319459983e-06,
+          "speed": 3.489824476390893e-05
+        },
+        {
+          "seconds": 16.0,
+          "error": 2.4446535844733737e-05,
+          "horizontal_error": 2.440968694077265e-05,
+          "vertical_error": 1.3417519373284525e-06,
+          "speed": 1.7246380781106133e-05
+        },
+        {
+          "seconds": 17.0,
+          "error": 1.2091173898994607e-05,
+          "horizontal_error": 1.207935122134961e-05,
+          "vertical_error": 5.34565549776764e-07,
+          "speed": 8.526876406907327e-06
+        },
+        {
+          "seconds": 18.0,
+          "error": 5.981352692097286e-06,
+          "horizontal_error": 5.9775746483459025e-06,
+          "vertical_error": 2.1255905229327528e-07,
+          "speed": 4.217112067960007e-06
+        },
+        {
+          "seconds": 19.0,
+          "error": 2.9592594443523937e-06,
+          "horizontal_error": 2.9580562105006743e-06,
+          "vertical_error": 8.437958584413053e-08,
+          "speed": 2.086071242375701e-06
+        },
+        {
+          "seconds": 20.0,
+          "error": 1.4642026407892386e-06,
+          "horizontal_error": 1.4638205300751253e-06,
+          "vertical_error": 3.3448901697360666e-08,
+          "speed": 1.0320523814885157e-06
+        }
+      ],
+      "minco_feasibility_proved": false,
+      "flight_qualified": false,
+      "continuous_local_rate_chain_maximum_pole_real": null,
+      "transient_acceptance_is_stability_proof": false
+    }
+  ],
+  "handover": {
+    "schema_version": 2,
+    "passed": true,
+    "flight_qualified": false,
+    "scope": "Actual runtime/controller dispatch using synthetic native feedback, memory publishers and injected positive Y authorization; no ROS executor",
+    "paper_step_calls_by_phase": {
+      "FOLLOW_ACTIVE": 0,
+      "Y_HANDOVER": 0,
+      "PAPER_INTERCEPT_ACTIVE": 5,
+      "SAFE_RECOVERY": 0
+    },
+    "paper_initialize_calls": 1,
+    "png_initialize_calls": 1,
+    "minco_revocations": 1,
+    "minco_polynomial_samples_by_phase": {
+      "FOLLOW_ACTIVE": 10,
+      "Y_HANDOVER": 0,
+      "PAPER_INTERCEPT_ACTIVE": 0,
+      "SAFE_RECOVERY": 0
+    },
+    "old_minco_explicit_reentry_rejected": true,
+    "recovery_target_guidance_calls": 0,
+    "first_y_output_continuous": true,
+    "target3d_reads": 0,
+    "bodyrate_only": true,
+    "single_memory_outlet_messages": 17,
+    "trace": [
+      {
+        "epoch": 10.0,
+        "phase": "FOLLOW_ACTIVE",
+        "output": {
+          "stamp": 10.0,
+          "rates": [
+            0.0,
+            0.0,
+            0.015
+          ],
+          "thrust": -0.5
+        },
+        "guidance_owner": "MINCO"
+      },
+      {
+        "epoch": 10.005,
+        "phase": "FOLLOW_ACTIVE",
+        "output": {
+          "stamp": 10.005,
+          "rates": [
+            0.0,
+            0.0,
+            0.030000000000002344
+          ],
+          "thrust": -0.5
+        },
+        "guidance_owner": "MINCO"
+      },
+      {
+        "epoch": 10.01,
+        "phase": "FOLLOW_ACTIVE",
+        "output": {
+          "stamp": 10.01,
+          "rates": [
+            0.0,
+            0.0,
+            0.04499999999999936
+          ],
+          "thrust": -0.5
+        },
+        "guidance_owner": "MINCO"
+      },
+      {
+        "epoch": 10.015,
+        "phase": "FOLLOW_ACTIVE",
+        "output": {
+          "stamp": 10.015,
+          "rates": [
+            0.0,
+            0.0,
+            0.060000000000001705
+          ],
+          "thrust": -0.5
+        },
+        "guidance_owner": "MINCO"
+      },
+      {
+        "epoch": 10.02,
+        "phase": "FOLLOW_ACTIVE",
+        "output": {
+          "stamp": 10.02,
+          "rates": [
+            0.0,
+            0.0,
+            0.07499999999999872
+          ],
+          "thrust": -0.5
+        },
+        "guidance_owner": "MINCO"
+      },
+      {
+        "epoch": 10.025,
+        "phase": "Y_HANDOVER",
+        "output": {
+          "stamp": 10.025,
+          "rates": [
+            0.0,
+            0.0012204287216941792,
+            0.06004973064672838
+          ],
+          "thrust": -0.5
+        },
+        "guidance_owner": "NONE"
+      },
+      {
+        "epoch": 10.03,
+        "phase": "Y_HANDOVER",
+        "output": {
+          "stamp": 10.03,
+          "rates": [
+            0.0,
+            0.003928982157094708,
+            0.04529629923951025
+          ],
+          "thrust": -0.5
+        },
+        "guidance_owner": "NONE"
+      },
+      {
+        "epoch": 10.035,
+        "phase": "PAPER_INTERCEPT_ACTIVE",
+        "output": {
+          "stamp": 10.035,
+          "rates": [
+            0.0,
+            0.0026327555042564618,
+            0.030352410974920536
+          ],
+          "thrust": -0.5
+        },
+        "guidance_owner": "PAPER"
+      },
+      {
+        "epoch": 10.04,
+        "phase": "PAPER_INTERCEPT_ACTIVE",
+        "output": {
+          "stamp": 10.04,
+          "rates": [
+            1.5738747022512563e-16,
+            -0.004902081338697271,
+            0.017382205357815712
+          ],
+          "thrust": -0.5
+        },
+        "guidance_owner": "PAPER"
+      },
+      {
+        "epoch": 10.045,
+        "phase": "PAPER_INTERCEPT_ACTIVE",
+        "output": {
+          "stamp": 10.045,
+          "rates": [
+            4.4198372429418964e-16,
+            -0.01723341806338089,
+            0.008841822779585423
+          ],
+          "thrust": -0.5
+        },
+        "guidance_owner": "PAPER"
+      },
+      {
+        "epoch": 10.05,
+        "phase": "PAPER_INTERCEPT_ACTIVE",
+        "output": {
+          "stamp": 10.05,
+          "rates": [
+            7.832391470337656e-16,
+            -0.03152626311350672,
+            0.004290495459652899
+          ],
+          "thrust": -0.5
+        },
+        "guidance_owner": "PAPER"
+      },
+      {
+        "epoch": 10.055,
+        "phase": "PAPER_INTERCEPT_ACTIVE",
+        "output": {
+          "stamp": 10.055,
+          "rates": [
+            1.14268008315507e-15,
+            -0.046358819910810846,
+            0.0020554878859168507
+          ],
+          "thrust": -0.5
+        },
+        "guidance_owner": "PAPER"
+      },
+      {
+        "epoch": 10.058,
+        "phase": "PAPER_INTERCEPT_ACTIVE",
+        "output": {
+          "stamp": 10.058,
+          "rates": [
+            1.4294756560645336e-15,
+            -0.05532195868774007,
+            0.0012417660258726656
+          ],
+          "thrust": -0.5
+        },
+        "guidance_owner": "PAPER"
+      },
+      {
+        "epoch": 10.06,
+        "phase": "SAFE_RECOVERY",
+        "output": {
+          "stamp": 10.06,
+          "rates": [
+            1.6846809433685917e-15,
+            -0.061321950290406824,
+            0.0012317277016836152
+          ],
+          "thrust": -0.5
+        },
+        "guidance_owner": "NONE"
+      },
+      {
+        "epoch": 10.065,
+        "phase": "SAFE_RECOVERY",
+        "output": {
+          "stamp": 10.065,
+          "rates": [
+            2.32579266164535e-15,
+            -0.07632192896446503,
+            0.0012064338741902313
+          ],
+          "thrust": -0.5
+        },
+        "guidance_owner": "NONE"
+      },
+      {
+        "epoch": 10.07,
+        "phase": "SAFE_RECOVERY",
+        "output": {
+          "stamp": 10.07,
+          "rates": [
+            2.970122061833454e-15,
+            -0.09132190729041952,
+            0.0011809344434891855
+          ],
+          "thrust": -0.5
+        },
+        "guidance_owner": "NONE"
+      },
+      {
+        "epoch": 10.075,
+        "phase": "SAFE_RECOVERY",
+        "output": {
+          "stamp": 10.075,
+          "rates": [
+            3.6177965566932114e-15,
+            -0.10632188525154042,
+            0.001155221299035813
+          ],
+          "thrust": -0.5
+        },
+        "guidance_owner": "NONE"
+      }
+    ]
+  },
+  "decision": {
+    "E2": "FAIL",
+    "stress_500ms_retained": true,
+    "flight_qualified": false,
+    "largest_tested_passing_time_constant_seconds": 0.44,
+    "largest_tested_case_inside_continuous_local_stability_bound": 0.4,
+    "physical_delay_bound": "UNKNOWN",
+    "continuous_nonlinear_stability_interval": "NOT_PROVED"
+  },
+  "limitations": [
+    "Point-mass plant and ideal synthetic qualified map only",
+    "No transport/feedback delay or measured PX4 actuator fit",
+    "No sea/obstacle/FOV/MINCO proof for candidate references",
+    "Recovery timing is not exercised by this hold-response model"
+  ],
+  "source_inputs": {
+    "/home/qin/data/uav_usv_mpc/scripts/p765_e2_analysis.py": "fe09f4cfbfa4e960ee9acce6b681d197d318970f5e1d91bc40cb0e779b990c8c",
+    "/home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/p76_contract.yaml": "9021ebe47129b2d5a46b8b0e98e442aad2d4829d987ce837bdea957ceac5f0e6",
+    "/home/qin/data/uav_usv_mpc/scripts/p764_handover_replay.py": "a2039b53292a2f8ed8815032678645f04e29bd41e0ae9065a77d2f13ed9c67ae",
+    "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/control/p76_paper_thrust.py": "ef3c1a627769d550e59a40ff1971443d7a2a380db5dc1c83d4d8ac20ae240e61",
+    "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/control/p76_paper_ibvs.py": "4b4526588709fce4ede09646c2b4f27e7a37014b50c82778bb7a971fd78c0dfe",
+    "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/control/p76_recovery.py": "88eb098be1e827e7e5d732d3bd9eaf11b2176aae390f908016c6f8e6904902c5",
+    "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/control/p76_paper_png.py": "df84fb87ea36d96d46d304b8115439d5020578d7e58809c7561521e4598832e5",
+    "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/control/p76_paper_controller.py": "30ffa5b285ecb6a4534d91f450e3e38f5991d40eff09f5802e2b26a3f563ca2a",
+    "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/control/p76_paper_attitude.py": "3ba8c564ca1dc7068be0b371aa6964a37c2f720cb084e5294b3a4ac555e2ffa2",
+    "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/control/p76_mode_coordinator.py": "49ebe62c4bcd4db9733cf9a4f0fe12cc518b65040ef00e3a6e214aea8e26d992",
+    "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/control/p76_minco_bodyrate_tracker.py": "d825a8deba064dfd9a7b18c60358f8500624f496e602924aa39c9a41607f5933",
+    "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/control/p763_calibration_control.py": "748f968ae40678efd4eb6a827ec86b6be4bbeb9309fafde53f1c4c1e87968dca",
+    "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/control/p76_tracker_runtime.py": "2d1a78e138c38375478a5ac781162632ec48a62be8d50644260680d8d690ce90",
+    "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/control/p76_bodyrate_safety.py": "b904646d499f4a9bbae6aa21a66450025a8e9c1e1babddc55519f8083cbfa8be"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "base_commit": "33a267f2c05ea087422a254cc385e8b15ba2edd5",
+  "sources": {
+    "scripts/p765_geometry_analysis.py": "1d6ead603613a85c71acc35ef72b2637df7e114dd1f3ceaddc01071388df0fcf",
+    "scripts/p765_roi_capture.py": "8f105bf5974db83a6e333830533643d19d5de5fc29c626a79d61b649670a7c73",
+    "scripts/p765_roi_replay.py": "bcae08b08d7b5900ec2207c5f60204f5565e3e518586f784b1f5c02da6a62f1b",
+    "src/uav_control/test/test_p765_geometry.py": "40d65315eb3bf1c7395902f03327f3984b398201748030374e3923c35e5ab9c3",
+    "src/uav_control/test/test_p765_roi_capture.py": "bcd2d07854d5976ea3008ce63611b130d0e3b7da698655402f3013ce8379df45",
+    "src/uav_control/uav_control/perception/p765_geometry.py": "beae73c55f8e870d03bdf2f1b9fe1bd49b73505ee5d4769e58679301e13a3ba7",
+    "src/uav_control/uav_control/perception/p765_roi_capture.py": "9ec622c37c239a59244a78edf53646199d980a18da9f3314560bc3a9c7922ed5",
+    "src/uav_control/uav_control/perception/rgbd_target_localizer.py": "917457f3fde6dd080641ebb6587094dd508646693652ba25330a17f96960fd34",
+    "src/uav_control/uav_control/perception/tof_sphere_localization.py": "2a7636d1c6c83a574d9b4640ab54dfa61671a3b9c01225d850ff5350fce273fd"
+  },
+  "verification": {
+    "command": "python3 -m pytest -q test/test_p765_geometry.py test/test_p765_roi_capture.py test/test_tof_sphere_localization.py test/test_rgbd_target_localizer.py",
+    "cwd": "src/uav_control",
+    "diff_check": "PASS",
+    "flight_sessions": 0,
+    "live_capture_sessions": 0,
+    "logs": "review_final_tests.txt; review_flake8_final.txt; review_final_diff_check.txt; review_final_compile.txt",
+    "result": "138 passed in 2.90s",
+    "scope_flake8": "PASS"
+  }
+}

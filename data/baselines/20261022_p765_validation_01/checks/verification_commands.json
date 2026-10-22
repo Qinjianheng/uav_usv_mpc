@@ -1,0 +1,8 @@
+{
+  "full_regression": "cd src/uav_control; python3 -m pytest -q --ignore=test/test_p6_sitl_driver.py --ignore=test/test_p6_turn_case_config.py",
+  "exclusions": "Two historical R11 fixture-dependent modules unavailable at P764 baseline; excluded explicitly, not passed.",
+  "ros_domain": 65,
+  "gazebo_px4_started": false,
+  "armed": false,
+  "new_actual_sessions": 0
+}

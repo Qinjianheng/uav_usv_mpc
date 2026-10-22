@@ -1,0 +1,103 @@
+{
+  "callback_seconds": {
+    "ImageDkfNode.tick": {
+      "count": 1500,
+      "p50": 5.1798997446894646e-05,
+      "p95": 0.0008618420928542036,
+      "p99": 0.0009479187993565575,
+      "maximum": 0.001216497999848798
+    },
+    "SpatialDkfNode.tick": {
+      "count": 1497,
+      "p50": 5.237000004854053e-05,
+      "p95": 6.64432009216398e-05,
+      "p99": 7.348320097662505e-05,
+      "maximum": 0.0001406170049449429
+    },
+    "SpatialDkfNode.receive": {
+      "count": 362,
+      "p50": 4.489498678594828e-06,
+      "p95": 6.9029920268803835e-06,
+      "p99": 8.585276809753845e-06,
+      "maximum": 2.6312001864425838e-05
+    },
+    "ImageDkfNode.receive": {
+      "count": 586,
+      "p50": 7.44479984859936e-05,
+      "p95": 0.0024462312576361,
+      "p99": 0.0025765575453988274,
+      "maximum": 0.0031470300018554553
+    },
+    "ImageDkfNode.navigation": {
+      "count": 1460,
+      "p50": 8.076996891759336e-06,
+      "p95": 1.0778942669276147e-05,
+      "p99": 1.1929471656912944e-05,
+      "maximum": 0.00018174300203099847
+    },
+    "ImageDkfNode.pose": {
+      "count": 2915,
+      "p50": 2.042599953711033e-05,
+      "p95": 2.934540243586524e-05,
+      "p99": 3.5550876928027796e-05,
+      "maximum": 5.422699905466288e-05
+    },
+    "ImageDkfNode.mode_changed": {
+      "count": 2,
+      "p50": 0.0005605874976026826,
+      "p95": 0.0006302020388829988,
+      "p99": 0.0006363899981079158,
+      "maximum": 0.000637936987914145
+    },
+    "SpatialDkfNode.mode_changed": {
+      "count": 2,
+      "p50": 1.4795499737374485e-05,
+      "p95": 1.5876856923568994e-05,
+      "p99": 1.5972977562341838e-05,
+      "maximum": 1.599700772203505e-05
+    }
+  },
+  "cpu_seconds": 4.720378787,
+  "states_observed": 8324,
+  "valid_states": 1356,
+  "transitions": [
+    {
+      "phase": "Y_HANDOVER",
+      "valid_before": false,
+      "filter_source": 1792577431.3233051
+    },
+    {
+      "phase": "PAPER_INTERCEPT_ACTIVE",
+      "valid_before": false,
+      "filter_source": 1792577431.3233051
+    }
+  ],
+  "spatial_distinct_updates_after_y": 0,
+  "illegal_authorizations": 0,
+  "posterior_and_covariance_preserved": true,
+  "recomputed_transitions": [
+    {
+      "node": "ImageDkfNode",
+      "phase": "Y_HANDOVER",
+      "preserved": true
+    },
+    {
+      "node": "SpatialDkfNode",
+      "phase": "Y_HANDOVER",
+      "preserved": true
+    },
+    {
+      "node": "ImageDkfNode",
+      "phase": "PAPER_INTERCEPT_ACTIVE",
+      "preserved": true
+    },
+    {
+      "node": "SpatialDkfNode",
+      "phase": "PAPER_INTERCEPT_ACTIVE",
+      "preserved": true
+    }
+  ],
+  "source": "/home/qin/data/uav_usv_mpc/data/baselines/20261021_p764_validation_01/nonflight_01/actual_callback_inputs.jsonl.gz",
+  "source_sha256": "e197ea9a801f7e7a258807ae8fa05bfbc4252188c8893750af1b9a83a36ab273",
+  "flight_qualified": false
+}

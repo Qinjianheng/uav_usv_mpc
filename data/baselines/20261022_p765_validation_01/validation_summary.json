@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "base": "33a267f2c05ea087422a254cc385e8b15ba2edd5",
+  "status": {
+    "E0": "BLOCKED",
+    "E1": "FAIL",
+    "E2": "FAIL",
+    "A1": "NO-GO"
+  },
+  "actual_new_sessions": 0,
+  "armed_sessions": 0,
+  "publication_authorized": false,
+  "full_regression": {
+    "runs": 1,
+    "passed": 2568,
+    "failed": 2,
+    "skipped": 2,
+    "warnings": 3,
+    "seconds": 47.05,
+    "failures": [
+      "test_flake8",
+      "test_pep257"
+    ],
+    "excluded": [
+      "test_p6_sitl_driver.py",
+      "test_p6_turn_case_config.py"
+    ]
+  },
+  "followup": {
+    "passed": 33,
+    "warnings": 2,
+    "seconds": 5.16,
+    "runtime_source_changed": false,
+    "reason": "Formatting/docstring changes only in two test files; targeted lint/affected retest; no repeated full suite."
+  },
+  "build": {
+    "success": true,
+    "packages": [
+      "uav_control",
+      "uav_usv_bringup"
+    ],
+    "seconds": 121,
+    "prefix": "/home/qin/data/uav_usv_mpc/install/uav_control"
+  },
+  "flake8": true,
+  "shell_syntax": true,
+  "diff_check": true,
+  "old_frozen_checksums": true,
+  "unique_next_experiment": "Separately approved one30s unarmed ROI/timing capture, noA1-D",
+  "source_commit": "3cc13bbcd1a04bcf3f3cf020168c5c025e6c79b9"
+}

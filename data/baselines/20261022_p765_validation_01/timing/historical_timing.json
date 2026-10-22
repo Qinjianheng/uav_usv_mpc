@@ -1,0 +1,177 @@
+{
+  "schema_version": 1,
+  "evidence_class": "P764_HISTORICAL_TIMING_RECOMPUTED",
+  "source": "/home/qin/data/uav_usv_mpc/data/baselines/20261021_p764_validation_01/nonflight_01/synchronized_packets.jsonl.gz",
+  "source_sha256": "38d041d35c0e175d04ff8f999a75bb93af42d876358d8ac49ef561dacaaad0ec",
+  "actual_new_sessions": 0,
+  "measured_performance_improvement": false,
+  "yolo": {
+    "count": 586,
+    "inference_executed": 545,
+    "inference_seconds": {
+      "count": 545,
+      "p50": 0.05104077899886761,
+      "p95": 0.06657984800694974,
+      "p99": 0.08342753644741593,
+      "maximum": 0.12112909799907357
+    },
+    "completion_source_age_seconds": {
+      "count": 585,
+      "p50": 0.13759493827819824,
+      "p95": 0.17516160011291504,
+      "p99": 0.18562054634094236,
+      "maximum": 0.21384906768798828
+    },
+    "reason_and_inference_counts": {
+      "IMAGE_BEFORE_CLOCK_REFERENCE:inference=False": 1,
+      "VALID:inference=True": 164,
+      "YOLO_SOURCE_STALE_AFTER_INFERENCE:inference=True": 381,
+      "YOLO_SOURCE_STALE_AFTER_INFERENCE:inference=False": 40
+    },
+    "unattributed_pipeline_seconds": {
+      "count": 545,
+      "p50": 0.08662526958505623,
+      "p95": 0.11983234719082246,
+      "p99": 0.12396259089116939,
+      "maximum": 0.12470369398943149
+    },
+    "detector_complete_to_collector_receipt_seconds": {
+      "count": 586,
+      "p50": 0.0016006231307983398,
+      "p95": 0.007884383201599121,
+      "p99": 0.009704399108886715,
+      "maximum": 0.03048563003540039
+    }
+  },
+  "localizer": {
+    "paired_receipt_to_processed_seconds": {
+      "count": 362,
+      "p50": 0.029459595680236816,
+      "p95": 0.09987590312957763,
+      "p99": 0.10989053726196289,
+      "maximum": 0.1269359588623047
+    },
+    "valid_observations": 0
+  },
+  "dkf": {
+    "callback_seconds": {
+      "ImageDkfNode.tick": {
+        "count": 2086,
+        "p50": 0.0003485389970592223,
+        "p95": 0.0032145910008694045,
+        "p99": 0.00687180724926293,
+        "maximum": 0.028651159009314142
+      },
+      "SpatialDkfNode.tick": {
+        "count": 1497,
+        "p50": 0.0003195269964635372,
+        "p95": 0.0004927293979562819,
+        "p99": 0.0005390566872665658,
+        "maximum": 0.0006351519987219945
+      },
+      "SpatialDkfNode.receive": {
+        "count": 362,
+        "p50": 0.00014280849427450448,
+        "p95": 0.0002485520984919276,
+        "p99": 0.0002719035719928797,
+        "maximum": 0.000399771990487352
+      },
+      "ImageDkfNode.receive": {
+        "count": 586,
+        "p50": 0.0005474869976751506,
+        "p95": 0.00607453849806916,
+        "p99": 0.007648849847464587,
+        "maximum": 0.00845549900259357
+      },
+      "ImageDkfNode.navigation": {
+        "count": 1460,
+        "p50": 8.035099017433822e-05,
+        "p95": 0.0001304540019191336,
+        "p99": 0.00015670583830797117,
+        "maximum": 0.0003336420049890876
+      },
+      "ImageDkfNode.pose": {
+        "count": 2915,
+        "p50": 0.00013812699762638658,
+        "p95": 0.0002389502013102173,
+        "p99": 0.000278479663829785,
+        "maximum": 0.0004622530104825273
+      },
+      "ImageDkfNode.mode_changed": {
+        "count": 2,
+        "p50": 0.0004383470004540868,
+        "p95": 0.0005032658031268511,
+        "p99": 0.0005090363633644302,
+        "maximum": 0.0005104790034238249
+      },
+      "SpatialDkfNode.mode_changed": {
+        "count": 2,
+        "p50": 3.359699621796608e-05,
+        "p95": 4.064309905515984e-05,
+        "p99": 4.1269419307354836e-05,
+        "maximum": 4.142599937040359e-05
+      }
+    },
+    "image_valid": 424,
+    "spatial_valid": 0,
+    "caveat": "Old callback times include synchronous instrumentation/serialization; nested image receive/tick durations overlap and must not be summed."
+  },
+  "shadow": {
+    "evidence_class": "ACTUAL_ROS_EXECUTOR_DISCONNECTED_SHADOW",
+    "period_seconds": 0.005,
+    "interval_seconds": {
+      "count": 5926,
+      "p50": 0.004987157495634165,
+      "p95": 0.006118803754361579,
+      "p99": 0.008984919997601537,
+      "maximum": 0.056745745008811355
+    },
+    "compute_seconds": {
+      "count": 5927,
+      "p50": 0.0005699060129700229,
+      "p95": 0.0009756193991051987,
+      "p99": 0.0011000910963048227,
+      "maximum": 0.0015223380032693967
+    },
+    "missed_cycles": 157,
+    "compute_deadline_misses": 0,
+    "successful_native_computations": 5768,
+    "rejections": {
+      "NATIVE_PAIR_NOT_AVAILABLE": 159
+    },
+    "qualified": false,
+    "workload": "Real BodyrateTracker, native hold PVA; no admitted MINCO or PNG",
+    "px4_outputs": false,
+    "flight_qualified": false
+  },
+  "process": {
+    "cpu_seconds": 21.913295519000002,
+    "wall_seconds": 30.55205809000472,
+    "core_fraction": 0.7172444964082162,
+    "rss_bytes": {
+      "count": 300,
+      "p50": 239609856.0,
+      "p95": 271191859.2,
+      "p99": 274012528.64,
+      "maximum": 274673664.0
+    }
+  },
+  "proven_confounder": "PX4 temporary stdin pipe closed; child EOF console busy-loop. Fixed wrapper subprocess test verifies stdin lifetime only.",
+  "unresolved": [
+    "Separate DDS wait from RGB bridge transport: no per-process monotonic enqueue/start timestamps in old trace.",
+    "Separate recorder serialization from actual DKF method compute: old wrapper times include serialization.",
+    "Attribute each of 157 missed cycles: raw wakeup samples/callback spans and scheduler/CPU timelines were not saved.",
+    "Quantify PX4 EOF fix or single-worker improvement: requires one separately authorized same-scene unarmed session."
+  ],
+  "new_instrumentation": [
+    "single inference worker; latest pending frame replacement",
+    "receipt/selection/inference/publication source ages",
+    "bounded asynchronous serializer with explicit overflow failure",
+    "raw timer intervals, costs, graph, transition and source identities"
+  ],
+  "limits_unchanged": {
+    "source_age": 0.125,
+    "period": 0.005
+  },
+  "e1_status": "NO_GO_NO_VALID_3D_AND_157_MISSED_CYCLES"
+}

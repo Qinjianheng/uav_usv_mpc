@@ -1,0 +1,7 @@
+{
+  "scripts/build_workspace.sh": 0,
+  "scripts/start_px4_ros2.sh": 0,
+  "scripts/sync_github.sh": 0,
+  "scripts/test_research_planners.sh": 0,
+  "scripts/uav_lab.sh": 0
+}

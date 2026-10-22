@@ -1,0 +1,1008 @@
+{
+  "schema_version": 1,
+  "stage": "E0_DYNAMICS_METHOD_AUDIT",
+  "source_inputs": {
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/session_A1_03/identity.json": "30dde601cf7c3e6e744eadcac57de2fd296e2bd4f98594031b2faafe6c4d5664",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/session_A1_03/calibration.jsonl": "51312b1147da4394602274eb68908fc2e7d2ff6b239bbf3b8c78efef34a47a44",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/session_A1_03/analysis.json": "cdd44e1308909616845927619bf79468d928822a8d95c243643764c77171960f",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/session_A1_03/native_px4.ulg": "e69608a1a30804f9f3a5f34d8473ab9fc698fad51c66deb365b84420b1352777",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/session_A1_03/p76_session_model.json": "fda6b6d914eeaf50d48d2dcba963d73601a95ccb92ef0ebcc28b3eab0c3f8fa1",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/frozen/models/x500/LICENSE": "cee4ef94e73cd38fb2886f5d7e7a04d6488f54b1e70cd8b1b29d74f38bfdba5b",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/frozen/models/x500/model.config": "52fdda8e66faa5095434d54e4dcaad5a6a8833cd014e0a5b439349ed8b4a1b67",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/frozen/models/x500/model.sdf": "847e91b282d5de6bdc1a5c94ceb46af439886b7fb9f273655dd8c75b4ef93e45",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/frozen/models/x500/thumbnails/1.png": "54d00187e5a03766d5e7b73311bc6bfa22f51cd98b823a287b2da8c551c3175e",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/frozen/models/x500/thumbnails/2.png": "cb6040c119b2a382030165a2a98ab9e9cf816557808a4549c323f2a3792cb8b4",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/frozen/models/x500/thumbnails/3.png": "848f431c64b34df15c59ad874e6211695ac53ee932ad3509ebb7c6372fc67375",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/frozen/models/x500/thumbnails/4.png": "86e1b7f31a49894caeef210f43248587d6454eba467a492f9bc147bf732ae666",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/frozen/models/x500/thumbnails/5.png": "b76053e95f7aff65c6f83533fb5635554292acb26fe51376c2d62e437e350e75",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/frozen/models/x500_base/LICENSE": "cee4ef94e73cd38fb2886f5d7e7a04d6488f54b1e70cd8b1b29d74f38bfdba5b",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/frozen/models/x500_base/materials/textures/CF.png": "3a56ec48eeaaf7774e8d3e8e5e88f6973bfa5652c610974c3eb2dbec6ec85944",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/frozen/models/x500_base/materials/textures/nxp.png": "6c2262c84e0f5f55dbe38e712e6508d654fb6e7c427d1a19cdd62231bc2d52b1",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/frozen/models/x500_base/materials/textures/rd.png": "9d8851c37dc612c336b46e41744c17fb8333a0af33ac4be93f7147f7549a8e25",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/frozen/models/x500_base/meshes/1345_prop_ccw.stl": "ba197e0961117a3462b555d65edf3433ba8ff5691624100a185242cb5f456244",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/frozen/models/x500_base/meshes/1345_prop_cw.stl": "7aa4b61c1ddc5304c9c1f5602eacf5e2ec5eafb95dd1f2a3368342f256122fc0",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/frozen/models/x500_base/meshes/5010Base.dae": "798396a1945c7ff55a0840b77869e27affdd35fed0d784fff96b68f50f160ea0",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/frozen/models/x500_base/meshes/5010Bell.dae": "b90a1b2dd63a8ebbe1f3339ed18cef23673e0d8f03314fd9b9533a68b6b66668",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/frozen/models/x500_base/meshes/CF.png": "3a56ec48eeaaf7774e8d3e8e5e88f6973bfa5652c610974c3eb2dbec6ec85944",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/frozen/models/x500_base/meshes/NXP-HGD-CF.dae": "7321861b113866996dfa79b403def5666d4b796810840d2c057c7b51fc315b0a",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/frozen/models/x500_base/model.config": "4856afbdeb52f19468f56ddaf4be57c04688f347b8cef2f609daacd2d014d437",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/frozen/models/x500_base/model.sdf": "e807dca3406f7cd5cb3d545898601c3ec17e0e5242e25cf467a69df1812cf436",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/frozen/models/x500_base/thumbnails/1.png": "54d00187e5a03766d5e7b73311bc6bfa22f51cd98b823a287b2da8c551c3175e",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/frozen/models/x500_base/thumbnails/2.png": "cb6040c119b2a382030165a2a98ab9e9cf816557808a4549c323f2a3792cb8b4",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/frozen/models/x500_base/thumbnails/3.png": "848f431c64b34df15c59ad874e6211695ac53ee932ad3509ebb7c6372fc67375",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/frozen/models/x500_base/thumbnails/4.png": "86e1b7f31a49894caeef210f43248587d6454eba467a492f9bc147bf732ae666",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/frozen/models/x500_base/thumbnails/5.png": "b76053e95f7aff65c6f83533fb5635554292acb26fe51376c2d62e437e350e75",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/frozen/models/x500_mono_cam/model.config": "d724880d1093db23c9cfebaead55b507ba2f957c1165d434f90ddd77d992b09c",
+    "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/frozen/models/x500_mono_cam/model.sdf": "a009f3bc5d254acb66a8900683e7440db3a0cc81e8e924fb741d69ca425a2ad7",
+    "/home/qin/data/uav_usv_mpc/scripts/p765_dynamics_analysis.py": "c2d497f9a6d09b083b8ef0eac5b98731d697cfcb4726c757b131a527a45e47b0",
+    "/home/qin/data/uav_usv_mpc/scripts/p76_calibration_analysis.py": "c3898a6abf63984ba0970e30529f8fb84b8f4ea0a302394a24f8706838bff08c",
+    "/home/qin/data/uav_usv_mpc/src/uav_control/uav_control/control/p763_calibration_control.py": "748f968ae40678efd4eb6a827ec86b6be4bbeb9309fafde53f1c4c1e87968dca"
+  },
+  "static_model": {
+    "mass": 2.1948611353641296,
+    "gravity": 9.8,
+    "maximum_thrust": 64.5289173797054,
+    "twr": 2.9999999999999996,
+    "scope": "Verified SDF static available motor-force ceiling; not measured TWR",
+    "motor_speed_time_constants_seconds": [
+      {
+        "up": 0.0125,
+        "down": 0.025
+      },
+      {
+        "up": 0.0125,
+        "down": 0.025
+      },
+      {
+        "up": 0.0125,
+        "down": 0.025
+      },
+      {
+        "up": 0.0125,
+        "down": 0.025
+      }
+    ]
+  },
+  "mode_exit": {
+    "scope": "BODY_RATE_TO_VELOCITY_WITHDRAWAL_ONLY",
+    "executed_collective_withdrawal_seconds": 0.24011754989624023,
+    "reset_command_interfaces": [
+      "velocity"
+    ],
+    "within_bodyrate_response_bound": "UNKNOWN",
+    "used_240ms_as_measured_within_mode_delay": false
+  },
+  "local_data": {
+    "force_samples": 2689,
+    "hover_force_samples": 100,
+    "force_scope": "Motion-derived lift including aero/navigation uncertainty",
+    "phase_samples": [
+      {
+        "phase": "THRUST_0.300",
+        "normalized": 0.3,
+        "duration_seconds": 0.2252950668334961,
+        "native_start_us": 26491142,
+        "native_end_us": 26716437,
+        "all_native_force_samples": 11,
+        "original_warmup_force_samples": 7,
+        "force_median_newtons": 10.645224636798469,
+        "force_min_newtons": 10.58704671174299,
+        "force_max_newtons": 11.02785366001398,
+        "force_MAD_newtons": 0.05185312579369317,
+        "command_stamp": 1792558202.4241433,
+        "executed_collective_matches_command_seconds": 0.003687620162963867,
+        "same_mode_physical_response_qualified": false,
+        "motor_fit": {
+          "status": "CONDITIONAL_FIT_ONLY",
+          "actual_samples": 11,
+          "steady_force_newtons": 10.589546223768473,
+          "speed_time_constant_seconds": 0.024881339529737086,
+          "input_to_force_fit_delay_seconds": 0.011925539594296706,
+          "jacobian_rank": 3,
+          "jacobian_condition": 164.45783449043324,
+          "residual_rms_newtons": 0.007928952119277055,
+          "conditional_parameter_standard_errors": [
+            0.0041784875477387795,
+            9.332977905791109e-05,
+            5.917163186837049e-05
+          ],
+          "conditional_uncertainty_scope": "Local iid residual assumption only; not confidence bounds",
+          "fitted_at_parameter_boundary": false,
+          "physical_error_bound": null,
+          "qualified": false
+        },
+        "steady_state_verified": false
+      },
+      {
+        "phase": "THRUST_0.400",
+        "normalized": 0.4,
+        "duration_seconds": 0.22463512420654297,
+        "native_start_us": 30112110,
+        "native_end_us": 30336746,
+        "all_native_force_samples": 11,
+        "original_warmup_force_samples": 7,
+        "force_median_newtons": 15.538861345531204,
+        "force_min_newtons": 15.499485136383639,
+        "force_max_newtons": 15.815649197739285,
+        "force_MAD_newtons": 0.023206018538173723,
+        "command_stamp": 1792558206.044269,
+        "executed_collective_matches_command_seconds": 0.00356292724609375,
+        "same_mode_physical_response_qualified": false,
+        "motor_fit": {
+          "status": "CONDITIONAL_FIT_ONLY",
+          "actual_samples": 11,
+          "steady_force_newtons": 15.508736195053128,
+          "speed_time_constant_seconds": 0.024612967462432286,
+          "input_to_force_fit_delay_seconds": 0.011893834809463742,
+          "jacobian_rank": 3,
+          "jacobian_condition": 89.87634904385605,
+          "residual_rms_newtons": 0.007967156200393424,
+          "conditional_parameter_standard_errors": [
+            0.004275705042885781,
+            0.00019196624118394598,
+            0.00015555819101635378
+          ],
+          "conditional_uncertainty_scope": "Local iid residual assumption only; not confidence bounds",
+          "fitted_at_parameter_boundary": false,
+          "physical_error_bound": null,
+          "qualified": false
+        },
+        "steady_state_verified": false
+      },
+      {
+        "phase": "THRUST_0.500",
+        "normalized": 0.5,
+        "duration_seconds": 0.22573304176330566,
+        "native_start_us": 33051123,
+        "native_end_us": 33276856,
+        "all_native_force_samples": 11,
+        "original_warmup_force_samples": 7,
+        "force_median_newtons": 21.362980545628055,
+        "force_min_newtons": 21.346628492152302,
+        "force_max_newtons": 21.382939141804915,
+        "force_MAD_newtons": 0.007374593949439401,
+        "command_stamp": 1792558208.984123,
+        "executed_collective_matches_command_seconds": 0.003711223602294922,
+        "same_mode_physical_response_qualified": false,
+        "motor_fit": {
+          "status": "CONDITIONAL_FIT_ONLY",
+          "actual_samples": 11,
+          "steady_force_newtons": 21.359305725436514,
+          "speed_time_constant_seconds": 0.027582001511631846,
+          "input_to_force_fit_delay_seconds": 0.006042726570386769,
+          "jacobian_rank": 3,
+          "jacobian_condition": 4.075132747672278,
+          "residual_rms_newtons": 0.011563233180140355,
+          "conditional_parameter_standard_errors": [
+            0.005966683350661624,
+            0.005344733668783319,
+            0.002262489794016346
+          ],
+          "conditional_uncertainty_scope": "Local iid residual assumption only; not confidence bounds",
+          "fitted_at_parameter_boundary": false,
+          "physical_error_bound": null,
+          "qualified": false
+        },
+        "steady_state_verified": false
+      },
+      {
+        "phase": "THRUST_0.600",
+        "normalized": 0.6,
+        "duration_seconds": 0.22497224807739258,
+        "native_start_us": 34641497,
+        "native_end_us": 34866470,
+        "all_native_force_samples": 11,
+        "original_warmup_force_samples": 7,
+        "force_median_newtons": 28.144252819600524,
+        "force_min_newtons": 28.124451742676793,
+        "force_max_newtons": 28.153359392688884,
+        "force_MAD_newtons": 0.004924752393254295,
+        "command_stamp": 1792558210.5752478,
+        "executed_collective_matches_command_seconds": 0.004591941833496094,
+        "same_mode_physical_response_qualified": false,
+        "motor_fit": {
+          "status": "CONDITIONAL_FIT_ONLY",
+          "actual_samples": 11,
+          "steady_force_newtons": 28.139884677248926,
+          "speed_time_constant_seconds": 0.012548060802333063,
+          "input_to_force_fit_delay_seconds": 0.008817956682059487,
+          "jacobian_rank": 3,
+          "jacobian_condition": 130.637891410545,
+          "residual_rms_newtons": 0.007744676853589354,
+          "conditional_parameter_standard_errors": [
+            0.0032056643932491112,
+            8.925495727478709e-05,
+            6.961375105346034e-05
+          ],
+          "conditional_uncertainty_scope": "Local iid residual assumption only; not confidence bounds",
+          "fitted_at_parameter_boundary": false,
+          "physical_error_bound": null,
+          "qualified": false
+        },
+        "steady_state_verified": false
+      },
+      {
+        "phase": "THRUST_0.700",
+        "normalized": 0.7,
+        "duration_seconds": 0.2250502109527588,
+        "native_start_us": 37871317,
+        "native_end_us": 38096368,
+        "all_native_force_samples": 11,
+        "original_warmup_force_samples": 7,
+        "force_median_newtons": 35.84973012327146,
+        "force_min_newtons": 35.8017199007741,
+        "force_max_newtons": 35.86194215000616,
+        "force_MAD_newtons": 0.0031882880026259386,
+        "command_stamp": 1792558213.8042047,
+        "executed_collective_matches_command_seconds": 0.003636598587036133,
+        "same_mode_physical_response_qualified": false,
+        "motor_fit": {
+          "status": "CONDITIONAL_FIT_ONLY",
+          "actual_samples": 11,
+          "steady_force_newtons": 35.85192145751627,
+          "speed_time_constant_seconds": 0.012557850333881843,
+          "input_to_force_fit_delay_seconds": 0.011783942909319271,
+          "jacobian_rank": 3,
+          "jacobian_condition": 230.6442609665827,
+          "residual_rms_newtons": 0.014174997416495944,
+          "conditional_parameter_standard_errors": [
+            0.006271389372278477,
+            0.00013723302163818235,
+            0.00018783664035778569
+          ],
+          "conditional_uncertainty_scope": "Local iid residual assumption only; not confidence bounds",
+          "fitted_at_parameter_boundary": false,
+          "physical_error_bound": null,
+          "qualified": false
+        },
+        "steady_state_verified": false
+      },
+      {
+        "phase": "THRUST_0.850",
+        "normalized": 0.85,
+        "duration_seconds": 0.22548484802246094,
+        "native_start_us": 41011245,
+        "native_end_us": 41236730,
+        "all_native_force_samples": 11,
+        "original_warmup_force_samples": 7,
+        "force_median_newtons": 49.185668818419416,
+        "force_min_newtons": 49.08758763823861,
+        "force_max_newtons": 49.201091982950715,
+        "force_MAD_newtons": 0.015423164531298994,
+        "command_stamp": 1792558216.9440908,
+        "executed_collective_matches_command_seconds": 0.003737211227416992,
+        "same_mode_physical_response_qualified": false,
+        "motor_fit": {
+          "status": "CONDITIONAL_FIT_ONLY",
+          "actual_samples": 11,
+          "steady_force_newtons": 49.185372651477216,
+          "speed_time_constant_seconds": 0.012518913612450581,
+          "input_to_force_fit_delay_seconds": 0.01197175312348431,
+          "jacobian_rank": 3,
+          "jacobian_condition": 499.3663759604083,
+          "residual_rms_newtons": 0.012375378242400634,
+          "conditional_parameter_standard_errors": [
+            0.005524298215561106,
+            5.138139783412929e-05,
+            5.19991101359916e-05
+          ],
+          "conditional_uncertainty_scope": "Local iid residual assumption only; not confidence bounds",
+          "fitted_at_parameter_boundary": false,
+          "physical_error_bound": null,
+          "qualified": false
+        },
+        "steady_state_verified": false
+      },
+      {
+        "phase": "THRUST_1.000",
+        "normalized": 1.0,
+        "duration_seconds": 0.22569584846496582,
+        "native_start_us": 44226185,
+        "native_end_us": 44451881,
+        "all_native_force_samples": 11,
+        "original_warmup_force_samples": 7,
+        "force_median_newtons": 60.60532941806211,
+        "force_min_newtons": 60.52898722922795,
+        "force_max_newtons": 60.862275633959136,
+        "force_MAD_newtons": 0.0735415978327012,
+        "command_stamp": 1792558220.159018,
+        "executed_collective_matches_command_seconds": 0.0008144378662109375,
+        "same_mode_physical_response_qualified": false,
+        "motor_fit": {
+          "status": "CONDITIONAL_FIT_ONLY",
+          "actual_samples": 11,
+          "steady_force_newtons": 60.628379564036706,
+          "speed_time_constant_seconds": 0.012115726077179497,
+          "input_to_force_fit_delay_seconds": 0.007859915567875912,
+          "jacobian_rank": 3,
+          "jacobian_condition": 865.2616213485718,
+          "residual_rms_newtons": 0.12395376038295361,
+          "conditional_parameter_standard_errors": [
+            0.05156070477085277,
+            0.00015153155139184993,
+            6.53491127208282e-05
+          ],
+          "conditional_uncertainty_scope": "Local iid residual assumption only; not confidence bounds",
+          "fitted_at_parameter_boundary": false,
+          "physical_error_bound": null,
+          "qualified": false
+        },
+        "steady_state_verified": false
+      }
+    ],
+    "maximum_short_window_twr": 2.817589317117044,
+    "maximum_steady_twr": "UNKNOWN",
+    "physical_force_error_bound": null
+  },
+  "per_level_upper_bounds": {
+    "proved": false,
+    "retained_upper_bound_newtons": 64.5289173797054,
+    "reason": "No independent measured RPM or qualified allocation/lag/error bound"
+  },
+  "motor_ulog": {
+    "source": "/home/qin/data/uav_usv_mpc/data/experiments/20261021_p761_01/session_A1_03/native_px4.ulg",
+    "sha256": "e69608a1a30804f9f3a5f34d8473ab9fc698fad51c66deb365b84420b1352777",
+    "datasets": [
+      "actuator_armed",
+      "actuator_controls_status_0",
+      "actuator_motors",
+      "actuator_outputs",
+      "battery_status",
+      "config_overrides",
+      "control_allocator_status",
+      "cpuload",
+      "detect_and_avoid_most_urgent",
+      "distance_sensor_mode_change_request",
+      "ekf2_timestamps",
+      "esc_status",
+      "estimator_aid_src_baro_hgt",
+      "estimator_aid_src_fake_hgt",
+      "estimator_aid_src_fake_pos",
+      "estimator_aid_src_gnss_hgt",
+      "estimator_aid_src_gnss_pos",
+      "estimator_aid_src_gnss_vel",
+      "estimator_aid_src_gravity",
+      "estimator_aid_src_mag",
+      "estimator_baro_bias",
+      "estimator_event_flags",
+      "estimator_fusion_control",
+      "estimator_gps_status",
+      "estimator_innovation_test_ratios",
+      "estimator_innovation_variances",
+      "estimator_innovations",
+      "estimator_sensor_bias",
+      "estimator_states",
+      "estimator_status",
+      "estimator_status_flags",
+      "event",
+      "failsafe_flags",
+      "failure_detector_status",
+      "gripper",
+      "home_position",
+      "hover_thrust_estimate",
+      "landing_gear",
+      "logger_status",
+      "manual_control_setpoint",
+      "mission_result",
+      "navigator_status",
+      "offboard_control_mode",
+      "parameter_update",
+      "position_setpoint_triplet",
+      "rate_ctrl_status",
+      "rtl_status",
+      "rtl_time_estimate",
+      "sensor_accel",
+      "sensor_baro",
+      "sensor_combined",
+      "sensor_gps",
+      "sensor_gyro",
+      "sensor_gyro_fft",
+      "sensor_mag",
+      "sensor_selection",
+      "sensors_status_imu",
+      "system_power",
+      "takeoff_status",
+      "telemetry_status",
+      "timesync_status",
+      "trajectory_setpoint",
+      "vehicle_acceleration",
+      "vehicle_air_data",
+      "vehicle_angular_velocity",
+      "vehicle_angular_velocity_groundtruth",
+      "vehicle_attitude",
+      "vehicle_attitude_groundtruth",
+      "vehicle_attitude_setpoint",
+      "vehicle_command",
+      "vehicle_command_ack",
+      "vehicle_constraints",
+      "vehicle_control_mode",
+      "vehicle_global_position",
+      "vehicle_global_position_groundtruth",
+      "vehicle_gps_position",
+      "vehicle_imu",
+      "vehicle_imu_status",
+      "vehicle_land_detected",
+      "vehicle_local_position",
+      "vehicle_local_position_groundtruth",
+      "vehicle_local_position_setpoint",
+      "vehicle_magnetometer",
+      "vehicle_rates_setpoint",
+      "vehicle_status",
+      "vehicle_thrust_setpoint",
+      "vehicle_torque_setpoint",
+      "yaw_estimator_status"
+    ],
+    "esc_rpm_fields_present": true,
+    "measured_rotor_rpm_present": false,
+    "esc_status_rows": 604,
+    "esc_nonzero_rows_by_motor": [
+      524,
+      524,
+      524,
+      524
+    ],
+    "esc_feedback_scope": "GZ bridge subscribes to its own command/motor_speed and copies velocity into esc_rpm; not independent rotor feedback",
+    "inspected_bridge_source": {
+      "path": "/home/qin/Projects/PX4-Autopilot/src/modules/simulation/gz_bridge/GZMixingInterfaceESC.cpp",
+      "sha256": "253e927cbd190a6d91008c9a0c391d7dd920d639a4b731ab9caf045c58354153",
+      "historical_source_binary_binding": false
+    },
+    "actuator_channels_scope": "actuator_motors: normalized allocation; actuator_outputs: motor-speed commands; neither is an independent rotor-speed measurement",
+    "per_phase": [
+      {
+        "phase": "THRUST_0.300",
+        "actuator_motors": {
+          "count": 2,
+          "channel_median": [
+            0.314300000667572,
+            0.28573447465896606,
+            0.3142007291316986,
+            0.2857647240161896
+          ],
+          "channel_min": [
+            0.31328508257865906,
+            0.28481540083885193,
+            0.3132685720920563,
+            0.2847367227077484
+          ],
+          "channel_max": [
+            0.315314918756485,
+            0.2866535484790802,
+            0.31513288617134094,
+            0.28679272532463074
+          ]
+        },
+        "actuator_outputs": {
+          "count": 2,
+          "channel_median": [
+            417.1549987792969,
+            392.8742980957031,
+            417.07061767578125,
+            392.9000244140625
+          ],
+          "channel_min": [
+            416.29229736328125,
+            392.09307861328125,
+            416.2782897949219,
+            392.0262145996094
+          ],
+          "channel_max": [
+            418.0177001953125,
+            393.655517578125,
+            417.86297607421875,
+            393.7738037109375
+          ]
+        }
+      },
+      {
+        "phase": "THRUST_0.400",
+        "actuator_motors": {
+          "count": 2,
+          "channel_median": [
+            0.4180203378200531,
+            0.38182637095451355,
+            0.4182335138320923,
+            0.3819196820259094
+          ],
+          "channel_min": [
+            0.41741880774497986,
+            0.38122424483299255,
+            0.41756513714790344,
+            0.3812519311904907
+          ],
+          "channel_max": [
+            0.41862186789512634,
+            0.38242849707603455,
+            0.41890186071395874,
+            0.3825874626636505
+          ]
+        },
+        "actuator_outputs": {
+          "count": 2,
+          "channel_median": [
+            505.3172607421875,
+            474.55242919921875,
+            505.49847412109375,
+            474.6317443847656
+          ],
+          "channel_min": [
+            504.80596923828125,
+            474.0406188964844,
+            504.93035888671875,
+            474.06414794921875
+          ],
+          "channel_max": [
+            505.8285827636719,
+            475.064208984375,
+            506.06658935546875,
+            475.1993408203125
+          ]
+        }
+      },
+      {
+        "phase": "THRUST_0.500",
+        "actuator_motors": {
+          "count": 3,
+          "channel_median": [
+            0.5217031836509705,
+            0.47955557703971863,
+            0.5203089714050293,
+            0.47835415601730347
+          ],
+          "channel_min": [
+            0.5215339064598083,
+            0.4794403314590454,
+            0.5202816724777222,
+            0.4782477617263794
+          ],
+          "channel_max": [
+            0.5220028162002563,
+            0.47983014583587646,
+            0.5203762054443359,
+            0.4783649444580078
+          ]
+        },
+        "actuator_outputs": {
+          "count": 3,
+          "channel_median": [
+            593.4476928710938,
+            557.6222534179688,
+            592.2626342773438,
+            556.6010131835938
+          ],
+          "channel_min": [
+            593.3038330078125,
+            557.5242919921875,
+            592.2394409179688,
+            556.5106201171875
+          ],
+          "channel_max": [
+            593.702392578125,
+            557.8556518554688,
+            592.3197631835938,
+            556.6102294921875
+          ]
+        }
+      },
+      {
+        "phase": "THRUST_0.600",
+        "actuator_motors": {
+          "count": 3,
+          "channel_median": [
+            0.6245474815368652,
+            0.5760973691940308,
+            0.6238634586334229,
+            0.5754915475845337
+          ],
+          "channel_min": [
+            0.6216061115264893,
+            0.5756301879882812,
+            0.6213226914405823,
+            0.5750511884689331
+          ],
+          "channel_max": [
+            0.6246820688247681,
+            0.57835453748703,
+            0.6246364116668701,
+            0.578716516494751
+          ]
+        },
+        "actuator_outputs": {
+          "count": 3,
+          "channel_median": [
+            680.8653564453125,
+            639.6827392578125,
+            680.283935546875,
+            639.1678466796875
+          ],
+          "channel_min": [
+            678.3651733398438,
+            639.294921875,
+            678.124267578125,
+            638.679443359375
+          ],
+          "channel_max": [
+            680.9644775390625,
+            641.6013793945312,
+            681.0609741210938,
+            641.9090576171875
+          ]
+        }
+      },
+      {
+        "phase": "THRUST_0.700",
+        "actuator_motors": {
+          "count": 2,
+          "channel_median": [
+            0.7273247241973877,
+            0.6723777055740356,
+            0.7274668216705322,
+            0.6728304624557495
+          ],
+          "channel_min": [
+            0.7269576191902161,
+            0.6719123721122742,
+            0.7269724011421204,
+            0.6724343299865723
+          ],
+          "channel_max": [
+            0.7276918292045593,
+            0.6728430390357971,
+            0.7279611825942993,
+            0.6732266545295715
+          ]
+        },
+        "actuator_outputs": {
+          "count": 2,
+          "channel_median": [
+            768.21435546875,
+            721.5382080078125,
+            768.4095458984375,
+            721.837646484375
+          ],
+          "channel_min": [
+            767.890625,
+            721.12548828125,
+            768.0521240234375,
+            721.5692138671875
+          ],
+          "channel_max": [
+            768.5380859375,
+            721.950927734375,
+            768.7669677734375,
+            722.1060791015625
+          ]
+        }
+      },
+      {
+        "phase": "THRUST_0.850",
+        "actuator_motors": {
+          "count": 2,
+          "channel_median": [
+            0.8838638067245483,
+            0.8161189556121826,
+            0.8838531970977783,
+            0.8161638975143433
+          ],
+          "channel_min": [
+            0.8824509382247925,
+            0.8148080110549927,
+            0.8824785947799683,
+            0.8146874308586121
+          ],
+          "channel_max": [
+            0.8852766156196594,
+            0.8174299597740173,
+            0.8852277994155884,
+            0.8176403641700745
+          ]
+        },
+        "actuator_outputs": {
+          "count": 2,
+          "channel_median": [
+            901.2841796875,
+            843.7011108398438,
+            901.2752075195312,
+            843.7393188476562
+          ],
+          "channel_min": [
+            900.083251953125,
+            842.5867919921875,
+            900.1068115234375,
+            842.4843139648438
+          ],
+          "channel_max": [
+            902.485107421875,
+            844.8154296875,
+            902.443603515625,
+            844.9943237304688
+          ]
+        }
+      },
+      {
+        "phase": "THRUST_1.000",
+        "actuator_motors": {
+          "count": 2,
+          "channel_median": [
+            0.9997001886367798,
+            0.9243189096450806,
+            0.9999539852142334,
+            0.9247840642929077
+          ],
+          "channel_min": [
+            0.9995447397232056,
+            0.9235870838165283,
+            0.9999079704284668,
+            0.9239633679389954
+          ],
+          "channel_max": [
+            0.999855637550354,
+            0.9250507950782776,
+            1.0,
+            0.9256048202514648
+          ]
+        },
+        "actuator_outputs": {
+          "count": 2,
+          "channel_median": [
+            999.746337890625,
+            934.9722900390625,
+            999.9052124023438,
+            935.4195556640625
+          ],
+          "channel_min": [
+            999.613037109375,
+            934.8955078125,
+            999.8104248046875,
+            935.368896484375
+          ],
+          "channel_max": [
+            999.879638671875,
+            935.0490112304688,
+            1000.0,
+            935.47021484375
+          ]
+        }
+      }
+    ]
+  },
+  "protocol_comparison": [
+    {
+      "name": "fixed_seven_022s",
+      "definition": "Seven full-envelope pulses; historical execution failed before rate/maneuver phases",
+      "required_input_window_seconds": 0.22,
+      "maximum_delivered_native_interval_seconds": 0.024002,
+      "nominal_post_80ms_sample_capacity": 6,
+      "actual_new_protocol_force_samples": 49,
+      "historical_samples_available_for_offline_fit": 77,
+      "force_upper_bound_newtons": 64.5289173797054,
+      "safety": "REJECTED_BY_RETAINED_BOUND",
+      "retained_guard": {
+        "admitted": false,
+        "reasons": [
+          "PREDICTED_SPEED_LIMIT",
+          "PREDICTED_UPPER_ALTITUDE"
+        ],
+        "speed_limit": 7.0,
+        "worst_response_delay": 0.24,
+        "sample_age": 0.125,
+        "duration": 0.22,
+        "horizon": 0.585,
+        "predicted_peak_speed": 11.465999999999998,
+        "maximum_upward_acceleration": 19.599999999999998,
+        "maximum_downward_acceleration": 9.8,
+        "maximum_lateral_acceleration": 0.0,
+        "upward_stopping_distance": 19.78744949999999,
+        "downward_stopping_distance": 5.785313625,
+        "upward_room": 4.0,
+        "clearance": 8.0,
+        "speed_margin": -4.4659999999999975,
+        "upper_altitude_margin": -15.78744949999999,
+        "lower_clearance_margin": 0.21468637500000032,
+        "scope": "Conservative logic bound; no physical response qualification"
+      },
+      "conditional_identifiable": [
+        "hover",
+        "transient local force curve"
+      ],
+      "uncertainty": "Physical input/force/model error bound UNKNOWN",
+      "maximum_steady_thrust_identifiable": false,
+      "rates_response_identifiable": false,
+      "braking_identifiable": false,
+      "original_A1_equivalent": false,
+      "authorized_to_execute": false
+    },
+    {
+      "name": "progressive_steps",
+      "definition": "Seven predeclared incremental levels, full settled reset between trials",
+      "required_input_window_seconds": 0.1,
+      "maximum_delivered_native_interval_seconds": 0.024002,
+      "nominal_post_80ms_sample_capacity": 1,
+      "actual_new_protocol_force_samples": 0,
+      "historical_samples_available_for_offline_fit": 77,
+      "force_upper_bound_newtons": 64.5289173797054,
+      "safety": "REJECTED_BY_RETAINED_BOUND",
+      "retained_guard": {
+        "admitted": false,
+        "reasons": [
+          "PREDICTED_SPEED_LIMIT",
+          "PREDICTED_UPPER_ALTITUDE"
+        ],
+        "speed_limit": 7.0,
+        "worst_response_delay": 0.24,
+        "sample_age": 0.125,
+        "duration": 0.1,
+        "horizon": 0.46499999999999997,
+        "predicted_peak_speed": 9.113999999999999,
+        "maximum_upward_acceleration": 19.599999999999998,
+        "maximum_downward_acceleration": 9.8,
+        "maximum_lateral_acceleration": 0.0,
+        "upward_stopping_distance": 12.502129499999997,
+        "downward_stopping_distance": 3.655283625,
+        "upward_room": 4.0,
+        "clearance": 8.0,
+        "speed_margin": -2.113999999999999,
+        "upper_altitude_margin": -8.502129499999997,
+        "lower_clearance_margin": 2.344716375,
+        "scope": "Conservative logic bound; no physical response qualification"
+      },
+      "conditional_identifiable": [
+        "local force increments"
+      ],
+      "uncertainty": "Physical input/force/model error bound UNKNOWN",
+      "maximum_steady_thrust_identifiable": false,
+      "rates_response_identifiable": false,
+      "braking_identifiable": false,
+      "original_A1_equivalent": false,
+      "authorized_to_execute": false
+    },
+    {
+      "name": "independent_short_pulses",
+      "definition": "Independent 40ms pulses followed by complete native-state settling",
+      "required_input_window_seconds": 0.04,
+      "maximum_delivered_native_interval_seconds": 0.024002,
+      "nominal_post_80ms_sample_capacity": 0,
+      "actual_new_protocol_force_samples": 0,
+      "historical_samples_available_for_offline_fit": 77,
+      "force_upper_bound_newtons": 64.5289173797054,
+      "safety": "REJECTED_BY_RETAINED_BOUND",
+      "retained_guard": {
+        "admitted": false,
+        "reasons": [
+          "PREDICTED_SPEED_LIMIT",
+          "PREDICTED_UPPER_ALTITUDE"
+        ],
+        "speed_limit": 7.0,
+        "worst_response_delay": 0.24,
+        "sample_age": 0.125,
+        "duration": 0.04,
+        "horizon": 0.40499999999999997,
+        "predicted_peak_speed": 7.937999999999999,
+        "maximum_upward_acceleration": 19.599999999999998,
+        "maximum_downward_acceleration": 9.8,
+        "maximum_lateral_acceleration": 0.0,
+        "upward_stopping_distance": 9.483925499999998,
+        "downward_stopping_distance": 2.772842625,
+        "upward_room": 4.0,
+        "clearance": 8.0,
+        "speed_margin": -0.9379999999999988,
+        "upper_altitude_margin": -5.483925499999998,
+        "lower_clearance_margin": 3.227157375,
+        "scope": "Conservative logic bound; no physical response qualification"
+      },
+      "conditional_identifiable": [
+        "transient impulse integral"
+      ],
+      "uncertainty": "Physical input/force/model error bound UNKNOWN",
+      "maximum_steady_thrust_identifiable": false,
+      "rates_response_identifiable": false,
+      "braking_identifiable": false,
+      "original_A1_equivalent": false,
+      "authorized_to_execute": false
+    },
+    {
+      "name": "small_signal",
+      "definition": "Hover +/-0.02 normalized input; no inference of maximum force",
+      "required_input_window_seconds": 0.2,
+      "maximum_delivered_native_interval_seconds": 0.024002,
+      "nominal_post_80ms_sample_capacity": 5,
+      "actual_new_protocol_force_samples": 0,
+      "historical_samples_available_for_offline_fit": 77,
+      "force_upper_bound_newtons": 64.5289173797054,
+      "safety": "REJECTED_BY_RETAINED_BOUND",
+      "retained_guard": {
+        "admitted": false,
+        "reasons": [
+          "PREDICTED_SPEED_LIMIT",
+          "PREDICTED_UPPER_ALTITUDE"
+        ],
+        "speed_limit": 7.0,
+        "worst_response_delay": 0.24,
+        "sample_age": 0.125,
+        "duration": 0.2,
+        "horizon": 0.565,
+        "predicted_peak_speed": 11.073999999999998,
+        "maximum_upward_acceleration": 19.599999999999998,
+        "maximum_downward_acceleration": 9.8,
+        "maximum_lateral_acceleration": 0.0,
+        "upward_stopping_distance": 18.457589499999994,
+        "downward_stopping_distance": 5.3964986249999995,
+        "upward_room": 4.0,
+        "clearance": 8.0,
+        "speed_margin": -4.073999999999998,
+        "upper_altitude_margin": -14.457589499999994,
+        "lower_clearance_margin": 0.6035013750000005,
+        "scope": "Conservative logic bound; no physical response qualification"
+      },
+      "conditional_identifiable": [
+        "hover-local gain and conditional local time constant"
+      ],
+      "uncertainty": "Physical input/force/model error bound UNKNOWN",
+      "maximum_steady_thrust_identifiable": false,
+      "rates_response_identifiable": false,
+      "braking_identifiable": false,
+      "original_A1_equivalent": false,
+      "authorized_to_execute": false
+    },
+    {
+      "name": "motor_model_fit",
+      "definition": "Fit only existing transients; do not execute a new pulse",
+      "required_input_window_seconds": 0.22,
+      "maximum_delivered_native_interval_seconds": 0.024002,
+      "nominal_post_80ms_sample_capacity": 6,
+      "actual_new_protocol_force_samples": 0,
+      "historical_samples_available_for_offline_fit": 77,
+      "force_upper_bound_newtons": 64.5289173797054,
+      "safety": "NOT_PROVED",
+      "retained_guard": {
+        "admitted": false,
+        "reasons": [
+          "PREDICTED_SPEED_LIMIT",
+          "PREDICTED_UPPER_ALTITUDE"
+        ],
+        "speed_limit": 7.0,
+        "worst_response_delay": 0.24,
+        "sample_age": 0.125,
+        "duration": 0.22,
+        "horizon": 0.585,
+        "predicted_peak_speed": 11.465999999999998,
+        "maximum_upward_acceleration": 19.599999999999998,
+        "maximum_downward_acceleration": 9.8,
+        "maximum_lateral_acceleration": 0.0,
+        "upward_stopping_distance": 19.78744949999999,
+        "downward_stopping_distance": 5.785313625,
+        "upward_room": 4.0,
+        "clearance": 8.0,
+        "speed_margin": -4.4659999999999975,
+        "upper_altitude_margin": -15.78744949999999,
+        "lower_clearance_margin": 0.21468637500000032,
+        "scope": "Conservative logic bound; no physical response qualification"
+      },
+      "conditional_identifiable": [
+        "conditional speed tau/delay/force parameters"
+      ],
+      "uncertainty": "Physical input/force/model error bound UNKNOWN",
+      "maximum_steady_thrust_identifiable": false,
+      "rates_response_identifiable": false,
+      "braking_identifiable": false,
+      "original_A1_equivalent": false,
+      "authorized_to_execute": false
+    }
+  ],
+  "decision": {
+    "E0": "BLOCKED",
+    "A1": "NO-GO",
+    "maximum_force_unknown": true,
+    "qualification_definition_change_required": true,
+    "reason": "Local/transient identification cannot replace original maximum/rate/maneuver A1",
+    "next_minimum_experiment": "Defer dynamics experiments; the single next-session proposal is a separately approved 30s unarmed ROI/timing collection to resolve zero valid 3D observations and E1",
+    "possible_future_identification_method": "Restrained thrust-stand identification with native input, allocation, independent RPM/force and uncertainty; requires separate design and authorization; not a current recommendation"
+  },
+  "assumption_audit": {
+    "retained_guard_delay_seconds": 0.24,
+    "measured_within_mode_delay_bound": false,
+    "retained_guard_braking_mps2": 4.0,
+    "measured_braking_bound": false,
+    "scope": "Conservative engineering reserves do not prove actual A1 safety"
+  }
+}
