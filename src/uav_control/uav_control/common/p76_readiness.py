@@ -25,6 +25,7 @@ def source_fingerprint(workspace):
         'p763_exit_replay.py', 'p763_dkf_replay.py', 'p763_control_replay.py',
         'p764_diagnostic_collect.py', 'p764_nonflight_session.py', 'p764_real_replay.py',
         'p764_handover_replay.py', 'p764_qualification_audit.py')]
+    paths += list((root/'scripts').glob('p765_*.py'))
     return {str(p.relative_to(root)): sha256(p) for p in sorted(paths)}
 
 

@@ -196,7 +196,8 @@ LAB_CAMERA_MODELS="${LAB_SESSION_DIR}/models"
 if [[ "${EXPERIMENT_LAUNCH}" == "p76_yan_paper.launch.py" \
    || "${EXPERIMENT_LAUNCH}" == "p76_px4_probe.launch.py" \
    || "${EXPERIMENT_LAUNCH}" == "p761_calibration.launch.py" \
-   || "${EXPERIMENT_LAUNCH}" == "p764_perception_probe.launch.py" ]]; then
+   || "${EXPERIMENT_LAUNCH}" == "p764_perception_probe.launch.py" \
+   || "${EXPERIMENT_LAUNCH}" == "p765_perception_probe.launch.py" ]]; then
     P76_CONTRACT="${UAV_USV_P76_CONTRACT:-${WS_ROOT}/src/uav_usv_bringup/config/p76_contract.yaml}"
     p76_qualification_args=()
     if [[ "${EXPERIMENT_LAUNCH}" == "p76_yan_paper.launch.py" ]]; then

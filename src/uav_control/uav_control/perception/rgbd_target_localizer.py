@@ -853,12 +853,21 @@ def target_vector_from_rgbd(
     return np.asarray(geometry.center_camera, dtype=float)
 
 
-def validation_sphere_center(points, radius):
+def validation_sphere_center(points, radius, diagnostics=None):
     """Recover the validation sphere center from its visible depth surface."""
     radius = float(radius)
+    detail = diagnostics if diagnostics is not None else {}
+    detail.update(fit_mode='ideal', fit_rank=None, fit_condition=None,
+                  fitted_radius=None, radius_residual=None, fit_position_std=None,
+                  explicit_fit_rejection_reason='')
+
+    def reject(reason):
+        detail['explicit_fit_rejection_reason'] = reason
+        return None
+
     if (not math.isfinite(radius) or radius <= 0.0 or len(points) < 12
             or not np.isfinite(points).all()):
-        return None
+        return reject('FIT_TOO_FEW_POINTS' if len(points) < 12 else 'FIT_INPUT_INVALID')
     # Keep the cost bounded even when the sphere fills the image. The fit
     # does not need a complete silhouette, unlike a median surface ray.
     points = points[::max(1, math.ceil(len(points) / 512))]
@@ -866,19 +875,25 @@ def validation_sphere_center(points, radius):
     solution, _, rank, singular = np.linalg.lstsq(
         matrix, np.sum(points * points, axis=1), rcond=None,
     )
+    detail.update(fit_sample_count=len(points), fit_rank=int(rank),
+                  fit_condition=float(singular[0]/singular[-1]) if singular[-1] > 0 else None)
     # A tiny nearly planar cap can have exact rank and negligible residual,
     # while amplifying depth/model errors by more than 100000 times.
-    if rank != 4 or singular[-1] <= 1e-5 * singular[0]:
-        return None
+    if rank != 4:
+        return reject('FIT_RANK_DEFICIENT')
+    if singular[-1] <= 1e-5 * singular[0]:
+        return reject('FIT_ILL_CONDITIONED')
     center = solution[:3]
     radius_squared = solution[3] + np.dot(center, center)
     if not np.isfinite(center).all() or center[0] <= 0 or radius_squared <= 0:
-        return None
-    if abs(math.sqrt(radius_squared) - radius) > .1 * radius:
-        return None
+        return reject('FIT_CENTER_OR_RADIUS_INVALID')
+    detail['fitted_radius'] = math.sqrt(radius_squared)
     residual = np.abs(np.linalg.norm(points - center, axis=1) - radius)
+    detail['radius_residual'] = float(np.percentile(residual, 95))
+    if abs(math.sqrt(radius_squared) - radius) > .1 * radius:
+        return reject('FITTED_RADIUS_MISMATCH')
     if np.percentile(residual, 95) > max(.05 * radius, .001):
-        return None
+        return reject('SURFACE_RESIDUAL_TOO_LARGE')
     return tuple(float(value) for value in center)
 
 
@@ -893,6 +908,7 @@ def target_geometry_from_rgbd(
     sphere_fit_mode='ideal',
     sphere_noise_std=.01,
     sphere_range_noise_scale=.001,
+    diagnostics=None,
 ):
     """
     Return the current estimator inputs and intermediate camera vectors.
@@ -904,13 +920,25 @@ def target_geometry_from_rgbd(
     The online node requires a valid sphere and rejects that approximation.
     Intermediate values keep the depth measurement independently auditable.
     """
+    detail = diagnostics if diagnostics is not None else {}
+    detail.clear()
+    detail.update(valid_depth_count=0, depth_ratio=0., depth_min=None,
+                  depth_median=None, depth_mad=None, fit_mode=sphere_fit_mode,
+                  fit_rank=None, fit_condition=None, fitted_radius=None,
+                  radius_residual=None, fit_position_std=None,
+                  explicit_fit_rejection_reason='')
+
+    def reject(reason):
+        detail['explicit_fit_rejection_reason'] = reason
+        return None
+
     if target_mask is None or depth is None:
-        return None
+        return reject('MASK_OR_DEPTH_MISSING')
     if target_mask.shape != depth.shape:
-        return None
+        return reject('MASK_DEPTH_SHAPE_MISMATCH')
     mask_rows, mask_columns = np.nonzero(target_mask)
     if mask_columns.size == 0:
-        return None
+        return reject('MASK_EMPTY')
     valid = (
         target_mask
         & np.isfinite(depth)
@@ -918,12 +946,16 @@ def target_geometry_from_rgbd(
         & (depth <= float(maximum_depth))
     )
     rows, columns = np.nonzero(valid)
+    detail.update(valid_depth_count=int(columns.size),
+                  depth_ratio=float(columns.size/mask_columns.size))
     if columns.size == 0:
-        return None
+        return reject('VALID_DEPTH_EMPTY')
     height, width = depth.shape
     fx, fy, cx, cy = camera_intrinsics(width, height, horizontal_fov)
     valid_depths = np.asarray(depth[valid], dtype=float)
     surface_forward = float(np.median(valid_depths))
+    detail.update(depth_min=float(valid_depths.min()), depth_median=surface_forward,
+                  depth_mad=float(np.median(np.abs(valid_depths-surface_forward))))
     mask_center_x = float(np.median(mask_columns))
     mask_center_y = float(np.median(mask_rows))
     image_x = float(np.median(columns))
@@ -951,11 +983,11 @@ def target_geometry_from_rgbd(
     if sphere_fit_mode == 'tof' and target_radius > 0:
         from .tof_sphere_localization import fit_tof_sphere
         fit = fit_tof_sphere(points, target_radius, noise_std=sphere_noise_std,
-                             range_noise_scale=sphere_range_noise_scale)
+                             range_noise_scale=sphere_range_noise_scale, diagnostics=detail)
         fitted = None if fit is None else fit.center
         fit_position_std = 0.0 if fit is None else fit.position_std
     elif sphere_fit_mode == 'ideal':
-        fitted = validation_sphere_center(points, target_radius)
+        fitted = validation_sphere_center(points, target_radius, diagnostics=detail)
     else:
         raise ValueError('sphere_fit_mode must be ideal or tof with positive radius')
     if require_valid_sphere and target_radius > 0.0 and fitted is None:
@@ -1135,6 +1167,7 @@ class RgbdTargetLocalizer(Node):
         self.declare_parameter('sphere_range_noise_scale', .001)
         self.declare_parameter('target_reference_z_offset', 0.42)
         self.declare_parameter('geometry_diagnostics_enabled', False)
+        self.declare_parameter('sphere_fit_diagnostics_enabled', False)
         self.declare_parameter('base_position_std', 0.08)
         self.declare_parameter('range_position_std_scale', 0.01)
 
@@ -1254,6 +1287,12 @@ class RgbdTargetLocalizer(Node):
         self.time_pair_diagnostics_enabled = bool(
             self.get_parameter('time_pair_diagnostics_enabled').value
         )
+        self.sphere_fit_diagnostic_pub = None
+        if self.get_parameter('sphere_fit_diagnostics_enabled').value:
+            from .p765_roi_capture import runtime_identity
+            self.sphere_fit_runtime_identity = runtime_identity()
+            self.sphere_fit_diagnostic_pub = self.create_publisher(
+                String, '/diagnostics/p765_sphere_fit', 10)
 
         sensor_qos = QoSProfile(
             reliability=ReliabilityPolicy.BEST_EFFORT,
@@ -1886,6 +1925,35 @@ class RgbdTargetLocalizer(Node):
     def _ros_seconds(self):
         return self.get_clock().now().nanoseconds * 1e-9
 
+    def _publish_sphere_fit_diagnostic(self, details, reason, color_frame, depth_frame,
+                                       measurement_stamp):
+        """Publish opt-in scalar evidence; pixel compression/I/O belongs to another process."""
+        publisher = getattr(self, 'sphere_fit_diagnostic_pub', None)
+        if publisher is None:
+            return
+        import json
+        from .p765_geometry import json_finite
+
+        def stamp(frame):
+            raw = frame.message.header.stamp
+            return dict(sec=int(raw.sec), nanosec=int(raw.nanosec))
+
+        packet = dict(schema_version=1, geometry=details, localization_reason=reason,
+                      rgb_raw_stamp=stamp(color_frame), depth_raw_stamp=stamp(depth_frame),
+                      rgb_receipt_stamp=color_frame.receipt_stamp,
+                      depth_receipt_stamp=depth_frame.receipt_stamp,
+                      measurement_stamp=measurement_stamp,
+                      diagnostic_publish_stamp=self._ros_seconds(),
+                      clock_epoch=getattr(getattr(self, 'image_clock_mapper', None),
+                                          'reset_count', 0),
+                      runtime_identity=self.sphere_fit_runtime_identity)
+        packet['geometry_contract'] = {
+            name: getattr(self, name, None) for name in (
+                'horizontal_fov', 'minimum_depth', 'maximum_depth', 'target_radius',
+                'sphere_fit_mode', 'sphere_noise_std', 'sphere_range_noise_scale')}
+        packet['geometry_contract']['require_valid_sphere'] = True
+        publisher.publish(String(data=json.dumps(json_finite(packet), allow_nan=False)))
+
     def publish_invalid_observation(
         self,
         reason='INVALID_OBSERVATION',
@@ -2091,6 +2159,15 @@ class RgbdTargetLocalizer(Node):
             self.pending_image_pairs.clear()
         color_message = color_frame.message
         depth_message = depth_frame.message
+        # Early detector rejection must describe this pair, not retain the
+        # previous pair's mapped pose/clock diagnostics.
+        self.last_time_diagnostic = {
+            'rgb_raw_stamp': color_frame.raw_stamp,
+            'depth_raw_stamp': depth_frame.raw_stamp,
+            'rgb_receipt_stamp': color_frame.receipt_stamp,
+            'depth_receipt_stamp': depth_frame.receipt_stamp,
+            'rgb_depth_acquisition_skew': abs(color_frame.raw_stamp-depth_frame.raw_stamp),
+        }
         raw_measurement_stamp = synchronized_measurement_time(
             color_frame.raw_stamp,
             depth_frame.raw_stamp,
@@ -2386,6 +2463,7 @@ class RgbdTargetLocalizer(Node):
                 'DEPTH_RATIO_LOW', measurement_stamp, received_stamp
             )
             return
+        fit_details = {}
         geometry = target_geometry_from_rgbd(
             self.color_mask,
             self.depth,
@@ -2397,8 +2475,11 @@ class RgbdTargetLocalizer(Node):
             sphere_fit_mode=getattr(self, 'sphere_fit_mode', 'ideal'),
             sphere_noise_std=getattr(self, 'sphere_noise_std', .01),
             sphere_range_noise_scale=getattr(self, 'sphere_range_noise_scale', .001),
+            diagnostics=fit_details,
         )
         if geometry is None:
+            self._publish_sphere_fit_diagnostic(
+                fit_details, 'TARGET_VECTOR_INVALID', color_frame, depth_frame, measurement_stamp)
             self.publish_invalid_observation(
                 'TARGET_VECTOR_INVALID', measurement_stamp, received_stamp
             )
@@ -2407,6 +2488,8 @@ class RgbdTargetLocalizer(Node):
         # so their median absolute deviation cannot exceed the radius.
         # Reject broad depth mixtures before publishing a pose.
         if geometry.depth_mad > self.maximum_depth_mad:
+            self._publish_sphere_fit_diagnostic(
+                fit_details, 'DEPTH_MAD_HIGH', color_frame, depth_frame, measurement_stamp)
             self.publish_invalid_observation(
                 'DEPTH_MAD_HIGH', measurement_stamp, received_stamp,
                 geometry=geometry,
@@ -2428,6 +2511,8 @@ class RgbdTargetLocalizer(Node):
                 self.target_reference_z_offset,
             )
         except ValueError:
+            self._publish_sphere_fit_diagnostic(
+                fit_details, 'TRANSFORM_INVALID', color_frame, depth_frame, measurement_stamp)
             self.publish_invalid_observation(
                 'TRANSFORM_INVALID', measurement_stamp, received_stamp
             )
@@ -2530,6 +2615,8 @@ class RgbdTargetLocalizer(Node):
                 self.target_reference_z_offset
             )
         observation.valid = True
+        self._publish_sphere_fit_diagnostic(
+            fit_details, '', color_frame, depth_frame, measurement_stamp)
         self.observation_pub.publish(observation)
 
         point = Point()

@@ -10,6 +10,7 @@ import math
 import os
 from pathlib import Path
 import time
+import uuid
 
 import numpy as np
 import rclpy
@@ -24,6 +25,8 @@ from uav_usv_interfaces.msg import (
     NativeAttitude, TargetImageDetection, TargetImageState, TargetObservation,
     TargetState, UavState,
 )
+
+from p765_recording import BoundedRecorder
 
 from uav_control.common.p76_contract import load_contract
 from uav_control.common.p76_native import NativePoseHistory
@@ -67,16 +70,22 @@ def instrument(cls, names, timings):
         original = getattr(cls, name)
 
         def wrapped(self, *args, _method=original, _key=cls.__name__+'.'+name, **kwargs):
-            began = time.perf_counter()
+            instrumentation_began = time.perf_counter()
             depth = getattr(self, 'p764_callback_depth', 0)
             if depth == 0:
                 if not hasattr(self, 'p764_callback_events'):
                     self.p764_callback_events = []
-                self.p764_callback_events.append(dict(
+                event = dict(
                     node=cls.__name__, method=_method.__name__,
+                    run_id=getattr(self, 'p765_run_id', ''),
                     receipt=self.get_clock().now().nanoseconds*1e-9,
-                    arguments=[plain(arg) for arg in args], phase=self.p76_phase,
-                    epoch=self.p76_epoch, y_stamp=self.p76_y_stamp))
+                    arguments=list(args), phase=self.p76_phase,
+                    epoch=self.p76_epoch, y_stamp=self.p76_y_stamp)
+                recorder = getattr(self, 'p765_recorder', None)
+                if recorder is None:
+                    self.p764_callback_events.append(plain(event))
+                elif not recorder.submit('callbacks', event):
+                    self.p765_recording_failed = True
             self.p764_callback_depth = depth+1
             transition = _method.__name__ == 'mode_changed'
 
@@ -88,10 +97,17 @@ def instrument(cls, names, timings):
                     camera_anchor=getattr(self.filter, 'anchor_rotation', None))),
                     sort_keys=True).encode()).hexdigest()
             before = snapshot() if transition else None
+            timings[_key+'.instrumentation'].append(time.perf_counter()-instrumentation_began)
+            began = time.perf_counter()
             try:
                 return _method(self, *args, **kwargs)
             finally:
-                timings[_key].append(time.perf_counter()-began)
+                ended = time.perf_counter()
+                timings[_key].append(ended-began)
+                if not hasattr(self, 'p765_callback_spans'):
+                    self.p765_callback_spans = []
+                self.p765_callback_spans.append(dict(
+                    method=_key, began=began, ended=ended, nested_depth=depth))
                 self.p764_callback_depth = depth
                 if transition:
                     if not hasattr(self, 'p764_transitions'):
@@ -107,9 +123,16 @@ class Collector(Node):
     def __init__(self, output, contract, spatial, image, timings, duration):
         super().__init__('p764_unarmed_diagnostic')
         self.output, self.c, self.filters = output, contract, (spatial, image)
+        from uav_control.common.p76_readiness import source_fingerprint, sha256
+        self.execution_sources = source_fingerprint(ROOT)
+        self.execution_contract = sha256(contract['_path'])
         self.timings, self.duration = timings, duration
         self.began, self.cpu_began = time.monotonic(), time.process_time()
-        self.raw = gzip.open(output/'synchronized_packets.jsonl.gz', 'xt')
+        self.run_id = uuid.uuid4().hex
+        self.recorder = BoundedRecorder(output, plain)
+        for node in self.filters:
+            node.p765_run_id = self.run_id
+            node.p765_recorder = self.recorder
         self.records, self.phases, self.graph = [], [], []
         self.phase, self.epoch, self.failure = 'FOLLOW_ACTIVE', 0, ''
         self.latest, self.navigation = {}, deque(maxlen=64)
@@ -157,9 +180,10 @@ class Collector(Node):
 
     def record(self, kind, message):
         now = self.get_clock().now().nanoseconds*1e-9
-        row = dict(kind=kind, receipt=now, monotonic=time.monotonic(), message=plain(message))
-        self.raw.write(json.dumps(row)+'\n')
-        self.records.append(row)
+        row = dict(kind=kind, run_id=self.run_id, receipt=now,
+                   monotonic=time.monotonic(), message=message)
+        if not self.recorder.submit('packets', row):
+            self.failure, self.done = 'DIAGNOSTIC_RECORDER_OVERFLOW_OR_FAILURE', True
         return row
 
     def receive(self, name, message):
@@ -182,7 +206,7 @@ class Collector(Node):
 
     def publish_phase(self):
         now = self.get_clock().now().nanoseconds*1e-9
-        packet = dict(schema_version=2, phase=self.phase, epoch=self.epoch,
+        packet = dict(schema_version=2, phase=self.phase, epoch=self.epoch, run_id=self.run_id,
                       y_stamp=self.y_stamp if hasattr(self, 'y_stamp') else 0.,
                       diagnostic_only=True, physical_guidance_owner='NONE')
         self.mode_pub.publish(String(data=json.dumps(packet)))
@@ -218,6 +242,9 @@ class Collector(Node):
 
     def supervise(self):
         elapsed = time.monotonic()-self.began
+        if (self.recorder.error is not None or self.recorder.overflows
+                or any(getattr(n, 'p765_recording_failed', False) for n in self.filters)):
+            self.failure, self.done = 'DIAGNOSTIC_RECORDER_OVERFLOW_OR_FAILURE', True
         if elapsed >= 12. and self.phase == 'FOLLOW_ACTIVE':
             self.phase, self.epoch = 'Y_HANDOVER', 1
             self.y_stamp = self.get_clock().now().nanoseconds*1e-9
@@ -236,14 +263,18 @@ class Collector(Node):
             self.done = True
 
     def save(self):
-        self.raw.close()
-        events = sorted((row for node in self.filters
-                         for row in getattr(node, 'p764_callback_events', [])),
-                        key=lambda row: row['receipt'])
-        with gzip.open(self.output/'actual_callback_inputs.jsonl.gz', 'xt') as stream:
-            for row in events:
-                stream.write(json.dumps(row)+'\n')
         elapsed, cpu = time.monotonic()-self.began, time.process_time()-self.cpu_began
+        self.recorder.close()
+        from uav_control.common.p76_readiness import source_fingerprint, sha256
+        recording_failed = any(getattr(n, 'p765_recording_failed', False)
+                               for n in self.filters)
+        if self.recorder.overflows or recording_failed:
+            self.failure = 'DIAGNOSTIC_RECORDER_OVERFLOW_OR_FAILURE'
+        if (self.execution_sources != source_fingerprint(ROOT)
+                or self.execution_contract != sha256(self.c['_path'])):
+            self.failure = 'RUNTIME_SOURCE_CHANGED_DURING_CAPTURE'
+        with gzip.open(self.output/'synchronized_packets.jsonl.gz', 'rt') as stream:
+            self.records = [json.loads(line) for line in stream]
         intervals = np.diff(self.timer_times)
         missed = sum(max(0, int(round(x/.005))-1) for x in intervals)
         shadow = dict(evidence_class='ACTUAL_ROS_EXECUTOR_DISCONNECTED_SHADOW',
@@ -267,13 +298,36 @@ class Collector(Node):
                         source=str(self.output/'synchronized_packets.jsonl.gz'))
         perf = dict(callback_seconds={k: stats(v) for k, v in self.timings.items()},
                     process_cpu_seconds=cpu, wall_seconds=elapsed,
+                    measurement_window='spin window; excludes recorder drain/offline analysis',
                     process_cpu_core_fraction=cpu/elapsed, rss_bytes=stats(self.rss),
-                    scope='Two DKFs, recorder and shadow share one single-thread executor')
+                    recorder_serialization_seconds=stats(self.recorder.serialization_seconds),
+                    recorder_queue_high_water=self.recorder.high_water,
+                    recorder_overflows=self.recorder.overflows,
+                    callback_scope='Method compute excludes pre-call instrumentation',
+                    scope='Two DKFs and shadow share executor; serializer uses bounded writer')
         for filename, result in (('e1_real_data_coverage.json', coverage),
                                  ('e1_dkf_performance.json', perf),
                                  ('e1_tracker_shadow_timing.json', shadow)):
             (self.output/filename).write_text(json.dumps(result, indent=2)+'\n')
+        (self.output/'e1_executor_raw.json').write_text(json.dumps(dict(
+            schema_version=1, evidence_class='ACTUAL_ROS_EXECUTOR_DISCONNECTED_SHADOW',
+            sources=self.execution_sources, contract_sha256=self.execution_contract,
+            run_id=self.run_id,
+            timer_times=self.timer_times, shadow_costs=self.shadow_costs,
+            shadow_epochs=self.shadow_epochs, transitions=transitions, graphs=self.graph,
+            failure=self.failure, callback_seconds=dict(self.timings),
+            recorder_overflows=self.recorder.overflows,
+            recorder_serialization_seconds=self.recorder.serialization_seconds,
+            recorder_serialization_spans=self.recorder.serialization_spans,
+            callback_spans=[span for node in self.filters
+                            for span in getattr(node, 'p765_callback_spans', [])]), indent=2)+'\n')
         (self.output/'phase_labels.json').write_text(json.dumps(self.phases, indent=2)+'\n')
+        raw_path = self.output/'e1_executor_raw.json'
+        raw_samples = json.loads(raw_path.read_text())
+        raw_samples['raw_inputs'] = {name: sha256(self.output/name) for name in (
+            'synchronized_packets.jsonl.gz', 'actual_callback_inputs.jsonl.gz',
+            'phase_labels.json')}
+        raw_path.write_text(json.dumps(raw_samples, indent=2)+'\n')
         success = coverage['qualified'] and shadow['qualified'] and not self.failure
         (self.output/'result.json').write_text(json.dumps(dict(
             success=bool(success), unarmed=coverage['unarmed'], flight_qualified=False,

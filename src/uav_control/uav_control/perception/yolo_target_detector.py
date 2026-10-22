@@ -14,7 +14,10 @@ from uav_usv_interfaces.msg import TargetImageDetection
 from uav_control.common.p76_contract import load_contract
 from uav_control.guidance.camera_visibility import CameraIntrinsics
 from .rgbd_target_localizer import GazeboImageClockMapper, aligned_camera_qos
-from .yolo_inference import Detection, YoloInference
+from .yolo_inference import (
+    Detection, YoloInference, decode_segmentation, letterbox_rgb, encode_mask,
+)
+from .inference_worker import TriggeredWorker, loaded_code_identity
 
 
 def time_message(seconds):
@@ -39,7 +42,6 @@ class YoloTargetDetector(Node):
         self.info_pub = self.create_publisher(CameraInfo, '/camera/front/camera_info',
                                               aligned_camera_qos())
         self.status_pub = self.create_publisher(String, '/diagnostics/p76_yolo', 10)
-        self.processing_guard = self.create_guard_condition(self.process)
         self.subscription = self.create_subscription(Image, '/camera/front/image_raw',
                                                      self.image_callback, aligned_camera_qos())
         self.clock = GazeboImageClockMapper(maximum_reference_age=.5, history_duration=2.,
@@ -50,12 +52,19 @@ class YoloTargetDetector(Node):
         self.last_raw = 0
         self.clock_resets = 0
         self.waiting_clock = False
+        self.replaced_frames = 0
         from gz.msgs10.clock_pb2 import Clock
         from gz.transport13 import Node as GazeboNode
         self.gz = GazeboNode()
         if not self.gz.subscribe(Clock, '/world/default/clock', self.clock_callback):
             raise RuntimeError('YOLO_TRUSTED_CLOCK_UNAVAILABLE')
-        self.timer = self.create_timer(1./self.contract['paper']['camera_rate_hz'], self.process)
+        self.runtime_identity = loaded_code_identity((
+            YoloTargetDetector.process, YoloTargetDetector.image_callback,
+            YoloInference.__init__, YoloInference.infer, decode_segmentation,
+            letterbox_rgb, encode_mask))
+        self.runtime_identity['model_sha256'] = detector['model_sha256']
+        self.worker = TriggeredWorker(self.process)
+        self.timer = self.create_timer(.05, self.check_worker)
 
     def now(self):
         """Return the ROS/system epoch for age checks only."""
@@ -72,7 +81,7 @@ class YoloTargetDetector(Node):
                 self.pending, self.last_raw = None, 0
                 self.clock_resets += 1
             elif self.waiting_clock and self.pending is not None:
-                self.processing_guard.trigger()
+                self.worker.trigger()
 
     def image_callback(self, image):
         """Drop duplicate/out-of-order frames without doing inference in DDS callbacks."""
@@ -82,15 +91,16 @@ class YoloTargetDetector(Node):
                 return
             self.last_raw = raw
             self.sequence += 1
-            self.pending = (image, self.sequence, self.clock_resets, time.monotonic())
-            self.processing_guard.trigger()
+            self.replaced_frames += self.pending is not None
+            self.pending = (image, self.sequence, self.clock_resets, time.monotonic(), self.now())
+            self.worker.trigger()
 
     def process(self):
         """Publish one authoritative valid/rejected result for each selected original frame."""
         with self.lock:
             if self.pending is None:
                 return
-            image, sequence, reset, received = self.pending
+            image, sequence, reset, received, receipt_epoch = self.pending
             source, reason = self.clock.map_time(image.header.stamp.sec
                                                  + image.header.stamp.nanosec*1e-9, self.now())
             if source is None and time.monotonic()-received <= .125:
@@ -98,7 +108,11 @@ class YoloTargetDetector(Node):
                 return
             self.pending = None
             self.waiting_clock = False
+        selected = self.now()
+        queue_wait = time.monotonic()-received
+        work_began = time.perf_counter()
         result = Detection(reason=reason or 'INVALID_IMAGE')
+        inference_executed = False
         if source is not None and 0 <= self.now()-source <= .125:
             try:
                 channels = {'rgb8': 3, 'bgr8': 3, 'rgba8': 4, 'bgra8': 4}[image.encoding.lower()]
@@ -107,15 +121,16 @@ class YoloTargetDetector(Node):
                 rgb = rgb[:, :, :3]
                 if image.encoding.lower().startswith('bgr'):
                     rgb = rgb[:, :, ::-1]
+                inference_executed = True
                 result = self.inference.infer(np.ascontiguousarray(rgb))
             except (ValueError, KeyError, RuntimeError) as exception:
                 result = Detection(reason='INFERENCE_ERROR:'+type(exception).__name__)
         completed = self.now()
+        compute_seconds = time.perf_counter()-work_began
         if source is not None and completed-source > .125:
-            result = replace(result, valid=False, reason='YOLO_SOURCE_STALE_AFTER_INFERENCE')
-        with self.lock:
-            if reset != self.clock_resets:
-                result = replace(result, valid=False, reason='CLOCK_RESET')
+            result = replace(result, valid=False, reason=(
+                'YOLO_SOURCE_STALE_AFTER_INFERENCE' if inference_executed
+                else 'YOLO_SOURCE_STALE_BEFORE_INFERENCE'))
         message = TargetImageDetection()
         message.stamp = time_message(source or 0.)
         message.raw_stamp = image.header.stamp
@@ -127,7 +142,15 @@ class YoloTargetDetector(Node):
         message.confidence, message.valid = result.confidence, result.valid
         message.class_name, message.rejection_reason = 'red_ball', result.reason
         message.model_sha256 = self.contract['detector']['model_sha256']
-        self.publisher.publish(message)
+        with self.lock:
+            if reset != self.clock_resets:
+                result = replace(result, valid=False, reason='CLOCK_RESET')
+            elif result.valid and source is not None and self.now()-source > .125:
+                result = replace(result, valid=False,
+                                 reason='YOLO_SOURCE_STALE_BEFORE_PUBLICATION')
+            message.valid, message.rejection_reason = result.valid, result.reason
+            self.publisher.publish(message)
+            published = self.now()
         camera = self.contract['camera']
         intr = CameraIntrinsics.from_horizontal_fov(camera['width'], camera['height'],
                                                     camera['horizontal_fov'])
@@ -142,8 +165,32 @@ class YoloTargetDetector(Node):
         status.data = json.dumps(dict(source_stamp=source, completed=completed, frame=sequence,
                                       valid=result.valid, reason=result.reason,
                                       inference_seconds=result.inference_seconds,
-                                      source_age=completed-source if source else None))
+                                      inference_executed=inference_executed,
+                                      source_age=completed-source if source else None,
+                                      raw_stamp=dict(sec=int(image.header.stamp.sec),
+                                                     nanosec=int(image.header.stamp.nanosec)),
+                                      image_receipt=receipt_epoch, selected=selected,
+                                      published=published, pending_wait_seconds=queue_wait,
+                                      compute_seconds=compute_seconds,
+                                      source_age_at_receipt=(receipt_epoch-source
+                                                             if source else None),
+                                      publication_source_age=(published-source
+                                                              if source else None),
+                                      replaced_pending_frames=self.replaced_frames,
+                                      inference_worker='single_coalescing_thread',
+                                      clock_epoch=reset,
+                                      runtime_identity=self.runtime_identity))
         self.status_pub.publish(status)
+
+    def check_worker(self):
+        """Fail explicitly on an unexpected inference-thread exception."""
+        if self.worker.error is not None:
+            raise RuntimeError('YOLO_WORKER_FAILED') from self.worker.error
+
+    def destroy_node(self):
+        """Wait for the sole inference worker before releasing ROS state."""
+        self.worker.close()
+        return super().destroy_node()
 
 
 def main(args=None):

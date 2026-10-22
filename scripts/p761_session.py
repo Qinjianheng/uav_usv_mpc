@@ -12,6 +12,10 @@ import time
 from p4_sitl_session import WORKSPACE, identity, preflight
 from p5_minco_sitl import shell_process, stop_late_components, stop_owned
 from p763_exit_replay import new_protocol, replay
+from p765_qualification import (
+    capture_evidence, capture_identity, validate_e1_raw, validate_e2_evidence,
+    validate_experiment_budget, validate_previous_c,
+)
 
 
 def launcher_process(arguments, env, path):
@@ -51,27 +55,11 @@ def validate_e0_evidence(historical, proposed):
 
 def validate_e1_evidence(e1):
     """Require real synchronized inputs and actual executor timing, never a synthetic fixture."""
-    from uav_control.common.p76_readiness import source_fingerprint, sha256
-    coverage, timing, replayed = (e1.get(k, {}) for k in ('coverage', 'tracker_shadow', 'replay'))
-    logs = e1.get('raw_evidence', {})
+    from uav_control.common.p76_readiness import source_fingerprint
     if (e1.get('evidence_kind') != 'P764_REAL_SYNC_DKF_EXECUTOR'
-            or e1.get('sources') != source_fingerprint(WORKSPACE)
-            or not logs or any(not Path(p).is_file() or sha256(p) != h for p, h in logs.items())
-            or coverage.get('evidence_class') != 'REAL_SYNCHRONIZED_UNARMED_SESSION'
-            or coverage.get('qualified') is not True
-            or coverage.get('causal_native_pose_navigation_brackets', 0) < 50
-            or coverage.get('posterior_and_covariance_preserved') is not True
-            or coverage.get('unarmed') is not True
-            or timing.get('evidence_class') != 'ACTUAL_ROS_EXECUTOR_DISCONNECTED_SHADOW'
-            or timing.get('qualified') is not True
-            or timing.get('missed_cycles', 1) != 0
-            or timing.get('compute_deadline_misses', 1) != 0
-            or replayed.get('evidence_class') != 'REAL_MATCHED_CALLBACK_REPLAY'
-            or replayed.get('original_acquisition_epochs_preserved') is not True
-            or replayed.get('original_receipt_epochs_preserved') is not True
-            or replayed.get('parallel', {}).get('spatial_distinct_updates_after_y', 0) <= 0
-            or replayed.get('parallel', {}).get('illegal_authorizations', 1) != 0):
+            or e1.get('sources') != source_fingerprint(WORKSPACE)):
         raise ValueError('P764_REAL_E1_INPUT_OR_EXECUTOR_NOT_QUALIFIED')
+    return validate_e1_raw(e1)
 
 
 def validate_offline_gates(path):
@@ -99,43 +87,34 @@ def validate_offline_gates(path):
         'E0', 'E0_NEW_PROTOCOL', 'E1', 'E2'))
     validate_e0_evidence(e0, proposed)
     validate_e1_evidence(e1)
-    if (e2.get('schema_version') != 2 or e2.get('logic_passed') is not True
-            or e2.get('recorded_replay', {}).get('output_bounds_and_continuity') is not True):
+    if e2.get('schema_version') != 2:
         raise ValueError('P763_TYPED_OFFLINE_EVIDENCE_NOT_QUALIFIED')
+    validate_e2_evidence(e2)
 
 
-def run(output, stage, prior=None, *, authorized_stage=None, offline_gates=None):
-    """No session starts without a free isolated simulator and a remaining budget slot."""
+def run(output, stage, prior=None, *, authorized_stage=None, offline_gates=None,
+        approved_budget=None, authorized_budget_id=None, prior_c=None, current_model_root=None):
+    """No session starts without a separately approved new budget and explicit stage authority."""
     if authorized_stage != stage:
         raise ValueError('P763_SEPARATE_STAGE_AUTHORIZATION_REQUIRED')
+    budget = validate_experiment_budget(approved_budget, authorized_budget_id, output, stage)
     if stage == 'A1':
         validate_offline_gates(offline_gates)
     output = output.resolve()
-    task = WORKSPACE/'data/experiments/20261021_p761_01'
-    if not output.is_relative_to(task):
-        raise ValueError('P761_SCOPED_OUTPUT_REQUIRED')
-    if not output.name.startswith('session_'):
-        raise ValueError('P761_COUNTED_SESSION_NAME_REQUIRED')
-    sessions = list(task.glob('session_*/environment.json'))
-    if len(sessions) >= 5:
-        raise ValueError('P761_FIVE_SESSION_BUDGET_EXHAUSTED')
+    c_binding, current_capture_identity = None, None
     if stage == 'D':
-        from uav_control.common.p76_readiness import source_fingerprint, sha256
-        current_sources = source_fingerprint(WORKSPACE)
-        contract_hash = sha256(WORKSPACE/'src/uav_usv_bringup/config/p76_contract.yaml')
-        eligible = False
-        for candidate in task.glob('session_*/run_result.json'):
-            identity_file = candidate.parent/'validation_identity.json'
-            result = json.loads(candidate.read_text())
-            if (result.get('stage') != 'C' or not result.get('success')
-                    or not identity_file.exists()):
-                continue
-            frozen = json.loads(identity_file.read_text())
-            eligible |= (frozen['sources'] == current_sources
-                         and frozen['contract_sha256'] == contract_hash)
-        if not eligible:
-            raise ValueError('P761_CURRENT_SUCCESSFUL_C_REQUIRED_FOR_D')
+        from uav_control.common.p76_contract import load_contract
+        if not current_model_root:
+            raise ValueError('P765_CURRENT_PHYSICAL_MODEL_REQUIRED_FOR_D')
+        contract = load_contract(WORKSPACE/'src/uav_usv_bringup/config/p76_contract.yaml')
+        current_capture_identity = capture_identity(contract, current_model_root, WORKSPACE)
+        c_binding = validate_previous_c(prior_c, current_capture_identity)
+        if output == Path(prior_c).resolve():
+            raise ValueError('P765_D_REQUIRES_INDEPENDENT_NEW_SESSION')
     output.mkdir(parents=True, exist_ok=False)
+    (output/'approved_budget_binding.json').write_text(json.dumps(budget, indent=2)+'\n')
+    if c_binding:
+        (output/'previous_c_binding.json').write_text(json.dumps(c_binding, indent=2)+'\n')
     check = preflight()
     (output/'preflight.json').write_text(json.dumps(check, indent=2)+'\n')
     shim = output/'terminal_shim'
@@ -202,6 +181,11 @@ with (root/(title.replace(' ', '_')+'.txt')).open('x') as log:
                 if actual_model_sha != model_data['manifest_sha256']:
                     raise ValueError('P761_SESSION_MODEL_IDENTITY_CHANGED')
                 env['UAV_USV_P76_MODEL_ROOT'] = str(model_root)
+                if stage == 'D':
+                    actual_identity = capture_identity(contract, model_root, WORKSPACE)
+                    if actual_identity != current_capture_identity:
+                        raise ValueError('P765_D_ACTUAL_MODEL_IDENTITY_CHANGED')
+                    validate_previous_c(prior_c, actual_identity)
                 observer_started = True
                 for args, name in (([sys.executable, str(WORKSPACE/'scripts/p761_validation.py'),
                                      '--stage', stage, '--output', str(output)], 'observer.txt'),
@@ -217,6 +201,13 @@ with (root/(title.replace(' ', '_')+'.txt')).open('x') as log:
                 if stage.startswith('A'):
                     from p76_calibration_analysis import assess_stage
                     result = assess_stage(output)
+                elif stage == 'C' and result.get('success') is True:
+                    from uav_control.common.p76_contract import load_contract
+                    current = capture_identity(load_contract(
+                        WORKSPACE/'src/uav_usv_bringup/config/p76_contract.yaml'), model_root)
+                    evidence = capture_evidence(output, current)
+                    (output/'capture_qualification.json').write_text(
+                        json.dumps(evidence, indent=2)+'\n')
                 return result
             if processes[1][0].poll() is not None:
                 break
@@ -245,9 +236,19 @@ def main():
                         help='Separate explicit authorization for exactly this bounded stage')
     parser.add_argument('--offline-gates', type=Path,
                         help='Frozen current E0/E1/E2 evidence manifest required before A1')
+    parser.add_argument('--approved-budget', type=Path, required=True,
+                        help='New separately approved budget; historical slots are closed')
+    parser.add_argument('--authorize-budget-id', required=True,
+                        help='Explicit approval for the exact independently approved budget id')
+    parser.add_argument('--prior-c', type=Path, help='Bound current successful C evidence for D')
+    parser.add_argument('--current-model-root', type=Path,
+                        help='Actual current physical model to compare with previous C before D')
     args = parser.parse_args()
     result = run(args.output, args.stage, args.prior_a1,
-                 authorized_stage=args.authorize_stage, offline_gates=args.offline_gates)
+                 authorized_stage=args.authorize_stage, offline_gates=args.offline_gates,
+                 approved_budget=args.approved_budget,
+                 authorized_budget_id=args.authorize_budget_id,
+                 prior_c=args.prior_c, current_model_root=args.current_model_root)
     print(json.dumps(result, indent=2))
     return stage_exit_code(result)
 

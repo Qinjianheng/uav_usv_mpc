@@ -113,6 +113,7 @@ class YoloInference:
                 or hashlib.sha256(path.read_bytes()).hexdigest() != expected_sha256):
             raise ValueError('YOLO_MODEL_SHA256')
         import onnxruntime as ort
+        cv2.setNumThreads(max(1, int(threads)))
         options = ort.SessionOptions()
         options.intra_op_num_threads = max(1, int(threads))
         options.inter_op_num_threads = 1

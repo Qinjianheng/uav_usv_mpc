@@ -161,7 +161,8 @@ def audit(model_root):
                   primary_sessions_used=len(sessions), primary_session_limit=5,
                   primary_sessions_remaining=max(0, 5-len(sessions)),
                   minimum_separate_future_sessions=len(future_stages), future_stages=future_stages,
-                  old_budget_sufficient=5-len(sessions) >= len(future_stages),
+                  old_budget_sufficient=False,
+                  historical_remaining_slots_usable_for_future_stages=False,
                   future_budget_status='REQUIRES_NEW_EXPLICIT_USER_APPROVAL',
                   future_evidence_directory='UNASSIGNED_UNTIL_APPROVED',
                   historical_sessions_must_not_be_deleted_or_relabelled=True)
@@ -176,15 +177,19 @@ def audit(model_root):
                      'native_physical_execution_verified and physical_acceptance summary. '
                      'This independent audit replays native samples when an actual B exists; '
                      'missing actual B remains MISSING. No raw parsing is added to Y dispatch.')),
-        dict(id='D_C_DEPENDENCY', status='OPEN', severity='P1', source='p761_session.py:run(D)',
-             detail=('D checks prior C success and current source/contract, but does not pin '
-                     'the C result/evaluator logs or compare prior C model/PX4/DDS identity. '
-                     'Current A/B gates remain necessary and do not make C native evidence.')),
-        dict(id='E1_E2_TYPED_EVIDENCE', status='OPEN', severity='P1',
+        dict(id='D_C_DEPENDENCY', status='FIXED_WITH_DIRECTED_TESTS', severity='P1',
+             source='p765_qualification.py:validate_previous_c; p761_session.py:run(D)',
+             detail=('D requires an explicit current C binding, compares complete model/A/'
+                     'PX4/DDS/detector/source/contract identities and independently replays '
+                     'pinned native capture/evaluator/observer bytes. Actual D model identity '
+                     'is compared again before the observer can issue X. No C exists yet.')),
+        dict(id='E1_E2_TYPED_EVIDENCE', status='FIXED_WITH_DIRECTED_TESTS', severity='P1',
              source='p761_session.py:validate_offline_gates',
-             detail=('E1/E2 typed reports are hashed but their asserted pass fields are not '
-                     'fully recomputed at admission. Real E1 coverage and E2 scope must be '
-                     'reviewed independently; synthetic fixtures cannot grant flight readiness.')),
+             detail=('E1 recomputes raw synchronized coverage, executor intervals/deadlines '
+                     'and callback posterior continuity. E2 reruns fixed stress/dispatch and '
+                     'raw counterfactual inputs before admission; saved pass flags grant '
+                     'nothing. Historical E1 lacks raw timing and remains unqualified; '
+                     'the unchanged 500 ms E2 stress still fails.')),
         dict(id='B_BOUNDS_SCOPE', status='UNQUALIFIED_CANDIDATE', severity='P1',
              source='p761_validation.py:BPhysicalAcceptance.bounds',
              detail=('Physical tracking thresholds remain the existing engineering candidates; '
@@ -204,6 +209,13 @@ def audit(model_root):
                 audit_kind='READ_ONLY_OFFLINE_QUALIFICATION_AUDIT',
                 current_identity=current, model_check=model_check, historical_stages=stages,
                 qualification=qualification, budget=budget, findings=findings,
+                b_physical_bounds=dict(
+                    qualification='UNQUALIFIED_ENGINEERING_CANDIDATE',
+                    thresholds=BPhysicalAcceptance.bounds,
+                    actual_measurement_available=bool(qualification['B'].get(
+                        'native_recomputation', {}).get('qualified_25s_native_window', False)),
+                    thresholds_changed=False,
+                    scope='Candidate engineering limits; no real B measurement exists yet'),
                 dependencies=dict(A1=['current E0 new protocol', 'real E1', 'bounded E2',
                                       'separate authorization', 'explicit new session budget'],
                                   A2=['current measured A1', 'Body-rate recovery and native LAND'],

@@ -30,19 +30,25 @@ with (root/'component_identities.jsonl').open('a') as stream:
     wrapper.chmod(0o755)
 
 
-def run(output):
+def run(output, *, launch_name='p764_perception_probe.launch.py',
+        output_scope='p764_offline_validation',
+        authorization='P764 one unarmed perception diagnostic only', snapshot=False,
+        completion_files=()):
     output = output.resolve()
-    if not output.is_relative_to(WORKSPACE/'data/experiments/p764_offline_validation'):
+    if not output.is_relative_to(WORKSPACE/'data/experiments'/output_scope):
         raise ValueError('P764_NONFLIGHT_OUTPUT_SCOPE')
     output.mkdir(parents=True, exist_ok=False)  # An existing attempt cannot be silently retried.
     check = preflight()
     (output/'preflight.json').write_text(json.dumps(check, indent=2)+'\n')
+    if snapshot:
+        from experiment_source_snapshot import freeze_sources
+        freeze_sources(output, WORKSPACE)
     shim = output/'terminal_shim'
     shim.mkdir()
     write_terminal_wrapper(shim/'gnome-terminal')
     started = time.time()
     env = dict(os.environ, UAV_USV_WS=str(WORKSPACE), UAV_USV_RESEARCH_DIRECTORY=str(output),
-               UAV_USV_EXPERIMENT_LAUNCH='p764_perception_probe.launch.py',
+               UAV_USV_EXPERIMENT_LAUNCH=launch_name,
                UAV_USV_EXPERIMENT_CONFIG_FILE=str(
                    WORKSPACE/'src/uav_usv_bringup/config/p76_yan_paper.yaml'),
                UAV_USV_P76_CONTRACT=str(WORKSPACE/'src/uav_usv_bringup/config/p76_contract.yaml'),
@@ -56,7 +62,7 @@ def run(output):
     grant.write_text(json.dumps(dict(pid=os.getpid(), process_start=identity(os.getpid())['start'],
                                      issued=started, domain=check['domain'],
                                      partition=env['GZ_PARTITION'], preflight_clear=True,
-                                     authorization='P764 one unarmed perception diagnostic only')))
+                                     authorization=authorization)))
     grant.chmod(0o600)
     env['UAV_USV_SITL_GRANT'] = str(grant)
     (output/'environment.json').write_text(json.dumps({k: v for k, v in env.items()
@@ -72,7 +78,8 @@ def run(output):
         processes.append(launcher_process(launch,
                                           env, output/'launcher.txt'))
         while time.time()-started < 150.:
-            if (output/'result.json').exists():
+            if ((output/'result.json').exists()
+                    and all((output/name).is_file() for name in completion_files)):
                 return json.loads((output/'result.json').read_text())
             if processes[-1][0].poll() is not None:
                 break
