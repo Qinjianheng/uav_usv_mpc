@@ -1,0 +1,1965 @@
+{
+  "schema_version": 1,
+  "source_head": "f5c8338",
+  "actual_sessions": 1,
+  "flight_sessions": 0,
+  "source_inputs": {
+    "/home/qin/data/uav_usv_mpc/data/experiments/p765_offline_validation/nonflight_01/synchronized_packets.jsonl.gz": "7a3a72b490df0eea819d954686424ac5a15cdb30d1563af6c3694e3a1576e82c",
+    "/home/qin/data/uav_usv_mpc/data/experiments/p765_offline_validation/nonflight_01/actual_callback_inputs.jsonl.gz": "52f906a6e1a74971eb3b614031053f194ad1a9e3d2aaba4ab65cd170210eb62c",
+    "/home/qin/data/uav_usv_mpc/data/experiments/p765_offline_validation/nonflight_01/phase_labels.json": "c6808df4654a67444fac4007d285b2e370ab4d32c0636f4a6db618aa6e2c5c64",
+    "/home/qin/data/uav_usv_mpc/data/experiments/p765_offline_validation/nonflight_01/e1_executor_raw.json": "4e9aff0318273fcea34e360f4bc8d4d5725eaf4b2f5c1844e08b1ab84b13d647"
+  },
+  "raw_capture": {
+    "completed": true,
+    "paired_samples": 10,
+    "manifest_sha256": "1567e58c680899b70b979062d71cb5c7c6df43c0b9d32d7d52a8cd87e91c2fbe",
+    "flight_qualified": false
+  },
+  "geometry": {
+    "fit_reasons": {
+      "FITTED_RADIUS_MISMATCH": 407
+    },
+    "capture_event_reasons": {
+      "SAVED": 10,
+      "STRATUM_LIMIT": 397,
+      "SESSION_END": 1
+    },
+    "cases": [
+      {
+        "raw_stamp": {
+          "nanosec": 900000000,
+          "sec": 10
+        },
+        "data_sha256": "48ed95525576f79f1472dc0f11a500986fab463a2747dfb60dba946503e6df3d",
+        "mask_count": 292,
+        "raw_valid_depth_count": 268,
+        "foreground_count": 263,
+        "background_count": 5,
+        "invalid_count": 24,
+        "depth_components": [
+          {
+            "count": 263,
+            "minimum": 6.3003997802734375,
+            "maximum": 6.540210247039795
+          },
+          {
+            "count": 1,
+            "minimum": 17.391361236572266,
+            "maximum": 17.391361236572266
+          },
+          {
+            "count": 1,
+            "minimum": 19.282604217529297,
+            "maximum": 19.282604217529297
+          },
+          {
+            "count": 1,
+            "minimum": 21.63536262512207,
+            "maximum": 21.63536262512207
+          },
+          {
+            "count": 2,
+            "minimum": 24.642051696777344,
+            "maximum": 24.642051696777344
+          }
+        ],
+        "background_rgb": [
+          [
+            41,
+            127,
+            168
+          ],
+          [
+            41,
+            127,
+            168
+          ],
+          [
+            41,
+            127,
+            168
+          ],
+          [
+            41,
+            127,
+            168
+          ],
+          [
+            41,
+            127,
+            168
+          ]
+        ],
+        "background_camera_plane": {
+          "unit_normal": [
+            -0.5310494684563982,
+            -2.2445075409383008e-07,
+            0.8473408181199147
+          ],
+          "offset": 0.5565420499306573,
+          "maximum_residual": 2.6181652424080228e-08,
+          "singular_values": [
+            7.615004510531464,
+            0.0708769948708665,
+            4.362804331753111e-08
+          ]
+        },
+        "original_valid": false,
+        "original_diagnostics": {
+          "valid_depth_count": 268,
+          "depth_ratio": 0.9178082191780822,
+          "depth_min": 6.3003997802734375,
+          "depth_median": 6.370656967163086,
+          "depth_mad": 0.0481410026550293,
+          "fit_mode": "ideal",
+          "fit_rank": 4,
+          "fit_condition": 101.85772661944227,
+          "fitted_radius": 10.864055024052396,
+          "radius_residual": 10.685355077176512,
+          "fit_position_std": null,
+          "explicit_fit_rejection_reason": "FITTED_RADIUS_MISMATCH",
+          "fit_sample_count": 268
+        },
+        "counterfactual_valid": true,
+        "counterfactual_diagnostics": {
+          "valid_depth_count": 263,
+          "depth_ratio": 1.0,
+          "depth_min": 6.3003997802734375,
+          "depth_median": 6.367176532745361,
+          "depth_mad": 0.04503679275512695,
+          "fit_mode": "ideal",
+          "fit_rank": 4,
+          "fit_condition": 3233.4049138550045,
+          "fitted_radius": 0.24833417847132683,
+          "radius_residual": 0.0019466700762107547,
+          "fit_position_std": null,
+          "explicit_fit_rejection_reason": "",
+          "fit_sample_count": 263
+        },
+        "counterfactual_center_camera": [
+          6.548266432429839,
+          0.011816839917774935,
+          3.9658411475533253
+        ],
+        "foreground_support_over_original_mask": 0.9006849315068494,
+        "counterfactual_scope": "Changed point association only, original sphere thresholds; not an online source modification or estimator qualification"
+      },
+      {
+        "raw_stamp": {
+          "nanosec": 952000000,
+          "sec": 10
+        },
+        "data_sha256": "48ed95525576f79f1472dc0f11a500986fab463a2747dfb60dba946503e6df3d",
+        "mask_count": 292,
+        "raw_valid_depth_count": 268,
+        "foreground_count": 263,
+        "background_count": 5,
+        "invalid_count": 24,
+        "depth_components": [
+          {
+            "count": 263,
+            "minimum": 6.3003997802734375,
+            "maximum": 6.540210247039795
+          },
+          {
+            "count": 1,
+            "minimum": 17.391361236572266,
+            "maximum": 17.391361236572266
+          },
+          {
+            "count": 1,
+            "minimum": 19.282604217529297,
+            "maximum": 19.282604217529297
+          },
+          {
+            "count": 1,
+            "minimum": 21.63536262512207,
+            "maximum": 21.63536262512207
+          },
+          {
+            "count": 2,
+            "minimum": 24.642051696777344,
+            "maximum": 24.642051696777344
+          }
+        ],
+        "background_rgb": [
+          [
+            41,
+            127,
+            168
+          ],
+          [
+            41,
+            127,
+            168
+          ],
+          [
+            41,
+            127,
+            168
+          ],
+          [
+            41,
+            127,
+            168
+          ],
+          [
+            41,
+            127,
+            168
+          ]
+        ],
+        "background_camera_plane": {
+          "unit_normal": [
+            -0.5310494684563982,
+            -2.2445075409383008e-07,
+            0.8473408181199147
+          ],
+          "offset": 0.5565420499306573,
+          "maximum_residual": 2.6181652424080228e-08,
+          "singular_values": [
+            7.615004510531464,
+            0.0708769948708665,
+            4.362804331753111e-08
+          ]
+        },
+        "original_valid": false,
+        "original_diagnostics": {
+          "valid_depth_count": 268,
+          "depth_ratio": 0.9178082191780822,
+          "depth_min": 6.3003997802734375,
+          "depth_median": 6.370656967163086,
+          "depth_mad": 0.0481410026550293,
+          "fit_mode": "ideal",
+          "fit_rank": 4,
+          "fit_condition": 101.85772661944227,
+          "fitted_radius": 10.864055024052396,
+          "radius_residual": 10.685355077176512,
+          "fit_position_std": null,
+          "explicit_fit_rejection_reason": "FITTED_RADIUS_MISMATCH",
+          "fit_sample_count": 268
+        },
+        "counterfactual_valid": true,
+        "counterfactual_diagnostics": {
+          "valid_depth_count": 263,
+          "depth_ratio": 1.0,
+          "depth_min": 6.3003997802734375,
+          "depth_median": 6.367176532745361,
+          "depth_mad": 0.04503679275512695,
+          "fit_mode": "ideal",
+          "fit_rank": 4,
+          "fit_condition": 3233.4049138550045,
+          "fitted_radius": 0.24833417847132683,
+          "radius_residual": 0.0019466700762107547,
+          "fit_position_std": null,
+          "explicit_fit_rejection_reason": "",
+          "fit_sample_count": 263
+        },
+        "counterfactual_center_camera": [
+          6.548266432429839,
+          0.011816839917774935,
+          3.9658411475533253
+        ],
+        "foreground_support_over_original_mask": 0.9006849315068494,
+        "counterfactual_scope": "Changed point association only, original sphere thresholds; not an online source modification or estimator qualification"
+      },
+      {
+        "raw_stamp": {
+          "nanosec": 100000000,
+          "sec": 11
+        },
+        "data_sha256": "48ed95525576f79f1472dc0f11a500986fab463a2747dfb60dba946503e6df3d",
+        "mask_count": 292,
+        "raw_valid_depth_count": 268,
+        "foreground_count": 263,
+        "background_count": 5,
+        "invalid_count": 24,
+        "depth_components": [
+          {
+            "count": 263,
+            "minimum": 6.3003997802734375,
+            "maximum": 6.540210247039795
+          },
+          {
+            "count": 1,
+            "minimum": 17.391361236572266,
+            "maximum": 17.391361236572266
+          },
+          {
+            "count": 1,
+            "minimum": 19.282604217529297,
+            "maximum": 19.282604217529297
+          },
+          {
+            "count": 1,
+            "minimum": 21.63536262512207,
+            "maximum": 21.63536262512207
+          },
+          {
+            "count": 2,
+            "minimum": 24.642051696777344,
+            "maximum": 24.642051696777344
+          }
+        ],
+        "background_rgb": [
+          [
+            41,
+            127,
+            168
+          ],
+          [
+            41,
+            127,
+            168
+          ],
+          [
+            41,
+            127,
+            168
+          ],
+          [
+            41,
+            127,
+            168
+          ],
+          [
+            41,
+            127,
+            168
+          ]
+        ],
+        "background_camera_plane": {
+          "unit_normal": [
+            -0.5310494684563982,
+            -2.2445075409383008e-07,
+            0.8473408181199147
+          ],
+          "offset": 0.5565420499306573,
+          "maximum_residual": 2.6181652424080228e-08,
+          "singular_values": [
+            7.615004510531464,
+            0.0708769948708665,
+            4.362804331753111e-08
+          ]
+        },
+        "original_valid": false,
+        "original_diagnostics": {
+          "valid_depth_count": 268,
+          "depth_ratio": 0.9178082191780822,
+          "depth_min": 6.3003997802734375,
+          "depth_median": 6.370656967163086,
+          "depth_mad": 0.0481410026550293,
+          "fit_mode": "ideal",
+          "fit_rank": 4,
+          "fit_condition": 101.85772661944227,
+          "fitted_radius": 10.864055024052396,
+          "radius_residual": 10.685355077176512,
+          "fit_position_std": null,
+          "explicit_fit_rejection_reason": "FITTED_RADIUS_MISMATCH",
+          "fit_sample_count": 268
+        },
+        "counterfactual_valid": true,
+        "counterfactual_diagnostics": {
+          "valid_depth_count": 263,
+          "depth_ratio": 1.0,
+          "depth_min": 6.3003997802734375,
+          "depth_median": 6.367176532745361,
+          "depth_mad": 0.04503679275512695,
+          "fit_mode": "ideal",
+          "fit_rank": 4,
+          "fit_condition": 3233.4049138550045,
+          "fitted_radius": 0.24833417847132683,
+          "radius_residual": 0.0019466700762107547,
+          "fit_position_std": null,
+          "explicit_fit_rejection_reason": "",
+          "fit_sample_count": 263
+        },
+        "counterfactual_center_camera": [
+          6.548266432429839,
+          0.011816839917774935,
+          3.9658411475533253
+        ],
+        "foreground_support_over_original_mask": 0.9006849315068494,
+        "counterfactual_scope": "Changed point association only, original sphere thresholds; not an online source modification or estimator qualification"
+      },
+      {
+        "raw_stamp": {
+          "nanosec": 152000000,
+          "sec": 11
+        },
+        "data_sha256": "48ed95525576f79f1472dc0f11a500986fab463a2747dfb60dba946503e6df3d",
+        "mask_count": 292,
+        "raw_valid_depth_count": 268,
+        "foreground_count": 263,
+        "background_count": 5,
+        "invalid_count": 24,
+        "depth_components": [
+          {
+            "count": 263,
+            "minimum": 6.3003997802734375,
+            "maximum": 6.540210247039795
+          },
+          {
+            "count": 1,
+            "minimum": 17.391361236572266,
+            "maximum": 17.391361236572266
+          },
+          {
+            "count": 1,
+            "minimum": 19.282604217529297,
+            "maximum": 19.282604217529297
+          },
+          {
+            "count": 1,
+            "minimum": 21.63536262512207,
+            "maximum": 21.63536262512207
+          },
+          {
+            "count": 2,
+            "minimum": 24.642051696777344,
+            "maximum": 24.642051696777344
+          }
+        ],
+        "background_rgb": [
+          [
+            41,
+            127,
+            168
+          ],
+          [
+            41,
+            127,
+            168
+          ],
+          [
+            41,
+            127,
+            168
+          ],
+          [
+            41,
+            127,
+            168
+          ],
+          [
+            41,
+            127,
+            168
+          ]
+        ],
+        "background_camera_plane": {
+          "unit_normal": [
+            -0.5310494684563982,
+            -2.2445075409383008e-07,
+            0.8473408181199147
+          ],
+          "offset": 0.5565420499306573,
+          "maximum_residual": 2.6181652424080228e-08,
+          "singular_values": [
+            7.615004510531464,
+            0.0708769948708665,
+            4.362804331753111e-08
+          ]
+        },
+        "original_valid": false,
+        "original_diagnostics": {
+          "valid_depth_count": 268,
+          "depth_ratio": 0.9178082191780822,
+          "depth_min": 6.3003997802734375,
+          "depth_median": 6.370656967163086,
+          "depth_mad": 0.0481410026550293,
+          "fit_mode": "ideal",
+          "fit_rank": 4,
+          "fit_condition": 101.85772661944227,
+          "fitted_radius": 10.864055024052396,
+          "radius_residual": 10.685355077176512,
+          "fit_position_std": null,
+          "explicit_fit_rejection_reason": "FITTED_RADIUS_MISMATCH",
+          "fit_sample_count": 268
+        },
+        "counterfactual_valid": true,
+        "counterfactual_diagnostics": {
+          "valid_depth_count": 263,
+          "depth_ratio": 1.0,
+          "depth_min": 6.3003997802734375,
+          "depth_median": 6.367176532745361,
+          "depth_mad": 0.04503679275512695,
+          "fit_mode": "ideal",
+          "fit_rank": 4,
+          "fit_condition": 3233.4049138550045,
+          "fitted_radius": 0.24833417847132683,
+          "radius_residual": 0.0019466700762107547,
+          "fit_position_std": null,
+          "explicit_fit_rejection_reason": "",
+          "fit_sample_count": 263
+        },
+        "counterfactual_center_camera": [
+          6.548266432429839,
+          0.011816839917774935,
+          3.9658411475533253
+        ],
+        "foreground_support_over_original_mask": 0.9006849315068494,
+        "counterfactual_scope": "Changed point association only, original sphere thresholds; not an online source modification or estimator qualification"
+      },
+      {
+        "raw_stamp": {
+          "nanosec": 200000000,
+          "sec": 11
+        },
+        "data_sha256": "48ed95525576f79f1472dc0f11a500986fab463a2747dfb60dba946503e6df3d",
+        "mask_count": 292,
+        "raw_valid_depth_count": 268,
+        "foreground_count": 263,
+        "background_count": 5,
+        "invalid_count": 24,
+        "depth_components": [
+          {
+            "count": 263,
+            "minimum": 6.3003997802734375,
+            "maximum": 6.540210247039795
+          },
+          {
+            "count": 1,
+            "minimum": 17.391361236572266,
+            "maximum": 17.391361236572266
+          },
+          {
+            "count": 1,
+            "minimum": 19.282604217529297,
+            "maximum": 19.282604217529297
+          },
+          {
+            "count": 1,
+            "minimum": 21.63536262512207,
+            "maximum": 21.63536262512207
+          },
+          {
+            "count": 2,
+            "minimum": 24.642051696777344,
+            "maximum": 24.642051696777344
+          }
+        ],
+        "background_rgb": [
+          [
+            41,
+            127,
+            168
+          ],
+          [
+            41,
+            127,
+            168
+          ],
+          [
+            41,
+            127,
+            168
+          ],
+          [
+            41,
+            127,
+            168
+          ],
+          [
+            41,
+            127,
+            168
+          ]
+        ],
+        "background_camera_plane": {
+          "unit_normal": [
+            -0.5310494684563982,
+            -2.2445075409383008e-07,
+            0.8473408181199147
+          ],
+          "offset": 0.5565420499306573,
+          "maximum_residual": 2.6181652424080228e-08,
+          "singular_values": [
+            7.615004510531464,
+            0.0708769948708665,
+            4.362804331753111e-08
+          ]
+        },
+        "original_valid": false,
+        "original_diagnostics": {
+          "valid_depth_count": 268,
+          "depth_ratio": 0.9178082191780822,
+          "depth_min": 6.3003997802734375,
+          "depth_median": 6.370656967163086,
+          "depth_mad": 0.0481410026550293,
+          "fit_mode": "ideal",
+          "fit_rank": 4,
+          "fit_condition": 101.85772661944227,
+          "fitted_radius": 10.864055024052396,
+          "radius_residual": 10.685355077176512,
+          "fit_position_std": null,
+          "explicit_fit_rejection_reason": "FITTED_RADIUS_MISMATCH",
+          "fit_sample_count": 268
+        },
+        "counterfactual_valid": true,
+        "counterfactual_diagnostics": {
+          "valid_depth_count": 263,
+          "depth_ratio": 1.0,
+          "depth_min": 6.3003997802734375,
+          "depth_median": 6.367176532745361,
+          "depth_mad": 0.04503679275512695,
+          "fit_mode": "ideal",
+          "fit_rank": 4,
+          "fit_condition": 3233.4049138550045,
+          "fitted_radius": 0.24833417847132683,
+          "radius_residual": 0.0019466700762107547,
+          "fit_position_std": null,
+          "explicit_fit_rejection_reason": "",
+          "fit_sample_count": 263
+        },
+        "counterfactual_center_camera": [
+          6.548266432429839,
+          0.011816839917774935,
+          3.9658411475533253
+        ],
+        "foreground_support_over_original_mask": 0.9006849315068494,
+        "counterfactual_scope": "Changed point association only, original sphere thresholds; not an online source modification or estimator qualification"
+      },
+      {
+        "raw_stamp": {
+          "nanosec": 252000000,
+          "sec": 11
+        },
+        "data_sha256": "48ed95525576f79f1472dc0f11a500986fab463a2747dfb60dba946503e6df3d",
+        "mask_count": 292,
+        "raw_valid_depth_count": 268,
+        "foreground_count": 263,
+        "background_count": 5,
+        "invalid_count": 24,
+        "depth_components": [
+          {
+            "count": 263,
+            "minimum": 6.3003997802734375,
+            "maximum": 6.540210247039795
+          },
+          {
+            "count": 1,
+            "minimum": 17.391361236572266,
+            "maximum": 17.391361236572266
+          },
+          {
+            "count": 1,
+            "minimum": 19.282604217529297,
+            "maximum": 19.282604217529297
+          },
+          {
+            "count": 1,
+            "minimum": 21.63536262512207,
+            "maximum": 21.63536262512207
+          },
+          {
+            "count": 2,
+            "minimum": 24.642051696777344,
+            "maximum": 24.642051696777344
+          }
+        ],
+        "background_rgb": [
+          [
+            41,
+            127,
+            168
+          ],
+          [
+            41,
+            127,
+            168
+          ],
+          [
+            41,
+            127,
+            168
+          ],
+          [
+            41,
+            127,
+            168
+          ],
+          [
+            41,
+            127,
+            168
+          ]
+        ],
+        "background_camera_plane": {
+          "unit_normal": [
+            -0.5310494684563982,
+            -2.2445075409383008e-07,
+            0.8473408181199147
+          ],
+          "offset": 0.5565420499306573,
+          "maximum_residual": 2.6181652424080228e-08,
+          "singular_values": [
+            7.615004510531464,
+            0.0708769948708665,
+            4.362804331753111e-08
+          ]
+        },
+        "original_valid": false,
+        "original_diagnostics": {
+          "valid_depth_count": 268,
+          "depth_ratio": 0.9178082191780822,
+          "depth_min": 6.3003997802734375,
+          "depth_median": 6.370656967163086,
+          "depth_mad": 0.0481410026550293,
+          "fit_mode": "ideal",
+          "fit_rank": 4,
+          "fit_condition": 101.85772661944227,
+          "fitted_radius": 10.864055024052396,
+          "radius_residual": 10.685355077176512,
+          "fit_position_std": null,
+          "explicit_fit_rejection_reason": "FITTED_RADIUS_MISMATCH",
+          "fit_sample_count": 268
+        },
+        "counterfactual_valid": true,
+        "counterfactual_diagnostics": {
+          "valid_depth_count": 263,
+          "depth_ratio": 1.0,
+          "depth_min": 6.3003997802734375,
+          "depth_median": 6.367176532745361,
+          "depth_mad": 0.04503679275512695,
+          "fit_mode": "ideal",
+          "fit_rank": 4,
+          "fit_condition": 3233.4049138550045,
+          "fitted_radius": 0.24833417847132683,
+          "radius_residual": 0.0019466700762107547,
+          "fit_position_std": null,
+          "explicit_fit_rejection_reason": "",
+          "fit_sample_count": 263
+        },
+        "counterfactual_center_camera": [
+          6.548266432429839,
+          0.011816839917774935,
+          3.9658411475533253
+        ],
+        "foreground_support_over_original_mask": 0.9006849315068494,
+        "counterfactual_scope": "Changed point association only, original sphere thresholds; not an online source modification or estimator qualification"
+      },
+      {
+        "raw_stamp": {
+          "nanosec": 452000000,
+          "sec": 11
+        },
+        "data_sha256": "48ed95525576f79f1472dc0f11a500986fab463a2747dfb60dba946503e6df3d",
+        "mask_count": 292,
+        "raw_valid_depth_count": 268,
+        "foreground_count": 263,
+        "background_count": 5,
+        "invalid_count": 24,
+        "depth_components": [
+          {
+            "count": 263,
+            "minimum": 6.3003997802734375,
+            "maximum": 6.540210247039795
+          },
+          {
+            "count": 1,
+            "minimum": 17.391361236572266,
+            "maximum": 17.391361236572266
+          },
+          {
+            "count": 1,
+            "minimum": 19.282604217529297,
+            "maximum": 19.282604217529297
+          },
+          {
+            "count": 1,
+            "minimum": 21.63536262512207,
+            "maximum": 21.63536262512207
+          },
+          {
+            "count": 2,
+            "minimum": 24.642051696777344,
+            "maximum": 24.642051696777344
+          }
+        ],
+        "background_rgb": [
+          [
+            41,
+            127,
+            168
+          ],
+          [
+            41,
+            127,
+            168
+          ],
+          [
+            41,
+            127,
+            168
+          ],
+          [
+            41,
+            127,
+            168
+          ],
+          [
+            41,
+            127,
+            168
+          ]
+        ],
+        "background_camera_plane": {
+          "unit_normal": [
+            -0.5310494684563982,
+            -2.2445075409383008e-07,
+            0.8473408181199147
+          ],
+          "offset": 0.5565420499306573,
+          "maximum_residual": 2.6181652424080228e-08,
+          "singular_values": [
+            7.615004510531464,
+            0.0708769948708665,
+            4.362804331753111e-08
+          ]
+        },
+        "original_valid": false,
+        "original_diagnostics": {
+          "valid_depth_count": 268,
+          "depth_ratio": 0.9178082191780822,
+          "depth_min": 6.3003997802734375,
+          "depth_median": 6.370656967163086,
+          "depth_mad": 0.0481410026550293,
+          "fit_mode": "ideal",
+          "fit_rank": 4,
+          "fit_condition": 101.85772661944227,
+          "fitted_radius": 10.864055024052396,
+          "radius_residual": 10.685355077176512,
+          "fit_position_std": null,
+          "explicit_fit_rejection_reason": "FITTED_RADIUS_MISMATCH",
+          "fit_sample_count": 268
+        },
+        "counterfactual_valid": true,
+        "counterfactual_diagnostics": {
+          "valid_depth_count": 263,
+          "depth_ratio": 1.0,
+          "depth_min": 6.3003997802734375,
+          "depth_median": 6.367176532745361,
+          "depth_mad": 0.04503679275512695,
+          "fit_mode": "ideal",
+          "fit_rank": 4,
+          "fit_condition": 3233.4049138550045,
+          "fitted_radius": 0.24833417847132683,
+          "radius_residual": 0.0019466700762107547,
+          "fit_position_std": null,
+          "explicit_fit_rejection_reason": "",
+          "fit_sample_count": 263
+        },
+        "counterfactual_center_camera": [
+          6.548266432429839,
+          0.011816839917774935,
+          3.9658411475533253
+        ],
+        "foreground_support_over_original_mask": 0.9006849315068494,
+        "counterfactual_scope": "Changed point association only, original sphere thresholds; not an online source modification or estimator qualification"
+      },
+      {
+        "raw_stamp": {
+          "nanosec": 500000000,
+          "sec": 11
+        },
+        "data_sha256": "48ed95525576f79f1472dc0f11a500986fab463a2747dfb60dba946503e6df3d",
+        "mask_count": 292,
+        "raw_valid_depth_count": 268,
+        "foreground_count": 263,
+        "background_count": 5,
+        "invalid_count": 24,
+        "depth_components": [
+          {
+            "count": 263,
+            "minimum": 6.3003997802734375,
+            "maximum": 6.540210247039795
+          },
+          {
+            "count": 1,
+            "minimum": 17.391361236572266,
+            "maximum": 17.391361236572266
+          },
+          {
+            "count": 1,
+            "minimum": 19.282604217529297,
+            "maximum": 19.282604217529297
+          },
+          {
+            "count": 1,
+            "minimum": 21.63536262512207,
+            "maximum": 21.63536262512207
+          },
+          {
+            "count": 2,
+            "minimum": 24.642051696777344,
+            "maximum": 24.642051696777344
+          }
+        ],
+        "background_rgb": [
+          [
+            41,
+            127,
+            168
+          ],
+          [
+            41,
+            127,
+            168
+          ],
+          [
+            41,
+            127,
+            168
+          ],
+          [
+            41,
+            127,
+            168
+          ],
+          [
+            41,
+            127,
+            168
+          ]
+        ],
+        "background_camera_plane": {
+          "unit_normal": [
+            -0.5310494684563982,
+            -2.2445075409383008e-07,
+            0.8473408181199147
+          ],
+          "offset": 0.5565420499306573,
+          "maximum_residual": 2.6181652424080228e-08,
+          "singular_values": [
+            7.615004510531464,
+            0.0708769948708665,
+            4.362804331753111e-08
+          ]
+        },
+        "original_valid": false,
+        "original_diagnostics": {
+          "valid_depth_count": 268,
+          "depth_ratio": 0.9178082191780822,
+          "depth_min": 6.3003997802734375,
+          "depth_median": 6.370656967163086,
+          "depth_mad": 0.0481410026550293,
+          "fit_mode": "ideal",
+          "fit_rank": 4,
+          "fit_condition": 101.85772661944227,
+          "fitted_radius": 10.864055024052396,
+          "radius_residual": 10.685355077176512,
+          "fit_position_std": null,
+          "explicit_fit_rejection_reason": "FITTED_RADIUS_MISMATCH",
+          "fit_sample_count": 268
+        },
+        "counterfactual_valid": true,
+        "counterfactual_diagnostics": {
+          "valid_depth_count": 263,
+          "depth_ratio": 1.0,
+          "depth_min": 6.3003997802734375,
+          "depth_median": 6.367176532745361,
+          "depth_mad": 0.04503679275512695,
+          "fit_mode": "ideal",
+          "fit_rank": 4,
+          "fit_condition": 3233.4049138550045,
+          "fitted_radius": 0.24833417847132683,
+          "radius_residual": 0.0019466700762107547,
+          "fit_position_std": null,
+          "explicit_fit_rejection_reason": "",
+          "fit_sample_count": 263
+        },
+        "counterfactual_center_camera": [
+          6.548266432429839,
+          0.011816839917774935,
+          3.9658411475533253
+        ],
+        "foreground_support_over_original_mask": 0.9006849315068494,
+        "counterfactual_scope": "Changed point association only, original sphere thresholds; not an online source modification or estimator qualification"
+      },
+      {
+        "raw_stamp": {
+          "nanosec": 600000000,
+          "sec": 11
+        },
+        "data_sha256": "48ed95525576f79f1472dc0f11a500986fab463a2747dfb60dba946503e6df3d",
+        "mask_count": 292,
+        "raw_valid_depth_count": 268,
+        "foreground_count": 263,
+        "background_count": 5,
+        "invalid_count": 24,
+        "depth_components": [
+          {
+            "count": 263,
+            "minimum": 6.3003997802734375,
+            "maximum": 6.540210247039795
+          },
+          {
+            "count": 1,
+            "minimum": 17.391361236572266,
+            "maximum": 17.391361236572266
+          },
+          {
+            "count": 1,
+            "minimum": 19.282604217529297,
+            "maximum": 19.282604217529297
+          },
+          {
+            "count": 1,
+            "minimum": 21.63536262512207,
+            "maximum": 21.63536262512207
+          },
+          {
+            "count": 2,
+            "minimum": 24.642051696777344,
+            "maximum": 24.642051696777344
+          }
+        ],
+        "background_rgb": [
+          [
+            41,
+            127,
+            168
+          ],
+          [
+            41,
+            127,
+            168
+          ],
+          [
+            41,
+            127,
+            168
+          ],
+          [
+            41,
+            127,
+            168
+          ],
+          [
+            41,
+            127,
+            168
+          ]
+        ],
+        "background_camera_plane": {
+          "unit_normal": [
+            -0.5310494684563982,
+            -2.2445075409383008e-07,
+            0.8473408181199147
+          ],
+          "offset": 0.5565420499306573,
+          "maximum_residual": 2.6181652424080228e-08,
+          "singular_values": [
+            7.615004510531464,
+            0.0708769948708665,
+            4.362804331753111e-08
+          ]
+        },
+        "original_valid": false,
+        "original_diagnostics": {
+          "valid_depth_count": 268,
+          "depth_ratio": 0.9178082191780822,
+          "depth_min": 6.3003997802734375,
+          "depth_median": 6.370656967163086,
+          "depth_mad": 0.0481410026550293,
+          "fit_mode": "ideal",
+          "fit_rank": 4,
+          "fit_condition": 101.85772661944227,
+          "fitted_radius": 10.864055024052396,
+          "radius_residual": 10.685355077176512,
+          "fit_position_std": null,
+          "explicit_fit_rejection_reason": "FITTED_RADIUS_MISMATCH",
+          "fit_sample_count": 268
+        },
+        "counterfactual_valid": true,
+        "counterfactual_diagnostics": {
+          "valid_depth_count": 263,
+          "depth_ratio": 1.0,
+          "depth_min": 6.3003997802734375,
+          "depth_median": 6.367176532745361,
+          "depth_mad": 0.04503679275512695,
+          "fit_mode": "ideal",
+          "fit_rank": 4,
+          "fit_condition": 3233.4049138550045,
+          "fitted_radius": 0.24833417847132683,
+          "radius_residual": 0.0019466700762107547,
+          "fit_position_std": null,
+          "explicit_fit_rejection_reason": "",
+          "fit_sample_count": 263
+        },
+        "counterfactual_center_camera": [
+          6.548266432429839,
+          0.011816839917774935,
+          3.9658411475533253
+        ],
+        "foreground_support_over_original_mask": 0.9006849315068494,
+        "counterfactual_scope": "Changed point association only, original sphere thresholds; not an online source modification or estimator qualification"
+      },
+      {
+        "raw_stamp": {
+          "nanosec": 652000000,
+          "sec": 11
+        },
+        "data_sha256": "48ed95525576f79f1472dc0f11a500986fab463a2747dfb60dba946503e6df3d",
+        "mask_count": 292,
+        "raw_valid_depth_count": 268,
+        "foreground_count": 263,
+        "background_count": 5,
+        "invalid_count": 24,
+        "depth_components": [
+          {
+            "count": 263,
+            "minimum": 6.3003997802734375,
+            "maximum": 6.540210247039795
+          },
+          {
+            "count": 1,
+            "minimum": 17.391361236572266,
+            "maximum": 17.391361236572266
+          },
+          {
+            "count": 1,
+            "minimum": 19.282604217529297,
+            "maximum": 19.282604217529297
+          },
+          {
+            "count": 1,
+            "minimum": 21.63536262512207,
+            "maximum": 21.63536262512207
+          },
+          {
+            "count": 2,
+            "minimum": 24.642051696777344,
+            "maximum": 24.642051696777344
+          }
+        ],
+        "background_rgb": [
+          [
+            41,
+            127,
+            168
+          ],
+          [
+            41,
+            127,
+            168
+          ],
+          [
+            41,
+            127,
+            168
+          ],
+          [
+            41,
+            127,
+            168
+          ],
+          [
+            41,
+            127,
+            168
+          ]
+        ],
+        "background_camera_plane": {
+          "unit_normal": [
+            -0.5310494684563982,
+            -2.2445075409383008e-07,
+            0.8473408181199147
+          ],
+          "offset": 0.5565420499306573,
+          "maximum_residual": 2.6181652424080228e-08,
+          "singular_values": [
+            7.615004510531464,
+            0.0708769948708665,
+            4.362804331753111e-08
+          ]
+        },
+        "original_valid": false,
+        "original_diagnostics": {
+          "valid_depth_count": 268,
+          "depth_ratio": 0.9178082191780822,
+          "depth_min": 6.3003997802734375,
+          "depth_median": 6.370656967163086,
+          "depth_mad": 0.0481410026550293,
+          "fit_mode": "ideal",
+          "fit_rank": 4,
+          "fit_condition": 101.85772661944227,
+          "fitted_radius": 10.864055024052396,
+          "radius_residual": 10.685355077176512,
+          "fit_position_std": null,
+          "explicit_fit_rejection_reason": "FITTED_RADIUS_MISMATCH",
+          "fit_sample_count": 268
+        },
+        "counterfactual_valid": true,
+        "counterfactual_diagnostics": {
+          "valid_depth_count": 263,
+          "depth_ratio": 1.0,
+          "depth_min": 6.3003997802734375,
+          "depth_median": 6.367176532745361,
+          "depth_mad": 0.04503679275512695,
+          "fit_mode": "ideal",
+          "fit_rank": 4,
+          "fit_condition": 3233.4049138550045,
+          "fitted_radius": 0.24833417847132683,
+          "radius_residual": 0.0019466700762107547,
+          "fit_position_std": null,
+          "explicit_fit_rejection_reason": "",
+          "fit_sample_count": 263
+        },
+        "counterfactual_center_camera": [
+          6.548266432429839,
+          0.011816839917774935,
+          3.9658411475533253
+        ],
+        "foreground_support_over_original_mask": 0.9006849315068494,
+        "counterfactual_scope": "Changed point association only, original sphere thresholds; not an online source modification or estimator qualification"
+      }
+    ],
+    "unique_pixel_payloads": 1,
+    "caution": "Ten source frames in one stationary scene; identical pixel payloads are not independent scenes. No association policy or covariance has been flight-qualified."
+  },
+  "observation_reasons": {
+    "YOLO_DETECTION_TIMEOUT": 50,
+    "POSITION_HISTORY_EMPTY": 3,
+    "POSITION_TIMESTAMP_BEFORE_HISTORY": 2,
+    "TARGET_VECTOR_INVALID": 406,
+    "YOLO_YOLO_SOURCE_STALE_AFTER_INFERENCE": 20,
+    "YOLO_SOURCE_STALE_OR_INVALID": 2
+  },
+  "actual_valid_3d": 0,
+  "valid_2d_outputs": 1033,
+  "old_detection": {
+    "count": 586,
+    "valid": 164,
+    "valid_fraction": 0.27986348122866894,
+    "inference": {
+      "count": 545,
+      "p50": 0.05104077899886761,
+      "p95": 0.06657984800694974,
+      "p99": 0.08342753644741593,
+      "maximum": 0.12112909799907357
+    },
+    "completion_source_age": {
+      "count": 585,
+      "p50": 0.13759493827819824,
+      "p95": 0.17516160011291504,
+      "p99": 0.18562054634094236,
+      "maximum": 0.21384906768798828
+    },
+    "reasons": {
+      "IMAGE_BEFORE_CLOCK_REFERENCE": 1,
+      "VALID": 164,
+      "YOLO_SOURCE_STALE_AFTER_INFERENCE": 421
+    },
+    "pending_wait_seconds": {
+      "count": 0
+    },
+    "compute_seconds": {
+      "count": 0
+    },
+    "source_age_at_receipt": {
+      "count": 0
+    },
+    "publication_source_age": {
+      "count": 0
+    },
+    "replaced_pending_frames": 0
+  },
+  "new_detection": {
+    "count": 504,
+    "valid": 454,
+    "valid_fraction": 0.9007936507936508,
+    "inference": {
+      "count": 504,
+      "p50": 0.05341292900266126,
+      "p95": 0.09007775540521833,
+      "p99": 0.12818677231523906,
+      "maximum": 0.1360374090145342
+    },
+    "completion_source_age": {
+      "count": 504,
+      "p50": 0.0982513427734375,
+      "p95": 0.1396137833595276,
+      "p99": 0.1779380702972412,
+      "maximum": 0.21033859252929688
+    },
+    "reasons": {
+      "VALID": 454,
+      "YOLO_SOURCE_STALE_AFTER_INFERENCE": 50
+    },
+    "pending_wait_seconds": {
+      "count": 504,
+      "p50": 0.02543287750449963,
+      "p95": 0.04678882830194197,
+      "p99": 0.050744286600092885,
+      "maximum": 0.0640244570095092
+    },
+    "compute_seconds": {
+      "count": 504,
+      "p50": 0.05346149801334832,
+      "p95": 0.09013747703429542,
+      "p99": 0.1282754592481069,
+      "maximum": 0.1361352569947485
+    },
+    "source_age_at_receipt": {
+      "count": 504,
+      "p50": 0.016108393669128418,
+      "p95": 0.026956534385681144,
+      "p99": 0.030765626430511474,
+      "maximum": 0.03654646873474121
+    },
+    "publication_source_age": {
+      "count": 504,
+      "p50": 0.09845530986785889,
+      "p95": 0.13983383178710937,
+      "p99": 0.17820116519927978,
+      "maximum": 0.2106482982635498
+    },
+    "replaced_pending_frames": 92
+  },
+  "old_shadow": {
+    "evidence_class": "ACTUAL_ROS_EXECUTOR_DISCONNECTED_SHADOW",
+    "period_seconds": 0.005,
+    "interval_seconds": {
+      "count": 5926,
+      "p50": 0.004987157495634165,
+      "p95": 0.006118803754361579,
+      "p99": 0.008984919997601537,
+      "maximum": 0.056745745008811355
+    },
+    "compute_seconds": {
+      "count": 5927,
+      "p50": 0.0005699060129700229,
+      "p95": 0.0009756193991051987,
+      "p99": 0.0011000910963048227,
+      "maximum": 0.0015223380032693967
+    },
+    "missed_cycles": 157,
+    "compute_deadline_misses": 0,
+    "successful_native_computations": 5768,
+    "rejections": {
+      "NATIVE_PAIR_NOT_AVAILABLE": 159
+    },
+    "qualified": false,
+    "workload": "Real BodyrateTracker, native hold PVA; no admitted MINCO or PNG",
+    "px4_outputs": false,
+    "flight_qualified": false
+  },
+  "new_shadow": {
+    "evidence_class": "ACTUAL_ROS_EXECUTOR_DISCONNECTED_SHADOW",
+    "period_seconds": 0.005,
+    "interval_seconds": {
+      "count": 5671,
+      "p50": 0.004986954008927569,
+      "p95": 0.008915287005947903,
+      "p99": 0.014350863290019337,
+      "maximum": 0.025668436021078378
+    },
+    "compute_seconds": {
+      "count": 5672,
+      "p50": 0.0007008494867477566,
+      "p95": 0.0012178195494925602,
+      "p99": 0.001537016292568296,
+      "maximum": 0.005125201976625249
+    },
+    "missed_cycles": 567,
+    "compute_deadline_misses": 1,
+    "successful_native_computations": 5594,
+    "rejections": {
+      "NATIVE_PAIR_NOT_AVAILABLE": 78
+    },
+    "qualified": false,
+    "workload": "Real BodyrateTracker, native hold PVA; no admitted MINCO or PNG",
+    "px4_outputs": false,
+    "flight_qualified": false
+  },
+  "scheduling": {
+    "missed_intervals": 439,
+    "with_image_callback_overlap": 423,
+    "missed_cycles_with_image_callback_overlap": 551,
+    "caveat": "Temporal overlap in the same executor, not independent CPU causal attribution; nested callbacks counted once."
+  },
+  "resources": {
+    "processes": [
+      {
+        "pid": 210105,
+        "start_ticks": 15587200,
+        "command": "/usr/bin/python3 /home/qin/data/uav_usv_mpc/scripts/p45_gcs_heartbeat.py",
+        "seconds": 31.399170124001103,
+        "core_fraction": 0.03152949571884568,
+        "peak_rss_bytes": 43335680
+      },
+      {
+        "pid": 210106,
+        "start_ticks": 15587200,
+        "command": "bash /home/qin/data/uav_usv_mpc/scripts/start_px4_ros2.sh --no-build",
+        "seconds": 31.399170124001103,
+        "core_fraction": 0.0003184797547358149,
+        "peak_rss_bytes": 4194304
+      },
+      {
+        "pid": 210583,
+        "start_ticks": 15587592,
+        "command": "bash -lc \nprintf '%s\\n' \"${BASHPID}\" > '/tmp/uav_usv_lab.DeRixS/gazebo.pid' &&\nsource '/home/qin/Projects/PX4-Autopilot/build/px4_sitl_default/rootfs/gz_env.sh' &&\nexport GZ_SIM_SERVER_CONFIG_PATH='/tmp/uav_usv_lab.DeRixS/magnetometer_enu.config' &&\nexport GZ_SIM_RESOURCE_PATH='/tmp/uav_usv_lab.DeRixS/models':'/home/qin/data/uav_usv_mpc/src/uav_usv_bringup/models':${GZ_SIM_RESOURCE_PATH:-} &&\ngz sim -s -r '/home/qin/data/uav_usv_mpc/src/uav_usv_bringup/worlds/ocean.sdf';\ncomponent_status=$?;\nif [[ ! -f '/tmp/uav_usv_lab.DeRixS/restarting' ]]; then exec bash; fi;\nexit ${component_status}",
+        "seconds": 31.399170124001103,
+        "core_fraction": 0.0,
+        "peak_rss_bytes": 3407872
+      },
+      {
+        "pid": 210597,
+        "start_ticks": 15587594,
+        "command": "gz sim -s -r /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/worlds/ocean.sdf",
+        "seconds": 31.399170124001103,
+        "core_fraction": 0.5898245057707293,
+        "peak_rss_bytes": 499826688
+      },
+      {
+        "pid": 210837,
+        "start_ticks": 15587804,
+        "command": "bash -lc \nprintf '%s\\n' \"${BASHPID}\" > '/tmp/uav_usv_lab.DeRixS/px4.pid' &&\nsource '/home/qin/Projects/PX4-Autopilot/build/px4_sitl_default/rootfs/gz_env.sh' &&\nexport GZ_SIM_SERVER_CONFIG_PATH='/tmp/uav_usv_lab.DeRixS/magnetometer_enu.config' &&\nexport PX4_GZ_MAGNETOMETER_ENU=1 &&\nexport PX4_GZ_GNSS_NO_DELAY=1 &&\nexport GZ_SIM_RESOURCE_PATH='/tmp/uav_usv_lab.DeRixS/models':'/home/qin/data/uav_usv_mpc/src/uav_usv_bringup/models':${GZ_SIM_RESOURCE_PATH:-} &&\nexport PX4_GZ_MODELS='/tmp/uav_usv_lab.DeRixS/models' &&\nexport PX4_GZ_STANDALONE=1 &&\nexport PX4_GZ_WORLD=default &&\n# Face Gazebo +Y (local NED north), where the USV starts 8 m away.\nexport PX4_GZ_MODEL_POSE='0,0,0,0,0,1.57079632679' &&\ncd '/home/qin/Projects/PX4-Autopilot' &&\nmake px4_sitl gz_x500_mono_cam;\ncomponent_status=$?;\nif [[ ! -f '/tmp/uav_usv_lab.DeRixS/restarting' ]]; then exec bash; fi;\nexit ${component_status}",
+        "seconds": 31.399170124001103,
+        "core_fraction": 0.0,
+        "peak_rss_bytes": 3461120
+      },
+      {
+        "pid": 210847,
+        "start_ticks": 15587806,
+        "command": "make px4_sitl gz_x500_mono_cam",
+        "seconds": 31.399170124001103,
+        "core_fraction": 0.0,
+        "peak_rss_bytes": 2703360
+      },
+      {
+        "pid": 210928,
+        "start_ticks": 15587815,
+        "command": "/bin/sh -c cmake --build \"/data/PX4-Autopilot/build/px4_sitl_default\" --  gz_x500_mono_cam",
+        "seconds": 31.399170124001103,
+        "core_fraction": 0.0,
+        "peak_rss_bytes": 1683456
+      },
+      {
+        "pid": 210929,
+        "start_ticks": 15587815,
+        "command": "cmake --build /data/PX4-Autopilot/build/px4_sitl_default -- gz_x500_mono_cam",
+        "seconds": 31.399170124001103,
+        "core_fraction": 0.0,
+        "peak_rss_bytes": 15204352
+      },
+      {
+        "pid": 210930,
+        "start_ticks": 15587815,
+        "command": "/usr/bin/ninja gz_x500_mono_cam",
+        "seconds": 31.399170124001103,
+        "core_fraction": 0.0,
+        "peak_rss_bytes": 24580096
+      },
+      {
+        "pid": 210931,
+        "start_ticks": 15587824,
+        "command": "/bin/sh -c cd /data/PX4-Autopilot/build/px4_sitl_default/src/modules/simulation/gz_bridge && /usr/bin/cmake -E env PX4_SIM_MODEL=gz_x500_mono_cam GZ_IP=127.0.0.1 /data/PX4-Autopilot/build/px4_sitl_default/bin/px4",
+        "seconds": 31.399170124001103,
+        "core_fraction": 0.0,
+        "peak_rss_bytes": 1683456
+      },
+      {
+        "pid": 210932,
+        "start_ticks": 15587824,
+        "command": "/usr/bin/cmake -E env PX4_SIM_MODEL=gz_x500_mono_cam GZ_IP=127.0.0.1 /data/PX4-Autopilot/build/px4_sitl_default/bin/px4",
+        "seconds": 31.399170124001103,
+        "core_fraction": 0.0,
+        "peak_rss_bytes": 13168640
+      },
+      {
+        "pid": 210933,
+        "start_ticks": 15587824,
+        "command": "/data/PX4-Autopilot/build/px4_sitl_default/bin/px4",
+        "seconds": 31.399170124001103,
+        "core_fraction": 0.2044640025403932,
+        "peak_rss_bytes": 20873216
+      },
+      {
+        "pid": 211790,
+        "start_ticks": 15588328,
+        "command": "bash -lc \nprintf '%s\\n' \"${BASHPID}\" > '/tmp/uav_usv_lab.DeRixS/dds.pid' &&\nMicroXRCEAgent udp4 -p 8888;\ncomponent_status=$?;\nif [[ ! -f '/tmp/uav_usv_lab.DeRixS/restarting' ]]; then exec bash; fi;\nexit ${component_status}",
+        "seconds": 31.399170124001103,
+        "core_fraction": 0.0,
+        "peak_rss_bytes": 3407872
+      },
+      {
+        "pid": 211797,
+        "start_ticks": 15588331,
+        "command": "MicroXRCEAgent udp4 -p 8888",
+        "seconds": 31.399170124001103,
+        "core_fraction": 0.05509699756929599,
+        "peak_rss_bytes": 27525120
+      },
+      {
+        "pid": 212466,
+        "start_ticks": 15588831,
+        "command": "bash -lc \nprintf '%s\\n' \"${BASHPID}\" > '/tmp/uav_usv_lab.DeRixS/experiment.pid' &&\nexport UAV_USV_WS='/home/qin/data/uav_usv_mpc' &&\nsource /opt/ros/humble/setup.bash &&\nsource '/home/qin/data/uav_usv_mpc/install/setup.bash' &&\ncd '/home/qin/data/uav_usv_mpc' &&\nros2 launch uav_usv_bringup 'p765_perception_probe.launch.py'     enable_evaluator:=true     enable_shadow_perception:=false     front_depth_model:=ideal     enable_down_camera:=false config_file:=/home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/p76_yan_paper.yaml;\ncomponent_status=$?;\nif [[ ! -f '/tmp/uav_usv_lab.DeRixS/restarting' ]]; then exec bash; fi;\nexit ${component_status}",
+        "seconds": 31.399170124001103,
+        "core_fraction": 0.0,
+        "peak_rss_bytes": 3407872
+      },
+      {
+        "pid": 212468,
+        "start_ticks": 15588832,
+        "command": "bash /home/qin/data/uav_usv_mpc/scripts/start_px4_ros2.sh --no-build",
+        "seconds": 2.016435409983387,
+        "core_fraction": 0.0,
+        "peak_rss_bytes": 2588672
+      },
+      {
+        "pid": 212469,
+        "start_ticks": 15588832,
+        "command": "timeout 3s ros2 topic echo --once --no-daemon --spin-time 1 /simulation/impact/flight_ready std_msgs/msg/Bool",
+        "seconds": 2.016435409983387,
+        "core_fraction": 0.0,
+        "peak_rss_bytes": 1966080
+      },
+      {
+        "pid": 212474,
+        "start_ticks": 15588832,
+        "command": "/usr/bin/python3 /opt/ros/humble/bin/ros2 topic echo --once --no-daemon --spin-time 1 /simulation/impact/flight_ready std_msgs/msg/Bool",
+        "seconds": 2.016435409983387,
+        "core_fraction": 0.02975547825779072,
+        "peak_rss_bytes": 64299008
+      },
+      {
+        "pid": 212532,
+        "start_ticks": 15588866,
+        "command": "/usr/bin/python3 /opt/ros/humble/bin/ros2 launch uav_usv_bringup p765_perception_probe.launch.py enable_evaluator:=true enable_shadow_perception:=false front_depth_model:=ideal enable_down_camera:=false config_file:=/home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/p76_yan_paper.yaml",
+        "seconds": 31.399170124001103,
+        "core_fraction": 0.0,
+        "peak_rss_bytes": 65511424
+      },
+      {
+        "pid": 212569,
+        "start_ticks": 15588902,
+        "command": "/usr/bin/python3 /home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/moving_target --ros-args -r __node:=moving_target --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/p76_yan_paper.yaml",
+        "seconds": 31.399170124001103,
+        "core_fraction": 0.0659253092303137,
+        "peak_rss_bytes": 81584128
+      },
+      {
+        "pid": 212571,
+        "start_ticks": 15588902,
+        "command": "/opt/ros/humble/lib/ros_gz_image/image_bridge /uav/camera/front/image /uav/camera/front/depth_image --ros-args -r __node:=p765_rgbd_bridge -r /uav/camera/front/image:=/camera/front/image_raw -r /uav/camera/front/depth_image:=/camera/front/depth/image_raw",
+        "seconds": 31.399170124001103,
+        "core_fraction": 0.10541679881755475,
+        "peak_rss_bytes": 97636352
+      },
+      {
+        "pid": 212573,
+        "start_ticks": 15588902,
+        "command": "/usr/bin/python3 /home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/rgbd_target_localizer --ros-args -r __node:=rgbd_target_localizer --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/p76_yan_paper.yaml --params-file /tmp/launch_params_uykj5f59",
+        "seconds": 31.399170124001103,
+        "core_fraction": 0.6860053917009454,
+        "peak_rss_bytes": 233086976
+      },
+      {
+        "pid": 212575,
+        "start_ticks": 15588902,
+        "command": "/home/qin/data/uav_usv_mpc/data/experiments/20261020_p76_runtime_01/venv/bin/python /home/qin/data/uav_usv_mpc/install/uav_control/lib/uav_control/yolo_target_detector --ros-args -r __node:=yolo_target_detector --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/p76_yan_paper.yaml",
+        "seconds": 31.399170124001103,
+        "core_fraction": 1.1025769108953913,
+        "peak_rss_bytes": 239935488
+      },
+      {
+        "pid": 212577,
+        "start_ticks": 15588903,
+        "command": "python3 /home/qin/data/uav_usv_mpc/scripts/p765_resource_monitor.py --output /home/qin/data/uav_usv_mpc/data/experiments/p765_offline_validation/nonflight_01/process_resources.jsonl --duration 35",
+        "seconds": 31.399170124001103,
+        "core_fraction": 0.011783750925225154,
+        "peak_rss_bytes": 12226560
+      },
+      {
+        "pid": 212579,
+        "start_ticks": 15588903,
+        "command": "python3 /home/qin/data/uav_usv_mpc/scripts/p765_roi_capture.py --output /home/qin/data/uav_usv_mpc/data/experiments/p765_offline_validation/nonflight_01/roi --duration 30 --max-samples 60 --max-per-stratum 10 --max-bytes 67108864 --capacity 24",
+        "seconds": 30.38369505800074,
+        "core_fraction": 0.15337173411937968,
+        "peak_rss_bytes": 270856192
+      },
+      {
+        "pid": 212581,
+        "start_ticks": 15588903,
+        "command": "python3 /home/qin/data/uav_usv_mpc/scripts/p764_diagnostic_collect.py --output /home/qin/data/uav_usv_mpc/data/experiments/p765_offline_validation/nonflight_01 --duration 30 --ros-args --params-file /home/qin/data/uav_usv_mpc/src/uav_usv_bringup/config/p76_yan_paper.yaml",
+        "seconds": 31.399170124001103,
+        "core_fraction": 0.8898324347318669,
+        "peak_rss_bytes": 300285952
+      },
+      {
+        "pid": 213036,
+        "start_ticks": 15589250,
+        "command": "bash /home/qin/data/uav_usv_mpc/scripts/start_px4_ros2.sh --no-build",
+        "seconds": 2.0248262120003346,
+        "core_fraction": 0.0,
+        "peak_rss_bytes": 2588672
+      },
+      {
+        "pid": 213037,
+        "start_ticks": 15589250,
+        "command": "timeout 3s ros2 topic echo --once --no-daemon --spin-time 1 /simulation/impact/flight_ready std_msgs/msg/Bool",
+        "seconds": 2.0248262120003346,
+        "core_fraction": 0.0,
+        "peak_rss_bytes": 1966080
+      },
+      {
+        "pid": 213038,
+        "start_ticks": 15589250,
+        "command": "/usr/bin/python3 /opt/ros/humble/bin/ros2 topic echo --once --no-daemon --spin-time 1 /simulation/impact/flight_ready std_msgs/msg/Bool",
+        "seconds": 2.0248262120003346,
+        "core_fraction": 0.014816086349634343,
+        "peak_rss_bytes": 64823296
+      },
+      {
+        "pid": 213424,
+        "start_ticks": 15589667,
+        "command": "bash /home/qin/data/uav_usv_mpc/scripts/start_px4_ros2.sh --no-build",
+        "seconds": 2.0276736539963167,
+        "core_fraction": 0.0,
+        "peak_rss_bytes": 2592768
+      },
+      {
+        "pid": 213430,
+        "start_ticks": 15589667,
+        "command": "timeout 3s ros2 topic echo --once --no-daemon --spin-time 1 /simulation/impact/flight_ready std_msgs/msg/Bool",
+        "seconds": 2.0276736539963167,
+        "core_fraction": 0.0,
+        "peak_rss_bytes": 1966080
+      },
+      {
+        "pid": 213431,
+        "start_ticks": 15589667,
+        "command": "/usr/bin/python3 /opt/ros/humble/bin/ros2 topic echo --once --no-daemon --spin-time 1 /simulation/impact/flight_ready std_msgs/msg/Bool",
+        "seconds": 2.0276736539963167,
+        "core_fraction": 0.014795280266562297,
+        "peak_rss_bytes": 63946752
+      },
+      {
+        "pid": 213820,
+        "start_ticks": 15590084,
+        "command": "bash /home/qin/data/uav_usv_mpc/scripts/start_px4_ros2.sh --no-build",
+        "seconds": 2.0316960479831323,
+        "core_fraction": 0.0,
+        "peak_rss_bytes": 2592768
+      },
+      {
+        "pid": 213821,
+        "start_ticks": 15590084,
+        "command": "timeout 3s ros2 topic echo --once --no-daemon --spin-time 1 /simulation/impact/flight_ready std_msgs/msg/Bool",
+        "seconds": 2.0316960479831323,
+        "core_fraction": 0.0,
+        "peak_rss_bytes": 1966080
+      },
+      {
+        "pid": 213822,
+        "start_ticks": 15590085,
+        "command": "/usr/bin/python3 /opt/ros/humble/bin/ros2 topic echo --once --no-daemon --spin-time 1 /simulation/impact/flight_ready std_msgs/msg/Bool",
+        "seconds": 2.0316960479831323,
+        "core_fraction": 0.04921996087912372,
+        "peak_rss_bytes": 64503808
+      },
+      {
+        "pid": 213907,
+        "start_ticks": 15590499,
+        "command": "bash /home/qin/data/uav_usv_mpc/scripts/start_px4_ros2.sh --no-build",
+        "seconds": 2.0316172059974633,
+        "core_fraction": 0.0,
+        "peak_rss_bytes": 2461696
+      },
+      {
+        "pid": 213908,
+        "start_ticks": 15590499,
+        "command": "timeout 3s ros2 topic echo --once --no-daemon --spin-time 1 /simulation/impact/flight_ready std_msgs/msg/Bool",
+        "seconds": 2.0316172059974633,
+        "core_fraction": 0.0,
+        "peak_rss_bytes": 1966080
+      },
+      {
+        "pid": 213909,
+        "start_ticks": 15590499,
+        "command": "/usr/bin/python3 /opt/ros/humble/bin/ros2 topic echo --once --no-daemon --spin-time 1 /simulation/impact/flight_ready std_msgs/msg/Bool",
+        "seconds": 2.0316172059974633,
+        "core_fraction": 0.02461093549138923,
+        "peak_rss_bytes": 64712704
+      },
+      {
+        "pid": 213922,
+        "start_ticks": 15590915,
+        "command": "bash /home/qin/data/uav_usv_mpc/scripts/start_px4_ros2.sh --no-build",
+        "seconds": 2.0221767149923835,
+        "core_fraction": 0.0,
+        "peak_rss_bytes": 2592768
+      },
+      {
+        "pid": 213923,
+        "start_ticks": 15590915,
+        "command": "timeout 3s ros2 topic echo --once --no-daemon --spin-time 1 /simulation/impact/flight_ready std_msgs/msg/Bool",
+        "seconds": 2.0221767149923835,
+        "core_fraction": 0.0,
+        "peak_rss_bytes": 1900544
+      },
+      {
+        "pid": 213924,
+        "start_ticks": 15590915,
+        "command": "/usr/bin/python3 /opt/ros/humble/bin/ros2 topic echo --once --no-daemon --spin-time 1 /simulation/impact/flight_ready std_msgs/msg/Bool",
+        "seconds": 2.0221767149923835,
+        "core_fraction": 0.09890332457950061,
+        "peak_rss_bytes": 64573440
+      },
+      {
+        "pid": 213938,
+        "start_ticks": 15591331,
+        "command": "bash /home/qin/data/uav_usv_mpc/scripts/start_px4_ros2.sh --no-build",
+        "seconds": 3.030527611990692,
+        "core_fraction": 0.0,
+        "peak_rss_bytes": 2592768
+      },
+      {
+        "pid": 213939,
+        "start_ticks": 15591331,
+        "command": "timeout 3s ros2 topic echo --once --no-daemon --spin-time 1 /simulation/impact/flight_ready std_msgs/msg/Bool",
+        "seconds": 3.030527611990692,
+        "core_fraction": 0.0,
+        "peak_rss_bytes": 1966080
+      },
+      {
+        "pid": 213940,
+        "start_ticks": 15591331,
+        "command": "/usr/bin/python3 /opt/ros/humble/bin/ros2 topic echo --once --no-daemon --spin-time 1 /simulation/impact/flight_ready std_msgs/msg/Bool",
+        "seconds": 3.030527611990692,
+        "core_fraction": 0.11219168525465469,
+        "peak_rss_bytes": 64647168
+      },
+      {
+        "pid": 213953,
+        "start_ticks": 15591748,
+        "command": "bash /home/qin/data/uav_usv_mpc/scripts/start_px4_ros2.sh --no-build",
+        "seconds": 2.0302426610141993,
+        "core_fraction": 0.0,
+        "peak_rss_bytes": 2592768
+      },
+      {
+        "pid": 213954,
+        "start_ticks": 15591748,
+        "command": "timeout 3s ros2 topic echo --once --no-daemon --spin-time 1 /simulation/impact/flight_ready std_msgs/msg/Bool",
+        "seconds": 2.0302426610141993,
+        "core_fraction": 0.0,
+        "peak_rss_bytes": 1966080
+      },
+      {
+        "pid": 213955,
+        "start_ticks": 15591748,
+        "command": "/usr/bin/python3 /opt/ros/humble/bin/ros2 topic echo --once --no-daemon --spin-time 1 /simulation/impact/flight_ready std_msgs/msg/Bool",
+        "seconds": 2.0302426610141993,
+        "core_fraction": 0.014776558771065155,
+        "peak_rss_bytes": 64458752
+      }
+    ],
+    "host_per_core_busy_fraction": {
+      "cpu0": {
+        "count": 31,
+        "p50": 0.20833333333333337,
+        "p95": 0.3286842105263158,
+        "p99": 0.3594188596491228,
+        "maximum": 0.36458333333333337
+      },
+      "cpu1": {
+        "count": 31,
+        "p50": 0.28865979381443296,
+        "p95": 0.505,
+        "p99": 0.5873131313131312,
+        "maximum": 0.6161616161616161
+      },
+      "cpu2": {
+        "count": 31,
+        "p50": 0.22680412371134018,
+        "p95": 0.3128024405638544,
+        "p99": 0.35739795918367345,
+        "maximum": 0.375
+      },
+      "cpu3": {
+        "count": 31,
+        "p50": 0.39,
+        "p95": 0.7289846631721996,
+        "p99": 0.7931372549019607,
+        "maximum": 0.8137254901960784
+      },
+      "cpu4": {
+        "count": 31,
+        "p50": 0.23469387755102045,
+        "p95": 0.4329294217687075,
+        "p99": 0.4498144712430427,
+        "maximum": 0.4545454545454546
+      },
+      "cpu5": {
+        "count": 31,
+        "p50": 0.3608247422680413,
+        "p95": 0.9507862550960978,
+        "p99": 0.9742574257425742,
+        "maximum": 0.9801980198019802
+      },
+      "cpu6": {
+        "count": 31,
+        "p50": 0.29292929292929293,
+        "p95": 0.4742268041237114,
+        "p99": 0.5544536082474226,
+        "maximum": 0.5800000000000001
+      },
+      "cpu7": {
+        "count": 31,
+        "p50": 0.31000000000000005,
+        "p95": 0.87,
+        "p99": 0.957069306930693,
+        "maximum": 0.9900990099009901
+      },
+      "cpu8": {
+        "count": 31,
+        "p50": 0.3608247422680413,
+        "p95": 0.573644609358895,
+        "p99": 0.63634546602146,
+        "maximum": 0.6597938144329897
+      },
+      "cpu9": {
+        "count": 31,
+        "p50": 0.35416666666666663,
+        "p95": 0.5839517625231911,
+        "p99": 0.6604720676149247,
+        "maximum": 0.6767676767676767
+      },
+      "cpu10": {
+        "count": 31,
+        "p50": 0.36458333333333337,
+        "p95": 0.6694329896907216,
+        "p99": 0.7503737373737374,
+        "maximum": 0.7676767676767677
+      },
+      "cpu11": {
+        "count": 31,
+        "p50": 0.3571428571428571,
+        "p95": 0.7339866639725197,
+        "p99": 0.779530612244898,
+        "maximum": 0.79
+      },
+      "cpu12": {
+        "count": 31,
+        "p50": 0.23958333333333337,
+        "p95": 0.39087628865979385,
+        "p99": 0.46752577319587624,
+        "maximum": 0.5
+      },
+      "cpu13": {
+        "count": 31,
+        "p50": 0.22680412371134018,
+        "p95": 0.3976749287124369,
+        "p99": 0.5237113402061855,
+        "maximum": 0.5714285714285714
+      },
+      "cpu14": {
+        "count": 31,
+        "p50": 0.21875,
+        "p95": 0.41154778743180437,
+        "p99": 0.5084108410841084,
+        "maximum": 0.5353535353535354
+      },
+      "cpu15": {
+        "count": 31,
+        "p50": 0.23958333333333337,
+        "p95": 0.3968962585034014,
+        "p99": 0.4729960025247211,
+        "maximum": 0.5051546391752577
+      }
+    },
+    "scope": "Host per-core activity is not wholly attributable to this experiment; process samples use exact inherited run-directory environment"
+  },
+  "independent_admission": {
+    "qualified": false,
+    "reason": "P765_E1_RECOMPUTED_NOT_QUALIFIED"
+  },
+  "graph_and_phase": {
+    "evidence_class": "REAL_SYNCHRONIZED_UNARMED_SESSION",
+    "counts": {
+      "spatial": 1501,
+      "image": 2005,
+      "ack": 3506,
+      "rgb_frame": 599,
+      "depth_frame": 599,
+      "observation": 483,
+      "detection": 504,
+      "yolo": 504,
+      "status": 59,
+      "navigation": 1480,
+      "pose": 2951,
+      "reference": 1478,
+      "thrust": 5840
+    },
+    "valid_detections": 454,
+    "same_rgb_depth_detection_observation_frames": 0,
+    "causal_native_pose_navigation_brackets": 0,
+    "image_valid_before_y": 263,
+    "image_valid_after_y": 770,
+    "spatial_valid_after_y": 0,
+    "illegal_authorizations": 0,
+    "valid_detection_age_seconds": {
+      "count": 454,
+      "p50": 0.10199952125549316,
+      "p95": 0.1254158854484558,
+      "p99": 0.12900471925735474,
+      "maximum": 0.1336653232574463
+    },
+    "one_yolo": true,
+    "no_px4_command_publishers": true,
+    "qualified": false,
+    "unarmed": true,
+    "flight_qualified": false,
+    "limits": {
+      "source_age": 0.125,
+      "pose_bracket": 0.05
+    },
+    "scope": "Stationary ground scene and shadow labels; no flight or capture",
+    "posterior_and_covariance_preserved": true,
+    "transitions": [
+      {
+        "phase": "Y_HANDOVER",
+        "epoch": 1,
+        "before": "04c9a65ca4a23e0527151c588644326feb13ed4e2267435266236ec914a927f3",
+        "after": "04c9a65ca4a23e0527151c588644326feb13ed4e2267435266236ec914a927f3"
+      },
+      {
+        "phase": "PAPER_INTERCEPT_ACTIVE",
+        "epoch": 1,
+        "before": "04c9a65ca4a23e0527151c588644326feb13ed4e2267435266236ec914a927f3",
+        "after": "04c9a65ca4a23e0527151c588644326feb13ed4e2267435266236ec914a927f3"
+      },
+      {
+        "phase": "Y_HANDOVER",
+        "epoch": 1,
+        "before": "ec8489ae4c6bdee0ae5bc21aba84d4e235b4e8d57641c4eb1cca2fbb6e824b47",
+        "after": "ec8489ae4c6bdee0ae5bc21aba84d4e235b4e8d57641c4eb1cca2fbb6e824b47"
+      },
+      {
+        "phase": "PAPER_INTERCEPT_ACTIVE",
+        "epoch": 1,
+        "before": "2f2e38e0f4b0798d9beee96728381ea16a57f71c733ec59506a10cb8713763a9",
+        "after": "2f2e38e0f4b0798d9beee96728381ea16a57f71c733ec59506a10cb8713763a9"
+      }
+    ],
+    "failure": "",
+    "source": "/home/qin/data/uav_usv_mpc/data/experiments/p765_offline_validation/nonflight_01/synchronized_packets.jsonl.gz"
+  },
+  "comparison_limitations": [
+    "Same scene/model/hardware but changed worker/EOF/serializer plus extra ROI/resource/identity recording and more successful 2D updates.",
+    "Do not attribute one change or declare equal-load scheduling improvement."
+  ],
+  "decision": {
+    "E0": "BLOCKED",
+    "E1": "FAIL",
+    "E2": "FAIL",
+    "A1": "NO-GO",
+    "production_source_changed": false,
+    "second_session_authorized": false
+  }
+}

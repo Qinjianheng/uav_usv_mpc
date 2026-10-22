@@ -6,7 +6,8 @@ P7 配置已实现 X 后 KF/BCTRA/MINCO FOLLOW、Y 后 IBVS/PNG 安全接近，�
 
 | 文档 | 用途 |
 |---|---|
-| [P7.6.5：三维诊断与剩余阻断](p765_remaining_blockers.md) | 离线修复、原始帧/运行代码身份与资格独立复算；无新仿真，E0 BLOCKED、E1/E2 FAIL、A1 NO-GO |
+| [P7.6.5：授权未解锁采集](p765_authorized_unarmed_capture.md) | 原始深度证实mask远背景污染；ROI采集完整，三维0、影子567丢周期，E1仍FAIL |
+| [P7.6.5：离线修复与剩余阻断](p765_remaining_blockers.md) | 采集前的离线阶段、原始帧/运行代码身份与资格独立复算；E0 BLOCKED、E1/E2 FAIL、A1 NO-GO |
 | [P7.6.4：架构收敛与分级验证](p764_architecture_validation.md) | 初始化/准入修复；2493 项冻结回归通过；一次未解锁真实采集失败，E0 协议与 E2 长延迟仍阻断，A1 NO-GO |
 | [P7.6.2：A1 实测与交接阻断](p762_bodyrate_calibration_validation.md) | 因果配对实飞无旧故障；悬停通过，满推力退出约 240 ms 执行滞后导致上升越界；A1 未合格，A2/B 未运行 |
 | [P7.6.1：安装修复、校准流程与阻断](p761_paper_architecture_completion.md) | A 前置安装真实渲染 0/15 全遮挡；两次 A1 失败并停止后续，因果配对候选未再飞；2380 项当前回归通过，尚无 0.25 m 捕获资格 |

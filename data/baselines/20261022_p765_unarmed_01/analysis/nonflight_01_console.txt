@@ -1,0 +1,21 @@
+{
+  "success": false,
+  "unarmed": true,
+  "flight_qualified": false,
+  "reason": "E1_COVERAGE_OR_TIMING_FAILED",
+  "graph": {
+    "/fmu/in/vehicle_command": [],
+    "/fmu/in/offboard_control_mode": [],
+    "/fmu/in/vehicle_rates_setpoint": [],
+    "/fmu/in/trajectory_setpoint": [],
+    "/perception/target_detection": [
+      "yolo_target_detector"
+    ]
+  },
+  "raw_capture": {
+    "completed": true,
+    "paired_samples": 10,
+    "manifest_sha256": "1567e58c680899b70b979062d71cb5c7c6df43c0b9d32d7d52a8cd87e91c2fbe",
+    "flight_qualified": false
+  }
+}
